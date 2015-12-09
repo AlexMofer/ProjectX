@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lint>
+    <issue id="NewApi">
+        <ignore path="src/android/support/v4/widget/SwipeRefreshLayout.java" />
+    </issue>
+    <issue id="RtlHardcoded">
+        <ignore path="src/com/am/widget/drawables/SharpCornerBoxDrawable.java" />
+    </issue>
+</lint>

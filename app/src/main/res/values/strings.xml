@@ -1,0 +1,41 @@
+<resources>
+
+    <string name="app_name">控件集</string>
+    <string name="wechat">仿微信</string>
+    <string name="newwidget">新控件</string>
+    <string name="bilateralpane">三面板</string>
+    <string name="dotpager">点</string>
+    <string name="supertab">超级Tab</string>
+    <string name="swiperefresh">下拉刷新</string>
+    <string name="draggridview">拖动网格</string>
+    <string name="shapeimage">形状Image</string>
+    <string name="citylist">城市列表</string>
+    <string name="sharpcornerbox">尖角框</string>
+    <string name="connectimage">连接动画</string>
+    <string name="stateframe">状态帧布局</string>
+    <string name="replace">交替布局</string>
+    <string name="drawableratingbar">星标评级</string>
+    <string name="left">左边</string>
+    <string name="right">右边</string>
+    <string name="connect">连接</string>
+    <string name="failure">失败</string>
+    <string name="empty">空白</string>
+    <string name="success">成功</string>
+    <string name="text_scbd">There is TextView Content</string>
+    <string name="text_scbd_v">There\nis\nTextView\nContent</string>
+    <string name="title_activity_replace">ReplaceActivity</string>
+    <string name="wrap">自动换行</string>
+    <string name="printer">打印</string>
+    <string name="printer_ip">打印机IP:</string>
+    <string name="printer_port">打印机端口:</string>
+    <string name="printer_for">图片循环:</string>
+    <string name="printer_pic">打印图片</string>
+    <string name="security_code">获取验证码</string>
+    <string name="loading_drawable">载入动画</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

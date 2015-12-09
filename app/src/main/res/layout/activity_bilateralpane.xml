@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.am.widget.bilateralpanelayout.BilateralPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sliding"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffffff"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical" >
+
+    <include
+        android:layout_width="320dp"
+        android:layout_height="match_parent"
+        layout="@layout/include_bilateralpane_left" />
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/include_bilateralpane_center" />
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/include_bilateralpane_right" />
+
+</com.am.widget.bilateralpanelayout.BilateralPaneLayout>

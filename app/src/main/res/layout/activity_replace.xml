@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical"
+              tools:context="com.am.activity.ReplaceActivity">
+
+    <com.am.widget.replacelayout.ReplaceLayout
+        android:id="@+id/rl_replace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ff303030"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_replace"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <com.am.widget.tabstrips.GradientTabStrip
+        android:id="@+id/tab_wechat"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_gravity="bottom"
+        android:drawablePadding="2dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:textColor="@color/color_tab"
+        android:textSize="12sp"
+        android:background="@drawable/bg_wechat_tabbar"/>
+</LinearLayout>

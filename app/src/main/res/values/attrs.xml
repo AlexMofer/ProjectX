@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FixedSizeImageView">
+        <attr name="widthScale" format="integer"/>
+        <attr name="heightScale" format="integer"/>
+        <attr name="scaleTarget" format="enum">
+            <enum name="height" value="0"/>
+            <enum name="width" value="1"/>
+        </attr>
+    </declare-styleable>
+</resources>
