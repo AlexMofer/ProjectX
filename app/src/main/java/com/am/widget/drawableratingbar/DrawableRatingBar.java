@@ -8,11 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
  * 图片评级
- * TODO 添加控制操作
  * Created by Alex on 2015/8/31.
  */
 public class DrawableRatingBar extends View {
@@ -22,6 +22,9 @@ public class DrawableRatingBar extends View {
     private int mDrawablePadding;
     private int mNumStars = 5;
     private int mRating = 0;
+    private boolean changeable = false;
+    private OnRatingChangeListener listener;
+    private int touchMin = 0;
 
     public DrawableRatingBar(Context context) {
         this(context, null);
@@ -137,7 +140,48 @@ public class DrawableRatingBar extends View {
             canvas.translate(secondaryProgressWidth + mDrawablePadding, 0);
         }
         canvas.restore();
+    }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        boolean touch = false;
+        if (changeable) {
+            final int action = event.getAction();
+            final int oldRating = getRating();
+            final int rating = getRatingByX(event.getX());
+            if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
+                touch = true;
+                setRating(rating);
+                if (oldRating != rating && listener != null)
+                    listener.onRatingChanged(rating, oldRating);
+            } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+                touch = true;
+                setRating(rating);
+                if (listener != null) {
+                    if (oldRating != rating)
+                        listener.onRatingChanged(rating, oldRating);
+                    listener.onRatingSelected(rating);
+                }
+            }
+        }
+        return touch || super.onTouchEvent(event);
+    }
+
+    private int getRatingByX(float x) {
+        final int paddingStart = ViewCompat.getPaddingStart(this);
+        final int paddingEnd = ViewCompat.getPaddingEnd(this);
+        final float itemWidth = (getMeasuredWidth() - paddingStart - paddingEnd + mDrawablePadding) / (float) mNumStars;
+        int rating;
+        if (x < paddingStart)
+            rating = 0;
+        else if (x > getMeasuredWidth() - paddingEnd)
+            rating = mNumStars;
+        else {
+            rating = (int) Math.ceil((x - paddingStart + mDrawablePadding * 0.5f) / itemWidth);
+        }
+        if (rating < touchMin)
+            rating = touchMin;
+        return rating;
     }
 
     public int getNumStars() {
@@ -181,5 +225,26 @@ public class DrawableRatingBar extends View {
         }
     }
 
+    public boolean isChangeable() {
+        return changeable;
+    }
 
+    public void setChangeable(boolean changeable) {
+        this.changeable = changeable;
+    }
+
+    public void setOnRatingChangeListener(OnRatingChangeListener listener) {
+        setChangeable(listener != null);
+        this.listener = listener;
+    }
+
+    public void setTouchMin(int touchMin) {
+        this.touchMin = touchMin;
+    }
+
+    public interface OnRatingChangeListener {
+        void onRatingChanged(int rating, int oldRating);
+
+        void onRatingSelected(int rating);
+    }
 }
