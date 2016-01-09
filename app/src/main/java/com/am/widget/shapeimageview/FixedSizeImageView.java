@@ -14,14 +14,15 @@ import com.am.widget.R;
  */
 public class FixedSizeImageView extends PressShapeImageView {
 
-    @IntDef({ST_HEIGHT, ST_WIDTH})
+    @IntDef({ST_AUTO, ST_HEIGHT, ST_WIDTH})
     public @interface FixedSizeImageViewScaleTarget {
     }
+    public static final int ST_AUTO = -1;
     public static final int ST_HEIGHT = 0;
     public static final int ST_WIDTH = 1;
     private int widthScale = 0;
     private int heightScale = 0;
-    private int scaleTarget = 0;
+    private int scaleTarget = ST_AUTO;
 
     public FixedSizeImageView(Context context) {
         super(context);
@@ -42,7 +43,7 @@ public class FixedSizeImageView extends PressShapeImageView {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.FixedSizeImageView);
         widthScale = typedArray.getInteger(R.styleable.FixedSizeImageView_widthScale, 0);
         heightScale = typedArray.getInteger(R.styleable.FixedSizeImageView_heightScale, 0);
-        scaleTarget = typedArray.getInt(R.styleable.FixedSizeImageView_scaleTarget, 0);
+        scaleTarget = typedArray.getInt(R.styleable.FixedSizeImageView_scaleTarget, ST_AUTO);
         typedArray.recycle();
     }
 
@@ -54,11 +55,22 @@ public class FixedSizeImageView extends PressShapeImageView {
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         final int measureWidth = getMeasuredWidth();
-        final int measureHeight = getMeasuredWidth();
-        if (scaleTarget == ST_HEIGHT) {
-            setMeasuredDimension(measureWidth, measureWidth * heightScale / widthScale);
-        } else {
-            setMeasuredDimension(measureHeight * widthScale / heightScale, measureHeight);
+        final int measureHeight = getMeasuredHeight();
+        switch (scaleTarget) {
+            default:
+            case ST_AUTO:
+                if (measureWidth < measureWidth * heightScale / widthScale) {
+                    setMeasuredDimension(measureWidth, measureWidth * heightScale / widthScale);
+                } else {
+                    setMeasuredDimension(measureHeight * widthScale / heightScale, measureHeight);
+                }
+                break;
+            case ST_HEIGHT:
+                setMeasuredDimension(measureWidth, measureWidth * heightScale / widthScale);
+                break;
+            case ST_WIDTH:
+                setMeasuredDimension(measureHeight * widthScale / heightScale, measureHeight);
+                break;
         }
     }
 
