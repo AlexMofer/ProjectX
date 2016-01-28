@@ -15,20 +15,40 @@ public class CenterDrawable extends Drawable {
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Drawable mDrawableCenter;
+    private int mMinWidth;
+    private int mMinHeight;
 
     public CenterDrawable(Drawable center, @ColorInt int color) {
-        mDrawableCenter = center;
-        mPaint.setColor(color);
+        this(center, color, 0, 0);
     }
 
-    @Override
-    public int getMinimumHeight() {
-        return mDrawableCenter == null ? super.getMinimumHeight() : Math.max(mDrawableCenter.getIntrinsicHeight(), super.getMinimumHeight());
+    public CenterDrawable(Drawable center, @ColorInt int color, int minWidth, int minHeight) {
+        mDrawableCenter = center;
+        mPaint.setColor(color);
+        mMinWidth = minWidth;
+        mMinHeight = minHeight;
     }
 
     @Override
     public int getMinimumWidth() {
-        return mDrawableCenter == null ? super.getMinimumWidth() : Math.max(mDrawableCenter.getIntrinsicWidth(), super.getMinimumWidth());
+        return mDrawableCenter == null ? mMinWidth :
+                Math.max(mDrawableCenter.getIntrinsicWidth(), mMinWidth);
+    }
+
+    @Override
+    public int getMinimumHeight() {
+        return mDrawableCenter == null ? mMinHeight :
+                Math.max(mDrawableCenter.getIntrinsicHeight(), mMinHeight);
+    }
+
+    @Override
+    public int getIntrinsicWidth() {
+        return mMinWidth == 0 ? super.getIntrinsicWidth() : mMinWidth;
+    }
+
+    @Override
+    public int getIntrinsicHeight() {
+        return mMinHeight == 0 ? super.getIntrinsicHeight() : mMinHeight;
     }
 
     @Override

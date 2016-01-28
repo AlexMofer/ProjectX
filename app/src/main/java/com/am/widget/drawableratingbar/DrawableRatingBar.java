@@ -70,8 +70,8 @@ public class DrawableRatingBar extends View {
         final int progressDrawableHeight = mProgressDrawable == null ? 0 : mProgressDrawable.getIntrinsicHeight();
         final int secondaryProgressWidth = mSecondaryProgress == null ? 0 : mSecondaryProgress.getIntrinsicWidth();
         final int secondaryProgressHeight = mSecondaryProgress == null ? 0 : mSecondaryProgress.getIntrinsicHeight();
-        int measureWidth = progressDrawableWidth * mRating + secondaryProgressWidth * (mNumStars - mRating)
-                + mDrawablePadding * (mNumStars - 1) + ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this);
+        int measureWidth = (mNumStars == 0 ? 0 : progressDrawableWidth * mRating + secondaryProgressWidth * (mNumStars - mRating)
+                + mDrawablePadding * (mNumStars - 1)) + ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this);
         int measureHeight = Math.max(progressDrawableHeight, secondaryProgressHeight) + getPaddingBottom() + getPaddingTop();
         switch (widthMode) {
             case MeasureSpec.EXACTLY:
@@ -101,8 +101,10 @@ public class DrawableRatingBar extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        drawProgress(canvas);
-        drawSecondaryProgress(canvas);
+        if (mNumStars != 0) {
+            drawProgress(canvas);
+            drawSecondaryProgress(canvas);
+        }
     }
 
     private void drawProgress(Canvas canvas) {
@@ -189,7 +191,7 @@ public class DrawableRatingBar extends View {
     }
 
     public void setNumStars(int numStars) {
-        if (numStars > 0 && numStars != mNumStars) {
+        if (numStars >= 0 && numStars != mNumStars) {
             this.mNumStars = numStars;
             mRating = mRating > mNumStars ? mNumStars : mRating;
             requestLayout();

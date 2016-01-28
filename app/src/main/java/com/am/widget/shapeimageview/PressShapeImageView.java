@@ -72,6 +72,22 @@ public class PressShapeImageView extends ShapeImageView {
 		return isPress || super.verifyDrawable(who);
 	}
 
+	@Override
+	protected void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		if (mPressDrawable != null) {
+			mPressDrawable.setCallback(this);
+		}
+	}
+
+	@Override
+	protected void onDetachedFromWindow() {
+		if (mPressDrawable != null) {
+			mPressDrawable.setCallback(null);
+		}
+		super.onDetachedFromWindow();
+	}
+
 	/**
 	 * 设置按压 Drawable
 	 * 
