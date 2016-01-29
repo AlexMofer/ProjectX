@@ -46,7 +46,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     private WeakReference<PagerAdapter> mWatchingAdapter;
     private int mLastKnownPosition = 0;
     private float mLastKnownPositionOffset = -1;
-    private int mCurrectPager = 0;
+    private int mCurrentPager = 0;
     private int mNextPager = 0;
     private int mTouchSlop;
     private float mInitialMotionX;
@@ -157,7 +157,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      * @param position 位置
      */
     public void performClick(int position) {
-        performClick(position, false);
+        performClick(position, false, true);
     }
 
     /**
@@ -166,19 +166,19 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      * @param position     位置
      * @param smoothScroll 是否平滑滚动
      */
-    public void performClick(int position, boolean smoothScroll) {
+    public void performClick(int position, boolean smoothScroll, boolean notifyListener) {
         if (getViewPager() != null && getViewPager().getAdapter() != null
                 && getViewPager().getAdapter().getCount() > 0) {
-            if (mListener != null) {
+            if (mListener != null && notifyListener) {
                 mListener.onTabClick(position);
             }
-            int currect = position % getViewPager().getAdapter().getCount();
-            getViewPager().setCurrentItem(currect, smoothScroll);
+            int current = position % getViewPager().getAdapter().getCount();
+            getViewPager().setCurrentItem(current, smoothScroll);
             if (!smoothScroll) {
-                mCurrectPager = currect;
-                jumpTo(mCurrectPager);
+                mCurrentPager = current;
+                jumpTo(mCurrentPager);
                 if (mTCListener != null)
-                    mTCListener.jumpTo(mCurrectPager);
+                    mTCListener.jumpTo(mCurrentPager);
 
             }
 
@@ -196,7 +196,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
             newAdapter.registerDataSetObserver(mPageListener);
             mWatchingAdapter = new WeakReference<>(newAdapter);
             mLastKnownPosition = mPager.getCurrentItem();
-            mCurrectPager = mLastKnownPosition;
+            mCurrentPager = mLastKnownPosition;
             mNextPager = mLastKnownPosition;
             if (willNeedTitle) {
                 for (int i = 0; i < newAdapter.getCount(); i++) {
@@ -206,9 +206,9 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         }
         getDrawables(newAdapter);
         if (mPager != null) {
-            jumpTo(mCurrectPager);
+            jumpTo(mCurrentPager);
             if (mTCListener != null)
-                mTCListener.jumpTo(mCurrectPager);
+                mTCListener.jumpTo(mCurrentPager);
         }
         requestLayout();
         invalidate();
@@ -261,33 +261,33 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
                 } else {
                     mLastKnownPosition = position;
                 }
-                mCurrectPager = mLastKnownPosition;
+                mCurrentPager = mLastKnownPosition;
                 mNextPager = mLastKnownPosition + 1;
-                gotoRight(mCurrectPager, mNextPager, mPositionOffset);
+                gotoRight(mCurrentPager, mNextPager, mPositionOffset);
                 if (mTCListener != null)
-                    mTCListener.gotoRight(mCurrectPager, mNextPager, mPositionOffset);
+                    mTCListener.gotoRight(mCurrentPager, mNextPager, mPositionOffset);
             } else {
-                mCurrectPager = mLastKnownPosition + 1;
+                mCurrentPager = mLastKnownPosition + 1;
                 mNextPager = mLastKnownPosition;
-                gotoLeft(mCurrectPager, mNextPager, mPositionOffset);
+                gotoLeft(mCurrentPager, mNextPager, mPositionOffset);
                 if (mTCListener != null)
-                    mTCListener.gotoLeft(mCurrectPager, mNextPager, mPositionOffset);
+                    mTCListener.gotoLeft(mCurrentPager, mNextPager, mPositionOffset);
             }
         } else {
             mLastKnownPosition = position;
             if (mLastKnownPositionOffset > mPositionOffset) {
-                mCurrectPager = mLastKnownPosition + 1;
+                mCurrentPager = mLastKnownPosition + 1;
                 mNextPager = mLastKnownPosition;
-                gotoLeft(mCurrectPager, mNextPager, mPositionOffset);
+                gotoLeft(mCurrentPager, mNextPager, mPositionOffset);
                 if (mTCListener != null)
-                    mTCListener.gotoLeft(mCurrectPager, mNextPager, mPositionOffset);
+                    mTCListener.gotoLeft(mCurrentPager, mNextPager, mPositionOffset);
             } else {
                 mPositionOffset = mPositionOffset == 0 ? 1 : mPositionOffset;
-                mCurrectPager = mLastKnownPosition;
+                mCurrentPager = mLastKnownPosition;
                 mNextPager = mLastKnownPosition + 1;
-                gotoRight(mCurrectPager, mNextPager, mPositionOffset);
+                gotoRight(mCurrentPager, mNextPager, mPositionOffset);
                 if (mTCListener != null)
-                    mTCListener.gotoRight(mCurrectPager, mNextPager, mPositionOffset);
+                    mTCListener.gotoRight(mCurrentPager, mNextPager, mPositionOffset);
             }
         }
         mLastKnownPosition = position;
@@ -356,7 +356,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         BaseTabStripSavedState ss = (BaseTabStripSavedState) state;
-        performClick(ss.currectPager);
+        performClick(ss.currectPager, false, false);
         super.onRestoreInstanceState(ss.getSuperState());
     }
 
@@ -492,7 +492,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     public void setOnTabChangeListener(OnTabChangeListener listener) {
         this.mTCListener = listener;
         if (this.mTCListener != null)
-            this.mTCListener.jumpTo(mCurrectPager);
+            this.mTCListener.jumpTo(mCurrentPager);
     }
 
     /**
