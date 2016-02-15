@@ -29,9 +29,6 @@ import android.support.v4.view.BaseTabStrip;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 
-import com.am.widget.tabstrips.TabTagAdapter.TagAlign;
-
-
 
 /**
  * GradientPagerTabStrip ，其Tabs固定于ViewPager上方或者下方，ViewPager滑动对应变化效果。不建议Tabs大于5个
@@ -39,11 +36,10 @@ import com.am.widget.tabstrips.TabTagAdapter.TagAlign;
  * @author Alex
  * 
  */
-public class GradientPagerTabStrip extends BaseTabStrip{
+public class GradientPagerTabStrip extends BaseTabStrip {
 
 	final float density;
 	private float itemWidth;
-	private int itemHeight;
 
 	private float textTop;// 文字最大高度
 	private boolean showTextGradient = true;// 显示文字颜色渐变
@@ -91,7 +87,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 	}
 
 	public GradientPagerTabStrip(Context context, AttributeSet attrs,
-			int defStyleAttr) {
+								 int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		density = getResources().getDisplayMetrics().density;
 		final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
@@ -149,7 +145,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 				- (-fontMetrics.ascent - fontMetrics.descent + (fontMetrics.bottom - fontMetrics.descent)
 						* density);
 		textHeight += textTop;
-		itemHeight = (int) Math.ceil(textHeight + indicatorHeight
+        int itemHeight = (int) Math.ceil(textHeight + indicatorHeight
 				+ underLineHeight);
 		int minHeight = getMinHeight();
 		if (minHeight > itemHeight + getPaddingTop() + getPaddingBottom()) {
@@ -213,7 +209,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 	/**
 	 * 绘制Tab背景
 	 * 
-	 * @param canvas
+	 * @param canvas Canvas
 	 */
 	private void drawTabBG(Canvas canvas) {
 		if (showTabColor) {
@@ -248,7 +244,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 	/**
 	 * 绘制文字
 	 * 
-	 * @param canvas
+	 * @param canvas Canvas
 	 */
 	private void drawText(Canvas canvas) {
 		float x = getPaddingLeft() + itemWidth / 2;
@@ -303,7 +299,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 	/**
 	 * 绘制标记
 	 * 
-	 * @param canvas
+	 * @param canvas Canvas
 	 */
 	private void drawTag(Canvas canvas) {
 		// TODO
@@ -312,7 +308,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 			float canvasOffset = 0;
 			int x = getPaddingLeft();
 			int y = getPaddingTop();
-			float textTop = 0;
+			float textTop;
 			mTextPaint.setColor(Color.WHITE);
 			mTextPaint.setTextAlign(Align.LEFT);
 			for (int position = 0; position < getViewTabs().size(); position++) {
@@ -361,7 +357,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 							* (1 + magnification) : textSize);
 					float myTextWidth = mTextPaint.measureText(getViewTabs()
 							.get(position));
-					TagAlign ta = mTagAdapter.getTagAlign(position);
+					TabTagAdapter.TagAlign ta = mTagAdapter.getTagAlign(position);
 					switch (ta) {
 					default:
 					case LEFTTOP:
@@ -457,7 +453,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 	/**
 	 * 绘制指示标
 	 * 
-	 * @param canvas
+	 * @param canvas Canvas
 	 */
 	private void drawIndicator(Canvas canvas) {
 
@@ -475,8 +471,8 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 				canvas.drawRect(itemWidth / 4, 0, itemWidth - itemWidth / 4 - 2
 						* indicatorPadding, indicatorHeight, mTextPaint);
 			else
-				canvas.drawRect(itemWidth / 4, 0, itemWidth - itemWidth / 4 - 1
-						* indicatorPadding, indicatorHeight, mTextPaint);
+				canvas.drawRect(itemWidth / 4, 0, itemWidth - itemWidth / 4 -
+						indicatorPadding, indicatorHeight, mTextPaint);
 		}
 		canvas.restore();
 	}
@@ -484,7 +480,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 	/**
 	 * 绘制下划线
 	 * 
-	 * @param canvas
+	 * @param canvas Canvas
 	 */
 	private void drawUnderLine(Canvas canvas) {
 		if (showUnderLine) {
@@ -498,7 +494,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 	/**
 	 * 设置Tabs之间的间隙
 	 * 
-	 * @param intervalWidth
+	 * @param intervalWidth 间隔
 	 */
 	public void setTabsInterval(int intervalWidth) {
 		this.intervalWidth = intervalWidth;
@@ -515,7 +511,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 	/**
 	 * 显示标签下标
 	 * 
-	 * @param show
+	 * @param show 显示下标
 	 */
 	public void showTabIndicator(boolean show) {
 		showIndicator = show;
@@ -542,7 +538,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 	/**
 	 * 显示下划线
 	 * 
-	 * @param show
+	 * @param show 显示下划线
 	 */
 	public void showUnderline(boolean show) {
 		showUnderLine = show;
@@ -566,7 +562,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 	/**
 	 * 显示文字颜色渐变
 	 * 
-	 * @param show
+	 * @param show 显示文字渐变
 	 */
 	public void showTextGradient(boolean show) {
 		showTextGradient = show;
@@ -595,7 +591,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 	/**
 	 * 设置字体大小
 	 * 
-	 * @param size
+	 * @param size 设置文字大小
 	 */
 	public void setTextSize(float size) {
 		textSize = size;
@@ -605,7 +601,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 	/**
 	 * 设置文字放大发倍数 默认值1.2
 	 * 
-	 * @param magnification
+	 * @param magnification 文字缩放比
 	 */
 	public void setMagnification(float magnification) {
 		if (magnification == 1)
@@ -619,7 +615,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 	/**
 	 * 是否显示Tab背景颜色
 	 * 
-	 * @param show
+	 * @param show 显示背景
 	 */
 	public void showTabGradient(boolean show) {
 		showTabColor = show;
@@ -643,7 +639,7 @@ public class GradientPagerTabStrip extends BaseTabStrip{
 	/**
 	 * 设置角标Adapter
 	 * 
-	 * @param adapter
+	 * @param adapter Adapter
 	 */
 	public void setTagAdapter(TabTagAdapter adapter) {
 		mTagAdapter = adapter;
