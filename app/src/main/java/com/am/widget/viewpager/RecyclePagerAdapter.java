@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * RecyclePagerAdapter
- * Created by Mofer on 2016/3/16.
+ * Created by Alex on 2016/3/16.
  */
 public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerViewHolder> extends PagerAdapter {
 
@@ -57,16 +57,26 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
     }
 
     @Override
-    public Object instantiateItem(View container, int position) {
+    public final Object instantiateItem(View container, int position) {
         return instantiateItem((ViewPager) container, position);
     }
 
     @Override
-    public void destroyItem(View container, int position, Object object) {
+    public final void destroyItem(View container, int position, Object object) {
         destroyItem((ViewPager) container, position, object);
     }
 
-
+    @Override
+    public final int getItemPosition(Object object) {
+        if (object != null) {
+            for (VH holder : holderList) {
+                if (holder == object) {
+                    return holder.mPosition;
+                }
+            }
+        }
+        return NO_POSITION;
+    }
 
     public abstract int getItemCount();
 
