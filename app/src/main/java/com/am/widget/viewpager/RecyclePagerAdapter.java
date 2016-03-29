@@ -107,7 +107,7 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
     public final void notifyDataSetChanged() {
         super.notifyDataSetChanged();
         for (VH holder : holderList) {
-            if (!holder.isRecycled) {
+            if (!holder.isRecycled && holder.mPosition < getItemCount()) {
                 onBindViewHolder(holder, holder.mPosition);
             }
         }
