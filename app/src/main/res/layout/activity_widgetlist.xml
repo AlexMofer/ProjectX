@@ -215,10 +215,14 @@
             android:orientation="horizontal"
             android:padding="10dp" >
 
-            <View
+            <Button
+                android:id="@+id/wl_btn_security"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/ic_security"
+                android:text="@string/security_check" />
 
             <View
                 android:layout_width="match_parent"

@@ -32,6 +32,7 @@
     <string name="printer_pic">打印图片</string>
     <string name="security_code">获取验证码</string>
     <string name="loading_drawable">载入动画</string>
+    <string name="security_check">安全检测</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

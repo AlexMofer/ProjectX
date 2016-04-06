@@ -5,6 +5,7 @@
     android:versionName="1.0">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -102,46 +103,60 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.am.activity.ReplaceActivity"
-            android:parentActivityName="com.am.activity.WidgetListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.am.activity.WidgetListActivity" />
+            android:name="com.am.activity.ReplaceActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
-            android:name="com.am.activity.DrawableRatingBarActivity"
-            android:parentActivityName="com.am.activity.WidgetListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.am.activity.WidgetListActivity" />
+            android:name="com.am.activity.DrawableRatingBarActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
-            android:name="com.am.activity.WrapActivity"
-            android:parentActivityName="com.am.activity.WidgetListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.am.activity.WidgetListActivity" />
+            android:name="com.am.activity.WrapActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
-            android:name="com.am.activity.PrinterActivity"
-            android:parentActivityName="com.am.activity.WidgetListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.am.activity.WidgetListActivity" />
+            android:name="com.am.activity.PrinterActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
-            android:name="com.am.activity.SecurityCodeActivity"
-            android:parentActivityName="com.am.activity.WidgetListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.am.activity.WidgetListActivity" />
+            android:name="com.am.activity.SecurityCodeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
-            android:name="com.am.activity.LoadingActivity"
-            android:parentActivityName="com.am.activity.WidgetListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.am.activity.WidgetListActivity" />
+            android:name="com.am.activity.LoadingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.am.activity.SecurityActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
     </application>
 
