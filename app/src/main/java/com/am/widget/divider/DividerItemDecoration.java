@@ -39,6 +39,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private int mOrientation;
 
+    private boolean enabled = true;
+
     public DividerItemDecoration(Context context, int orientation) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         mDivider = a.getDrawable(0);
@@ -60,10 +62,12 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        if (mOrientation == VERTICAL_LIST) {
-            drawVertical(c, parent);
-        } else {
-            drawHorizontal(c, parent);
+        if (enabled) {
+            if (mOrientation == VERTICAL_LIST) {
+                drawVertical(c, parent);
+            } else {
+                drawHorizontal(c, parent);
+            }
         }
     }
 
@@ -103,10 +107,26 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        if (mOrientation == VERTICAL_LIST) {
-            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
-        } else {
-            outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
+        if (enabled) {
+            if (mOrientation == VERTICAL_LIST) {
+                outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+            } else {
+                outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
+            }
         }
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * Set the enabled state of this decoration.
+     * After set, you should call {@link RecyclerView#invalidateItemDecorations()} to update.
+     *
+     * @param enabled True if this decoration is enabled, false otherwise.
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
