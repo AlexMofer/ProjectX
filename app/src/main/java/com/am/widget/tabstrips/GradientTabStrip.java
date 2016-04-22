@@ -18,9 +18,10 @@ import android.support.v4.view.BaseTabStrip;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.Gravity;
+
 /**
  * 微信式滑动渐变TabStrip，并实现点击效果，非ViewGroup实现
- * @author xiangzhicheng
+ * @author Alex
  *
  */
 public class GradientTabStrip extends BaseTabStrip {
@@ -65,8 +66,9 @@ public class GradientTabStrip extends BaseTabStrip {
 	}
 
 	@SuppressLint("NewApi")
+	@SuppressWarnings("ResourceType")
 	public GradientTabStrip(Context context, AttributeSet attrs,
-			int defStyleAttr) {
+							int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		final float density = getResources().getDisplayMetrics().density;
 		mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);

@@ -86,6 +86,7 @@ public class GradientPagerTabStrip extends BaseTabStrip {
 
 	}
 
+	@SuppressWarnings("ResourceType")
 	public GradientPagerTabStrip(Context context, AttributeSet attrs,
 								 int defStyleAttr) {
 		super(context, attrs, defStyleAttr);

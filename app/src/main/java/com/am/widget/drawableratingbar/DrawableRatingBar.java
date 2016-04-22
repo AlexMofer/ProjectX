@@ -45,6 +45,7 @@ public class DrawableRatingBar extends View {
         initView(context, attrs);
     }
 
+    @SuppressWarnings("ResourceType")
     private void initView(Context context, AttributeSet attrs) {
         final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
         Drawable progressDrawable = a.getDrawable(0);

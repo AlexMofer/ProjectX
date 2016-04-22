@@ -17,12 +17,12 @@ import android.view.Gravity;
 
 /**
  * ViewPager 小点
- * @author xiangzhicheng
+ * @author Alex
  *
  */
 public class DotTabStrip extends BaseTabStrip {
 
-	private final static int DEFAULT_SIZE = 5;
+	private final static int DEFAULT_SIZE = 6;
 	private Drawable mSelectedDrawable;
 	private Drawable mNormalDrawable;
 	private ColorStateList mColors;
@@ -46,6 +46,7 @@ public class DotTabStrip extends BaseTabStrip {
 		this(context, attrs, 0);
 	}
 
+	@SuppressWarnings("ResourceType")
 	public DotTabStrip(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
@@ -79,14 +80,15 @@ public class DotTabStrip extends BaseTabStrip {
 		super.updateAdapter(oldAdapter, newAdapter);
 	}
 
+    @SuppressWarnings("ResourceAsColor")
 	private Drawable getDefaultDrawable(boolean selected) {
 		if (selected) {
 			final GradientDrawable mBackground = new GradientDrawable();
 			mBackground.setShape(GradientDrawable.OVAL);
 			mBackground.setColor(mColors.isStateful() ? mColors
-					.getColorForState(SELECTED_STATE_SET,
-							mColors.getDefaultColor()) : mColors
-					.getDefaultColor());
+                    .getColorForState(SELECTED_STATE_SET,
+                            mColors.getDefaultColor()) : mColors
+                    .getDefaultColor());
 			mBackground.setSize(defaultDrawableSize, defaultDrawableSize);
 			return mBackground;
 		} else {
