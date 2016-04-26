@@ -7,8 +7,6 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import android.annotation.SuppressLint;
-
 /**
  * AES加密解密工具类
  * 
@@ -17,90 +15,88 @@ import android.annotation.SuppressLint;
  */
 public class AESUtil {
 
+    private final static String ENCODING = "UTF-8";
+    private final static String ALGORITHM = "AES";
+    private final static String SR_ALGORITHM = "SHA1PRNG";
+    private final static String PROVIDER = "Crypto";
+	private final static String TRANSFORMATION = "AES/CBC/PKCS5Padding";
+
 	/**
 	 * 加密
 	 * 
-	 * @param key
-	 * @param src
-	 * @return
+	 * @param key 密钥
+	 * @param src 字符串
+	 * @return 加密字节
 	 * @throws Exception
 	 */
 	public static byte[] encrypt(String key, String src, String charsetName) throws Exception {
-		byte[] rawKey = getRawKey(key.getBytes("UTF-8"));
-		return encrypt(rawKey, src.getBytes(charsetName));
+		return encrypt(getRawKey(key.getBytes(ENCODING)), src.getBytes(charsetName));
 	}
 
 	/**
 	 * 解密
 	 * 
-	 * @param key
-	 * @param encrypted
-	 * @return
+	 * @param key 密钥串
+	 * @param encrypted 解密字节
+	 * @return 解密串
 	 * @throws Exception
 	 */
 	public static String decrypt(String key, byte[] encrypted, String charsetName) throws Exception {
-		byte[] rawKey = getRawKey(key.getBytes("UTF-8"));
-		byte[] result = decrypt(rawKey, encrypted);
-		return new String(result, charsetName);
+		return new String(decrypt(getRawKey(key.getBytes(ENCODING)), encrypted), charsetName);
 	}
 
 	/**
 	 * 获取256位的加密密钥
 	 * 
-	 * @param seed
-	 * @return
+	 * @param seed 密钥种子
+	 * @return 密钥字节
 	 * @throws Exception
 	 */
-	@SuppressLint("TrulyRandom")
 	private static byte[] getRawKey(byte[] seed) throws Exception {
-		// 在4.3以上版本中，修复OpenSSL的PRNG问题
+		//修复OpenSSL的PRNG问题(在4.3及以下版本需要)
 		PRNGFixes.apply();
-		KeyGenerator kgen = KeyGenerator.getInstance("AES");
+		KeyGenerator keyGen = KeyGenerator.getInstance(ALGORITHM);
 		// 在4.2以上版本中，SecureRandom获取方式发生了改变
-		SecureRandom sr = android.os.Build.VERSION.SDK_INT >= 17 ? SecureRandom
-				.getInstance("SHA1PRNG", "Crypto") : SecureRandom
-				.getInstance("SHA1PRNG");
-
+		SecureRandom sr = android.os.Build.VERSION.SDK_INT >= 17 ?
+                SecureRandom.getInstance(SR_ALGORITHM, PROVIDER)
+                :
+                SecureRandom.getInstance(SR_ALGORITHM);
 		sr.setSeed(seed);
 		// 256 bits or 128 bits,192bits
-		kgen.init(128, sr);
-		SecretKey skey = kgen.generateKey();
-		byte[] raw = skey.getEncoded();
-		return raw;
+        keyGen.init(256, sr);
+		SecretKey sKey = keyGen.generateKey();
+		return sKey.getEncoded();
 	}
 
 	/**
 	 * 真正的加密过程
 	 * 
-	 * @param key
-	 * @param src
-	 * @return
+	 * @param key 密钥
+	 * @param src 字节
+	 * @return 加密字节
 	 * @throws Exception
 	 */
-	@SuppressLint("TrulyRandom")
 	private static byte[] encrypt(byte[] key, byte[] src) throws Exception {
-		SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
-		Cipher cipher = Cipher.getInstance("AES");
-		cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-		byte[] encrypted = cipher.doFinal(src);
-		return encrypted;
+		SecretKeySpec sKeySpec = new SecretKeySpec(key, ALGORITHM);
+		Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+		cipher.init(Cipher.ENCRYPT_MODE, sKeySpec);
+		return cipher.doFinal(src);
 	}
 
 	/**
 	 * 真正的解密过程
 	 * 
-	 * @param key
-	 * @param encrypted
-	 * @return
+	 * @param key 密钥
+	 * @param encrypted 加密字节
+	 * @return 解密字节
 	 * @throws Exception
 	 */
 	private static byte[] decrypt(byte[] key, byte[] encrypted)
 			throws Exception {
-		SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
-		Cipher cipher = Cipher.getInstance("AES");
-		cipher.init(Cipher.DECRYPT_MODE, skeySpec);
-		byte[] decrypted = cipher.doFinal(encrypted);
-		return decrypted;
+		SecretKeySpec sKeySpec = new SecretKeySpec(key, ALGORITHM);
+		Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+		cipher.init(Cipher.DECRYPT_MODE, sKeySpec);
+		return cipher.doFinal(encrypted);
 	}
 
 }
