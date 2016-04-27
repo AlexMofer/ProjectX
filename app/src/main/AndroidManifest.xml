@@ -1,163 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.am.widget"
-    android:versionCode="1"
-    android:versionName="1.0">
+    package="com.am.widget">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:label="@string/app_name">
         <activity android:name="com.am.activity.WidgetListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.am.activity.NewWidgetActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.am.activity.WechatActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.am.activity.BilateralPaneActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.am.activity.DotpagerActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+        <activity android:name="com.am.activity.NewWidgetActivity" />
+        <activity android:name="com.am.activity.WechatActivity" />
+        <activity android:name="com.am.activity.BilateralPaneActivity" />
+        <activity android:name="com.am.activity.DotpagerActivity" />
         <activity android:name="com.am.activity.SuperTabActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.am.activity.SwipeRefreshActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="github.com"
+                    android:pathPrefix="/AlexMofer/GradientPagerTabStrip"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name="com.am.activity.DragGridViewActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.am.activity.ShapeImageViewActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.am.activity.CityListActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.am.activity.SharpCornerBoxActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.am.activity.ConnectImageActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.am.activity.StateFrameActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.am.activity.ReplaceActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.am.activity.DrawableRatingBarActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.am.activity.WrapActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.am.activity.PrinterActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.am.activity.SecurityCodeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.am.activity.LoadingActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.am.activity.SecurityActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+        <activity android:name="com.am.activity.SwipeRefreshActivity" />
+        <activity android:name="com.am.activity.DragGridViewActivity" />
+        <activity android:name="com.am.activity.ShapeImageViewActivity" />
+        <activity android:name="com.am.activity.CityListActivity" />
+        <activity android:name="com.am.activity.SharpCornerBoxActivity" />
+        <activity android:name="com.am.activity.ConnectImageActivity" />
+        <activity android:name="com.am.activity.StateFrameActivity" />
+        <activity android:name="com.am.activity.ReplaceActivity" />
+        <activity android:name="com.am.activity.DrawableRatingBarActivity" />
+        <activity android:name="com.am.activity.WrapActivity" />
+        <activity android:name="com.am.activity.PrinterActivity" />
+        <activity android:name="com.am.activity.SecurityCodeActivity" />
+        <activity android:name="com.am.activity.LoadingActivity" />
+        <activity android:name="com.am.activity.SecurityActivity" />
+        <activity android:name="com.am.activity.CipherActivity" />
     </application>
 
 </manifest>

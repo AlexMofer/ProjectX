@@ -35,6 +35,7 @@ public class WidgetListActivity extends Activity implements OnClickListener {
         findViewById(R.id.wl_btn_securitycode).setOnClickListener(me);
         findViewById(R.id.wl_btn_loading).setOnClickListener(me);
         findViewById(R.id.wl_btn_security).setOnClickListener(me);
+        findViewById(R.id.wl_btn_cipher).setOnClickListener(me);
     }
 
     @Override
@@ -97,6 +98,9 @@ public class WidgetListActivity extends Activity implements OnClickListener {
                 break;
             case R.id.wl_btn_security:
                 intent = new Intent(me, SecurityActivity.class);
+                break;
+            case R.id.wl_btn_cipher:
+                intent = new Intent(me, CipherActivity.class);
                 break;
             default:
                 break;

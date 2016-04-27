@@ -16,46 +16,34 @@ public class BytesUtil {
         if (src == null || src.length <= 0) {
             return null;
         }
-        String result = "";
-        for (byte data : src) {
-            int v = data & 0xFF;
-            String hv = Integer.toHexString(v);
-            if (hv.length() < 2) {
-                result += "0";
+        String hexStr = "";
+        for (byte b : src) {
+            String hex = Integer.toHexString(b & 0xFF);
+            if (hex.length() == 1) {
+                hex = '0' + hex;
             }
-            result += hv + " ";
+            hexStr += hex.toUpperCase();
         }
-        return result;
+        return hexStr;
     }
 
     /**
      * 把为字符串转化为字节数组
      *
-     * @param hexString 16进制字符串
+     * @param hexStr 16进制字符串
      * @return 字节数组
      */
-    public static byte[] hexStringToBytes(String hexString) {
-        if (hexString == null || hexString.equals("")) {
+    public static byte[] hexStringToBytes(String hexStr) {
+        if (hexStr == null || hexStr.equals("") || hexStr.length() < 1) {
             return null;
         }
-        hexString = hexString.toUpperCase();
-        int length = hexString.length() / 2;
-        char[] hexChars = hexString.toCharArray();
-        byte[] d = new byte[length];
-        for (int i = 0; i < length; i++) {
-            int pos = i * 2;
-            d[i] = (byte) (charToByte(hexChars[pos]) << 4 | charToByte(hexChars[pos + 1]));
+        byte[] result = new byte[hexStr.length() / 2];
+        for (int i = 0; i < hexStr.length() / 2; i++) {
+            int high = Integer.parseInt(hexStr.substring(i * 2, i * 2 + 1), 16);
+            int low = Integer.parseInt(hexStr.substring(i * 2 + 1, i * 2 + 2),
+                    16);
+            result[i] = (byte) (high * 16 + low);
         }
-        return d;
-    }
-
-    /**
-     * char 转 byte
-     *
-     * @param c char
-     * @return byte
-     */
-    private static byte charToByte(char c) {
-        return (byte) "0123456789ABCDEF".indexOf(c);
+        return result;
     }
 }

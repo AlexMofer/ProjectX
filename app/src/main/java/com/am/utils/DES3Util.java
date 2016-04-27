@@ -11,11 +11,11 @@ import javax.crypto.spec.DESedeKeySpec;
  * 3DES加密工具类
  *
  */
-public class DES3 {
+public class DES3Util {
 
     private final static String ENCODING = "UTF-8";
     private final static String ALGORITHM = "DESede";
-    private final static String TRANSFORMATION = "DESede/CBC/PKCS5Padding";
+    private final static String TRANSFORMATION = "DESede/ECB/PKCS5Padding";
 
     /**
      * 3DES加密
@@ -30,10 +30,10 @@ public class DES3 {
 
         DESedeKeySpec dks = new DESedeKeySpec(secretKey.getBytes(ENCODING));
         SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(ALGORITHM);
-        SecretKey securekey = keyFactory.generateSecret(dks);
+        SecretKey secureKey = keyFactory.generateSecret(dks);
 
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-        cipher.init(Cipher.ENCRYPT_MODE, securekey);
+        cipher.init(Cipher.ENCRYPT_MODE, secureKey);
         byte[] b = cipher.doFinal(plainText.getBytes(ENCODING));
         return new String(Base64.encode(b, Base64.DEFAULT), ENCODING);
     }
@@ -49,16 +49,15 @@ public class DES3 {
     public static String decrypt(String encryptText, String secretKey)
             throws Exception {
 
-        byte[] bytesrc = Base64.decode(encryptText, Base64.DEFAULT);
-        //--解密的key
+        byte[] byteSrc = Base64.decode(encryptText.getBytes(ENCODING), Base64.DEFAULT);
+
         DESedeKeySpec dks = new DESedeKeySpec(secretKey.getBytes(ENCODING));
         SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(ALGORITHM);
-        SecretKey securekey = keyFactory.generateSecret(dks);
+        SecretKey secureKey = keyFactory.generateSecret(dks);
 
-        //--Chipher对象解密
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-        cipher.init(Cipher.DECRYPT_MODE, securekey);
-        byte[] retByte = cipher.doFinal(bytesrc);
+        cipher.init(Cipher.DECRYPT_MODE, secureKey);
+        byte[] retByte = cipher.doFinal(byteSrc);
 
         return new String(retByte, ENCODING);
 
