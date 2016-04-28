@@ -2,22 +2,24 @@ package com.am.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.am.utils.AESUtil;
-import com.am.utils.BytesUtil;
-import com.am.utils.DES3Util;
+import com.am.security.AESUtil;
+import com.am.security.DESUtil;
 import com.am.utils.ImmUtils;
+import com.am.security.MessageDigestUtils;
 import com.am.widget.R;
 
-public class CipherActivity extends Activity implements View.OnClickListener{
+public class CipherActivity extends Activity implements View.OnClickListener {
 
     private EditText edtText;
     private EditText edtKey;
     private TextView tvInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +28,7 @@ public class CipherActivity extends Activity implements View.OnClickListener{
         edtKey = (EditText) findViewById(R.id.cipher_edt_key);
         tvInfo = (TextView) findViewById(R.id.cipher_tv_info);
         findViewById(R.id.cipher_btn_cipher).setOnClickListener(this);
+        edtKey.setText("e8ffc7e56311679f12b6fc91aa77a5eb");
     }
 
     @Override
@@ -57,81 +60,65 @@ public class CipherActivity extends Activity implements View.OnClickListener{
 
         info += "输入串：" + text + "\n";
         info += "密钥串：" + key + "\n";
-        String cipher, result;
+        info += "输入串MD5：" + MessageDigestUtils.getMD5(text.getBytes()) + "\n";
+        info += "输入串SHA-256：" + MessageDigestUtils.getSHA256(text.getBytes()) + "\n";
+
+        byte[] cipher;
+        byte[] result;
         // 3DES
         try {
-            cipher = DES3Util.encrypt(text, key);
+            cipher = DESUtil.encrypt(key.getBytes(), text.getBytes());
         } catch (Exception e) {
             cipher = null;
         }
         if (cipher == null) {
-            info += "3DES加密密文串：" + "加密失败" + "\n";
-            info += "3DES解密明文串：" + "加密失败" + "\n";
+            info += "DES加密：" + "加密失败,Key 需要超过24位" + "\n";
+            info += "DES解密：" + "加密失败" + "\n";
         } else {
-            info += "3DES加密密文串：" + cipher + "\n";
+            info += "DES加密：" + Base64.encodeToString(cipher, Base64.DEFAULT) + "\n";
             try {
-                result = DES3Util.decrypt(cipher, key);
+                result = DESUtil.decrypt(key.getBytes(), cipher);
             } catch (Exception e) {
                 result = null;
             }
             if (result == null) {
-                info += "3DES解密明文串：" + "解密失败" + "\n";
+                info += "DES解密：" + "解密失败" + "\n";
             } else {
-                info += "3DES解密明文串：" + result + "\n";
+                info += "DES解密：" + new String(result) + "\n";
             }
         }
-        // AES + 16进制编码
-        try {
-            cipher = AESUtil.encryptToHexString(text, key, AESUtil.ENCODING);
-        } catch (Exception e) {
-            cipher = null;
-        }
+        // AES + 随机数种子
+        cipher = AESUtil.encryptWithRandomKey(key.getBytes(), text.getBytes());
         if (cipher == null) {
-            info += "AES加密16进制编码密文串：" + "加密失败" + "\n";
-            info += "AES解密明文串：" + "加密失败" + "\n";
+            info += "AES随机数种子加密：" + "加密失败" + "\n";
+            info += "AES随机数种子解密：" + "加密失败" + "\n";
         } else {
-            info += "AES加密16进制编码密文串：" + cipher + "\n";
-            try {
-                result = AESUtil.decryptFromHexString(cipher, key, AESUtil.ENCODING);
-            } catch (Exception e) {
-                result = null;
-            }
+            info += "AES随机数种子加密：" + Base64.encodeToString(cipher, Base64.DEFAULT) + "\n";
+            result = AESUtil.decryptWithRandomKey(key.getBytes(), cipher);
             if (result == null) {
-                info += "AES解密明文串：" + "解密失败" + "\n";
+                info += "AES随机数种子解密：" + "解密失败" + "\n";
             } else {
-                info += "AES解密明文串：" + result + "\n";
-            }
-        }
-        // AES + Base64进制编码
-        try {
-            cipher = AESUtil.encryptToBase64(text, key, AESUtil.ENCODING);
-        } catch (Exception e) {
-            cipher = null;
-        }
-        if (cipher == null) {
-            info += "AES加密Base64编码密文串：" + "加密失败" + "\n";
-            info += "AES解密明文串：" + "加密失败" + "\n";
-        } else {
-            info += "AES加密Base64编码密文串：" + cipher + "\n";
-            System.out.println(cipher);
-            System.out.println(key);
-            try {
-                result = AESUtil.decryptFromBase64(cipher, key, AESUtil.ENCODING);
-            } catch (Exception e) {
-                e.printStackTrace();
-                result = null;
-            }
-            if (result == null) {
-                info += "AES解密明文串：" + "解密失败" + "\n";
-            } else {
-                info += "AES解密明文串：" + result + "\n";
+                info += "AES随机数种子解密：" + new String(result) + "\n";
             }
         }
 
-        byte[] data = text.getBytes();
-        String hex = BytesUtil.bytesToHexString(data);
-        System.out.println(hex);
-        System.out.println(new String(BytesUtil.hexStringToBytes(hex)));
+        // AES + PBE口令
+        byte[] salt = key.getBytes();// 自行定义盐
+        int iteration = 2048;// 迭代次数
+
+        cipher = AESUtil.encryptWithPBEKey(key.toCharArray(), salt, iteration, text.getBytes());
+        if (cipher == null) {
+            info += "AES PBE口令加密：" + "加密失败" + "\n";
+            info += "AES PBE口令解密：" + "加密失败" + "\n";
+        } else {
+            info += "AES PBE口令加密：" + Base64.encodeToString(cipher, Base64.DEFAULT) + "\n";
+            result = AESUtil.decryptWithPBEKey(key.toCharArray(), salt, iteration, cipher);
+            if (result == null) {
+                info += "AES PBE口令解密：" + "解密失败" + "\n";
+            } else {
+                info += "AES PBE口令解密：" + new String(result) + "\n";
+            }
+        }
 
         tvInfo.setText(info);
     }

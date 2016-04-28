@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.am.utils.SecurityUtils;
+import com.am.security.AntiEmulatorUtils;
 import com.am.widget.R;
 
 import diff.strazzere.anti.AntiEmulator;
@@ -21,12 +21,12 @@ public class SecurityActivity extends Activity {
         setContentView(R.layout.activity_security);
         TextView tvSecurity = (TextView) findViewById(R.id.security);
         String log = "";
-        log += "isDebuggable = " + SecurityUtils.isDebuggable(this) + "\n";
+        log += "isDebuggable = " + AntiEmulatorUtils.isDebuggable(this) + "\n";
         log += "isQEmuEnvDetected = " + AntiEmulator.isQEmuEnvDetected(this) + "\n";
         log += "isDebugged = " + AntiEmulator.isDebugged() + "\n";
         log += "isMonkeyDetected = " + AntiEmulator.isMonkeyDetected() + "\n";
         log += "isTaintTrackingDetected = " + AntiEmulator.isTaintTrackingDetected(this) + "\n";
-        log += "Signature = " + SecurityUtils.getSignature(this);
+        log += "Signature = " + AntiEmulatorUtils.getSignature(this);
         tvSecurity.setText(log);
     }
 }

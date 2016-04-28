@@ -1,4 +1,4 @@
-package com.am.utils;
+package com.am.security;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -9,13 +9,14 @@ import android.content.pm.Signature;
 import diff.strazzere.anti.AntiEmulator;
 
 /**
- * 安全性工具
+ * 应用安全工具
  * Created by Alex on 2016/4/5.
  */
-public class SecurityUtils {
+public class AntiEmulatorUtils {
 
     /**
      * 检查安全性
+     *
      * @param context Context
      */
     public static void checkSecurity(Context context) {
@@ -45,6 +46,7 @@ public class SecurityUtils {
 
     /**
      * 获取签名
+     *
      * @param context Context
      * @return 签名哈希值
      */
