@@ -1,16 +1,12 @@
 package com.am.security;
 
-import com.am.utils.PRNGFixes;
-
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -46,7 +42,7 @@ public class AESUtil {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
-    private static byte[] encrypt(byte[] key, byte[] clear) throws
+    public static byte[] encrypt(byte[] key, byte[] clear) throws
             NoSuchAlgorithmException,
             NoSuchPaddingException,
             InvalidKeyException,
@@ -73,7 +69,7 @@ public class AESUtil {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
-    private static byte[] decrypt(byte[] key, byte[] encrypted) throws
+    public static byte[] decrypt(byte[] key, byte[] encrypted) throws
             NoSuchAlgorithmException,
             NoSuchPaddingException,
             InvalidKeyException,
@@ -88,6 +84,16 @@ public class AESUtil {
     }
 
     /**
+     * 生成密钥
+     *
+     * @return 密钥字节
+     * @throws NoSuchAlgorithmException
+     */
+    public static byte[] generateKey() throws NoSuchAlgorithmException {
+        return KeyUtil.generateKey(KEY_ALGORITHM, SIZE);
+    }
+
+    /**
      * 随机数种子
      *
      * @param seed 随机数种子
@@ -95,15 +101,7 @@ public class AESUtil {
      * @throws Exception
      */
     private static byte[] getRandomKey(byte[] seed) throws Exception {
-        //修复OpenSSL的PRNG问题(在4.3及以下版本需要)
-        PRNGFixes.apply();
-        KeyGenerator keyGen = KeyGenerator.getInstance(KEY_ALGORITHM);
-        SecureRandom sr = SecureRandom.getInstance(RAW_ALGORITHM, PROVIDER);
-        sr.setSeed(seed);
-        // 256 bits or 128 bits,192bits
-        keyGen.init(SIZE, sr);
-        SecretKey sKey = keyGen.generateKey();
-        return sKey.getEncoded();
+        return KeyUtil.getRandomKey(KEY_ALGORITHM, seed, SIZE);
     }
 
     /**

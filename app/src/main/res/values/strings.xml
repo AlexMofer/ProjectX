@@ -34,5 +34,7 @@
     <string name="loading_drawable">载入动画</string>
     <string name="security_check">安全检测</string>
     <string name="cipher">加密解密</string>
-    <string name="btn_cipher">加密/解密</string>
+    <string name="message_digest">信息摘要</string>
+    <string name="des">DES</string>
+    <string name="aes">AES</string>
 </resources>

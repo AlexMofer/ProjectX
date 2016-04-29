@@ -16,17 +16,35 @@
             android:layout_height="wrap_content"
             android:inputType="text" />
 
-        <EditText
-            android:id="@+id/cipher_edt_key"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/cipher_btn_cipher"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_cipher" />
+            <Button
+                android:id="@+id/cipher_btn_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/message_digest" />
+
+            <Button
+                android:id="@+id/cipher_btn_des"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/des" />
+
+            <Button
+                android:id="@+id/cipher_btn_aes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/aes" />
+
+        </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/cipher_tv_info"

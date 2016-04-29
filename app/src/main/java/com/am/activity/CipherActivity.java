@@ -9,15 +9,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.am.security.AESUtil;
-import com.am.security.DESUtil;
-import com.am.utils.ImmUtils;
+import com.am.security.DESedeUtil;
 import com.am.security.MessageDigestUtils;
+import com.am.utils.ImmUtils;
 import com.am.widget.R;
 
 public class CipherActivity extends Activity implements View.OnClickListener {
 
     private EditText edtText;
-    private EditText edtKey;
     private TextView tvInfo;
 
     @Override
@@ -25,101 +24,238 @@ public class CipherActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cipher);
         edtText = (EditText) findViewById(R.id.cipher_edt_text);
-        edtKey = (EditText) findViewById(R.id.cipher_edt_key);
         tvInfo = (TextView) findViewById(R.id.cipher_tv_info);
-        findViewById(R.id.cipher_btn_cipher).setOnClickListener(this);
-        edtKey.setText("e8ffc7e56311679f12b6fc91aa77a5eb");
+        findViewById(R.id.cipher_btn_message).setOnClickListener(this);
+        findViewById(R.id.cipher_btn_des).setOnClickListener(this);
+        findViewById(R.id.cipher_btn_aes).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
+        if (!check())
+            return;
+        final String text = edtText.getText().toString().trim();
         switch (v.getId()) {
-            case R.id.cipher_btn_cipher:
-                getResult();
+            case R.id.cipher_btn_message:
+                getMessage(text);
+                break;
+            case R.id.cipher_btn_des:
+                getDES(text);
+                break;
+            case R.id.cipher_btn_aes:
+                getAES(text);
                 break;
         }
     }
 
-    private void getResult() {
+    private boolean check() {
         final String text = edtText.getText().toString().trim();
         if (text.length() <= 0) {
             Toast.makeText(getApplicationContext(), "输入文本串", Toast.LENGTH_SHORT).show();
             edtText.requestFocus();
             ImmUtils.showImm(getApplicationContext(), edtText);
-            return;
-        }
-        final String key = edtKey.getText().toString().trim();
-        if (key.length() <= 0) {
-            Toast.makeText(getApplicationContext(), "输入密钥串", Toast.LENGTH_SHORT).show();
-            edtKey.requestFocus();
-            ImmUtils.showImm(getApplicationContext(), edtKey);
-            return;
+            return false;
         }
         ImmUtils.closeImm(this);
-        String info = "";
+        return true;
+    }
 
-        info += "输入串：" + text + "\n";
-        info += "密钥串：" + key + "\n";
-        info += "输入串MD5：" + MessageDigestUtils.getMD5(text.getBytes()) + "\n";
-        info += "输入串SHA-256：" + MessageDigestUtils.getSHA256(text.getBytes()) + "\n";
+    private void getMessage(String text) {
+        StringBuffer buffer = new StringBuffer();
 
+        getMD5(buffer, text);
+
+        getSHA256(buffer, text);
+
+        tvInfo.setText(buffer);
+    }
+
+    private void getDES(String text) {
+        StringBuffer buffer = new StringBuffer();
+
+        doDESede(buffer, text);
+
+        doDESedeWithRandomKey(buffer, text);
+
+        doDESedeWithPBEKey(buffer, text);
+
+        tvInfo.setText(buffer);
+    }
+
+    private void getAES(String text) {
+        StringBuffer buffer = new StringBuffer();
+
+        doAES(buffer, text);
+
+        tvInfo.setText(buffer);
+    }
+
+    private void getMD5(StringBuffer buffer, String text) {
+        buffer.append("MD5：");
+        buffer.append(MessageDigestUtils.getMD5(text.getBytes()));
+        buffer.append("\n");
+    }
+
+    private void getSHA256(StringBuffer buffer, String text) {
+        buffer.append("SHA-256：");
+        buffer.append(MessageDigestUtils.getSHA256(text.getBytes()));
+        buffer.append("\n");
+    }
+
+    /**
+     * DESede
+     */
+    private void doDESede(StringBuffer buffer, String text) {
+        buffer.append("DESede：\n");
         byte[] cipher;
         byte[] result;
-        // 3DES
+        byte[] key;
         try {
-            cipher = DESUtil.encrypt(key.getBytes(), text.getBytes());
+            key = DESedeUtil.generateKey();
         } catch (Exception e) {
-            cipher = null;
+            buffer.append("KEY：failure.\n");
+            return;
         }
-        if (cipher == null) {
-            info += "DES加密：" + "加密失败,Key 需要超过24位" + "\n";
-            info += "DES解密：" + "加密失败" + "\n";
-        } else {
-            info += "DES加密：" + Base64.encodeToString(cipher, Base64.DEFAULT) + "\n";
-            try {
-                result = DESUtil.decrypt(key.getBytes(), cipher);
-            } catch (Exception e) {
-                result = null;
-            }
-            if (result == null) {
-                info += "DES解密：" + "解密失败" + "\n";
-            } else {
-                info += "DES解密：" + new String(result) + "\n";
-            }
+        buffer.append("KEY：");
+        buffer.append(Base64.encodeToString(key, Base64.DEFAULT));
+        buffer.append("\n");
+        try {
+            cipher = DESedeUtil.encrypt(key, text.getBytes());
+        } catch (Exception e) {
+            buffer.append("ENCRYPT：failure.\n");
+            return;
         }
-        // AES + 随机数种子
-        cipher = AESUtil.encryptWithRandomKey(key.getBytes(), text.getBytes());
-        if (cipher == null) {
-            info += "AES随机数种子加密：" + "加密失败" + "\n";
-            info += "AES随机数种子解密：" + "加密失败" + "\n";
-        } else {
-            info += "AES随机数种子加密：" + Base64.encodeToString(cipher, Base64.DEFAULT) + "\n";
-            result = AESUtil.decryptWithRandomKey(key.getBytes(), cipher);
-            if (result == null) {
-                info += "AES随机数种子解密：" + "解密失败" + "\n";
-            } else {
-                info += "AES随机数种子解密：" + new String(result) + "\n";
-            }
+        buffer.append("ENCRYPT：");
+        buffer.append(Base64.encodeToString(cipher, Base64.DEFAULT));
+        buffer.append("\n");
+        try {
+            result = DESedeUtil.decrypt(key, cipher);
+        } catch (Exception e) {
+            buffer.append("DECRYPT：failure.\n");
+            return;
         }
+        buffer.append("ENCRYPT：");
+        buffer.append(new String(result));
+        buffer.append("\n");
+        buffer.append("\n");
+    }
 
-        // AES + PBE口令
-        byte[] salt = key.getBytes();// 自行定义盐
-        int iteration = 2048;// 迭代次数
-
-        cipher = AESUtil.encryptWithPBEKey(key.toCharArray(), salt, iteration, text.getBytes());
-        if (cipher == null) {
-            info += "AES PBE口令加密：" + "加密失败" + "\n";
-            info += "AES PBE口令解密：" + "加密失败" + "\n";
-        } else {
-            info += "AES PBE口令加密：" + Base64.encodeToString(cipher, Base64.DEFAULT) + "\n";
-            result = AESUtil.decryptWithPBEKey(key.toCharArray(), salt, iteration, cipher);
-            if (result == null) {
-                info += "AES PBE口令解密：" + "解密失败" + "\n";
-            } else {
-                info += "AES PBE口令解密：" + new String(result) + "\n";
-            }
+    private void doDESedeWithRandomKey(StringBuffer buffer, String text) {
+        buffer.append("\n");
+        buffer.append("DESedeWithRandomKey：\n");
+        String seed = "this is my seed";
+        buffer.append("SEED：");
+        buffer.append(seed);
+        buffer.append("\n");
+        byte[] cipher;
+        byte[] result;
+        byte[] key;
+        try {
+            key = DESedeUtil.getRandomKey(seed.getBytes());
+        } catch (Exception e) {
+            buffer.append("KEY：failure.\n");
+            return;
         }
+        buffer.append("KEY：");
+        buffer.append(Base64.encodeToString(key, Base64.DEFAULT));
+        buffer.append("\n");
+        try {
+            cipher = DESedeUtil.encrypt(key, text.getBytes());
+        } catch (Exception e) {
+            buffer.append("ENCRYPT：failure.\n");
+            return;
+        }
+        buffer.append("ENCRYPT：");
+        buffer.append(Base64.encodeToString(cipher, Base64.DEFAULT));
+        buffer.append("\n");
+        try {
+            result = DESedeUtil.decrypt(key, cipher);
+        } catch (Exception e) {
+            buffer.append("DECRYPT：failure.\n");
+            return;
+        }
+        buffer.append("ENCRYPT：");
+        buffer.append(new String(result));
+        buffer.append("\n");
+    }
 
-        tvInfo.setText(info);
+    private void doDESedeWithPBEKey(StringBuffer buffer, String text) {
+        buffer.append("\n");
+        buffer.append("DESedeWithPBEKey：\n");
+        String password = "this is my password";
+        buffer.append("PASSWORD：");
+        buffer.append(password);
+        buffer.append("\n");
+        String salt = "this is my salt, it should be very long.";
+        buffer.append("SALT：");
+        buffer.append(salt);
+        buffer.append("\n");
+        byte[] cipher;
+        byte[] result;
+        byte[] key;
+        try {
+            key = DESedeUtil.getPBEKey(password.toCharArray(), salt.getBytes());
+        } catch (Exception e) {
+            buffer.append("KEY：failure.\n");
+            return;
+        }
+        buffer.append("KEY：");
+        buffer.append(Base64.encodeToString(key, Base64.DEFAULT));
+        buffer.append("\n");
+        try {
+            cipher = DESedeUtil.encrypt(key, text.getBytes());
+        } catch (Exception e) {
+            buffer.append("ENCRYPT：failure.\n");
+            e.printStackTrace();
+            return;
+        }
+        buffer.append("ENCRYPT：");
+        buffer.append(Base64.encodeToString(cipher, Base64.DEFAULT));
+        buffer.append("\n");
+        try {
+            result = DESedeUtil.decrypt(key, cipher);
+        } catch (Exception e) {
+            buffer.append("DECRYPT：failure.\n");
+            return;
+        }
+        buffer.append("ENCRYPT：");
+        buffer.append(new String(result));
+        buffer.append("\n");
+    }
+
+    private void doAES(StringBuffer buffer, String text) {
+        buffer.append("\n");
+        buffer.append("AES：\n");
+        byte[] cipher;
+        byte[] result;
+        byte[] key;
+        try {
+            key = AESUtil.generateKey();
+        } catch (Exception e) {
+            buffer.append("KEY：failure.\n");
+            return;
+        }
+        buffer.append("KEY：");
+        buffer.append(Base64.encodeToString(key, Base64.DEFAULT));
+        buffer.append("\n");
+        try {
+            cipher = AESUtil.encrypt(key, text.getBytes());
+        } catch (Exception e) {
+            buffer.append("ENCRYPT：failure.\n");
+            return;
+        }
+        buffer.append("ENCRYPT：");
+        buffer.append(Base64.encodeToString(cipher, Base64.DEFAULT));
+        buffer.append("\n");
+        try {
+            result = AESUtil.decrypt(key, cipher);
+        } catch (Exception e) {
+            buffer.append("DECRYPT：failure.\n");
+            return;
+        }
+        buffer.append("ENCRYPT：");
+        buffer.append(new String(result));
+        buffer.append("\n");
+        buffer.append("\n");
     }
 }
