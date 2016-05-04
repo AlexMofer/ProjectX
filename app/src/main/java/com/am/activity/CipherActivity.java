@@ -11,8 +11,11 @@ import android.widget.Toast;
 import com.am.security.AESUtil;
 import com.am.security.DESedeUtil;
 import com.am.security.MessageDigestUtils;
+import com.am.security.RSAUtil;
 import com.am.utils.ImmUtils;
 import com.am.widget.R;
+
+import java.security.KeyPair;
 
 public class CipherActivity extends Activity implements View.OnClickListener {
 
@@ -28,6 +31,7 @@ public class CipherActivity extends Activity implements View.OnClickListener {
         findViewById(R.id.cipher_btn_message).setOnClickListener(this);
         findViewById(R.id.cipher_btn_des).setOnClickListener(this);
         findViewById(R.id.cipher_btn_aes).setOnClickListener(this);
+        findViewById(R.id.cipher_btn_rsa).setOnClickListener(this);
     }
 
     @Override
@@ -44,6 +48,9 @@ public class CipherActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.cipher_btn_aes:
                 getAES(text);
+                break;
+            case R.id.cipher_btn_rsa:
+                getRSA(text);
                 break;
         }
     }
@@ -90,6 +97,14 @@ public class CipherActivity extends Activity implements View.OnClickListener {
         doAESWithRandomKey(buffer, text);
 
         doAESWithPBEKey(buffer, text);
+
+        tvInfo.setText(buffer);
+    }
+
+    private void getRSA(String text) {
+        StringBuffer buffer = new StringBuffer();
+
+        doRSA(buffer, text);
 
         tvInfo.setText(buffer);
     }
@@ -337,6 +352,48 @@ public class CipherActivity extends Activity implements View.OnClickListener {
         buffer.append("\n");
         try {
             result = AESUtil.decrypt(key, cipher);
+        } catch (Exception e) {
+            buffer.append("DECRYPT：failure.\n");
+            return;
+        }
+        buffer.append("ENCRYPT：");
+        buffer.append(new String(result));
+        buffer.append("\n");
+        buffer.append("\n");
+    }
+
+    private void doRSA(StringBuffer buffer, String text) {
+        buffer.append("\n");
+        buffer.append("RSA：\n");
+        byte[] cipher;
+        byte[] result;
+        byte[] privateKey;
+        byte[] publicKey;
+        try {
+            KeyPair keyPair = RSAUtil.generateKeyPair();
+            privateKey = keyPair.getPrivate().getEncoded();
+            publicKey = keyPair.getPublic().getEncoded();
+        } catch (Exception e) {
+            buffer.append("KEY：failure.\n");
+            return;
+        }
+        buffer.append("PRIVATE KEY：");
+        buffer.append(Base64.encodeToString(privateKey, Base64.DEFAULT));
+        buffer.append("\n");
+        buffer.append("PUBLIC KEY：");
+        buffer.append(Base64.encodeToString(publicKey, Base64.DEFAULT));
+        buffer.append("\n");
+        try {
+            cipher = RSAUtil.encryptByPublicKey(publicKey, text.getBytes());
+        } catch (Exception e) {
+            buffer.append("ENCRYPT：failure.\n");
+            return;
+        }
+        buffer.append("ENCRYPT：");
+        buffer.append(Base64.encodeToString(cipher, Base64.DEFAULT));
+        buffer.append("\n");
+        try {
+            result = RSAUtil.decryptByPrivateKey(privateKey, cipher);
         } catch (Exception e) {
             buffer.append("DECRYPT：failure.\n");
             return;

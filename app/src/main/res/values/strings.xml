@@ -37,4 +37,5 @@
     <string name="message_digest">信息摘要</string>
     <string name="des">DES</string>
     <string name="aes">AES</string>
+    <string name="rsa">RSA</string>
 </resources>
