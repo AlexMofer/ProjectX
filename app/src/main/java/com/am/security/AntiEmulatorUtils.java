@@ -14,6 +14,7 @@ import diff.strazzere.anti.AntiEmulator;
  */
 public class AntiEmulatorUtils {
 
+    private static final int SIGNATURE = 2074025482;// TODO 修改应用签名Hash
     /**
      * 检查安全性
      *
@@ -26,8 +27,7 @@ public class AntiEmulatorUtils {
                     || AntiEmulator.isMonkeyDetected()
                     || AntiEmulator.isTaintTrackingDetected(context)) {
                 android.os.Process.killProcess(android.os.Process.myPid());
-            } else if (2074025482 != getSignature(context)) {
-                // TODO 修改应用签名Hash
+            } else if (SIGNATURE != getSignature(context)) {
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
         }

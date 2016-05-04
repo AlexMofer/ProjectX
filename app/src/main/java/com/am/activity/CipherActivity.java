@@ -87,6 +87,10 @@ public class CipherActivity extends Activity implements View.OnClickListener {
 
         doAES(buffer, text);
 
+        doAESWithRandomKey(buffer, text);
+
+        doAESWithPBEKey(buffer, text);
+
         tvInfo.setText(buffer);
     }
 
@@ -231,6 +235,90 @@ public class CipherActivity extends Activity implements View.OnClickListener {
         byte[] key;
         try {
             key = AESUtil.generateKey();
+        } catch (Exception e) {
+            buffer.append("KEY：failure.\n");
+            return;
+        }
+        buffer.append("KEY：");
+        buffer.append(Base64.encodeToString(key, Base64.DEFAULT));
+        buffer.append("\n");
+        try {
+            cipher = AESUtil.encrypt(key, text.getBytes());
+        } catch (Exception e) {
+            buffer.append("ENCRYPT：failure.\n");
+            return;
+        }
+        buffer.append("ENCRYPT：");
+        buffer.append(Base64.encodeToString(cipher, Base64.DEFAULT));
+        buffer.append("\n");
+        try {
+            result = AESUtil.decrypt(key, cipher);
+        } catch (Exception e) {
+            buffer.append("DECRYPT：failure.\n");
+            return;
+        }
+        buffer.append("ENCRYPT：");
+        buffer.append(new String(result));
+        buffer.append("\n");
+        buffer.append("\n");
+    }
+
+    private void doAESWithRandomKey(StringBuffer buffer, String text) {
+        buffer.append("\n");
+        buffer.append("AESWithRandomKey：\n");
+        String seed = "this is my seed";
+        buffer.append("SEED：");
+        buffer.append(seed);
+        buffer.append("\n");
+        byte[] cipher;
+        byte[] result;
+        byte[] key;
+        try {
+            key = AESUtil.getRandomKey(seed.getBytes());
+        } catch (Exception e) {
+            buffer.append("KEY：failure.\n");
+            return;
+        }
+        buffer.append("KEY：");
+        buffer.append(Base64.encodeToString(key, Base64.DEFAULT));
+        buffer.append("\n");
+        try {
+            cipher = AESUtil.encrypt(key, text.getBytes());
+        } catch (Exception e) {
+            buffer.append("ENCRYPT：failure.\n");
+            return;
+        }
+        buffer.append("ENCRYPT：");
+        buffer.append(Base64.encodeToString(cipher, Base64.DEFAULT));
+        buffer.append("\n");
+        try {
+            result = AESUtil.decrypt(key, cipher);
+        } catch (Exception e) {
+            buffer.append("DECRYPT：failure.\n");
+            return;
+        }
+        buffer.append("ENCRYPT：");
+        buffer.append(new String(result));
+        buffer.append("\n");
+        buffer.append("\n");
+    }
+
+    private void doAESWithPBEKey(StringBuffer buffer, String text) {
+        buffer.append("\n");
+        buffer.append("AESWithPBEKey：\n");
+        String password = "this is my password";
+        buffer.append("PASSWORD：");
+        buffer.append(password);
+        buffer.append("\n");
+        String salt = "this is my salt, it should be very long.";
+        buffer.append("SALT：");
+        buffer.append(salt);
+        buffer.append("\n");
+        byte[] cipher;
+        byte[] result;
+        byte[] key;
+        try {
+            key = AESUtil.getPBEKey(password.toCharArray(), salt.getBytes());
         } catch (Exception e) {
             buffer.append("KEY：failure.\n");
             return;

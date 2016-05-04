@@ -21,7 +21,7 @@ import javax.crypto.spec.DESedeKeySpec;
  */
 public class DESedeUtil {
 
-    private final static String KEY_ALGORITHM = "DESede";
+    private final static String ALGORITHM = "DESede";
     private final static String TRANSFORMATION = "DESede/ECB/PKCS5Padding";
     private final static int SIZE = 192;// 仅支持128、168、192
 
@@ -45,7 +45,7 @@ public class DESedeUtil {
             InvalidKeySpecException,
             IllegalBlockSizeException,
             BadPaddingException {
-        SecretKey secureKey = SecretKeyFactory.getInstance(KEY_ALGORITHM)
+        SecretKey secureKey = SecretKeyFactory.getInstance(ALGORITHM)
                 .generateSecret(new DESedeKeySpec(key));// 128 长度的Key不支持
 //        SecretKeySpec secureKey = new SecretKeySpec(key, KEY_ALGORITHM);// 168 长度的Key部分支持
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
@@ -74,7 +74,7 @@ public class DESedeUtil {
             IllegalBlockSizeException,
             BadPaddingException {
 
-        SecretKey secureKey = SecretKeyFactory.getInstance(KEY_ALGORITHM)
+        SecretKey secureKey = SecretKeyFactory.getInstance(ALGORITHM)
                 .generateSecret(new DESedeKeySpec(key));// 128 长度的Key不支持
 //        SecretKeySpec secureKey = new SecretKeySpec(key, KEY_ALGORITHM);// 168 长度的Key部分支持
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
@@ -89,7 +89,7 @@ public class DESedeUtil {
      * @throws NoSuchAlgorithmException
      */
     public static byte[] generateKey() throws NoSuchAlgorithmException {
-        return KeyUtil.generateKey(KEY_ALGORITHM, SIZE);
+        return KeyUtil.generateKey(ALGORITHM, SIZE);
     }
 
     /**
@@ -103,7 +103,7 @@ public class DESedeUtil {
     public static byte[] getRandomKey(byte[] seed) throws
             NoSuchAlgorithmException,
             NoSuchProviderException {
-        return KeyUtil.getRandomKey(KEY_ALGORITHM, seed, SIZE);
+        return KeyUtil.getRandomKey(ALGORITHM, seed, SIZE);
     }
 
     /**
