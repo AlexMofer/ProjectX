@@ -20,6 +20,7 @@ import javax.crypto.NoSuchPaddingException;
 
 /**
  * RSA加密解密工具类
+ * 一般用于加密对称加密的密钥
  * Created by Alex on 2016/4/28.
  */
 public class RSAUtil {
