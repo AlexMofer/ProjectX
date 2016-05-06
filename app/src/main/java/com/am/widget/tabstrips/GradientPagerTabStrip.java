@@ -104,6 +104,7 @@ public class GradientPagerTabStrip extends BaseTabStrip {
 		indicatorPadding = (int) (10 * density);
 		indicatorHeight = (int) (3 * density);
 		underLineHeight = (int) (2 * density);
+		setClickable(true);
 	}
 
 	private int getColor(int normalColor, int selectedColor, float offset) {
