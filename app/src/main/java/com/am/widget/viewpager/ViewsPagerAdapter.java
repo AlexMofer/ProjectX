@@ -5,6 +5,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,6 +15,12 @@ public class ViewsPagerAdapter extends PagerAdapter {
     private List<View> mListViews;
 
     public ViewsPagerAdapter() {
+    }
+
+    public ViewsPagerAdapter(View... views) {
+        if (views == null || views.length <= 0)
+            return;
+        setViews(Arrays.asList(views));
     }
 
     public ViewsPagerAdapter(List<View> views) {
