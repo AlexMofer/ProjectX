@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.am.widget.R;
 import com.am.widget.tabstrips.DotTabStrip;
+import com.am.widget.viewpager.ViewsPagerAdapter;
 
 public class DotpagerActivity extends Activity {
 	private DotpagerActivity me = this;
@@ -28,7 +29,7 @@ public class DotpagerActivity extends Activity {
 		views.add(one);
 		views.add(two);
 		views.add(three);
-		BaseViewPagerAdapter adapter = new BaseViewPagerAdapter(views);
+		ViewsPagerAdapter adapter = new ViewsPagerAdapter(views);
 		pager.setAdapter(adapter);
 
 		DotTabStrip dot = (DotTabStrip) findViewById(R.id.dot);

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.am.widget.R;
 import com.am.widget.bilateralpanelayout.BilateralPaneLayout;
+import com.am.widget.viewpager.ViewsPagerAdapter;
 
 public class BilateralPaneActivity extends Activity {
 
@@ -38,7 +39,7 @@ public class BilateralPaneActivity extends Activity {
 		view.add(pager1);
 		view.add(pager2);
 		view.add(pager3);
-		pagerR.setAdapter(new BaseViewPagerAdapter(view));
+		pagerR.setAdapter(new ViewsPagerAdapter(view));
 		
 		View pager4 = LayoutInflater.from(getBaseContext()).inflate(R.layout.item_bilateralpane_pager, pagerL, false);
 		((TextView)pager4.findViewById(R.id.text)).setText("第一屏");
@@ -53,7 +54,7 @@ public class BilateralPaneActivity extends Activity {
 		viewL.add(pager4);
 		viewL.add(pager5);
 		viewL.add(pager6);
-		pagerL.setAdapter(new BaseViewPagerAdapter(viewL));
+		pagerL.setAdapter(new ViewsPagerAdapter(viewL));
 		slidingPaneLayout.addRightCheckView(pagerR);
 		slidingPaneLayout.addLeftCheckView(pagerL);
 		
