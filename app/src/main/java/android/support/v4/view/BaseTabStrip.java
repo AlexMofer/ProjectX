@@ -177,6 +177,8 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
             if (!smoothScroll) {
                 mCurrentPager = current;
                 jumpTo(mCurrentPager);
+                mLastKnownPosition = mCurrentPager;
+                mLastKnownPositionOffset = 0;
                 if (mTCListener != null)
                     mTCListener.jumpTo(mCurrentPager);
 
@@ -207,6 +209,8 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         getDrawables(newAdapter);
         if (mPager != null) {
             jumpTo(mCurrentPager);
+            mLastKnownPosition = mCurrentPager;
+            mLastKnownPositionOffset = 0;
             if (mTCListener != null)
                 mTCListener.jumpTo(mCurrentPager);
         }
@@ -222,10 +226,8 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
                     break;
                 }
                 Drawable tag = mTabDrawable.getConstantState().newDrawable();
-                if (tag != null) {
-                    tag.setCallback(this);
-                    mTabDrawables.add(tag);
-                }
+                tag.setCallback(this);
+                mTabDrawables.add(tag);
             }
             return true;
         }
@@ -255,7 +257,6 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         if (position > mLastKnownPosition) {
             mLastKnownPosition = position - 1;
             if (mLastKnownPositionOffset > mPositionOffset) {
-
                 if (mPositionOffset == 0) {
                     mPositionOffset = 1;
                 } else {
@@ -443,6 +444,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      * 设置Tab点击监听
      * @param listener 监听器
      */
+    @SuppressWarnings("unused")
     public void setOnTabClickListener(OnTabClickListener listener) {
         this.mListener = listener;
     }
@@ -451,6 +453,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         return mTabDrawables;
     }
 
+    @SuppressWarnings("unused")
     public Drawable getTabDrawable() {
         return mTabDrawable;
     }
@@ -469,6 +472,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         }
     }
 
+    @SuppressWarnings("unused")
     public boolean willNeedTitle() {
         return willNeedTitle;
     }
@@ -477,6 +481,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         this.willNeedTitle = willNeedTitle;
     }
 
+    @SuppressWarnings("unused")
     public boolean willClick() {
         return willClick;
     }
