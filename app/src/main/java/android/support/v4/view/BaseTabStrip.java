@@ -436,6 +436,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         return mPager;
     }
 
+    @SuppressWarnings("unused")
     public final List<String> getViewTabs() {
         return mTabs;
     }
@@ -449,6 +450,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         this.mListener = listener;
     }
 
+    @SuppressWarnings("unused")
     public ArrayList<Drawable> getTabDrawables() {
         return mTabDrawables;
     }
@@ -458,6 +460,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         return mTabDrawable;
     }
 
+    @SuppressWarnings("unused")
     public void setTabDrawable(int resId) {
         setTabDrawable(ContextCompat.getDrawable(getContext(), resId));
     }
@@ -477,6 +480,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         return willNeedTitle;
     }
 
+    @SuppressWarnings("unused")
     public void setWillNeedTitle(boolean willNeedTitle) {
         this.willNeedTitle = willNeedTitle;
     }
@@ -486,6 +490,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         return willClick;
     }
 
+    @SuppressWarnings("unused")
     public void setWillClick(boolean willClick) {
         this.willClick = willClick;
     }
@@ -494,6 +499,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      * 设置Tab更改监听
      * @param listener 监听器
      */
+    @SuppressWarnings("unused")
     public void setOnTabChangeListener(OnTabChangeListener listener) {
         this.mTCListener = listener;
         if (this.mTCListener != null)

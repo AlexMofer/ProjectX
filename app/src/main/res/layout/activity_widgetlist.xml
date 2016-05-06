@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true" >
+    android:fitsSystemWindows="true"
+    tools:context="com.am.activity.WidgetListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_newwidget"
                 android:text="@string/newwidget" />
 
@@ -29,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_wechat"
                 android:text="@string/wechat" />
 
@@ -38,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_bilateralpane"
                 android:text="@string/bilateralpane" />
         </LinearLayout>
@@ -54,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_dot"
                 android:text="@string/dotpager" />
 
@@ -63,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_supertab"
                 android:text="@string/supertab" />
 
@@ -72,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_swipelayout"
                 android:text="@string/swiperefresh" />
         </LinearLayout>
@@ -88,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_draggridview"
                 android:text="@string/draggridview" />
 
@@ -97,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_shapeimage"
                 android:text="@string/shapeimage" />
 
@@ -106,7 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_citylist"
                 android:text="@string/citylist" />
         </LinearLayout>
@@ -121,7 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_sharpcornerbox"
                 android:text="@string/sharpcornerbox" />
 
@@ -130,7 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_connetimage"
                 android:text="@string/connectimage" />
 
@@ -139,7 +141,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_stateframelayout"
                 android:text="@string/stateframe" />
         </LinearLayout>
@@ -154,7 +156,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_replace"
                 android:text="@string/replace" />
 
@@ -163,7 +165,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_drawableratingbar"
                 android:text="@string/drawableratingbar" />
 
@@ -172,7 +174,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_warplayout"
                 android:text="@string/wrap" />
         </LinearLayout>
@@ -187,7 +189,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_printer"
                 android:text="@string/printer" />
 
@@ -196,7 +198,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_securitycode"
                 android:text="@string/security_code" />
 
@@ -205,7 +207,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_loading"
                 android:text="@string/loading_drawable" />
         </LinearLayout>
@@ -220,7 +222,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_security"
                 android:text="@string/security_check" />
 
@@ -229,7 +231,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_tab"
                 android:drawableTop="@drawable/ic_cipher"
                 android:text="@string/cipher" />
 
