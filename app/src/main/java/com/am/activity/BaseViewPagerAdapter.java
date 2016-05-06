@@ -1,10 +1,10 @@
 package com.am.activity;
-import java.util.List;
-
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.List;
 
 public class BaseViewPagerAdapter extends PagerAdapter {
     private List<View> mListViews;
@@ -36,12 +36,11 @@ public class BaseViewPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(View container, int position, Object object) {
-        ((ViewPager) container).removeView(mListViews.get(position));
+        destroyItem((ViewPager) container, position, object);
     }
 
     @Override
     public Object instantiateItem(View container, int position) {
-        ((ViewPager) container).addView(mListViews.get(position), 0);
-        return mListViews.get(position);
+        return instantiateItem((ViewPager) container, position);
     }
 }
