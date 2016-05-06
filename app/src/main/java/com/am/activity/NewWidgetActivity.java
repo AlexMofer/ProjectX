@@ -1,9 +1,5 @@
 package com.am.activity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +13,10 @@ import android.widget.Toast;
 
 import com.am.widget.R;
 import com.am.widget.newone.DragGridView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class NewWidgetActivity extends Activity {
 
@@ -37,29 +37,29 @@ public class NewWidgetActivity extends Activity {
 	private void createSuperGird() {
 		for (int i = 0; i < 95; i++) {
 			HashMap<String, Object> itemHashMap = new HashMap<String, Object>();
-			itemHashMap.put("item_image", R.drawable.ic_launcher);
+			itemHashMap.put("item_image", R.drawable.ic_newwidget);
 			itemHashMap.put("item_text", "Item " + Integer.toString(i));
 			dataSourceList.add(itemHashMap);
 		}
 
 		for (int i = 0; i < 10; i++) {
 			HashMap<String, Object> itemHashMap = new HashMap<String, Object>();
-			itemHashMap.put("item_image", R.drawable.ic_launcher);
+			itemHashMap.put("item_image", R.drawable.ic_newwidget);
 			itemHashMap.put("item_text", "New " + Integer.toString(i));
 			dataSourceListNew.add(itemHashMap);
 		}
 		List<HashMap<String, Object>> hAf = new ArrayList<HashMap<String, Object>>();
 		HashMap<String, Object> h1 = new HashMap<String, Object>();
-		h1.put("item_image", R.drawable.ic_launcher);
+		h1.put("item_image", R.drawable.ic_newwidget);
 		h1.put("item_text", "Header 1");
 		HashMap<String, Object> h2 = new HashMap<String, Object>();
-		h2.put("item_image", R.drawable.ic_launcher);
+		h2.put("item_image", R.drawable.ic_newwidget);
 		h2.put("item_text", "Header 2");
 		HashMap<String, Object> f1 = new HashMap<String, Object>();
-		f1.put("item_image", R.drawable.ic_launcher);
+		f1.put("item_image", R.drawable.ic_newwidget);
 		f1.put("item_text", "Footer 1");
 		HashMap<String, Object> f2 = new HashMap<String, Object>();
-		f2.put("item_image", R.drawable.ic_launcher);
+		f2.put("item_image", R.drawable.ic_newwidget);
 		f2.put("item_text", "Footer 2");
 		hAf.add(h1);
 		hAf.add(h2);
@@ -186,7 +186,7 @@ public class NewWidgetActivity extends Activity {
 							once = true;
 							HashMap<String, Object> itemHashMap = new HashMap<String, Object>();
 							itemHashMap.put("item_image",
-									R.drawable.ic_launcher);
+									R.drawable.ic_newwidget);
 							itemHashMap.put(
 									"item_text",
 									"Item "

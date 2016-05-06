@@ -1,15 +1,15 @@
 package com.am.activity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.am.widget.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class SwipeRefreshActivity extends Activity {
 
@@ -20,7 +20,7 @@ public class SwipeRefreshActivity extends Activity {
 		List<HashMap<String, Object>> dataSourceList = new ArrayList<HashMap<String, Object>>();
 		for (int i = 0; i < 10; i++) {
 			HashMap<String, Object> itemHashMap = new HashMap<String, Object>();
-			itemHashMap.put("item_image", R.drawable.ic_launcher);
+			itemHashMap.put("item_image", R.drawable.ic_swipelayout);
 			itemHashMap.put("item_text", "Item " + Integer.toString(i));
 			dataSourceList.add(itemHashMap);
 		}

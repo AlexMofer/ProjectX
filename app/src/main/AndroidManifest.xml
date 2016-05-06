@@ -7,7 +7,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name">
         <activity android:name="com.am.activity.WidgetListActivity">
             <intent-filter>
@@ -15,13 +15,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.am.activity.NewWidgetActivity" />
+        <activity
+            android:name="com.am.activity.NewWidgetActivity"
+            android:label="@string/newwidget" />
         <activity
             android:name="com.am.activity.WechatActivity"
             android:label="@string/wechat" />
-        <activity android:name="com.am.activity.BilateralPaneActivity" />
-        <activity android:name="com.am.activity.DotpagerActivity" />
-        <activity android:name="com.am.activity.SuperTabActivity">
+        <activity
+            android:name="com.am.activity.BilateralPaneActivity"
+            android:label="@string/bilateralpane" />
+        <activity
+            android:name="com.am.activity.DotpagerActivity"
+            android:label="@string/dotpager" />
+        <activity
+            android:name="com.am.activity.SuperTabActivity"
+            android:label="@string/supertab">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -34,21 +42,51 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name="com.am.activity.SwipeRefreshActivity" />
-        <activity android:name="com.am.activity.DragGridViewActivity" />
-        <activity android:name="com.am.activity.ShapeImageViewActivity" />
-        <activity android:name="com.am.activity.CityListActivity" />
-        <activity android:name="com.am.activity.SharpCornerBoxActivity" />
-        <activity android:name="com.am.activity.ConnectImageActivity" />
-        <activity android:name="com.am.activity.StateFrameActivity" />
-        <activity android:name="com.am.activity.ReplaceActivity" />
-        <activity android:name="com.am.activity.DrawableRatingBarActivity" />
-        <activity android:name="com.am.activity.WrapActivity" />
-        <activity android:name="com.am.activity.PrinterActivity" />
-        <activity android:name="com.am.activity.SecurityCodeActivity" />
-        <activity android:name="com.am.activity.LoadingActivity" />
-        <activity android:name="com.am.activity.SecurityActivity" />
-        <activity android:name="com.am.activity.CipherActivity" />
+        <activity
+            android:name="com.am.activity.SwipeRefreshActivity"
+            android:label="@string/swiperefresh" />
+        <activity
+            android:name="com.am.activity.DragGridViewActivity"
+            android:label="@string/draggridview" />
+        <activity
+            android:name="com.am.activity.ShapeImageViewActivity"
+            android:label="@string/shapeimage" />
+        <activity
+            android:name="com.am.activity.CityListActivity"
+            android:label="@string/citylist" />
+        <activity
+            android:name="com.am.activity.SharpCornerBoxActivity"
+            android:label="@string/sharpcornerbox" />
+        <activity
+            android:name="com.am.activity.ConnectImageActivity"
+            android:label="@string/connectimage" />
+        <activity
+            android:name="com.am.activity.StateFrameActivity"
+            android:label="@string/stateframe" />
+        <activity
+            android:name="com.am.activity.ReplaceActivity"
+            android:label="@string/replace" />
+        <activity
+            android:name="com.am.activity.DrawableRatingBarActivity"
+            android:label="@string/drawableratingbar" />
+        <activity
+            android:name="com.am.activity.WrapActivity"
+            android:label="@string/wrap" />
+        <activity
+            android:name="com.am.activity.PrinterActivity"
+            android:label="@string/printer" />
+        <activity
+            android:name="com.am.activity.SecurityCodeActivity"
+            android:label="@string/security_code" />
+        <activity
+            android:name="com.am.activity.LoadingActivity"
+            android:label="@string/loading_drawable" />
+        <activity
+            android:name="com.am.activity.SecurityActivity"
+            android:label="@string/security_check" />
+        <activity
+            android:name="com.am.activity.CipherActivity"
+            android:label="@string/cipher" />
     </application>
 
 </manifest>
