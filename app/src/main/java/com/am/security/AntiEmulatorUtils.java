@@ -20,6 +20,7 @@ public class AntiEmulatorUtils {
      *
      * @param context Context
      */
+    @SuppressWarnings("unused")
     public static void checkSecurity(Context context) {
         if (!isDebuggable(context)) {
             if (AntiEmulator.isQEmuEnvDetected(context)
@@ -50,6 +51,7 @@ public class AntiEmulatorUtils {
      * @param context Context
      * @return 签名哈希值
      */
+    @SuppressWarnings("all")
     public static int getSignature(Context context) {
         int sig;
         try {

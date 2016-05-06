@@ -38,6 +38,7 @@ public class DESedeUtil {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
+    @SuppressWarnings("all")
     public static byte[] encrypt(byte[] key, byte[] clear) throws
             NoSuchAlgorithmException,
             NoSuchPaddingException,
@@ -66,6 +67,7 @@ public class DESedeUtil {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
+    @SuppressWarnings("all")
     public static byte[] decrypt(byte[] key, byte[] encrypted) throws
             NoSuchAlgorithmException,
             NoSuchPaddingException,

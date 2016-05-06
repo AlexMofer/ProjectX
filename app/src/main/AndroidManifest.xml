@@ -16,7 +16,9 @@
             </intent-filter>
         </activity>
         <activity android:name="com.am.activity.NewWidgetActivity" />
-        <activity android:name="com.am.activity.WechatActivity" />
+        <activity
+            android:name="com.am.activity.WechatActivity"
+            android:label="@string/wechat" />
         <activity android:name="com.am.activity.BilateralPaneActivity" />
         <activity android:name="com.am.activity.DotpagerActivity" />
         <activity android:name="com.am.activity.SuperTabActivity">

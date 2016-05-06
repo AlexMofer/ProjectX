@@ -43,6 +43,7 @@ public class RSAUtil {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
+    @SuppressWarnings("all")
     public static byte[] encryptByPublicKey(byte[] key, byte[] clear) throws
             NoSuchAlgorithmException,
             InvalidKeySpecException,
@@ -70,6 +71,7 @@ public class RSAUtil {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
+    @SuppressWarnings("all")
     public static byte[] encryptByPrivateKey(byte[] key, byte[] clear) throws
             NoSuchAlgorithmException,
             InvalidKeySpecException,
@@ -97,6 +99,7 @@ public class RSAUtil {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
+    @SuppressWarnings("all")
     public static byte[] decryptByPublicKey(byte[] key, byte[] encrypted) throws
             NoSuchAlgorithmException,
             InvalidKeySpecException,
@@ -124,6 +127,7 @@ public class RSAUtil {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
+    @SuppressWarnings("all")
     public static byte[] decryptByPrivateKey(byte[] key, byte[] encrypted) throws
             NoSuchAlgorithmException,
             InvalidKeySpecException,
