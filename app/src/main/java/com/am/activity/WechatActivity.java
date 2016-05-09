@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.am.widget.R;
 import com.am.widget.tabstrips.GradientTabStrip;
-import com.am.widget.tabstrips.SimpleGradientTabAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,10 +55,10 @@ public class WechatActivity extends Activity {
 		listStrings.add("我");
 		mViewPager.setAdapter(new TitleViewPagerAdapter(viewList, listStrings));
 		GradientTabStrip tab = (GradientTabStrip) findViewById(R.id.tab_wechat);
-		tab.setViewPager(mViewPager);
+		tab.bindViewPager(mViewPager);
 		tab.setGravity(Gravity.CENTER);
-		tab.setTabDrawable(R.drawable.bg_tab);
-		SimpleGradientTabAdapter adapter = new SimpleGradientTabAdapter() {
+        tab.setItemBackground(R.drawable.bg_tab);
+        GradientTabStrip.SimpleGradientTabAdapter adapter = new GradientTabStrip.SimpleGradientTabAdapter() {
 
 			@Override
 			public Drawable getSelectedDrawable(int position, Context context) {

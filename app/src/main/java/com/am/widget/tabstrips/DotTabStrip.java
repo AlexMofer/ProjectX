@@ -8,7 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.BaseTabStrip;
+import android.support.v4.view.BaseTabStripOld;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
@@ -20,7 +20,7 @@ import android.view.Gravity;
  * @author Alex
  *
  */
-public class DotTabStrip extends BaseTabStrip {
+public class DotTabStrip extends BaseTabStripOld {
 
 	private final static int DEFAULT_SIZE = 6;
 	private Drawable mSelectedDrawable;
@@ -49,6 +49,7 @@ public class DotTabStrip extends BaseTabStrip {
 	@SuppressWarnings("ResourceType")
 	public DotTabStrip(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
+		setClickable(false);
 		final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
 		mColors = a.getColorStateList(0);
 		if (mColors == null) {

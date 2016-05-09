@@ -22,43 +22,37 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewParent;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * BasePagerTabStrip ViewPager滑动对应变化效果<br>
- * 若要作为 ViewPager子项使用 <b>implements ViewPager.Decor</b>
+ * BasePagerTabStrip ViewPager滑动对应变化效果
  *
  * @author Alex
  */
 public abstract class BaseTabStrip extends View implements ViewPager.Decor {
 
     private ViewPager mPager;
-    private List<String> mTabs = new ArrayList<>();
     private final PageListener mPageListener = new PageListener();
     private WeakReference<PagerAdapter> mWatchingAdapter;
     private int mLastKnownPosition = 0;
     private float mLastKnownPositionOffset = -1;
     private int mCurrentPager = 0;
     private int mNextPager = 0;
-    private int mTouchSlop;
-    private float mInitialMotionX;
-    private float mInitialMotionY;
-    private float mDownMotionX = -1;
-    private float mDownMotionY = -1;
-    private OnTabClickListener mListener;
-    private Drawable mTabDrawable;
-    private ArrayList<Drawable> mTabDrawables = new ArrayList<>();
-    private boolean willNeedTitle = true;
-    private boolean willClick = true;
-    private OnTabChangeListener mTCListener;
+    private Drawable mTabItemBackground;
+    private ArrayList<Drawable> mTabItemBackgrounds = new ArrayList<>();
+    private boolean tabClickable;
+    private GestureDetectorCompat mTabGestureDetector;
+    private TabOnGestureListener mTabOnGestureListener = new TabOnGestureListener();
+    private OnItemClickListener clickListener;
+    private ArrayList<OnChangeListener> changeListeners;
 
     public BaseTabStrip(Context context) {
         this(context, null);
@@ -66,13 +60,12 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
 
     public BaseTabStrip(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-
     }
 
     public BaseTabStrip(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        final ViewConfiguration vc = ViewConfiguration.get(context);
-        mTouchSlop = vc.getScaledTouchSlop();
+        setItemClickable(false);
+        mTabGestureDetector = new GestureDetectorCompat(context, mTabOnGestureListener);
     }
 
     @Override
@@ -80,22 +73,43 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         super.onAttachedToWindow();
         final ViewParent parent = getParent();
         if (mPager == null && parent instanceof ViewPager) {
-            setViewPager((ViewPager) parent);
+            bindViewPager((ViewPager) parent);
+        }
+    }
+
+    private void createTabItemDrawables(PagerAdapter adapter) {
+        if (mTabItemBackground == null)
+            return;
+        if (adapter != null) {
+            int i = 0;
+            for (; i < adapter.getCount(); i++) {
+                if (i < mTabItemBackgrounds.size()) {
+                    mTabItemBackgrounds.get(i).setState(onCreateDrawableState(0));
+                } else {
+                    Drawable tag = mTabItemBackground.getConstantState().newDrawable();
+                    tag.setCallback(this);
+                    mTabItemBackgrounds.add(tag);
+                }
+            }
+        } else {
+            for (Drawable drawable : mTabItemBackgrounds) {
+                drawable.setState(onCreateDrawableState(0));
+            }
         }
     }
 
     /**
-     * 设置ViewPager
+     * 捆绑ViewPager
      *
      * @param pager 关联的ViewPager
      */
-    public void setViewPager(ViewPager pager) {
+    public void bindViewPager(ViewPager pager) {
         mPager = pager;
         if (mPager != null) {
             final PagerAdapter adapter = mPager.getAdapter();
             mPager.setInternalPageChangeListener(mPageListener);
             mPager.setOnAdapterChangeListener(mPageListener);
-            updateAdapter(mWatchingAdapter != null ? mWatchingAdapter.get()
+            bindPagerAdapter(mWatchingAdapter != null ? mWatchingAdapter.get()
                     : null, adapter);
         }
     }
@@ -104,51 +118,28 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mPager != null) {
-            updateAdapter(mPager.getAdapter(), null);
+            bindPagerAdapter(mPager.getAdapter(), null);
             mPager.setInternalPageChangeListener(null);
             mPager.setOnAdapterChangeListener(null);
             mPager = null;
         }
-        if (mTabDrawables != null) {
-            for (Drawable drawable : mTabDrawables) {
-                drawable.setCallback(null);
-            }
+        clearTabItemBackground();
+    }
+
+    private void clearTabItemBackground() {
+        for (Drawable drawable : mTabItemBackgrounds) {
+            drawable.setCallback(null);
         }
+        mTabItemBackgrounds.clear();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (!willClick) {
+        if (!tabClickable) {
             return super.onTouchEvent(ev);
         }
-        final int action = ev.getAction();
-        final float x = ev.getX();
-        final float y = ev.getY();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                mInitialMotionX = x;
-                mInitialMotionY = y;
-                mDownMotionX = x;
-                mDownMotionY = y;
-                break;
-
-            case MotionEvent.ACTION_UP:
-                final float dx = x - mInitialMotionX;
-                final float dy = y - mInitialMotionY;
-                if (dx * dx + dy * dy < mTouchSlop * mTouchSlop) {
-                    mInitialMotionX = x;
-                    mInitialMotionY = y;
-                    final int position = pointToPosition(mInitialMotionX,
-                            mInitialMotionY);
-                    performClick(position);
-                    mInitialMotionX = -1;
-                    mInitialMotionY = -1;
-
-                }
-                break;
-        }
-
-        return super.onTouchEvent(ev);
+        final boolean tab = mTabGestureDetector.onTouchEvent(ev);
+        return super.onTouchEvent(ev) || tab;
     }
 
     /**
@@ -167,183 +158,135 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      * @param smoothScroll 是否平滑滚动
      */
     public void performClick(int position, boolean smoothScroll, boolean notifyListener) {
-        if (getViewPager() != null && getViewPager().getAdapter() != null
-                && getViewPager().getAdapter().getCount() > 0) {
-            if (mListener != null && notifyListener) {
-                mListener.onTabClick(position);
+        if (getViewPager() != null) {
+            if (clickListener != null && notifyListener) {
+                clickListener.onItemClick(position);
             }
-            int current = position % getViewPager().getAdapter().getCount();
-            getViewPager().setCurrentItem(current, smoothScroll);
+            getViewPager().setCurrentItem(position, smoothScroll);
             if (!smoothScroll) {
-                mCurrentPager = current;
+                mCurrentPager = position;
                 jumpTo(mCurrentPager);
                 mLastKnownPosition = mCurrentPager;
                 mLastKnownPositionOffset = 0;
-                if (mTCListener != null)
-                    mTCListener.jumpTo(mCurrentPager);
-
+                notifyJumpTo(mCurrentPager);
             }
-
         }
     }
 
-    protected void updateAdapter(PagerAdapter oldAdapter,
-                                 PagerAdapter newAdapter) {
+    /**
+     * 捆绑PagerAdapter
+     *
+     * @param oldAdapter 旧Adapter
+     * @param newAdapter 新Adapter
+     */
+    protected void bindPagerAdapter(PagerAdapter oldAdapter,
+                                    PagerAdapter newAdapter) {
         if (oldAdapter != null) {
             oldAdapter.unregisterDataSetObserver(mPageListener);
             mWatchingAdapter = null;
         }
-        mTabs.clear();
         if (newAdapter != null) {
             newAdapter.registerDataSetObserver(mPageListener);
             mWatchingAdapter = new WeakReference<>(newAdapter);
             mLastKnownPosition = mPager.getCurrentItem();
             mCurrentPager = mLastKnownPosition;
             mNextPager = mLastKnownPosition;
-            if (willNeedTitle) {
-                for (int i = 0; i < newAdapter.getCount(); i++) {
-                    mTabs.add(newAdapter.getPageTitle(i).toString());
-                }
-            }
         }
-        getDrawables(newAdapter);
+        createTabItemDrawables(newAdapter);
+        onBindPagerAdapter();
         if (mPager != null) {
             jumpTo(mCurrentPager);
             mLastKnownPosition = mCurrentPager;
             mLastKnownPositionOffset = 0;
-            if (mTCListener != null)
-                mTCListener.jumpTo(mCurrentPager);
+            notifyJumpTo(mCurrentPager);
         }
         requestLayout();
         invalidate();
     }
 
-    private boolean getDrawables(PagerAdapter adapter) {
-        mTabDrawables.clear();
-        if (adapter != null) {
-            for (int i = 0; i < adapter.getCount(); i++) {
-                if (mTabDrawable == null) {
-                    break;
-                }
-                Drawable tag = mTabDrawable.getConstantState().newDrawable();
-                tag.setCallback(this);
-                mTabDrawables.add(tag);
-            }
-            return true;
-        }
-        return false;
+    /**
+     * 捆绑PagerAdapter
+     */
+    protected void onBindPagerAdapter() {
+
     }
 
     /**
-     * 更新View
-     *
-     * @param position       位置
-     * @param positionOffset 位置偏移
-     * @param force          是否强制更新
-     */
-    private void updateView(int position, float positionOffset, boolean force) {
-        if (mLastKnownPositionOffset == -1) {
-            mLastKnownPositionOffset = positionOffset;
-        }
-        if (!force && positionOffset == mLastKnownPositionOffset) {
-            return;
-        }
-        float mPositionOffset = positionOffset;
-        if (mLastKnownPositionOffset == 0 || mLastKnownPositionOffset == 1)
-            if (mPositionOffset > 0.5f)
-                mLastKnownPositionOffset = 1;
-            else
-                mLastKnownPositionOffset = 0;
-        if (position > mLastKnownPosition) {
-            mLastKnownPosition = position - 1;
-            if (mLastKnownPositionOffset > mPositionOffset) {
-                if (mPositionOffset == 0) {
-                    mPositionOffset = 1;
-                } else {
-                    mLastKnownPosition = position;
-                }
-                mCurrentPager = mLastKnownPosition;
-                mNextPager = mLastKnownPosition + 1;
-                gotoRight(mCurrentPager, mNextPager, mPositionOffset);
-                if (mTCListener != null)
-                    mTCListener.gotoRight(mCurrentPager, mNextPager, mPositionOffset);
-            } else {
-                mCurrentPager = mLastKnownPosition + 1;
-                mNextPager = mLastKnownPosition;
-                gotoLeft(mCurrentPager, mNextPager, mPositionOffset);
-                if (mTCListener != null)
-                    mTCListener.gotoLeft(mCurrentPager, mNextPager, mPositionOffset);
-            }
-        } else {
-            mLastKnownPosition = position;
-            if (mLastKnownPositionOffset > mPositionOffset) {
-                mCurrentPager = mLastKnownPosition + 1;
-                mNextPager = mLastKnownPosition;
-                gotoLeft(mCurrentPager, mNextPager, mPositionOffset);
-                if (mTCListener != null)
-                    mTCListener.gotoLeft(mCurrentPager, mNextPager, mPositionOffset);
-            } else {
-                mPositionOffset = mPositionOffset == 0 ? 1 : mPositionOffset;
-                mCurrentPager = mLastKnownPosition;
-                mNextPager = mLastKnownPosition + 1;
-                gotoRight(mCurrentPager, mNextPager, mPositionOffset);
-                if (mTCListener != null)
-                    mTCListener.gotoRight(mCurrentPager, mNextPager, mPositionOffset);
-            }
-        }
-        mLastKnownPosition = position;
-        mLastKnownPositionOffset = positionOffset;
-    }
-
-    /**
-     * 直接跳转到
-     */
-    protected abstract void jumpTo(int currect);
-
-    /**
-     * 滑向左边
-     *
-     * @param currect 当前页
-     * @param next    目标页
-     * @param offset  偏移
-     */
-    protected abstract void gotoLeft(int currect, int next, float offset);
-
-    /**
-     * 滑向右边
-     *
-     * @param currect 当前页
-     * @param next    目标页
-     * @param offset  偏移
-     */
-    protected abstract void gotoRight(int currect, int next, float offset);
-
-    /**
-     * 由触摸点转为Tag
+     * 由触摸点转为Position
      *
      * @param x X坐标
      * @param y Y坐标
      * @return 坐标对应位置
      */
+    @SuppressWarnings("unused")
     protected int pointToPosition(float x, float y) {
         return 0;
     }
 
+    @Override
+    protected void drawableStateChanged() {
+        final float downMotionX = mTabOnGestureListener.getDownMotionX();
+        final float downMotionY = mTabOnGestureListener.getDownMotionY();
+        int position = pointToPosition(downMotionX, downMotionY);
+        if (position >= 0 && position < mTabItemBackgrounds.size()) {
+            Drawable tag = mTabItemBackgrounds.get(position);
+            DrawableCompat.setHotspot(tag, getHotspotX(tag, position, downMotionX, downMotionY),
+                    getHotspotY(tag, position, downMotionX, downMotionY));
+            if (tag.isStateful()) {
+                tag.setState(getDrawableState());
+            }
+        }
+        super.drawableStateChanged();
+    }
+
     /**
-     * DOWN 事件对应Position
+     * set hotspot's x location
      *
-     * @return 位置坐标
+     * @param background 背景图
+     * @param position   图片Position
+     * @param motionX    点击位置X
+     * @param motionY    点击位置Y
+     * @return x location
      */
-    public int downPointToPosition() {
-        return pointToPosition(mDownMotionX, mDownMotionY);
+    @SuppressWarnings("unused")
+    protected float getHotspotX(Drawable background, int position, float motionX, float motionY) {
+        return background.getIntrinsicWidth() * 0.5f;
     }
 
-    public float downPointX() {
-        return mDownMotionX;
+    /**
+     * set hotspot's y location
+     *
+     * @param background 背景图
+     * @param position   图片Position
+     * @param motionX    点击位置X
+     * @param motionY    点击位置Y
+     * @return y location
+     */
+    @SuppressWarnings("unused")
+    protected float getHotspotY(Drawable background, int position, float motionX, float motionY) {
+        return background.getIntrinsicHeight() * 0.5f;
     }
 
-    public float downPointY() {
-        return mDownMotionY;
+    @Override
+    protected boolean verifyDrawable(Drawable who) {
+        boolean isTag = false;
+        for (Drawable tag : mTabItemBackgrounds) {
+            if (who == tag) {
+                isTag = true;
+                break;
+            }
+        }
+        return isTag || super.verifyDrawable(who);
+    }
+
+    /**
+     * 获取Tab子项背景
+     *
+     * @param position 位置
+     * @return 背景
+     */
+    protected Drawable getItemBackground(int position) {
+        return position < mTabItemBackgrounds.size() ? mTabItemBackgrounds.get(position) : null;
     }
 
     @Override
@@ -379,15 +322,16 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
             out.writeInt(currectPager);
         }
 
-        public static final Parcelable.Creator<BaseTabStripSavedState> CREATOR = new Parcelable.Creator<BaseTabStripSavedState>() {
-            public BaseTabStripSavedState createFromParcel(Parcel in) {
-                return new BaseTabStripSavedState(in);
-            }
+        public static final Creator<BaseTabStripSavedState> CREATOR =
+                new Creator<BaseTabStripSavedState>() {
+                    public BaseTabStripSavedState createFromParcel(Parcel in) {
+                        return new BaseTabStripSavedState(in);
+                    }
 
-            public BaseTabStripSavedState[] newArray(int size) {
-                return new BaseTabStripSavedState[size];
-            }
-        };
+                    public BaseTabStripSavedState[] newArray(int size) {
+                        return new BaseTabStripSavedState[size];
+                    }
+                };
     }
 
     private class PageListener extends DataSetObserver implements
@@ -405,8 +349,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
             if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
                 // Only update the text here if we're not dragging or settling.
 
-                float offset = mLastKnownPositionOffset >= 0 ? mLastKnownPositionOffset
-                        : 0;
+                float offset = mLastKnownPositionOffset >= 0 ? mLastKnownPositionOffset : 0;
 
                 updateView(mPager.getCurrentItem(), offset, false);
             }
@@ -420,107 +363,350 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         @Override
         public void onAdapterChanged(PagerAdapter oldAdapter,
                                      PagerAdapter newAdapter) {
-            updateAdapter(oldAdapter, newAdapter);
+            bindPagerAdapter(oldAdapter, newAdapter);
         }
 
         @Override
         public void onChanged() {
 
-            final float offset = mLastKnownPositionOffset >= 0 ? mLastKnownPositionOffset
-                    : 0;
+            final float offset = mLastKnownPositionOffset >= 0 ? mLastKnownPositionOffset : 0;
             updateView(mPager.getCurrentItem(), offset, true);
         }
     }
 
+    /**
+     * 更新View
+     *
+     * @param position       位置
+     * @param positionOffset 位置偏移
+     * @param force          是否强制更新
+     */
+    private void updateView(int position, float positionOffset, boolean force) {
+        if (mLastKnownPositionOffset == -1) {
+            mLastKnownPositionOffset = positionOffset;
+        }
+        if (!force && positionOffset == mLastKnownPositionOffset) {
+            return;
+        }
+        float mPositionOffset = positionOffset;
+        if (mLastKnownPositionOffset == 0 || mLastKnownPositionOffset == 1)
+            if (mPositionOffset > 0.5f)
+                mLastKnownPositionOffset = 1;
+            else
+                mLastKnownPositionOffset = 0;
+        if (position > mLastKnownPosition) {
+            mLastKnownPosition = position - 1;
+            if (mLastKnownPositionOffset > mPositionOffset) {
+                if (mPositionOffset == 0) {
+                    mPositionOffset = 1;
+                } else {
+                    mLastKnownPosition = position;
+                }
+                mCurrentPager = mLastKnownPosition;
+                mNextPager = mLastKnownPosition + 1;
+                gotoRight(mCurrentPager, mNextPager, mPositionOffset);
+                notifyGotoRight(mCurrentPager, mNextPager, mPositionOffset);
+            } else {
+                mCurrentPager = mLastKnownPosition + 1;
+                mNextPager = mLastKnownPosition;
+                gotoLeft(mCurrentPager, mNextPager, mPositionOffset);
+                notifyGotoLeft(mCurrentPager, mNextPager, mPositionOffset);
+            }
+        } else {
+            mLastKnownPosition = position;
+            if (mLastKnownPositionOffset > mPositionOffset) {
+                mCurrentPager = mLastKnownPosition + 1;
+                mNextPager = mLastKnownPosition;
+                gotoLeft(mCurrentPager, mNextPager, mPositionOffset);
+                notifyGotoLeft(mCurrentPager, mNextPager, mPositionOffset);
+            } else {
+                mPositionOffset = mPositionOffset == 0 ? 1 : mPositionOffset;
+                mCurrentPager = mLastKnownPosition;
+                mNextPager = mLastKnownPosition + 1;
+                gotoRight(mCurrentPager, mNextPager, mPositionOffset);
+                notifyGotoRight(mCurrentPager, mNextPager, mPositionOffset);
+            }
+        }
+        mLastKnownPosition = position;
+        mLastKnownPositionOffset = positionOffset;
+    }
+
+    /**
+     * 通知跳转到
+     * @param current 位置
+     */
+    private void notifyJumpTo(int current) {
+        if (changeListeners == null)
+            return;
+        for (OnChangeListener listener : changeListeners) {
+            listener.jumpTo(current);
+        }
+    }
+
+    /**
+     * 通知滑向左边
+     *
+     * @param current 当前页
+     * @param next    目标页
+     * @param offset  偏移
+     */
+    private void notifyGotoLeft(int current, int next, float offset) {
+        if (changeListeners == null)
+            return;
+        for (OnChangeListener listener : changeListeners) {
+            listener.gotoLeft(current, next, offset);
+        }
+    }
+
+    /**
+     * 通知滑向右边
+     *
+     * @param current 当前页
+     * @param next    目标页
+     * @param offset  偏移
+     */
+    private void notifyGotoRight(int current, int next, float offset) {
+        if (changeListeners == null)
+            return;
+        for (OnChangeListener listener : changeListeners) {
+            listener.gotoRight(current, next, offset);
+        }
+    }
+
+    /**
+     * 直接跳转到
+     * @param current 位置
+     */
+    protected abstract void jumpTo(int current);
+
+    /**
+     * 滑向左边
+     *
+     * @param current 当前页
+     * @param next    目标页
+     * @param offset  偏移
+     */
+    protected abstract void gotoLeft(int current, int next, float offset);
+
+    /**
+     * 滑向右边
+     *
+     * @param current 当前页
+     * @param next    目标页
+     * @param offset  偏移
+     */
+    protected abstract void gotoRight(int current, int next, float offset);
+
+    private class TabOnGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        private float mDownMotionX = -1;
+        private float mDownMotionY = -1;
+        private int oldPosition = -1;
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            mDownMotionX = e.getX();
+            mDownMotionY = e.getY();
+            return super.onDown(e);
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            oldPosition = mCurrentPager;
+            performClick(pointToPosition(e.getX(), e.getY()));
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            if (oldPosition == mCurrentPager && clickListener != null) {
+                clickListener.onSelectedClick(mCurrentPager);
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            if (clickListener != null) {
+                clickListener.onDoubleClick(mCurrentPager);
+            }
+            return true;
+        }
+
+        public float getDownMotionX() {
+            return mDownMotionX;
+        }
+
+        public float getDownMotionY() {
+            return mDownMotionY;
+        }
+    }
+
+    @SuppressWarnings("unused")
     public final ViewPager getViewPager() {
         return mPager;
     }
 
     @SuppressWarnings("unused")
-    public final List<String> getViewTabs() {
-        return mTabs;
-    }
-
-    /**
-     * 设置Tab点击监听
-     * @param listener 监听器
-     */
-    @SuppressWarnings("unused")
-    public void setOnTabClickListener(OnTabClickListener listener) {
-        this.mListener = listener;
-    }
-
-    @SuppressWarnings("unused")
-    public ArrayList<Drawable> getTabDrawables() {
-        return mTabDrawables;
-    }
-
-    @SuppressWarnings("unused")
-    public Drawable getTabDrawable() {
-        return mTabDrawable;
-    }
-
-    @SuppressWarnings("unused")
-    public void setTabDrawable(int resId) {
-        setTabDrawable(ContextCompat.getDrawable(getContext(), resId));
-    }
-
-    public void setTabDrawable(Drawable drawable) {
-        if (mTabDrawable != drawable) {
-            mTabDrawable = drawable;
-            if (mPager != null && getDrawables(mPager.getAdapter())) {
-                requestLayout();
-                invalidate();
-            }
+    public final int getItemCount() {
+        try {
+            return mWatchingAdapter.get().getCount();
+        } catch (Exception e) {
+            return 0;
         }
     }
 
     @SuppressWarnings("unused")
-    public boolean willNeedTitle() {
-        return willNeedTitle;
-    }
-
-    @SuppressWarnings("unused")
-    public void setWillNeedTitle(boolean willNeedTitle) {
-        this.willNeedTitle = willNeedTitle;
-    }
-
-    @SuppressWarnings("unused")
-    public boolean willClick() {
-        return willClick;
-    }
-
-    @SuppressWarnings("unused")
-    public void setWillClick(boolean willClick) {
-        this.willClick = willClick;
+    public final CharSequence getItemText(int position) {
+        try {
+            return mWatchingAdapter.get().getPageTitle(position);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
-     * 设置Tab更改监听
+     * 设置Tab子项背景
+     *
+     * @param background 背景
+     */
+    public void setItemBackground(Drawable background) {
+        if (mTabItemBackground != background) {
+            mTabItemBackground = background;
+            if (mTabItemBackground == null) {
+                clearTabItemBackground();
+            } else {
+                if (mPager != null) {
+                    createTabItemDrawables(mPager.getAdapter());
+                    requestLayout();
+                    invalidate();
+                }
+            }
+        }
+    }
+
+    /**
+     * 设置Tab子项背景
+     *
+     * @param background 背景
+     */
+    @SuppressWarnings("unused")
+    public void setItemBackground(int background) {
+        setItemBackground(ContextCompat.getDrawable(getContext(), background));
+    }
+
+    /**
+     * 设置Tab是否可以点击
+     *
+     * @param clickable 是否可以点击
+     */
+    public void setItemClickable(boolean clickable) {
+        tabClickable = clickable;
+        if (tabClickable) {
+            setClickable(true);
+        }
+    }
+
+    /**
+     * Tab是否可以点击
+     *
+     * @return Tab是否可以点击
+     */
+    @SuppressWarnings("unused")
+    public boolean isTabClickable() {
+        return tabClickable;
+    }
+
+    /**
+     * 设置点击监听器
+     *
      * @param listener 监听器
      */
     @SuppressWarnings("unused")
-    public void setOnTabChangeListener(OnTabChangeListener listener) {
-        this.mTCListener = listener;
-        if (this.mTCListener != null)
-            this.mTCListener.jumpTo(mCurrentPager);
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        clickListener = listener;
     }
 
     /**
-     * Tab更改监听
+     * 点击监听
      */
-    public interface OnTabChangeListener {
+    public interface OnItemClickListener {
+        /**
+         * 点击子项
+         *
+         * @param position 位置
+         */
+        void onItemClick(int position);
+
+        /**
+         * 点击已选中的子项
+         *
+         * @param position 位置
+         */
+        void onSelectedClick(int position);
+
+        /**
+         * 双击子项
+         *
+         * @param position 位置
+         */
+        void onDoubleClick(int position);
+    }
+
+    /**
+     * 添加变化监听器
+     *
+     * @param listener 变化监听器
+     */
+    @SuppressWarnings("unused")
+    public void addOnChangeListener(OnChangeListener listener) {
+        if (listener == null)
+            return;
+        if (changeListeners == null)
+            changeListeners = new ArrayList<>();
+        changeListeners.add(listener);
+        listener.jumpTo(mCurrentPager);
+    }
+
+    /**
+     * 移除变化监听器
+     *
+     * @param listener 变化监听器
+     */
+    @SuppressWarnings("unused")
+    public void removeOnChangeListener(OnChangeListener listener) {
+        if (changeListeners == null)
+            return;
+        changeListeners.remove(listener);
+    }
+
+    /**
+     * 变化监听
+     */
+    public interface OnChangeListener {
+        /**
+         * 跳转到当前位置
+         *
+         * @param correct 当前位置
+         */
         void jumpTo(int correct);
 
+        /**
+         * 往左滚动
+         *
+         * @param correct 当前位置
+         * @param next    将要抵达位置
+         * @param offset  移动便宜
+         */
         void gotoLeft(int correct, int next, float offset);
 
+        /**
+         * 往右滚动
+         *
+         * @param correct 当前位置
+         * @param next    将要抵达位置
+         * @param offset  移动便宜
+         */
         void gotoRight(int correct, int next, float offset);
-    }
-
-    /**
-     * Tab点击监听
-     */
-    public interface OnTabClickListener {
-        void onTabClick(int position);
     }
 }

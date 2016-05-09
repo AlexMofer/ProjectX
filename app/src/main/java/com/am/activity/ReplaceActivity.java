@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.am.widget.R;
 import com.am.widget.replacelayout.ReplaceLayout;
 import com.am.widget.replacelayout.ReplaceLayout.ReplaceAdapter;
-import com.am.widget.tabstrips.GradientTabStrip;
+import com.am.widget.tabstrips.GradientTabStripOld;
 import com.am.widget.tabstrips.SimpleGradientTabAdapter;
 
 public class ReplaceActivity extends FragmentActivity {
@@ -37,7 +37,7 @@ public class ReplaceActivity extends FragmentActivity {
         rts.setAdapter(adapter);
         vp.setAdapter(adapter);
 
-        GradientTabStrip tab = (GradientTabStrip) findViewById(R.id.tab_wechat);
+        GradientTabStripOld tab = (GradientTabStripOld) findViewById(R.id.tab_wechat);
         tab.setViewPager(vp);
         tab.setGravity(Gravity.CENTER);
         tab.setTabDrawable(R.drawable.bg_tab);

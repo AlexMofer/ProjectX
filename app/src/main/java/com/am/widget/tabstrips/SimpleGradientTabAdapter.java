@@ -3,7 +3,7 @@ package com.am.widget.tabstrips;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
-import com.am.widget.tabstrips.GradientTabStrip.GradientTabAdapter;
+import com.am.widget.tabstrips.GradientTabStripOld.GradientTabAdapter;
 
 /**
  * 简单的数据容器Adapter

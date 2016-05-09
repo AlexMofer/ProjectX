@@ -25,7 +25,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.v4.view.BaseTabStrip;
+import android.support.v4.view.BaseTabStripOld;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 
@@ -36,7 +36,7 @@ import android.util.AttributeSet;
  * @author Alex
  * 
  */
-public class GradientPagerTabStrip extends BaseTabStrip {
+public class GradientPagerTabStrip extends BaseTabStripOld {
 
 	final float density;
 	private float itemWidth;
@@ -49,11 +49,13 @@ public class GradientPagerTabStrip extends BaseTabStrip {
 	private float textSize;// 文字大小
 	private float magnification = 0.2f;
 	private float textSizeOffset = 1;
+	private float heightOffset;// 高度偏移
 
 	private int intervalWidth;
 
 	private boolean showIndicator = true;
-	private int indicatorPadding;
+	//private int indicatorPadding;
+    private int indicatorWidth;
 	private int indicatorHeight;
 	private int indicatorColor = Color.BLACK;
 	private float indicatorOffset = 0;
@@ -101,7 +103,6 @@ public class GradientPagerTabStrip extends BaseTabStrip {
 		mTextPaint.setAntiAlias(true);
 
 		intervalWidth = (int) (0 * density);
-		indicatorPadding = (int) (10 * density);
 		indicatorHeight = (int) (3 * density);
 		underLineHeight = (int) (2 * density);
 		setClickable(true);
@@ -154,8 +155,11 @@ public class GradientPagerTabStrip extends BaseTabStrip {
 			itemHeight = minHeight - getPaddingTop() - getPaddingBottom();
 		}
 		if (heightMode == MeasureSpec.EXACTLY) {
+			heightOffset = (heightSize - (itemHeight + getPaddingTop() + getPaddingBottom()))
+					* 0.5f;
 			setMeasuredDimension(widthSize, heightSize);
 		} else {
+			heightOffset = 0;
 			setMeasuredDimension(widthSize, itemHeight + getPaddingTop()
 					+ getPaddingBottom());
 		}
@@ -249,6 +253,8 @@ public class GradientPagerTabStrip extends BaseTabStrip {
 	 * @param canvas Canvas
 	 */
 	private void drawText(Canvas canvas) {
+        canvas.save();
+        canvas.translate(0, -heightOffset);
 		float x = getPaddingLeft() + itemWidth / 2;
 		int y = getHeight() - getPaddingBottom() - indicatorHeight
 				- underLineHeight;
@@ -296,6 +302,7 @@ public class GradientPagerTabStrip extends BaseTabStrip {
 			position++;
 			canvas.restore();
 		}
+        canvas.restore();
 	}
 
 	/**
@@ -461,20 +468,19 @@ public class GradientPagerTabStrip extends BaseTabStrip {
 
 		canvas.save();
 		canvas.translate(getPaddingLeft() + currectPager
-				* (itemWidth + intervalWidth) + indicatorPadding
+				* (itemWidth + intervalWidth) + ((itemWidth - indicatorWidth) * 0.5f)
 				+ indicatorOffset * (itemWidth + intervalWidth), getHeight()
 				- underLineHeight - getPaddingBottom() - indicatorHeight);
 		if (showIndicator) {
 			mTextPaint.setColor(indicatorColor);
 			if (getViewTabs().size() > 1)
-				canvas.drawRect(0, 0, itemWidth - 2 * indicatorPadding,
-						indicatorHeight, mTextPaint);
+				canvas.drawRect(0, 0, indicatorWidth, indicatorHeight, mTextPaint);
 			else if (getViewTabs().size() > 0)
-				canvas.drawRect(itemWidth / 4, 0, itemWidth - itemWidth / 4 - 2
-						* indicatorPadding, indicatorHeight, mTextPaint);
+				canvas.drawRect(itemWidth / 4, 0, indicatorWidth - itemWidth / 4,
+                        indicatorHeight, mTextPaint);
 			else
-				canvas.drawRect(itemWidth / 4, 0, itemWidth - itemWidth / 4 -
-						indicatorPadding, indicatorHeight, mTextPaint);
+				canvas.drawRect(itemWidth / 4, 0, indicatorWidth - itemWidth / 4,
+                        indicatorHeight, mTextPaint);
 		}
 		canvas.restore();
 	}
@@ -527,13 +533,13 @@ public class GradientPagerTabStrip extends BaseTabStrip {
 	 *            下标颜色
 	 * @param height
 	 *            下标高度
-	 * @param padding
-	 *            下标两端padding
+	 * @param width
+	 *            下标宽度
 	 */
-	public void setTabIndicator(int color, int height, int padding) {
+	public void setTabIndicator(int color, int height, int width) {
 		indicatorColor = color;
+        indicatorWidth = width;
 		indicatorHeight = height;
-		indicatorPadding = padding;
 		invalidate();
 	}
 
