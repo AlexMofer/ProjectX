@@ -19,7 +19,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 
 /**
- * 微信式滑动渐变TabStrip，并实现点击效果，非ViewGroup实现
+ * 微信式滑动渐变TabStrip
  *
  * @author Alex
  */
@@ -32,7 +32,7 @@ public class GradientTabStrip extends BaseTabStrip {
     private final TextPaint mTextPaint;
     private static final int[] ATTRS = new int[]{android.R.attr.textSize,
             android.R.attr.textColor, android.R.attr.drawablePadding};
-    private int mGravity = Gravity.CENTER;
+    private int mGravity;
     private ColorStateList mTextColor;
     private int mTextColorNormal;
     private int mTextColorSelected;
@@ -45,7 +45,7 @@ public class GradientTabStrip extends BaseTabStrip {
     private int mDesc;
     private float mTopOffset = 0;
     private float mTagTextSize;
-    private int mTagTextColor = DEFAULT_TAGTEXTCOLOR;
+    private int mTagTextColor;
     private int mTagTextHeight;
     private int mTagDesc;
     private int mTagPadding;
@@ -84,14 +84,16 @@ public class GradientTabStrip extends BaseTabStrip {
         }
         mDrawablePadding = a.getDimensionPixelSize(2, 0);
         a.recycle();
+        setGravity(Gravity.CENTER);
         setTextSize(textSize);
         setTextColor(colors);
+        setTagTextColor(DEFAULT_TAGTEXTCOLOR);
         if (mTagTextSize == 0) {
-            mTagTextSize = DEFAULT_TAGTEXTSIZE
-                    * context.getResources().getDisplayMetrics().density;
+            setTagTextSize(DEFAULT_TAGTEXTSIZE
+                    * context.getResources().getDisplayMetrics().density);
         }
         if (mTagBackground == null) {
-            mTagBackground = getDefaultTagBackground();
+            setTagBackground(getDefaultTagBackground());
         }
         mTagPadding = (int) (DEFAULT_TAGPADDING * density);
         setClickable(true);
@@ -290,6 +292,14 @@ public class GradientTabStrip extends BaseTabStrip {
         canvas.restore();
     }
 
+    /**
+     * 颜色合成器
+     *
+     * @param normalColor   普通状态颜色
+     * @param selectedColor 选中状态颜色
+     * @param offset        偏移值
+     * @return 合成色
+     */
     private int getColor(int normalColor, int selectedColor, float offset) {
         int normalAlpha = Color.alpha(normalColor);
         int normalRed = Color.red(normalColor);
@@ -352,18 +362,6 @@ public class GradientTabStrip extends BaseTabStrip {
         invalidate(mRefreshRect);
     }
 
-    public final GradientTabAdapter getAdapter() {
-        return mAdapter;
-    }
-
-    public final void setAdapter(GradientTabAdapter adapter) {
-        if (mAdapter != adapter) {
-            mAdapter = adapter;
-            requestLayout();
-            invalidate();
-        }
-    }
-
     @Override
     protected int pointToPosition(float x, float y) {
         int position = 0;
@@ -378,10 +376,44 @@ public class GradientTabStrip extends BaseTabStrip {
         return position;
     }
 
+    /**
+     * 获取Adapter
+     *
+     * @return Adapter
+     */
+    @SuppressWarnings("unused")
+    public final GradientTabAdapter getAdapter() {
+        return mAdapter;
+    }
+
+    /**
+     * 设置Adapter
+     *
+     * @param adapter Adapter
+     */
+    public final void setAdapter(GradientTabAdapter adapter) {
+        if (mAdapter != adapter) {
+            mAdapter = adapter;
+            requestLayout();
+            invalidate();
+        }
+    }
+
+    /**
+     * 图像排版方式
+     *
+     * @return 排版方式
+     */
+    @SuppressWarnings("unused")
     public final int getGravity() {
         return mGravity;
     }
 
+    /**
+     * 设置图像排版方式
+     *
+     * @param gravity 图像排版方式
+     */
     public final void setGravity(int gravity) {
         if (mGravity != gravity) {
             mGravity = gravity;
@@ -389,21 +421,21 @@ public class GradientTabStrip extends BaseTabStrip {
         }
     }
 
-    public float getTagTextSize() {
-        return mTagTextSize;
-    }
-
-    public void setTagTextSize(float tagTextSize) {
-        if (mTagTextSize != tagTextSize) {
-            mTagTextSize = tagTextSize;
-            invalidate();
-        }
-    }
-
+    /**
+     * 获取文字颜色
+     *
+     * @return 文字颜色
+     */
+    @SuppressWarnings("unused")
     public ColorStateList getTextColor() {
         return mTextColor;
     }
 
+    /**
+     * 设置文字颜色
+     *
+     * @param color 文字颜色
+     */
     public void setTextColor(ColorStateList color) {
         if (color != null && mTextColor != color) {
             mTextColor = color;
@@ -414,10 +446,21 @@ public class GradientTabStrip extends BaseTabStrip {
         }
     }
 
+    /**
+     * 获取文字大小
+     *
+     * @return 文字大小
+     */
+    @SuppressWarnings("unused")
     public final float getTextSize() {
         return mTextSize;
     }
 
+    /**
+     * 设置文字大小
+     *
+     * @param textSize 文字大小
+     */
     public final void setTextSize(int textSize) {
         if (mTextSize != textSize) {
             mTextSize = textSize;
@@ -426,10 +469,21 @@ public class GradientTabStrip extends BaseTabStrip {
         }
     }
 
+    /**
+     * 获取小标签文字颜色
+     *
+     * @return 小标签文字颜色
+     */
+    @SuppressWarnings("unused")
     public int getTagTextColor() {
         return mTagTextColor;
     }
 
+    /**
+     * 设置小标签文字颜色
+     *
+     * @param color 小标签文字颜色
+     */
     public void setTagTextColor(int color) {
         if (mTagTextColor != color) {
             mTagTextColor = color;
@@ -437,10 +491,43 @@ public class GradientTabStrip extends BaseTabStrip {
         }
     }
 
+    /**
+     * 获取小标签文字大小
+     *
+     * @return 小标签文字大小
+     */
+    @SuppressWarnings("unused")
+    public float getTagTextSize() {
+        return mTagTextSize;
+    }
+
+    /**
+     * 设置小标签文字大小
+     *
+     * @param tagTextSize 小标签文字大小
+     */
+    public void setTagTextSize(float tagTextSize) {
+        if (mTagTextSize != tagTextSize) {
+            mTagTextSize = tagTextSize;
+            invalidate();
+        }
+    }
+
+    /**
+     * 获取小标签背景
+     *
+     * @return 小标签背景
+     */
+    @SuppressWarnings("unused")
     public Drawable getTagBackground() {
         return mTagBackground;
     }
 
+    /**
+     * 设置小标签背景
+     *
+     * @param background 小标签背景
+     */
     public void setTagBackground(Drawable background) {
         if (mTagBackground != background) {
             mTagBackground = background;

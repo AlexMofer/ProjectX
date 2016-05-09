@@ -1,17 +1,17 @@
 package com.am.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.BaseTabStrip;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.am.widget.R;
 import com.am.widget.tabstrips.GradientTabStrip;
@@ -19,7 +19,7 @@ import com.am.widget.tabstrips.GradientTabStrip;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressLint("InflateParams")
+@SuppressWarnings("all")
 public class WechatActivity extends Activity {
 
 	@Override
@@ -56,7 +56,6 @@ public class WechatActivity extends Activity {
 		mViewPager.setAdapter(new TitleViewPagerAdapter(viewList, listStrings));
 		GradientTabStrip tab = (GradientTabStrip) findViewById(R.id.tab_wechat);
 		tab.bindViewPager(mViewPager);
-		tab.setGravity(Gravity.CENTER);
         tab.setItemBackground(R.drawable.bg_tab);
         GradientTabStrip.SimpleGradientTabAdapter adapter = new GradientTabStrip.SimpleGradientTabAdapter() {
 
@@ -110,7 +109,23 @@ public class WechatActivity extends Activity {
 			}
 		};
 		tab.setAdapter(adapter);
-		// 不要使用 ViewPager 的 setCurrentItem 来跳转
+		// 不要使用 ViewPager 的 setCurrentItem 来跳转，其不会通知到Tab进行修改
+		tab.setOnItemClickListener(new BaseTabStrip.OnItemClickListener() {
+			@Override
+			public void onItemClick(int position) {
+                Toast.makeText(getApplication(), "第" + position + "页", Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onSelectedClick(int position) {
+                Toast.makeText(getApplication(), "第" + position + "页已经选中", Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onDoubleClick(int position) {
+                Toast.makeText(getApplication(), "双击第" + position + "页", Toast.LENGTH_SHORT).show();
+			}
+		});
 		
 	}
 }
