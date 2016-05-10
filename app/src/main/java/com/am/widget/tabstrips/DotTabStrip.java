@@ -8,9 +8,8 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.BaseTabStripOld;
+import android.support.v4.view.BaseTabStrip;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -20,14 +19,13 @@ import android.view.Gravity;
  * @author Alex
  *
  */
-public class DotTabStrip extends BaseTabStripOld {
+public class DotTabStrip extends BaseTabStrip {
 
 	private final static int DEFAULT_SIZE = 6;
 	private Drawable mSelectedDrawable;
 	private Drawable mNormalDrawable;
 	private ColorStateList mColors;
 	private int defaultDrawableSize = 0;
-	private int itemNumber = 0;
 	private int drawablePadding = 0;
 	private int mCurrectPager = 0;
 	private int mNextPager = 0;
@@ -35,7 +33,7 @@ public class DotTabStrip extends BaseTabStripOld {
 	private int mGravity = Gravity.CENTER;
 	private float mOffsetX;
 	private float mOffsetY;
-	private static final int[] ATTRS = new int[] { android.R.attr.textColor,
+	private static final int[] ATTRS = new int[]{android.R.attr.textColor,
 			android.R.attr.drawablePadding};
 
 	public DotTabStrip(Context context) {
@@ -57,8 +55,6 @@ public class DotTabStrip extends BaseTabStripOld {
 		}
 		setDrawablePadding(a.getDimensionPixelSize(1, 0));
 		a.recycle();
-		setWillNeedTitle(false);
-		setWillClick(false);
 		if (defaultDrawableSize == 0) {
 			setDefaultDrawableSize((int) (getResources().getDisplayMetrics().density * DEFAULT_SIZE));
 		}
@@ -70,26 +66,15 @@ public class DotTabStrip extends BaseTabStripOld {
 		}
 	}
 
-	@Override
-	protected void updateAdapter(PagerAdapter oldAdapter,
-			PagerAdapter newAdapter) {
-		if (newAdapter != null) {
-			itemNumber = newAdapter.getCount();
-		} else {
-			itemNumber = 0;
-		}
-		super.updateAdapter(oldAdapter, newAdapter);
-	}
-
-    @SuppressWarnings("ResourceAsColor")
+	@SuppressWarnings("ResourceAsColor")
 	private Drawable getDefaultDrawable(boolean selected) {
 		if (selected) {
 			final GradientDrawable mBackground = new GradientDrawable();
 			mBackground.setShape(GradientDrawable.OVAL);
 			mBackground.setColor(mColors.isStateful() ? mColors
-                    .getColorForState(SELECTED_STATE_SET,
-                            mColors.getDefaultColor()) : mColors
-                    .getDefaultColor());
+					.getColorForState(SELECTED_STATE_SET,
+							mColors.getDefaultColor()) : mColors
+					.getDefaultColor());
 			mBackground.setSize(defaultDrawableSize, defaultDrawableSize);
 			return mBackground;
 		} else {
@@ -124,62 +109,62 @@ public class DotTabStrip extends BaseTabStripOld {
 		}
 		setMeasuredDimension(width, height);
 		switch (GravityCompat.getAbsoluteGravity(mGravity, ViewCompat.getLayoutDirection(this))) {
-		default:
-		case Gravity.CENTER:
-			mOffsetX = (width - getTotalWidth()) * 0.5f;
-			mOffsetY = (height - getTotalHeight()) * 0.5f;
-			break;
-		case Gravity.CENTER_HORIZONTAL:
-		case Gravity.CENTER_HORIZONTAL | Gravity.TOP:
-			mOffsetX = (width - getTotalWidth()) * 0.5f;
-			mOffsetY = 0;
-			break;
-		case Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM:
-			mOffsetX = (width - getTotalWidth()) * 0.5f;
-			mOffsetY = height - getTotalHeight();
-			break;
-		case Gravity.CENTER_VERTICAL:
-		case Gravity.CENTER_VERTICAL | GravityCompat.START:
-			mOffsetX = 0;
-			mOffsetY = (height - getTotalHeight()) * 0.5f;
-			break;
-		case Gravity.CENTER_VERTICAL | GravityCompat.END:
-			mOffsetX = width - getTotalWidth();
-			mOffsetY = (height - getTotalHeight()) * 0.5f;
-			break;
-		case GravityCompat.START:
-		case Gravity.TOP:
-		case GravityCompat.START | Gravity.TOP:
-			mOffsetX = 0;
-			mOffsetY = 0;
-			break;
-		case GravityCompat.END:
-		case GravityCompat.END | Gravity.TOP:
-			mOffsetX = width - getTotalWidth();
-			mOffsetY = 0;
-			break;
-		case GravityCompat.END | Gravity.BOTTOM:
-			mOffsetX = width - getTotalWidth();
-			mOffsetY = height - getTotalHeight();
-			break;
-		case Gravity.BOTTOM:
-		case Gravity.BOTTOM | GravityCompat.START:
-			mOffsetX = 0;
-			mOffsetY = height - getTotalHeight();
-			break;
+			default:
+			case Gravity.CENTER:
+				mOffsetX = (width - getTotalWidth()) * 0.5f;
+				mOffsetY = (height - getTotalHeight()) * 0.5f;
+				break;
+			case Gravity.CENTER_HORIZONTAL:
+			case Gravity.CENTER_HORIZONTAL | Gravity.TOP:
+				mOffsetX = (width - getTotalWidth()) * 0.5f;
+				mOffsetY = 0;
+				break;
+			case Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM:
+				mOffsetX = (width - getTotalWidth()) * 0.5f;
+				mOffsetY = height - getTotalHeight();
+				break;
+			case Gravity.CENTER_VERTICAL:
+			case Gravity.CENTER_VERTICAL | GravityCompat.START:
+				mOffsetX = 0;
+				mOffsetY = (height - getTotalHeight()) * 0.5f;
+				break;
+			case Gravity.CENTER_VERTICAL | GravityCompat.END:
+				mOffsetX = width - getTotalWidth();
+				mOffsetY = (height - getTotalHeight()) * 0.5f;
+				break;
+			case GravityCompat.START:
+			case Gravity.TOP:
+			case GravityCompat.START | Gravity.TOP:
+				mOffsetX = 0;
+				mOffsetY = 0;
+				break;
+			case GravityCompat.END:
+			case GravityCompat.END | Gravity.TOP:
+				mOffsetX = width - getTotalWidth();
+				mOffsetY = 0;
+				break;
+			case GravityCompat.END | Gravity.BOTTOM:
+				mOffsetX = width - getTotalWidth();
+				mOffsetY = height - getTotalHeight();
+				break;
+			case Gravity.BOTTOM:
+			case Gravity.BOTTOM | GravityCompat.START:
+				mOffsetX = 0;
+				mOffsetY = height - getTotalHeight();
+				break;
 		}
 	}
-	
+
 	private int getTotalWidth() {
-		int gap = itemNumber > 0 ? drawablePadding * (itemNumber - 1) : 0;
-		return getMaxWidth() * itemNumber + gap + getPaddingLeft()
+		int gap = getItemCount() > 0 ? drawablePadding * (getItemCount() - 1) : 0;
+		return getMaxWidth() * getItemCount() + gap + getPaddingLeft()
 				+ getPaddingRight();
 	}
 
 	private int getTotalHeight() {
 		return getMaxHeight() + getPaddingTop() + getPaddingBottom();
 	}
-	
+
 	private int getMaxWidth() {
 		return mSelectedDrawable.getIntrinsicWidth() > mNormalDrawable
 				.getIntrinsicWidth() ? mSelectedDrawable.getIntrinsicWidth()
@@ -220,7 +205,7 @@ public class DotTabStrip extends BaseTabStripOld {
 		canvas.translate(startX, startY);
 		float alphaNormal;
 		float alphaSelected;
-		for (int i = 0; i < itemNumber; i++) {
+		for (int i = 0; i < getItemCount(); i++) {
 			if (i == mNextPager) {
 				alphaNormal = 1 - mOffset;
 				alphaSelected = mOffset;
@@ -231,10 +216,8 @@ public class DotTabStrip extends BaseTabStripOld {
 				alphaNormal = 1;
 				alphaSelected = 0;
 			}
-			mNormalDrawable.setAlpha((int) Math.ceil((0xFF - 0x00)
-					* alphaNormal));
-			mSelectedDrawable.setAlpha((int) Math.ceil((0xFF - 0x00)
-					* alphaSelected));
+			mNormalDrawable.setAlpha((int) Math.ceil(0xFF * alphaNormal));
+			mSelectedDrawable.setAlpha((int) Math.ceil(0xFF * alphaSelected));
 			mNormalDrawable.setBounds(0, 0,
 					mNormalDrawable.getIntrinsicWidth(),
 					mNormalDrawable.getIntrinsicHeight());
@@ -249,29 +232,30 @@ public class DotTabStrip extends BaseTabStripOld {
 	}
 
 	@Override
-	protected void jumpTo(int currect) {
-		mCurrectPager = currect - 1;
-		mNextPager = currect;
+	protected void jumpTo(int current) {
+		mCurrectPager = current - 1;
+		mNextPager = current;
 		mOffset = 1;
 		invalidate();
 	}
 
 	@Override
-	protected void gotoLeft(int currect, int next, float offset) {
-		mCurrectPager = currect;
+	protected void gotoLeft(int current, int next, float offset) {
+		mCurrectPager = current;
 		mNextPager = next;
 		mOffset = 1 - offset;
 		invalidate();
 	}
 
 	@Override
-	protected void gotoRight(int currect, int next, float offset) {
-		mCurrectPager = currect;
+	protected void gotoRight(int current, int next, float offset) {
+		mCurrectPager = current;
 		mNextPager = next;
 		mOffset = offset;
 		invalidate();
 	}
 
+	@SuppressWarnings("unused")
 	public final int getDrawablePadding() {
 		return drawablePadding;
 	}
@@ -281,32 +265,66 @@ public class DotTabStrip extends BaseTabStripOld {
 		invalidate();
 	}
 
+	/**
+	 * 获取默认图片尺寸
+	 *
+	 * @return 默认图片尺寸
+	 */
+	@SuppressWarnings("unused")
 	public final int getDefaultDrawableSize() {
 		return defaultDrawableSize;
 	}
 
+	/**
+	 * 设置默认图片尺寸
+	 *
+	 * @param size 默认图片尺寸
+	 */
 	public final void setDefaultDrawableSize(int size) {
 		defaultDrawableSize = size;
 		invalidate();
 	}
-	
+
+	/**
+	 * 设置图片
+	 *
+	 * @param normal   普通图
+	 * @param selected 选中图
+	 */
+	@SuppressWarnings("unused")
 	public final void setDrawables(int normal, int selected) {
 		setDrawables(ContextCompat.getDrawable(getContext(), normal),
 				ContextCompat.getDrawable(getContext(), selected));
 	}
-	
+
+	/**
+	 * 设置图片
+	 *
+	 * @param normal   普通图
+	 * @param selected 选中图
+	 */
 	public final void setDrawables(Drawable normal, Drawable selected) {
 		mNormalDrawable = normal;
 		mSelectedDrawable = selected;
 		invalidate();
 	}
 
+	/**
+	 * 获取排版方式
+	 * @return 排版方式
+	 */
+	@SuppressWarnings("unused")
 	public int getGravity() {
 		return mGravity;
 	}
 
-	public void setGravity(int mGravity) {
-		this.mGravity = mGravity;
+	/**
+	 * 设置排版方式
+	 * @param gravity 排版方式
+	 */
+	@SuppressWarnings("unused")
+	public void setGravity(int gravity) {
+		mGravity = gravity;
 	}
 
 }

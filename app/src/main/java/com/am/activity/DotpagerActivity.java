@@ -1,7 +1,5 @@
 package com.am.activity;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -10,6 +8,8 @@ import android.view.View;
 import com.am.widget.R;
 import com.am.widget.tabstrips.DotTabStrip;
 import com.am.widget.viewpager.ViewsPagerAdapter;
+
+import java.util.ArrayList;
 
 public class DotpagerActivity extends Activity {
 	private DotpagerActivity me = this;
@@ -25,7 +25,7 @@ public class DotpagerActivity extends Activity {
 		two.setBackgroundColor(0xffff00ff);
 		View three = new View(me);
 		three.setBackgroundColor(0xff0000ff);
-		ArrayList<View> views = new ArrayList<View>();
+		ArrayList<View> views = new ArrayList<>();
 		views.add(one);
 		views.add(two);
 		views.add(three);
@@ -33,6 +33,6 @@ public class DotpagerActivity extends Activity {
 		pager.setAdapter(adapter);
 
 		DotTabStrip dot = (DotTabStrip) findViewById(R.id.dot);
-		dot.setViewPager(pager);
+		dot.bindViewPager(pager);
 	}
 }
