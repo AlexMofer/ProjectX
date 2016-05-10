@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,9 +21,9 @@ import android.widget.Toast;
 import com.am.widget.R;
 import com.am.widget.replacelayout.ReplaceLayout;
 import com.am.widget.replacelayout.ReplaceLayout.ReplaceAdapter;
-import com.am.widget.tabstrips.GradientTabStripOld;
-import com.am.widget.tabstrips.SimpleGradientTabAdapter;
+import com.am.widget.tabstrips.GradientTabStrip;
 
+@SuppressWarnings("all")
 public class ReplaceActivity extends FragmentActivity {
 
     @Override
@@ -37,11 +36,11 @@ public class ReplaceActivity extends FragmentActivity {
         rts.setAdapter(adapter);
         vp.setAdapter(adapter);
 
-        GradientTabStripOld tab = (GradientTabStripOld) findViewById(R.id.tab_wechat);
-        tab.setViewPager(vp);
-        tab.setGravity(Gravity.CENTER);
-        tab.setTabDrawable(R.drawable.bg_tab);
-        SimpleGradientTabAdapter sgtadapter = new SimpleGradientTabAdapter() {
+        GradientTabStrip tab = (GradientTabStrip) findViewById(R.id.tab_wechat);
+        tab.bindViewPager(vp);
+        tab.setItemBackground(R.drawable.bg_tab);
+        GradientTabStrip.SimpleGradientTabAdapter sgtadapter =
+                new GradientTabStrip.SimpleGradientTabAdapter() {
 
             @Override
             public Drawable getSelectedDrawable(int position, Context context) {
@@ -93,7 +92,7 @@ public class ReplaceActivity extends FragmentActivity {
             }
         };
         tab.setAdapter(sgtadapter);
-        tab.setOnTabChangeListener(rts);
+        tab.addOnChangeListener(rts);
 
         // 不要使用 ViewPager 的 setCurrentItem 来跳转
     }

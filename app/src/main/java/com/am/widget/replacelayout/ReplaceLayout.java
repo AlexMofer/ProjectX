@@ -1,7 +1,7 @@
 package com.am.widget.replacelayout;
 
 import android.content.Context;
-import android.support.v4.view.BaseTabStripOld.OnTabChangeListener;
+import android.support.v4.view.BaseTabStrip;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
  * 交替布局
  * Created by Alex on 2015/8/28.
  */
-public class ReplaceLayout extends ViewGroup implements OnTabChangeListener {
+public class ReplaceLayout extends ViewGroup implements BaseTabStrip.OnChangeListener {
 
     private ReplaceAdapter mAdapter;
     private int mCorrect = -1;
