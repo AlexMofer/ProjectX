@@ -228,7 +228,7 @@ public class IndicatorTabStrip extends BaseTabStrip {
 
     @Override
     protected int pointToPosition(float x, float y) {
-        int position = 0;
+        int position = -1;
         for (int i = 0; i < getItemCount(); i++) {
             float l = getPaddingLeft() + intervalWidth * i + itemWidth * i;
             float r = l + itemWidth;

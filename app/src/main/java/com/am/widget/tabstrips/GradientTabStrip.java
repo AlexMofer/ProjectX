@@ -18,7 +18,6 @@ import android.view.Gravity;
 
 /**
  * 滑动渐变TabStrip，Item不建议超过5个
- * TODO 不支持Padding
  * @author Alex
  */
 public class GradientTabStrip extends BaseTabStrip {
@@ -50,7 +49,7 @@ public class GradientTabStrip extends BaseTabStrip {
     private Drawable mTagBackground;
     private final Rect mRefreshRect = new Rect();
     private GradientTabAdapter mAdapter;
-    private int mCurrectPager = 0;
+    private int mCurrentPager = 0;
     private int mNextPager = 0;
 
     public GradientTabStrip(Context context) {
@@ -111,10 +110,8 @@ public class GradientTabStrip extends BaseTabStrip {
         FontMetricsInt metrics = mTextPaint.getFontMetricsInt();
         mTextHeight = metrics.bottom - metrics.top;
         mDesc = mTextHeight + metrics.top;
-//        mTextHeight = metrics.descent - metrics.ascent;
-//        mDesc = mTextHeight + metrics.ascent;
         if (mAdapter != null) {
-            mDrawableHeight = mAdapter.getSelectedDrawable(mCurrectPager,
+            mDrawableHeight = mAdapter.getSelectedDrawable(mCurrentPager,
                     getContext()).getIntrinsicHeight();
         } else {
             mDrawableHeight = -mDrawablePadding;
@@ -166,6 +163,7 @@ public class GradientTabStrip extends BaseTabStrip {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         canvas.save();
+        canvas.translate(getPaddingLeft(), 0);
         for (int i = 0; i < getItemCount(); i++) {
             Drawable tag = getItemBackground(i);
             if (tag != null) {
@@ -197,7 +195,7 @@ public class GradientTabStrip extends BaseTabStrip {
             if (position == mNextPager) {
                 mTextPaint.setColor(getColor(mTextColorNormal,
                         mTextColorSelected, mTextColorOffset));
-            } else if (position == mCurrectPager) {
+            } else if (position == mCurrentPager) {
                 mTextPaint.setColor(getColor(mTextColorNormal,
                         mTextColorSelected, 1 - mTextColorOffset));
             } else {
@@ -212,7 +210,7 @@ public class GradientTabStrip extends BaseTabStrip {
                 if (position == mNextPager) {
                     alphaNormal = 1 - mTextColorOffset;
                     alphaSelected = mTextColorOffset;
-                } else if (position == mCurrectPager) {
+                } else if (position == mCurrentPager) {
                     alphaNormal = mTextColorOffset;
                     alphaSelected = 1 - mTextColorOffset;
                 } else {
@@ -310,34 +308,34 @@ public class GradientTabStrip extends BaseTabStrip {
     }
 
     @Override
-    protected void jumpTo(int currect) {
+    protected void jumpTo(int current) {
         mRefreshRect.set((int) Math.floor(mItemWidth * mNextPager),
-                getPaddingTop(), (int) Math.ceil(mItemWidth * (currect + 1)),
+                getPaddingTop(), (int) Math.ceil(mItemWidth * (current + 1)),
                 getHeight() - getPaddingBottom());
-        mCurrectPager = currect - 1;
-        mNextPager = currect;
+        mCurrentPager = current - 1;
+        mNextPager = current;
         mTextColorOffset = 1;
         invalidate(mRefreshRect);
     }
 
     @Override
-    protected void gotoLeft(int currect, int next, float offset) {
-        mCurrectPager = currect;
+    protected void gotoLeft(int current, int next, float offset) {
+        mCurrentPager = current;
         mNextPager = next;
         mTextColorOffset = 1 - offset;
         mRefreshRect.set((int) Math.floor(mItemWidth * mNextPager),
                 getPaddingTop(),
-                (int) Math.ceil(mItemWidth * (mCurrectPager + 1)), getHeight()
+                (int) Math.ceil(mItemWidth * (mCurrentPager + 1)), getHeight()
                         - getPaddingBottom());
         invalidate(mRefreshRect);
     }
 
     @Override
-    protected void gotoRight(int currect, int next, float offset) {
-        mCurrectPager = currect;
+    protected void gotoRight(int current, int next, float offset) {
+        mCurrentPager = current;
         mNextPager = next;
         mTextColorOffset = offset;
-        mRefreshRect.set((int) Math.floor(mItemWidth * mCurrectPager),
+        mRefreshRect.set((int) Math.floor(mItemWidth * mCurrentPager),
                 getPaddingTop(),
                 (int) Math.ceil(mItemWidth * (mNextPager + 1)), getHeight()
                         - getPaddingBottom());
@@ -346,7 +344,7 @@ public class GradientTabStrip extends BaseTabStrip {
 
     @Override
     protected int pointToPosition(float x, float y) {
-        int position = 0;
+        int position = -1;
         for (int i = 0; i < getItemCount(); i++) {
             float l = getPaddingLeft() + mItemWidth * i;
             float r = l + mItemWidth;

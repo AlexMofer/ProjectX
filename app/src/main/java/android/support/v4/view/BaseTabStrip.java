@@ -162,7 +162,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      * @param smoothScroll 是否平滑滚动
      */
     public void performClick(int position, boolean smoothScroll, boolean notifyListener) {
-        if (getViewPager() != null) {
+        if (getViewPager() != null && position >= 0 && position < getItemCount()) {
             if (clickListener != null && notifyListener) {
                 clickListener.onItemClick(position);
             }
@@ -525,6 +525,9 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
+            int position = pointToPosition(e.getX(), e.getY());
+            if (position < 0)
+                return false;
             if (oldPosition == mCurrentPager && clickListener != null) {
                 clickListener.onSelectedClick(mCurrentPager);
             }
@@ -533,6 +536,9 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
+            int position = pointToPosition(e.getX(), e.getY());
+            if (position < 0)
+                return false;
             if (clickListener != null) {
                 clickListener.onDoubleClick(mCurrentPager);
             }
