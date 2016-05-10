@@ -1,6 +1,5 @@
 package com.am.widget.tabstrips;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -19,16 +18,16 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 
 /**
- * 微信式滑动渐变TabStrip
+ * 滑动渐变TabStrip，Item不建议超过5个
  *
  * @author Alex
  */
 public class GradientTabStrip extends BaseTabStrip {
 
-    public static final int DEFAULT_TEXTSIZE = 16;// dp
-    public static final int DEFAULT_TAGTEXTSIZE = 11;// dp
-    public static final int DEFAULT_TAGTEXTCOLOR = 0xffffffff;
-    public static final int DEFAULT_TAGPADDING = 6;
+    public static final int DEFAULT_TEXT_SIZE = 16;// dp
+    public static final int DEFAULT_TAG_TEXT_SIZE = 11;// dp
+    public static final int DEFAULT_TAG_TEXT_COLOR = 0xffffffff;
+    public static final int DEFAULT_TAG_PADDING = 6;
     private final TextPaint mTextPaint;
     private static final int[] ATTRS = new int[]{android.R.attr.textSize,
             android.R.attr.textColor, android.R.attr.drawablePadding};
@@ -63,7 +62,6 @@ public class GradientTabStrip extends BaseTabStrip {
         this(context, attrs, 0);
     }
 
-    @SuppressLint("NewApi")
     @SuppressWarnings("ResourceType")
     public GradientTabStrip(Context context, AttributeSet attrs,
                             int defStyleAttr) {
@@ -77,7 +75,7 @@ public class GradientTabStrip extends BaseTabStrip {
         }
         final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
         int textSize = a.getDimensionPixelSize(0,
-                (int) (DEFAULT_TEXTSIZE * density));
+                (int) (DEFAULT_TEXT_SIZE * density));
         ColorStateList colors = a.getColorStateList(1);
         if (colors == null) {
             colors = ColorStateList.valueOf(a.getColor(1, Color.BLACK));
@@ -87,15 +85,15 @@ public class GradientTabStrip extends BaseTabStrip {
         setGravity(Gravity.CENTER);
         setTextSize(textSize);
         setTextColor(colors);
-        setTagTextColor(DEFAULT_TAGTEXTCOLOR);
+        setTagTextColor(DEFAULT_TAG_TEXT_COLOR);
         if (mTagTextSize == 0) {
-            setTagTextSize(DEFAULT_TAGTEXTSIZE
+            setTagTextSize(DEFAULT_TAG_TEXT_SIZE
                     * context.getResources().getDisplayMetrics().density);
         }
         if (mTagBackground == null) {
             setTagBackground(getDefaultTagBackground());
         }
-        mTagPadding = (int) (DEFAULT_TAGPADDING * density);
+        mTagPadding = (int) (DEFAULT_TAG_PADDING * density);
         setClickable(true);
     }
 

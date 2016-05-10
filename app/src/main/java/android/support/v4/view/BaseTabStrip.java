@@ -49,6 +49,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     private Drawable mTabItemBackground;
     private ArrayList<Drawable> mTabItemBackgrounds = new ArrayList<>();
     private boolean tabClickable;
+    private boolean clickSmoothScroll;
     private GestureDetectorCompat mTabGestureDetector;
     private TabOnGestureListener mTabOnGestureListener = new TabOnGestureListener();
     private OnItemClickListener clickListener;
@@ -65,6 +66,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     public BaseTabStrip(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setItemClickable(false);
+        setClickSmoothScroll(false);
         mTabGestureDetector = new GestureDetectorCompat(context, mTabOnGestureListener);
     }
 
@@ -147,6 +149,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      *
      * @param position 位置
      */
+    @SuppressWarnings("unused")
     public void performClick(int position) {
         performClick(position, false, true);
     }
@@ -433,6 +436,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
 
     /**
      * 通知跳转到
+     *
      * @param current 位置
      */
     private void notifyJumpTo(int current) {
@@ -475,6 +479,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
 
     /**
      * 直接跳转到
+     *
      * @param current 位置
      */
     protected abstract void jumpTo(int current);
@@ -513,7 +518,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             oldPosition = mCurrentPager;
-            performClick(pointToPosition(e.getX(), e.getY()));
+            performClick(pointToPosition(e.getX(), e.getY()), clickSmoothScroll, true);
             return true;
         }
 
@@ -615,6 +620,25 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     @SuppressWarnings("unused")
     public boolean isTabClickable() {
         return tabClickable;
+    }
+
+    /**
+     * 是否点击时平滑滚动
+     *
+     * @return 是否点击时平滑滚动
+     */
+    @SuppressWarnings("unused")
+    public boolean isClickSmoothScroll() {
+        return clickSmoothScroll;
+    }
+
+    /**
+     * 设置点击时是否平滑滚动
+     *
+     * @param smooth 点击时是否平滑滚动
+     */
+    public void setClickSmoothScroll(boolean smooth) {
+        clickSmoothScroll = smooth;
     }
 
     /**

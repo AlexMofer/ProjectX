@@ -113,7 +113,7 @@ public class WechatActivity extends Activity {
 		tab.setOnItemClickListener(new BaseTabStrip.OnItemClickListener() {
 			@Override
 			public void onItemClick(int position) {
-                Toast.makeText(getApplication(), "第" + position + "页", Toast.LENGTH_SHORT).show();
+
 			}
 
 			@Override
