@@ -19,6 +19,7 @@ package android.support.v4.view;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
@@ -705,6 +706,21 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
+     * 获取默认Tag背景
+     *
+     * @return 默认Tag背景
+     */
+    protected Drawable getDefaultTagBackground() {
+        final float density = getResources().getDisplayMetrics().density;
+        final GradientDrawable mBackground = new GradientDrawable();
+        mBackground.setShape(GradientDrawable.RECTANGLE);
+        mBackground.setColor(0xffff4444);
+        mBackground.setCornerRadius(10 * density);
+        mBackground.setSize((int) (10 * density), (int) (10 * density));
+        return mBackground;
+    }
+
+    /**
      * 变化监听
      */
     public interface OnChangeListener {
@@ -732,5 +748,27 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
          * @param offset  移动便宜
          */
         void gotoRight(int correct, int next, float offset);
+    }
+
+    /**
+     * 角标数据容器Adapter
+     */
+    public interface ItemTabAdapter {
+
+        /**
+         * 是否启用角标
+         *
+         * @param position Item位置
+         * @return 是否启用
+         */
+        boolean isTagEnable(int position);
+
+        /**
+         * 获取角标值
+         *
+         * @param position Item位置
+         * @return 角标值
+         */
+        String getTag(int position);
     }
 }

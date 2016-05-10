@@ -28,7 +28,7 @@
             android:name="com.am.activity.DotpagerActivity"
             android:label="@string/dotpager" />
         <activity
-            android:name="com.am.activity.SuperTabActivity"
+            android:name="com.am.activity.IndicatorTabActivity"
             android:label="@string/supertab">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

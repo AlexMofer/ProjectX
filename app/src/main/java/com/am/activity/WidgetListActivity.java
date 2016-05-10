@@ -55,7 +55,7 @@ public class WidgetListActivity extends Activity implements OnClickListener {
                 intent = new Intent(me, DotpagerActivity.class);
                 break;
             case R.id.wl_btn_supertab:
-                intent = new Intent(me, SuperTabActivity.class);
+                intent = new Intent(me, IndicatorTabActivity.class);
                 break;
             case R.id.wl_btn_swiperefresh:
                 intent = new Intent(me, SwipeRefreshActivity.class);

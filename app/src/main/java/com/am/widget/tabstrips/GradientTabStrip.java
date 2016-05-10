@@ -10,7 +10,6 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.FontMetricsInt;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.v4.view.BaseTabStrip;
 import android.text.TextPaint;
@@ -19,7 +18,7 @@ import android.view.Gravity;
 
 /**
  * 滑动渐变TabStrip，Item不建议超过5个
- *
+ * TODO 不支持Padding
  * @author Alex
  */
 public class GradientTabStrip extends BaseTabStrip {
@@ -95,21 +94,6 @@ public class GradientTabStrip extends BaseTabStrip {
         }
         mTagPadding = (int) (DEFAULT_TAG_PADDING * density);
         setClickable(true);
-    }
-
-    /**
-     * 获取默认Tag背景
-     *
-     * @return 默认Tag背景
-     */
-    private Drawable getDefaultTagBackground() {
-        final float density = getResources().getDisplayMetrics().density;
-        final GradientDrawable mBackground = new GradientDrawable();
-        mBackground.setShape(GradientDrawable.RECTANGLE);
-        mBackground.setColor(0xffff4444);
-        mBackground.setCornerRadius(10 * density);
-        mBackground.setSize((int) (10 * density), (int) (10 * density));
-        return mBackground;
     }
 
     @Override
@@ -538,7 +522,7 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @author Alex
      */
-    public interface GradientTabAdapter {
+    public interface GradientTabAdapter extends ItemTabAdapter{
 
         /**
          * 获取普通状态下的 Drawable
@@ -557,10 +541,6 @@ public class GradientTabStrip extends BaseTabStrip {
          * @return 必须非空
          */
         Drawable getSelectedDrawable(int position, Context context);
-
-        boolean isTagEnable(int position);
-
-        String getTag(int position);
     }
 
     /**
