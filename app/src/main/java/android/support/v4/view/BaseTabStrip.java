@@ -46,7 +46,8 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     private int mLastKnownPosition = 0;
     private float mLastKnownPositionOffset = -1;
     private int mCurrentPager = 0;
-    private int mNextPager = 0;
+    private int mPosition = 0;
+    private boolean clickSelectedItem = false;
     private Drawable mTabItemBackground;
     private ArrayList<Drawable> mTabItemBackgrounds = new ArrayList<>();
     private boolean tabClickable;
@@ -75,17 +76,131 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         final ViewParent parent = getParent();
-        if (mPager == null && parent instanceof ViewPager) {
+        if (mPager == null && parent != null && parent instanceof ViewPager) {
             bindViewPager((ViewPager) parent);
         }
     }
 
-    private void createTabItemDrawables(PagerAdapter adapter) {
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        bindViewPager(null);
+        clearItemBackground();
+    }
+
+    /**
+     * 捆绑ViewPager
+     *
+     * @param pager 关联的ViewPager
+     */
+    public void bindViewPager(ViewPager pager) {
+        PagerAdapter oldAdapter = null;
+        PagerAdapter newAdapter = null;
+        if (mPager != null) {
+            mPager.setInternalPageChangeListener(null);
+            mPager.setOnAdapterChangeListener(null);
+            oldAdapter = mPager.getAdapter();
+        }
+        mPager = pager;
+        if (mPager != null) {
+            mPager.setInternalPageChangeListener(mPageListener);
+            mPager.setOnAdapterChangeListener(mPageListener);
+            newAdapter = mPager.getAdapter();
+        }
+        bindPagerAdapter(oldAdapter, newAdapter);
+    }
+
+    private void clearItemBackground() {
+        for (Drawable drawable : mTabItemBackgrounds) {
+            drawable.setCallback(null);
+        }
+        mTabItemBackgrounds.clear();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        if (!tabClickable) {
+            return super.onTouchEvent(ev);
+        }
+        final boolean tab = mTabGestureDetector.onTouchEvent(ev);
+        return super.onTouchEvent(ev) || tab;
+    }
+
+    @Override
+    @Deprecated
+    public boolean performClick() {
+        return super.performClick();
+    }
+
+    /**
+     * 点击
+     *
+     * @param position 位置
+     */
+    @SuppressWarnings("unused")
+    public boolean performClick(int position) {
+        return performClick(position, false, true);
+    }
+
+    /**
+     * 点击
+     *
+     * @param position     位置
+     * @param smoothScroll 是否平滑滚动
+     */
+    public boolean performClick(int position, boolean smoothScroll, boolean notifyListener) {
+        if (getViewPager() != null && position >= 0 && position < getItemCount()) {
+            clickSelectedItem = position == mPosition;
+            mPosition = position;
+            if (!clickSelectedItem) {
+                if (!smoothScroll) {
+                    mCurrentPager = position;
+                    mLastKnownPosition = mCurrentPager;
+                    mLastKnownPositionOffset = 0;
+                    jumpTo(mCurrentPager);
+                    notifyJumpTo(mCurrentPager);
+                }
+                getViewPager().setCurrentItem(position, smoothScroll);
+            }
+            if (clickListener != null && notifyListener) {
+                clickListener.onItemClick(mPosition);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 捆绑PagerAdapter
+     *
+     * @param oldAdapter 旧Adapter
+     * @param newAdapter 新Adapter
+     */
+    protected void bindPagerAdapter(PagerAdapter oldAdapter, PagerAdapter newAdapter) {
+        if (oldAdapter != null) {
+            oldAdapter.unregisterDataSetObserver(mPageListener);
+            mWatchingAdapter = null;
+        }
+        if (newAdapter != null) {
+            newAdapter.registerDataSetObserver(mPageListener);
+            mWatchingAdapter = new WeakReference<>(newAdapter);
+        }
+        createItemBackgrounds();
+        onBindPagerAdapter();
+        checkCurrentItem();
+        requestLayout();
+        invalidate();
+    }
+
+    /**
+     * 创建子项背景
+     */
+    protected void createItemBackgrounds() {
         if (mTabItemBackground == null)
             return;
-        if (adapter != null) {
-            int i = 0;
-            for (; i < adapter.getCount(); i++) {
+        int count = getItemCount();
+        if (count > 0) {
+            for (int i = 0; i < count; i++) {
                 if (i < mTabItemBackgrounds.size()) {
                     mTabItemBackgrounds.get(i).setState(onCreateDrawableState(0));
                 } else {
@@ -102,110 +217,42 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * 捆绑ViewPager
-     *
-     * @param pager 关联的ViewPager
+     * 重新创建子项背景
      */
-    public void bindViewPager(ViewPager pager) {
-        mPager = pager;
-        if (mPager != null) {
-            final PagerAdapter adapter = mPager.getAdapter();
-            mPager.setInternalPageChangeListener(mPageListener);
-            mPager.setOnAdapterChangeListener(mPageListener);
-            bindPagerAdapter(mWatchingAdapter != null ? mWatchingAdapter.get()
-                    : null, adapter);
-        }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (mPager != null) {
-            bindPagerAdapter(mPager.getAdapter(), null);
-            mPager.setInternalPageChangeListener(null);
-            mPager.setOnAdapterChangeListener(null);
-            mPager = null;
-        }
-        clearTabItemBackground();
-    }
-
-    private void clearTabItemBackground() {
-        for (Drawable drawable : mTabItemBackgrounds) {
-            drawable.setCallback(null);
-        }
-        mTabItemBackgrounds.clear();
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        if (!tabClickable) {
-            return super.onTouchEvent(ev);
-        }
-        final boolean tab = mTabGestureDetector.onTouchEvent(ev);
-        return super.onTouchEvent(ev) || tab;
-    }
-
-    /**
-     * 点击
-     *
-     * @param position 位置
-     */
-    @SuppressWarnings("unused")
-    public void performClick(int position) {
-        performClick(position, false, true);
-    }
-
-    /**
-     * 点击
-     *
-     * @param position     位置
-     * @param smoothScroll 是否平滑滚动
-     */
-    public void performClick(int position, boolean smoothScroll, boolean notifyListener) {
-        if (getViewPager() != null && position >= 0 && position < getItemCount()) {
-            if (clickListener != null && notifyListener) {
-                clickListener.onItemClick(position);
-            }
-            getViewPager().setCurrentItem(position, smoothScroll);
-            if (!smoothScroll) {
-                mCurrentPager = position;
-                jumpTo(mCurrentPager);
-                mLastKnownPosition = mCurrentPager;
-                mLastKnownPositionOffset = 0;
-                notifyJumpTo(mCurrentPager);
-            }
+    protected void recreateItemBackgrounds() {
+        clearItemBackground();
+        if (mTabItemBackground == null)
+            return;
+        int count = getItemCount();
+        for (int i = 0; i < count; i++) {
+            Drawable tag = mTabItemBackground.getConstantState().newDrawable();
+            tag.setCallback(this);
+            mTabItemBackgrounds.add(tag);
         }
     }
 
     /**
-     * 捆绑PagerAdapter
+     * 获取当前选中的子项
      *
-     * @param oldAdapter 旧Adapter
-     * @param newAdapter 新Adapter
+     * @return 当前选中的子项
      */
-    protected void bindPagerAdapter(PagerAdapter oldAdapter,
-                                    PagerAdapter newAdapter) {
-        if (oldAdapter != null) {
-            oldAdapter.unregisterDataSetObserver(mPageListener);
-            mWatchingAdapter = null;
-        }
-        if (newAdapter != null) {
-            newAdapter.registerDataSetObserver(mPageListener);
-            mWatchingAdapter = new WeakReference<>(newAdapter);
-            mLastKnownPosition = mPager.getCurrentItem();
-            mCurrentPager = mLastKnownPosition;
-            mNextPager = mLastKnownPosition;
-        }
-        createTabItemDrawables(newAdapter);
-        onBindPagerAdapter();
-        if (mPager != null) {
-            jumpTo(mCurrentPager);
+    public int getCurrentItem() {
+        return mPager == null ? -1 : mPager.getCurrentItem();
+    }
+
+    /**
+     * 检查选中子项
+     */
+    public void checkCurrentItem() {
+        final int position = getCurrentItem();
+        mPosition = position;
+        if (position >= 0 && position != mCurrentPager) {
+            mCurrentPager = position;
             mLastKnownPosition = mCurrentPager;
             mLastKnownPositionOffset = 0;
+            jumpTo(mCurrentPager);
             notifyJumpTo(mCurrentPager);
         }
-        requestLayout();
-        invalidate();
     }
 
     /**
@@ -297,19 +344,19 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     public Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
         BaseTabStripSavedState ss = new BaseTabStripSavedState(superState);
-        ss.currectPager = mPager != null ? mPager.getCurrentItem() : 0;
+        ss.currentPager = mCurrentPager;
         return ss;
     }
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         BaseTabStripSavedState ss = (BaseTabStripSavedState) state;
-        performClick(ss.currectPager, false, false);
+        performClick(ss.currentPager, false, false);
         super.onRestoreInstanceState(ss.getSuperState());
     }
 
     static class BaseTabStripSavedState extends BaseSavedState {
-        int currectPager;
+        int currentPager;
 
         BaseTabStripSavedState(Parcelable superState) {
             super(superState);
@@ -317,13 +364,13 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
 
         private BaseTabStripSavedState(Parcel in) {
             super(in);
-            currectPager = in.readInt();
+            currentPager = in.readInt();
         }
 
         @Override
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
-            out.writeInt(currectPager);
+            out.writeInt(currentPager);
         }
 
         public static final Creator<BaseTabStripSavedState> CREATOR =
@@ -351,12 +398,10 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         @Override
         public void onPageSelected(int position) {
             if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
-                // Only update the text here if we're not dragging or settling.
-
                 float offset = mLastKnownPositionOffset >= 0 ? mLastKnownPositionOffset : 0;
-
-                updateView(mPager.getCurrentItem(), offset, false);
+                updateView(position, offset, false);
             }
+            mPosition = position;
         }
 
         @Override
@@ -372,9 +417,10 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
 
         @Override
         public void onChanged() {
-
             final float offset = mLastKnownPositionOffset >= 0 ? mLastKnownPositionOffset : 0;
-            updateView(mPager.getCurrentItem(), offset, true);
+            final int position = getCurrentItem();
+            mPosition = position;
+            updateView(position, offset, true);
         }
     }
 
@@ -398,6 +444,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
                 mLastKnownPositionOffset = 1;
             else
                 mLastKnownPositionOffset = 0;
+        int nextPager;
         if (position > mLastKnownPosition) {
             mLastKnownPosition = position - 1;
             if (mLastKnownPositionOffset > mPositionOffset) {
@@ -407,28 +454,28 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
                     mLastKnownPosition = position;
                 }
                 mCurrentPager = mLastKnownPosition;
-                mNextPager = mLastKnownPosition + 1;
-                gotoRight(mCurrentPager, mNextPager, mPositionOffset);
-                notifyGotoRight(mCurrentPager, mNextPager, mPositionOffset);
+                nextPager = mLastKnownPosition + 1;
+                gotoRight(mCurrentPager, nextPager, mPositionOffset);
+                notifyGotoRight(mCurrentPager, nextPager, mPositionOffset);
             } else {
                 mCurrentPager = mLastKnownPosition + 1;
-                mNextPager = mLastKnownPosition;
-                gotoLeft(mCurrentPager, mNextPager, mPositionOffset);
-                notifyGotoLeft(mCurrentPager, mNextPager, mPositionOffset);
+                nextPager = mLastKnownPosition;
+                gotoLeft(mCurrentPager, nextPager, mPositionOffset);
+                notifyGotoLeft(mCurrentPager, nextPager, mPositionOffset);
             }
         } else {
             mLastKnownPosition = position;
             if (mLastKnownPositionOffset > mPositionOffset) {
                 mCurrentPager = mLastKnownPosition + 1;
-                mNextPager = mLastKnownPosition;
-                gotoLeft(mCurrentPager, mNextPager, mPositionOffset);
-                notifyGotoLeft(mCurrentPager, mNextPager, mPositionOffset);
+                nextPager = mLastKnownPosition;
+                gotoLeft(mCurrentPager, nextPager, mPositionOffset);
+                notifyGotoLeft(mCurrentPager, nextPager, mPositionOffset);
             } else {
                 mPositionOffset = mPositionOffset == 0 ? 1 : mPositionOffset;
                 mCurrentPager = mLastKnownPosition;
-                mNextPager = mLastKnownPosition + 1;
-                gotoRight(mCurrentPager, mNextPager, mPositionOffset);
-                notifyGotoRight(mCurrentPager, mNextPager, mPositionOffset);
+                nextPager = mLastKnownPosition + 1;
+                gotoRight(mCurrentPager, nextPager, mPositionOffset);
+                notifyGotoRight(mCurrentPager, nextPager, mPositionOffset);
             }
         }
         mLastKnownPosition = position;
@@ -507,7 +554,6 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
 
         private float mDownMotionX = -1;
         private float mDownMotionY = -1;
-        private int oldPosition = -1;
 
         @Override
         public boolean onDown(MotionEvent e) {
@@ -518,9 +564,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
-            oldPosition = mCurrentPager;
-            performClick(pointToPosition(e.getX(), e.getY()), clickSmoothScroll, true);
-            return true;
+            return performClick(pointToPosition(e.getX(), e.getY()), clickSmoothScroll, true);
         }
 
         @Override
@@ -528,8 +572,8 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
             int position = pointToPosition(e.getX(), e.getY());
             if (position < 0)
                 return false;
-            if (oldPosition == mCurrentPager && clickListener != null) {
-                clickListener.onSelectedClick(mCurrentPager);
+            if (clickSelectedItem && clickListener != null) {
+                clickListener.onSelectedClick(mPosition);
             }
             return true;
         }
@@ -540,7 +584,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
             if (position < 0)
                 return false;
             if (clickListener != null) {
-                clickListener.onDoubleClick(mCurrentPager);
+                clickListener.onDoubleClick(mPosition);
             }
             return true;
         }
@@ -554,12 +598,10 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         }
     }
 
-    @SuppressWarnings("unused")
     public final ViewPager getViewPager() {
         return mPager;
     }
 
-    @SuppressWarnings("unused")
     public final int getItemCount() {
         try {
             return mWatchingAdapter.get().getCount();
@@ -585,15 +627,9 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     public void setItemBackground(Drawable background) {
         if (mTabItemBackground != background) {
             mTabItemBackground = background;
-            if (mTabItemBackground == null) {
-                clearTabItemBackground();
-            } else {
-                if (mPager != null) {
-                    createTabItemDrawables(mPager.getAdapter());
-                    requestLayout();
-                    invalidate();
-                }
-            }
+            recreateItemBackgrounds();
+            requestLayout();
+            invalidate();
         }
     }
 

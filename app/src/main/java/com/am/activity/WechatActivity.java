@@ -9,7 +9,6 @@ import android.support.v4.view.BaseTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,17 +26,11 @@ public class WechatActivity extends Activity {
 		setContentView(R.layout.activity_wechat);
 		super.onCreate(savedInstanceState);
 		final ViewPager mViewPager = (ViewPager) findViewById(R.id.vp);
+        final GradientTabStrip tab = (GradientTabStrip) findViewById(R.id.tab_wechat);
+
 		List<View> viewList = new ArrayList<View>();
 		View v1 = LayoutInflater.from(this).inflate(R.layout.item_pager, null);
 		((TextView) v1.findViewById(R.id.text)).setText("微信");
-		v1.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mViewPager.setCurrentItem(1, true);
-			}
-		});
 		viewList.add(v1);
 		View v2 = LayoutInflater.from(this).inflate(R.layout.item_pager, null);
 		((TextView) v2.findViewById(R.id.text)).setText("通讯录");
@@ -47,15 +40,24 @@ public class WechatActivity extends Activity {
 		viewList.add(v3);
 		View v4 = LayoutInflater.from(this).inflate(R.layout.item_pager, null);
 		((TextView) v4.findViewById(R.id.text)).setText("我");
+        v4.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                tab.performClick(0);
+            }
+        });
+
 		viewList.add(v4);
-		List<String> listStrings = new ArrayList<String>();
+		List<String> listStrings = new ArrayList<>();
 		listStrings.add("微信");
 		listStrings.add("通讯录");
 		listStrings.add("发现");
 		listStrings.add("我");
 		mViewPager.setAdapter(new TitleViewPagerAdapter(viewList, listStrings));
-		GradientTabStrip tab = (GradientTabStrip) findViewById(R.id.tab_wechat);
 		tab.bindViewPager(mViewPager);
+        tab.performClick(1);
+
         tab.setItemBackground(R.drawable.bg_tab);
         GradientTabStrip.SimpleGradientTabAdapter adapter = new GradientTabStrip.SimpleGradientTabAdapter() {
 

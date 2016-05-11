@@ -312,7 +312,7 @@ public class GradientTabStrip extends BaseTabStrip {
         mRefreshRect.set((int) Math.floor(mItemWidth * mNextPager),
                 getPaddingTop(), (int) Math.ceil(mItemWidth * (current + 1)),
                 getHeight() - getPaddingBottom());
-        mCurrentPager = current - 1;
+        mCurrentPager = -1;
         mNextPager = current;
         mTextColorOffset = 1;
         invalidate(mRefreshRect);
