@@ -5,7 +5,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <com.am.widget.securitycodebutton.SecurityCodeButton
+    <am.project.x.widgets.securitycodebutton.SecurityCodeButton
         android:id="@+id/as_stn"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"

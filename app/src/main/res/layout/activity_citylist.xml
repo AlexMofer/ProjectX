@@ -6,8 +6,9 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical" >
 
-    <com.am.widget.citylistview.CitysListView
+    <am.project.x.widgets.citylistview.CitysListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</FrameLayout>
+
+</FrameLayout>

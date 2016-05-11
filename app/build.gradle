@@ -5,22 +5,31 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.am.widget"
+        applicationId "am.project.x"
         minSdkVersion 8
         targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
     }
-
     buildTypes {
         release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable false
+            enforceUniquePackageName false
+        }
+        debug {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            debuggable true
+            enforceUniquePackageName false
         }
     }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:support-v4:23.3.0'
-    compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile 'com.android.support:design:23.3.0'
+    compile files('libs/antiemulator.jar')
 }

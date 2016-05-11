@@ -1,6 +1,5 @@
 <resources>
-
-    <string name="app_name">控件集</string>
+    <string name="app_name">ProjectX</string>
     <string name="wechat">仿微信</string>
     <string name="newwidget">新控件</string>
     <string name="bilateralpane">三面板</string>

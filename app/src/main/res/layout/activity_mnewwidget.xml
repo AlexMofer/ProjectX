@@ -6,7 +6,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical" >
 
-    <com.am.widget.newone.DragGridView
+    <am.project.x.widgets.newone.DragGridView
         android:id="@+id/grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
