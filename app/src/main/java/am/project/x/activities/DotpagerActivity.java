@@ -16,7 +16,7 @@ public class DotpagerActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.activity_dotpager);
+		setContentView(R.layout.old_activity_dotpager);
 		super.onCreate(savedInstanceState);
 		ViewPager pager = (ViewPager) findViewById(R.id.pager);
 		View one = new View(me);

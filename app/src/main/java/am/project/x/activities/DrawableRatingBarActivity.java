@@ -17,7 +17,7 @@ public class DrawableRatingBarActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drawableratingbar);
+        setContentView(R.layout.old_activity_drawableratingbar);
         DrawableRatingBar drBar = (DrawableRatingBar) findViewById(R.id.ratingbar);
         drBar.setRating(3);
         drBar.setTouchMin(1);

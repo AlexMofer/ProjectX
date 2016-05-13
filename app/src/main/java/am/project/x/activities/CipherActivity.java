@@ -25,7 +25,7 @@ public class CipherActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cipher);
+        setContentView(R.layout.old_activity_cipher);
         edtText = (EditText) findViewById(R.id.cipher_edt_text);
         tvInfo = (TextView) findViewById(R.id.cipher_tv_info);
         findViewById(R.id.cipher_btn_message).setOnClickListener(this);

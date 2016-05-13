@@ -9,7 +9,7 @@
         android:id="@+id/as_stn"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:textColor="@color/color_code"/>
+        android:textColor="@color/old_color_code"/>
 
     <Button
         android:id="@+id/as_stop"

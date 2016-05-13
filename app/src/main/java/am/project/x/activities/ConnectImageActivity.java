@@ -14,10 +14,10 @@ public class ConnectImageActivity extends Activity implements OnClickListener{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_connectimage);
+		setContentView(R.layout.old_activity_connectimage);
 		connectImage = (ConnectImageView) findViewById(R.id.image);
-		connectImage.setDrawables(R.drawable.connectting, R.drawable.connected,
-				R.drawable.unconnect);
+		connectImage.setDrawables(R.drawable.old_connectting, R.drawable.old_connected,
+				R.drawable.old_unconnect);
 		findViewById(R.id.btn_connect).setOnClickListener(this);
 		findViewById(R.id.btn_failure).setOnClickListener(this);
 		findViewById(R.id.btn_success).setOnClickListener(this);

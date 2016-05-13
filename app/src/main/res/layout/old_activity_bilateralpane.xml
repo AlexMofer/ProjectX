@@ -10,16 +10,16 @@
     <include
         android:layout_width="320dp"
         android:layout_height="match_parent"
-        layout="@layout/include_bilateralpane_left" />
+        layout="@layout/old_include_bilateralpane_left" />
 
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/include_bilateralpane_center" />
+        layout="@layout/old_include_bilateralpane_center" />
 
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/include_bilateralpane_right" />
+        layout="@layout/old_include_bilateralpane_right" />
 
 </am.project.x.widgets.bilateralpanelayout.BilateralPaneLayout>

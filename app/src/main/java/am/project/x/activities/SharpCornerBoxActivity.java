@@ -18,7 +18,7 @@ public class SharpCornerBoxActivity extends Activity {
         final int height = 18;
         final int padding = 40;
         final float round = 20;
-        setContentView(R.layout.activity_sharpcornerbox);
+        setContentView(R.layout.old_activity_sharpcornerbox);
         VersionCompat.setBackground(findViewById(R.id.scb_top_center),
                 new SharpCornerBoxDrawable(color, width, height));
         VersionCompat.setBackground(findViewById(R.id.scb_top_end),

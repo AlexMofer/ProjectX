@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:drawablePadding="5dp"
-        android:textColor="@color/color_tab"
+        android:textColor="@color/old_color_tab"
         android:layout_marginBottom="10dp" />
 
 </FrameLayout>

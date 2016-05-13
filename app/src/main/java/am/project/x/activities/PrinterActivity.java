@@ -34,7 +34,7 @@ public class PrinterActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_printer);
+        setContentView(R.layout.old_activity_printer);
         edtIP = (EditText) findViewById(R.id.printer_edt_ip);
         edtPort = (EditText) findViewById(R.id.printer_edt_port);
         edtFor = (EditText) findViewById(R.id.printer_edt_times);
@@ -244,7 +244,7 @@ public class PrinterActivity extends Activity implements View.OnClickListener {
 
         outputStream.write(PrinterUtils.emphasizedOff());
         outputStream.write(PrinterUtils.alignLeft());
-        printPhotoInAssets(getApplicationContext(), "dnet_bitmap_logo.png", outputStream);
+        printPhotoInAssets(getApplicationContext(), "old_dnet_bitmap_logo.png", outputStream);
         outputStream.write(PrinterUtils.underLine(true, 2));
         outputStream.write(PrinterUtils.underLine(false, 2));
         outputStream.write("互联网餐饮平台                  mazing.com".getBytes("gb2312"));
@@ -256,12 +256,10 @@ public class PrinterActivity extends Activity implements View.OnClickListener {
 
         outputStream.write(PrinterUtils.emphasizedOff());
         outputStream.write(PrinterUtils.alignCenter());
-        printPhotoInAssets(getApplicationContext(), "dnet_bitmap_QR.png", outputStream);
+        printPhotoInAssets(getApplicationContext(), "old_dnet_bitmap_QR.png", outputStream);
         outputStream.write(PrinterUtils.printLineFeed());
         outputStream.write("扫一扫 查看订单".getBytes("gb2312"));
         outputStream.write(PrinterUtils.printLineFeed());
-
-        //printPhotoInAssets(getApplicationContext(), "dnet_bitmap.jpg", outputStream);
 
 
 
@@ -273,10 +271,10 @@ public class PrinterActivity extends Activity implements View.OnClickListener {
 
     public void writePic(OutputStream outputStream) throws IOException {
         for (int i = 0; i < Integer.parseInt(edtFor.getText().toString()); i++) {
-            printPhotoInAssets(getApplicationContext(), "dnet_bitmap_1.jpg", outputStream);
-            printPhotoInAssets(getApplicationContext(), "dnet_bitmap_2.jpg", outputStream);
-            printPhotoInAssets(getApplicationContext(), "dnet_bitmap_3.jpg", outputStream);
-            printPhotoInAssets(getApplicationContext(), "dnet_bitmap_4.jpg", outputStream);
+            printPhotoInAssets(getApplicationContext(), "old_dnet_bitmap_1.jpg", outputStream);
+            printPhotoInAssets(getApplicationContext(), "old_dnet_bitmap_2.jpg", outputStream);
+            printPhotoInAssets(getApplicationContext(), "old_dnet_bitmap_3.jpg", outputStream);
+            printPhotoInAssets(getApplicationContext(), "old_dnet_bitmap_4.jpg", outputStream);
             outputStream.write(PrinterUtils.feedPaperCutPartial());
         }
         outputStream.flush();

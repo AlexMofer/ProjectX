@@ -16,16 +16,16 @@ public class SwipeRefreshActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_swiperefresh);
+		setContentView(R.layout.old_activity_swiperefresh);
 		List<HashMap<String, Object>> dataSourceList = new ArrayList<HashMap<String, Object>>();
 		for (int i = 0; i < 10; i++) {
 			HashMap<String, Object> itemHashMap = new HashMap<String, Object>();
-			itemHashMap.put("item_image", R.drawable.ic_swipelayout);
+			itemHashMap.put("item_image", R.drawable.old_ic_swipelayout);
 			itemHashMap.put("item_text", "Item " + Integer.toString(i));
 			dataSourceList.add(itemHashMap);
 		}
 		final SimpleAdapter mSimpleAdapter = new SimpleAdapter(this,
-				dataSourceList, R.layout.supergridview_item_griditem, new String[] {
+				dataSourceList, R.layout.old_supergridview_item_griditem, new String[] {
 						"item_image", "item_text" }, new int[] {
 						R.id.item_image, R.id.item_text });
 		((ListView)findViewById(R.id.list)).setAdapter(mSimpleAdapter);

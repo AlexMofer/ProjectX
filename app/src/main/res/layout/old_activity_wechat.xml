@@ -19,8 +19,8 @@
         android:drawablePadding="2dp"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
-        android:textColor="@color/color_tab"
+        android:textColor="@color/old_color_tab"
         android:textSize="12sp"
-        android:background="@drawable/bg_wechat_tabbar"/>
+        android:background="@drawable/old_bg_wechat_tabbar"/>
 
 </LinearLayout>

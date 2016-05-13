@@ -13,6 +13,6 @@
         android:drawablePadding="3dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:progressDrawable="@drawable/ic_tasty_ratingbar"/>
+        android:progressDrawable="@drawable/old_ic_tasty_ratingbar"/>
 
 </LinearLayout>

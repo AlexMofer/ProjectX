@@ -23,22 +23,22 @@ public class WechatActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.activity_wechat);
+		setContentView(R.layout.old_activity_wechat);
 		super.onCreate(savedInstanceState);
 		final ViewPager mViewPager = (ViewPager) findViewById(R.id.vp);
         final GradientTabStrip tab = (GradientTabStrip) findViewById(R.id.tab_wechat);
 
 		List<View> viewList = new ArrayList<View>();
-		View v1 = LayoutInflater.from(this).inflate(R.layout.item_pager, null);
+		View v1 = LayoutInflater.from(this).inflate(R.layout.old_item_pager, null);
 		((TextView) v1.findViewById(R.id.text)).setText("微信");
 		viewList.add(v1);
-		View v2 = LayoutInflater.from(this).inflate(R.layout.item_pager, null);
+		View v2 = LayoutInflater.from(this).inflate(R.layout.old_item_pager, null);
 		((TextView) v2.findViewById(R.id.text)).setText("通讯录");
 		viewList.add(v2);
-		View v3 = LayoutInflater.from(this).inflate(R.layout.item_pager, null);
+		View v3 = LayoutInflater.from(this).inflate(R.layout.old_item_pager, null);
 		((TextView) v3.findViewById(R.id.text)).setText("发现");
 		viewList.add(v3);
-		View v4 = LayoutInflater.from(this).inflate(R.layout.item_pager, null);
+		View v4 = LayoutInflater.from(this).inflate(R.layout.old_item_pager, null);
 		((TextView) v4.findViewById(R.id.text)).setText("我");
         v4.setOnClickListener(new View.OnClickListener() {
 
@@ -58,7 +58,7 @@ public class WechatActivity extends Activity {
 		tab.bindViewPager(mViewPager);
         tab.performClick(1);
 
-        tab.setItemBackground(R.drawable.bg_tab);
+        tab.setItemBackground(R.drawable.old_bg_tab);
         GradientTabStrip.SimpleGradientTabAdapter adapter = new GradientTabStrip.SimpleGradientTabAdapter() {
 
 			@Override
@@ -66,13 +66,13 @@ public class WechatActivity extends Activity {
 				switch (position) {
 				default:
 				case 0:
-					return ContextCompat.getDrawable(context, R.drawable.ain);
+					return ContextCompat.getDrawable(context, R.drawable.old_ain);
 				case 1:
-					return ContextCompat.getDrawable(context, R.drawable.ail);
+					return ContextCompat.getDrawable(context, R.drawable.old_ail);
 				case 2:
-					return ContextCompat.getDrawable(context, R.drawable.aip);
+					return ContextCompat.getDrawable(context, R.drawable.old_aip);
 				case 3:
-					return ContextCompat.getDrawable(context, R.drawable.air);
+					return ContextCompat.getDrawable(context, R.drawable.old_air);
 				}
 			}
 
@@ -81,13 +81,13 @@ public class WechatActivity extends Activity {
 				switch (position) {
 				default:
 				case 0:
-					return ContextCompat.getDrawable(context, R.drawable.aio);
+					return ContextCompat.getDrawable(context, R.drawable.old_aio);
 				case 1:
-					return ContextCompat.getDrawable(context, R.drawable.aim);
+					return ContextCompat.getDrawable(context, R.drawable.old_aim);
 				case 2:
-					return ContextCompat.getDrawable(context, R.drawable.aiq);
+					return ContextCompat.getDrawable(context, R.drawable.old_aiq);
 				case 3:
-					return ContextCompat.getDrawable(context, R.drawable.ais);
+					return ContextCompat.getDrawable(context, R.drawable.old_ais);
 				}
 			}
 			

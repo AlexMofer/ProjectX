@@ -17,7 +17,7 @@ public class CityListActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.activity_citylist);
+		setContentView(R.layout.old_activity_citylist);
 		super.onCreate(savedInstanceState);
 		listView = (ListView) findViewById(android.R.id.list);
 		adapter = new MyCitysAdapter(this, android.R.layout.simple_list_item_2);

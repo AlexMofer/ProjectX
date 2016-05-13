@@ -29,7 +29,7 @@ public class ReplaceActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_replace);
+        setContentView(R.layout.old_activity_replace);
         ViewPager vp = (ViewPager) findViewById(R.id.vp_replace);
         final ReplaceLayout rts = (ReplaceLayout) findViewById(R.id.rl_replace);
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), getApplicationContext(), rts);
@@ -38,7 +38,7 @@ public class ReplaceActivity extends FragmentActivity {
 
         GradientTabStrip tab = (GradientTabStrip) findViewById(R.id.tab_wechat);
         tab.bindViewPager(vp);
-        tab.setItemBackground(R.drawable.bg_tab);
+        tab.setItemBackground(R.drawable.old_bg_tab);
         GradientTabStrip.SimpleGradientTabAdapter sgtadapter =
                 new GradientTabStrip.SimpleGradientTabAdapter() {
 
@@ -47,13 +47,13 @@ public class ReplaceActivity extends FragmentActivity {
                 switch (position) {
                     default:
                     case 0:
-                        return ContextCompat.getDrawable(context, R.drawable.ain);
+                        return ContextCompat.getDrawable(context, R.drawable.old_ain);
                     case 1:
-                        return ContextCompat.getDrawable(context, R.drawable.ail);
+                        return ContextCompat.getDrawable(context, R.drawable.old_ail);
                     case 2:
-                        return ContextCompat.getDrawable(context, R.drawable.aip);
+                        return ContextCompat.getDrawable(context, R.drawable.old_aip);
                     case 3:
-                        return ContextCompat.getDrawable(context, R.drawable.air);
+                        return ContextCompat.getDrawable(context, R.drawable.old_air);
                 }
             }
 
@@ -62,13 +62,13 @@ public class ReplaceActivity extends FragmentActivity {
                 switch (position) {
                     default:
                     case 0:
-                        return ContextCompat.getDrawable(context, R.drawable.aio);
+                        return ContextCompat.getDrawable(context, R.drawable.old_aio);
                     case 1:
-                        return ContextCompat.getDrawable(context, R.drawable.aim);
+                        return ContextCompat.getDrawable(context, R.drawable.old_aim);
                     case 2:
-                        return ContextCompat.getDrawable(context, R.drawable.aiq);
+                        return ContextCompat.getDrawable(context, R.drawable.old_aiq);
                     case 3:
-                        return ContextCompat.getDrawable(context, R.drawable.ais);
+                        return ContextCompat.getDrawable(context, R.drawable.old_ais);
                 }
             }
 
@@ -105,7 +105,7 @@ public class ReplaceActivity extends FragmentActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.fragment_blank, container, false);
+            return inflater.inflate(R.layout.old_fragment_blank, container, false);
         }
 
         @Override
@@ -151,7 +151,7 @@ public class ReplaceActivity extends FragmentActivity {
                     tvContent.setText("我");
                 }
             };
-            mV1 = LayoutInflater.from(context).inflate(R.layout.item_title_replace, parent, false);
+            mV1 = LayoutInflater.from(context).inflate(R.layout.old_item_title_replace, parent, false);
             TextView tv1 = (TextView) mV1.findViewById(R.id.item_tv_title);
             tv1.setText("Title1");
             tv1.setBackgroundColor(0xff00ff00);
@@ -161,7 +161,7 @@ public class ReplaceActivity extends FragmentActivity {
                     Toast.makeText(v.getContext(), "Title1", Toast.LENGTH_SHORT).show();
                 }
             });
-            mV2 = LayoutInflater.from(context).inflate(R.layout.item_title_replace, parent, false);
+            mV2 = LayoutInflater.from(context).inflate(R.layout.old_item_title_replace, parent, false);
             TextView tv2 = (TextView) mV2.findViewById(R.id.item_tv_title);
             tv2.setText("Title2");
             tv2.setBackgroundColor(0xffff0000);
@@ -171,7 +171,7 @@ public class ReplaceActivity extends FragmentActivity {
                     Toast.makeText(v.getContext(), "Title2", Toast.LENGTH_SHORT).show();
                 }
             });
-            mV3 = LayoutInflater.from(context).inflate(R.layout.item_title_replace, parent, false);
+            mV3 = LayoutInflater.from(context).inflate(R.layout.old_item_title_replace, parent, false);
             TextView tv3 = (TextView) mV3.findViewById(R.id.item_tv_title);
             tv3.setText("Title3");
             tv3.setBackgroundColor(0xff0000ff);
@@ -181,7 +181,7 @@ public class ReplaceActivity extends FragmentActivity {
                     Toast.makeText(v.getContext(), "Title3", Toast.LENGTH_SHORT).show();
                 }
             });
-            mV4 = LayoutInflater.from(context).inflate(R.layout.item_title_replace, parent, false);
+            mV4 = LayoutInflater.from(context).inflate(R.layout.old_item_title_replace, parent, false);
             TextView tv4 = (TextView) mV4.findViewById(R.id.item_tv_title);
             tv4.setText("Title4");
             tv4.setBackgroundColor(0xffff00ff);

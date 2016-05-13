@@ -16,7 +16,7 @@ public class WidgetListActivity extends Activity implements OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_widgetlist);
+        setContentView(R.layout.old_activity_widgetlist);
         findViewById(R.id.wl_btn_newwidget).setOnClickListener(me);
         findViewById(R.id.wl_btn_wechat).setOnClickListener(me);
         findViewById(R.id.wl_btn_bilateralpane).setOnClickListener(me);

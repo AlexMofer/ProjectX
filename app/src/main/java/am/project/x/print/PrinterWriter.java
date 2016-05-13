@@ -70,7 +70,7 @@ public class PrinterWriter {
         if (data == null)
             return;
         write(PrinterUtils.alignCenter());// 居中对齐
-        printDrawable(context.getResources(), R.drawable.ic_print_logo);// 打印 Mazing Logo
+        printDrawable(context.getResources(), R.drawable.old_ic_print_logo);// 打印 Mazing Logo
 
         write(PrinterUtils.alignLeft());// 左对齐
         writeLine();// 绘制横线
@@ -143,7 +143,7 @@ public class PrinterWriter {
         write(PrinterUtils.printLineFeed());// 输出并换行
 
         write(PrinterUtils.alignCenter());// 居中对齐
-        printDrawable(context.getResources(), R.drawable.ic_print_qr);
+        printDrawable(context.getResources(), R.drawable.old_ic_print_qr);
         write(PrinterUtils.printLineFeed());// 输出并换行
 
         writeString("多谢惠顾！扫一扫 查看订单");

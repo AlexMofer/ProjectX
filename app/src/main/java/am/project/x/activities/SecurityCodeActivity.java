@@ -17,7 +17,7 @@ public class SecurityCodeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_securitycode);
+        setContentView(R.layout.old_activity_securitycode);
         final SecurityCodeButton securityCodeButton = (SecurityCodeButton) findViewById(R.id.as_stn);
         securityCodeButton.setText("获取验证码");
         securityCodeButton.setDuration(60000);

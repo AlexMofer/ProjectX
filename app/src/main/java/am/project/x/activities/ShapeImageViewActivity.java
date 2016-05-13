@@ -16,7 +16,7 @@ public class ShapeImageViewActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_shapeimage);
+		setContentView(R.layout.old_activity_shapeimage);
 		
 		final ShapeImageView ivC = (ShapeImageView) findViewById(R.id.image_CR);
 		ivC.setImageShape(new CircleImageShape(0xff00ffff, 10, true));
@@ -28,10 +28,10 @@ public class ShapeImageViewActivity extends Activity {
 				// TODO Auto-generated method stub
 				if ((Boolean) v.getTag()) {
 					v.setTag(false);
-					ivC.setImageResource(R.drawable.ic_wechat);
+					ivC.setImageResource(R.drawable.old_ic_wechat);
 				} else {
 					v.setTag(true);
-					ivC.setImageResource(R.drawable.ic_shapeimage_test);
+					ivC.setImageResource(R.drawable.old_ic_shapeimage_test);
 				}
 			}
 		});
@@ -46,10 +46,10 @@ public class ShapeImageViewActivity extends Activity {
 				// TODO Auto-generated method stub
 				if ((Boolean) v.getTag()) {
 					v.setTag(false);
-					ivRR.setImageResource(R.drawable.ic_wechat);
+					ivRR.setImageResource(R.drawable.old_ic_wechat);
 				} else {
 					v.setTag(true);
-					ivRR.setImageResource(R.drawable.ic_shapeimage_test);
+					ivRR.setImageResource(R.drawable.old_ic_shapeimage_test);
 				}
 			}
 		});

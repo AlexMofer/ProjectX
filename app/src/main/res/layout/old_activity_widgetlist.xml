@@ -22,8 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_newwidget"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_newwidget"
                 android:text="@string/newwidget" />
 
             <Button
@@ -31,8 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_wechat"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_wechat"
                 android:text="@string/wechat" />
 
             <Button
@@ -40,8 +40,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_bilateralpane"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_bilateralpane"
                 android:text="@string/bilateralpane" />
         </LinearLayout>
 
@@ -56,8 +56,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_dot"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_dot"
                 android:text="@string/dotpager" />
 
             <Button
@@ -65,8 +65,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_supertab"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_supertab"
                 android:text="@string/supertab" />
 
             <Button
@@ -74,8 +74,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_swipelayout"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_swipelayout"
                 android:text="@string/swiperefresh" />
         </LinearLayout>
 
@@ -90,8 +90,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_draggridview"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_draggridview"
                 android:text="@string/draggridview" />
 
             <Button
@@ -99,8 +99,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_shapeimage"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_shapeimage"
                 android:text="@string/shapeimage" />
 
             <Button
@@ -108,8 +108,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_citylist"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_citylist"
                 android:text="@string/citylist" />
         </LinearLayout>
         <LinearLayout
@@ -123,8 +123,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_sharpcornerbox"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_sharpcornerbox"
                 android:text="@string/sharpcornerbox" />
 
             <Button
@@ -132,8 +132,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_connetimage"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_connetimage"
                 android:text="@string/connectimage" />
 
             <Button
@@ -141,8 +141,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_stateframelayout"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_stateframelayout"
                 android:text="@string/stateframe" />
         </LinearLayout>
         <LinearLayout
@@ -156,8 +156,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_replace"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_replace"
                 android:text="@string/replace" />
 
             <Button
@@ -165,8 +165,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_drawableratingbar"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_drawableratingbar"
                 android:text="@string/drawableratingbar" />
 
             <Button
@@ -174,8 +174,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_warplayout"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_warplayout"
                 android:text="@string/wrap" />
         </LinearLayout>
         <LinearLayout
@@ -189,8 +189,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_printer"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_printer"
                 android:text="@string/printer" />
 
             <Button
@@ -198,8 +198,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_securitycode"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_securitycode"
                 android:text="@string/security_code" />
 
             <Button
@@ -207,8 +207,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_loading"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_loading"
                 android:text="@string/loading_drawable" />
         </LinearLayout>
         <LinearLayout
@@ -222,8 +222,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_security"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_security"
                 android:text="@string/security_check" />
 
             <Button
@@ -231,8 +231,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_tab"
-                android:drawableTop="@drawable/ic_cipher"
+                android:background="@drawable/old_bg_tab"
+                android:drawableTop="@drawable/old_ic_cipher"
                 android:text="@string/cipher" />
 
             <View

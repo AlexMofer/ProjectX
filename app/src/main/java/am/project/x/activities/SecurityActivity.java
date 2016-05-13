@@ -17,7 +17,7 @@ public class SecurityActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_security);
+        setContentView(R.layout.old_activity_security);
         TextView tvSecurity = (TextView) findViewById(R.id.security);
         String log = "";
         log += "isDebuggable = " + AntiEmulatorUtils.isDebuggable(this) + "\n";

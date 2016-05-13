@@ -18,7 +18,7 @@ public class LoadingActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loading);
+        setContentView(R.layout.old_activity_loading);
         ImageView iv01 = (ImageView) findViewById(R.id.loading_iv_01);
         iv01.setImageDrawable(new MaterialLoadingProgressDrawable(iv01));
         CircleImageView iv02 = (CircleImageView) findViewById(R.id.loading_iv_02);

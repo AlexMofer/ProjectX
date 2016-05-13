@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/secondaryProgress"
-          android:drawable="@drawable/ic_tasty_star_normal"/>
+          android:drawable="@drawable/old_ic_tasty_star_normal"/>
     <item android:id="@android:id/progress"
-          android:drawable="@drawable/ic_tasty_star_selected"/>
+          android:drawable="@drawable/old_ic_tasty_star_selected"/>
 </layer-list>

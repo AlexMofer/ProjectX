@@ -36,7 +36,7 @@ public class StateFrameActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_stateframe);
+		setContentView(R.layout.old_activity_stateframe);
 		ViewPager vp = (ViewPager) findViewById(R.id.sf_vp_pager);
 		vp.setAdapter(new StateFrameAdapter(getSupportFragmentManager()));
 	}
@@ -76,7 +76,7 @@ public class StateFrameActivity extends FragmentActivity {
 		private StateFrameLayout mStateFrameLayout;
 		@Override
 		protected int setContentLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			return R.layout.fragment_stateframe_simple;
+			return R.layout.old_fragment_stateframe_simple;
 		}
 
 		@Override
@@ -89,8 +89,8 @@ public class StateFrameActivity extends FragmentActivity {
 			mStateFrameLayout = (StateFrameLayout) findViewById(R.id.sfl_state);
 			mStateFrameLayout.setStateDrawables(new DoubleCircleDrawable(
 					getResources().getDisplayMetrics().density), ContextCompat
-					.getDrawable(getContext(), R.drawable.unconnect), ContextCompat
-					.getDrawable(getContext(), R.drawable.connected));
+					.getDrawable(getContext(), R.drawable.old_unconnect), ContextCompat
+					.getDrawable(getContext(), R.drawable.old_connected));
 			mStateFrameLayout.setOnStateClickListener(me);
 		}
 
@@ -125,7 +125,7 @@ public class StateFrameActivity extends FragmentActivity {
 		private StateFrameLayout mStateFrameLayout;
 		@Override
 		protected int setContentLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			return R.layout.fragment_stateframe_simple;
+			return R.layout.old_fragment_stateframe_simple;
 		}
 
 		@Override

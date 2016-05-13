@@ -23,18 +23,18 @@ public class IndicatorTabActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.activity_indicator);
+		setContentView(R.layout.old_activity_indicator);
 		super.onCreate(savedInstanceState);
 		mViewPager = (ViewPager) findViewById(R.id.vp);
 		float density = getResources().getDisplayMetrics().density;
 		List<View> viewList = new ArrayList<>();
-		View v1 = LayoutInflater.from(this).inflate(R.layout.item_pager, null);
+		View v1 = LayoutInflater.from(this).inflate(R.layout.old_item_pager, null);
 		((TextView) v1.findViewById(R.id.text)).setText("昨天");
 		viewList.add(v1);
-		View v2 = LayoutInflater.from(this).inflate(R.layout.item_pager, null);
+		View v2 = LayoutInflater.from(this).inflate(R.layout.old_item_pager, null);
 		((TextView) v2.findViewById(R.id.text)).setText("今天");
 		viewList.add(v2);
-		View v3 = LayoutInflater.from(this).inflate(R.layout.item_pager, null);
+		View v3 = LayoutInflater.from(this).inflate(R.layout.old_item_pager, null);
 		((TextView) v3.findViewById(R.id.text)).setText("明天");
 		viewList.add(v3);
 		List<String> listStrings = new ArrayList<>();
