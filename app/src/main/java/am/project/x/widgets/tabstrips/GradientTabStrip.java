@@ -17,8 +17,11 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 
+import am.project.x.R;
+
 /**
  * 滑动渐变TabStrip，Item不建议超过5个
+ *
  * @author Alex
  */
 public class GradientTabStrip extends BaseTabStrip {
@@ -38,7 +41,7 @@ public class GradientTabStrip extends BaseTabStrip {
     private float mTextSize;
     private float mItemWidth;
     private int mDrawableHeight;
-    private int mDrawablePadding;
+    private int mDrawablePadding = 0;
     private int mTextHeight;
     private int mDesc;
     private float mTopOffset = 0;
@@ -61,7 +64,6 @@ public class GradientTabStrip extends BaseTabStrip {
         this(context, attrs, 0);
     }
 
-    @SuppressWarnings("ResourceType")
     public GradientTabStrip(Context context, AttributeSet attrs,
                             int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -72,18 +74,43 @@ public class GradientTabStrip extends BaseTabStrip {
         if (Build.VERSION.SDK_INT > 4) {
             mTextPaint.density = density;
         }
-        final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
-        int textSize = a.getDimensionPixelSize(0,
-                (int) (DEFAULT_TEXT_SIZE * density));
-        ColorStateList colors = a.getColorStateList(1);
-        if (colors == null) {
-            colors = ColorStateList.valueOf(a.getColor(1, Color.BLACK));
+        final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS, defStyleAttr, 0);
+        int n = a.getIndexCount();
+        int textSize = (int) (DEFAULT_TEXT_SIZE * density);
+        ColorStateList colors = null;
+        int padding = 0;
+        Drawable drawable = null;
+        for (int i = 0; i < n; i++) {
+            int attr = a.getIndex(i);
+            switch (attr) {
+                case 0:
+                    textSize = a.getDimensionPixelSize(attr, textSize);
+                    break;
+                case 1:
+                    colors = a.getColorStateList(attr);
+                    break;
+                case 2:
+                    padding = a.getDimensionPixelSize(attr, padding);
+                    break;
+            }
         }
-        mDrawablePadding = a.getDimensionPixelSize(2, 0);
         a.recycle();
+
+        TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.GradientTabStrip);
+        textSize = custom.getDimensionPixelSize(R.styleable.GradientTabStrip_gtsTextSize, textSize);
+        if (custom.hasValue(R.styleable.GradientTabStrip_gtsTextColor))
+            colors = custom.getColorStateList(R.styleable.GradientTabStrip_gtsTextColor);
+        padding = custom.getDimensionPixelSize(R.styleable.GradientTabStrip_gtsDrawablePadding,
+                padding);
+        if (custom.hasValue(R.styleable.GradientTabStrip_gtsBackground))
+            drawable = custom.getDrawable(R.styleable.GradientTabStrip_gtsBackground);
+        custom.recycle();
+
         setGravity(Gravity.CENTER);
         setTextSize(textSize);
         setTextColor(colors);
+        setDrawablePadding(padding);
+        setItemBackground(drawable);
         setTagTextColor(DEFAULT_TAG_TEXT_COLOR);
         if (mTagTextSize == 0) {
             setTagTextSize(DEFAULT_TAG_TEXT_SIZE
@@ -451,6 +478,27 @@ public class GradientTabStrip extends BaseTabStrip {
     }
 
     /**
+     * 设置图像间距
+     * @param padding 间距
+     */
+    public void setDrawablePadding(int padding) {
+        if (padding != mDrawablePadding) {
+            mDrawablePadding = padding;
+            requestLayout();
+            invalidate();
+        }
+    }
+
+    /**
+     * 获取图像间距
+     * @return 图像间距
+     */
+    @SuppressWarnings("unused")
+    public final int getDrawableHeight() {
+        return mDrawableHeight;
+    }
+
+    /**
      * 获取小标签文字颜色
      *
      * @return 小标签文字颜色
@@ -521,7 +569,7 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @author Alex
      */
-    public interface GradientTabAdapter extends ItemTabAdapter{
+    public interface GradientTabAdapter extends ItemTabAdapter {
 
         /**
          * 获取普通状态下的 Drawable

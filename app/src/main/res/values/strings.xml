@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">ProjectX</string>
 
+    <string name="main_tab_develop">Develop</string>
+    <string name="main_tab_widgets">Widgets</string>
+    <string name="main_tab_drawables">Drawables</string>
+    <string name="main_tab_others">Others</string>
+
     <string name="cd_welcome">welcome icon</string>
-
-
-
-
-
 
 
     <string name="wechat">仿微信</string>
@@ -46,4 +46,7 @@
     <string name="des">DES</string>
     <string name="aes">AES</string>
     <string name="rsa">RSA</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GradientTabStrip">
+        <attr name="gtsTextSize" format="dimension"/>
+        <attr name="gtsTextColor" format="color"/>
+        <attr name="gtsDrawablePadding" format="dimension"/>
+        <attr name="gtsBackground" format="reference"/>
+    </declare-styleable>
+</resources>

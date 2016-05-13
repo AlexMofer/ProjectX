@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/DrawerActivity</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="GradualTheme" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/GradualActivity</item>
+    </style>
+
+    <style name="WelcomeTheme" parent="GradualTheme">
+        <item name="android:windowBackground">@color/colorBackground_welcome</item>
+        <item name="android:windowFullscreen">true</item>\
+    </style>
+
+</resources>
