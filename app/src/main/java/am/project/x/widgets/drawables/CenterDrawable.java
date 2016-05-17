@@ -53,7 +53,6 @@ public class CenterDrawable extends Drawable {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.save();
         drawBackground(canvas, mPaint);
         drawCenterDrawable(canvas, mDrawableCenter);
     }
