@@ -1,4 +1,4 @@
-package am.project.x.widgets.tabstrips;
+package am.widget.gradienttabstrip;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -15,9 +15,6 @@ import android.support.v4.view.BaseTabStrip;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.View;
-
-import am.project.x.R;
 
 /**
  * 滑动渐变TabStrip，Item不建议超过5个
@@ -125,11 +122,11 @@ public class GradientTabStrip extends BaseTabStrip {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        final int widthMode = View.MeasureSpec.getMode(widthMeasureSpec);
-        final int heightMode = View.MeasureSpec.getMode(heightMeasureSpec);
-        final int widthSize = View.MeasureSpec.getSize(widthMeasureSpec);
-        final int heightSize = View.MeasureSpec.getSize(heightMeasureSpec);
-        if (widthMode != View.MeasureSpec.EXACTLY) {
+        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        final int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        final int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        if (widthMode != MeasureSpec.EXACTLY) {
             throw new IllegalStateException("Must measure with an exact width");
         }
         mItemWidth = (float) (widthSize - getPaddingLeft() - getPaddingRight())
@@ -145,7 +142,7 @@ public class GradientTabStrip extends BaseTabStrip {
             mDrawableHeight = -mDrawablePadding;
         }
         int height;
-        if (heightMode == View.MeasureSpec.EXACTLY) {
+        if (heightMode == MeasureSpec.EXACTLY) {
             height = heightSize;
             setMeasuredDimension(widthSize, heightSize);
         } else {
@@ -399,6 +396,7 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @param adapter Adapter
      */
+    @SuppressWarnings("unused")
     public final void setAdapter(GradientTabAdapter adapter) {
         if (mAdapter != adapter) {
             mAdapter = adapter;

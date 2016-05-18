@@ -11,7 +11,7 @@
         android:layout_weight="1"
         android:background="@android:color/white"/>
 
-    <am.project.x.widgets.tabstrips.GradientTabStrip
+    <am.widget.gradienttabstrip.GradientTabStrip
         android:id="@+id/tab_wechat"
         android:layout_width="match_parent"
         android:layout_height="54dp"

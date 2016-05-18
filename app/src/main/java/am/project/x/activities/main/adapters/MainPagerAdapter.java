@@ -12,7 +12,7 @@ import am.project.x.activities.main.fragments.DevelopFragment;
 import am.project.x.activities.main.fragments.DrawablesFragment;
 import am.project.x.activities.main.fragments.OthersFragment;
 import am.project.x.activities.main.fragments.WidgetsFragment;
-import am.project.x.widgets.tabstrips.GradientTabStrip;
+import am.widget.gradienttabstrip.GradientTabStrip;
 
 /**
  * 主页Adapter

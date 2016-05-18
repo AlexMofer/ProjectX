@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import am.project.x.R;
 import am.project.x.activities.main.adapters.MainPagerAdapter;
-import am.project.x.widgets.tabstrips.GradientTabStrip;
+import am.widget.gradienttabstrip.GradientTabStrip;
 
 /**
  * 主页

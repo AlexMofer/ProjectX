@@ -1,4 +1,4 @@
-# GradientPagerTabStrip
+# GradientTabStrip
   继承自View，实现ViewPager.Decor接口（因其为包内私有接口，无法外部继承，故BaseTabStrip类必须存放在android.support.v4.view包中），版本兼容到API4(Android 1.6)
 ## 预览
 -![alt text](https://github.com/AlexMofer/ProjectX/blob/master/images/IndicatorTabStrip.gif "Screenshot")

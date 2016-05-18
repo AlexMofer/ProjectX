@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import am.project.x.R;
-import am.project.x.widgets.tabstrips.GradientTabStrip;
+import am.widget.gradienttabstrip.GradientTabStrip;
 
 @SuppressWarnings("all")
 public class WechatActivity extends Activity {
