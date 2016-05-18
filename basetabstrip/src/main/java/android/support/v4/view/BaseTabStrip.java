@@ -269,7 +269,6 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      * @param y Y坐标
      * @return 坐标对应位置
      */
-    @SuppressWarnings("unused")
     protected int pointToPosition(float x, float y) {
         return 0;
     }
@@ -299,7 +298,6 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      * @param motionY    点击位置Y
      * @return x location
      */
-    @SuppressWarnings("unused")
     protected float getHotspotX(Drawable background, int position, float motionX, float motionY) {
         return background.getIntrinsicWidth() * 0.5f;
     }
@@ -313,7 +311,6 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      * @param motionY    点击位置Y
      * @return y location
      */
-    @SuppressWarnings("unused")
     protected float getHotspotY(Drawable background, int position, float motionX, float motionY) {
         return background.getIntrinsicHeight() * 0.5f;
     }
@@ -598,10 +595,20 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         }
     }
 
+    /**
+     * 获取ViewPager
+     *
+     * @return ViewPager
+     */
     public final ViewPager getViewPager() {
         return mPager;
     }
 
+    /**
+     * 获取子项总数
+     *
+     * @return 子项总数
+     */
     public final int getItemCount() {
         try {
             return mWatchingAdapter.get().getCount();
@@ -610,6 +617,12 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         }
     }
 
+    /**
+     * 获取子项文字
+     *
+     * @param position 子项坐标
+     * @return 子项文字
+     */
     @SuppressWarnings("unused")
     public final CharSequence getItemText(int position) {
         try {
