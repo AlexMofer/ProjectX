@@ -85,5 +85,5 @@
 ## 注意
  - 如果子类实现子项点击事件，需要在构造方法中setItemClickable(ture)，且同时可设置点击时是否平滑滚动setClickSmoothScroll(boolean)；
  - 可通过setItemBackground()来给子项设置背景，但背景并未在基类中绘画出来，因此需要在子类中自行将其绘制出来，如果不需要则可以忽略
- - OnItemClickListener中实现了，单击、点击已选中子项、双击三种点击事件
+ - OnItemClickListener中实现了：单击、点击已选中子项、双击三种点击事件
  - ItemTabAdapter为角标基本容器，需要实现角标，可以基于该接口
