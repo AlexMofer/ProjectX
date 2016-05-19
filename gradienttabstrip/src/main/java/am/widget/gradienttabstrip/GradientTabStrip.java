@@ -1,5 +1,6 @@
 package am.widget.gradienttabstrip;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -17,7 +18,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 
 /**
- * 滑动渐变TabStrip，Item不建议超过5个
+ * 滑动渐变TabStrip，子项建议不超过5个
  *
  * @author Alex
  */
@@ -69,7 +70,7 @@ public class GradientTabStrip extends BaseTabStrip {
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setTextAlign(Align.CENTER);
         if (Build.VERSION.SDK_INT > 4) {
-            mTextPaint.density = density;
+            updateTextPaintDensity();
         }
         final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS, defStyleAttr, 0);
         int n = a.getIndexCount();
@@ -118,6 +119,11 @@ public class GradientTabStrip extends BaseTabStrip {
         }
         mTagPadding = (int) (DEFAULT_TAG_PADDING * density);
         setClickable(true);
+    }
+
+    @TargetApi(5)
+    private void updateTextPaintDensity() {
+        mTextPaint.density = getResources().getDisplayMetrics().density;
     }
 
     @Override
@@ -477,6 +483,7 @@ public class GradientTabStrip extends BaseTabStrip {
 
     /**
      * 设置图像间距
+     *
      * @param padding 间距
      */
     public void setDrawablePadding(int padding) {
@@ -489,6 +496,7 @@ public class GradientTabStrip extends BaseTabStrip {
 
     /**
      * 获取图像间距
+     *
      * @return 图像间距
      */
     @SuppressWarnings("unused")

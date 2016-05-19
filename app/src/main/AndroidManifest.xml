@@ -23,27 +23,9 @@
         </activity>
         <activity
             android:name=".activities.main.MainActivity"
-            android:theme="@style/GradualTheme" />
-        
-
-
-
-        <activity android:name=".activities.WidgetListActivity" />
-        <activity
-            android:name=".activities.NewWidgetActivity"
-            android:label="@string/newwidget" />
-        <activity
-            android:name=".activities.WechatActivity"
-            android:label="@string/wechat" />
-        <activity
-            android:name=".activities.BilateralPaneActivity"
-            android:label="@string/bilateralpane" />
-        <activity
-            android:name=".activities.DotpagerActivity"
-            android:label="@string/dotpager" />
-        <activity
-            android:name=".activities.IndicatorTabActivity"
-            android:label="@string/supertab">
+            android:theme="@style/MainTheme" />
+        <activity android:name=".activities.widgets.gradienttabstrip.GradientTabStripActivity"
+            android:label="@string/gradienttabstrip_title">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -52,11 +34,25 @@
 
                 <data
                     android:host="github.com"
-                    android:pathPrefix="/AlexMofer/GradientPagerTabStrip"
+                    android:pathPrefix="/AlexMofer/ProjectX/tree/master/gradienttabstrip"
                     android:scheme="https" />
             </intent-filter>
         </activity>
 
+
+        <activity android:name=".activities.WidgetListActivity" />
+        <activity
+            android:name=".activities.NewWidgetActivity"
+            android:label="@string/newwidget" />
+        <activity
+            android:name=".activities.BilateralPaneActivity"
+            android:label="@string/bilateralpane" />
+        <activity
+            android:name=".activities.DotpagerActivity"
+            android:label="@string/dotpager" />
+        <activity
+            android:name=".activities.IndicatorTabActivity"
+            android:label="@string/supertab"/>
         <activity
             android:name=".activities.SwipeRefreshActivity"
             android:label="@string/swiperefresh" />
@@ -102,6 +98,7 @@
         <activity
             android:name=".activities.CipherActivity"
             android:label="@string/cipher" />
+
     </application>
 
 </manifest>

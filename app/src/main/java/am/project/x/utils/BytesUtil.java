@@ -1,5 +1,7 @@
 package am.project.x.utils;
 
+import java.util.Locale;
+
 /**
  * 字节工具类
  * Created by Alex on 2016/4/26.
@@ -22,7 +24,7 @@ public class BytesUtil {
             if (hex.length() == 1) {
                 hex = '0' + hex;
             }
-            hexStr += hex.toUpperCase();
+            hexStr += hex.toUpperCase(Locale.getDefault());
         }
         return hexStr;
     }

@@ -13,7 +13,7 @@
         android:theme="@style/AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/main_toolbar"
+            android:id="@+id/gts_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/app_name" />
+                android:text="@string/gradienttabstrip_title" />
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
@@ -34,18 +34,18 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v4.view.ViewPager
-            android:id="@+id/main_vp_fragments"
+            android:id="@+id/gts_vp_fragments"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
         <am.widget.gradienttabstrip.GradientTabStrip
-            android:id="@+id/main_gts_tabs"
+            android:id="@+id/gts_gts_tabs"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/bg_main_tab_bar"
-            android:textColor="@color/color_main_tabs"
-            android:textSize="@dimen/textSize_9"
+            android:background="@drawable/bg_gradienttabstrip_tab"
+            android:textColor="@color/color_gradienttabstrip_tab"
+            android:textSize="12sp"
             app:gtsBackground="@drawable/bg_common_press"/>
 
     </LinearLayout>

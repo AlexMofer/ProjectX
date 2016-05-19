@@ -6,6 +6,8 @@
     <string name="main_tab_drawables">Drawables</string>
     <string name="main_tab_others">Others</string>
 
+    <string name="gradienttabstrip_title">仿微信</string>
+
     <string name="cd_welcome">welcome icon</string>
 
 
@@ -47,6 +49,4 @@
     <string name="aes">AES</string>
     <string name="rsa">RSA</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

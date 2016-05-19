@@ -1,8 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
-
-version = "2.0.0"
 
 android {
     compileSdkVersion 23
@@ -11,7 +7,7 @@ android {
         minSdkVersion 4
         targetSdkVersion 23
         versionCode 20
-        versionName version
+        versionName "2.0.0"
     }
     buildTypes {
         release {
@@ -25,74 +21,5 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:23.4.0'
 }
-def siteUrl = 'https://github.com/AlexMofer/ProjectX/tree/master/basetabstrip'      // 项目的主页
-def gitUrl = 'https://github.com/AlexMofer/ProjectX.git'   // Git仓库的url
-group = "am.widget" // Maven Group ID for the artifact，一般填你唯一的包名
-//通过gradlew install命令生成pom-default.xml 在 module库目录/build/poms/pom-default.xml
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                packaging 'aar'
-                name 'Base TabStrip For Develop'                                   // #CONFIG# // project title
-                url siteUrl
-                // Set your license
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id 'alexmofer'                                           // #CONFIG# // your user id (you can write your nickname)
-                        name 'alexmofer'                                       // #CONFIG# // your user name
-                        email 'moferalex@gmail.com'                               // #CONFIG# // your email
-                    }
-                }
-                scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url siteUrl
-                }
-            }
-        }
-    }
-}
 
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    configurations = ['archives']
-    pkg {
-        repo = "maven" //发布到Bintray的那个仓库里，默认账户有四个库，我们这里上传到maven库
-        name = "BaseTabStrip"  //发布到Bintray上的项目名字
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        licenses = ["Apache-2.0"]
-        publish = true
-    }
-}
+//apply from: "bintray.gradle"

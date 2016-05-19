@@ -47,7 +47,6 @@ public class WidgetListActivity extends Activity implements OnClickListener {
                 intent = new Intent(me, NewWidgetActivity.class);
                 break;
             case R.id.wl_btn_wechat:
-                intent = new Intent(me, WechatActivity.class);
                 break;
             case R.id.wl_btn_bilateralpane:
                 intent = new Intent(me, BilateralPaneActivity.class);

@@ -14,6 +14,13 @@
         <item name="android:activityCloseExitAnimation">@anim/activity_hide_out</item>
     </style>
 
+    <style name="MainActivity" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_show_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_hide_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_in_from_back</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_out_to_right</item>
+    </style>
+
     <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="ToolbarTitle">

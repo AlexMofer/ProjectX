@@ -53,7 +53,7 @@ public class CalendarUtils {
 	 */
 	public static long getTimesWeekStart() {
 		Calendar cal = Calendar.getInstance();
-		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONDAY),
+		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
 				cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
 		cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 		return cal.getTimeInMillis();
@@ -92,7 +92,7 @@ public class CalendarUtils {
 	 */
 	public static long getTimesMonthStart() {
 		Calendar cal = Calendar.getInstance();
-		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONDAY),
+		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
 				cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
 		cal.set(Calendar.DAY_OF_MONTH,
 				cal.getActualMinimum(Calendar.DAY_OF_MONTH));
@@ -106,7 +106,7 @@ public class CalendarUtils {
 	 */
 	public static long getTimesMonthEnd() {
 		Calendar cal = Calendar.getInstance();
-		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONDAY),
+		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
 				cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
 		cal.set(Calendar.DAY_OF_MONTH,
 				cal.getActualMaximum(Calendar.DAY_OF_MONTH));
@@ -124,7 +124,7 @@ public class CalendarUtils {
 	 */
 	public static long getTimesMonthNextStart() {
 		Calendar cal = Calendar.getInstance();
-		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONDAY),
+		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
 				cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
 		cal.set(Calendar.DAY_OF_MONTH,
 				cal.getActualMaximum(Calendar.DAY_OF_MONTH));

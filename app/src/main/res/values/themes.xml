@@ -17,4 +17,8 @@
         <item name="android:windowFullscreen">true</item>\
     </style>
 
+    <style name="MainTheme" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/MainActivity</item>
+    </style>
+
 </resources>
