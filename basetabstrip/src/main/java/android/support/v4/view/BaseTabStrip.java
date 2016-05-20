@@ -34,7 +34,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
- * BasePagerTabStrip ViewPager»¬¶¯¶ÔÓ¦±ä»¯Ð§¹û
+ * BasePagerTabStrip ViewPageræ»‘åŠ¨å¯¹åº”å˜åŒ–æ•ˆæžœ
  *
  * @author Alex
  */
@@ -89,9 +89,9 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * À¦°óViewPager
+     * æ†ç»‘ViewPager
      *
-     * @param pager ¹ØÁªµÄViewPager
+     * @param pager å…³è”çš„ViewPager
      */
     public void bindViewPager(ViewPager pager) {
         PagerAdapter oldAdapter = null;
@@ -133,9 +133,10 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * µã»÷
+     * ç‚¹å‡»
      *
-     * @param position Î»ÖÃ
+     * @param position ä½ç½®
+     * @return ç‚¹å‡»æˆåŠŸ
      */
     @SuppressWarnings("unused")
     public boolean performClick(int position) {
@@ -143,10 +144,12 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * µã»÷
+     * ç‚¹å‡»
      *
-     * @param position     Î»ÖÃ
-     * @param smoothScroll ÊÇ·ñÆ½»¬¹ö¶¯
+     * @param position       ä½ç½®
+     * @param smoothScroll   æ˜¯å¦å¹³æ»‘æ»šåŠ¨
+     * @param notifyListener æ˜¯å¦é€šçŸ¥ç›‘å¬å™¨
+     * @return ç‚¹å‡»æˆåŠŸ
      */
     public boolean performClick(int position, boolean smoothScroll, boolean notifyListener) {
         if (getViewPager() != null && position >= 0 && position < getItemCount()) {
@@ -171,10 +174,10 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * À¦°óPagerAdapter
+     * æ†ç»‘PagerAdapter
      *
-     * @param oldAdapter ¾ÉAdapter
-     * @param newAdapter ÐÂAdapter
+     * @param oldAdapter æ—§Adapter
+     * @param newAdapter æ–°Adapter
      */
     protected void bindPagerAdapter(PagerAdapter oldAdapter, PagerAdapter newAdapter) {
         if (oldAdapter != null) {
@@ -193,7 +196,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * ´´½¨×ÓÏî±³¾°
+     * åˆ›å»ºå­é¡¹èƒŒæ™¯
      */
     protected void createItemBackgrounds() {
         if (mTabItemBackground == null)
@@ -217,7 +220,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * ÖØÐÂ´´½¨×ÓÏî±³¾°
+     * é‡æ–°åˆ›å»ºå­é¡¹èƒŒæ™¯
      */
     protected void recreateItemBackgrounds() {
         clearItemBackground();
@@ -232,16 +235,16 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * »ñÈ¡µ±Ç°Ñ¡ÖÐµÄ×ÓÏî
+     * èŽ·å–å½“å‰é€‰ä¸­çš„å­é¡¹
      *
-     * @return µ±Ç°Ñ¡ÖÐµÄ×ÓÏî
+     * @return å½“å‰é€‰ä¸­çš„å­é¡¹
      */
     public int getCurrentItem() {
         return mPager == null ? -1 : mPager.getCurrentItem();
     }
 
     /**
-     * ¼ì²éÑ¡ÖÐ×ÓÏî
+     * æ£€æŸ¥é€‰ä¸­å­é¡¹
      */
     public void checkCurrentItem() {
         final int position = getCurrentItem();
@@ -256,19 +259,20 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * À¦°óPagerAdapter
+     * æ†ç»‘PagerAdapter
      */
     protected void onBindPagerAdapter() {
 
     }
 
     /**
-     * ÓÉ´¥Ãþµã×ªÎªPosition
+     * ç”±è§¦æ‘¸ç‚¹è½¬ä¸ºPosition
      *
-     * @param x X×ø±ê
-     * @param y Y×ø±ê
-     * @return ×ø±ê¶ÔÓ¦Î»ÖÃ
+     * @param x Xåæ ‡
+     * @param y Yåæ ‡
+     * @return åæ ‡å¯¹åº”ä½ç½®
      */
+    @SuppressWarnings("unused")
     protected int pointToPosition(float x, float y) {
         return 0;
     }
@@ -292,12 +296,13 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     /**
      * set hotspot's x location
      *
-     * @param background ±³¾°Í¼
-     * @param position   Í¼Æ¬Position
-     * @param motionX    µã»÷Î»ÖÃX
-     * @param motionY    µã»÷Î»ÖÃY
+     * @param background èƒŒæ™¯å›¾
+     * @param position   å›¾ç‰‡Position
+     * @param motionX    ç‚¹å‡»ä½ç½®X
+     * @param motionY    ç‚¹å‡»ä½ç½®Y
      * @return x location
      */
+    @SuppressWarnings("unused")
     protected float getHotspotX(Drawable background, int position, float motionX, float motionY) {
         return background.getIntrinsicWidth() * 0.5f;
     }
@@ -305,12 +310,13 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     /**
      * set hotspot's y location
      *
-     * @param background ±³¾°Í¼
-     * @param position   Í¼Æ¬Position
-     * @param motionX    µã»÷Î»ÖÃX
-     * @param motionY    µã»÷Î»ÖÃY
+     * @param background èƒŒæ™¯å›¾
+     * @param position   å›¾ç‰‡Position
+     * @param motionX    ç‚¹å‡»ä½ç½®X
+     * @param motionY    ç‚¹å‡»ä½ç½®Y
      * @return y location
      */
+    @SuppressWarnings("unused")
     protected float getHotspotY(Drawable background, int position, float motionX, float motionY) {
         return background.getIntrinsicHeight() * 0.5f;
     }
@@ -328,11 +334,12 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * »ñÈ¡Tab×ÓÏî±³¾°
+     * èŽ·å–Tabå­é¡¹èƒŒæ™¯
      *
-     * @param position Î»ÖÃ
-     * @return ±³¾°
+     * @param position ä½ç½®
+     * @return èƒŒæ™¯
      */
+    @SuppressWarnings("unused")
     protected Drawable getItemBackground(int position) {
         return position < mTabItemBackgrounds.size() ? mTabItemBackgrounds.get(position) : null;
     }
@@ -422,11 +429,11 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * ¸üÐÂView
+     * æ›´æ–°View
      *
-     * @param position       Î»ÖÃ
-     * @param positionOffset Î»ÖÃÆ«ÒÆ
-     * @param force          ÊÇ·ñÇ¿ÖÆ¸üÐÂ
+     * @param position       ä½ç½®
+     * @param positionOffset ä½ç½®åç§»
+     * @param force          æ˜¯å¦å¼ºåˆ¶æ›´æ–°
      */
     private void updateView(int position, float positionOffset, boolean force) {
         if (mLastKnownPositionOffset == -1) {
@@ -480,9 +487,9 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * Í¨ÖªÌø×ªµ½
+     * é€šçŸ¥è·³è½¬åˆ°
      *
-     * @param current Î»ÖÃ
+     * @param current ä½ç½®
      */
     private void notifyJumpTo(int current) {
         if (changeListeners == null)
@@ -493,11 +500,11 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * Í¨Öª»¬Ïò×ó±ß
+     * é€šçŸ¥æ»‘å‘å·¦è¾¹
      *
-     * @param current µ±Ç°Ò³
-     * @param next    Ä¿±êÒ³
-     * @param offset  Æ«ÒÆ
+     * @param current å½“å‰é¡µ
+     * @param next    ç›®æ ‡é¡µ
+     * @param offset  åç§»
      */
     private void notifyGotoLeft(int current, int next, float offset) {
         if (changeListeners == null)
@@ -508,11 +515,11 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * Í¨Öª»¬ÏòÓÒ±ß
+     * é€šçŸ¥æ»‘å‘å³è¾¹
      *
-     * @param current µ±Ç°Ò³
-     * @param next    Ä¿±êÒ³
-     * @param offset  Æ«ÒÆ
+     * @param current å½“å‰é¡µ
+     * @param next    ç›®æ ‡é¡µ
+     * @param offset  åç§»
      */
     private void notifyGotoRight(int current, int next, float offset) {
         if (changeListeners == null)
@@ -523,27 +530,27 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * Ö±½ÓÌø×ªµ½
+     * ç›´æŽ¥è·³è½¬åˆ°
      *
-     * @param current Î»ÖÃ
+     * @param current ä½ç½®
      */
     protected abstract void jumpTo(int current);
 
     /**
-     * »¬Ïò×ó±ß
+     * æ»‘å‘å·¦è¾¹
      *
-     * @param current µ±Ç°Ò³
-     * @param next    Ä¿±êÒ³
-     * @param offset  Æ«ÒÆ
+     * @param current å½“å‰é¡µ
+     * @param next    ç›®æ ‡é¡µ
+     * @param offset  åç§»
      */
     protected abstract void gotoLeft(int current, int next, float offset);
 
     /**
-     * »¬ÏòÓÒ±ß
+     * æ»‘å‘å³è¾¹
      *
-     * @param current µ±Ç°Ò³
-     * @param next    Ä¿±êÒ³
-     * @param offset  Æ«ÒÆ
+     * @param current å½“å‰é¡µ
+     * @param next    ç›®æ ‡é¡µ
+     * @param offset  åç§»
      */
     protected abstract void gotoRight(int current, int next, float offset);
 
@@ -596,7 +603,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * »ñÈ¡ViewPager
+     * èŽ·å–ViewPager
      *
      * @return ViewPager
      */
@@ -605,9 +612,9 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * »ñÈ¡×ÓÏî×ÜÊý
+     * èŽ·å–å­é¡¹æ€»æ•°
      *
-     * @return ×ÓÏî×ÜÊý
+     * @return å­é¡¹æ€»æ•°
      */
     public final int getItemCount() {
         try {
@@ -618,10 +625,10 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * »ñÈ¡×ÓÏîÎÄ×Ö
+     * èŽ·å–å­é¡¹æ–‡å­—
      *
-     * @param position ×ÓÏî×ø±ê
-     * @return ×ÓÏîÎÄ×Ö
+     * @param position å­é¡¹åæ ‡
+     * @return å­é¡¹æ–‡å­—
      */
     @SuppressWarnings("unused")
     public final CharSequence getItemText(int position) {
@@ -633,9 +640,9 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * ÉèÖÃTab×ÓÏî±³¾°
+     * è®¾ç½®Tabå­é¡¹èƒŒæ™¯
      *
-     * @param background ±³¾°
+     * @param background èƒŒæ™¯
      */
     public void setItemBackground(Drawable background) {
         if (mTabItemBackground != background) {
@@ -647,9 +654,9 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * ÉèÖÃTab×ÓÏî±³¾°
+     * è®¾ç½®Tabå­é¡¹èƒŒæ™¯
      *
-     * @param background ±³¾°
+     * @param background èƒŒæ™¯
      */
     @SuppressWarnings("unused")
     public void setItemBackground(int background) {
@@ -657,9 +664,9 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * ÉèÖÃTabÊÇ·ñ¿ÉÒÔµã»÷
+     * è®¾ç½®Tabæ˜¯å¦å¯ä»¥ç‚¹å‡»
      *
-     * @param clickable ÊÇ·ñ¿ÉÒÔµã»÷
+     * @param clickable æ˜¯å¦å¯ä»¥ç‚¹å‡»
      */
     public void setItemClickable(boolean clickable) {
         tabClickable = clickable;
@@ -669,9 +676,9 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * TabÊÇ·ñ¿ÉÒÔµã»÷
+     * Tabæ˜¯å¦å¯ä»¥ç‚¹å‡»
      *
-     * @return TabÊÇ·ñ¿ÉÒÔµã»÷
+     * @return Tabæ˜¯å¦å¯ä»¥ç‚¹å‡»
      */
     @SuppressWarnings("unused")
     public boolean isTabClickable() {
@@ -679,9 +686,9 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * ÊÇ·ñµã»÷Ê±Æ½»¬¹ö¶¯
+     * æ˜¯å¦ç‚¹å‡»æ—¶å¹³æ»‘æ»šåŠ¨
      *
-     * @return µã»÷Ê±ÊÇ·ñÆ½»¬¹ö¶¯
+     * @return ç‚¹å‡»æ—¶æ˜¯å¦å¹³æ»‘æ»šåŠ¨
      */
     @SuppressWarnings("unused")
     public boolean isClickSmoothScroll() {
@@ -689,18 +696,18 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * ÉèÖÃµã»÷Ê±ÊÇ·ñÆ½»¬¹ö¶¯
+     * è®¾ç½®ç‚¹å‡»æ—¶æ˜¯å¦å¹³æ»‘æ»šåŠ¨
      *
-     * @param smooth µã»÷Ê±ÊÇ·ñÆ½»¬¹ö¶¯
+     * @param smooth ç‚¹å‡»æ—¶æ˜¯å¦å¹³æ»‘æ»šåŠ¨
      */
     public void setClickSmoothScroll(boolean smooth) {
         clickSmoothScroll = smooth;
     }
 
     /**
-     * ÉèÖÃµã»÷¼àÌý
+     * è®¾ç½®ç‚¹å‡»ç›‘å¬
      *
-     * @param listener ¼àÌýÆ÷
+     * @param listener ç›‘å¬å™¨
      */
     @SuppressWarnings("unused")
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -708,35 +715,35 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * µã»÷¼àÌý
+     * ç‚¹å‡»ç›‘å¬
      */
     public interface OnItemClickListener {
         /**
-         * µã»÷×ÓÏî
+         * ç‚¹å‡»å­é¡¹
          *
-         * @param position Î»ÖÃ
+         * @param position ä½ç½®
          */
         void onItemClick(int position);
 
         /**
-         * µã»÷ÒÑÑ¡ÖÐ×ÓÏî
+         * ç‚¹å‡»å·²é€‰ä¸­å­é¡¹
          *
-         * @param position Î»ÖÃ
+         * @param position ä½ç½®
          */
         void onSelectedClick(int position);
 
         /**
-         * Ë«»÷×ÓÏî
+         * åŒå‡»å­é¡¹
          *
-         * @param position Î»ÖÃ
+         * @param position ä½ç½®
          */
         void onDoubleClick(int position);
     }
 
     /**
-     * Ìí¼Ó±ä»¯¼àÌýÆ÷
+     * æ·»åŠ å˜åŒ–ç›‘å¬å™¨
      *
-     * @param listener ±ä»¯¼àÌýÆ÷
+     * @param listener å˜åŒ–ç›‘å¬å™¨
      */
     @SuppressWarnings("unused")
     public void addOnChangeListener(OnChangeListener listener) {
@@ -749,9 +756,9 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * ÒÆ³ý±ä»¯¼àÌýÆ÷
+     * ç§»é™¤å˜åŒ–ç›‘å¬å™¨
      *
-     * @param listener ±ä»¯¼àÌýÆ÷
+     * @param listener å˜åŒ–ç›‘å¬å™¨
      */
     @SuppressWarnings("unused")
     public void removeOnChangeListener(OnChangeListener listener) {
@@ -761,10 +768,11 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * »ñÈ¡Ä¬ÈÏTag±³¾°
+     * èŽ·å–é»˜è®¤TagèƒŒæ™¯
      *
-     * @return Ä¬ÈÏTag±³¾°
+     * @return é»˜è®¤TagèƒŒæ™¯
      */
+    @SuppressWarnings("unused")
     protected Drawable getDefaultTagBackground() {
         final float density = getResources().getDisplayMetrics().density;
         final GradientDrawable mBackground = new GradientDrawable();
@@ -776,53 +784,54 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
-     * ±ä»¯¼àÌý
+     * å˜åŒ–ç›‘å¬
      */
     public interface OnChangeListener {
         /**
-         * Ìø×ªµ½µ±Ç°Î»ÖÃ
+         * è·³è½¬åˆ°å½“å‰ä½ç½®
          *
-         * @param correct µ±Ç°Î»ÖÃ
+         * @param correct å½“å‰ä½ç½®
          */
         void jumpTo(int correct);
 
         /**
-         * Íù×ó¹ö¶¯
+         * å¾€å·¦æ»šåŠ¨
          *
-         * @param correct µ±Ç°Î»ÖÃ
-         * @param next    ½«ÒªµÖ´ïÎ»ÖÃ
-         * @param offset  ÒÆ¶¯±ãÒË
+         * @param correct å½“å‰ä½ç½®
+         * @param next    å°†è¦æŠµè¾¾ä½ç½®
+         * @param offset  ç§»åŠ¨ä¾¿å®œ
          */
         void gotoLeft(int correct, int next, float offset);
 
         /**
-         * ÍùÓÒ¹ö¶¯
+         * å¾€å³æ»šåŠ¨
          *
-         * @param correct µ±Ç°Î»ÖÃ
-         * @param next    ½«ÒªµÖ´ïÎ»ÖÃ
-         * @param offset  ÒÆ¶¯±ãÒË
+         * @param correct å½“å‰ä½ç½®
+         * @param next    å°†è¦æŠµè¾¾ä½ç½®
+         * @param offset  ç§»åŠ¨ä¾¿å®œ
          */
         void gotoRight(int correct, int next, float offset);
     }
 
     /**
-     * ½Ç±êÊý¾ÝÈÝÆ÷Adapter
+     * è§’æ ‡æ•°æ®å®¹å™¨Adapter
      */
+    @SuppressWarnings("unused")
     public interface ItemTabAdapter {
 
         /**
-         * ÊÇ·ñÆôÓÃ½Ç±ê
+         * æ˜¯å¦å¯ç”¨è§’æ ‡
          *
-         * @param position ItemÎ»ÖÃ
-         * @return ÊÇ·ñÆôÓÃ
+         * @param position Itemä½ç½®
+         * @return æ˜¯å¦å¯ç”¨
          */
         boolean isTagEnable(int position);
 
         /**
-         * »ñÈ¡½Ç±êÖµ
+         * èŽ·å–è§’æ ‡å€¼
          *
-         * @param position ItemÎ»ÖÃ
-         * @return ½Ç±êÖµ
+         * @param position Itemä½ç½®
+         * @return è§’æ ‡å€¼
          */
         String getTag(int position);
     }
