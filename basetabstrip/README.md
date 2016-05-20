@@ -3,6 +3,14 @@
   其实可以去掉ViewPager.Decor接口，其目的是作为子View放入ViewPager，并能够达到自动捆绑ViewPager与显示于其内部的上方或者下方
 ## 功能
   BaseTabStrip为基础类，仅实现了一些通用基础逻辑。具体的实现效果需要实现与重写部分方法
+## 引用
+```java
+dependencies {
+    ⋯
+    compile 'am.widget:basetabstrip:2.0.1'
+    ⋯
+}
+```
 ## 使用
 必须实现的方法（实现子类独有的效果）：
 ```java
