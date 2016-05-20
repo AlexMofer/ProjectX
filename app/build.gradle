@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "am.project.x"
-        minSdkVersion 8
+        minSdkVersion 11
         targetSdkVersion 22
         versionCode 11
         versionName "2.0"

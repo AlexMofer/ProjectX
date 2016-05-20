@@ -24,4 +24,4 @@ dependencies {
     compile 'am.widget:basetabstrip:2.0.1'
 }
 
-//apply from: "bintray.gradle"
+apply from: "bintray.gradle"

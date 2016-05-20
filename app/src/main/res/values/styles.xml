@@ -21,6 +21,12 @@
         <item name="android:activityCloseExitAnimation">@anim/activity_out_to_right</item>
     </style>
 
+    <style name="ActionBarStyle" parent="Widget.AppCompat.Light.ActionBar">
+        <item name="displayOptions">homeAsUp</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="navigationIcon">@drawable/ic_action_back</item>
+    </style>
+
     <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="ToolbarTitle">
