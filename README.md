@@ -1,7 +1,7 @@
 # ProjectX
   整体项目合集，包括Widget、Drawable以及一些工具类。
   
-![](https://github.com/AlexMofer/ProjectX/blob/master/ProjectX.png "ICON")
+![ICON](https://github.com/AlexMofer/ProjectX/blob/master/ProjectX.png)
   
 ## 控件
 - [BaseTabStrip](https://github.com/AlexMofer/ProjectX/tree/master/basetabstrip)
