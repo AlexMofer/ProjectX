@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import am.project.x.R;
-import am.project.x.widgets.tabstrips.IndicatorTabStrip;
+import am.widget.indicatortabstrip.IndicatorTabStrip;
 
 @SuppressWarnings("all")
 public class IndicatorTabActivity extends Activity {

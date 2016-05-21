@@ -1,4 +1,4 @@
-package am.project.x.widgets.tabstrips;
+package am.widget.tagtabstrip;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -20,7 +20,7 @@ import android.view.View;
  * @author Alex
  *
  */
-public class DotTabStrip extends BaseTabStrip {
+public class TagTabStrip extends BaseTabStrip {
 
 	private final static int DEFAULT_SIZE = 6;
 	private Drawable mSelectedDrawable;
@@ -28,7 +28,7 @@ public class DotTabStrip extends BaseTabStrip {
 	private ColorStateList mColors;
 	private int defaultDrawableSize = 0;
 	private int drawablePadding = 0;
-	private int mCurrectPager = 0;
+	private int mCurrentPager = 0;
 	private int mNextPager = 0;
 	private float mOffset = 1;
 	private int mGravity = Gravity.CENTER;
@@ -37,16 +37,16 @@ public class DotTabStrip extends BaseTabStrip {
 	private static final int[] ATTRS = new int[]{android.R.attr.textColor,
 			android.R.attr.drawablePadding};
 
-	public DotTabStrip(Context context) {
+	public TagTabStrip(Context context) {
 		this(context, null);
 	}
 
-	public DotTabStrip(Context context, AttributeSet attrs) {
+	public TagTabStrip(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
 	}
 
 	@SuppressWarnings("ResourceType")
-	public DotTabStrip(Context context, AttributeSet attrs, int defStyleAttr) {
+	public TagTabStrip(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		setClickable(false);
 		final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
@@ -210,7 +210,7 @@ public class DotTabStrip extends BaseTabStrip {
 			if (i == mNextPager) {
 				alphaNormal = 1 - mOffset;
 				alphaSelected = mOffset;
-			} else if (i == mCurrectPager) {
+			} else if (i == mCurrentPager) {
 				alphaNormal = mOffset;
 				alphaSelected = 1 - mOffset;
 			} else {
@@ -234,7 +234,7 @@ public class DotTabStrip extends BaseTabStrip {
 
 	@Override
 	protected void jumpTo(int current) {
-		mCurrectPager = current - 1;
+		mCurrentPager = current - 1;
 		mNextPager = current;
 		mOffset = 1;
 		invalidate();
@@ -242,7 +242,7 @@ public class DotTabStrip extends BaseTabStrip {
 
 	@Override
 	protected void gotoLeft(int current, int next, float offset) {
-		mCurrectPager = current;
+		mCurrentPager = current;
 		mNextPager = next;
 		mOffset = 1 - offset;
 		invalidate();
@@ -250,7 +250,7 @@ public class DotTabStrip extends BaseTabStrip {
 
 	@Override
 	protected void gotoRight(int current, int next, float offset) {
-		mCurrectPager = current;
+		mCurrentPager = current;
 		mNextPager = next;
 		mOffset = offset;
 		invalidate();

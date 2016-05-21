@@ -8,8 +8,8 @@ import android.view.View;
 import java.util.ArrayList;
 
 import am.project.x.R;
-import am.project.x.widgets.tabstrips.DotTabStrip;
 import am.project.x.widgets.viewpager.ViewsPagerAdapter;
+import am.widget.tagtabstrip.TagTabStrip;
 
 public class DotpagerActivity extends Activity {
 	private DotpagerActivity me = this;
@@ -32,7 +32,7 @@ public class DotpagerActivity extends Activity {
 		ViewsPagerAdapter adapter = new ViewsPagerAdapter(views);
 		pager.setAdapter(adapter);
 
-		DotTabStrip dot = (DotTabStrip) findViewById(R.id.dot);
+		TagTabStrip dot = (TagTabStrip) findViewById(R.id.dot);
 		dot.bindViewPager(pager);
 	}
 }

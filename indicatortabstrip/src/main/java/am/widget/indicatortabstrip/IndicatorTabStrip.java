@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package am.project.x.widgets.tabstrips;
+package am.widget.indicatortabstrip;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -27,7 +27,6 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.view.BaseTabStrip;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.view.View;
 
 
 /**
@@ -95,7 +94,7 @@ public class IndicatorTabStrip extends BaseTabStrip {
 
     @SuppressWarnings("ResourceType")
     public IndicatorTabStrip(Context context, AttributeSet attrs,
-                                int defStyleAttr) {
+                             int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setItemClickable(true);
         density = getResources().getDisplayMetrics().density;
@@ -151,12 +150,12 @@ public class IndicatorTabStrip extends BaseTabStrip {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        final int widthMode = View.MeasureSpec.getMode(widthMeasureSpec);
-        final int heightMode = View.MeasureSpec.getMode(heightMeasureSpec);
-        final int widthSize = View.MeasureSpec.getSize(widthMeasureSpec);
-        final int heightSize = View.MeasureSpec.getSize(heightMeasureSpec);
+        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        final int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        final int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
-        if (widthMode != View.MeasureSpec.EXACTLY) {
+        if (widthMode != MeasureSpec.EXACTLY) {
             // TODO 使用不确定宽度处理
             throw new IllegalStateException("Must measure with an exact width");
         }
@@ -178,7 +177,7 @@ public class IndicatorTabStrip extends BaseTabStrip {
         if (minHeight > itemHeight + getPaddingTop() + getPaddingBottom()) {
             itemHeight = minHeight - getPaddingTop() - getPaddingBottom();
         }
-        if (heightMode == View.MeasureSpec.EXACTLY) {
+        if (heightMode == MeasureSpec.EXACTLY) {
             heightOffset = (heightSize - (itemHeight + getPaddingTop() + getPaddingBottom()))
                     * 0.5f;
             setMeasuredDimension(widthSize, heightSize);
