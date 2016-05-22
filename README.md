@@ -3,7 +3,7 @@
   
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/ProjectX.png)
   
-## 控件
+## Widget
 - [BaseTabStrip](https://github.com/AlexMofer/ProjectX/tree/master/basetabstrip)
 
 TabStrip基础类，其实现了类似于PagerTabStrip的一些基础方法，继承该类型并实现相应方法达到自定义的PagerTabStrip同类型的效果。

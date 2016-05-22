@@ -25,9 +25,9 @@ import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewParent;
 
 import java.lang.ref.WeakReference;
@@ -52,8 +52,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     private ArrayList<Drawable> mTabItemBackgrounds = new ArrayList<>();
     private boolean tabClickable;
     private boolean clickSmoothScroll;
-    private GestureDetectorCompat mTabGestureDetector;
-    private TabOnGestureListener mTabOnGestureListener = new TabOnGestureListener();
+    private TabStripGestureDetector tabStripGestureDetector;
     private OnItemClickListener clickListener;
     private ArrayList<OnChangeListener> changeListeners;
 
@@ -69,7 +68,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         super(context, attrs, defStyleAttr);
         setItemClickable(false);
         setClickSmoothScroll(false);
-        mTabGestureDetector = new GestureDetectorCompat(context, mTabOnGestureListener);
+        tabStripGestureDetector = new TabStripGestureDetector(context);
     }
 
     @Override
@@ -122,7 +121,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         if (!tabClickable) {
             return super.onTouchEvent(ev);
         }
-        final boolean tab = mTabGestureDetector.onTouchEvent(ev);
+        final boolean tab = tabStripGestureDetector.onTouchEvent(ev);
         return super.onTouchEvent(ev) || tab;
     }
 
@@ -279,8 +278,8 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
 
     @Override
     protected void drawableStateChanged() {
-        final float downMotionX = mTabOnGestureListener.getDownMotionX();
-        final float downMotionY = mTabOnGestureListener.getDownMotionY();
+        final float downMotionX = tabStripGestureDetector.getDownMotionX();
+        final float downMotionY = tabStripGestureDetector.getDownMotionY();
         int position = pointToPosition(downMotionX, downMotionY);
         if (position >= 0 && position < mTabItemBackgrounds.size()) {
             Drawable tag = mTabItemBackgrounds.get(position);
@@ -554,43 +553,74 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      */
     protected abstract void gotoRight(int current, int next, float offset);
 
-    private class TabOnGestureListener extends GestureDetector.SimpleOnGestureListener {
+    private class TabStripGestureDetector {
 
-        private float mDownMotionX = -1;
-        private float mDownMotionY = -1;
+        private final int DOUBLE_TAP_TIMEOUT = ViewConfiguration.getDoubleTapTimeout();
+        private int mTouchSlop;
+        private float mDownMotionX;
+        private float mDownMotionY;
+        private int mLastPosition;
+        private long mLastUpTime;
 
-        @Override
-        public boolean onDown(MotionEvent e) {
-            mDownMotionX = e.getX();
-            mDownMotionY = e.getY();
-            return super.onDown(e);
+        public TabStripGestureDetector(Context context) {
+            mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         }
 
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            return performClick(pointToPosition(e.getX(), e.getY()), clickSmoothScroll, true);
+        public boolean onTouchEvent(MotionEvent ev) {
+            boolean isClick = false;
+            final int action = ev.getAction();
+            final float x = ev.getX();
+            final float y = ev.getY();
+
+            switch (action) {
+                case MotionEvent.ACTION_DOWN:
+                    mDownMotionX = x;
+                    mDownMotionY = y;
+                    mLastPosition = getCurrentItem();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    final float dx = x - mDownMotionX;
+                    final float dy = y - mDownMotionY;
+                    if (dx * dx + dy * dy < mTouchSlop * mTouchSlop) {
+                        final int clickPosition = pointToPosition(x, y);
+                        isClick = onItemClick(clickPosition);
+                        if (mLastPosition == clickPosition) {
+                            final long downTime = ev.getDownTime();
+                            if (mLastUpTime != 0 && downTime - mLastUpTime < DOUBLE_TAP_TIMEOUT) {
+                                onDoubleClick(clickPosition);
+                            } else {
+                                onSelectedClick(clickPosition);
+                            }
+                        }
+                        mLastUpTime = ev.getEventTime();
+                    } else {
+                        mLastUpTime = 0;
+                    }
+                    break;
+            }
+            return isClick;
         }
 
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            int position = pointToPosition(e.getX(), e.getY());
-            if (position < 0)
-                return false;
+        private boolean onItemClick(int position) {
+            performClick(position, clickSmoothScroll, true);
+            return true;
+        }
+
+        private void onSelectedClick(int position) {
             if (clickSelectedItem && clickListener != null) {
-                clickListener.onSelectedClick(mPosition);
+                clickListener.onSelectedClick(position);
             }
-            return true;
         }
 
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            int position = pointToPosition(e.getX(), e.getY());
-            if (position < 0)
-                return false;
+        /**
+         * 双击子项
+         *
+         * @param position 位置
+         */
+        private void onDoubleClick(int position) {
             if (clickListener != null) {
-                clickListener.onDoubleClick(mPosition);
+                clickListener.onDoubleClick(position);
             }
-            return true;
         }
 
         public float getDownMotionX() {

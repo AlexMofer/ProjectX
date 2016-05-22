@@ -3,18 +3,20 @@ package am.project.x.activities.widgets.gradienttabstrip;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.BaseTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import am.project.x.R;
 import am.project.x.activities.widgets.gradienttabstrip.adapters.GradientTabStripAdapter;
 import am.widget.gradienttabstrip.GradientTabStrip;
 
 public class GradientTabStripActivity extends AppCompatActivity implements
-        ViewPager.OnPageChangeListener {
+        ViewPager.OnPageChangeListener, BaseTabStrip.OnItemClickListener {
 
     private ViewPager vpFragments;
     private TextView tvTitle;
@@ -41,6 +43,7 @@ public class GradientTabStripActivity extends AppCompatActivity implements
         tabStrip.setAdapter(adapter);
         vpFragments.addOnPageChangeListener(this);
         tabStrip.bindViewPager(vpFragments);
+        tabStrip.setOnItemClickListener(this);
         setTitle(adapter.getPageTitle(vpFragments.getCurrentItem()));
     }
 
@@ -63,6 +66,21 @@ public class GradientTabStripActivity extends AppCompatActivity implements
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
+    }
+
+    @Override
+    public void onSelectedClick(int position) {
+        Toast.makeText(getApplicationContext(), "onSelectedClick", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDoubleClick(int position) {
+        Toast.makeText(getApplicationContext(), "onDoubleClick", Toast.LENGTH_SHORT).show();
     }
 
     public static void startActivity(Context context) {
