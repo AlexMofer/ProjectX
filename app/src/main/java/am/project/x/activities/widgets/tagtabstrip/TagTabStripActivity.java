@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -35,10 +36,11 @@ public class TagTabStripActivity extends BaseActivity {
 
     private ArrayList<View> getPagers() {
         ArrayList<View> views = new ArrayList<>();
-        for (int i= 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             TextView text = new TextView(this);
-            text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 80);
-            text.setText(String.format(Locale.getDefault(), "%d", i));
+            text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 180);
+            text.setText(String.format(Locale.getDefault(), "%d", i + 1));
+            text.setGravity(Gravity.CENTER);
             text.setTextColor(0xff000000);
             text.setBackgroundColor(0xff3f51b5);
             views.add(text);
