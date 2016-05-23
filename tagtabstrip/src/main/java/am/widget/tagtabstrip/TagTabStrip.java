@@ -28,7 +28,6 @@ public class TagTabStrip extends BaseTabStrip {
     private int drawablePadding;
 	private Drawable mSelectedDrawable;
 	private Drawable mNormalDrawable;
-	//private ColorStateList mColors;
 	private int mCurrentPager = 0;
 	private int mNextPager = 0;
 	private float mOffset = 1;
