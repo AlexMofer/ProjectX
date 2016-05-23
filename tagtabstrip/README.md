@@ -1,7 +1,7 @@
 # TagTabStrip
   继承自BaseTabStrip，实现ViewPager标志小点，一般用于功能引导页面及新功能简介页
   
-![ICON](https://github.com/AlexMofer/ProjectX/blob/master/tagtabstrip/icon.gif)
+![ICON](https://github.com/AlexMofer/ProjectX/blob/master/tagtabstrip/icon.png)
 ## 预览
 暂无预览
 ## 引用
