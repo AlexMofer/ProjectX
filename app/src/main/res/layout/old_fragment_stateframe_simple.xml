@@ -15,7 +15,7 @@
             android:id="@+id/tv_stateframe"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/old_bg_tab"
+            android:background="@drawable/bg_common_press"
             android:clickable="true"
             android:gravity="center"
             android:text="@string/text_scbd"

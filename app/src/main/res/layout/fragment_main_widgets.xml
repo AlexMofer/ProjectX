@@ -22,14 +22,22 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_common_press"
                 android:drawableTop="@drawable/ic_widget_gradienttabstrip"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
+                android:drawablePadding="4dp"
+                android:paddingBottom="18dp"
+                android:paddingTop="18dp"
                 android:text="@string/gradienttabstrip_title" />
 
-            <View
+            <Button
+                android:id="@+id/widget_btn_tagtabstrip"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_common_press"
+                android:drawableTop="@drawable/ic_widget_tagtabstrip"
+                android:drawablePadding="4dp"
+                android:paddingBottom="18dp"
+                android:paddingTop="18dp"
+                android:text="@string/tagtabstrip_title" />
 
             <View
                 android:layout_width="match_parent"

@@ -1,10 +1,8 @@
 package am.widget.tagtabstrip;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
@@ -22,20 +20,21 @@ import android.view.View;
  */
 public class TagTabStrip extends BaseTabStrip {
 
-	private final static int DEFAULT_SIZE = 6;
+	private final static int DEFAULT_SIZE = 6;// 默认图片dp
+    private final static int DEFAULT_DRAWABLE_SELECTED = 0xffffffff;
+    private final static int DEFAULT_DRAWABLE_NORMAL = 0x80ffffff;
+    private int defaultDrawableSize;
+    private int mGravity = Gravity.CENTER;
+    private int drawablePadding;
 	private Drawable mSelectedDrawable;
 	private Drawable mNormalDrawable;
-	private ColorStateList mColors;
-	private int defaultDrawableSize = 0;
-	private int drawablePadding = 0;
+	//private ColorStateList mColors;
 	private int mCurrentPager = 0;
 	private int mNextPager = 0;
 	private float mOffset = 1;
-	private int mGravity = Gravity.CENTER;
 	private float mOffsetX;
 	private float mOffsetY;
-	private static final int[] ATTRS = new int[]{android.R.attr.textColor,
-			android.R.attr.drawablePadding};
+	private static final int[] ATTRS = new int[]{android.R.attr.gravity, android.R.attr.drawablePadding};
 
 	public TagTabStrip(Context context) {
 		this(context, null);
@@ -45,20 +44,25 @@ public class TagTabStrip extends BaseTabStrip {
 		this(context, attrs, 0);
 	}
 
-	@SuppressWarnings("ResourceType")
 	public TagTabStrip(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		setClickable(false);
+        defaultDrawableSize = (int) (getResources().getDisplayMetrics().density * DEFAULT_SIZE);
 		final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
-		mColors = a.getColorStateList(0);
-		if (mColors == null) {
-			mColors = ColorStateList.valueOf(a.getColor(0, Color.BLACK));
-		}
-		setDrawablePadding(a.getDimensionPixelSize(1, 0));
+        int n = a.getIndexCount();
+        for (int i = 0; i < n; i++) {
+            int attr = a.getIndex(i);
+            switch (attr) {
+                case 0:
+                    mGravity = a.getInt(attr, Gravity.CENTER);
+                    break;
+                case 2:
+                    drawablePadding = a.getDimensionPixelSize(attr, 0);
+                    break;
+            }
+        }
 		a.recycle();
-		if (defaultDrawableSize == 0) {
-			setDefaultDrawableSize((int) (getResources().getDisplayMetrics().density * DEFAULT_SIZE));
-		}
+
 		if (mSelectedDrawable == null) {
 			mSelectedDrawable = getDefaultDrawable(true);
 		}
@@ -67,21 +71,18 @@ public class TagTabStrip extends BaseTabStrip {
 		}
 	}
 
-	@SuppressWarnings("ResourceAsColor")
+
 	private Drawable getDefaultDrawable(boolean selected) {
 		if (selected) {
 			final GradientDrawable mBackground = new GradientDrawable();
 			mBackground.setShape(GradientDrawable.OVAL);
-			mBackground.setColor(mColors.isStateful() ? mColors
-					.getColorForState(SELECTED_STATE_SET,
-							mColors.getDefaultColor()) : mColors
-					.getDefaultColor());
+			mBackground.setColor(DEFAULT_DRAWABLE_SELECTED);
 			mBackground.setSize(defaultDrawableSize, defaultDrawableSize);
 			return mBackground;
 		} else {
 			final GradientDrawable mBackground = new GradientDrawable();
 			mBackground.setShape(GradientDrawable.OVAL);
-			mBackground.setColor(mColors.getDefaultColor());
+			mBackground.setColor(DEFAULT_DRAWABLE_NORMAL);
 			mBackground.setSize(defaultDrawableSize, defaultDrawableSize);
 			return mBackground;
 		}
@@ -263,26 +264,6 @@ public class TagTabStrip extends BaseTabStrip {
 
 	public final void setDrawablePadding(int padding) {
 		drawablePadding = padding;
-		invalidate();
-	}
-
-	/**
-	 * 获取默认图片尺寸
-	 *
-	 * @return 默认图片尺寸
-	 */
-	@SuppressWarnings("unused")
-	public final int getDefaultDrawableSize() {
-		return defaultDrawableSize;
-	}
-
-	/**
-	 * 设置默认图片尺寸
-	 *
-	 * @param size 默认图片尺寸
-	 */
-	public final void setDefaultDrawableSize(int size) {
-		defaultDrawableSize = size;
 		invalidate();
 	}
 

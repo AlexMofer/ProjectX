@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import am.project.x.R;
 import am.project.x.activities.widgets.gradienttabstrip.GradientTabStripActivity;
+import am.project.x.activities.widgets.tagtabstrip.TagTabStripActivity;
 
 /**
  * 控件
@@ -30,6 +31,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.widget_btn_gradienttabstrip).setOnClickListener(this);
+        view.findViewById(R.id.widget_btn_tagtabstrip).setOnClickListener(this);
     }
 
     @Override
@@ -37,6 +39,9 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.widget_btn_gradienttabstrip:
                 GradientTabStripActivity.startActivity(getContext());
+                break;
+            case R.id.widget_btn_tagtabstrip:
+                TagTabStripActivity.startActivity(getContext());
                 break;
         }
     }

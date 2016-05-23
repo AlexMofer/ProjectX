@@ -15,7 +15,7 @@
             android:layout_height="300dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
-            android:src="@drawable/old_ic_wechat" />
+            android:src="@drawable/ic_widget_gradienttabstrip" />
 
         <am.project.x.widgets.shapeimageview.ShapeImageView
             android:id="@+id/image_RR"

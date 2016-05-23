@@ -24,7 +24,8 @@
         <activity
             android:name=".activities.main.MainActivity"
             android:theme="@style/MainTheme" />
-        <activity android:name=".activities.widgets.gradienttabstrip.GradientTabStripActivity"
+        <activity
+            android:name=".activities.widgets.gradienttabstrip.GradientTabStripActivity"
             android:label="@string/gradienttabstrip_title">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -38,67 +39,20 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.widgets.tagtabstrip.TagTabStripActivity"
+            android:label="@string/tagtabstrip_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-        <activity android:name=".activities.WidgetListActivity" />
-        <activity
-            android:name=".activities.NewWidgetActivity"
-            android:label="@string/newwidget" />
-        <activity
-            android:name=".activities.BilateralPaneActivity"
-            android:label="@string/bilateralpane" />
-        <activity
-            android:name=".activities.DotpagerActivity"
-            android:label="@string/dotpager" />
-        <activity
-            android:name=".activities.IndicatorTabActivity"
-            android:label="@string/supertab"/>
-        <activity
-            android:name=".activities.SwipeRefreshActivity"
-            android:label="@string/swiperefresh" />
-        <activity
-            android:name=".activities.DragGridViewActivity"
-            android:label="@string/draggridview" />
-        <activity
-            android:name=".activities.ShapeImageViewActivity"
-            android:label="@string/shapeimage" />
-        <activity
-            android:name=".activities.CityListActivity"
-            android:label="@string/citylist" />
-        <activity
-            android:name=".activities.SharpCornerBoxActivity"
-            android:label="@string/sharpcornerbox" />
-        <activity
-            android:name=".activities.ConnectImageActivity"
-            android:label="@string/connectimage" />
-        <activity
-            android:name=".activities.StateFrameActivity"
-            android:label="@string/stateframe" />
-        <activity
-            android:name=".activities.ReplaceActivity"
-            android:label="@string/replace" />
-        <activity
-            android:name=".activities.DrawableRatingBarActivity"
-            android:label="@string/drawableratingbar" />
-        <activity
-            android:name=".activities.WrapActivity"
-            android:label="@string/wrap" />
-        <activity
-            android:name=".activities.PrinterActivity"
-            android:label="@string/printer" />
-        <activity
-            android:name=".activities.SecurityCodeActivity"
-            android:label="@string/security_code" />
-        <activity
-            android:name=".activities.LoadingActivity"
-            android:label="@string/loading_drawable" />
-        <activity
-            android:name=".activities.SecurityActivity"
-            android:label="@string/security_check" />
-        <activity
-            android:name=".activities.CipherActivity"
-            android:label="@string/cipher" />
-
+                <data
+                    android:host="github.com"
+                    android:pathPrefix="/AlexMofer/ProjectX/tree/master/tagtabstrip"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

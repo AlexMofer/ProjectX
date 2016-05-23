@@ -5,37 +5,32 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.BaseTabStrip;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import am.project.x.R;
+import am.project.x.activities.BaseActivity;
 import am.project.x.activities.widgets.gradienttabstrip.adapters.GradientTabStripAdapter;
 import am.widget.gradienttabstrip.GradientTabStrip;
 
-public class GradientTabStripActivity extends AppCompatActivity implements
+public class GradientTabStripActivity extends BaseActivity implements
         ViewPager.OnPageChangeListener, BaseTabStrip.OnItemClickListener {
 
     private ViewPager vpFragments;
     private TextView tvTitle;
     private GradientTabStripAdapter adapter;
+
+    @Override
+    protected int getContentViewLayoutResources() {
+        return R.layout.activity_gradienttabstrip;
+    }
+
     @Override
     @SuppressWarnings("all")
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gradient_tab_strip);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.gts_toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        tvTitle = (TextView) toolbar.findViewById(R.id.gts_tv_title);
+    protected void initResource(Bundle savedInstanceState) {
+        setSupportActionBar(R.id.gts_toolbar);
+
+        tvTitle = (TextView) findViewById(R.id.gts_tv_title);
         vpFragments = (ViewPager) findViewById(R.id.gts_vp_fragments);
         GradientTabStrip tabStrip = (GradientTabStrip) findViewById(R.id.gts_gts_tabs);
         adapter = new GradientTabStripAdapter(getSupportFragmentManager());

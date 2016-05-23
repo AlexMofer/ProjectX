@@ -22,25 +22,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_newwidget"
                 android:text="@string/newwidget" />
-
-            <Button
-                android:id="@+id/wl_btn_wechat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
-                android:drawableTop="@drawable/old_ic_wechat"
-                android:text="@string/wechat" />
 
             <Button
                 android:id="@+id/wl_btn_bilateralpane"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_bilateralpane"
                 android:text="@string/bilateralpane" />
         </LinearLayout>
@@ -52,20 +41,10 @@
             android:padding="10dp" >
 
             <Button
-                android:id="@+id/wl_btn_dotpager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
-                android:drawableTop="@drawable/old_ic_dot"
-                android:text="@string/dotpager" />
-
-            <Button
                 android:id="@+id/wl_btn_supertab"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_supertab"
                 android:text="@string/supertab" />
 
@@ -74,7 +53,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_swipelayout"
                 android:text="@string/swiperefresh" />
         </LinearLayout>
@@ -90,7 +68,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_draggridview"
                 android:text="@string/draggridview" />
 
@@ -99,7 +76,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_shapeimage"
                 android:text="@string/shapeimage" />
 
@@ -108,7 +84,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_citylist"
                 android:text="@string/citylist" />
         </LinearLayout>
@@ -123,7 +98,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_sharpcornerbox"
                 android:text="@string/sharpcornerbox" />
 
@@ -132,7 +106,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_connetimage"
                 android:text="@string/connectimage" />
 
@@ -141,7 +114,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_stateframelayout"
                 android:text="@string/stateframe" />
         </LinearLayout>
@@ -156,7 +128,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_replace"
                 android:text="@string/replace" />
 
@@ -165,7 +136,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_drawableratingbar"
                 android:text="@string/drawableratingbar" />
 
@@ -174,7 +144,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_warplayout"
                 android:text="@string/wrap" />
         </LinearLayout>
@@ -189,7 +158,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_printer"
                 android:text="@string/printer" />
 
@@ -198,7 +166,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_securitycode"
                 android:text="@string/security_code" />
 
@@ -207,7 +174,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_loading"
                 android:text="@string/loading_drawable" />
         </LinearLayout>
@@ -222,7 +188,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_security"
                 android:text="@string/security_check" />
 
@@ -231,7 +196,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/old_bg_tab"
                 android:drawableTop="@drawable/old_ic_cipher"
                 android:text="@string/cipher" />
 
