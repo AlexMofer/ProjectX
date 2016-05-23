@@ -1,12 +1,14 @@
 # GradientTabStrip
   继承自BaseTabStrip，实现微信式渐变底部Tab效果
+  
+![ICON](https://github.com/AlexMofer/ProjectX/blob/master/gradienttabstrip/icon.png)
 ## 预览
-![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/gradienttabstrip/images/screenshots.gif)
+![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/gradienttabstrip/screenshots.gif)
 ## 引用
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:gradienttabstrip:2.0.1'
+    compile 'am.widget:gradienttabstrip:2.0.2'
     ⋯
 }
 ```
