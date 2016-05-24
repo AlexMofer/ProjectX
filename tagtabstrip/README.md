@@ -21,15 +21,12 @@ dependencies {
 ```xml
 <am.widget.tagtabstrip.TagTabStrip
       xmlns:app="http://schemas.android.com/apk/res-auto"
-      android:id="@+id/tts_tts_tags"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="bottom|center_horizontal"
-      android:layout_marginBottom="72dp"
       android:drawablePadding="6dp"
       android:gravity="center"
       app:ttsScale="1.6"
-      app:ttsDrawable="@drawable/ic_tagtabstrip_item"/>
+      app:ttsDrawable="@drawable/ic_tag"/>
 ```
 - 基本代码
 
@@ -43,3 +40,4 @@ ttsTags.bindViewPager(viewpager);
 - app:ttsScale指定的值需要大于等于1才有效
 - android:drawablePadding与app:ttsDrawablePadding等效，只需设置其中一个
 - 默认状态是颜色为0xff808080与0x80808080的大小为8dp的两个小圆点Drawable，之间没有间距
+- android:gravity默认值就是center，可以不设置

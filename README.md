@@ -11,3 +11,7 @@ TabStrip基础类，其实现了类似于PagerTabStrip的一些基础方法，�
 - [GradientTabStrip](https://github.com/AlexMofer/ProjectX/tree/master/gradienttabstrip)
 
 继承自BaseTabStrip，实现微信式渐变底部Tab效果
+
+- [TagTabStrip](https://github.com/AlexMofer/ProjectX/tree/master/tagtabstrip)
+
+继承自BaseTabStrip，实现ViewPager滚动标记点
