@@ -1,6 +1,7 @@
 # IndicatorTabStrip
-简介
+ 继承自BaseTabStrip，移动式下标渐变缩放Tab，Item不建议超过5个
 
+![ICON](https://github.com/AlexMofer/ProjectX/blob/master/indicatortabstrip/icon.png)
 ## 预览
 ![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/indicatortabstrip/screenshots.gif)
 
@@ -8,12 +9,14 @@
 ```java
 dependencies {
     ⋯
+    compile 'am.widget:indicatortabstrip:2.0.3'
     ⋯
 }
 ```
 
 ## 功能
-内容描述
+为ViewPager添加如PagerTitleStrip一样的Tab，但支持更多自定义功能
+并支持为Tab增加标记点功能，并可以自定义标记点各自的位置及显示状态以及背景等
 
 ## 使用
 - 基本布局
@@ -26,4 +29,5 @@ dependencies {
 ```
 
 ## 注意
-- ⋯
+- 不要使用ViewPage的setCurrentItem(int)方法，其不会通知到IndicatorTabStrip进行刷新，使用IndicatorTabStrip的performClick(int)方法
+- 布局时，android:textColor指定的颜色可以使用选择器，其中android:state_selected="true"状态下的颜色会与普通状态下的颜色进行渐变
