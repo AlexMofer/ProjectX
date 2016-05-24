@@ -11,6 +11,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.FontMetricsInt;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.v4.view.BaseTabStrip;
 import android.text.TextPaint;
@@ -119,6 +120,9 @@ public class GradientTabStrip extends BaseTabStrip {
         }
         mTagPadding = (int) (DEFAULT_TAG_PADDING * density);
         setClickable(true);
+        if (isInEditMode()) {
+            setAdapter(new TestAdapter(context));
+        }
     }
 
     @TargetApi(5)
@@ -387,6 +391,22 @@ public class GradientTabStrip extends BaseTabStrip {
         return position;
     }
 
+    @Override
+    protected int getItemCount() {
+        if (isInEditMode()) {
+            return 4;
+        }
+        return super.getItemCount();
+    }
+
+    @Override
+    protected CharSequence getItemText(int position) {
+        if (isInEditMode()) {
+            return "Tab" + position;
+        }
+        return super.getItemText(position);
+    }
+
     /**
      * 获取Adapter
      *
@@ -601,7 +621,6 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @author Alex
      */
-    @SuppressWarnings("unused")
     public static abstract class SimpleGradientTabAdapter implements GradientTabAdapter {
 
         /**
@@ -628,6 +647,33 @@ public class GradientTabStrip extends BaseTabStrip {
 
         public String getTag(int position) {
             return null;
+        }
+    }
+
+    private class TestAdapter extends SimpleGradientTabAdapter {
+
+        private GradientDrawable selected;
+        private GradientDrawable normal;
+        public TestAdapter(Context context) {
+            final int size = (int) (context.getResources().getDisplayMetrics().density * 10);
+            selected = new GradientDrawable();
+            selected.setShape(GradientDrawable.OVAL);
+            selected.setColor(0xff808080);
+            selected.setSize(size, size);
+            normal = new GradientDrawable();
+            normal.setShape(GradientDrawable.OVAL);
+            normal.setColor(0x80808080);
+            normal.setSize(size, size);
+        }
+
+        @Override
+        public Drawable getNormalDrawable(int position, Context context) {
+            return normal;
+        }
+
+        @Override
+        public Drawable getSelectedDrawable(int position, Context context) {
+            return selected;
         }
     }
 }
