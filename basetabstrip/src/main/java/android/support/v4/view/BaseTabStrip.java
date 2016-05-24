@@ -637,7 +637,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      *
      * @return ViewPager
      */
-    public final ViewPager getViewPager() {
+    protected ViewPager getViewPager() {
         return mPager;
     }
 
@@ -646,7 +646,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      *
      * @return 子项总数
      */
-    public final int getItemCount() {
+    protected int getItemCount() {
         try {
             return mWatchingAdapter.get().getCount();
         } catch (Exception e) {
@@ -661,7 +661,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      * @return 子项文字
      */
     @SuppressWarnings("unused")
-    public final CharSequence getItemText(int position) {
+    protected CharSequence getItemText(int position) {
         try {
             return mWatchingAdapter.get().getPageTitle(position);
         } catch (Exception e) {

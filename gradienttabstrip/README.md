@@ -8,7 +8,7 @@
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:gradienttabstrip:2.0.2'
+    compile 'am.widget:gradienttabstrip:2.0.3'
     ⋯
 }
 ```
@@ -54,6 +54,6 @@ dependencies {
 ```
 ## 注意
 - 不要使用ViewPage的setCurrentItem(int)方法，其不会通知到GradientTabStrip进行刷新，使用GradientTabStrip的performClick(int)方法
-- 布局时，android:textColor指定的颜色可以使用选择器，其中selected状态下的颜色会与Normal状态下的颜色进行渐变
+- 布局时，android:textColor指定的颜色可以使用选择器，其中android:state_selected="true"状态下的颜色会与普通状态下的颜色进行渐变
 - GradientTabAdapter中进行了改变GradientTabAdapter，需要手动通知GradientTabStrip进行刷新
 - 不需要Tag小红点，可以使用SimpleGradientTabAdapter替代GradientTabAdapter

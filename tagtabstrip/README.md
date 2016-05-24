@@ -3,11 +3,12 @@
   
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/tagtabstrip/icon.png)
 ## 预览
-暂无预览
+![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/tagtabstrip/screenshots.gif)
 ## 引用
 ```java
 dependencies {
     ⋯
+    compile 'am.widget:tagtabstrip:2.0.3'
     ⋯
 }
 ```
@@ -18,12 +19,27 @@ dependencies {
 - 基本布局
 
 ```xml
-⋯
+<am.widget.tagtabstrip.TagTabStrip
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      android:id="@+id/tts_tts_tags"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom|center_horizontal"
+      android:layout_marginBottom="72dp"
+      android:drawablePadding="6dp"
+      android:gravity="center"
+      app:ttsScale="1.6"
+      app:ttsDrawable="@drawable/ic_tagtabstrip_item"/>
 ```
 - 基本代码
 
 ```java
-⋯
+TagTabStrip ttsTags = (TagTabStrip) findViewById(id);
+ttsTags.bindViewPager(viewpager);
 ```
 ## 注意
-- ⋯
+- 不要使用ViewPage的setCurrentItem(int)方法，其不会通知到TagTabStrip进行刷新，使用TagTabStrip的performClick(int)方法
+- 布局时，app:ttsDrawable指定的颜色可以使用选择器，其中android:state_selected="true"状态下的颜色会与普通状态下的Drawable进行渐变
+- app:ttsScale指定的值需要大于等于1才有效
+- android:drawablePadding与app:ttsDrawablePadding等效，只需设置其中一个
+- 默认状态是颜色为0xff808080与0x80808080的大小为8dp的两个小圆点Drawable，之间没有间距

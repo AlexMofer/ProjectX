@@ -42,7 +42,6 @@ public class TagTabStripActivity extends BaseActivity {
             text.setText(String.format(Locale.getDefault(), "%d", i + 1));
             text.setGravity(Gravity.CENTER);
             text.setTextColor(0xff000000);
-            text.setBackgroundColor(0xff3f51b5);
             views.add(text);
         }
         return views;

@@ -42,7 +42,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="40dp" />
+            android:layout_marginBottom="72dp"
+            android:drawablePadding="6dp"
+            android:gravity="center"
+            app:ttsScale="1.6"
+            app:ttsDrawable="@drawable/ic_tagtabstrip_item"/>
 
     </FrameLayout>
 
