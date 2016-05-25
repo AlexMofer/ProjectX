@@ -8,12 +8,19 @@
 
     <string name="gradienttabstrip_title">渐变Tab</string>
     <string name="tagtabstrip_title">标记Tab</string>
+    <string name="indicatortabstrip_title">移动Tab</string>
 
     <string name="cd_welcome">welcome icon</string>
 
+
+
+
+
+
+
+
     <string name="newwidget">新控件</string>
     <string name="bilateralpane">三面板</string>
-    <string name="supertab">下标Tab</string>
     <string name="swiperefresh">下拉刷新</string>
     <string name="draggridview">拖动网格</string>
     <string name="shapeimage">形状Image</string>

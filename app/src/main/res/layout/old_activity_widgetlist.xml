@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.am.activity.WidgetListActivity">
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,14 +15,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp" >
-
-            <Button
-                android:id="@+id/wl_btn_newwidget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/old_ic_newwidget"
-                android:text="@string/newwidget" />
 
             <Button
                 android:id="@+id/wl_btn_bilateralpane"
@@ -39,14 +30,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp" >
-
-            <Button
-                android:id="@+id/wl_btn_supertab"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTop="@drawable/old_ic_supertab"
-                android:text="@string/supertab" />
 
             <Button
                 android:id="@+id/wl_btn_swiperefresh"

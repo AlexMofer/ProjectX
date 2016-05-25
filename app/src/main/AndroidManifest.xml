@@ -39,7 +39,8 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.widgets.tagtabstrip.TagTabStripActivity"
+        <activity
+            android:name=".activities.widgets.tagtabstrip.TagTabStripActivity"
             android:label="@string/tagtabstrip_title">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -50,6 +51,20 @@
                 <data
                     android:host="github.com"
                     android:pathPrefix="/AlexMofer/ProjectX/tree/master/tagtabstrip"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.widgets.indicatortabstrip.IndicatorTabStripActivity"
+            android:label="@string/indicatortabstrip_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="github.com"
+                    android:pathPrefix="/AlexMofer/ProjectX/tree/master/indicatortabstrip"
                     android:scheme="https" />
             </intent-filter>
         </activity>

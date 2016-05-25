@@ -20,7 +20,7 @@ import android.view.Gravity;
 
 /**
  * 滑动渐变TabStrip，子项建议不超过5个
- *
+ * TODO 增加更多属性XML定义
  * @author Alex
  */
 public class GradientTabStrip extends BaseTabStrip {
