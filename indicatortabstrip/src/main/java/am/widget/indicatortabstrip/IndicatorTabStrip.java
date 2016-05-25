@@ -33,6 +33,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.BaseTabStrip;
+import android.support.v4.view.ViewCompat;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 
@@ -266,8 +267,10 @@ public class IndicatorTabStrip extends BaseTabStrip {
             final int itemWidth = Math.max(maxTextWidth, itemBackgroundWith);
             final int intervalWidth = mInterval == null ? 0 : mInterval.getIntrinsicWidth();
             final int totalWidth = itemWidth * getItemCount() +
-                    intervalWidth * (getItemCount() - 1);
-            final int dividerWidth = mDivider == null ? 0 : mDivider.getIntrinsicWidth();
+                    intervalWidth * (getItemCount() - 1) +
+                    ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this);
+            final int dividerWidth = mDivider == null ? 0 : mDivider.getIntrinsicWidth() +
+                    ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this);
             width = Math.max(Math.max(totalWidth, dividerWidth), getMinWidth());
             if (widthMode == MeasureSpec.AT_MOST)
                 width = Math.min(width, widthSize);
