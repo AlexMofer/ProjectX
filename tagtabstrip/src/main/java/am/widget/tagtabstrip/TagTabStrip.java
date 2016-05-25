@@ -108,19 +108,20 @@ public class TagTabStrip extends BaseTabStrip {
         final int totalWidth = getTotalWidth();
         final int totalHeight = getTotalHeight();
         int width;
-        if (widthMode == View.MeasureSpec.EXACTLY) {
+        if (widthMode == MeasureSpec.EXACTLY) {
             width = widthSize;
         } else {
-            width = totalWidth;
-            width = Math.max(width, getMinWidth());
+            width = Math.max(totalWidth, getMinWidth());
+            if (widthMode == MeasureSpec.AT_MOST)
+                width = Math.min(width, widthSize);
         }
         int height;
-        if (heightMode == View.MeasureSpec.EXACTLY) {
+        if (heightMode == MeasureSpec.EXACTLY) {
             height = heightSize;
         } else {
-            height = totalHeight;
-            height = Math.max(height, getMinHeight());
-
+            height = Math.max(totalHeight, getMinHeight());
+            if (heightMode == MeasureSpec.AT_MOST)
+                height = Math.min(height, heightSize);
         }
         setMeasuredDimension(width, height);
         makeGravity(width, height, totalWidth, totalHeight);
@@ -211,35 +212,6 @@ public class TagTabStrip extends BaseTabStrip {
             mScaleSpaceY = (int) (Math.ceil(((float) itemHeight) * mScale - itemHeight) * 0.5f) + 1;
         }
         return mScaleSpaceY * 2 + itemHeight + getPaddingTop() + getPaddingBottom();
-    }
-
-
-    /**
-     * 获取最小宽度
-     *
-     * @return 最小宽度
-     */
-    private int getMinWidth() {
-        int minWidth = 0;
-        final Drawable bg = getBackground();
-        if (bg != null) {
-            minWidth = bg.getIntrinsicWidth();
-        }
-        return Math.max(0, minWidth);
-    }
-
-    /**
-     * 获取最小高度
-     *
-     * @return 最小高度
-     */
-    private int getMinHeight() {
-        int minHeight = 0;
-        final Drawable bg = getBackground();
-        if (bg != null) {
-            minHeight = bg.getIntrinsicHeight();
-        }
-        return Math.max(0, minHeight);
     }
 
     /**
@@ -431,7 +403,7 @@ public class TagTabStrip extends BaseTabStrip {
      * @param scale 选中子项缩放比
      */
     public void setScale(float scale) {
-        if (scale >= 1 && scale != mScale) {
+        if (scale > 0 && scale != mScale) {
             mScale = scale;
             requestLayout();
             invalidate();
@@ -457,7 +429,7 @@ public class TagTabStrip extends BaseTabStrip {
         if (item != null && item.isStateful()) {
             Drawable normal = item.getConstantState().newDrawable();
             Drawable selected = item.getConstantState().newDrawable();
-            selected.setState(new int[]{android.R.attr.state_selected});
+            selected.setState(SELECTED_STATE_SET);
             setDrawables(normal, selected);
         } else {
             mSingleDrawable = item;

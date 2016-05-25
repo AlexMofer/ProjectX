@@ -18,6 +18,7 @@ package android.support.v4.view;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Parcel;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 
 /**
  * BasePagerTabStrip ViewPager滑动对应变化效果
+ * TODO 点击再优化
  *
  * @author Alex
  */
@@ -808,9 +810,89 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         final GradientDrawable mBackground = new GradientDrawable();
         mBackground.setShape(GradientDrawable.RECTANGLE);
         mBackground.setColor(0xffff4444);
-        mBackground.setCornerRadius(10 * density);
+        mBackground.setCornerRadius(100000 * density);
         mBackground.setSize((int) (10 * density), (int) (10 * density));
         return mBackground;
+    }
+
+    /**
+     * 获取最小宽度
+     *
+     * @return 最小宽度
+     */
+    @SuppressWarnings("unused")
+    protected int getMinWidth() {
+        int minWidth = 0;
+        final Drawable bg = getBackground();
+        if (bg != null) {
+            minWidth = bg.getIntrinsicWidth();
+        }
+        return Math.max(0, minWidth);
+    }
+
+    /**
+     * 获取最小高度
+     *
+     * @return 最小高度
+     */
+    @SuppressWarnings("unused")
+    protected int getMinHeight() {
+        int minHeight = 0;
+        final Drawable bg = getBackground();
+        if (bg != null) {
+            minHeight = bg.getIntrinsicHeight();
+        }
+        return Math.max(0, minHeight);
+    }
+
+    /**
+     * 获取子项背景最小宽度
+     *
+     * @return 子项背景最小宽度
+     */
+    @SuppressWarnings("unused")
+    protected int getMinItemBackgroundWidth() {
+        if (mTabItemBackground == null)
+            return 0;
+        return mTabItemBackground.getIntrinsicWidth();
+    }
+
+    /**
+     * 获取子项背景最小高度
+     *
+     * @return 子项背景最小高度
+     */
+    @SuppressWarnings("unused")
+    protected int getMinItemBackgroundHeight() {
+        if (mTabItemBackground == null)
+            return 0;
+        return mTabItemBackground.getIntrinsicHeight();
+    }
+
+    /**
+     * 双色合成
+     *
+     * @param normalColor   普通颜色
+     * @param selectedColor 选中颜色
+     * @param offset        偏移值
+     * @return 合成色
+     */
+    @SuppressWarnings("unused")
+    protected int getColor(int normalColor, int selectedColor, float offset) {
+        int normalAlpha = Color.alpha(normalColor);
+        int normalRed = Color.red(normalColor);
+        int normalGreen = Color.green(normalColor);
+        int normalBlue = Color.blue(normalColor);
+        int selectedAlpha = Color.alpha(selectedColor);
+        int selectedRed = Color.red(selectedColor);
+        int selectedGreen = Color.green(selectedColor);
+        int selectedBlue = Color.blue(selectedColor);
+        int a = (int) Math.ceil((selectedAlpha - normalAlpha) * offset);
+        int r = (int) Math.ceil((selectedRed - normalRed) * offset);
+        int g = (int) Math.ceil((selectedGreen - normalGreen) * offset);
+        int b = (int) Math.ceil((selectedBlue - normalBlue) * offset);
+        return Color.argb(normalAlpha + a, normalRed + r, normalGreen + g,
+                normalBlue + b);
     }
 
     /**
@@ -864,5 +946,105 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
          * @return 角标值
          */
         String getTag(int position);
+    }
+
+    /**
+     * Tag位置
+     */
+    @SuppressWarnings("unused")
+    protected static class TagLocation {
+        public static final int LOCATION_CONTENT = 0;//贴近文字
+        public static final int LOCATION_EDGE = 1;// 贴近边缘
+        private int location = LOCATION_CONTENT;// 位置
+
+        private int paddingLeft;
+        private int paddingRight;
+        private int paddingTop;
+        private int paddingBottom;
+
+        private int marginLeft;
+        private int marginRight;
+        private int marginTop;
+        private int marginBottom;
+
+        public TagLocation() {
+            this(LOCATION_CONTENT);
+        }
+
+        public TagLocation(int location) {
+            setLocation(location);
+            setPadding(0, 0, 0, 0);
+            setMargin(0, 0, 0, 0);
+        }
+
+        public boolean setLocation(int location) {
+            if (location != LOCATION_CONTENT && location != LOCATION_EDGE)
+                return false;
+            if (this.location != location) {
+                this.location = location;
+                return true;
+            }
+            return false;
+        }
+
+        public boolean setPadding(int left, int top, int right, int bottom) {
+            if (left < 0 || top < 0 || right < 0 || bottom < 0 ||
+                    (paddingLeft == left && paddingTop == top
+                            && paddingRight == right && paddingBottom == bottom))
+                return false;
+            paddingLeft = left;
+            paddingTop = top;
+            paddingRight = right;
+            paddingBottom = bottom;
+            return true;
+        }
+
+        public boolean setMargin(int left, int top, int right, int bottom) {
+            if (left < 0 || top < 0 || right < 0 || bottom < 0 ||
+                    (marginLeft == left && marginTop == top
+                            && marginRight == right && marginBottom == bottom))
+                return false;
+            marginLeft = left;
+            marginTop = top;
+            marginRight = right;
+            marginBottom = bottom;
+            return true;
+        }
+
+        public int getLocation() {
+            return location;
+        }
+
+        public int getPaddingLeft() {
+            return paddingLeft;
+        }
+
+        public int getPaddingRight() {
+            return paddingRight;
+        }
+
+        public int getPaddingTop() {
+            return paddingTop;
+        }
+
+        public int getPaddingBottom() {
+            return paddingBottom;
+        }
+
+        public int getMarginLeft() {
+            return marginLeft;
+        }
+
+        public int getMarginRight() {
+            return marginRight;
+        }
+
+        public int getMarginTop() {
+            return marginTop;
+        }
+
+        public int getMarginBottom() {
+            return marginBottom;
+        }
     }
 }

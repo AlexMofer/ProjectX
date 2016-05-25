@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.FontMetricsInt;
@@ -20,12 +19,13 @@ import android.view.Gravity;
 
 /**
  * 滑动渐变TabStrip，子项建议不超过5个
- * TODO 增加更多属性XML定义
+ * TODO 增加更多属性XML定义、子项背景绘制有问题
  * @author Alex
  */
 public class GradientTabStrip extends BaseTabStrip {
 
-    public static final int DEFAULT_TEXT_SIZE = 16;// dp
+    public static final int DEFAULT_TEXT_SIZE = 14;// dp
+    public static final int DEFAULT_TEXT_COLOR = 0xff000000;// 默认字体颜色
     public static final int DEFAULT_TAG_TEXT_SIZE = 11;// dp
     public static final int DEFAULT_TAG_TEXT_COLOR = 0xffffffff;
     public static final int DEFAULT_TAG_PADDING = 6;
@@ -104,7 +104,8 @@ public class GradientTabStrip extends BaseTabStrip {
         if (custom.hasValue(R.styleable.GradientTabStrip_gtsBackground))
             drawable = custom.getDrawable(R.styleable.GradientTabStrip_gtsBackground);
         custom.recycle();
-
+        if (colors == null)
+            colors = ColorStateList.valueOf(DEFAULT_TEXT_COLOR);
         setGravity(Gravity.CENTER);
         setTextSize(textSize);
         setTextColor(colors);
@@ -183,15 +184,6 @@ public class GradientTabStrip extends BaseTabStrip {
                 - tagMetrics.descent + (tagMetrics.bottom - tagMetrics.descent)
                 * getResources().getDisplayMetrics().density));
         mTagTextHeight += mTagDesc;
-    }
-
-    private int getMinHeight() {
-        int minHeight = 0;
-        final Drawable bg = getBackground();
-        if (bg != null) {
-            minHeight = bg.getIntrinsicHeight();
-        }
-        return minHeight;
     }
 
     @Override
@@ -305,31 +297,6 @@ public class GradientTabStrip extends BaseTabStrip {
             canvas.translate(mItemWidth, 0);
         }
         canvas.restore();
-    }
-
-    /**
-     * 颜色合成器
-     *
-     * @param normalColor   普通状态颜色
-     * @param selectedColor 选中状态颜色
-     * @param offset        偏移值
-     * @return 合成色
-     */
-    private int getColor(int normalColor, int selectedColor, float offset) {
-        int normalAlpha = Color.alpha(normalColor);
-        int normalRed = Color.red(normalColor);
-        int normalGreen = Color.green(normalColor);
-        int normalBlue = Color.blue(normalColor);
-        int selectedAlpha = Color.alpha(selectedColor);
-        int selectedRed = Color.red(selectedColor);
-        int selectedGreen = Color.green(selectedColor);
-        int selectedBlue = Color.blue(selectedColor);
-        int a = (int) Math.ceil((selectedAlpha - normalAlpha) * offset);
-        int r = (int) Math.ceil((selectedRed - normalRed) * offset);
-        int g = (int) Math.ceil((selectedGreen - normalGreen) * offset);
-        int b = (int) Math.ceil((selectedBlue - normalBlue) * offset);
-        return Color.argb(normalAlpha + a, normalRed + r, normalGreen + g,
-                normalBlue + b);
     }
 
     @Override
@@ -451,16 +418,6 @@ public class GradientTabStrip extends BaseTabStrip {
             mGravity = gravity;
             invalidate();
         }
-    }
-
-    /**
-     * 获取文字颜色
-     *
-     * @return 文字颜色
-     */
-    @SuppressWarnings("unused")
-    public ColorStateList getTextColor() {
-        return mTextColor;
     }
 
     /**
