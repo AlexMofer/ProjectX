@@ -298,7 +298,7 @@ public class TagTabStrip extends BaseTabStrip {
                 alphaSelected = 0;
                 scale = 1;
             }
-            if (scale > 1) {
+            if (scale != 1) {
                 canvas.save();
                 canvas.scale(scale, scale, itemWidth * 0.5f, itemHeight * 0.5f);
             }

@@ -36,7 +36,6 @@ import java.util.ArrayList;
 
 /**
  * BasePagerTabStrip ViewPager滑动对应变化效果
- * TODO 点击再优化
  *
  * @author Alex
  */
@@ -70,7 +69,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         super(context, attrs, defStyleAttr);
         setItemClickable(false);
         setClickSmoothScroll(false);
-        tabStripGestureDetector = new TabStripGestureDetector(context);
+        tabStripGestureDetector = new TabStripGestureDetector();
     }
 
     @Override
@@ -197,10 +196,19 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     }
 
     /**
+     * 判断是否有子项背景
+     *
+     * @return 是否子项背景
+     */
+    protected boolean hasItemBackgrounds() {
+        return mTabItemBackground != null;
+    }
+
+    /**
      * 创建子项背景
      */
     protected void createItemBackgrounds() {
-        if (mTabItemBackground == null)
+        if (!hasItemBackgrounds())
             return;
         int count = getItemCount();
         if (count > 0) {
@@ -225,7 +233,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      */
     protected void recreateItemBackgrounds() {
         clearItemBackground();
-        if (mTabItemBackground == null)
+        if (!hasItemBackgrounds())
             return;
         int count = getItemCount();
         for (int i = 0; i < count; i++) {
@@ -558,15 +566,11 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     private class TabStripGestureDetector {
 
         private final int DOUBLE_TAP_TIMEOUT = ViewConfiguration.getDoubleTapTimeout();
-        private int mTouchSlop;
         private float mDownMotionX;
         private float mDownMotionY;
+        private int mDownPosition;
         private int mLastPosition;
         private long mLastUpTime;
-
-        public TabStripGestureDetector(Context context) {
-            mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-        }
 
         public boolean onTouchEvent(MotionEvent ev) {
             boolean isClick = false;
@@ -578,13 +582,12 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
                 case MotionEvent.ACTION_DOWN:
                     mDownMotionX = x;
                     mDownMotionY = y;
+                    mDownPosition = pointToPosition(x, y);
                     mLastPosition = getCurrentItem();
                     break;
                 case MotionEvent.ACTION_UP:
-                    final float dx = x - mDownMotionX;
-                    final float dy = y - mDownMotionY;
-                    if (dx * dx + dy * dy < mTouchSlop * mTouchSlop) {
-                        final int clickPosition = pointToPosition(x, y);
+                    final int clickPosition = pointToPosition(x, y);
+                    if (mDownPosition == clickPosition) {
                         isClick = onItemClick(clickPosition);
                         if (mLastPosition == clickPosition) {
                             final long downTime = ev.getDownTime();
@@ -852,7 +855,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      */
     @SuppressWarnings("unused")
     protected int getMinItemBackgroundWidth() {
-        if (mTabItemBackground == null)
+        if (!hasItemBackgrounds())
             return 0;
         return mTabItemBackground.getIntrinsicWidth();
     }
@@ -864,7 +867,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      */
     @SuppressWarnings("unused")
     protected int getMinItemBackgroundHeight() {
-        if (mTabItemBackground == null)
+        if (!hasItemBackgrounds())
             return 0;
         return mTabItemBackground.getIntrinsicHeight();
     }
@@ -953,7 +956,7 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
      */
     @SuppressWarnings("unused")
     protected static class TagLocation {
-        public static final int LOCATION_CONTENT = 0;//贴近文字
+        public static final int LOCATION_CONTENT = 0;//贴近内容
         public static final int LOCATION_EDGE = 1;// 贴近边缘
         private int location = LOCATION_CONTENT;// 位置
 

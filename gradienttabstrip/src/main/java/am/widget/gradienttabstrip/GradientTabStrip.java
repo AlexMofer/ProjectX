@@ -19,7 +19,8 @@ import android.view.Gravity;
 
 /**
  * 滑动渐变TabStrip，子项建议不超过5个
- * TODO 增加更多属性XML定义、子项背景绘制有问题
+ * TODO 增加更多属性XML定义
+ *
  * @author Alex
  */
 public class GradientTabStrip extends BaseTabStrip {
@@ -187,8 +188,18 @@ public class GradientTabStrip extends BaseTabStrip {
     }
 
     @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        drawItemBackground(canvas);
+        drawTab(canvas);
+    }
+
+    /**
+     * 绘制子项背景
+     *
+     * @param canvas 画布
+     */
+    protected void drawItemBackground(Canvas canvas) {
         canvas.save();
         canvas.translate(getPaddingLeft(), 0);
         for (int i = 0; i < getItemCount(); i++) {
@@ -202,9 +213,12 @@ public class GradientTabStrip extends BaseTabStrip {
         canvas.restore();
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    /**
+     * 绘制子项
+     *
+     * @param canvas 画布
+     */
+    protected void drawTab(Canvas canvas) {
         canvas.save();
         final float x = getPaddingLeft() + mItemWidth / 2;
         final float y = getPaddingTop() + mDrawableHeight + mDrawablePadding
@@ -611,6 +625,7 @@ public class GradientTabStrip extends BaseTabStrip {
 
         private GradientDrawable selected;
         private GradientDrawable normal;
+
         public TestAdapter(Context context) {
             final int size = (int) (context.getResources().getDisplayMetrics().density * 10);
             selected = new GradientDrawable();

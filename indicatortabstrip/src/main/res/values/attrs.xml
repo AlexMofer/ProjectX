@@ -8,6 +8,17 @@
         <attr name="ttsGradient" format="color"/>
         <attr name="ttsDivider" format="reference"/>
         <attr name="ttsIndicator" format="reference"/>
+        <attr name="ttsIndicatorWidthMode" format="enum">
+            <enum name="BySet" value="0"/>
+            <enum name="ByTab" value="1"/>
+        </attr>
+        <attr name="ttsIndicatorPadding" format="dimension"/>
+        <attr name="ttsIndicatorWidth" format="dimension">
+            <flag name="DrawableWidth" value="-1"/>
+        </attr>
+        <attr name="ttsIndicatorHeight" format="dimension">
+            <flag name="DrawableHeight" value="-1"/>
+        </attr>
         <attr name="ttsInterval" format="reference"/>
         <attr name="ttsTagTextSize" format="dimension"/>
         <attr name="ttsTagTextColor" format="color"/>

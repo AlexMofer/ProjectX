@@ -34,11 +34,19 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <am.widget.indicatortabstrip.IndicatorTabStrip
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/its_its_tabs"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:padding="5dp"
+            app:ttsDivider="@drawable/divider_indicator_under"
+            app:ttsInterval="@drawable/divider_indicator_interval"
+            app:ttsIndicator="@drawable/ic_indicator_indicator"
+            app:ttsBackground="@drawable/bg_common_press"
+            app:ttsGradient="@color/color_indicator"
             android:textColor="@color/color_main_tabs"
-            android:textSize="18sp" />
+            android:textSize="16sp"
+            app:ttsTextScale="1.2"/>
 
     </android.support.v4.view.ViewPager>
 

@@ -21,11 +21,10 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import android.graphics.Paint.FontMetrics;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
@@ -51,60 +50,30 @@ public class IndicatorTabStrip extends BaseTabStrip {
     public static final int DEFAULT_TEXT_COLOR = 0xff000000;// 默认字体颜色
     public static final int DEFAULT_TAG_TEXT_SIZE = 11;// 默认Tag字体大小dp
     public static final int DEFAULT_TAG_TEXT_COLOR = 0xffffffff;// 默认Tag文字颜色
+    public static final int INDICATOR_WIDTH_MODE_SET = 0;// 按照设置宽度计算
+    public static final int INDICATOR_WIDTH_MODE_TAB = 1;// 按照子项宽度计算
+    public static final int INDICATOR_WIDTH_BY_DRAWABLE = -1;// 按照图片宽度计算
+    public static final int INDICATOR_HEIGHT_BY_DRAWABLE = -1;// 按照图片高度计算
     private final TextPaint mTextPaint;
     private float mTextSize;// 文字大小
+    private float mTextDesc;// 文字偏移
     private ColorStateList mTextColor;// 文字颜色
     private float mTextScale;// 选中文字缩放
     private ColorStateList mGradient;// 渐变子项背景
     private Drawable mDivider;// 底部Divider
     private Drawable mIndicator;// 游标
+    private int mIndicatorWidthMode;// 游标宽度计算模式
+    private int mIndicatorPadding;// 游标两端Padding（仅“按照子项宽度计算”模式下有效）
+    private int mIndicatorWidth;// 游标高度
+    private int mIndicatorHeight;// 游标高度
     private Drawable mInterval;// 子项间隔
     private ItemTabAdapter mAdapter;// Tag
     private float mTagTextSize;// Tag文字大小
+    private float mTagTextDesc;// Tag文字偏移
     private int mTagTextColor;// Tag文字颜色
     private Drawable mTagBackground;// Tag文字背景
     private TagLocation mTagLocation;// Tag布局
     private Rect mTextMeasureBounds = new Rect();// 文字测量
-
-
-    private float itemWidth;
-
-    private float textTop;// 文字最大高度
-    private boolean showTextGradient;// 显示文字颜色渐变
-    private int textColorNormal;// 文字普通颜色
-    private int textColorSelected;// 文字选中时颜色
-    private boolean showTextScale;// 显示文字缩放
-    private float textSize;// 文字大小
-    private float magnification = 0.2f;
-    private float textSizeOffset = 1;
-    private float heightOffset;// 高度偏移
-
-    private int intervalWidth;
-
-    private boolean showIndicator;
-    private int indicatorWidth;
-    private int indicatorHeight;
-    private int indicatorColor = Color.BLACK;
-    private float indicatorOffset = 0;
-
-    private boolean showUnderLine;
-    private int underLineHeight;
-    private int underLineColor = Color.BLACK;
-
-    private boolean showTabColor;
-    private int tabColorSelected;
-    private int tabColorNormal;
-
-    private float textSizeTag;
-    private Drawable backgroundTag;
-    private int paddingStartTag;
-    private int paddingEndTag;
-    private int paddingTopTag;
-    private int paddingBottomTag;
-    private int marginStartTag;
-    private int marginEndTag;
-    private int marginTopTag;
-
     private int currentPager = 0;
     private int nextPager = 0;
     private float mOffset = 1;
@@ -122,8 +91,10 @@ public class IndicatorTabStrip extends BaseTabStrip {
                              int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setItemClickable(true);
+        setClickSmoothScroll(true);
         final float density = getResources().getDisplayMetrics().density;
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        mTextPaint.setTextAlign(Align.CENTER);
         if (Build.VERSION.SDK_INT > 4) {
             updateTextPaintDensity();
         }
@@ -152,6 +123,10 @@ public class IndicatorTabStrip extends BaseTabStrip {
         Drawable itemBackground = null;
         ColorStateList gradient = null;
         Drawable indicator = null;
+        int indicatorWidthMode = INDICATOR_WIDTH_MODE_SET;
+        int indicatorPadding = 0;
+        int indicatorWidth = INDICATOR_WIDTH_BY_DRAWABLE;
+        int indicatorHeight = INDICATOR_HEIGHT_BY_DRAWABLE;
         Drawable interval = null;
         int tagTextSize = (int) (DEFAULT_TAG_TEXT_SIZE * density);
         int tagTextColor = DEFAULT_TAG_TEXT_COLOR;
@@ -178,6 +153,14 @@ public class IndicatorTabStrip extends BaseTabStrip {
             divider = custom.getDrawable(R.styleable.IndicatorTabStrip_ttsDivider);
         if (custom.hasValue(R.styleable.IndicatorTabStrip_ttsIndicator))
             indicator = custom.getDrawable(R.styleable.IndicatorTabStrip_ttsIndicator);
+        indicatorWidthMode = custom.getInt(R.styleable.IndicatorTabStrip_ttsIndicatorWidthMode,
+                indicatorWidthMode);
+        indicatorPadding = custom.getDimensionPixelOffset(
+                R.styleable.IndicatorTabStrip_ttsIndicatorPadding, indicatorPadding);
+        indicatorWidth = custom.getDimensionPixelOffset(
+                R.styleable.IndicatorTabStrip_ttsIndicatorWidth, indicatorWidth);
+        indicatorHeight = custom.getDimensionPixelOffset(
+                R.styleable.IndicatorTabStrip_ttsIndicatorHeight, indicatorHeight);
         if (custom.hasValue(R.styleable.IndicatorTabStrip_ttsInterval))
             interval = custom.getDrawable(R.styleable.IndicatorTabStrip_ttsInterval);
         tagTextSize = custom.getDimensionPixelSize(R.styleable.IndicatorTabStrip_ttsTagTextSize,
@@ -230,6 +213,10 @@ public class IndicatorTabStrip extends BaseTabStrip {
         setGradient(gradient);
         setDivider(divider);
         setIndicator(indicator);
+        setIndicatorWidthMode(indicatorWidthMode);
+        setIndicatorPadding(indicatorPadding);
+        setIndicatorWidth(indicatorWidth);
+        setIndicatorHeight(indicatorHeight);
         setInterval(interval);
         setTagTextSize(tagTextSize);
         setTagTextColor(tagTextColor);
@@ -250,6 +237,8 @@ public class IndicatorTabStrip extends BaseTabStrip {
         final int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         final int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         mTextPaint.setTextSize(mTextSize);
+        Paint.FontMetricsInt metrics = mTextPaint.getFontMetricsInt();
+        mTextDesc = metrics.bottom;
         int width;
         if (widthMode == MeasureSpec.EXACTLY) {
             width = widthSize;
@@ -265,7 +254,7 @@ public class IndicatorTabStrip extends BaseTabStrip {
                     (int) (Math.ceil((float) textWidth * mTextScale) + 1) : textWidth;
             final int itemBackgroundWith = getMinItemBackgroundWidth();
             final int itemWidth = Math.max(maxTextWidth, itemBackgroundWith);
-            final int intervalWidth = mInterval == null ? 0 : mInterval.getIntrinsicWidth();
+            final int intervalWidth = getIntervalWidth();
             final int totalWidth = itemWidth * getItemCount() +
                     intervalWidth * (getItemCount() - 1) +
                     ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this);
@@ -285,7 +274,7 @@ public class IndicatorTabStrip extends BaseTabStrip {
                     (int) (Math.ceil((float) textHeight * mTextScale) + 1) : textHeight;
             final int itemBackgroundHeight = getMinItemBackgroundHeight();
             final int intervalHeight = mInterval == null ? 0 : mInterval.getIntrinsicHeight();
-            final int dividerHeight = mDivider == null ? 0 : mDivider.getIntrinsicHeight();
+            final int dividerHeight = getDividerHeight();
             final int itemHeight = Math.max(maxTextHeight,
                     Math.max(itemBackgroundHeight, intervalHeight));
             height = Math.max(dividerHeight + itemHeight + getPaddingTop() + getPaddingBottom(),
@@ -294,85 +283,105 @@ public class IndicatorTabStrip extends BaseTabStrip {
                 height = Math.min(height, heightSize);
         }
         setMeasuredDimension(width, height);
-//
-//
-//        if (heightMode == MeasureSpec.EXACTLY) {
-//            heightOffset = (heightSize - (itemHeight + getPaddingTop() + getPaddingBottom()))
-//                    * 0.5f;
-//            setMeasuredDimension(widthSize, heightSize);
-//        } else {
-//            height
-//        }
-//
-//
-//        if (widthMode != MeasureSpec.EXACTLY) {
-//            // TODO 使用不确定宽度处理
-//            throw new IllegalStateException("Must measure with an exact width");
-//        }
-//        itemWidth = (float) (widthSize - getPaddingLeft() - getPaddingRight() - intervalWidth
-//                * (getItemCount() <= 0 ? 1 : getItemCount() - 1))
-//                / (getItemCount() <= 0 ? 1 : getItemCount());
-//        mTextPaint.setTextSize(magnification <= 0 ? textSize : textSize
-//                + textSize * magnification);
-//        // TODO 当Tab文字长度超过itemWidth时需处理
-//        FontMetrics fontMetrics = mTextPaint.getFontMetrics();
-//        float textHeight = fontMetrics.descent - fontMetrics.ascent;
-//        textTop = textHeight - (-fontMetrics.ascent - fontMetrics.descent
-//                + (fontMetrics.bottom - fontMetrics.descent) * getResources().getDisplayMetrics().density);
-//        textHeight += textTop;
-//        int itemHeight = (int) Math.ceil(textHeight + indicatorHeight
-//                + underLineHeight);
-//        int minHeight = getMinHeight();
-//        if (minHeight > itemHeight + getPaddingTop() + getPaddingBottom()) {
-//            itemHeight = minHeight - getPaddingTop() - getPaddingBottom();
-//        }
-//        if (heightMode == MeasureSpec.EXACTLY) {
-//            heightOffset = (heightSize - (itemHeight + getPaddingTop() + getPaddingBottom()))
-//                    * 0.5f;
-//            setMeasuredDimension(widthSize, heightSize);
-//        } else {
-//            heightOffset = 0;
-//            setMeasuredDimension(widthSize, itemHeight + getPaddingTop()
-//                    + getPaddingBottom());
-//        }
+        mTextPaint.setTextSize(mTagTextSize);
+        metrics = mTextPaint.getFontMetricsInt();
+        mTagTextDesc = metrics.bottom;
     }
 
+    /**
+     * 获取间隔宽度
+     *
+     * @return 间隔宽度
+     */
+    protected int getIntervalWidth() {
+        return mInterval == null ? 0 : mInterval.getIntrinsicWidth();
+    }
+
+    /**
+     * 获取子项宽度
+     *
+     * @return 子项宽度
+     */
+    protected float getItemWidth() {
+        float width = getWidth() - ViewCompat.getPaddingStart(this) - ViewCompat.getPaddingEnd(this)
+                - getIntervalWidth() * (getItemCount() - 1);
+        return width / getItemCount();
+    }
+
+    /**
+     * 获取子项宽度（非精确）
+     *
+     * @return 子项宽度（非精确）
+     */
+    protected int getDrawItemWidth() {
+        return Math.round(getItemWidth());
+    }
+
+    /**
+     * 获取最后一个子项宽度（非精确）
+     *
+     * @return 最后一个子项宽度（非精确）
+     */
+    protected int getLastItemWidth() {
+        return getWidth() - ViewCompat.getPaddingStart(this) - ViewCompat.getPaddingEnd(this)
+                - getIntervalWidth() * (getItemCount() - 1)
+                - getDrawItemWidth() * (getItemCount() - 1);
+    }
+
+    /**
+     * 获取Divider高度
+     *
+     * @return Divider高度
+     */
+    protected int getDividerHeight() {
+        return mDivider == null ? 0 : mDivider.getIntrinsicHeight();
+    }
+
+    /**
+     * 获取子项高度
+     *
+     * @return 子项高度
+     */
+    protected int getItemHeight() {
+        return getHeight() - getDividerHeight() - getPaddingTop() - getPaddingBottom();
+    }
 
     @Override
     protected void jumpTo(int current) {
-        indicatorOffset = 1;
         currentPager = current - 1;
         nextPager = current;
         mOffset = 1;
-        textSizeOffset = 1;
         invalidate();
     }
 
     @Override
     protected void gotoLeft(int current, int next, float offset) {
-        indicatorOffset = offset - 1;
         currentPager = current;
         nextPager = next;
         mOffset = 1 - offset;
-        textSizeOffset = 1 - offset;
         invalidate();
     }
 
     @Override
     protected void gotoRight(int current, int next, float offset) {
-        indicatorOffset = offset;
         currentPager = current;
         nextPager = next;
         mOffset = offset;
-        textSizeOffset = offset;
         invalidate();
     }
 
     @Override
     protected int pointToPosition(float x, float y) {
+        final int paddingTop = getPaddingTop();
+        final int paddingBottom = getPaddingBottom();
+        if (y < paddingTop || y > getWidth() - paddingBottom) {
+            return -1;
+        }
         int position = -1;
+        final float itemWidth = getItemWidth();
+        final int intervalWidth = getIntervalWidth();
         for (int i = 0; i < getItemCount(); i++) {
-            float l = getPaddingLeft() + intervalWidth * i + itemWidth * i;
+            float l = ViewCompat.getPaddingStart(this) + intervalWidth * i + itemWidth * i;
             float r = l + itemWidth;
             if (x >= l && x <= r) {
                 position = i;
@@ -384,7 +393,8 @@ public class IndicatorTabStrip extends BaseTabStrip {
 
     @Override
     protected float getHotspotX(Drawable background, int position, float motionX, float motionY) {
-        return motionX - getPaddingLeft() - intervalWidth * position - itemWidth * position;
+        return motionX - getPaddingLeft() - getIntervalWidth() * position
+                - getItemWidth() * position;
     }
 
     @Override
@@ -411,233 +421,208 @@ public class IndicatorTabStrip extends BaseTabStrip {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        // TODO 绘制子项背景
-        //drawItemBackground(canvas);
-        //drawItemInterval(canvas);
-        //drawUnderLine(canvas);
-        //drawIndicator(canvas);
-        //drawItemText(canvas);
-        //drawItemTag(canvas);
+        drawDivider(canvas);
+        drawItem(canvas);
+        drawIndicator(canvas);
     }
 
     /**
-     * 绘制背景
+     * 绘制Divider
      *
      * @param canvas 画布
      */
-    private void drawItemBackground(Canvas canvas) {
-        if (showTabColor) {
-            mTextPaint.setColor(tabColorNormal);
-            canvas.save();
-            canvas.translate(getPaddingLeft(), 0);
-            if (getItemCount() > 0)
-                for (int i = 0; i < getItemCount(); i++) {
-                    if (i == nextPager) {
-                        mTextPaint.setColor(getColor(tabColorNormal,
-                                tabColorSelected, textSizeOffset));
-                    } else if (i == currentPager) {
-                        mTextPaint.setColor(getColor(tabColorNormal,
-                                tabColorSelected, 1 - textSizeOffset));
-                    } else {
-                        mTextPaint.setColor(tabColorNormal);
-                    }
-                    canvas.drawRect(0, getPaddingTop(), itemWidth, getHeight()
-                            - getPaddingBottom(), mTextPaint);
-                    canvas.translate(itemWidth + intervalWidth, 0);
-                }
-            else {
-                mTextPaint.setColor(tabColorSelected);
-                canvas.drawRect(0, getPaddingTop(), itemWidth + intervalWidth
-                                + getPaddingLeft(), getHeight() - getPaddingBottom(),
-                        mTextPaint);
-            }
-            canvas.restore();
-        }
-        // TODO 两种类型的背景，传统背景及双色渐变背景
-    }
-
-    /**
-     * 绘制间隔图案
-     *
-     * @param canvas 画布
-     */
-    private void drawItemInterval(Canvas canvas) {
-        // TODO 绘制间隔图案
-    }
-
-    /**
-     * 绘制下划线
-     *
-     * @param canvas 画布
-     */
-    private void drawUnderLine(Canvas canvas) {
-        if (showUnderLine) {
-            mTextPaint.setColor(underLineColor);
-            canvas.drawRect(getPaddingLeft(), getHeight() - underLineHeight
-                            - getPaddingBottom(), getWidth() - getPaddingRight(),
-                    getHeight() - getPaddingBottom(), mTextPaint);
-        }
-    }
-
-    /**
-     * 绘制指示标
-     *
-     * @param canvas 画布
-     */
-    private void drawIndicator(Canvas canvas) {
+    protected void drawDivider(Canvas canvas) {
+        if (mDivider == null || mDivider.getIntrinsicHeight() <= 0)
+            return;
+        final int dividerWidth = mDivider.getIntrinsicWidth() > 0 ? mDivider.getIntrinsicWidth() :
+                getWidth() - ViewCompat.getPaddingStart(this) - ViewCompat.getPaddingEnd(this);
+        final int dividerHeight = mDivider.getIntrinsicHeight();
+        mDivider.setBounds(0, 0, dividerWidth, dividerHeight);
+        final float moveX = ViewCompat.getPaddingStart(this);
+        final float moveY = getItemHeight() + getPaddingTop();
         canvas.save();
-        canvas.translate(getPaddingLeft() + currentPager
-                * (itemWidth + intervalWidth) + ((itemWidth - indicatorWidth) * 0.5f)
-                + indicatorOffset * (itemWidth + intervalWidth), getHeight()
-                - underLineHeight - getPaddingBottom() - indicatorHeight);
-        if (showIndicator) {
-            mTextPaint.setColor(indicatorColor);
-            if (getItemCount() > 1)
-                canvas.drawRect(0, 0, indicatorWidth, indicatorHeight, mTextPaint);
-            else if (getItemCount() > 0)
-                canvas.drawRect(itemWidth / 4, 0, indicatorWidth - itemWidth / 4,
-                        indicatorHeight, mTextPaint);
-            else
-                canvas.drawRect(itemWidth / 4, 0, indicatorWidth - itemWidth / 4,
-                        indicatorHeight, mTextPaint);
-        }
+        canvas.translate(moveX, moveY);
+        mDivider.draw(canvas);
         canvas.restore();
     }
 
     /**
-     * 绘制文字
+     * 绘制子项
      *
      * @param canvas 画布
      */
-    private void drawItemText(Canvas canvas) {
+    protected void drawItem(Canvas canvas) {
+        final int itemWidth = getDrawItemWidth();
+        final int itemHeight = getItemHeight();
+        for (int position = 0; position < getItemCount(); position++) {
+            drawItemBackground(canvas, position, itemWidth, itemHeight);
+            drawItemGradient(canvas, position, itemWidth, itemHeight);
+            drawInterval(canvas, position, itemWidth, itemHeight);
+            drawText(canvas, position, itemWidth, itemHeight);
+            drawTag(canvas, position, itemWidth, itemHeight);
+        }
+    }
+
+    protected void drawItemBackground(Canvas canvas, int position, int itemWidth, int itemHeight) {
+        if (!hasItemBackgrounds())
+            return;
+        Drawable tag = getItemBackground(position);
+        if (position == getItemCount() - 1) {
+            int restWidth = getLastItemWidth();
+            tag.setBounds(0, 0, restWidth, itemHeight);
+        } else {
+            tag.setBounds(0, 0, itemWidth, itemHeight);
+        }
+        final float moveX = ViewCompat.getPaddingStart(this) +
+                (itemWidth + getIntervalWidth()) * position;
+        final float moveY = getPaddingTop();
         canvas.save();
-        canvas.translate(0, -heightOffset);
-        float x = getPaddingLeft() + itemWidth / 2;
-        int y = getHeight() - getPaddingBottom() - indicatorHeight
-                - underLineHeight;
-        int position = 0;
-        for (int i = 0; i < getItemCount(); i++) {
-            CharSequence charSequence = getItemText(i);
-            String text = charSequence == null ? "" : charSequence.toString();
-            canvas.save();
-            mTextPaint.setColor(textColorNormal);
-            mTextPaint.setTextAlign(Align.LEFT);
-            mTextPaint.setTextSize(textSize);
-            if (showTextGradient) {
-                if (position == nextPager) {
-                    mTextPaint.setColor(getColor(textColorNormal,
-                            textColorSelected, textSizeOffset));
-                } else if (position == currentPager) {
-                    mTextPaint.setColor(getColor(textColorNormal,
-                            textColorSelected, 1 - textSizeOffset));
-                } else {
-                    mTextPaint.setColor(textColorNormal);
-                }
-            }
-            if (showTextScale) {
-                if (position == nextPager) {
-                    canvas.translate(x - mTextPaint.measureText(text)
-                            * (1 + textSizeOffset * magnification) / 2, y
-                            - textTop);
-                    canvas.scale(1 + textSizeOffset * magnification, 1
-                            + textSizeOffset * magnification);
-                } else if (position == currentPager) {
-                    canvas.translate(x - mTextPaint.measureText(text)
-                            * (1 + (1 - textSizeOffset) * magnification) / 2, y
-                            - textTop);
-                    canvas.scale(1 + (1 - textSizeOffset) * magnification, 1
-                            + (1 - textSizeOffset) * magnification);
-                } else {
-                    canvas.translate(x - mTextPaint.measureText(text) / 2, y
-                            - textTop);
-                    canvas.scale(1, 1);
-                }
+        canvas.translate(moveX, moveY);
+        tag.draw(canvas);
+        canvas.restore();
+    }
+
+    protected void drawItemGradient(Canvas canvas, int position, int itemWidth, int itemHeight) {
+        if (mGradient == null || !mGradient.isStateful())
+            return;
+        final int normalColor = mGradient.getDefaultColor();
+        final int selectedColor = mGradient.getColorForState(SELECTED_STATE_SET, normalColor);
+        if (position == nextPager) {
+            mTextPaint.setColor(getColor(normalColor, selectedColor, mOffset));
+        } else if (position == currentPager) {
+            mTextPaint.setColor(getColor(normalColor, selectedColor, 1 - mOffset));
+        } else {
+            mTextPaint.setColor(normalColor);
+        }
+        final float moveX = ViewCompat.getPaddingStart(this) +
+                (itemWidth + getIntervalWidth()) * position;
+        final float moveY = getPaddingTop();
+        final int restWidth = position == getItemCount() - 1 ? getLastItemWidth() : itemWidth;
+        canvas.save();
+        canvas.translate(moveX, moveY);
+        canvas.drawRect(0, 0, restWidth, itemHeight, mTextPaint);
+        canvas.restore();
+    }
+
+    protected void drawInterval(Canvas canvas, int position, int itemWidth, int itemHeight) {
+        if (mInterval == null || mInterval.getIntrinsicWidth() <= 0
+                || position == getItemCount() - 1)
+            return;
+        final int intervalHeight = mInterval.getIntrinsicHeight() <= 0 ? itemHeight :
+                mInterval.getIntrinsicHeight();
+        mInterval.setBounds(0, 0, getIntervalWidth(), intervalHeight);
+        final int moveX = ViewCompat.getPaddingStart(this) + itemWidth * position;
+        final float moveY = getPaddingTop() + (itemHeight - intervalHeight) * 0.5f;
+        canvas.save();
+        canvas.translate(moveX, moveY);
+        mInterval.draw(canvas);
+        canvas.restore();
+    }
+
+    protected void drawText(Canvas canvas, int position, int itemWidth, int itemHeight) {
+        if (getItemText(position) == null)
+            return;
+        String text = getItemText(position).toString();
+        if (text.length() <= 0)
+            return;
+        mTextPaint.setTextSize(mTextSize);
+        if (mTextColor == null) {
+            mTextPaint.setColor(DEFAULT_TEXT_COLOR);
+        } else {
+            final int normalColor = mTextColor.getDefaultColor();
+            final int selectedColor = mTextColor.getColorForState(SELECTED_STATE_SET, normalColor);
+            if (position == nextPager) {
+                mTextPaint.setColor(getColor(normalColor, selectedColor, mOffset));
+            } else if (position == currentPager) {
+                mTextPaint.setColor(getColor(normalColor, selectedColor, 1 - mOffset));
             } else {
-                canvas.translate(x - mTextPaint.measureText(text) / 2, y
-                        - textTop);
+                mTextPaint.setColor(normalColor);
             }
-            canvas.drawText(text, 0, 0, mTextPaint);
-            x += itemWidth + intervalWidth;
-            position++;
-            canvas.restore();
         }
+        final float centerX = ViewCompat.getPaddingStart(this) +
+                (itemWidth + getIntervalWidth()) * ((float) position + 0.5f);
+        final float centerY = getPaddingTop() + itemHeight * 0.5f;
+        float scale;
+        if (position == nextPager) {
+            scale = 1 + (mTextScale - 1) * mOffset;
+        } else if (position == currentPager) {
+            scale = 1 + (mTextScale - 1) * (1 - mOffset);
+        } else {
+            scale = 1;
+        }
+        canvas.save();
+        canvas.translate(centerX, centerY + mTextDesc);
+        if (scale != 1) {
+            canvas.scale(scale, scale, 0, -mTextDesc);
+        }
+        canvas.drawText(text, 0, 0, mTextPaint);
         canvas.restore();
     }
 
+    protected void drawTag(Canvas canvas, int position, int itemWidth, int itemHeight) {
+        if (mAdapter == null || !mAdapter.isTagEnable(position))
+            return;
+        String text = mAdapter.getTag(position) == null ? "" : mAdapter.getTag(position);
+        mTextPaint.setTextSize(mTagTextSize);
+        mTextPaint.setColor(mTagTextColor);
+        mTextPaint.getTextBounds(text, 0, text.length(), mTextMeasureBounds);
+        final int textWidth = mTextMeasureBounds.width();
+        final int textHeight = mTextMeasureBounds.height();
+        final int tagBackgroundWidth = mTagBackground == null ?
+                0 : mTagBackground.getIntrinsicWidth();
+        final int tagBackgroundHeight = mTagBackground == null ?
+                0 : mTagBackground.getIntrinsicHeight();
+        final int tagWidth = Math.max(textWidth +
+                mTagLocation.getPaddingLeft() + mTagLocation.getPaddingRight(),
+                tagBackgroundWidth);
+        final int tagHeight = Math.max(textHeight +
+                mTagLocation.getPaddingTop() + mTagLocation.getPaddingBottom(),
+                tagBackgroundHeight);
+        final int rightTabX = ViewCompat.getPaddingStart(this) + itemWidth * (position + 1);
+        final int rightTagX = rightTabX - mTagLocation.getMarginRight();
+        final int tagY = getPaddingTop() + mTagLocation.getMarginTop();
+        final int leftTagX = rightTagX - tagWidth;
+        final float tagCenterX = leftTagX + tagWidth * 0.5f;
+        final float tagCenterY = tagY + tagHeight * 0.5f;
+        canvas.save();
+        if (mTagBackground != null) {
+            mTagBackground.setBounds(0, 0, tagWidth, tagHeight);
+            canvas.translate(leftTagX, tagY);
+            mTagBackground.draw(canvas);
+            canvas.translate(tagWidth * 0.5f, tagHeight * 0.5f + mTagTextDesc);
+        } else {
+            canvas.translate(tagCenterX, tagCenterY + mTagTextDesc);
+        }
+        canvas.drawText(text, 0, 0, mTextPaint);
+        canvas.restore();
+        // TODO
+    }
+
     /**
-     * 绘制角标
+     * 绘制游标
      *
      * @param canvas 画布
      */
-    private void drawItemTag(Canvas canvas) {
-        // TODO
-        if (mAdapter != null) {
-            canvas.save();
-            float canvasOffset = 0;
-            int x = getPaddingLeft();
-            int y = getPaddingTop();
-            float textTop;
-            mTextPaint.setColor(Color.WHITE);
-            mTextPaint.setTextAlign(Align.LEFT);
-            for (int position = 0; position < getItemCount(); position++) {
-                canvas.translate(canvasOffset, 0);
-                canvasOffset = itemWidth + intervalWidth;
-                canvas.save();
-                if (mAdapter.isTagEnable(position)) {
-                    int textWidth;
-                    int textHeight;
-                    mTextPaint.setTextSize(textSizeTag);
-                    String tag = mAdapter.getTag(position) == null ? ""
-                            : mAdapter.getTag(position);
-                    textWidth = (int) Math.ceil(mTextPaint.measureText(tag));
-                    FontMetrics fontMetrics = mTextPaint.getFontMetrics();
-                    textHeight = (int) Math.ceil(fontMetrics.descent
-                            - fontMetrics.ascent);
-                    textTop = textHeight
-                            - (-fontMetrics.ascent - fontMetrics.descent + (fontMetrics.bottom - fontMetrics.descent)
-                            * getResources().getDisplayMetrics().density);
-                    textHeight += textTop;
-                    if ("".equals(tag)) {
-                        textHeight = 0;
-                    }
-                    int drawableWidth = backgroundTag == null ? 0 : backgroundTag.getMinimumWidth();
-                    int drawableHeight = backgroundTag == null ? 0 : backgroundTag.getMinimumHeight();
-                    float offsetX = Math.max(
-                            textWidth + paddingStartTag + paddingEndTag,
-                            drawableWidth);
-                    float offsetTextX = (offsetX - (textWidth
-                            + paddingStartTag + paddingEndTag)) * 0.5f;
-                    float offsetY = Math.max(
-                            textHeight + paddingBottomTag + paddingTopTag,
-                            drawableHeight);
-                    float offsetTextY = (offsetY - (textHeight
-                            + paddingBottomTag + paddingTopTag)) * 0.5f;
-                    mTextPaint.setTextSize(showTextScale ? textSize
-                            * (1 + magnification) : textSize);
-                    CharSequence charSequence = getItemText(position);
-                    String text = charSequence == null ? "" : charSequence.toString();
-                    float myTextWidth = mTextPaint.measureText(text);
-                    // 只做右上角
-                    // 文字右上角
-//                    canvas.translate((itemWidth + myTextWidth) / 2 + marginStartTag, marginTopTag);
-                    // Item右上角
-                    canvas.translate(itemWidth - offsetX - marginEndTag, marginTopTag);
-                    mTextPaint.setTextSize(textSizeTag);
-                    if (backgroundTag != null) {
-                        backgroundTag.setBounds(x, y, (int) (x + offsetX),
-                                (int) (y + offsetY));
-                        backgroundTag.draw(canvas);
-                    }
-                    canvas.drawText(
-                            tag,
-                            x + offsetTextX + paddingStartTag,
-                            y + offsetY - textTop - offsetTextY - paddingTopTag,
-                            mTextPaint);
-                }
-                canvas.restore();
-            }
-            canvas.restore();
-        }
+    protected void drawIndicator(Canvas canvas) {
+        if (mIndicator == null)
+            return;
+        final int indicatorWidth = getIndicatorWidth();
+        final int indicatorHeight = getIndicatorHeight();
+        if (indicatorWidth <= 0 || indicatorHeight <= 0)
+            return;
+        mIndicator.setBounds(0, 0, indicatorWidth, indicatorHeight);
+        final float widthWithInterval = getItemWidth() + getIntervalWidth();
+        final float currentCenter = ViewCompat.getPaddingStart(this) +
+                currentPager * widthWithInterval + widthWithInterval * 0.5f;
+        final float nextCenter = ViewCompat.getPaddingStart(this) +
+                nextPager * widthWithInterval + widthWithInterval * 0.5f;
+        final float moveCenter = currentCenter + (nextCenter - currentCenter) * mOffset;
+        final float moveX = moveCenter - indicatorWidth * 0.5f;
+        final float moveY = getHeight() - getPaddingBottom() - getDividerHeight() - indicatorHeight;
+        canvas.save();
+        canvas.translate(moveX, moveY);
+        mIndicator.draw(canvas);
+        canvas.restore();
     }
 
     /**
@@ -739,6 +724,8 @@ public class IndicatorTabStrip extends BaseTabStrip {
         } else if (mGradient != gradient && gradient.isStateful()) {
             mGradient = gradient;
             invalidate();
+        } else {
+            setItemBackground(new ColorDrawable(gradient.getDefaultColor()));
         }
     }
 
@@ -814,6 +801,110 @@ public class IndicatorTabStrip extends BaseTabStrip {
     @SuppressWarnings("unused")
     public void setIndicator(@DrawableRes int indicator) {
         setIndicator(ContextCompat.getDrawable(getContext(), indicator));
+    }
+
+    /**
+     * 获取游标宽度计算模式
+     *
+     * @return 游标宽度计算模式
+     */
+    @SuppressWarnings("unused")
+    public int getIndicatorWidthMode() {
+        return mIndicatorWidthMode;
+    }
+
+    /**
+     * 设置获取游标宽度计算模式
+     *
+     * @param mode 获取游标宽度计算模式
+     */
+    public void setIndicatorWidthMode(int mode) {
+        if (mode != INDICATOR_WIDTH_MODE_SET && mode != INDICATOR_WIDTH_MODE_TAB)
+            return;
+        if (mIndicatorWidthMode != mode) {
+            mIndicatorWidthMode = mode;
+            invalidate();
+        }
+    }
+
+    /**
+     * 获取游标两端Padding
+     *
+     * @return 游标两端Padding
+     */
+    @SuppressWarnings("unused")
+    public int getIndicatorPadding() {
+        return mIndicatorPadding;
+    }
+
+    /**
+     * 设置游标两端Padding
+     *
+     * @param padding 游标两端Padding
+     */
+    public void setIndicatorPadding(int padding) {
+        if (mIndicatorPadding != padding) {
+            mIndicatorPadding = padding;
+            invalidate();
+        }
+    }
+
+    /**
+     * 获取游标宽度
+     *
+     * @return 游标宽度
+     */
+    public int getIndicatorWidth() {
+        if (mIndicator == null)
+            return 0;
+        switch (mIndicatorWidthMode) {
+            default:
+            case INDICATOR_WIDTH_MODE_SET:
+                return mIndicatorWidth == INDICATOR_WIDTH_BY_DRAWABLE ?
+                        mIndicator.getIntrinsicWidth() : mIndicatorWidth;
+            case INDICATOR_WIDTH_MODE_TAB:
+                return getDrawItemWidth() - mIndicatorPadding * 2;
+        }
+    }
+
+    /**
+     * 设置游标宽度
+     *
+     * @param width 游标宽度
+     */
+    public void setIndicatorWidth(int width) {
+        if (width < INDICATOR_WIDTH_BY_DRAWABLE)
+            return;
+        if (mIndicatorWidth != width) {
+            mIndicatorWidth = width;
+            invalidate();
+        }
+    }
+
+    /**
+     * 获取游标高度
+     *
+     * @return 游标高度
+     */
+    public int getIndicatorHeight() {
+        if (mIndicator == null)
+            return 0;
+        return mIndicatorHeight == INDICATOR_HEIGHT_BY_DRAWABLE ?
+                mIndicator.getIntrinsicHeight() : mIndicatorHeight;
+    }
+
+    /**
+     * 设置游标高度
+     *
+     * @param height 游标高度
+     */
+    public void setIndicatorHeight(int height) {
+        if (height < INDICATOR_HEIGHT_BY_DRAWABLE)
+            return;
+        if (mIndicatorHeight != height) {
+            mIndicatorHeight = height;
+            invalidate();
+        }
     }
 
     /**
