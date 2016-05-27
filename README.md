@@ -15,3 +15,7 @@ TabStrip基础类，其实现了类似于PagerTabStrip的一些基础方法，�
 - [TagTabStrip](https://github.com/AlexMofer/ProjectX/tree/master/tagtabstrip)
 
 继承自BaseTabStrip，实现ViewPager滚动标记点
+
+- [IndicatorTabStrip](https://github.com/AlexMofer/ProjectX/tree/master/indicatortabstrip)
+
+继承自BaseTabStrip，移动式下标渐变缩放Tab，Item不建议超过5个
