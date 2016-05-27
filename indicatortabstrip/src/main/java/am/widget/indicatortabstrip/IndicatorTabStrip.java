@@ -39,7 +39,7 @@ import android.util.AttributeSet;
 
 /**
  * 游标TabStrip，Item不建议超过5个
- * TODO 增加子项最小高宽设置及默认值
+ *
  * @author Alex
  */
 public class IndicatorTabStrip extends BaseTabStrip {
