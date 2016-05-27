@@ -39,14 +39,17 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:padding="5dp"
+            android:textColor="@color/color_main_tabs"
+            android:textSize="16sp"
+            app:ttsTextScale="1.2"
             app:ttsDivider="@drawable/divider_indicator_under"
             app:ttsInterval="@drawable/divider_indicator_interval"
             app:ttsIndicator="@drawable/ic_indicator_indicator"
             app:ttsBackground="@drawable/bg_common_press"
             app:ttsGradient="@color/color_indicator"
-            android:textColor="@color/color_main_tabs"
-            android:textSize="16sp"
-            app:ttsTextScale="1.2"/>
+            app:ttsTagMargin="5dp"
+            app:ttsTagMinWidth="15dp"
+            app:ttsTagMinHeight="15dp"/>
 
     </android.support.v4.view.ViewPager>
 

@@ -33,7 +33,6 @@ public class IndicatorTabStripActivity extends BaseActivity {
         ViewPager vpContent = (ViewPager) findViewById(R.id.its_vp_content);
         IndicatorTabStrip tabs = (IndicatorTabStrip) findViewById(R.id.its_its_tabs);
         vpContent.setAdapter(new IndicatorTabStripViewsPagerAdapter(getPagers()));
-
         BaseTabStrip.ItemTabAdapter adapter = new BaseTabStrip.ItemTabAdapter() {
 
             @Override
@@ -50,11 +49,11 @@ public class IndicatorTabStripActivity extends BaseActivity {
                 switch (position) {
                     default:
                     case 0:
-                        return "000";
+                        return null;
                     case 1:
                         return "";
                     case 2:
-                        return "New";
+                        return "3";
                 }
             }
         };

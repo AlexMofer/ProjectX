@@ -54,6 +54,8 @@ public class IndicatorTabStrip extends BaseTabStrip {
     public static final int INDICATOR_WIDTH_MODE_TAB = 1;// 按照子项宽度计算
     public static final int INDICATOR_WIDTH_BY_DRAWABLE = -1;// 按照图片宽度计算
     public static final int INDICATOR_HEIGHT_BY_DRAWABLE = -1;// 按照图片高度计算
+    public static final int TAG_MIN_SIZE_MODE_HAS_TEXT = 0;// 当图片最小宽高更小时，按图片计算
+    public static final int TAG_MIN_SIZE_MODE_ALWAYS = 1;// 按照设置的最小宽高
     private final TextPaint mTextPaint;
     private float mTextSize;// 文字大小
     private float mTextDesc;// 文字偏移
@@ -72,12 +74,14 @@ public class IndicatorTabStrip extends BaseTabStrip {
     private float mTagTextDesc;// Tag文字偏移
     private int mTagTextColor;// Tag文字颜色
     private Drawable mTagBackground;// Tag文字背景
+    private int mTagMinSizeMode;// Tag文字大小模式
+    private int mTagMinWidth;// Tag文字最小宽度
+    private int mTagMinHeight;// Tag文字最小高度
     private TagLocation mTagLocation;// Tag布局
     private Rect mTextMeasureBounds = new Rect();// 文字测量
     private int currentPager = 0;
     private int nextPager = 0;
     private float mOffset = 1;
-
 
     public IndicatorTabStrip(Context context) {
         this(context, null);
@@ -131,6 +135,9 @@ public class IndicatorTabStrip extends BaseTabStrip {
         int tagTextSize = (int) (DEFAULT_TAG_TEXT_SIZE * density);
         int tagTextColor = DEFAULT_TAG_TEXT_COLOR;
         Drawable tagBackground = getDefaultTagBackground();
+        int tagMinSizeMode = TAG_MIN_SIZE_MODE_HAS_TEXT;
+        int tagMinWidth = 0;
+        int tagMinHeight = 0;
         int tagPaddingLeft = 0;
         int tagPaddingTop = 0;
         int tagPaddingRight = 0;
@@ -169,6 +176,12 @@ public class IndicatorTabStrip extends BaseTabStrip {
                 tagTextColor);
         if (custom.hasValue(R.styleable.IndicatorTabStrip_ttsTagBackground))
             tagBackground = custom.getDrawable(R.styleable.IndicatorTabStrip_ttsTagBackground);
+        tagMinSizeMode = custom.getInt(R.styleable.IndicatorTabStrip_ttsTagMinSizeMode,
+                tagMinSizeMode);
+        tagMinWidth = custom.getDimensionPixelOffset(R.styleable.IndicatorTabStrip_ttsTagMinWidth,
+                tagMinWidth);
+        tagMinHeight = custom.getDimensionPixelOffset(R.styleable.IndicatorTabStrip_ttsTagMinHeight,
+                tagMinHeight);
         if (custom.hasValue(R.styleable.IndicatorTabStrip_ttsTagPadding)) {
             final int padding = custom.getDimensionPixelOffset(
                     R.styleable.IndicatorTabStrip_ttsTagPadding, 0);
@@ -221,6 +234,9 @@ public class IndicatorTabStrip extends BaseTabStrip {
         setTagTextSize(tagTextSize);
         setTagTextColor(tagTextColor);
         setTagBackground(tagBackground);
+        setTagMinSizeMode(tagMinSizeMode);
+        setTagMinWidth(tagMinWidth);
+        setTagMinHeight(tagMinHeight);
         setTagPadding(tagPaddingLeft, tagPaddingTop, tagPaddingRight, tagPaddingBottom);
         setTagMargin(tagMarginLeft, tagMarginTop, tagMarginRight, tagMarginBottom);
     }
@@ -463,6 +479,14 @@ public class IndicatorTabStrip extends BaseTabStrip {
         }
     }
 
+    /**
+     * 绘制背景
+     *
+     * @param canvas     画布
+     * @param position   子项坐标
+     * @param itemWidth  子项宽
+     * @param itemHeight 子项高
+     */
     protected void drawItemBackground(Canvas canvas, int position, int itemWidth, int itemHeight) {
         if (!hasItemBackgrounds())
             return;
@@ -482,6 +506,14 @@ public class IndicatorTabStrip extends BaseTabStrip {
         canvas.restore();
     }
 
+    /**
+     * 绘制渐变
+     *
+     * @param canvas     画布
+     * @param position   子项坐标
+     * @param itemWidth  子项宽
+     * @param itemHeight 子项高
+     */
     protected void drawItemGradient(Canvas canvas, int position, int itemWidth, int itemHeight) {
         if (mGradient == null || !mGradient.isStateful())
             return;
@@ -504,6 +536,14 @@ public class IndicatorTabStrip extends BaseTabStrip {
         canvas.restore();
     }
 
+    /**
+     * 绘制间隔
+     *
+     * @param canvas     画布
+     * @param position   子项坐标
+     * @param itemWidth  子项宽
+     * @param itemHeight 子项高
+     */
     protected void drawInterval(Canvas canvas, int position, int itemWidth, int itemHeight) {
         if (mInterval == null || mInterval.getIntrinsicWidth() <= 0
                 || position == getItemCount() - 1)
@@ -519,6 +559,14 @@ public class IndicatorTabStrip extends BaseTabStrip {
         canvas.restore();
     }
 
+    /**
+     * 绘制文字
+     *
+     * @param canvas     画布
+     * @param position   子项坐标
+     * @param itemWidth  子项宽
+     * @param itemHeight 子项高
+     */
     protected void drawText(Canvas canvas, int position, int itemWidth, int itemHeight) {
         if (getItemText(position) == null)
             return;
@@ -559,6 +607,15 @@ public class IndicatorTabStrip extends BaseTabStrip {
         canvas.restore();
     }
 
+    /**
+     * 绘制Tag
+     *
+     * @param canvas     画布
+     * @param position   子项坐标
+     * @param itemWidth  子项宽
+     * @param itemHeight 子项高
+     */
+    @SuppressWarnings("unused")
     protected void drawTag(Canvas canvas, int position, int itemWidth, int itemHeight) {
         if (mAdapter == null || !mAdapter.isTagEnable(position))
             return;
@@ -572,30 +629,48 @@ public class IndicatorTabStrip extends BaseTabStrip {
                 0 : mTagBackground.getIntrinsicWidth();
         final int tagBackgroundHeight = mTagBackground == null ?
                 0 : mTagBackground.getIntrinsicHeight();
-        final int tagWidth = Math.max(textWidth +
-                mTagLocation.getPaddingLeft() + mTagLocation.getPaddingRight(),
-                tagBackgroundWidth);
-        final int tagHeight = Math.max(textHeight +
-                mTagLocation.getPaddingTop() + mTagLocation.getPaddingBottom(),
-                tagBackgroundHeight);
-        final int rightTabX = ViewCompat.getPaddingStart(this) + itemWidth * (position + 1);
+        int minTagWidth;
+        int minTagHeight;
+        switch (mTagMinSizeMode) {
+            default:
+            case TAG_MIN_SIZE_MODE_HAS_TEXT:
+                if ("".equals(text)) {
+                    minTagWidth = Math.min(mTagMinWidth, tagBackgroundWidth);
+                    minTagHeight = Math.min(mTagMinHeight, tagBackgroundHeight);
+                    break;
+                }
+            case TAG_MIN_SIZE_MODE_ALWAYS:
+                minTagWidth = Math.max(
+                        textWidth + mTagLocation.getPaddingLeft() + mTagLocation.getPaddingRight(),
+                        Math.max(mTagMinWidth, tagBackgroundWidth));
+                minTagHeight = Math.max(
+                        textHeight + mTagLocation.getPaddingTop() + mTagLocation.getPaddingBottom(),
+                        Math.max(mTagMinHeight, tagBackgroundHeight));
+                break;
+        }
+        final int rightTabX = position == getItemCount() - 1 ?
+                getWidth() - ViewCompat.getPaddingEnd(this)
+                : ViewCompat.getPaddingStart(this) +
+                (itemWidth + getIntervalWidth()) * position + itemWidth;
         final int rightTagX = rightTabX - mTagLocation.getMarginRight();
         final int tagY = getPaddingTop() + mTagLocation.getMarginTop();
-        final int leftTagX = rightTagX - tagWidth;
-        final float tagCenterX = leftTagX + tagWidth * 0.5f;
-        final float tagCenterY = tagY + tagHeight * 0.5f;
+        final int leftTagX = rightTagX - minTagWidth;
+        final float tagCenterX = leftTagX + minTagWidth * 0.5f;
+        final float tagCenterY = tagY + minTagWidth * 0.5f;
         canvas.save();
         if (mTagBackground != null) {
-            mTagBackground.setBounds(0, 0, tagWidth, tagHeight);
+            mTagBackground.setBounds(0, 0, minTagWidth, minTagHeight);
             canvas.translate(leftTagX, tagY);
             mTagBackground.draw(canvas);
-            canvas.translate(tagWidth * 0.5f, tagHeight * 0.5f + mTagTextDesc);
+            if (!"".equals(text)) {
+                canvas.translate(minTagWidth * 0.5f, minTagHeight * 0.5f + mTagTextDesc);
+                canvas.drawText(text, 0, 0, mTextPaint);
+            }
         } else {
             canvas.translate(tagCenterX, tagCenterY + mTagTextDesc);
+            canvas.drawText(text, 0, 0, mTextPaint);
         }
-        canvas.drawText(text, 0, 0, mTextPaint);
         canvas.restore();
-        // TODO
     }
 
     /**
@@ -1036,6 +1111,74 @@ public class IndicatorTabStrip extends BaseTabStrip {
     @SuppressWarnings("unused")
     public void setTagBackground(@DrawableRes int background) {
         setTagBackground(ContextCompat.getDrawable(getContext(), background));
+    }
+
+    /**
+     * 获取Tag最小高宽计算模式
+     *
+     * @return Tag最小高宽计算模式
+     */
+    @SuppressWarnings("unused")
+    public int getTagMinSizeMode() {
+        return mTagMinSizeMode;
+    }
+
+    /**
+     * 设置Tag最小高宽计算模式
+     *
+     * @param mode Tag最小高宽计算模式
+     */
+    public void setTagMinSizeMode(int mode) {
+        if (mode != TAG_MIN_SIZE_MODE_HAS_TEXT && mode != TAG_MIN_SIZE_MODE_ALWAYS)
+            return;
+        if (mTagMinSizeMode != mode) {
+            mTagMinSizeMode = mode;
+            invalidate();
+        }
+    }
+
+    /**
+     * 获取Tag最小宽度
+     *
+     * @return Tag最小宽度
+     */
+    @SuppressWarnings("unused")
+    public int getTagMinWidth() {
+        return mTagMinWidth;
+    }
+
+    /**
+     * 设置Tag最小宽度
+     *
+     * @param width Tag最小宽度
+     */
+    public void setTagMinWidth(int width) {
+        if (width >= 0 && mTagMinWidth != width) {
+            mTagMinWidth = width;
+            invalidate();
+        }
+    }
+
+    /**
+     * 获取Tag最小高度
+     *
+     * @return Tag最小高度
+     */
+    @SuppressWarnings("unused")
+    public int getTagMinHeight() {
+        return mTagMinHeight;
+    }
+
+    /**
+     * 设置Tag最小高度
+     *
+     * @param height Tag最小高度
+     */
+    public void setTagMinHeight(int height) {
+        if (height >= 0 && mTagMinHeight != height) {
+            mTagMinHeight = height;
+            invalidate();
+        }
     }
 
     /**

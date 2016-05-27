@@ -9,7 +9,7 @@
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:basetabstrip:2.0.3'
+    compile 'am.widget:basetabstrip:2.1.0'
     ⋯
 }
 ```

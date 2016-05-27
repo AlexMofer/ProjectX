@@ -8,7 +8,7 @@
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:gradienttabstrip:2.0.3'
+    compile 'am.widget:gradienttabstrip:2.1.0'
     ⋯
 }
 ```
