@@ -39,7 +39,7 @@ import android.util.AttributeSet;
 
 /**
  * 游标TabStrip，Item不建议超过5个
- *
+ * TODO 增加子项最小高宽设置及默认值
  * @author Alex
  */
 public class IndicatorTabStrip extends BaseTabStrip {
@@ -47,16 +47,17 @@ public class IndicatorTabStrip extends BaseTabStrip {
     private static final int[] ATTRS = new int[]{android.R.attr.textSize,
             android.R.attr.textColor, android.R.attr.divider};
     private static final int DEFAULT_TEXT_SIZE = 14;// 默认字体大小dp
-    public static final int DEFAULT_TEXT_COLOR = 0xff000000;// 默认字体颜色
-    public static final int DEFAULT_TAG_TEXT_SIZE = 11;// 默认Tag字体大小dp
-    public static final int DEFAULT_TAG_TEXT_COLOR = 0xffffffff;// 默认Tag文字颜色
+    private static final int DEFAULT_TEXT_COLOR = 0xff000000;// 默认字体颜色
+    private static final int DEFAULT_TAG_TEXT_SIZE = 11;// 默认Tag字体大小dp
+    private static final int DEFAULT_TAG_TEXT_COLOR = 0xffffffff;// 默认Tag文字颜色
+    private static final int DEFAULT_TAG_MIN_SIZE = 15;// 默认Tag最小大小dp
     public static final int INDICATOR_WIDTH_MODE_SET = 0;// 按照设置宽度计算
     public static final int INDICATOR_WIDTH_MODE_TAB = 1;// 按照子项宽度计算
     public static final int INDICATOR_WIDTH_BY_DRAWABLE = -1;// 按照图片宽度计算
     public static final int INDICATOR_HEIGHT_BY_DRAWABLE = -1;// 按照图片高度计算
     public static final int TAG_MIN_SIZE_MODE_HAS_TEXT = 0;// 当图片最小宽高更小时，按图片计算
     public static final int TAG_MIN_SIZE_MODE_ALWAYS = 1;// 按照设置的最小宽高
-    private final TextPaint mTextPaint;
+    private final TextPaint mTextPaint;// 文字画笔
     private float mTextSize;// 文字大小
     private float mTextDesc;// 文字偏移
     private ColorStateList mTextColor;// 文字颜色
@@ -79,8 +80,8 @@ public class IndicatorTabStrip extends BaseTabStrip {
     private int mTagMinHeight;// Tag文字最小高度
     private TagLocation mTagLocation;// Tag布局
     private Rect mTextMeasureBounds = new Rect();// 文字测量
-    private int currentPager = 0;
-    private int nextPager = 0;
+    private int mCurrentPager = 0;
+    private int mNextPager = 0;
     private float mOffset = 1;
 
     public IndicatorTabStrip(Context context) {
@@ -136,8 +137,8 @@ public class IndicatorTabStrip extends BaseTabStrip {
         int tagTextColor = DEFAULT_TAG_TEXT_COLOR;
         Drawable tagBackground = getDefaultTagBackground();
         int tagMinSizeMode = TAG_MIN_SIZE_MODE_HAS_TEXT;
-        int tagMinWidth = 0;
-        int tagMinHeight = 0;
+        int tagMinWidth = (int) (DEFAULT_TAG_MIN_SIZE * density);
+        int tagMinHeight = (int) (DEFAULT_TAG_MIN_SIZE * density);
         int tagPaddingLeft = 0;
         int tagPaddingTop = 0;
         int tagPaddingRight = 0;
@@ -254,6 +255,7 @@ public class IndicatorTabStrip extends BaseTabStrip {
         final int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         mTextPaint.setTextSize(mTextSize);
         Paint.FontMetricsInt metrics = mTextPaint.getFontMetricsInt();
+        final int textHeight = metrics.bottom - metrics.top;
         mTextDesc = metrics.bottom;
         int width;
         if (widthMode == MeasureSpec.EXACTLY) {
@@ -261,10 +263,11 @@ public class IndicatorTabStrip extends BaseTabStrip {
         } else {
             int textWidth = 0;
             for (int i = 0; i < getItemCount(); i++) {
-                CharSequence charSequence = getItemText(i);
-                String text = charSequence == null ? "" : charSequence.toString();
-                mTextPaint.getTextBounds(text, 0, text.length(), mTextMeasureBounds);
-                textWidth = Math.max(textWidth, mTextMeasureBounds.width());
+                if (getItemText(i) != null) {
+                    String text = getItemText(i).toString();
+                    mTextPaint.getTextBounds(text, 0, text.length(), mTextMeasureBounds);
+                    textWidth = Math.max(textWidth, mTextMeasureBounds.width());
+                }
             }
             final int maxTextWidth = mTextScale > 1 ?
                     (int) (Math.ceil((float) textWidth * mTextScale) + 1) : textWidth;
@@ -284,8 +287,6 @@ public class IndicatorTabStrip extends BaseTabStrip {
         if (heightMode == MeasureSpec.EXACTLY) {
             height = heightSize;
         } else {
-            mTextPaint.getTextBounds(" ", 0, 1, mTextMeasureBounds);
-            final int textHeight = mTextMeasureBounds.height();
             final int maxTextHeight = mTextScale > 1 ?
                     (int) (Math.ceil((float) textHeight * mTextScale) + 1) : textHeight;
             final int itemBackgroundHeight = getMinItemBackgroundHeight();
@@ -364,24 +365,24 @@ public class IndicatorTabStrip extends BaseTabStrip {
 
     @Override
     protected void jumpTo(int current) {
-        currentPager = current - 1;
-        nextPager = current;
+        mCurrentPager = current - 1;
+        mNextPager = current;
         mOffset = 1;
         invalidate();
     }
 
     @Override
     protected void gotoLeft(int current, int next, float offset) {
-        currentPager = current;
-        nextPager = next;
+        mCurrentPager = current;
+        mNextPager = next;
         mOffset = 1 - offset;
         invalidate();
     }
 
     @Override
     protected void gotoRight(int current, int next, float offset) {
-        currentPager = current;
-        nextPager = next;
+        mCurrentPager = current;
+        mNextPager = next;
         mOffset = offset;
         invalidate();
     }
@@ -519,9 +520,9 @@ public class IndicatorTabStrip extends BaseTabStrip {
             return;
         final int normalColor = mGradient.getDefaultColor();
         final int selectedColor = mGradient.getColorForState(SELECTED_STATE_SET, normalColor);
-        if (position == nextPager) {
+        if (position == mNextPager) {
             mTextPaint.setColor(getColor(normalColor, selectedColor, mOffset));
-        } else if (position == currentPager) {
+        } else if (position == mCurrentPager) {
             mTextPaint.setColor(getColor(normalColor, selectedColor, 1 - mOffset));
         } else {
             mTextPaint.setColor(normalColor);
@@ -579,9 +580,9 @@ public class IndicatorTabStrip extends BaseTabStrip {
         } else {
             final int normalColor = mTextColor.getDefaultColor();
             final int selectedColor = mTextColor.getColorForState(SELECTED_STATE_SET, normalColor);
-            if (position == nextPager) {
+            if (position == mNextPager) {
                 mTextPaint.setColor(getColor(normalColor, selectedColor, mOffset));
-            } else if (position == currentPager) {
+            } else if (position == mCurrentPager) {
                 mTextPaint.setColor(getColor(normalColor, selectedColor, 1 - mOffset));
             } else {
                 mTextPaint.setColor(normalColor);
@@ -591,9 +592,9 @@ public class IndicatorTabStrip extends BaseTabStrip {
                 (itemWidth + getIntervalWidth()) * ((float) position + 0.5f);
         final float centerY = getPaddingTop() + itemHeight * 0.5f;
         float scale;
-        if (position == nextPager) {
+        if (position == mNextPager) {
             scale = 1 + (mTextScale - 1) * mOffset;
-        } else if (position == currentPager) {
+        } else if (position == mCurrentPager) {
             scale = 1 + (mTextScale - 1) * (1 - mOffset);
         } else {
             scale = 1;
@@ -629,21 +630,21 @@ public class IndicatorTabStrip extends BaseTabStrip {
                 0 : mTagBackground.getIntrinsicWidth();
         final int tagBackgroundHeight = mTagBackground == null ?
                 0 : mTagBackground.getIntrinsicHeight();
-        int minTagWidth;
-        int minTagHeight;
+        int tagWidth;
+        int tagHeight;
         switch (mTagMinSizeMode) {
             default:
             case TAG_MIN_SIZE_MODE_HAS_TEXT:
                 if ("".equals(text)) {
-                    minTagWidth = Math.min(mTagMinWidth, tagBackgroundWidth);
-                    minTagHeight = Math.min(mTagMinHeight, tagBackgroundHeight);
+                    tagWidth = Math.min(mTagMinWidth, tagBackgroundWidth);
+                    tagHeight = Math.min(mTagMinHeight, tagBackgroundHeight);
                     break;
                 }
             case TAG_MIN_SIZE_MODE_ALWAYS:
-                minTagWidth = Math.max(
+                tagWidth = Math.max(
                         textWidth + mTagLocation.getPaddingLeft() + mTagLocation.getPaddingRight(),
                         Math.max(mTagMinWidth, tagBackgroundWidth));
-                minTagHeight = Math.max(
+                tagHeight = Math.max(
                         textHeight + mTagLocation.getPaddingTop() + mTagLocation.getPaddingBottom(),
                         Math.max(mTagMinHeight, tagBackgroundHeight));
                 break;
@@ -654,16 +655,16 @@ public class IndicatorTabStrip extends BaseTabStrip {
                 (itemWidth + getIntervalWidth()) * position + itemWidth;
         final int rightTagX = rightTabX - mTagLocation.getMarginRight();
         final int tagY = getPaddingTop() + mTagLocation.getMarginTop();
-        final int leftTagX = rightTagX - minTagWidth;
-        final float tagCenterX = leftTagX + minTagWidth * 0.5f;
-        final float tagCenterY = tagY + minTagWidth * 0.5f;
+        final int leftTagX = rightTagX - tagWidth;
+        final float tagCenterX = leftTagX + tagWidth * 0.5f;
+        final float tagCenterY = tagY + tagWidth * 0.5f;
         canvas.save();
         if (mTagBackground != null) {
-            mTagBackground.setBounds(0, 0, minTagWidth, minTagHeight);
+            mTagBackground.setBounds(0, 0, tagWidth, tagHeight);
             canvas.translate(leftTagX, tagY);
             mTagBackground.draw(canvas);
             if (!"".equals(text)) {
-                canvas.translate(minTagWidth * 0.5f, minTagHeight * 0.5f + mTagTextDesc);
+                canvas.translate(tagWidth * 0.5f, tagHeight * 0.5f + mTagTextDesc);
                 canvas.drawText(text, 0, 0, mTextPaint);
             }
         } else {
@@ -688,9 +689,9 @@ public class IndicatorTabStrip extends BaseTabStrip {
         mIndicator.setBounds(0, 0, indicatorWidth, indicatorHeight);
         final float widthWithInterval = getItemWidth() + getIntervalWidth();
         final float currentCenter = ViewCompat.getPaddingStart(this) +
-                currentPager * widthWithInterval + widthWithInterval * 0.5f;
+                mCurrentPager * widthWithInterval + widthWithInterval * 0.5f;
         final float nextCenter = ViewCompat.getPaddingStart(this) +
-                nextPager * widthWithInterval + widthWithInterval * 0.5f;
+                mNextPager * widthWithInterval + widthWithInterval * 0.5f;
         final float moveCenter = currentCenter + (nextCenter - currentCenter) * mOffset;
         final float moveX = moveCenter - indicatorWidth * 0.5f;
         final float moveY = getHeight() - getPaddingBottom() - getDividerHeight() - indicatorHeight;

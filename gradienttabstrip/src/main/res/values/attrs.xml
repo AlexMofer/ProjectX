@@ -5,5 +5,27 @@
         <attr name="gtsTextColor" format="color"/>
         <attr name="gtsDrawablePadding" format="dimension"/>
         <attr name="gtsBackground" format="reference"/>
+        <attr name="gtsInterval" format="reference" />
+        <attr name="gtsMinItemWidth" format="dimension"/>
+        <attr name="gtsMinItemHeight" format="dimension"/>
+        <attr name="gtsTagTextSize" format="dimension" />
+        <attr name="gtsTagTextColor" format="color" />
+        <attr name="gtsTagBackground" format="reference" />
+        <attr name="gtsTagPadding" format="dimension" />
+        <attr name="gtsTagPaddingLeft" format="dimension" />
+        <attr name="gtsTagPaddingTop" format="dimension" />
+        <attr name="gtsTagPaddingRight" format="dimension" />
+        <attr name="gtsTagPaddingBottom" format="dimension" />
+        <attr name="gtsTagMargin" format="dimension" />
+        <attr name="gtsTagMarginLeft" format="dimension" />
+        <attr name="gtsTagMarginTop" format="dimension" />
+        <attr name="gtsTagMarginRight" format="dimension" />
+        <attr name="gtsTagMarginBottom" format="dimension" />
+        <attr name="gtsTagMinSizeMode" format="enum">
+            <enum name="OnlyHasText" value="0" />
+            <enum name="Always" value="1" />
+        </attr>
+        <attr name="gtsTagMinWidth" format="dimension" />
+        <attr name="gtsTagMinHeight" format="dimension" />
     </declare-styleable>
 </resources>

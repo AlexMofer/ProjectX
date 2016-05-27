@@ -19,6 +19,7 @@ package android.support.v4.view;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Parcel;
@@ -56,6 +57,8 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
     private TabStripGestureDetector tabStripGestureDetector;
     private OnItemClickListener clickListener;
     private ArrayList<OnChangeListener> changeListeners;
+    private final Rect mRefreshRect = new Rect();
+    private final Rect mRefreshTempRect = new Rect();
 
     public BaseTabStrip(Context context) {
         this(context, null);
@@ -896,6 +899,35 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         int b = (int) Math.ceil((selectedBlue - normalBlue) * offset);
         return Color.argb(normalAlpha + a, normalRed + r, normalGreen + g,
                 normalBlue + b);
+    }
+
+    /**
+     * 刷新指定区域
+     *
+     * @param dirty 区域集
+     */
+    public void invalidate(int... dirty) {
+        if (dirty == null || dirty.length <= 0)
+            return;
+        mRefreshRect.set(0, 0, 0, 0);
+        for (int position : dirty) {
+            mRefreshTempRect.set(0, 0, 0, 0);
+            getItemRect(position, mRefreshTempRect);
+            mRefreshRect.union(mRefreshTempRect);
+        }
+        if (!mRefreshTempRect.isEmpty())
+            invalidate(mRefreshTempRect);
+    }
+
+    /**
+     * 获取子项边界
+     *
+     * @param position 子项
+     * @param bound    边界
+     */
+    @SuppressWarnings("unused")
+    protected void getItemRect(int position, Rect bound) {
+
     }
 
     /**
