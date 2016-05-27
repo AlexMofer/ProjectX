@@ -21,7 +21,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':basetabstrip')
-    //compile 'am.widget:basetabstrip:2.0.3'
+    //compile 'am.widget:basetabstrip:2.1.0'
 }
 
 //apply from: "bintray.gradle"
