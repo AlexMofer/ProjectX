@@ -68,7 +68,7 @@ BaseTabStrip.ItemTabAdapter adapter = new BaseTabStrip.ItemTabAdapter() {
     }
 };
 tabs.setAdapter(adapter);
-tabs.bindViewPager(viewPager);// IndicatorTabStrip放置于ViewPager内部则不需要此行
+tabs.bindViewPager(viewPager);
 ```
 
 ## 注意

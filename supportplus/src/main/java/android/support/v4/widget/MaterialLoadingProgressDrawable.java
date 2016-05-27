@@ -4,8 +4,10 @@ import android.view.View;
 
 /**
  * MaterialProgressDrawable
+ * 其为包内可见类，官方下拉刷新图
  * Created by Alex on 2015/10/27.
  */
+@SuppressWarnings("unused")
 public class MaterialLoadingProgressDrawable extends MaterialProgressDrawable {
 
     public MaterialLoadingProgressDrawable(View parent) {

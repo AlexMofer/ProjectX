@@ -250,8 +250,8 @@ public class GradientTabStrip extends BaseTabStrip {
             final int contentHeight = mMaxDrawableHeight + mDrawablePadding + mTextHeight;
             final int itemBackgroundHeight = getMinItemBackgroundHeight();
             final int intervalHeight = mInterval == null ? 0 : mInterval.getIntrinsicHeight();
-            final int itemHeight = Math.max(contentHeight,
-                    Math.max(itemBackgroundHeight, intervalHeight));
+            final int itemHeight = Math.max(Math.max(contentHeight, intervalHeight),
+                    Math.max(mMinItemHeight, itemBackgroundHeight));
             height = Math.max(itemHeight + getPaddingTop() + getPaddingBottom(), getMinHeight());
             if (heightMode == MeasureSpec.AT_MOST)
                 height = Math.min(height, heightSize);

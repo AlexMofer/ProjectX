@@ -1,1 +1,1 @@
-include ':app', ':gradienttabstrip', ':basetabstrip', ':tagtabstrip', ':indicatortabstrip'
+include ':app', ':gradienttabstrip', ':basetabstrip', ':tagtabstrip', ':indicatortabstrip', ':supportplus'

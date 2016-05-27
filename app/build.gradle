@@ -38,4 +38,5 @@ dependencies {
     compile project(':gradienttabstrip')
     compile project(':tagtabstrip')
     compile project(':indicatortabstrip')
+    compile project(':supportplus')
 }

@@ -48,6 +48,8 @@ public class IndicatorTabStrip extends BaseTabStrip {
             android.R.attr.textColor, android.R.attr.divider};
     private static final int DEFAULT_TEXT_SIZE = 14;// 默认字体大小dp
     private static final int DEFAULT_TEXT_COLOR = 0xff000000;// 默认字体颜色
+    private static final int DEFAULT_ITEM_WIDTH = 64;// 最小子项宽度dp
+    private static final int DEFAULT_ITEM_HEIGHT = 32;// 最小子项高度dp
     private static final int DEFAULT_TAG_TEXT_SIZE = 11;// 默认Tag字体大小dp
     private static final int DEFAULT_TAG_TEXT_COLOR = 0xffffffff;// 默认Tag文字颜色
     private static final int DEFAULT_TAG_MIN_SIZE = 15;// 默认Tag最小大小dp
@@ -70,6 +72,8 @@ public class IndicatorTabStrip extends BaseTabStrip {
     private int mIndicatorWidth;// 游标高度
     private int mIndicatorHeight;// 游标高度
     private Drawable mInterval;// 子项间隔
+    private int mMinItemWidth;// 最小子项宽度
+    private int mMinItemHeight;// 最小子项高度
     private ItemTabAdapter mAdapter;// Tag
     private float mTagTextSize;// Tag文字大小
     private float mTagTextDesc;// Tag文字偏移
@@ -133,6 +137,8 @@ public class IndicatorTabStrip extends BaseTabStrip {
         int indicatorWidth = INDICATOR_WIDTH_BY_DRAWABLE;
         int indicatorHeight = INDICATOR_HEIGHT_BY_DRAWABLE;
         Drawable interval = null;
+        int minItemWidth = (int) (DEFAULT_ITEM_WIDTH * density);
+        int minItemHeight = (int) (DEFAULT_ITEM_HEIGHT * density);
         int tagTextSize = (int) (DEFAULT_TAG_TEXT_SIZE * density);
         int tagTextColor = DEFAULT_TAG_TEXT_COLOR;
         Drawable tagBackground = getDefaultTagBackground();
@@ -171,6 +177,10 @@ public class IndicatorTabStrip extends BaseTabStrip {
                 R.styleable.IndicatorTabStrip_ttsIndicatorHeight, indicatorHeight);
         if (custom.hasValue(R.styleable.IndicatorTabStrip_ttsInterval))
             interval = custom.getDrawable(R.styleable.IndicatorTabStrip_ttsInterval);
+        minItemWidth = custom.getDimensionPixelOffset(R.styleable.IndicatorTabStrip_ttsMinItemWidth,
+                minItemWidth);
+        minItemHeight = custom.getDimensionPixelOffset(R.styleable.IndicatorTabStrip_ttsMinItemHeight,
+                minItemHeight);
         tagTextSize = custom.getDimensionPixelSize(R.styleable.IndicatorTabStrip_ttsTagTextSize,
                 tagTextSize);
         tagTextColor = custom.getColor(R.styleable.IndicatorTabStrip_ttsTagTextColor,
@@ -232,6 +242,8 @@ public class IndicatorTabStrip extends BaseTabStrip {
         setIndicatorWidth(indicatorWidth);
         setIndicatorHeight(indicatorHeight);
         setInterval(interval);
+        setMinItemWidth(minItemWidth);
+        setMinItemHeight(minItemHeight);
         setTagTextSize(tagTextSize);
         setTagTextColor(tagTextColor);
         setTagBackground(tagBackground);
@@ -272,7 +284,8 @@ public class IndicatorTabStrip extends BaseTabStrip {
             final int maxTextWidth = mTextScale > 1 ?
                     (int) (Math.ceil((float) textWidth * mTextScale) + 1) : textWidth;
             final int itemBackgroundWith = getMinItemBackgroundWidth();
-            final int itemWidth = Math.max(maxTextWidth, itemBackgroundWith);
+            final int itemWidth = Math.max(maxTextWidth,
+                    Math.max(mMinItemWidth, itemBackgroundWith));
             final int intervalWidth = getIntervalWidth();
             final int totalWidth = itemWidth * getItemCount() +
                     intervalWidth * (getItemCount() - 1) +
@@ -292,8 +305,8 @@ public class IndicatorTabStrip extends BaseTabStrip {
             final int itemBackgroundHeight = getMinItemBackgroundHeight();
             final int intervalHeight = mInterval == null ? 0 : mInterval.getIntrinsicHeight();
             final int dividerHeight = getDividerHeight();
-            final int itemHeight = Math.max(maxTextHeight,
-                    Math.max(itemBackgroundHeight, intervalHeight));
+            final int itemHeight = Math.max(Math.max(maxTextHeight, intervalHeight),
+                    Math.max(mMinItemHeight, itemBackgroundHeight));
             height = Math.max(dividerHeight + itemHeight + getPaddingTop() + getPaddingBottom(),
                     getMinHeight());
             if (heightMode == MeasureSpec.AT_MOST)
@@ -1013,6 +1026,52 @@ public class IndicatorTabStrip extends BaseTabStrip {
     @SuppressWarnings("unused")
     public void setInterval(@DrawableRes int interval) {
         setInterval(ContextCompat.getDrawable(getContext(), interval));
+    }
+
+    /**
+     * 获取子项最小宽度
+     *
+     * @return 子项最小宽度
+     */
+    @SuppressWarnings("unused")
+    public int getMinItemWidth() {
+        return mMinItemWidth;
+    }
+
+    /**
+     * 设置子项最小宽度
+     *
+     * @param width 子项最小宽度
+     */
+    public void setMinItemWidth(int width) {
+        if (width >= 0 && width != mMinItemWidth) {
+            mMinItemWidth = width;
+            requestLayout();
+            invalidate();
+        }
+    }
+
+    /**
+     * 获取子项最小高度
+     *
+     * @return 子项最小高度
+     */
+    @SuppressWarnings("unused")
+    public int getMinItemHeight() {
+        return mMinItemHeight;
+    }
+
+    /**
+     * 设置子项最小高度
+     *
+     * @param height 子项最小高度
+     */
+    public void setMinItemHeight(int height) {
+        if (height >= 0 && height != mMinItemHeight) {
+            mMinItemHeight = height;
+            requestLayout();
+            invalidate();
+        }
     }
 
     /**

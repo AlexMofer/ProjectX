@@ -20,6 +20,8 @@
             <flag name="DrawableHeight" value="-1" />
         </attr>
         <attr name="ttsInterval" format="reference" />
+        <attr name="ttsMinItemWidth" format="dimension"/>
+        <attr name="ttsMinItemHeight" format="dimension"/>
         <attr name="ttsTagTextSize" format="dimension" />
         <attr name="ttsTagTextColor" format="color" />
         <attr name="ttsTagBackground" format="reference" />
