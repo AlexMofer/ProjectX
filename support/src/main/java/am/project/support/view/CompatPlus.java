@@ -17,6 +17,7 @@ import android.view.WindowManager.LayoutParams;
  *
  * @author Mofer
  */
+@SuppressWarnings("unused")
 public class CompatPlus {
 
     public static final int SHAPE_RECT = 0;

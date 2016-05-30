@@ -8,6 +8,7 @@ import android.view.animation.Interpolator;
  *
  * @author Mofer
  */
+@SuppressWarnings("unused")
 public abstract class BaseNextAnimator extends BaseAnimator {
 
     private boolean toNext = false;

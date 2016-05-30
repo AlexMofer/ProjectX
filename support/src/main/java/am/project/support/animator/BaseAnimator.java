@@ -71,7 +71,7 @@ public abstract class BaseAnimator implements Runnable {
     /**
      * 动画
      *
-     * @param p
+     * @param p 偏移
      */
     protected abstract void animator(float p);
 
@@ -98,6 +98,7 @@ public abstract class BaseAnimator implements Runnable {
      *
      * @param callback 动画状态回调
      */
+    @SuppressWarnings("unused")
     public void addAnimatorCallback(AnimatorCallback callback) {
         animatorCallback = callback;
     }
@@ -105,6 +106,7 @@ public abstract class BaseAnimator implements Runnable {
     /**
      * 移除动画状态回调
      */
+    @SuppressWarnings("unused")
     public void removeAnimatorCallback() {
         animatorCallback = null;
     }

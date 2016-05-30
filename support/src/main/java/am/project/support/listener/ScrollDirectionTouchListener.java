@@ -9,6 +9,7 @@ import android.view.View.OnTouchListener;
  *
  * @author Mofer
  */
+@SuppressWarnings("unused")
 public abstract class ScrollDirectionTouchListener implements OnTouchListener {
 
     public static final int STATE_TOP = 0;
