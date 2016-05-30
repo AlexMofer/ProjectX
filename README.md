@@ -20,6 +20,11 @@ TabStrip基础类，其实现了类似于PagerTabStrip的一些基础方法，�
 
 继承自BaseTabStrip，移动式下标渐变缩放Tab，Item不建议超过5个
 
+## Other
 - [SupportPlus](https://github.com/AlexMofer/ProjectX/tree/master/supportplus)
 
 v4支持包拓展
+
+- [Support](https://github.com/AlexMofer/ProjectX/tree/master/support)
+
+支持包
