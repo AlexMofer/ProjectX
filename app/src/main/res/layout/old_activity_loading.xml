@@ -11,6 +11,7 @@
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal" />
 
+
     <am.project.x.widgets.circleimageview.CircleImageView
         android:id="@+id/loading_iv_02"
         android:layout_width="60dp"
@@ -18,6 +19,16 @@
         android:layout_gravity="center_horizontal" />
 
     <am.project.x.widgets.circleimageview.MaterialCircleImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
+
+    <android.support.v4.widget.ProgressImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal" />
+
+    <am.project.supportplus.widget.MaterialCircleImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal" />

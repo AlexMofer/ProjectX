@@ -6,7 +6,8 @@ import android.graphics.BitmapFactory;
 
 import java.util.List;
 
-import am.project.x.widgets.utils.VersionCompat;
+import am.project.support.view.CompatPlus;
+
 
 /**
  * 工具
@@ -58,8 +59,8 @@ public class Tools {
         ActivityManager am = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
         int memoryClass = am.getMemoryClass();
-        if (VersionCompat.isLargeHeap(context)) {
-            memoryClass = VersionCompat.getLargeMemoryClass(am);
+        if (CompatPlus.isLargeHeap(context)) {
+            memoryClass = CompatPlus.getLargeMemoryClass(am);
         }
         return memoryClass;
     }

@@ -19,3 +19,7 @@ TabStrip基础类，其实现了类似于PagerTabStrip的一些基础方法，�
 - [IndicatorTabStrip](https://github.com/AlexMofer/ProjectX/tree/master/indicatortabstrip)
 
 继承自BaseTabStrip，移动式下标渐变缩放Tab，Item不建议超过5个
+
+- [SupportPlus](https://github.com/AlexMofer/ProjectX/tree/master/supportplus)
+
+v4支持包拓展

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;
 
-import am.project.x.widgets.listeners.EdgeScrollListener;
+import am.project.support.listener.EdgeScrollListener;
 
 
 /**

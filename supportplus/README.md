@@ -1,5 +1,5 @@
 # SupportPlus
-对com.android.support:support-v4包进行拓展，将包内部分包内可见的类及接口暴露出来，用于实现特定功能
+对com.android.support:support-v4包进行拓展，将包内部分包内可见的类及接口暴露出来，用于实现特定功能，其次增加一些工具类
   
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/supportplus/icon.png)
 ## 引用
