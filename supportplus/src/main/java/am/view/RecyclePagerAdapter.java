@@ -1,4 +1,4 @@
-package am.project.supportplus.view;
+package am.view;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;

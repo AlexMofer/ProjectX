@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import am.project.supportplus.view.ViewsPagerAdapter;
+import am.view.ViewsPagerAdapter;
 import am.project.x.R;
 import am.project.x.widgets.bilateralpanelayout.BilateralPaneLayout;
 

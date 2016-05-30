@@ -6,15 +6,34 @@
 ```java
 dependencies {
     ⋯
+    compile 'am.project:supportplus:23.4.0'
     ⋯
 }
 ```
 ## 功能
 - ViewPagerDecor
 
+暴露android.support.v4.view.ViewPager.Decor接口，
 实现BaseTabStrip作为ViewPager子项实现自动捆绑ViewPager功能
 
 - MaterialLoadingProgressDrawable
+
+暴露android.support.v4.widget.MaterialProgressDrawable类，
+实现官方下拉刷新中的转动Drawable
+
+- ProgressImageView
+
+暴露android.support.v4.widget.CircleImageView类，
+实现官方下拉刷新中的圆形白色ImageView
+
+- RecyclePagerAdapter
+可回收的PagerAdapter
+
+- ViewsPagerAdapter
+普通View列表PagerAdapter
+
+- MaterialCircleImageView
+官方下拉刷新转动提示ImageView
 
 下拉刷新官方图
 ## 注意

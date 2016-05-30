@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import am.project.supportplus.view.ViewsPagerAdapter;
+import am.view.ViewsPagerAdapter;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
 import am.widget.indicatortabstrip.IndicatorTabStrip;
