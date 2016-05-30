@@ -27,28 +27,28 @@ public class ViewsPagerAdapter extends PagerAdapter {
 
     @SuppressWarnings("unused")
     public ViewsPagerAdapter(List<View> views) {
-        setViews(views);// 构造方法，参数是我们的页卡，这样比较方便。
+        setViews(views);
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(mListViews.get(position));// 删除页卡
+        container.removeView(mListViews.get(position));
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) { // 这个方法用来实例化页卡
-        container.addView(mListViews.get(position), 0);// 添加页卡
+    public Object instantiateItem(ViewGroup container, int position) {
+        container.addView(mListViews.get(position), 0);
         return mListViews.get(position);
     }
 
     @Override
     public int getCount() {
-        return mListViews == null ? 0 : mListViews.size();// 返回页卡的数量
+        return mListViews == null ? 0 : mListViews.size();
     }
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view == object;// 官方提示这样写
+        return view == object;
     }
 
     @Override

@@ -16,7 +16,7 @@ import android.widget.ImageView;
 /**
  * ProgressImageView
  *
- * @see android.support.v4.widget.CircleImageView
+ * android.support.v4.widget.CircleImageView
  */
 @SuppressWarnings("all")
 public class ProgressImageView extends ImageView {
