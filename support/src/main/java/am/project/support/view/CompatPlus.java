@@ -13,7 +13,7 @@ import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 
 /**
- * L Elevation特效版本控制器
+ * 版本兼容控制器
  *
  * @author Mofer
  */

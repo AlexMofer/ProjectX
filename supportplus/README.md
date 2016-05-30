@@ -27,14 +27,15 @@ dependencies {
 实现官方下拉刷新中的圆形白色ImageView
 
 - RecyclePagerAdapter
+
 可回收的PagerAdapter
 
 - ViewsPagerAdapter
+
 普通View列表PagerAdapter
 
 - MaterialCircleImageView
-官方下拉刷新转动提示ImageView
 
-下拉刷新官方图
+官方下拉刷新转动提示ImageView
 ## 注意
 - 最好是相同版本号的com.android.support:support-v4使用相同的版本
