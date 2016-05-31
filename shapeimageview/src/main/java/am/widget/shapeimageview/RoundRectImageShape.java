@@ -1,4 +1,4 @@
-package am.project.x.widgets.shapeimageview;
+package am.widget.shapeimageview;
 
 import android.annotation.TargetApi;
 import android.graphics.Canvas;

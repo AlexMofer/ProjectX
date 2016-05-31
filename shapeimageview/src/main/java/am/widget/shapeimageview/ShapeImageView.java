@@ -1,5 +1,6 @@
-package am.project.x.widgets.shapeimageview;
+package am.widget.shapeimageview;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -7,6 +8,7 @@ import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 
 /**
@@ -144,4 +146,30 @@ public class ShapeImageView extends ImageView {
 			invalidate();
 		}
 	}
+
+	private static int getPaddingStart(View view) {
+        final int version = android.os.Build.VERSION.SDK_INT;
+		if (version >= 17) {
+            return getPaddingStartAPI17(view);
+        }
+        return view.getPaddingLeft();
+	}
+
+    @TargetApi(17)
+	private static int getPaddingStartAPI17(View view) {
+		return view.getPaddingStart();
+	}
+
+    private static int getPaddingEnd(View view) {
+        final int version = android.os.Build.VERSION.SDK_INT;
+        if (version >= 17) {
+            return getPaddingEndAPI17(view);
+        }
+        return view.getPaddingRight();
+    }
+
+    @TargetApi(17)
+    private static int getPaddingEndAPI17(View view) {
+        return view.getPaddingStart();
+    }
 }

@@ -19,20 +19,20 @@ import android.widget.ImageView;
  * android.support.v4.widget.CircleImageView
  */
 @SuppressWarnings("all")
-public class ProgressImageView extends ImageView {
+public class ShadowsCircleImageView extends ImageView {
 
     private static final int DEFAULT_COLOR = 0xFFFAFAFA;
     private static final int DEFAULT_RADIUS = 10;
 
-    public ProgressImageView(Context context) {
+    public ShadowsCircleImageView(Context context) {
         this(context, null);
     }
 
-    public ProgressImageView(Context context, AttributeSet attrs) {
+    public ShadowsCircleImageView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ProgressImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ShadowsCircleImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setColorAndRadius(DEFAULT_COLOR,
                 (int) (context.getResources().getDisplayMetrics().density * DEFAULT_RADIUS));
@@ -144,8 +144,8 @@ public class ProgressImageView extends ImageView {
 
         @Override
         public void draw(Canvas canvas, Paint paint) {
-            final int viewWidth = ProgressImageView.this.getWidth();
-            final int viewHeight = ProgressImageView.this.getHeight();
+            final int viewWidth = ShadowsCircleImageView.this.getWidth();
+            final int viewHeight = ShadowsCircleImageView.this.getHeight();
             canvas.drawCircle(viewWidth / 2, viewHeight / 2, (mCircleDiameter / 2 + mShadowRadius),
                     mShadowPaint);
             canvas.drawCircle(viewWidth / 2, viewHeight / 2, (mCircleDiameter / 2), paint);

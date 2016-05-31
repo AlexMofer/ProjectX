@@ -2,25 +2,46 @@ package am.widget;
 
 import android.content.Context;
 import android.support.v4.widget.MaterialLoadingProgressDrawable;
-import android.support.v4.widget.ProgressImageView;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 
 /**
- * MaterialCircleImageView
- * Created by Alex on 2015/10/27.
+ * MaterialImageView
+ * Created by Alex on 2015/11/13.
  */
-public class MaterialProgressImageView extends ProgressImageView {
+public class MaterialProgressImageView extends ImageView {
+
+    private MaterialLoadingProgressDrawable drawable = new MaterialLoadingProgressDrawable(this);
+
     public MaterialProgressImageView(Context context) {
-        this(context, null);
+        super(context);
+        setImageDrawable(drawable);
     }
 
     public MaterialProgressImageView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        setImageDrawable(drawable);
     }
 
     public MaterialProgressImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setImageDrawable(new MaterialLoadingProgressDrawable(this));
+        setImageDrawable(drawable);
     }
 
+    public void start() {
+        drawable.start();
+    }
+
+    public void stop() {
+        drawable.stop();
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == VISIBLE)
+            drawable.start();
+        else
+            drawable.stop();
+    }
 }
