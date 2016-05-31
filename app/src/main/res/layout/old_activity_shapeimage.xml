@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <am.project.x.widgets.shapeimageview.ShapeImageView
+        <am.widget.shapeimageview.ShapeImageView
             android:id="@+id/image_CR"
             android:layout_width="250dp"
             android:layout_height="300dp"
@@ -17,7 +17,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_widget_gradienttabstrip" />
 
-        <am.project.x.widgets.shapeimageview.ShapeImageView
+        <am.widget.shapeimageview.ShapeImageView
             android:id="@+id/image_RR"
             android:layout_width="250dp"
             android:layout_height="300dp"

@@ -15,6 +15,8 @@ import android.widget.ImageView;
  */
 public class CircleImageShape extends BaseImageShape {
 
+
+    @SuppressWarnings("unused")
 	public CircleImageShape() {
 		this(false);
 	}
@@ -23,6 +25,8 @@ public class CircleImageShape extends BaseImageShape {
 		this(0, 0, catchOnly);
 	}
 
+
+    @SuppressWarnings("unused")
 	public CircleImageShape(int color, int width) {
 		this(color, width, false);
 	}

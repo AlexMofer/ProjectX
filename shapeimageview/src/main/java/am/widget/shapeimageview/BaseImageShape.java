@@ -1,7 +1,7 @@
 package am.widget.shapeimageview;
 
 /**
- *
+ * BaseImageShape
  * Created by Alex on 2015/12/9.
  */
 public abstract class BaseImageShape implements ImageShape {

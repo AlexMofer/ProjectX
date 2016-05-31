@@ -1,13 +1,16 @@
 package am.widget.shapeimageview;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -23,20 +26,96 @@ import android.widget.ImageView;
  */
 public class ShapeImageView extends ImageView {
 
+    public static final int ST_AUTO = -1;
+    public static final int ST_HEIGHT = 0;
+    public static final int ST_WIDTH = 1;
+    private static final int SHAPE_CIRCLE = 1;// 圆形
+    private static final int SHAPE_ROUND_RECT = 2;// 圆角矩形
 	private ShapeCompat mShapeCompat = new ShapeCompat();
 	private ImageShape mShape;
 
+    private Drawable mPressDrawable;
+    private int mId;
+    private boolean duplicateViewState = true;
+
+
+    private int widthScale = 0;
+    private int heightScale = 0;
+    private int scaleTarget = ST_AUTO;
+
 	public ShapeImageView(Context context) {
-		super(context);
+		this(context, null);
 	}
 
 	public ShapeImageView(Context context, AttributeSet attrs) {
-		super(context, attrs);
+		this(context, attrs, 0);
 	}
 
 	public ShapeImageView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+        TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.ShapeImageView);
+        int shapeType = custom.getInt(R.styleable.ShapeImageView_sivShape, 0);
+        int roundRectRadius = custom.getDimensionPixelSize(
+                R.styleable.ShapeImageView_sivRoundRectRadius, 0);
+        int borderWidth = custom.getDimensionPixelSize(
+                R.styleable.ShapeImageView_sivBorderWidth, 0);
+        int borderColor = custom.getColor(R.styleable.ShapeImageView_sivBorderColor, 0x00000000);
+        boolean catchOnly = custom.getBoolean(R.styleable.ShapeImageView_sivCatchOnly, false);
+        Drawable foreground = null;
+        if (custom.hasValue(R.styleable.ShapeImageView_sivForeground))
+            foreground = custom.getDrawable(R.styleable.ShapeImageView_sivForeground);
+        boolean duplicateViewState = custom.getBoolean(
+                R.styleable.ShapeImageView_sivDuplicateViewState, true);
+        int widthScale = custom.getInteger(R.styleable.ShapeImageView_sivWidthScale, 0);
+        int heightScale = custom.getInteger(R.styleable.ShapeImageView_sivHeightScale, 0);
+        int scaleTarget = custom.getInt(R.styleable.ShapeImageView_sivScaleTarget, ST_AUTO);
+        custom.recycle();
+        ImageShape shape;
+        switch (shapeType) {
+            case SHAPE_CIRCLE:
+                shape = new CircleImageShape(borderColor, borderWidth, catchOnly);
+                break;
+            case SHAPE_ROUND_RECT:
+                shape = new RoundRectImageShape(borderColor, borderWidth, catchOnly,
+                        roundRectRadius);
+                break;
+            default:
+                shape = null;
+                break;
+        }
+        setImageShape(shape);
+        setForeground(foreground);
+        setDuplicateViewState(duplicateViewState);
+        setFixedSize(widthScale, heightScale);
+        setScaleTarget(scaleTarget);
 	}
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (widthScale <= 0 || heightScale <= 0) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            return;
+        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        final int measureWidth = getMeasuredWidth();
+        final int measureHeight = getMeasuredHeight();
+        switch (scaleTarget) {
+            default:
+            case ST_AUTO:
+                if (measureWidth < measureWidth * heightScale / widthScale) {
+                    setMeasuredDimension(measureWidth, measureWidth * heightScale / widthScale);
+                } else {
+                    setMeasuredDimension(measureHeight * widthScale / heightScale, measureHeight);
+                }
+                break;
+            case ST_HEIGHT:
+                setMeasuredDimension(measureWidth, measureWidth * heightScale / widthScale);
+                break;
+            case ST_WIDTH:
+                setMeasuredDimension(measureHeight * widthScale / heightScale, measureHeight);
+                break;
+        }
+    }
 
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -56,15 +135,65 @@ public class ShapeImageView extends ImageView {
 		} else {
 			super.onDraw(canvas);
 		}
+
+        if (mPressDrawable != null) {
+            mPressDrawable.setBounds(getPaddingStart(this), getPaddingTop(),
+                    getWidth() - getPaddingEnd(this), getHeight() - getPaddingBottom());
+            mPressDrawable.draw(canvas);
+        }
 	}
 
-	@Override
-	protected void onDetachedFromWindow() {
-		if (mShapeCompat != null) {
-			mShapeCompat.detachedFromWindow(mShape);
-		}
-		super.onDetachedFromWindow();
-	}
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (mPressDrawable != null
+                && event.getAction() == MotionEvent.ACTION_DOWN) {
+            setHotspot(mPressDrawable, event.getX(),
+                    event.getY());
+        }
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    protected void drawableStateChanged() {
+        if (mPressDrawable != null && mPressDrawable.isStateful()) {
+            if (duplicateViewState) {
+                mPressDrawable.setState(getDrawableState());
+            } else {
+                mPressDrawable.setState(EMPTY_STATE_SET);
+            }
+        }
+        super.drawableStateChanged();
+
+    }
+
+    @Override
+    protected boolean verifyDrawable(Drawable who) {
+        boolean isPress = false;
+        if (mPressDrawable != null && who == mPressDrawable) {
+            isPress = true;
+        }
+        return isPress || super.verifyDrawable(who);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (mPressDrawable != null) {
+            mPressDrawable.setCallback(this);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        if (mShapeCompat != null) {
+            mShapeCompat.detachedFromWindow(mShape);
+        }
+        if (mPressDrawable != null) {
+            mPressDrawable.setCallback(null);
+        }
+        super.onDetachedFromWindow();
+    }
 
 	@Override
 	public void setColorFilter(ColorFilter cf) {
@@ -147,6 +276,65 @@ public class ShapeImageView extends ImageView {
 		}
 	}
 
+    /**
+     * 设置按压 Drawable
+     *
+     * @param id 资源ID
+     */
+    @SuppressWarnings("unused")
+    public void setForeground(int id) {
+        if (mId != id) {
+            mId = id;
+            setForeground(getDrawable(getContext(), mId));
+        }
+    }
+
+    /**
+     * 设置按压 Drawable
+     *
+     * @param foreground 图片
+     */
+    public void setForeground(Drawable foreground) {
+//        super.setForeground(foreground);
+        if (mPressDrawable != foreground) {
+            if (mPressDrawable != null) {
+                mPressDrawable.setCallback(null);
+            }
+            mPressDrawable = foreground;
+            mPressDrawable.setCallback(this);
+            invalidate();
+        }
+    }
+
+
+    @SuppressWarnings("unused")
+    public boolean isDuplicateViewState() {
+        return duplicateViewState;
+    }
+
+    public void setDuplicateViewState(boolean duplicateViewState) {
+        this.duplicateViewState = duplicateViewState;
+    }
+
+
+    @SuppressWarnings("unused")
+    public int getScaleTarget() {
+        return scaleTarget;
+    }
+
+    public void setScaleTarget(int scaleTarget) {
+        this.scaleTarget = scaleTarget;
+        requestLayout();
+        invalidate();
+    }
+
+    public void setFixedSize(int widthScale, int heightScale) {
+        this.widthScale = widthScale;
+        this.heightScale = heightScale;
+        requestLayout();
+        invalidate();
+    }
+
 	private static int getPaddingStart(View view) {
         final int version = android.os.Build.VERSION.SDK_INT;
 		if (version >= 17) {
@@ -171,5 +359,31 @@ public class ShapeImageView extends ImageView {
     @TargetApi(17)
     private static int getPaddingEndAPI17(View view) {
         return view.getPaddingStart();
+    }
+
+    @SuppressWarnings("all")
+    private static Drawable getDrawable(Context context, int id) {
+        final int version = android.os.Build.VERSION.SDK_INT;
+        if (version >= 21) {
+            return getDrawableAPI21(context, id);
+        }
+        return context.getResources().getDrawable(id);
+    }
+
+    @TargetApi(21)
+    private static Drawable getDrawableAPI21(Context context, int id) {
+        return context.getDrawable(id);
+    }
+
+    private static void setHotspot(Drawable drawable, float x, float y) {
+        final int version = android.os.Build.VERSION.SDK_INT;
+        if (version >= 21) {
+            setHotspotAPI21(drawable, x, y);
+        }
+    }
+
+    @TargetApi(21)
+    private static void setHotspotAPI21(Drawable drawable, float x, float y) {
+        drawable.setHotspot(x, y);
     }
 }

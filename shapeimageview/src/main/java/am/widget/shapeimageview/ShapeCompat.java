@@ -524,5 +524,4 @@ class ShapeCompat {
         IMPL.setColorFilter(cf);
     }
 
-
 }

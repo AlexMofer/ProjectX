@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import am.project.x.R;
-import am.project.x.widgets.shapeimageview.CircleImageShape;
-import am.project.x.widgets.shapeimageview.RoundRectImageShape;
-import am.project.x.widgets.shapeimageview.ShapeImageView;
+import am.widget.shapeimageview.CircleImageShape;
+import am.widget.shapeimageview.RoundRectImageShape;
+import am.widget.shapeimageview.ShapeImageView;
 
 
 public class ShapeImageViewActivity extends Activity {
