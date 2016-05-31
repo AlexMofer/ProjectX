@@ -73,4 +73,25 @@ public class RoundRectImageShape extends BaseImageShape {
             canvas.drawRoundRect(mRectF, mRadius, mRadius, paint);
         }
     }
+
+    /**
+     * 获取圆角
+     * @return 圆角
+     */
+    @SuppressWarnings("unused")
+    public float getRadius() {
+        return mRadius;
+    }
+
+    /**
+     * 设置圆角
+     * @param radius 圆角
+     */
+    @SuppressWarnings("unused")
+    public void setRadius(float radius) {
+        if (mRadius != radius) {
+            mRadius = radius;
+            notifyDataSetChanged();
+        }
+    }
 }

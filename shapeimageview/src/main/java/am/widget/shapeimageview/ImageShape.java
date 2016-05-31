@@ -71,4 +71,18 @@ public interface ImageShape {
      * @return 边框宽度
      */
     float getBorderWidth();
+
+    /**
+     * 捆绑ShapeImageView
+     *
+     * @param view ShapeImageView
+     */
+    void onAttached(ShapeImageView view);
+
+    /**
+     * 解绑ShapeImageView
+     *
+     * @param view ShapeImageView
+     */
+    void onDetached(ShapeImageView view);
 }

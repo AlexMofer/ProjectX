@@ -54,7 +54,8 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.widgets.indicatortabstrip.IndicatorTabStripActivity"
+        <activity
+            android:name=".activities.widgets.indicatortabstrip.IndicatorTabStripActivity"
             android:label="@string/indicatortabstrip_title">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -68,6 +69,7 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.widgets.shapeimageview.ShapeImageViewActivity"></activity>
     </application>
 
 </manifest>
