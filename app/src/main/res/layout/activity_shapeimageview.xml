@@ -52,7 +52,9 @@
                 app:sivHeightScale="1"
                 app:sivScaleTarget="height"
                 app:sivShape="Circle"
-                app:sivWidthScale="1" />
+                app:sivWidthScale="1"
+                app:sivBorderColor="#ffff0000"
+                app:sivBorderWidth="2dp"/>
 
             <am.widget.shapeimageview.ShapeImageView
                 android:id="@+id/siv_image_r"
@@ -68,7 +70,9 @@
                 app:sivRoundRectRadius="10dp"
                 app:sivScaleTarget="height"
                 app:sivShape="RoundRect"
-                app:sivWidthScale="1" />
+                app:sivWidthScale="1"
+                app:sivBorderColor="#ffff0000"
+                app:sivBorderWidth="2dp" />
         </LinearLayout>
 
 

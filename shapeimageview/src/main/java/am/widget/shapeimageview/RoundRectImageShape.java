@@ -12,9 +12,9 @@ import android.widget.ImageView;
 /**
  * 圆角矩形
  *
- * @author Mofer
+ * @author Alex
  */
-public class RoundRectImageShape extends BaseImageShape {
+public class RoundRectImageShape extends ImageShape {
 
     private float mRadius = 0;
     private final RectF mRectF = new RectF();

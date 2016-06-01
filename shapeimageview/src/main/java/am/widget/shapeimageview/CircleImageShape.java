@@ -10,10 +10,10 @@ import android.widget.ImageView;
 
 /**
  * 圆形
- * @author Mofer
+ * @author Alex
  *
  */
-public class CircleImageShape extends BaseImageShape {
+public class CircleImageShape extends ImageShape {
 
 
     @SuppressWarnings("unused")

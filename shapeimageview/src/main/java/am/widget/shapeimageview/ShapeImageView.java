@@ -21,7 +21,7 @@ import android.widget.ImageView;
  * 以下使用 BitmapShader 方式实现<br>
  * API 21 及以上 支持动态图
  *
- * @author Mofer
+ * @author Alex
  */
 public class ShapeImageView extends ImageView {
 
@@ -30,17 +30,12 @@ public class ShapeImageView extends ImageView {
     public static final int SCALE_TARGET_WIDTH = 1;// 对宽进行缩放
     private static final int SHAPE_CIRCLE = 1;// 圆形裁剪
     private static final int SHAPE_ROUND_RECT = 2;// 圆角矩形裁剪
-    private ShapeCompat mShapeCompat = new ShapeCompat();
-    private ImageShape mShape;
-
-    private Drawable mPressDrawable;
-    private int mId;
-    private boolean duplicateViewState = true;
-
-
-    private int widthScale = 0;
-    private int heightScale = 0;
-    private int scaleTarget = SCALE_TARGET_AUTO;
+    private ImageShape mShape;// 形状
+    private Drawable mForeground;// 前景
+    private int mForegroundId;// 前景ID
+    private int widthScale = 0;// 宽度缩放比
+    private int heightScale = 0;// 高度缩放比
+    private int scaleTarget = SCALE_TARGET_AUTO;// 缩放目标
 
     public ShapeImageView(Context context) {
         this(context, null);
@@ -63,8 +58,6 @@ public class ShapeImageView extends ImageView {
         Drawable foreground = null;
         if (custom.hasValue(R.styleable.ShapeImageView_sivForeground))
             foreground = custom.getDrawable(R.styleable.ShapeImageView_sivForeground);
-        boolean duplicateViewState = custom.getBoolean(
-                R.styleable.ShapeImageView_sivDuplicateViewState, true);
         int widthScale = custom.getInteger(R.styleable.ShapeImageView_sivWidthScale, 0);
         int heightScale = custom.getInteger(R.styleable.ShapeImageView_sivHeightScale, 0);
         int scaleTarget = custom.getInt(
@@ -85,14 +78,12 @@ public class ShapeImageView extends ImageView {
         }
         setImageShape(shape);
         setForeground(foreground);
-        setDuplicateViewState(duplicateViewState);
         setFixedSize(widthScale, heightScale);
         setScaleTarget(scaleTarget);
     }
 
-    private void checkShapeCompat() {
-        if (mShapeCompat == null)
-            mShapeCompat = new ShapeCompat();
+    private boolean hasForeground() {
+        return mForeground != null;
     }
 
     @Override
@@ -124,44 +115,41 @@ public class ShapeImageView extends ImageView {
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        checkShapeCompat();
-        mShapeCompat.sizeChanged(w, h, mShape);
+        if (mShape != null)
+            mShape.sizeChanged(w, h, mShape);
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        checkShapeCompat();
-        if (mShapeCompat.needOnDraw(this, canvas, mShape)) {
+        if (mShape != null) {
+            if (mShape.needOnDraw(this, canvas, mShape)) {
+                super.onDraw(canvas);
+            }
+            mShape.drawBorder(this, canvas, mShape);
+        } else {
             super.onDraw(canvas);
         }
-        mShapeCompat.drawBorder(this, canvas, mShape);
-        if (mPressDrawable != null) {
-            mPressDrawable.setBounds(getPaddingStart(this), getPaddingTop(),
+        if (hasForeground()) {
+            mForeground.setBounds(getPaddingStart(this), getPaddingTop(),
                     getWidth() - getPaddingEnd(this), getHeight() - getPaddingBottom());
-            mPressDrawable.draw(canvas);
+            mForeground.draw(canvas);
         }
     }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (mPressDrawable != null
-                && event.getAction() == MotionEvent.ACTION_DOWN) {
-            setHotspot(mPressDrawable, event.getX(),
-                    event.getY());
+        if (hasForeground() && event.getAction() == MotionEvent.ACTION_DOWN) {
+            setHotspot(mForeground, event.getX(), event.getY());
         }
         return super.onTouchEvent(event);
     }
 
     @Override
     protected void drawableStateChanged() {
-        if (mPressDrawable != null && mPressDrawable.isStateful()) {
-            if (duplicateViewState) {
-                mPressDrawable.setState(getDrawableState());
-            } else {
-                mPressDrawable.setState(EMPTY_STATE_SET);
-            }
+        if (hasForeground() && mForeground.isStateful()) {
+            mForeground.setState(getDrawableState());
         }
         super.drawableStateChanged();
 
@@ -170,7 +158,7 @@ public class ShapeImageView extends ImageView {
     @Override
     protected boolean verifyDrawable(Drawable who) {
         boolean isPress = false;
-        if (mPressDrawable != null && who == mPressDrawable) {
+        if (hasForeground() && who == mForeground) {
             isPress = true;
         }
         return isPress || super.verifyDrawable(who);
@@ -182,23 +170,20 @@ public class ShapeImageView extends ImageView {
             mShape.onAttached(this);
         }
         super.onAttachedToWindow();
-        if (mPressDrawable != null) {
-            mPressDrawable.setCallback(this);
+        if (hasForeground()) {
+            mForeground.setCallback(this);
         }
-        checkShapeCompat();
-        mShapeCompat.setPadding(getPaddingStart(this), getPaddingTop(), getPaddingEnd(this),
-                getPaddingBottom(), mShape);
     }
 
     @Override
     protected void onDetachedFromWindow() {
-        checkShapeCompat();
-        mShapeCompat.detachedFromWindow(mShape);
+        if (mShape != null)
+            mShape.detachedFromWindow(mShape);
         if (mShape != null) {
             mShape.onDetached(this);
         }
-        if (mPressDrawable != null) {
-            mPressDrawable.setCallback(null);
+        if (hasForeground()) {
+            mForeground.setCallback(null);
         }
         super.onDetachedFromWindow();
 
@@ -206,57 +191,57 @@ public class ShapeImageView extends ImageView {
 
     @Override
     public void setColorFilter(ColorFilter cf) {
-        checkShapeCompat();
-        mShapeCompat.setColorFilter(cf);
+        if (mShape != null)
+            mShape.setColorFilter(cf);
         super.setColorFilter(cf);
     }
 
     @Override
     public void setImageResource(int resId) {
         super.setImageResource(resId);
-        checkShapeCompat();
-        mShapeCompat.changeBitmap(getDrawable(), mShape);
+        if (mShape != null)
+            mShape.changeBitmap(getDrawable(), mShape);
     }
 
     @Override
     public void setImageURI(Uri uri) {
         super.setImageURI(uri);
-        checkShapeCompat();
-        mShapeCompat.changeBitmap(getDrawable(), mShape);
+        if (mShape != null)
+            mShape.changeBitmap(getDrawable(), mShape);
     }
 
     @Override
     public void setImageDrawable(Drawable drawable) {
-        checkShapeCompat();
-        mShapeCompat.changeBitmap(drawable, mShape);
+        if (mShape != null)
+            mShape.changeBitmap(drawable, mShape);
         super.setImageDrawable(drawable);
     }
 
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
-        checkShapeCompat();
-        mShapeCompat.changeBitmap(getDrawable(), mShape);
+        if (mShape != null)
+            mShape.changeBitmap(getDrawable(), mShape);
     }
 
     @Override
     public void setScaleType(ScaleType scaleType) {
-        checkShapeCompat();
-        mShapeCompat.setScaleType(scaleType, mShape);
+        if (mShape != null)
+            mShape.setScaleType(scaleType, mShape);
         super.setScaleType(scaleType);
     }
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
-        checkShapeCompat();
-        mShapeCompat.setPadding(left, top, right, bottom, mShape);
+        if (mShape != null)
+            mShape.setPadding(left, top, right, bottom, mShape);
         super.setPadding(left, top, right, bottom);
     }
 
     @Override
     public void setPaddingRelative(int start, int top, int end, int bottom) {
-        checkShapeCompat();
-        mShapeCompat.setPadding(start, top, end, bottom, mShape);
+        if (mShape != null)
+            mShape.setPadding(start, top, end, bottom, mShape);
         super.setPaddingRelative(start, top, end, bottom);
     }
 
@@ -266,18 +251,17 @@ public class ShapeImageView extends ImageView {
      * @param shape 图像形状
      */
     public void setImageShape(ImageShape shape) {
-        checkShapeCompat();
         if (mShape != shape) {
             if (mShape != null) {
                 mShape.onDetached(this);
             }
             mShape = shape;
-            mShapeCompat.init(this, mShape);
-            mShapeCompat.changeBitmap(getDrawable(), mShape);
-            mShapeCompat.setScaleType(getScaleType(), mShape);
-            mShapeCompat.setPadding(getPaddingStart(this), getPaddingTop(), getPaddingEnd(this),
-                    getPaddingBottom(), mShape);
             if (mShape != null) {
+                mShape.initShape(this);
+                mShape.changeBitmap(getDrawable(), mShape);
+                mShape.setScaleType(getScaleType(), mShape);
+                mShape.setPadding(getPaddingStart(this), getPaddingTop(), getPaddingEnd(this),
+                        getPaddingBottom(), mShape);
                 mShape.onAttached(this);
             }
             invalidate();
@@ -285,62 +269,83 @@ public class ShapeImageView extends ImageView {
     }
 
     /**
-     * 设置按压 Drawable
+     * 设置前景
      *
      * @param id 资源ID
      */
     @SuppressWarnings("unused")
     public void setForeground(int id) {
-        if (mId != id) {
-            mId = id;
-            setForeground(getDrawable(getContext(), mId));
+        if (mForegroundId != id) {
+            mForegroundId = id;
+            setForeground(getDrawable(getContext(), mForegroundId));
         }
     }
 
     /**
-     * 设置按压 Drawable
+     * 设置前景
      *
      * @param foreground 图片
      */
     public void setForeground(Drawable foreground) {
-//        super.setForeground(foreground);
-        if (mPressDrawable != foreground) {
-            if (mPressDrawable != null) {
-                mPressDrawable.setCallback(null);
+//        final int version = android.os.Build.VERSION.SDK_INT;
+//        if (version >= 23) {
+//            setForegroundAPI23(foreground);
+//            return;
+//        }
+        if (mForeground != foreground) {
+            if (mForeground != null) {
+                mForeground.setCallback(null);
             }
-            mPressDrawable = foreground;
-            mPressDrawable.setCallback(this);
+            mForeground = foreground;
+            mForeground.setCallback(this);
             invalidate();
         }
     }
 
-
-    @SuppressWarnings("unused")
-    public boolean isDuplicateViewState() {
-        return duplicateViewState;
-    }
-
-    public void setDuplicateViewState(boolean duplicateViewState) {
-        this.duplicateViewState = duplicateViewState;
-    }
-
-
+    /**
+     * 获取缩放目标
+     *
+     * @return 缩放目标
+     */
     @SuppressWarnings("unused")
     public int getScaleTarget() {
         return scaleTarget;
     }
 
-    public void setScaleTarget(int scaleTarget) {
-        this.scaleTarget = scaleTarget;
-        requestLayout();
-        invalidate();
+    /**
+     * 设置缩放目标
+     *
+     * @param target 缩放目标
+     */
+    public void setScaleTarget(int target) {
+        if (target != SCALE_TARGET_AUTO && target != SCALE_TARGET_HEIGHT
+                && target != SCALE_TARGET_WIDTH)
+            return;
+        if (scaleTarget != target) {
+            scaleTarget = target;
+            requestLayout();
+            invalidate();
+        }
     }
 
+    /**
+     * 设置缩放比（任意值小于等于0则关闭该功能）
+     *
+     * @param widthScale  宽度缩放比
+     * @param heightScale 高度缩放比
+     */
     public void setFixedSize(int widthScale, int heightScale) {
-        this.widthScale = widthScale;
-        this.heightScale = heightScale;
-        requestLayout();
-        invalidate();
+        if (this.widthScale != widthScale || this.heightScale != heightScale) {
+            this.widthScale = widthScale;
+            this.heightScale = heightScale;
+            requestLayout();
+            invalidate();
+        }
+    }
+
+    @TargetApi(23)
+    private void setForegroundAPI23(Drawable foreground) {
+        super.setForeground(foreground);
     }
 
     private static int getPaddingStart(View view) {
