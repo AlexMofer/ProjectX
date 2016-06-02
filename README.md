@@ -20,6 +20,10 @@ TabStrip基础类，其实现了类似于PagerTabStrip的一些基础方法，�
 
 继承自BaseTabStrip，移动式下标渐变缩放Tab，Item不建议超过5个
 
+- [ShapeImageView](https://github.com/AlexMofer/ProjectX/tree/master/shapeimageview)
+
+图形裁剪ImageView，API 21 及以上 使用 setOutlineProvider 方式实现，低版本使用 BitmapShader 方式实现，支持固定高宽比缩放，支持前景Drawable
+
 ## Other
 - [SupportPlus](https://github.com/AlexMofer/ProjectX/tree/master/supportplus)
 
