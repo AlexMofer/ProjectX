@@ -28,6 +28,7 @@ class ShapeHelper {
     private Paint mBitmapPaint;
     private Canvas mBitmapCanvas;
     private Matrix mMatrix;
+    private Matrix mImageMatrix;
     private Paint mBorderPaint;
 
     private int mViewWidth;
@@ -62,6 +63,7 @@ class ShapeHelper {
         mScaleType = ImageView.ScaleType.FIT_CENTER;
         mBitmapCanvas = new Canvas();
         mMatrix = new Matrix();
+        mImageMatrix = new Matrix();
     }
 
     @TargetApi(21)
@@ -85,27 +87,37 @@ class ShapeHelper {
             mViewHeight = height;
             if (!view.isCatchBitmapOnly()) {
                 mBitmapPaint.setShader(null);
-                mBitmap = view.getDrawable() == null ? null : configBitmap(mBitmap, view.getWidth(), view.getHeight());
+                mBitmap = view.getDrawable() == null ? null : configBitmap(mBitmap,
+                        view.getWidth(), view.getHeight());
             }
-            invalidateBitmap(mBitmapPaint, mBitmap, mMatrix, mBitmapCanvas, view);
+            mImageMatrix.set(view.getImageMatrix());
+            invalidateBitmap(mBitmapPaint, mBitmap, mMatrix, mBitmapCanvas, mImageMatrix,
+                    width, height, view.isCatchBitmapOnly(), view.getDrawable(),
+                    view.getScaleType(), ShapeCompat.getPaddingStart(view), view.getPaddingTop(),
+                    ShapeCompat.getPaddingEnd(view), view.getPaddingBottom());
         }
     }
 
 
     void setScaleType(ImageView.ScaleType scaleType, ImageShape shape, ShapeImageView view) {
-        if (shape == null ||canUseLollipopWay(shape))
+        if (shape == null || canUseLollipopWay(shape))
             return;
         if (mScaleType != scaleType) {
             mScaleType = scaleType;
             if (!view.isCatchBitmapOnly() && view.getDrawable() != null && mBitmap == null) {
                 mBitmap = ShapeHelper.configBitmap(null, view.getWidth(), view.getHeight());
             }
-            invalidateBitmap(mBitmapPaint, mBitmap, mMatrix, mBitmapCanvas, view);
+            mImageMatrix.set(view.getImageMatrix());
+            invalidateBitmap(mBitmapPaint, mBitmap, mMatrix, mBitmapCanvas, mImageMatrix,
+                    view.getWidth(), view.getHeight(), view.isCatchBitmapOnly(),
+                    view.getDrawable(), scaleType, ShapeCompat.getPaddingStart(view),
+                    view.getPaddingTop(), ShapeCompat.getPaddingEnd(view), view.getPaddingBottom());
         }
     }
 
-    void setPadding(int left, int top, int right, int bottom, ImageShape shape, ShapeImageView view) {
-        if (shape == null ||canUseLollipopWay(shape))
+    void setPadding(int left, int top, int right, int bottom, ImageShape shape,
+                    ShapeImageView view) {
+        if (shape == null || canUseLollipopWay(shape))
             return;
         if (paddingStart != 0 || paddingTop != top || paddingEnd != right
                 || paddingBottom != right) {
@@ -116,12 +128,15 @@ class ShapeHelper {
             if (!view.isCatchBitmapOnly() && view.getDrawable() != null && mBitmap == null) {
                 mBitmap = ShapeHelper.configBitmap(null, view.getWidth(), view.getHeight());
             }
-            invalidateBitmap(mBitmapPaint, mBitmap, mMatrix, mBitmapCanvas, view);
+            mImageMatrix.set(view.getImageMatrix());
+            invalidateBitmap(mBitmapPaint, mBitmap, mMatrix, mBitmapCanvas, mImageMatrix,
+                    view.getWidth(), view.getHeight(), view.isCatchBitmapOnly(),
+                    view.getDrawable(), view.getScaleType(), left, top, right, bottom);
         }
     }
 
     void detachedFromWindow(ImageShape shape, ShapeImageView view) {
-        if (shape == null ||canUseLollipopWay(shape))
+        if (shape == null || canUseLollipopWay(shape))
             return;
         if (!view.isCatchBitmapOnly()) {
             if (mBitmap != null && !mBitmap.isRecycled()
@@ -142,7 +157,7 @@ class ShapeHelper {
     }
 
     void forceUpdateBitmap(ImageShape shape, ShapeImageView view) {
-        if (shape == null ||canUseLollipopWay(shape))
+        if (shape == null || canUseLollipopWay(shape))
             return;
         if (view.isCatchBitmapOnly()) {
             mBitmapPaint.setShader(null);
@@ -151,12 +166,16 @@ class ShapeHelper {
         if (!view.isCatchBitmapOnly() && view.getDrawable() != null && mBitmap == null) {
             mBitmap = configBitmap(null, view.getWidth(), view.getHeight());
         }
-        invalidateBitmap(mBitmapPaint, mBitmap, mMatrix, mBitmapCanvas, view);
+        mImageMatrix.set(view.getImageMatrix());
+        invalidateBitmap(mBitmapPaint, mBitmap, mMatrix, mBitmapCanvas, mImageMatrix,
+                view.getWidth(), view.getHeight(), view.isCatchBitmapOnly(), view.getDrawable(),
+                view.getScaleType(), ShapeCompat.getPaddingStart(view), view.getPaddingTop(),
+                ShapeCompat.getPaddingEnd(view), view.getPaddingBottom());
     }
 
 
     boolean needOnDraw(ShapeImageView view, Canvas canvas, ImageShape shape) {
-        if (shape == null ||canUseLollipopWay(shape))
+        if (shape == null || canUseLollipopWay(shape))
             return true;
         if (mBitmapPaint.getShader() == null) {
             return true;
@@ -189,10 +208,6 @@ class ShapeHelper {
     private static boolean isLollipop() {
         return android.os.Build.VERSION.SDK_INT >= 21;
     }
-
-
-
-
 
 
     private static Bitmap getBitmap(Drawable drawable) {
@@ -264,25 +279,29 @@ class ShapeHelper {
         return bitmap;
     }
 
-    private static void invalidateBitmap(Paint paint, Bitmap bitmap, Matrix matrix, Canvas canvas, ShapeImageView imageView) {
+    private static void invalidateBitmap(Paint paint, Bitmap bitmap, Matrix matrix, Canvas canvas,
+                                         Matrix imageMatrix, int width, int height,
+                                         boolean isCatchBitmapOnly, Drawable drawable,
+                                         ImageView.ScaleType scaleType, int paddingStart,
+                                         int paddingTop, int paddingEnd, int paddingBottom) {
         if (paint == null)
             return;
         paint.setShader(null);
         if (bitmap == null)
             return;
-        final int width = imageView.getWidth();
-        final int height = imageView.getHeight();
-        if (imageView.isCatchBitmapOnly()) {
+        if (isCatchBitmapOnly) {
             configMatrix(matrix, width, height, bitmap.getWidth(), bitmap.getHeight());
-            BitmapShader mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            BitmapShader mBitmapShader = new BitmapShader(bitmap,
+                    Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
             mBitmapShader.setLocalMatrix(matrix);
             paint.setShader(mBitmapShader);
         } else {
             bitmap.eraseColor(Color.TRANSPARENT);
             canvas.setBitmap(bitmap);
-            editBitmap(canvas, imageView.getDrawable(), width, height, imageView.getScaleType(),
-                    ShapeCompat.getPaddingStart(imageView), ShapeCompat.getPaddingEnd(imageView), imageView.getPaddingTop(), imageView.getPaddingBottom());
-            BitmapShader mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            editBitmap(canvas, drawable, imageMatrix, width, height, scaleType,
+                    paddingStart, paddingEnd, paddingTop, paddingBottom);
+            BitmapShader mBitmapShader = new BitmapShader(bitmap,
+                    Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
             paint.setShader(mBitmapShader);
         }
     }
@@ -301,7 +320,7 @@ class ShapeHelper {
         matrix.preTranslate(translateX, translateY);
     }
 
-    private static void editBitmap(Canvas canvas, Drawable drawable, int width,
+    private static void editBitmap(Canvas canvas, Drawable drawable, Matrix matrix, int width,
                                    int height, ImageView.ScaleType scaleType, int paddingStart,
                                    int paddingEnd, int paddingTop, int paddingBottom) {
         if (canvas == null || drawable == null || width == 0 || height == 0) {
@@ -310,10 +329,12 @@ class ShapeHelper {
         switch (scaleType) {
             default:
             case MATRIX:
+                canvas.setMatrix(matrix);
                 drawable.setBounds(paddingStart, paddingTop, paddingStart
                                 + drawable.getIntrinsicWidth(),
                         paddingTop + drawable.getIntrinsicHeight());
                 drawable.draw(canvas);
+                canvas.setMatrix(null);
                 break;
             case FIT_XY:
                 drawable.setBounds(paddingStart, paddingTop,

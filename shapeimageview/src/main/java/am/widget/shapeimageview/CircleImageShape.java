@@ -60,9 +60,4 @@ public class CircleImageShape extends ImageShape {
 			canvas.drawCircle(cx, cy, radius, paint);
 		}
 	}
-
-    @Override
-    public boolean alwaysUseBaseWay() {
-        return true;
-    }
 }

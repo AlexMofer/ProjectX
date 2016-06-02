@@ -3,6 +3,7 @@ package am.project.x.activities.widgets.shapeimageview;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -62,18 +63,22 @@ public class ShapeImageViewActivity extends BaseActivity
             case R.id.siv_image_c:
                 if (tag != null && tag instanceof Boolean && (Boolean) tag) {
                     sivCircle.setImageResource(R.drawable.bg_shapeimageview);
+                    sivCircle.setBorderColor(ContextCompat.getColor(this, R.color.colorPrimary));
                     sivCircle.setTag(false);
                 } else {
                     sivCircle.setImageResource(R.drawable.bg_welcome);
+                    sivCircle.setBorderColor(ContextCompat.getColor(this, R.color.colorAccent));
                     sivCircle.setTag(true);
                 }
                 break;
             case R.id.siv_image_r:
                 if (tag != null && tag instanceof Boolean && (Boolean) tag) {
                     sivRoundRect.setImageResource(R.drawable.bg_shapeimageview);
+                    sivRoundRect.setBorderColor(ContextCompat.getColor(this, R.color.colorPrimary));
                     sivRoundRect.setTag(false);
                 } else {
                     sivRoundRect.setImageResource(R.drawable.bg_welcome);
+                    sivRoundRect.setBorderColor(ContextCompat.getColor(this, R.color.colorAccent));
                     sivRoundRect.setTag(true);
                 }
                 break;
@@ -117,44 +122,62 @@ public class ShapeImageViewActivity extends BaseActivity
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        if (checkedId != -1)
-            if (group == rgScaleType1) {
-                rgScaleType2.clearCheck();
-            } else {
-                rgScaleType1.clearCheck();
-            }
         switch (checkedId) {
             case R.id.siv_rb_center:
                 sivCircle.setScaleType(ImageView.ScaleType.CENTER);
                 sivRoundRect.setScaleType(ImageView.ScaleType.CENTER);
+                rgScaleType2.setOnCheckedChangeListener(null);
+                rgScaleType2.clearCheck();
+                rgScaleType2.setOnCheckedChangeListener(this);
                 break;
             case R.id.siv_rb_centercrop:
                 sivCircle.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 sivRoundRect.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                rgScaleType2.setOnCheckedChangeListener(null);
+                rgScaleType2.clearCheck();
+                rgScaleType2.setOnCheckedChangeListener(this);
                 break;
             case R.id.siv_rb_centerinside:
                 sivCircle.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                 sivRoundRect.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                rgScaleType2.setOnCheckedChangeListener(null);
+                rgScaleType2.clearCheck();
+                rgScaleType2.setOnCheckedChangeListener(this);
                 break;
             case R.id.siv_rb_fitcenter:
                 sivCircle.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 sivRoundRect.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                rgScaleType2.setOnCheckedChangeListener(null);
+                rgScaleType2.clearCheck();
+                rgScaleType2.setOnCheckedChangeListener(this);
                 break;
             case R.id.siv_rb_fitend:
                 sivCircle.setScaleType(ImageView.ScaleType.FIT_END);
                 sivRoundRect.setScaleType(ImageView.ScaleType.FIT_END);
+                rgScaleType1.setOnCheckedChangeListener(null);
+                rgScaleType1.clearCheck();
+                rgScaleType1.setOnCheckedChangeListener(this);
                 break;
             case R.id.siv_rb_fitstart:
                 sivCircle.setScaleType(ImageView.ScaleType.FIT_START);
                 sivRoundRect.setScaleType(ImageView.ScaleType.FIT_START);
+                rgScaleType1.setOnCheckedChangeListener(null);
+                rgScaleType1.clearCheck();
+                rgScaleType1.setOnCheckedChangeListener(this);
                 break;
             case R.id.siv_rb_fitxy:
                 sivCircle.setScaleType(ImageView.ScaleType.FIT_XY);
                 sivRoundRect.setScaleType(ImageView.ScaleType.FIT_XY);
+                rgScaleType1.setOnCheckedChangeListener(null);
+                rgScaleType1.clearCheck();
+                rgScaleType1.setOnCheckedChangeListener(this);
                 break;
             case R.id.siv_rb_matrix:
                 sivCircle.setScaleType(ImageView.ScaleType.MATRIX);
                 sivRoundRect.setScaleType(ImageView.ScaleType.MATRIX);
+                rgScaleType1.setOnCheckedChangeListener(null);
+                rgScaleType1.clearCheck();
+                rgScaleType1.setOnCheckedChangeListener(this);
                 break;
         }
 
