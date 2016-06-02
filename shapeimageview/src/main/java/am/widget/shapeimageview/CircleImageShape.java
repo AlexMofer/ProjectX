@@ -8,7 +8,6 @@ import android.graphics.Paint;
 
 /**
  * 圆形
- * @author Alex
  *
  */
 public class CircleImageShape extends ImageShape {

@@ -15,12 +15,9 @@ import android.widget.ImageView;
 
 /**
  * 图形裁剪ImageView
- * <p/>
- * API 21 及以上 使用 setOutlineProvider 方式实现<br>
- * 以下使用 BitmapShader 方式实现<br>
+ * API 21 及以上 使用 setOutlineProvider 方式实现
+ * 以下使用 BitmapShader 方式实现
  * API 21 及以上 支持动态图
- *
- * @author Alex
  */
 public class ShapeImageView extends ImageView {
 

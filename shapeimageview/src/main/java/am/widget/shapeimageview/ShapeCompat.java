@@ -8,7 +8,6 @@ import android.view.View;
 /**
  * 版本兼容控制器
  *
- * @author Alex
  */
 class ShapeCompat {
 

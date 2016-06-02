@@ -10,7 +10,6 @@ import android.graphics.RectF;
 /**
  * 圆角矩形
  *
- * @author Alex
  */
 public class RoundRectImageShape extends ImageShape {
 
