@@ -9,7 +9,21 @@
     <string name="gradienttabstrip_title">渐变Tab</string>
     <string name="tagtabstrip_title">标记Tab</string>
     <string name="indicatortabstrip_title">移动Tab</string>
+
     <string name="shapeimageview_titel">形状Image</string>
+    <string name="shapeimageview_height_width_scale">宽高比(100/100~100/50)：</string>
+    <string name="shapeimageview_border_width">边线宽(0dp~10dp)：</string>
+    <string name="shapeimageview_radius">圆角(0dp~30dp)：</string>
+    <string name="shapeimageview_padding">Padding(0dp~20dp)：</string>
+    <string name="shapeimageview_scaletype">ScaleType：</string>
+    <string name="shapeimageview_scaletype_center">center</string>
+    <string name="shapeimageview_scaletype_centercrop">centerCrop</string>
+    <string name="shapeimageview_scaletype_centerinside">centerInside</string>
+    <string name="shapeimageview_scaletype_fitcenter">fitCenter</string>
+    <string name="shapeimageview_scaletype_fitend">fitEnd</string>
+    <string name="shapeimageview_scaletype_fitstart">fitStart</string>
+    <string name="shapeimageview_scaletype_fitxy">fitXY</string>
+    <string name="shapeimageview_scaletype_matrix">matrix</string>
 
     <string name="cd_welcome">welcome icon</string>
 

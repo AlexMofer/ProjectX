@@ -8,7 +8,7 @@
         <attr name="sivRoundRectRadius" format="dimension" />
         <attr name="sivBorderWidth" format="dimension" />
         <attr name="sivBorderColor" format="color" />
-        <attr name="sivCatchOnly" format="boolean" />
+        <attr name="sivCatchBitmapOnly" format="boolean" />
         <attr name="sivForeground" format="reference"/>
         <attr name="sivWidthScale" format="integer"/>
         <attr name="sivHeightScale" format="integer"/>
