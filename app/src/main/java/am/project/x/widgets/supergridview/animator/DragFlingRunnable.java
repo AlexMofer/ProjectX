@@ -7,7 +7,7 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 
 import am.project.x.widgets.supergridview.DragView;
-import am.project.x.widgets.support.ViewHelper;
+import am.project.x.widgets.supergridview.support.ViewCompat;
 
 public class DragFlingRunnable extends DragBaseRunnable {
 
@@ -98,8 +98,8 @@ public class DragFlingRunnable extends DragBaseRunnable {
 		flingY = velocityY * mDuration;
 		// TODO 飞行距离应做控制，飞行距离太短应由距离决定时间，计算飞出是否会进入删除区域。
 		isFlingDelete = false;
-		startflingX = ViewHelper.getTranslationX(mDragView);
-		startflingY = ViewHelper.getTranslationY(mDragView);
+		startflingX = ViewCompat.getTranslationX(mDragView);
+		startflingY = ViewCompat.getTranslationY(mDragView);
 		isFlingBack = false;
 		mInterpolator = decelerateInterpolator;
 		if (canFlyToDelete()) {
@@ -254,8 +254,8 @@ public class DragFlingRunnable extends DragBaseRunnable {
 			if (!isFlingBack) {
 				isFlingBack = true;
 				mInterpolator = accelerateInterpolator;
-				startDeleteX = ViewHelper.getTranslationX(mDeleteView);
-				startDeleteY = ViewHelper.getTranslationY(mDeleteView);
+				startDeleteX = ViewCompat.getTranslationX(mDeleteView);
+				startDeleteY = ViewCompat.getTranslationY(mDeleteView);
 				start();
 			} else {
 				isFlingBack = false;
@@ -284,8 +284,8 @@ public class DragFlingRunnable extends DragBaseRunnable {
 		if (!isGoingToAbsorb) {
 			isGoingToAbsorb(x, y);
 			isFlyToDelete(x, y);
-			mStartScaleX = ViewHelper.getScaleX(mDragView);
-			mStartScaleY = ViewHelper.getScaleY(mDragView);
+			mStartScaleX = ViewCompat.getScaleX(mDragView);
+			mStartScaleY = ViewCompat.getScaleY(mDragView);
 		}
 		if (isGoingToAbsorb) {
 			final float ix = mDeleteCenterX - mCenterX;
@@ -295,28 +295,28 @@ public class DragFlingRunnable extends DragBaseRunnable {
 				mStartDragRunnable.setOffSet(x, y);
 			} else {
 				setOffSet(x, y);
-				ViewHelper.setTranslationX(mDeleteView, deleteOffX);
-				ViewHelper.setTranslationY(mDeleteView, deleteOffY);
+                ViewCompat.setTranslationX(mDeleteView, deleteOffX);
+                ViewCompat.setTranslationY(mDeleteView, deleteOffY);
 			}
 			float op = 0;
 			if (mDuration - mTime <= DragMoveRunnable.MOVEDURATION) {
 				op = absorbInterpolator
 						.getInterpolation((float) (DragMoveRunnable.MOVEDURATION - mDuration + mTime)
 								/ (float) DragMoveRunnable.MOVEDURATION);
-				ViewHelper.setScaleX(mDragView, mStartScaleX - (mStartScaleX - mAbsorbedScale) * op);
-				ViewHelper.setScaleY(mDragView, mStartScaleY - (mStartScaleY - mAbsorbedScale) * op);
+                ViewCompat.setScaleX(mDragView, mStartScaleX - (mStartScaleX - mAbsorbedScale) * op);
+                ViewCompat.setScaleY(mDragView, mStartScaleY - (mStartScaleY - mAbsorbedScale) * op);
 			}
-			ViewHelper.setTranslationX(mDragView, translationX + deleteOffX - mDeleteInherentX - (translationX - ix) * op);
-			ViewHelper.setTranslationY(mDragView, translationY + deleteOffY - mDeleteInherentY - (translationY - iy) * op);
+            ViewCompat.setTranslationX(mDragView, translationX + deleteOffX - mDeleteInherentX - (translationX - ix) * op);
+            ViewCompat.setTranslationY(mDragView, translationY + deleteOffY - mDeleteInherentY - (translationY - iy) * op);
 		} else {
 			if (mStartDragRunnable.isRunning()) {
 				mStartDragRunnable.setOffSet(x, y);
 			} else {
-				ViewHelper.setTranslationX(mDragView, translationX);
-				ViewHelper.setTranslationY(mDragView, translationY);
+                ViewCompat.setTranslationX(mDragView, translationX);
+                ViewCompat.setTranslationY(mDragView, translationY);
 				setOffSet(x, y);
-				ViewHelper.setTranslationX(mDeleteView, deleteOffX);
-				ViewHelper.setTranslationY(mDeleteView, deleteOffY);
+                ViewCompat.setTranslationX(mDeleteView, deleteOffX);
+                ViewCompat.setTranslationY(mDeleteView, deleteOffY);
 			}
 		}
 	}
@@ -329,20 +329,20 @@ public class DragFlingRunnable extends DragBaseRunnable {
 		if (mStartDragRunnable.isRunning()) {
 			mStartDragRunnable.setOffSet(x, y);
 		} else {
-			ViewHelper.setTranslationX(mDragView, translationX);
-			ViewHelper.setTranslationY(mDragView, translationY);
+            ViewCompat.setTranslationX(mDragView, translationX);
+            ViewCompat.setTranslationY(mDragView, translationY);
 			setOffSet(x, y);
-			ViewHelper.setTranslationX(mDeleteView, deleteOffX);
-			ViewHelper.setTranslationY(mDeleteView, deleteOffY);
+            ViewCompat.setTranslationX(mDeleteView, deleteOffX);
+            ViewCompat.setTranslationY(mDeleteView, deleteOffY);
 		}
 
 	}
 
 	private void remove(float p) {
-		ViewHelper.setTranslationX(mDragView, (startflingX + flingX) * (1 - p));
-		ViewHelper.setTranslationY(mDragView, (startflingY + flingY) * (1 - p));
-		ViewHelper.setTranslationX(mDeleteView, startDeleteX * (1 - p));
-		ViewHelper.setTranslationY(mDeleteView, startDeleteY * (1 - p));
+        ViewCompat.setTranslationX(mDragView, (startflingX + flingX) * (1 - p));
+        ViewCompat.setTranslationY(mDragView, (startflingY + flingY) * (1 - p));
+        ViewCompat.setTranslationX(mDeleteView, startDeleteX * (1 - p));
+        ViewCompat.setTranslationY(mDeleteView, startDeleteY * (1 - p));
 		float scale = 0;
 		if (startScale == 1) {
 			return;
@@ -351,8 +351,8 @@ public class DragFlingRunnable extends DragBaseRunnable {
 		} else {
 			scale = startScale + (1 - startScale) * p;
 		}
-		ViewHelper.setScaleX(mDragView, scale);
-		ViewHelper.setScaleY(mDragView, scale);
+        ViewCompat.setScaleX(mDragView, scale);
+        ViewCompat.setScaleY(mDragView, scale);
 	}
 
 	public void setStartScale(float scale) {

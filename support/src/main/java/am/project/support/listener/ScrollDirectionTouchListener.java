@@ -3,23 +3,25 @@ package am.project.support.listener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewConfiguration;
 
 /**
  * 滑动方向触摸监听
- *
- * @author Mofer
  */
 @SuppressWarnings("unused")
 public abstract class ScrollDirectionTouchListener implements OnTouchListener {
 
     public static final int STATE_TOP = 0;
     public static final int STATE_BOTTOM = 1;
-    private static final int TOUCH_SLOP = 20;
+    private int mTouchSlop;
     private float stateY;
     private int state = -1;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if (mTouchSlop == 0) {
+            mTouchSlop = ViewConfiguration.get(v.getContext()).getScaledTouchSlop();
+        }
         checkUpOrDown(event);
         return false;
     }
@@ -68,14 +70,14 @@ public abstract class ScrollDirectionTouchListener implements OnTouchListener {
                 stateY = event.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (stateY + TOUCH_SLOP / 2 < event.getY()) {
+                if (stateY + mTouchSlop / 2 < event.getY()) {
                     if (state != STATE_TOP) {
                         onScrollUp();
                         state = STATE_TOP;
                     }
                     stateY = event.getY();
 
-                } else if (stateY - TOUCH_SLOP / 2 > event.getY()) {
+                } else if (stateY - mTouchSlop / 2 > event.getY()) {
                     if (state != STATE_BOTTOM) {
                         onScrollDown();
                         state = STATE_BOTTOM;

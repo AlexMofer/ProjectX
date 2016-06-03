@@ -14,8 +14,7 @@ import android.widget.GridView;
  */
 public class DragGridViewSmoothScrollCompat {
 	interface SmoothScrollVersionImpl {
-		public void smoothScrollBy(GridView gridView, int distance,
-								   int duration);
+		void smoothScrollBy(GridView gridView, int distance, int duration);
 	}
 
 	static class BaseSmoothScrollImpl implements SmoothScrollVersionImpl {
@@ -28,7 +27,7 @@ public class DragGridViewSmoothScrollCompat {
 			MotionEvent down = MotionEvent.obtain(SystemClock.uptimeMillis(),
 					SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN, x, y,
 					0);
-			gridView.onTouchEvent(down);
+			gridView.dispatchTouchEvent(down);
 			int num = duration / 5;
 			float offset = distance * 5 / duration;
 			y -= offset;
@@ -37,15 +36,14 @@ public class DragGridViewSmoothScrollCompat {
 					0);
 			for (int i = 1; i < num; i++) {
 				y -= offset;
-				gridView.onTouchEvent(move);
+				gridView.dispatchTouchEvent(move);
 				move = MotionEvent.obtain(SystemClock.uptimeMillis(),
 						SystemClock.uptimeMillis(), MotionEvent.ACTION_MOVE, x,
 						y, 0);
-
 			}
 			MotionEvent up = MotionEvent.obtain(SystemClock.uptimeMillis(),
 					SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, x, y, 0);
-			gridView.onTouchEvent(up);
+			gridView.dispatchTouchEvent(up);
 			down.recycle();
 			move.recycle();
 			up.recycle();
@@ -53,7 +51,7 @@ public class DragGridViewSmoothScrollCompat {
 
 	}
 
-	@TargetApi(Build.VERSION_CODES.FROYO)
+	@TargetApi(8)
 	static class FroyoSmoothScrollImpl extends BaseSmoothScrollImpl {
 		@Override
 		public void smoothScrollBy(GridView gridView, int distance,
@@ -64,7 +62,7 @@ public class DragGridViewSmoothScrollCompat {
 
 	static final SmoothScrollVersionImpl IMPL;
 	static {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+		if (Build.VERSION.SDK_INT >= 8) {
 			IMPL = new FroyoSmoothScrollImpl();
 		} else {
 			IMPL = new BaseSmoothScrollImpl();

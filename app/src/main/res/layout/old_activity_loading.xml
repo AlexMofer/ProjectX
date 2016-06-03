@@ -12,13 +12,13 @@
         android:layout_gravity="center_horizontal" />
 
 
-    <am.project.x.widgets.circleimageview.CircleImageView
+    <android.support.v4.widget.ShadowsCircleImageView
         android:id="@+id/loading_iv_02"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal" />
 
-    <am.project.x.widgets.circleimageview.MaterialCircleImageView
+    <am.widget.MaterialProgressCircleImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal" />

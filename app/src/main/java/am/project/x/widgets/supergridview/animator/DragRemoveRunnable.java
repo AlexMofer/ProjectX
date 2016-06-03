@@ -4,7 +4,7 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 
 import am.project.x.widgets.supergridview.DragView;
-import am.project.x.widgets.support.ViewHelper;
+import am.project.x.widgets.supergridview.support.ViewCompat;
 
 
 public class DragRemoveRunnable extends DragBaseRunnable {
@@ -21,12 +21,12 @@ public class DragRemoveRunnable extends DragBaseRunnable {
 	}
 	
 	public void start() {
-		mDragScaleX = ViewHelper.getScaleX(mDragView);
-		mDragScaleY = ViewHelper.getScaleY(mDragView);
-		mDragTranslationX = ViewHelper.getTranslationX(mDragView);
-		mDragTranslationY = ViewHelper.getTranslationY(mDragView);
-		mDeleteTranslationX = ViewHelper.getTranslationX(mDeleteView);
-		mDeleteTranslationY = ViewHelper.getTranslationY(mDeleteView);
+		mDragScaleX = ViewCompat.getScaleX(mDragView);
+		mDragScaleY = ViewCompat.getScaleY(mDragView);
+		mDragTranslationX = ViewCompat.getTranslationX(mDragView);
+		mDragTranslationY = ViewCompat.getTranslationY(mDragView);
+		mDeleteTranslationX = ViewCompat.getTranslationX(mDeleteView);
+		mDeleteTranslationY = ViewCompat.getTranslationY(mDeleteView);
 		super.start();
 	}
 	
@@ -56,12 +56,12 @@ public class DragRemoveRunnable extends DragBaseRunnable {
 		} else {
 			scaleY = 1 - (1 - mDragScaleY) * op;
 		}
-		ViewHelper.setScaleX(mDragView, scaleX);
-		ViewHelper.setScaleY(mDragView, scaleY);
-		ViewHelper.setTranslationX(mDragView, mDragTranslationX * op);
-		ViewHelper.setTranslationY(mDragView, mDragTranslationY * op);
-		ViewHelper.setTranslationX(mDeleteView, mDeleteTranslationX * op);
-		ViewHelper.setTranslationY(mDeleteView, mDeleteTranslationY * op);
+		ViewCompat.setScaleX(mDragView, scaleX);
+		ViewCompat.setScaleY(mDragView, scaleY);
+		ViewCompat.setTranslationX(mDragView, mDragTranslationX * op);
+		ViewCompat.setTranslationY(mDragView, mDragTranslationY * op);
+		ViewCompat.setTranslationX(mDeleteView, mDeleteTranslationX * op);
+		ViewCompat.setTranslationY(mDeleteView, mDeleteTranslationY * op);
 	}
 
 }

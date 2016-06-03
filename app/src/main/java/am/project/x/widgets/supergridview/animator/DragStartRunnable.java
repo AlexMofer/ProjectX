@@ -5,7 +5,7 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 
 import am.project.x.widgets.supergridview.DragView;
-import am.project.x.widgets.support.ViewHelper;
+import am.project.x.widgets.supergridview.support.ViewCompat;
 
 
 public class DragStartRunnable extends DragBaseRunnable {
@@ -115,15 +115,15 @@ public class DragStartRunnable extends DragBaseRunnable {
 		} else {
 			scale = 1 - (1 - mStartScale) * p;
 		}
-		ViewHelper.setScaleX(mDragView, scale);
-		ViewHelper.setScaleY(mDragView, scale);
-		ViewHelper.setTranslationX(mDragView, dragOffX * p);
-		ViewHelper.setTranslationY(mDragView, dragOffY * p);
+		ViewCompat.setScaleX(mDragView, scale);
+		ViewCompat.setScaleY(mDragView, scale);
+		ViewCompat.setTranslationX(mDragView, dragOffX * p);
+		ViewCompat.setTranslationY(mDragView, dragOffY * p);
 	}
 
 	private void moveDelete(float p) {
-		ViewHelper.setTranslationX(mDeleteView, deleteOffX * p);
-		ViewHelper.setTranslationY(mDeleteView, deleteOffY * p);
+		ViewCompat.setTranslationX(mDeleteView, deleteOffX * p);
+		ViewCompat.setTranslationY(mDeleteView, deleteOffY * p);
 	}
 
 	public void setStartScale(float startScale) {

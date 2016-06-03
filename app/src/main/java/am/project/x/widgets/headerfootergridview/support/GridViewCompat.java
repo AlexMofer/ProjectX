@@ -13,17 +13,17 @@ import android.widget.GridView;
 public class GridViewCompat {
 
 	interface GridViewVersionImpl {
-		public int getNumColumns(GridView gridView);
+		int getNumColumns(GridView gridView);
 
-		public int getColumnWidth(GridView gridView);
+		int getColumnWidth(GridView gridView);
 
-		public int getRequestedColumnWidth(GridView gridView);
+		int getRequestedColumnWidth(GridView gridView);
 
-		public int getVerticalSpacing(GridView gridView);
+		int getVerticalSpacing(GridView gridView);
 
-		public int getHorizontalSpacing(GridView gridView);
+		int getHorizontalSpacing(GridView gridView);
 
-		public int getRequestedHorizontalSpacing(GridView gridView);
+		int getRequestedHorizontalSpacing(GridView gridView);
 	}
 
 	static class BaseGridViewVersionImpl implements GridViewVersionImpl {

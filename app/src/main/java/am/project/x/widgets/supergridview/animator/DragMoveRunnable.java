@@ -4,7 +4,7 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 
 import am.project.x.widgets.supergridview.DragView;
-import am.project.x.widgets.support.ViewHelper;
+import am.project.x.widgets.supergridview.support.ViewCompat;
 
 
 /**
@@ -97,18 +97,18 @@ public class DragMoveRunnable extends DragBaseRunnable {
 				dragOffY = mDragInherentY + (deleteOffY - mDeleteInherentY)
 						* 0.5f;
 			} else {
-				ViewHelper.setTranslationX(mDragView, mDragInherentX
+				ViewCompat.setTranslationX(mDragView, mDragInherentX
 						+ deleteOffX - mDeleteInherentX);
-				ViewHelper.setTranslationY(mDragView, mDragInherentY
+                ViewCompat.setTranslationY(mDragView, mDragInherentY
 						+ (deleteOffY - mDeleteInherentY) * 0.5f);
 			}
 		} else {
 			// 开始接管DragView的移动
 			absorbed = true;
-			mStartDragX = ViewHelper.getTranslationX(mDragView);
-			mStartDragY = ViewHelper.getTranslationY(mDragView);
-			mStartScaleX = ViewHelper.getScaleX(mDragView);
-			mStartScaleY = ViewHelper.getScaleY(mDragView);
+			mStartDragX = ViewCompat.getTranslationX(mDragView);
+			mStartDragY = ViewCompat.getTranslationY(mDragView);
+			mStartScaleX = ViewCompat.getScaleX(mDragView);
+			mStartScaleY = ViewCompat.getScaleY(mDragView);
 			dragOffX = mDragInherentX + deleteOffX - mDeleteInherentX;
 			dragOffY = mDragInherentY + (deleteOffY - mDeleteInherentY) * 0.5f;
 			if (mRunning) {
@@ -139,10 +139,10 @@ public class DragMoveRunnable extends DragBaseRunnable {
 			if (absorbed) {
 				// DragView已被接管，释放接管并开始释放动画
 				absorbed = false;
-				mStartDragX = ViewHelper.getTranslationX(mDragView);
-				mStartDragY = ViewHelper.getTranslationY(mDragView);
-				mStartScaleX = ViewHelper.getScaleX(mDragView);
-				mStartScaleY = ViewHelper.getScaleY(mDragView);
+				mStartDragX = ViewCompat.getTranslationX(mDragView);
+				mStartDragY = ViewCompat.getTranslationY(mDragView);
+				mStartScaleX = ViewCompat.getScaleX(mDragView);
+				mStartScaleY = ViewCompat.getScaleY(mDragView);
 				dragOffX = x - mCenterX;
 				dragOffY = y - mCenterY;
 				if (mRunning) {
@@ -155,8 +155,8 @@ public class DragMoveRunnable extends DragBaseRunnable {
 				dragOffY = y - mCenterY;
 				if (!mRunning) {
 					// 释放动画不在进行
-					ViewHelper.setTranslationX(mDragView, dragOffX);
-					ViewHelper.setTranslationY(mDragView, dragOffY);
+                    ViewCompat.setTranslationX(mDragView, dragOffX);
+                    ViewCompat.setTranslationY(mDragView, dragOffY);
 				}
 			}
 		}
@@ -175,8 +175,8 @@ public class DragMoveRunnable extends DragBaseRunnable {
 				- mDeleteMove + mDeleteInherentX;
 		deleteOffY = (y - mParentTop) * mDeleteMove * 2f / mParentHeight
 				- mDeleteMove + mDeleteInherentY;
-		ViewHelper.setTranslationX(mDeleteView, deleteOffX);
-		ViewHelper.setTranslationY(mDeleteView, deleteOffY);
+        ViewCompat.setTranslationX(mDeleteView, deleteOffX);
+        ViewCompat.setTranslationY(mDeleteView, deleteOffY);
 	}
 
 	@Override
@@ -186,19 +186,19 @@ public class DragMoveRunnable extends DragBaseRunnable {
 
 	@Override
 	protected void animator(float p) {
-		ViewHelper.setTranslationX(mDragView, mStartDragX
+        ViewCompat.setTranslationX(mDragView, mStartDragX
 				+ (dragOffX - mStartDragX) * p);
-		ViewHelper.setTranslationY(mDragView, mStartDragY
+        ViewCompat.setTranslationY(mDragView, mStartDragY
 				+ (dragOffY - mStartDragY) * p);
 		if (absorbed) {
-			ViewHelper.setScaleX(mDragView, mStartScaleX
+            ViewCompat.setScaleX(mDragView, mStartScaleX
 					- (mStartScaleX - mAbsorbedScale) * p);
-			ViewHelper.setScaleY(mDragView, mStartScaleY
+            ViewCompat.setScaleY(mDragView, mStartScaleY
 					- (mStartScaleY - mAbsorbedScale) * p);
 		} else {
-			ViewHelper.setScaleX(mDragView, mStartScaleX
+            ViewCompat.setScaleX(mDragView, mStartScaleX
 					- (mStartScaleX - mStartScale) * p);
-			ViewHelper.setScaleY(mDragView, mStartScaleY
+            ViewCompat.setScaleY(mDragView, mStartScaleY
 					- (mStartScaleY - mStartScale) * p);
 		}
 	}

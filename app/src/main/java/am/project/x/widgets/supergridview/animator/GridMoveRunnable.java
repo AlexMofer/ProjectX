@@ -7,7 +7,7 @@ import am.project.x.widgets.animators.BaseAnimator;
 import am.project.x.widgets.headerfootergridview.HeaderFooterGridView;
 import am.project.x.widgets.headerfootergridview.HeaderFooterViewListAdapter;
 import am.project.x.widgets.supergridview.DragView;
-import am.project.x.widgets.support.ViewHelper;
+import am.project.x.widgets.supergridview.support.ViewCompat;
 
 
 /**
@@ -202,13 +202,13 @@ public class GridMoveRunnable extends BaseAnimator {
 					.getPositionType(position);
 			if (pt == HeaderFooterViewListAdapter.PositionType.NORMAL
 					|| pt == HeaderFooterViewListAdapter.PositionType.HEADERITEM) {
-				ViewHelper.setTranslationX(child, x);
-				ViewHelper.setTranslationY(child, y);
+				ViewCompat.setTranslationX(child, x);
+				ViewCompat.setTranslationY(child, y);
 			} else if (pt == HeaderFooterViewListAdapter.PositionType.FOOTERITEM) {
-				ViewHelper.setTranslationX(child, x);
-				ViewHelper.setTranslationY(child, y);
+				ViewCompat.setTranslationX(child, x);
+				ViewCompat.setTranslationY(child, y);
 			} else if (pt == HeaderFooterViewListAdapter.PositionType.HEADERVIEW) {
-				ViewHelper.setTranslationY(child, y);
+				ViewCompat.setTranslationY(child, y);
 			} else if (pt == HeaderFooterViewListAdapter.PositionType.FOOTERVIEW) {
 				// TODO 动画效果，垂直上移
 			}
