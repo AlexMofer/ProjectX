@@ -1,6 +1,7 @@
 package am.widget;
 
 import android.content.Context;
+import android.graphics.drawable.Animatable;
 import android.support.v4.widget.MaterialLoadingProgressDrawable;
 import android.support.v4.widget.ShadowsCircleImageView;
 import android.util.AttributeSet;
@@ -9,7 +10,7 @@ import android.util.AttributeSet;
  * MaterialCircleImageView
  * Created by Alex on 2015/10/27.
  */
-public class MaterialProgressCircleImageView extends ShadowsCircleImageView {
+public class MaterialProgressCircleImageView extends ShadowsCircleImageView implements Animatable {
 
     private MaterialLoadingProgressDrawable drawable = new MaterialLoadingProgressDrawable(this);
     public MaterialProgressCircleImageView(Context context) {
@@ -34,17 +35,19 @@ public class MaterialProgressCircleImageView extends ShadowsCircleImageView {
             stop();
     }
 
+    @Override
     public void start() {
         drawable.start();
     }
 
+    @Override
     public void stop() {
         drawable.stop();
     }
 
-    @SuppressWarnings("unused")
-    public void setLoading(boolean loading) {
-        setVisibility(loading ? VISIBLE : GONE);
+    @Override
+    public boolean isRunning() {
+        return drawable.isRunning();
     }
 
 }

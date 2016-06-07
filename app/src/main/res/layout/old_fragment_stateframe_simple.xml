@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <am.project.x.widgets.stateframelayout.StateFrameLayout
+    <am.widget.stateframelayout.StateFrameLayout
         android:id="@+id/sfl_state"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -20,7 +20,7 @@
             android:gravity="center"
             android:text="@string/text_scbd"
             android:textSize="40sp" />
-    </am.project.x.widgets.stateframelayout.StateFrameLayout>
+    </am.widget.stateframelayout.StateFrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -20,11 +20,11 @@ import android.widget.Toast;
 
 import am.project.x.R;
 import am.project.x.widgets.drawables.DoubleCircleDrawable;
-import am.project.x.widgets.stateframelayout.StateFrameLayout;
+import am.widget.stateframelayout.StateFrameLayout;
 
 
 /**
- * 状态镇布局
+ * 状态帧布局
  * 
  * @author Mofer
  * 

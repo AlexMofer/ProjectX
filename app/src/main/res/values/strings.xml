@@ -25,6 +25,16 @@
     <string name="shapeimageview_scaletype_fitxy">fitXY</string>
     <string name="shapeimageview_scaletype_matrix">matrix</string>
 
+    <string name="stateframelayout_title">状态帧布局</string>
+    <string name="stateframelayout_change_state">状态修改：</string>
+    <string name="stateframelayout_change_state_normal">普通</string>
+    <string name="stateframelayout_change_state_loading">载入</string>
+    <string name="stateframelayout_change_state_error">错误</string>
+    <string name="stateframelayout_change_state_empty">空白</string>
+    <string name="stateframelayout_change_mode">模式修改：</string>
+    <string name="stateframelayout_change_mode_drawable">Drawable</string>
+    <string name="stateframelayout_change_mode_view">View</string>
+
     <string name="cd_welcome">welcome icon</string>
 
 

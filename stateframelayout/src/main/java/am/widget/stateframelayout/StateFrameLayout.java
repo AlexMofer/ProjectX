@@ -1,14 +1,15 @@
 package am.widget.stateframelayout;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -28,28 +29,24 @@ public class StateFrameLayout extends FrameLayout {
     private Drawable mLoadingDrawable;
     private Drawable mErrorDrawable;
     private Drawable mEmptyDrawable;
-    private int mState = STATE_NORMAL;
-    private boolean alwaysDrawChild = false;
-    private boolean alwaysTouchable = false;
+    private int mState;
+    private boolean mAlwaysDrawChild;
+    private boolean mAlwaysTouchable;
+    private boolean mAllViewCanClick;
     private OnStateClickListener mClickListener;
     private OnClickListener mErrorListener;
     private float downX;
     private float downY;
-    private boolean allViewCanClick = false;
     private View mLoadingView;
     private View mErrorView;
     private View mEmptyView;
 
     public StateFrameLayout(Context context) {
-        super(context);
-        setWillNotDraw(false);
-        setClickable(true);
+        this(context, null);
     }
 
     public StateFrameLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        setWillNotDraw(false);
-        setClickable(true);
+        this(context, attrs, 0);
     }
 
     public StateFrameLayout(Context context, AttributeSet attrs,
@@ -57,24 +54,30 @@ public class StateFrameLayout extends FrameLayout {
         super(context, attrs, defStyleAttr);
         setWillNotDraw(false);
         setClickable(true);
-    }
-
-    @TargetApi(21)
-    public StateFrameLayout(Context context, AttributeSet attrs,
-                            int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        setWillNotDraw(false);
-        setClickable(true);
+        Drawable loading, error, empty;
+        TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.StateFrameLayout);
+        boolean alwaysDrawChild = custom.getBoolean(
+                R.styleable.StateFrameLayout_sflAlwaysDrawChild, false);
+        boolean alwaysTouchable = custom.getBoolean(
+                R.styleable.StateFrameLayout_sflAlwaysTouchable, false);
+        boolean allViewCanClick = custom.getBoolean(
+                R.styleable.StateFrameLayout_sflAllViewCanClick, false);
+        loading = custom.getDrawable(R.styleable.StateFrameLayout_sflLoadingDrawable);
+        error = custom.getDrawable(R.styleable.StateFrameLayout_sflErrorDrawable);
+        empty = custom.getDrawable(R.styleable.StateFrameLayout_sflEmptyDrawable);
+        int state = custom.getInt(R.styleable.StateFrameLayout_sflState, STATE_NORMAL);
+        custom.recycle();
+        setAlwaysDrawChild(alwaysDrawChild);
+        setAlwaysTouchable(alwaysTouchable);
+        setAllViewCanClick(allViewCanClick);
+        setStateDrawables(loading, error, empty);
+        setState(state);
     }
 
     @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
         switch (mState) {
-            default:
-            case STATE_NORMAL:
-                // do nothing
-                break;
             case STATE_LOADING:
                 drawLoading(canvas);
                 break;
@@ -84,12 +87,17 @@ public class StateFrameLayout extends FrameLayout {
             case STATE_EMPTY:
                 drawEmpty(canvas);
                 break;
+            default:
+            case STATE_NORMAL:
+                // do nothing
+                break;
         }
     }
 
+
     @Override
     protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
-        if (alwaysDrawChild) {
+        if (mAlwaysDrawChild) {
             return super.drawChild(canvas, child, drawingTime);
         }
         switch (mState) {
@@ -101,7 +109,7 @@ public class StateFrameLayout extends FrameLayout {
             case STATE_ERROR:
                 return child != mErrorView || super.drawChild(canvas, child, drawingTime);
             case STATE_EMPTY:
-                return super.drawChild(canvas, child, drawingTime);
+                return child != mEmptyView || super.drawChild(canvas, child, drawingTime);
         }
     }
 
@@ -146,7 +154,7 @@ public class StateFrameLayout extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (!alwaysTouchable) {
+        if (!mAlwaysTouchable) {
             switch (mState) {
                 default:
                 case STATE_NORMAL:
@@ -222,7 +230,7 @@ public class StateFrameLayout extends FrameLayout {
             case STATE_LOADING:
                 break;
             case STATE_ERROR:
-                if (allViewCanClick && mClickListener != null) {
+                if (mAllViewCanClick && mClickListener != null) {
                     mClickListener.onError(this);
                     break;
                 }
@@ -305,14 +313,27 @@ public class StateFrameLayout extends FrameLayout {
         if (mLoadingView == loadingView) {
             return;
         }
-        if (loadingView == null) {
+        if (mLoadingView != null) {
             removeView(mLoadingView);
             mLoadingView = null;
-        } else {
+        }
+        if (loadingView != null) {
+            setStateDrawables(null, mErrorDrawable, mEmptyDrawable);
             mLoadingView = loadingView;
             addView(mLoadingView, layoutParams);
             checkViewVisibility();
         }
+    }
+
+    /**
+     * 设置自定义载入View
+     *
+     * @param loadingView 载入View
+     */
+    public void setLoadingView(View loadingView) {
+        LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        lp.gravity = Gravity.CENTER;
+        setLoadingView(loadingView, lp);
     }
 
     /**
@@ -325,15 +346,28 @@ public class StateFrameLayout extends FrameLayout {
         if (mErrorView == errorView) {
             return;
         }
-        if (errorView == null) {
+        if (mErrorView != null) {
             removeView(mErrorView);
             mErrorView = null;
-        } else {
+        }
+        if (errorView != null) {
+            setStateDrawables(mLoadingDrawable, null, mEmptyDrawable);
             mErrorView = errorView;
             addView(mErrorView, layoutParams);
             mErrorView.setOnClickListener(getErrorListener());
             checkViewVisibility();
         }
+    }
+
+    /**
+     * 设置自定义错误View
+     *
+     * @param errorView 错误View
+     */
+    public void setErrorView(View errorView) {
+        LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        lp.gravity = Gravity.CENTER;
+        setErrorView(errorView, lp);
     }
 
     /**
@@ -346,14 +380,41 @@ public class StateFrameLayout extends FrameLayout {
         if (mEmptyView == emptyView) {
             return;
         }
-        if (emptyView == null) {
+        if (mEmptyView != null) {
             removeView(mEmptyView);
             mEmptyView = null;
-        } else {
+        }
+        if (emptyView != null) {
+            setStateDrawables(mLoadingDrawable, mErrorDrawable, null);
             mEmptyView = emptyView;
             addView(mEmptyView, layoutParams);
             checkViewVisibility();
         }
+    }
+
+    /**
+     * 设置自定义空白View
+     *
+     * @param emptyView 空白View
+     */
+    public void setEmptyView(View emptyView) {
+        LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        lp.gravity = Gravity.CENTER;
+        setEmptyView(emptyView, lp);
+    }
+
+    /**
+     * 设置状态View
+     *
+     * @param loading 载入
+     * @param error   错误
+     * @param empty   空白
+     */
+    @SuppressWarnings("unused")
+    public void setStateViews(View loading, View error, View empty) {
+        setLoadingView(loading);
+        setErrorView(error);
+        setEmptyView(empty);
     }
 
     private OnClickListener getErrorListener() {
@@ -412,7 +473,7 @@ public class StateFrameLayout extends FrameLayout {
      *
      * @param loading 载入
      * @param error   错误
-     * @param empty   空内容
+     * @param empty   空白
      */
     public void setStateDrawables(Drawable loading, Drawable error, Drawable empty) {
         boolean shouldInvalidate = false;
@@ -424,23 +485,38 @@ public class StateFrameLayout extends FrameLayout {
                 mLoadingDrawable.setCallback(null);
             }
             mLoadingDrawable = loading;
-            mLoadingDrawable.setCallback(this);
+            if (mLoadingDrawable != null) {
+                mLoadingDrawable.setCallback(this);
+                setLoadingView(null);
+            }
             shouldInvalidate = true;
         }
         if (mErrorDrawable != error) {
             if (mErrorDrawable != null) {
+                if (mErrorDrawable instanceof Animatable) {
+                    ((Animatable) mErrorDrawable).stop();
+                }
                 mErrorDrawable.setCallback(null);
             }
             mErrorDrawable = error;
-            mErrorDrawable.setCallback(this);
+            if (mErrorDrawable != null) {
+                mErrorDrawable.setCallback(this);
+                setErrorView(null);
+            }
             shouldInvalidate = true;
         }
         if (mEmptyDrawable != empty) {
             if (mEmptyDrawable != null) {
+                if (mEmptyDrawable instanceof Animatable) {
+                    ((Animatable) mEmptyDrawable).stop();
+                }
                 mEmptyDrawable.setCallback(null);
             }
             mEmptyDrawable = empty;
-            mEmptyDrawable.setCallback(this);
+            if (mEmptyDrawable != null) {
+                mEmptyDrawable.setCallback(this);
+                setEmptyView(null);
+            }
             shouldInvalidate = true;
         }
         if (shouldInvalidate) {
@@ -456,6 +532,7 @@ public class StateFrameLayout extends FrameLayout {
      * @param error   错误
      * @param empty   空内容
      */
+    @SuppressWarnings("unused")
     public void setStateDrawables(int loading, int error, int empty) {
         setStateDrawables(Compat.getDrawable(getContext(), loading),
                 Compat.getDrawable(getContext(), error), Compat.getDrawable(getContext(), empty));
@@ -509,6 +586,11 @@ public class StateFrameLayout extends FrameLayout {
         }
     }
 
+    /**
+     * 设置状态
+     *
+     * @param state 状态
+     */
     public void setState(int state) {
         if (mState != state) {
             mState = state;
@@ -518,33 +600,105 @@ public class StateFrameLayout extends FrameLayout {
         }
     }
 
-    public boolean isAlwaysDrawChild() {
-        return alwaysDrawChild;
+    /**
+     * 修改状态为普通
+     */
+    @SuppressWarnings("unused")
+    public void normal() {
+        setState(STATE_NORMAL);
     }
 
+    /**
+     * 修改状态为载入
+     */
+    @SuppressWarnings("unused")
+    public void loading() {
+        setState(STATE_LOADING);
+    }
+
+    /**
+     * 修改状态为错误
+     */
+    @SuppressWarnings("unused")
+    public void error() {
+        setState(STATE_ERROR);
+    }
+
+    /**
+     * 修改状态为空白
+     */
+    @SuppressWarnings("unused")
+    public void empty() {
+        setState(STATE_EMPTY);
+    }
+
+    /**
+     * 是否始终绘制子项
+     *
+     * @return 是否始终绘制子项
+     */
+    @SuppressWarnings("unused")
+    public boolean isAlwaysDrawChild() {
+        return mAlwaysDrawChild;
+    }
+
+    /**
+     * 设置是否始终绘制子项
+     *
+     * @param draw 是否始终绘制子项
+     */
     public void setAlwaysDrawChild(boolean draw) {
-        alwaysDrawChild = draw;
+        mAlwaysDrawChild = draw;
         invalidate();
     }
 
+    /**
+     * 是否始终可触摸
+     *
+     * @return 是否始终可触摸
+     */
+    @SuppressWarnings("unused")
     public boolean isAlwaysTouchable() {
-        return alwaysTouchable;
+        return mAlwaysTouchable;
     }
 
+    /**
+     * 设置是否始终可触摸
+     *
+     * @param touchable 是否始终可触摸
+     */
     public void setAlwaysTouchable(boolean touchable) {
-        alwaysTouchable = touchable;
+        mAlwaysTouchable = touchable;
     }
 
+    /**
+     * 状态点击监听
+     *
+     * @param listener 状态点击监听
+     */
+    @SuppressWarnings("unused")
     public void setOnStateClickListener(OnStateClickListener listener) {
         mClickListener = listener;
     }
 
+    /**
+     * 是否所有状态View可点击
+     *
+     * @return 是否所有状态View可点击
+     */
+    @SuppressWarnings("unused")
     public boolean isAllViewCanClick() {
-        return allViewCanClick;
+        return mAllViewCanClick;
     }
 
+    /**
+     * 是否是否所有状态View可点击
+     *
+     * @param all 是否所有状态View可点击
+     */
+    @SuppressWarnings("unused")
     public void setAllViewCanClick(boolean all) {
-        allViewCanClick = all;
+        mAllViewCanClick = all;
     }
 
     @Override
@@ -552,9 +706,9 @@ public class StateFrameLayout extends FrameLayout {
         Parcelable superState = super.onSaveInstanceState();
         SavedState ss = new SavedState(superState);
         ss.mState = mState;
-        ss.alwaysDrawChild = alwaysDrawChild;
-        ss.alwaysTouchable = alwaysTouchable;
-        ss.allViewCanClick = allViewCanClick;
+        ss.mAlwaysDrawChild = mAlwaysDrawChild;
+        ss.mAlwaysTouchable = mAlwaysTouchable;
+        ss.mAllViewCanClick = mAllViewCanClick;
         return ss;
     }
 
@@ -562,18 +716,18 @@ public class StateFrameLayout extends FrameLayout {
     public void onRestoreInstanceState(Parcelable state) {
         SavedState ss = (SavedState) state;
         mState = ss.mState;
-        alwaysDrawChild = ss.alwaysDrawChild;
-        alwaysTouchable = ss.alwaysTouchable;
-        allViewCanClick = ss.allViewCanClick;
+        mAlwaysDrawChild = ss.mAlwaysDrawChild;
+        mAlwaysTouchable = ss.mAlwaysTouchable;
+        mAllViewCanClick = ss.mAllViewCanClick;
         invalidate();
         super.onRestoreInstanceState(ss.getSuperState());
     }
 
     static class SavedState extends BaseSavedState {
         private int mState = STATE_NORMAL;
-        private boolean alwaysDrawChild = false;
-        private boolean alwaysTouchable = false;
-        private boolean allViewCanClick = false;
+        private boolean mAlwaysDrawChild = false;
+        private boolean mAlwaysTouchable = false;
+        private boolean mAllViewCanClick = false;
 
         SavedState(Parcelable superState) {
             super(superState);
@@ -582,18 +736,18 @@ public class StateFrameLayout extends FrameLayout {
         private SavedState(Parcel in) {
             super(in);
             mState = in.readInt();
-            alwaysDrawChild = in.readInt() == 1;
-            alwaysTouchable = in.readInt() == 1;
-            allViewCanClick = in.readInt() == 1;
+            mAlwaysDrawChild = in.readInt() == 1;
+            mAlwaysTouchable = in.readInt() == 1;
+            mAllViewCanClick = in.readInt() == 1;
         }
 
         @Override
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeInt(mState);
-            out.writeInt(alwaysDrawChild ? 1 : 0);
-            out.writeInt(alwaysTouchable ? 1 : 0);
-            out.writeInt(allViewCanClick ? 1 : 0);
+            out.writeInt(mAlwaysDrawChild ? 1 : 0);
+            out.writeInt(mAlwaysTouchable ? 1 : 0);
+            out.writeInt(mAllViewCanClick ? 1 : 0);
         }
 
         public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
