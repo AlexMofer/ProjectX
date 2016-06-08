@@ -632,6 +632,15 @@ public class StateFrameLayout extends FrameLayout {
     }
 
     /**
+     * 获取状态
+     *
+     * @return 状态
+     */
+    public int getState() {
+        return mState;
+    }
+
+    /**
      * 设置状态
      *
      * @param state 状态
@@ -682,7 +691,6 @@ public class StateFrameLayout extends FrameLayout {
      *
      * @return 是否始终绘制子项
      */
-    @SuppressWarnings("unused")
     public boolean isAlwaysDrawChild() {
         return mAlwaysDrawChild;
     }
@@ -711,17 +719,16 @@ public class StateFrameLayout extends FrameLayout {
     public Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
         SavedState ss = new SavedState(superState);
-        ss.mState = mState;
-        ss.mAlwaysDrawChild = mAlwaysDrawChild;
+        ss.mState = getState();
+        ss.mAlwaysDrawChild = isAlwaysDrawChild();
         return ss;
     }
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         SavedState ss = (SavedState) state;
-        mState = ss.mState;
-        mAlwaysDrawChild = ss.mAlwaysDrawChild;
-        invalidate();
+        setAlwaysDrawChild(ss.mAlwaysDrawChild);
+        setState(ss.mState);
         super.onRestoreInstanceState(ss.getSuperState());
     }
 
