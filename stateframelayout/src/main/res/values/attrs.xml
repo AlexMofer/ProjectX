@@ -2,8 +2,6 @@
 <resources>
     <declare-styleable name="StateFrameLayout">
         <attr name="sflAlwaysDrawChild" format="boolean"/>
-        <attr name="sflAlwaysTouchable" format="boolean"/>
-        <attr name="sflAllViewCanClick" format="boolean"/>
         <attr name="sflState" format="enum">
             <enum name="normal" value="0"/>
             <enum name="loading" value="1"/>

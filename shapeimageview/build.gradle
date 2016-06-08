@@ -22,4 +22,4 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-apply from: "bintray.gradle"
+//apply from: "bintray.gradle"

@@ -43,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/cd_welcome"
+                android:clickable="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/bg_welcome"
                 app:sivForeground="@drawable/bg_common_press_dark"/>

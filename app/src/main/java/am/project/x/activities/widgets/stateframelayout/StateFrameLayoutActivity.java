@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
@@ -17,7 +18,7 @@ import am.widget.MaterialProgressCircleImageView;
 import am.widget.stateframelayout.StateFrameLayout;
 
 public class StateFrameLayoutActivity extends BaseActivity
-        implements RadioGroup.OnCheckedChangeListener {
+        implements RadioGroup.OnCheckedChangeListener, StateFrameLayout.OnAllStateClickListener {
 
     private StateFrameLayout lytState;
     private MaterialLoadingProgressDrawable mLoadingDrawable;
@@ -57,7 +58,7 @@ public class StateFrameLayoutActivity extends BaseActivity
         tvEmpty.setClickable(true);
         tvEmpty.setBackgroundResource(R.drawable.bg_common_press);
         mEmptyView = tvEmpty;
-
+        lytState.setOnStateClickListener(this);
         rgpState.setOnCheckedChangeListener(this);
         rgpMode.setOnCheckedChangeListener(this);
         rgpState.check(R.id.sfl_rbt_normal);
@@ -87,6 +88,30 @@ public class StateFrameLayoutActivity extends BaseActivity
                 lytState.setStateViews(mLoadingView, mErrorView, mEmptyView);
                 break;
         }
+    }
+
+    @Override
+    public void onNormalClick(StateFrameLayout layout) {
+        Toast.makeText(getApplicationContext(), R.string.stateframelayout_change_state_normal,
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLoadingClick(StateFrameLayout layout) {
+        Toast.makeText(getApplicationContext(), R.string.stateframelayout_change_state_loading,
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEmptyClick(StateFrameLayout layout) {
+        Toast.makeText(getApplicationContext(), R.string.stateframelayout_change_state_empty,
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onErrorClick(StateFrameLayout layout) {
+        Toast.makeText(getApplicationContext(), R.string.stateframelayout_change_state_error,
+                Toast.LENGTH_SHORT).show();
     }
 
     public static void startActivity(Context context) {

@@ -24,6 +24,10 @@ TabStrip基础类，其实现了类似于PagerTabStrip的一些基础方法，�
 
 图形裁剪ImageView，API 21 及以上 使用 setOutlineProvider 方式实现，低版本使用 BitmapShader 方式实现，支持固定高宽比缩放，支持前景Drawable
 
+- [StateFrameLayout](https://github.com/AlexMofer/ProjectX/tree/master/stateframelayout)
+
+状态帧布局，通常用于网络请求的四种状态，普通、载入、错误、空白。支持Drawable或者View来展示，也可以混搭
+
 ## Other
 - [SupportPlus](https://github.com/AlexMofer/ProjectX/tree/master/supportplus)
 
