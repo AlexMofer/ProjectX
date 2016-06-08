@@ -35,6 +35,9 @@
     <string name="stateframelayout_change_mode_drawable">Drawable</string>
     <string name="stateframelayout_change_mode_view">View</string>
 
+    <string name="wraplayout_title">自换行布局</string>
+    <string name="wraplayout_text">文本框</string>
+
     <string name="cd_welcome">welcome icon</string>
 
 
@@ -54,7 +57,6 @@
     <string name="text_scbd">There is TextView Content</string>
     <string name="text_scbd_v">There\nis\nTextView\nContent</string>
     <string name="title_activity_replace">ReplaceActivity</string>
-    <string name="wrap">自动换行</string>
     <string name="printer">打印</string>
     <string name="printer_ip">打印机IP:</string>
     <string name="printer_port">打印机端口:</string>

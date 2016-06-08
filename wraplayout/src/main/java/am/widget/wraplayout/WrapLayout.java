@@ -151,9 +151,9 @@ public class WrapLayout extends ViewGroup {
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
             final int childWidth = child.getMeasuredWidth();
             final int childHeight = child.getMeasuredHeight();
-            rowItemMaxHeight = Math.max(childHeight, rowItemMaxHeight);
             if (childLeft + childWidth <= maxEnd) {
                 childLeft += childWidth + mHorizontalSpacing;
+                rowItemMaxHeight = Math.max(childHeight, rowItemMaxHeight);
                 rowHeight = rowItemMaxHeight;
             } else {
                 mNumRows++;

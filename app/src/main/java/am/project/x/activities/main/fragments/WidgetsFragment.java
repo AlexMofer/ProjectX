@@ -14,6 +14,7 @@ import am.project.x.activities.widgets.indicatortabstrip.IndicatorTabStripActivi
 import am.project.x.activities.widgets.shapeimageview.ShapeImageViewActivity;
 import am.project.x.activities.widgets.stateframelayout.StateFrameLayoutActivity;
 import am.project.x.activities.widgets.tagtabstrip.TagTabStripActivity;
+import am.project.x.activities.widgets.wraplayout.WrapLayoutActivity;
 
 /**
  * 控件
@@ -38,6 +39,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
         view.findViewById(R.id.widget_btn_indicatortabstrip).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_shapeimageview).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_stateframelayout).setOnClickListener(this);
+        view.findViewById(R.id.widget_btn_wraplayout).setOnClickListener(this);
     }
 
     @Override
@@ -57,6 +59,9 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.widget_btn_stateframelayout:
                 StateFrameLayoutActivity.startActivity(getContext());
+                break;
+            case R.id.widget_btn_wraplayout:
+                WrapLayoutActivity.startActivity(getContext());
                 break;
         }
     }

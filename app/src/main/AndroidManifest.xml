@@ -23,7 +23,19 @@
         </activity>
         <activity
             android:name=".activities.main.MainActivity"
-            android:theme="@style/MainTheme" />
+            android:theme="@style/MainTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="github.com"
+                    android:pathPrefix="/AlexMofer/ProjectX"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.widgets.gradienttabstrip.GradientTabStripActivity"
             android:label="@string/gradienttabstrip_title">
@@ -69,7 +81,8 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.widgets.shapeimageview.ShapeImageViewActivity"
+        <activity
+            android:name=".activities.widgets.shapeimageview.ShapeImageViewActivity"
             android:label="@string/shapeimageview_titel">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -83,7 +96,8 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.widgets.stateframelayout.StateFrameLayoutActivity"
+        <activity
+            android:name=".activities.widgets.stateframelayout.StateFrameLayoutActivity"
             android:label="@string/stateframelayout_title">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -94,6 +108,19 @@
                 <data
                     android:host="github.com"
                     android:pathPrefix="/AlexMofer/ProjectX/tree/master/stateframelayout"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.widgets.wraplayout.WrapLayoutActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="github.com"
+                    android:pathPrefix="/AlexMofer/ProjectX/tree/master/wraplayout"
                     android:scheme="https" />
             </intent-filter>
         </activity>
