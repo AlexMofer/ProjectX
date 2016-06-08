@@ -143,6 +143,7 @@ public class WrapLayout extends ViewGroup {
         needWidth = paddingStart + paddingEnd;
         needHeight = paddingTop + paddingBottom;
         int rowHeight = 0;
+        // TODO 有Bug
         for (int i = 0, childLeft = paddingStart, rowItemMaxHeight = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             if (child.getVisibility() == View.GONE) {
