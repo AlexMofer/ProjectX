@@ -1,81 +1,121 @@
-package am.project.x.widgets.wraplayout;
+package am.widget.wraplayout;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
 /**
  * 自动换行布局
- * Created by Alex on 2015/9/17.
  */
 public class WrapLayout extends ViewGroup {
 
     private static final int[] ATTRS = new int[]{android.R.attr.horizontalSpacing,
             android.R.attr.verticalSpacing};
-    private int mVerticalSpacing = 0;
-    private int mHorizontalSpacing = 0;
+    private int mVerticalSpacing;
+    private int mHorizontalSpacing;
     private int mNumRows = 0;
 
     public WrapLayout(Context context) {
-        super(context);
+        this(context, null);
     }
 
-
-    @SuppressWarnings("ResourceType")
     public WrapLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
-        mHorizontalSpacing = a.getDimensionPixelSize(0, 0);
-        mVerticalSpacing = a.getDimensionPixelSize(1, 0);
-        a.recycle();
+        this(context, attrs, 0);
     }
 
-    @SuppressWarnings("ResourceType")
     public WrapLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
-        mHorizontalSpacing = a.getDimensionPixelSize(0, 0);
-        mVerticalSpacing = a.getDimensionPixelSize(1, 0);
+        final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS, defStyleAttr, 0);
+        int n = a.getIndexCount();
+        int horizontalSpacing = 0;
+        int verticalSpacing = 0;
+        for (int i = 0; i < n; i++) {
+            int attr = a.getIndex(i);
+            switch (attr) {
+                case 0:
+                    horizontalSpacing = a.getDimensionPixelSize(attr, horizontalSpacing);
+                    break;
+                case 1:
+                    verticalSpacing = a.getDimensionPixelSize(attr, verticalSpacing);
+                    break;
+            }
+        }
         a.recycle();
+        TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.WrapLayout);
+        horizontalSpacing = custom.getDimensionPixelSize(
+                R.styleable.WrapLayout_wlyHorizontalSpacing, horizontalSpacing);
+        verticalSpacing = custom.getDimensionPixelSize(
+                R.styleable.WrapLayout_wlyVerticalSpacing, verticalSpacing);
+        custom.recycle();
+        setHorizontalSpacing(horizontalSpacing);
+        setVerticalSpacing(verticalSpacing);
     }
 
-    @TargetApi(21)
-    @SuppressWarnings("ResourceType")
-    public WrapLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
-        mHorizontalSpacing = a.getDimensionPixelSize(0, 0);
-        mVerticalSpacing = a.getDimensionPixelSize(1, 0);
-        a.recycle();
+    /**
+     * 获取水平间距
+     *
+     * @return 水平间距
+     */
+    @SuppressWarnings("unused")
+    public int getHorizontalSpacing() {
+        return mHorizontalSpacing;
     }
 
+    /**
+     * 设置水平间距
+     *
+     * @param pixelSize 水平间距
+     */
     public void setHorizontalSpacing(int pixelSize) {
         mHorizontalSpacing = pixelSize;
+        requestLayout();
     }
 
+    /**
+     * 获取垂直间距
+     *
+     * @return 垂直间距
+     */
+    @SuppressWarnings("unused")
+    public int getVerticalSpacing() {
+        return mVerticalSpacing;
+    }
+
+    /**
+     * 设置垂直间距
+     *
+     * @param pixelSize 垂直间距
+     */
     public void setVerticalSpacing(int pixelSize) {
         mVerticalSpacing = pixelSize;
+        requestLayout();
     }
 
+    /**
+     * 获取行数目
+     *
+     * @return 行数目
+     */
+    @SuppressWarnings("unused")
     public int getNumRows() {
         return mNumRows;
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        final int paddingStart = ViewCompat.getPaddingStart(this);
-        final int paddingEnd = ViewCompat.getPaddingEnd(this);
+        final int paddingStart = Compat.getPaddingStart(this);
+        final int paddingEnd = Compat.getPaddingEnd(this);
         final int paddingTop = getPaddingTop();
         final int paddingBottom = getPaddingBottom();
         if (getChildCount() <= 0) {
             mNumRows = 0;
-            setMeasuredDimension(resolveSize(Math.max(paddingStart + paddingEnd, getMinWidth()), widthMeasureSpec),
-                    resolveSize(Math.max(paddingTop + paddingBottom, getMinHeight()), heightMeasureSpec));
+            setMeasuredDimension(resolveSize(Math.max(paddingStart + paddingEnd, getMinWidth()),
+                    widthMeasureSpec),
+                    resolveSize(Math.max(paddingTop + paddingBottom, getMinHeight()),
+                            heightMeasureSpec));
             return;
         } else {
             mNumRows = 1;
@@ -93,7 +133,8 @@ public class WrapLayout extends ViewGroup {
                 needWidth += childWidth + mHorizontalSpacing;
                 needHeight = Math.max(childHeight, needHeight);
             }
-            needWidth = Math.max(needWidth - mHorizontalSpacing + paddingStart + paddingEnd, getMinWidth());
+            needWidth = Math.max(needWidth - mHorizontalSpacing + paddingStart + paddingEnd,
+                    getMinWidth());
             needHeight = Math.max(needHeight, getMinHeight());
             setMeasuredDimension(needWidth, resolveSize(needHeight, heightMeasureSpec));
             return;
@@ -124,7 +165,8 @@ public class WrapLayout extends ViewGroup {
             }
         }
         needHeight += rowHeight;
-        setMeasuredDimension(resolveSize(Math.max(needWidth, getMinWidth()), widthMeasureSpec), resolveSize(Math.max(needHeight, getMinHeight()), heightMeasureSpec));
+        setMeasuredDimension(resolveSize(Math.max(needWidth, getMinWidth()), widthMeasureSpec),
+                resolveSize(Math.max(needHeight, getMinHeight()), heightMeasureSpec));
     }
 
     private int getMinWidth() {
@@ -147,11 +189,12 @@ public class WrapLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        final int paddingStart = ViewCompat.getPaddingStart(this);
-        final int paddingEnd = ViewCompat.getPaddingEnd(this);
+        final int paddingStart = Compat.getPaddingStart(this);
+        final int paddingEnd = Compat.getPaddingEnd(this);
         final int paddingTop = getPaddingTop();
         final int itemEnd = r - l - paddingEnd;
-        for (int i = 0, childLeft = paddingStart, childTop = paddingTop, rowItemMaxHeight = 0; i < getChildCount(); i++) {
+        for (int i = 0, childLeft = paddingStart, childTop = paddingTop, rowItemMaxHeight = 0;
+             i < getChildCount(); i++) {
             View childView = getChildAt(i);
             if (childView.getVisibility() == View.GONE) {
                 continue;
@@ -160,7 +203,8 @@ public class WrapLayout extends ViewGroup {
             final int childHeight = childView.getMeasuredHeight();
             rowItemMaxHeight = Math.max(childHeight, rowItemMaxHeight);
             if (childLeft + childWidth <= itemEnd) {
-                childView.layout(childLeft, childTop, childLeft + childWidth, childTop + childHeight);
+                childView.layout(childLeft, childTop,
+                        childLeft + childWidth, childTop + childHeight);
                 childLeft += childWidth + mHorizontalSpacing;
 
             } else {
