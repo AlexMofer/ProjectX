@@ -41,7 +41,7 @@ lytWrap.setVerticalSpacing(20);
 
 ## 注意
 - 继承自ViewGroup
-- android:horizontalSpacing 与 app:wlyHorizontalSpacing只要需要定义一份即可
-- android:verticalSpacing 与 app:wlyVerticalSpacing只要需要定义一份即可
+- android:horizontalSpacing 与 app:wlyHorizontalSpacing只定义一份即可
+- android:verticalSpacing 与 app:wlyVerticalSpacing只定义一份即可
 - 通过getNumRows()方法获取行数目
 - 通过getNumColumns(int)方法获取某一行的列数目
