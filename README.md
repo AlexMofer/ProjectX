@@ -28,6 +28,10 @@ TabStrip基础类，其实现了类似于PagerTabStrip的一些基础方法，�
 
 状态帧布局，通常用于网络请求的四种状态，普通、载入、错误、空白。支持Drawable或者View来展示，也可以混搭
 
+- [WrapLayout](https://github.com/AlexMofer/ProjectX/tree/master/wraplayout)
+
+自动换行布局，支持不等长不等宽子项，且可以设置垂直间距与水平间距
+
 ## Other
 - [SupportPlus](https://github.com/AlexMofer/ProjectX/tree/master/supportplus)
 

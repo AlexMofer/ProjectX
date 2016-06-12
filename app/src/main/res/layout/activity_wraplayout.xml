@@ -33,141 +33,150 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <am.widget.wraplayout.WrapLayout
-            android:id="@+id/wly_lyt_warp"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:horizontalSpacing="10dp"
-            android:padding="10dp"
-            android:verticalSpacing="10dp">
+            android:layout_weight="1">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <am.widget.wraplayout.WrapLayout
+                android:id="@+id/wly_lyt_warp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorRipple"
-                android:gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_wraplayout_content"
+                android:horizontalSpacing="10dp"
                 android:padding="10dp"
-                android:text="@string/wraplayout_text"
-                android:textColor="@android:color/white" />
+                android:verticalSpacing="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorRipple"
-                android:gravity="center"
-                android:minWidth="72dp"
-                android:padding="10dp"
-                android:text="@string/wraplayout_text"
-                android:textColor="@android:color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorRipple"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/wraplayout_text"
+                    android:textColor="@android:color/white" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorRipple"
-                android:gravity="center"
-                android:minWidth="86dp"
-                android:padding="10dp"
-                android:text="@string/wraplayout_text"
-                android:textColor="@android:color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorRipple"
+                    android:gravity="center"
+                    android:minWidth="72dp"
+                    android:padding="10dp"
+                    android:text="@string/wraplayout_text"
+                    android:textColor="@android:color/white" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorRipple"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/wraplayout_text"
-                android:textColor="@android:color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorRipple"
+                    android:gravity="center"
+                    android:minWidth="86dp"
+                    android:padding="10dp"
+                    android:text="@string/wraplayout_text"
+                    android:textColor="@android:color/white" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorRipple"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/wraplayout_text"
-                android:textColor="@android:color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorRipple"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/wraplayout_text"
+                    android:textColor="@android:color/white" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorRipple"
-                android:gravity="center"
-                android:minHeight="64dp"
-                android:minWidth="142dp"
-                android:padding="10dp"
-                android:text="@string/wraplayout_text"
-                android:textColor="@android:color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorRipple"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/wraplayout_text"
+                    android:textColor="@android:color/white" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorRipple"
-                android:gravity="center"
-                android:minHeight="64dp"
-                android:padding="10dp"
-                android:text="@string/wraplayout_text"
-                android:textColor="@android:color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorRipple"
+                    android:gravity="center"
+                    android:minHeight="64dp"
+                    android:minWidth="142dp"
+                    android:padding="10dp"
+                    android:text="@string/wraplayout_text"
+                    android:textColor="@android:color/white" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorRipple"
-                android:gravity="center"
-                android:minHeight="64dp"
-                android:minWidth="108dp"
-                android:padding="10dp"
-                android:text="@string/wraplayout_text"
-                android:textColor="@android:color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorRipple"
+                    android:gravity="center"
+                    android:minHeight="64dp"
+                    android:padding="10dp"
+                    android:text="@string/wraplayout_text"
+                    android:textColor="@android:color/white" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorRipple"
-                android:gravity="center"
-                android:minWidth="96dp"
-                android:padding="10dp"
-                android:text="@string/wraplayout_text"
-                android:textColor="@android:color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorRipple"
+                    android:gravity="center"
+                    android:minHeight="64dp"
+                    android:minWidth="108dp"
+                    android:padding="10dp"
+                    android:text="@string/wraplayout_text"
+                    android:textColor="@android:color/white" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorRipple"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/wraplayout_text"
-                android:textColor="@android:color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorRipple"
+                    android:gravity="center"
+                    android:minWidth="96dp"
+                    android:padding="10dp"
+                    android:text="@string/wraplayout_text"
+                    android:textColor="@android:color/white" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorRipple"
-                android:gravity="center"
-                android:minWidth="96dp"
-                android:padding="10dp"
-                android:text="@string/wraplayout_text"
-                android:textColor="@android:color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorRipple"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/wraplayout_text"
+                    android:textColor="@android:color/white" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorRipple"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/wraplayout_text"
-                android:textColor="@android:color/white" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorRipple"
+                    android:gravity="center"
+                    android:minWidth="96dp"
+                    android:padding="10dp"
+                    android:text="@string/wraplayout_text"
+                    android:textColor="@android:color/white" />
 
-        </am.widget.wraplayout.WrapLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorRipple"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/wraplayout_text"
+                    android:textColor="@android:color/white" />
+
+            </am.widget.wraplayout.WrapLayout>
+
+        </ScrollView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="水平间距（0～30dp）：" />
+            android:text="@string/wraplayout_text_horizontal" />
 
         <SeekBar
+            android:id="@+id/wly_sb_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
@@ -176,9 +185,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="垂直间距（0～30dp）：" />
+            android:text="@string/wraplayout_text_vertical" />
 
         <SeekBar
+            android:id="@+id/wly_sb_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dp"

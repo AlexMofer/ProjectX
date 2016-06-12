@@ -37,6 +37,8 @@
 
     <string name="wraplayout_title">自换行布局</string>
     <string name="wraplayout_text">文本框</string>
+    <string name="wraplayout_text_horizontal">水平间距（0～30dp）：</string>
+    <string name="wraplayout_text_vertical">垂直间距（0～30dp）：</string>
 
     <string name="cd_welcome">welcome icon</string>
 
