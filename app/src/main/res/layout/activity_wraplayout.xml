@@ -55,7 +55,7 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="@string/wraplayout_text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
                     android:minWidth="72dp"
                     android:padding="10dp"
                     android:text="@string/wraplayout_text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -75,7 +75,7 @@
                     android:minWidth="86dp"
                     android:padding="10dp"
                     android:text="@string/wraplayout_text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -84,7 +84,7 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="@string/wraplayout_text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -93,7 +93,7 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="@string/wraplayout_text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -104,7 +104,7 @@
                     android:minWidth="142dp"
                     android:padding="10dp"
                     android:text="@string/wraplayout_text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -114,7 +114,7 @@
                     android:minHeight="64dp"
                     android:padding="10dp"
                     android:text="@string/wraplayout_text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -125,7 +125,7 @@
                     android:minWidth="108dp"
                     android:padding="10dp"
                     android:text="@string/wraplayout_text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -135,7 +135,7 @@
                     android:minWidth="96dp"
                     android:padding="10dp"
                     android:text="@string/wraplayout_text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -144,7 +144,7 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="@string/wraplayout_text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -154,7 +154,7 @@
                     android:minWidth="96dp"
                     android:padding="10dp"
                     android:text="@string/wraplayout_text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -163,7 +163,7 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="@string/wraplayout_text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/white" />
 
             </am.widget.wraplayout.WrapLayout>
 
