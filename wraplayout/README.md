@@ -8,7 +8,7 @@
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:wraplayout:1.0.1'
+    compile 'am.widget:wraplayout:1.1.0'
     ⋯
 }
 ```
@@ -37,6 +37,7 @@ dependencies {
 WrapLayout lytWrap = (WrapLayout) findViewById(R.id.wly_lyt_warp);
 lytWrap.setHorizontalSpacing(20);
 lytWrap.setVerticalSpacing(20);
+lytWrap.setGravity(WrapLayout.GRAVITY_CENTER);
 ```
 
 ## 注意
@@ -45,3 +46,4 @@ lytWrap.setVerticalSpacing(20);
 - android:verticalSpacing 与 app:wlyVerticalSpacing只定义一份即可
 - 通过getNumRows()方法获取行数目
 - 通过getNumColumns(int)方法获取某一行的列数目
+- 通过setGravity(int)方法设置子项对齐模式，仅支持上中下，左右对齐是无意义的。

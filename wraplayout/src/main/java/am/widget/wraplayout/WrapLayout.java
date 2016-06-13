@@ -13,12 +13,17 @@ import java.util.ArrayList;
  */
 public class WrapLayout extends ViewGroup {
 
+    public static final int GRAVITY_TOP = 0;// 子项顶部对齐
+    public static final int GRAVITY_CENTER = 1;// 子项居中对齐
+    public static final int GRAVITY_BOTTOM = 2; // 子项底部对齐
     private static final int[] ATTRS = new int[]{android.R.attr.horizontalSpacing,
             android.R.attr.verticalSpacing};
     private int mVerticalSpacing;
     private int mHorizontalSpacing;
     private int mNumRows = 0;
     private ArrayList<Integer> mNumColumns = new ArrayList<>();
+    private ArrayList<Integer> mChildMaxWidth = new ArrayList<>();
+    private int mGravity;
 
     public WrapLayout(Context context) {
         this(context, null);
@@ -51,9 +56,11 @@ public class WrapLayout extends ViewGroup {
                 R.styleable.WrapLayout_wlyHorizontalSpacing, horizontalSpacing);
         verticalSpacing = custom.getDimensionPixelSize(
                 R.styleable.WrapLayout_wlyVerticalSpacing, verticalSpacing);
+        int gravity = custom.getInt(R.styleable.WrapLayout_wlyGravity, GRAVITY_TOP);
         custom.recycle();
         setHorizontalSpacing(horizontalSpacing);
         setVerticalSpacing(verticalSpacing);
+        setGravity(gravity);
     }
 
 
@@ -71,6 +78,7 @@ public class WrapLayout extends ViewGroup {
         int itemsHeight = 0;
         mNumRows = 0;
         mNumColumns.clear();
+        mChildMaxWidth.clear();
         if (getChildCount() > 0) {
             if (widthMode == MeasureSpec.UNSPECIFIED) {
                 int numColumns = 0;
@@ -91,8 +99,10 @@ public class WrapLayout extends ViewGroup {
                     itemsHeight = Math.max(childHeight, itemsHeight);
                     numColumns++;
                 }
-                if (numColumns != 0)
+                if (numColumns != 0) {
                     mNumColumns.add(numColumns);
+                    mChildMaxWidth.add(itemsHeight);
+                }
             } else {
                 int numColumns = 0;
                 final int maxItemsWidth = widthSize - paddingStart - paddingEnd;
@@ -119,6 +129,7 @@ public class WrapLayout extends ViewGroup {
                         itemsWidth = Math.max(rowWidth, itemsWidth);
                         itemsHeight += mNumRows == 1 ? rowHeight : mVerticalSpacing + rowHeight;
                         mNumColumns.add(numColumns);
+                        mChildMaxWidth.add(rowHeight);
                         mNumRows++;
                         rowWidth = 0;
                         rowHeight = 0;
@@ -131,6 +142,7 @@ public class WrapLayout extends ViewGroup {
                 if (numColumns != 0) {
                     itemsHeight += mNumRows == 1 ? rowHeight : mVerticalSpacing + rowHeight;
                     mNumColumns.add(numColumns);
+                    mChildMaxWidth.add(rowHeight);
                 }
             }
         }
@@ -148,7 +160,7 @@ public class WrapLayout extends ViewGroup {
         int columnTop = paddingTop - mVerticalSpacing;
         for (int row = 0; row < mNumRows; row++) {
             int numColumn = mNumColumns.get(row);
-            int maxChildHeight = 0;
+            int childMaxHeight = mChildMaxWidth.get(row);
             int startX = paddingStart - mHorizontalSpacing;
             for (int index = 0; index < numColumn; ) {
                 View childView = getChildAt(numChild);
@@ -158,14 +170,27 @@ public class WrapLayout extends ViewGroup {
                 }
                 final int childWidth = childView.getMeasuredWidth();
                 final int childHeight = childView.getMeasuredHeight();
-                maxChildHeight = Math.max(childHeight, maxChildHeight);
+
                 startX += mHorizontalSpacing;
-                int startY = columnTop + mVerticalSpacing;
+                int topOffset;
+                switch (mGravity) {
+                    case GRAVITY_CENTER:
+                        topOffset = Math.round((childMaxHeight - childHeight) * 0.5f);
+                        break;
+                    case GRAVITY_BOTTOM:
+                        topOffset = childMaxHeight - childHeight;
+                        break;
+                    default:
+                    case GRAVITY_TOP:
+                        topOffset = 0;
+                        break;
+                }
+                int startY = columnTop + mVerticalSpacing + topOffset;
                 childView.layout(startX, startY, startX + childWidth, startY + childHeight);
                 startX += childWidth;
                 index++;
             }
-            columnTop += mVerticalSpacing + maxChildHeight;
+            columnTop += mVerticalSpacing + childMaxHeight;
         }
     }
 
@@ -234,4 +259,25 @@ public class WrapLayout extends ViewGroup {
         return mNumColumns.get(index);
     }
 
+    /**
+     * 获取子项对齐模式
+     *
+     * @return 对齐模式
+     */
+    @SuppressWarnings("unused")
+    public int getGravity() {
+        return mGravity;
+    }
+
+    /**
+     * 设置子项对齐模式
+     *
+     * @param gravity 对齐模式
+     */
+    public void setGravity(int gravity) {
+        if (gravity != GRAVITY_TOP && gravity != GRAVITY_CENTER && gravity != GRAVITY_BOTTOM)
+            return;
+        this.mGravity = gravity;
+        requestLayout();
+    }
 }
