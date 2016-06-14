@@ -1,4 +1,4 @@
-package com.widget.drawableratingbar;
+package am.widget.drawableratingbar;
 
 import android.annotation.TargetApi;
 import android.view.View;
