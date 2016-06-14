@@ -37,7 +37,6 @@ public class DrawableRatingBar extends View {
         initView(context, attrs, defStyleAttr);
     }
 
-    @SuppressWarnings("ResourceType")
     private void initView(Context context, AttributeSet attrs, int defStyleAttr) {
         final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS, defStyleAttr, 0);
         int n = a.getIndexCount();
