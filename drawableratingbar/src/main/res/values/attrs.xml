@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DrawableRatingBar">
+        <attr name="drbProgressDrawable" format="reference" />
+        <attr name="drbSecondaryProgress" format="reference" />
+        <attr name="drbDrawablePadding" format="dimension"/>
+    </declare-styleable>
+</resources>

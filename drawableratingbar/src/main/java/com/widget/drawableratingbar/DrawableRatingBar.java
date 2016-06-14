@@ -1,12 +1,10 @@
-package am.project.x.widgets.drawableratingbar;
+package com.widget.drawableratingbar;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,20 +34,47 @@ public class DrawableRatingBar extends View {
 
     public DrawableRatingBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initView(context, attrs);
+        initView(context, attrs, defStyleAttr);
     }
 
     @SuppressWarnings("ResourceType")
-    private void initView(Context context, AttributeSet attrs) {
-        final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
-        Drawable progressDrawable = a.getDrawable(0);
-        if (progressDrawable != null && progressDrawable instanceof LayerDrawable) {
-            LayerDrawable layerDrawable = (LayerDrawable) progressDrawable;
+    private void initView(Context context, AttributeSet attrs, int defStyleAttr) {
+        final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS, defStyleAttr, 0);
+        int n = a.getIndexCount();
+        Drawable drawable = null;
+        int drawablePadding = 0;
+        for (int i = 0; i < n; i++) {
+            int attr = a.getIndex(i);
+            switch (attr) {
+                case 0:
+                    drawable = a.getDrawable(attr);
+                    break;
+                case 1:
+                    drawablePadding = a.getDimensionPixelSize(attr, drawablePadding);
+                    break;
+            }
+        }
+        a.recycle();
+        TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.DrawableRatingBar);
+        Drawable progressDrawable = custom.getDrawable(
+                R.styleable.DrawableRatingBar_drbProgressDrawable);
+        Drawable secondaryProgress = custom.getDrawable(
+                R.styleable.DrawableRatingBar_drbSecondaryProgress);
+        drawablePadding = custom.getDimensionPixelSize(
+                R.styleable.DrawableRatingBar_drbDrawablePadding, drawablePadding);
+        custom.recycle();
+
+
+        if (drawable != null && drawable instanceof LayerDrawable) {
+            LayerDrawable layerDrawable = (LayerDrawable) drawable;
             mProgressDrawable = layerDrawable.findDrawableByLayerId(android.R.id.progress);
             mSecondaryProgress = layerDrawable.findDrawableByLayerId(android.R.id.secondaryProgress);
         }
-        mDrawablePadding = a.getDimensionPixelSize(1, 0);
-        a.recycle();
+        if (progressDrawable != null)
+            mProgressDrawable = progressDrawable;
+        if (secondaryProgress != null)
+            mSecondaryProgress = secondaryProgress;
+        mDrawablePadding = drawablePadding;
         if (isInEditMode())
             mRating = 4;
     }
@@ -66,7 +91,7 @@ public class DrawableRatingBar extends View {
         final int secondaryProgressWidth = mSecondaryProgress == null ? 0 : mSecondaryProgress.getIntrinsicWidth();
         final int secondaryProgressHeight = mSecondaryProgress == null ? 0 : mSecondaryProgress.getIntrinsicHeight();
         int measureWidth = (mNumStars == 0 ? 0 : progressDrawableWidth * mRating + secondaryProgressWidth * (mNumStars - mRating)
-                + mDrawablePadding * (mNumStars - 1)) + ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this);
+                + mDrawablePadding * (mNumStars - 1)) + Compat.getPaddingStart(this) + Compat.getPaddingEnd(this);
         int measureHeight = Math.max(progressDrawableHeight, secondaryProgressHeight) + getPaddingBottom() + getPaddingTop();
         switch (widthMode) {
             case MeasureSpec.EXACTLY:
@@ -105,7 +130,7 @@ public class DrawableRatingBar extends View {
     private void drawProgress(Canvas canvas) {
         if (mProgressDrawable == null)
             return;
-        final int paddingStart = ViewCompat.getPaddingStart(this);
+        final int paddingStart = Compat.getPaddingStart(this);
         final int paddingTop = getPaddingTop();
         final int progressDrawableWidth = mProgressDrawable.getIntrinsicWidth();
         final int progressDrawableHeight = mProgressDrawable.getIntrinsicHeight();
@@ -123,7 +148,7 @@ public class DrawableRatingBar extends View {
     private void drawSecondaryProgress(Canvas canvas) {
         if (mSecondaryProgress == null)
             return;
-        final int paddingStart = ViewCompat.getPaddingStart(this);
+        final int paddingStart = Compat.getPaddingStart(this);
         final int paddingTop = getPaddingTop();
         final int progressDrawableWidth = mProgressDrawable == null ? 0 : mProgressDrawable.getIntrinsicWidth();
         final int secondaryProgressWidth = mSecondaryProgress.getIntrinsicWidth();
@@ -165,8 +190,8 @@ public class DrawableRatingBar extends View {
     }
 
     private int getRatingByX(float x) {
-        final int paddingStart = ViewCompat.getPaddingStart(this);
-        final int paddingEnd = ViewCompat.getPaddingEnd(this);
+        final int paddingStart = Compat.getPaddingStart(this);
+        final int paddingEnd = Compat.getPaddingEnd(this);
         final float itemWidth = (getMeasuredWidth() - paddingStart - paddingEnd + mDrawablePadding) / (float) mNumStars;
         int rating;
         if (x < paddingStart)
