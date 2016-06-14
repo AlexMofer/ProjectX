@@ -9,7 +9,7 @@
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:replacelayout:1.0.0'
+    compile 'am.widget:replacelayout:1.1.0'
     ⋯
 }
 ```
@@ -20,14 +20,20 @@ dependencies {
 ## 使用
 - 基本布局
 ```xml
-⋯
+<am.widget.replacelayout.ReplaceLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
 ```
 - 基本代码
 ```java
-⋯
+replaceLayout = (ReplaceLayout) findViewById(id);
+replaceLayout.setAdapter(adapter);
+replaceLayout.moveTo(correct);
+replaceLayout.move(correct, next, offset);
 ```
 
 ## 注意
 - 继承自FrameLayout，仅修改必要的触摸拦截，不建议通过xml方式在其内部添加View
 - 仅有设置ReplaceAdapter并实现其中的变化方法才能实现子View变化效果
 - move(int, int, float)中最后一个参数为0-1的偏移值
+- 清楚移动方向可使用moveLeft(int, int, float)及moveRight(int, int, float)

@@ -40,6 +40,9 @@
     <string name="wraplayout_text_horizontal">水平间距（0～30dp）：</string>
     <string name="wraplayout_text_vertical">垂直间距（0～30dp）：</string>
 
+    <string name="replacelayout_title">交替布局</string>
+    <string name="replacelayout_titles">第%1$d页</string>
+
     <string name="cd_welcome">welcome icon</string>
 
 

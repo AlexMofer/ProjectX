@@ -55,30 +55,29 @@ public class ReplaceLayout extends FrameLayout {
     }
 
     /**
-     * 从某一位置往另一位置移动一定距离
+     * 从某一位置移动一定距离
      *
-     * @param correct 某一位置
-     * @param next    另一位置
-     * @param offset  相对于完全到达另一位置的百分比
+     * @param position 某一位置
+     * @param positionOffset  相对于完全到达另一位置的偏移（-1～1）
      */
     @SuppressWarnings("unused")
-    public void move(int correct, int next, float offset) {
-        if (next < correct) {
-            moveLeft(correct, next, offset);
-        } else {
-            moveRight(correct, next, offset);
+    public void move(int position, float positionOffset) {
+        if (positionOffset < 0) {
+            moveLeft(position, -positionOffset);
+        } else{
+            moveRight(position, positionOffset);
         }
     }
 
     /**
-     * 从某一位置往左边另一位置移动一定距离
+     * 从某一位置往左边移动一定距离
      *
      * @param correct 某一位置
-     * @param next    另一位置
-     * @param offset  相对于完全到达另一位置的百分比
+     * @param offset  相对于完全到达左边位置的偏移（0～1）
      */
-    public void moveLeft(int correct, int next, float offset) {
+    public void moveLeft(int correct, float offset) {
         mCorrect = correct;
+        int next = correct - 1;
         View correctView = null;
         View nextView = null;
         if (mAdapter != null) {
@@ -112,14 +111,14 @@ public class ReplaceLayout extends FrameLayout {
     }
 
     /**
-     * 从某一位置往右边另一位置移动一定距离
+     * 从某一位置往右边移动一定距离
      *
      * @param correct 某一位置
-     * @param next    另一位置
-     * @param offset  相对于完全到达另一位置的百分比
+     * @param offset  相对于完全到达右边位置的偏移（0～1）
      */
-    public void moveRight(int correct, int next, float offset) {
+    public void moveRight(int correct, float offset) {
         mCorrect = correct;
+        int next = correct + 1;
         View correctView = null;
         View nextView = null;
         if (mAdapter != null) {

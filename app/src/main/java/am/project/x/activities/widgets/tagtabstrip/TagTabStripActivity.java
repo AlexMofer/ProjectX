@@ -47,7 +47,6 @@ public class TagTabStripActivity extends BaseActivity {
         return views;
     }
 
-
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, TagTabStripActivity.class));
     }

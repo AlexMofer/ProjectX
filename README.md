@@ -32,6 +32,10 @@ TabStrip基础类，其实现了类似于PagerTabStrip的一些基础方法，�
 
 自动换行布局，支持不等长不等宽子项，且可以设置垂直间距与水平间距及子项对齐模式
 
+- [ReplaceLayout](https://github.com/AlexMofer/ProjectX/tree/master/replacelayout)
+
+交替布局，配合TabStrip使用，达到伴随ViewPager动作而进行改变的效果
+
 ## Other
 - [SupportPlus](https://github.com/AlexMofer/ProjectX/tree/master/supportplus)
 

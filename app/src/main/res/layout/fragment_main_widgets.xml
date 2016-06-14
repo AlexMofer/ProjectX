@@ -16,49 +16,53 @@
             android:padding="10dp">
 
             <Button
+                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/widget_btn_gradienttabstrip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/bg_common_press"
-                android:drawableTop="@drawable/ic_widget_gradienttabstrip"
                 android:drawablePadding="4dp"
+                android:drawableTop="@drawable/ic_widget_gradienttabstrip"
                 android:paddingBottom="18dp"
                 android:paddingTop="18dp"
                 android:text="@string/gradienttabstrip_title" />
 
             <Button
+                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/widget_btn_tagtabstrip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/bg_common_press"
-                android:drawableTop="@drawable/ic_widget_tagtabstrip"
                 android:drawablePadding="4dp"
+                android:drawableTop="@drawable/ic_widget_tagtabstrip"
                 android:paddingBottom="18dp"
                 android:paddingTop="18dp"
                 android:text="@string/tagtabstrip_title" />
 
             <Button
+                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/widget_btn_indicatortabstrip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/bg_common_press"
-                android:drawableTop="@drawable/ic_widget_indicatortabstrip"
                 android:drawablePadding="4dp"
+                android:drawableTop="@drawable/ic_widget_indicatortabstrip"
                 android:paddingBottom="18dp"
                 android:paddingTop="18dp"
                 android:text="@string/indicatortabstrip_title" />
 
             <Button
+                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/widget_btn_shapeimageview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/bg_common_press"
-                android:drawableTop="@drawable/ic_widget_shapeimageview"
                 android:drawablePadding="4dp"
+                android:drawableTop="@drawable/ic_widget_shapeimageview"
                 android:paddingBottom="18dp"
                 android:paddingTop="18dp"
                 android:text="@string/shapeimageview_titel" />
@@ -71,28 +75,65 @@
             android:padding="10dp">
 
             <Button
+                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/widget_btn_stateframelayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/bg_common_press"
-                android:drawableTop="@drawable/ic_widget_stateframelayout"
                 android:drawablePadding="4dp"
+                android:drawableTop="@drawable/ic_widget_stateframelayout"
                 android:paddingBottom="18dp"
                 android:paddingTop="18dp"
                 android:text="@string/stateframelayout_title" />
 
             <Button
+                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/widget_btn_wraplayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/bg_common_press"
-                android:drawableTop="@drawable/ic_widget_wraplayout"
                 android:drawablePadding="4dp"
+                android:drawableTop="@drawable/ic_widget_wraplayout"
                 android:paddingBottom="18dp"
                 android:paddingTop="18dp"
                 android:text="@string/wraplayout_title" />
+
+            <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/widget_btn_replacelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_common_press"
+                android:drawablePadding="4dp"
+                android:drawableTop="@drawable/ic_widget_replacelayout"
+                android:paddingBottom="18dp"
+                android:paddingTop="18dp"
+                android:text="@string/replacelayout_title" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
 
             <View
                 android:layout_width="match_parent"

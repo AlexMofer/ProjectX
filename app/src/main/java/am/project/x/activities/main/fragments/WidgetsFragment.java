@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import am.project.x.R;
+import am.project.x.activities.widgets.ReplaceLayoutActivity;
 import am.project.x.activities.widgets.gradienttabstrip.GradientTabStripActivity;
 import am.project.x.activities.widgets.indicatortabstrip.IndicatorTabStripActivity;
 import am.project.x.activities.widgets.shapeimageview.ShapeImageViewActivity;
@@ -40,6 +41,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
         view.findViewById(R.id.widget_btn_shapeimageview).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_stateframelayout).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_wraplayout).setOnClickListener(this);
+        view.findViewById(R.id.widget_btn_replacelayout).setOnClickListener(this);
     }
 
     @Override
@@ -62,6 +64,9 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.widget_btn_wraplayout:
                 WrapLayoutActivity.startActivity(getContext());
+                break;
+            case R.id.widget_btn_replacelayout:
+                ReplaceLayoutActivity.startActivity(getContext());
                 break;
         }
     }
