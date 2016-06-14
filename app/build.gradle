@@ -43,6 +43,7 @@ dependencies {
     compile project(':wraplayout')
     compile project(':replacelayout')
     compile project(':drawableratingbar')
+    compile project(':drawable')
     compile project(':supportplus')
     compile project(':support')
 }
