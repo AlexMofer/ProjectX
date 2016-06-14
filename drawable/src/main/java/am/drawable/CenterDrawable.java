@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 /**
  * 中心Drawable
  * Created by Alex on 2015/11/4.
+ * TODO 增加圆，矩形，圆角矩形背景
  */
 public class CenterDrawable extends Drawable {
 

@@ -125,22 +125,18 @@ public class LineDrawable extends Drawable {
         return PixelFormat.TRANSLUCENT;
     }
 
-    /**
-     * 多状态一横线Drawable
-     * Created by Alex on 2015/10/27.
-     */
-    public static class StateListLineDrawable extends StateListDrawable {
 
-        public StateListLineDrawable(int backgroundColor, int normalColor, int focusColor, int lineHeight) {
-            this(backgroundColor, normalColor, focusColor, lineHeight, Gravity.BOTTOM);
-        }
+    public static StateListDrawable getLineStateListDrawable(int backgroundColor, int normalColor, int focusColor, int lineHeight) {
+        return getLineStateListDrawable(backgroundColor, normalColor, focusColor, lineHeight, Gravity.BOTTOM);
+    }
 
-        public StateListLineDrawable(int backgroundColor, int lineColor, int focusColor, int lineHeight, int gravity) {
-            LineDrawable focus = new LineDrawable(backgroundColor, focusColor, lineHeight, gravity);
-            LineDrawable normal = new LineDrawable(backgroundColor, lineColor, lineHeight, gravity);
-            addState(new int[]{android.R.attr.state_enabled, android.R.attr.state_focused}, focus);
-            addState(new int[]{android.R.attr.state_focused}, focus);
-            addState(new int[]{}, normal);
-        }
+    public static StateListDrawable getLineStateListDrawable(int backgroundColor, int lineColor, int focusColor, int lineHeight, int gravity) {
+        StateListDrawable drawable = new StateListDrawable();
+        LineDrawable focus = new LineDrawable(backgroundColor, focusColor, lineHeight, gravity);
+        LineDrawable normal = new LineDrawable(backgroundColor, lineColor, lineHeight, gravity);
+        drawable.addState(new int[]{android.R.attr.state_enabled, android.R.attr.state_focused}, focus);
+        drawable.addState(new int[]{android.R.attr.state_focused}, focus);
+        drawable.addState(new int[]{}, normal);
+        return drawable;
     }
 }
