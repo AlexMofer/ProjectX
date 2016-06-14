@@ -30,7 +30,7 @@ TabStrip基础类，其实现了类似于PagerTabStrip的一些基础方法，�
 
 - [WrapLayout](https://github.com/AlexMofer/ProjectX/tree/master/wraplayout)
 
-自动换行布局，支持不等长不等宽子项，且可以设置垂直间距与水平间距
+自动换行布局，支持不等长不等宽子项，且可以设置垂直间距与水平间距及子项对齐模式
 
 ## Other
 - [SupportPlus](https://github.com/AlexMofer/ProjectX/tree/master/supportplus)
