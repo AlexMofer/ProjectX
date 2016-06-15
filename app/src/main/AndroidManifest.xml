@@ -111,7 +111,8 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.widgets.wraplayout.WrapLayoutActivity"
+        <activity
+            android:name=".activities.widgets.wraplayout.WrapLayoutActivity"
             android:label="@string/wraplayout_title">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -125,7 +126,8 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.widgets.ReplaceLayoutActivity"
+        <activity
+            android:name=".activities.widgets.replacelayout.ReplaceLayoutActivity"
             android:label="@string/replacelayout_title">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -136,6 +138,20 @@
                 <data
                     android:host="github.com"
                     android:pathPrefix="/AlexMofer/ProjectX/tree/master/replacelayout"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.widgets.drawableratingbar.DrawableRatingBarActivity"
+            android:label="@string/drawableratingbar_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="github.com"
+                    android:pathPrefix="/AlexMofer/ProjectX/tree/master/drawableratingbar"
                     android:scheme="https" />
             </intent-filter>
         </activity>

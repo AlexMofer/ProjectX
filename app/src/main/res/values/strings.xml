@@ -43,6 +43,8 @@
     <string name="replacelayout_title">交替布局</string>
     <string name="replacelayout_titles">第%1$d页</string>
 
+    <string name="drawableratingbar_title">图片评级</string>
+
     <string name="cd_welcome">welcome icon</string>
 
 
@@ -51,8 +53,6 @@
     <string name="citylist">城市列表</string>
     <string name="sharpcornerbox">尖角框</string>
     <string name="connectimage">连接动画</string>
-    <string name="replace">交替布局</string>
-    <string name="drawableratingbar">星标评级</string>
     <string name="left">左边</string>
     <string name="right">右边</string>
     <string name="connect">连接</string>

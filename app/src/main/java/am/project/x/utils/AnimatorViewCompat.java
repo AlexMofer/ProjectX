@@ -1,4 +1,4 @@
-package am.project.x.widgets.supergridview.support;
+package am.project.x.utils;
 
 import android.annotation.TargetApi;
 import android.graphics.Camera;
@@ -12,10 +12,10 @@ import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
 
 /**
- * ViewCompat
+ * AnimatorViewCompat
  * Created by Alex on 2016/6/3.
  */
-public class ViewCompat {
+public class AnimatorViewCompat {
 
     interface ViewCompatImpl {
         float getAlpha(View view);

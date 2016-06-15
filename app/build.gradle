@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "am.project.x"
-        minSdkVersion 21
+        minSdkVersion 8
         targetSdkVersion 22
         versionCode 45
         versionName "2.0.3"
@@ -26,6 +26,12 @@ android {
     }
     lintOptions {
         abortOnError false
+    }
+
+    productFlavors {
+        dev {
+            minSdkVersion 8
+        }
     }
 }
 

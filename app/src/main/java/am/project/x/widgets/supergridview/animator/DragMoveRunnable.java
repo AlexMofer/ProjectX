@@ -4,7 +4,7 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 
 import am.project.x.widgets.supergridview.DragView;
-import am.project.x.widgets.supergridview.support.ViewCompat;
+import am.project.x.utils.AnimatorViewCompat;
 
 
 /**
@@ -97,18 +97,18 @@ public class DragMoveRunnable extends DragBaseRunnable {
 				dragOffY = mDragInherentY + (deleteOffY - mDeleteInherentY)
 						* 0.5f;
 			} else {
-				ViewCompat.setTranslationX(mDragView, mDragInherentX
+				AnimatorViewCompat.setTranslationX(mDragView, mDragInherentX
 						+ deleteOffX - mDeleteInherentX);
-                ViewCompat.setTranslationY(mDragView, mDragInherentY
+                AnimatorViewCompat.setTranslationY(mDragView, mDragInherentY
 						+ (deleteOffY - mDeleteInherentY) * 0.5f);
 			}
 		} else {
 			// 开始接管DragView的移动
 			absorbed = true;
-			mStartDragX = ViewCompat.getTranslationX(mDragView);
-			mStartDragY = ViewCompat.getTranslationY(mDragView);
-			mStartScaleX = ViewCompat.getScaleX(mDragView);
-			mStartScaleY = ViewCompat.getScaleY(mDragView);
+			mStartDragX = AnimatorViewCompat.getTranslationX(mDragView);
+			mStartDragY = AnimatorViewCompat.getTranslationY(mDragView);
+			mStartScaleX = AnimatorViewCompat.getScaleX(mDragView);
+			mStartScaleY = AnimatorViewCompat.getScaleY(mDragView);
 			dragOffX = mDragInherentX + deleteOffX - mDeleteInherentX;
 			dragOffY = mDragInherentY + (deleteOffY - mDeleteInherentY) * 0.5f;
 			if (mRunning) {
@@ -139,10 +139,10 @@ public class DragMoveRunnable extends DragBaseRunnable {
 			if (absorbed) {
 				// DragView已被接管，释放接管并开始释放动画
 				absorbed = false;
-				mStartDragX = ViewCompat.getTranslationX(mDragView);
-				mStartDragY = ViewCompat.getTranslationY(mDragView);
-				mStartScaleX = ViewCompat.getScaleX(mDragView);
-				mStartScaleY = ViewCompat.getScaleY(mDragView);
+				mStartDragX = AnimatorViewCompat.getTranslationX(mDragView);
+				mStartDragY = AnimatorViewCompat.getTranslationY(mDragView);
+				mStartScaleX = AnimatorViewCompat.getScaleX(mDragView);
+				mStartScaleY = AnimatorViewCompat.getScaleY(mDragView);
 				dragOffX = x - mCenterX;
 				dragOffY = y - mCenterY;
 				if (mRunning) {
@@ -155,8 +155,8 @@ public class DragMoveRunnable extends DragBaseRunnable {
 				dragOffY = y - mCenterY;
 				if (!mRunning) {
 					// 释放动画不在进行
-                    ViewCompat.setTranslationX(mDragView, dragOffX);
-                    ViewCompat.setTranslationY(mDragView, dragOffY);
+                    AnimatorViewCompat.setTranslationX(mDragView, dragOffX);
+                    AnimatorViewCompat.setTranslationY(mDragView, dragOffY);
 				}
 			}
 		}
@@ -175,8 +175,8 @@ public class DragMoveRunnable extends DragBaseRunnable {
 				- mDeleteMove + mDeleteInherentX;
 		deleteOffY = (y - mParentTop) * mDeleteMove * 2f / mParentHeight
 				- mDeleteMove + mDeleteInherentY;
-        ViewCompat.setTranslationX(mDeleteView, deleteOffX);
-        ViewCompat.setTranslationY(mDeleteView, deleteOffY);
+        AnimatorViewCompat.setTranslationX(mDeleteView, deleteOffX);
+        AnimatorViewCompat.setTranslationY(mDeleteView, deleteOffY);
 	}
 
 	@Override
@@ -186,19 +186,19 @@ public class DragMoveRunnable extends DragBaseRunnable {
 
 	@Override
 	protected void animator(float p) {
-        ViewCompat.setTranslationX(mDragView, mStartDragX
+        AnimatorViewCompat.setTranslationX(mDragView, mStartDragX
 				+ (dragOffX - mStartDragX) * p);
-        ViewCompat.setTranslationY(mDragView, mStartDragY
+        AnimatorViewCompat.setTranslationY(mDragView, mStartDragY
 				+ (dragOffY - mStartDragY) * p);
 		if (absorbed) {
-            ViewCompat.setScaleX(mDragView, mStartScaleX
+            AnimatorViewCompat.setScaleX(mDragView, mStartScaleX
 					- (mStartScaleX - mAbsorbedScale) * p);
-            ViewCompat.setScaleY(mDragView, mStartScaleY
+            AnimatorViewCompat.setScaleY(mDragView, mStartScaleY
 					- (mStartScaleY - mAbsorbedScale) * p);
 		} else {
-            ViewCompat.setScaleX(mDragView, mStartScaleX
+            AnimatorViewCompat.setScaleX(mDragView, mStartScaleX
 					- (mStartScaleX - mStartScale) * p);
-            ViewCompat.setScaleY(mDragView, mStartScaleY
+            AnimatorViewCompat.setScaleY(mDragView, mStartScaleY
 					- (mStartScaleY - mStartScale) * p);
 		}
 	}

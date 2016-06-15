@@ -1,10 +1,8 @@
-package am.project.x.activities.widgets;
+package am.project.x.activities.widgets.replacelayout;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.view.BaseTabStrip;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -17,9 +15,9 @@ import java.util.Locale;
 
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
+import am.project.x.utils.AnimatorViewCompat;
 import am.view.ViewsPagerAdapter;
 import am.widget.replacelayout.ReplaceLayout;
-import am.widget.tagtabstrip.TagTabStrip;
 
 public class ReplaceLayoutActivity extends BaseActivity implements
         ViewPager.OnPageChangeListener, ReplaceLayout.ReplaceAdapter {
@@ -130,10 +128,10 @@ public class ReplaceLayoutActivity extends BaseActivity implements
         View correctV = getReplaceView(replaceLayout, correct);
         View nextV = getReplaceView(replaceLayout, next);
         if (correctV != null) {
-            correctV.setAlpha(offset);
+            AnimatorViewCompat.setAlpha(correctV, offset);
         }
         if (nextV != null) {
-            nextV.setAlpha(1F - offset);
+            AnimatorViewCompat.setAlpha(nextV, 1F - offset);
         }
     }
 
@@ -141,7 +139,7 @@ public class ReplaceLayoutActivity extends BaseActivity implements
     public void onSelected(ViewGroup replace, int position) {
         View child = getReplaceView(replaceLayout, position);
         if (child != null) {
-            child.setAlpha(1);
+            AnimatorViewCompat.setAlpha(child, 1);
         }
     }
 

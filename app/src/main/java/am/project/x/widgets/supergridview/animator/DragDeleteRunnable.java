@@ -5,7 +5,7 @@ import android.widget.ImageView;
 
 import am.project.x.widgets.animators.AnimatorCallback;
 import am.project.x.widgets.supergridview.DragView;
-import am.project.x.widgets.supergridview.support.ViewCompat;
+import am.project.x.utils.AnimatorViewCompat;
 
 
 /**
@@ -61,12 +61,12 @@ public class DragDeleteRunnable extends DragBaseRunnable {
 			mDragMoveRunnable.addAnimatorCallback(animatorCallback);
 			return;
 		}
-		mDragScaleX = ViewCompat.getScaleX(mDragView);
-		mDragScaleY = ViewCompat.getScaleY(mDragView);
-		mDeleteTranslationX = ViewCompat.getTranslationX(mDeleteView);
-		mDeleteTranslationY = ViewCompat.getTranslationY(mDeleteView);
-		mDragTranslationX = ViewCompat.getTranslationX(mDragView);
-		mDragTranslationY = ViewCompat.getTranslationY(mDragView);
+		mDragScaleX = AnimatorViewCompat.getScaleX(mDragView);
+		mDragScaleY = AnimatorViewCompat.getScaleY(mDragView);
+		mDeleteTranslationX = AnimatorViewCompat.getTranslationX(mDeleteView);
+		mDeleteTranslationY = AnimatorViewCompat.getTranslationY(mDeleteView);
+		mDragTranslationX = AnimatorViewCompat.getTranslationX(mDragView);
+		mDragTranslationY = AnimatorViewCompat.getTranslationY(mDragView);
 		mDragOffX = mDragTranslationX - mDeleteTranslationX;
 		mDragOffY = mDragTranslationY - mDeleteTranslationY;
 		super.start();
@@ -83,14 +83,14 @@ public class DragDeleteRunnable extends DragBaseRunnable {
 	@Override
 	protected void animator(float p) {
 		final float op = 1 - p;
-		ViewCompat.setScaleX(mDragView, mDragScaleX * op);
-		ViewCompat.setScaleY(mDragView, mDragScaleY * op);
-		ViewCompat.setTranslationX(mDragView, mDragTranslationX +
+		AnimatorViewCompat.setScaleX(mDragView, mDragScaleX * op);
+		AnimatorViewCompat.setScaleY(mDragView, mDragScaleY * op);
+		AnimatorViewCompat.setTranslationX(mDragView, mDragTranslationX +
 				(mDragOffX - mDragTranslationX) * p);
-		ViewCompat.setTranslationY(mDragView, mDragTranslationY +
+		AnimatorViewCompat.setTranslationY(mDragView, mDragTranslationY +
 				(mDragOffY - mDragTranslationY) * p);
-		ViewCompat.setTranslationX(mDeleteView, mDeleteTranslationX * op);
-		ViewCompat.setTranslationY(mDeleteView, mDeleteTranslationY * op);
+		AnimatorViewCompat.setTranslationX(mDeleteView, mDeleteTranslationX * op);
+		AnimatorViewCompat.setTranslationY(mDeleteView, mDeleteTranslationY * op);
 	}
 
 }
