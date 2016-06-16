@@ -648,10 +648,17 @@ public class StateFrameLayout extends FrameLayout {
     public void setState(int state) {
         if (mState != state) {
             mState = state;
-            checkViewVisibility();
-            invalidate();
-            animateDrawable();
+            invalidateState();
         }
+    }
+
+    /**
+     * 刷新状态
+     */
+    public void invalidateState() {
+        checkViewVisibility();
+        invalidate();
+        animateDrawable();
     }
 
     /**
