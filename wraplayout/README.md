@@ -1,9 +1,12 @@
 # WrapLayout
-自动换行布局
-  
+----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/wraplayout/icon.png)
+
+自动换行布局，水平排列子项，并自动换行，支持不等长不等宽子项，且可以设置垂直间距与水平间距及子项对齐模式。
 ## 预览
 ![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/wraplayout/screenshots.gif)
+## 要求
+minSdkVersion 4
 ## 引用
 ```java
 dependencies {
@@ -12,8 +15,6 @@ dependencies {
     ⋯
 }
 ```
-## 功能
-水平排列子项，并自动换行，支持不等长不等宽子项，且可以设置垂直间距与水平间距及子项对齐模式
 ## 使用
 - 基本布局
 ```xml
@@ -39,7 +40,6 @@ lytWrap.setHorizontalSpacing(20);
 lytWrap.setVerticalSpacing(20);
 lytWrap.setGravity(WrapLayout.GRAVITY_CENTER);
 ```
-
 ## 注意
 - 继承自ViewGroup
 - android:horizontalSpacing 与 app:wlyHorizontalSpacing只定义一份即可

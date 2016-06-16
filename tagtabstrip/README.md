@@ -1,9 +1,12 @@
 # TagTabStrip
-  继承自BaseTabStrip，实现ViewPager标志小点，一般用于功能引导页面及新功能简介页
-  
+----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/tagtabstrip/icon.png)
+
+继承自BaseTabStrip，实现ViewPager标志小点，一般用于功能引导页面及新功能简介页，为ViewPager添加标志小点，并不仅限于小点，标志由设置的Drawable决定，普通模式为双Drawable交替模式，亦可设置为单Drawable缩放模式。
 ## 预览
 ![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/tagtabstrip/screenshots.gif)
+## 要求
+minSdkVersion 4
 ## 引用
 ```java
 dependencies {
@@ -12,24 +15,20 @@ dependencies {
     ⋯
 }
 ```
-## 功能
-  为ViewPager添加标志小点，并不仅限于小点，标志由设置的Drawable决定，
-  普通模式为双Drawable交替模式，亦可设置为单Drawable缩放模式
 ## 使用
 - 基本布局
 
 ```xml
 <am.widget.tagtabstrip.TagTabStrip
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:drawablePadding="6dp"
-      android:gravity="center"
-      app:ttsScale="1.6"
-      app:ttsDrawable="@drawable/ic_tag"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:drawablePadding="6dp"
+    android:gravity="center"
+    app:ttsScale="1.6"
+    app:ttsDrawable="@drawable/ic_tag"/>
 ```
 - 基本代码
-
 ```java
 TagTabStrip ttsTags = (TagTabStrip) findViewById(id);
 ttsTags.bindViewPager(viewpager);

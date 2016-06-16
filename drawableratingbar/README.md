@@ -1,10 +1,12 @@
 # DrawableRatingBar
- 图片评级View
-
+----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/drawableratingbar/icon.png)
+
+图片评级,双图片评级控件，可设置图片间距，支持拖动进度及点击进度，可控制最大值最小值，及是否可手动。
 ## 预览
 ![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/drawableratingbar/screenshots.gif)
-
+## 要求
+minSdkVersion 4
 ## 引用
 ```java
 dependencies {
@@ -13,10 +15,6 @@ dependencies {
     ⋯
 }
 ```
-
-## 功能
-双图片评级控件，可设置图片间距，支持拖动进度及点击进度，可控制最大值最小值，及是否可手动。
-
 ## 使用
 - 基本布局
 ```xml
@@ -48,7 +46,6 @@ mRating.setManually(boolean);
 mRating.setOnlyItemTouchable(boolean);
 mRating.setOnRatingChangeListener(OnRatingChangeListener);
 ```
-
 ## 注意
 - 继承自View
 - android:progressDrawable与ProgressBar控件的属性一致，图片的ID定义方式也一致

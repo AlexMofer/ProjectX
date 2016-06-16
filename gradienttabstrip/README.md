@@ -1,9 +1,12 @@
 # GradientTabStrip
-  继承自BaseTabStrip，实现微信式渐变底部Tab效果
-  
+----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/gradienttabstrip/icon.png)
+
+继承自BaseTabStrip，实现微信式渐变底部Tab效果，为ViewPager添加如PagerTitleStrip一样的Tab，但支持更多自定义功能，并支持为Tab增加标记点功能，并可以自定义标记点各自的位置及显示状态以及背景等。
 ## 预览
 ![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/gradienttabstrip/screenshots.gif)
+## 要求
+minSdkVersion 4
 ## 引用
 ```java
 dependencies {
@@ -12,45 +15,42 @@ dependencies {
     ⋯
 }
 ```
-## 功能
-  为ViewPager添加如PagerTitleStrip一样的Tab，但支持更多自定义功能
-  并支持为Tab增加标记点功能，并可以自定义标记点各自的位置及显示状态以及背景等
 ## 使用
 - 基本布局
 ```xml
-       <am.widget.gradienttabstrip.GradientTabStrip
-              android:id="@+id/gts_gts_tabs"
-              android:layout_width="match_parent"
-              android:layout_height="64dp"
-              android:textColor="@color/color_gradienttabstrip_tab"
-              android:textSize="12sp"
-              app:gtsBackground="@drawable/bg_common_press"/>
+<am.widget.gradienttabstrip.GradientTabStrip
+    android:id="@+id/gts_gts_tabs"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:textColor="@color/color_gradienttabstrip_tab"
+    android:textSize="12sp"
+    app:gtsBackground="@drawable/bg_common_press"/>
 ```
 - 基本代码
 ```java
-  GradientTabStrip tabStrip = (GradientTabStrip) findViewById(id);
-  GradientTabStrip.GradientTabAdapter adapter = new GradientTabStrip.GradientTabAdapter () {
-       @Override
-       public Drawable getNormalDrawable(int position, Context context) {
-           return null;
-       }
+GradientTabStrip tabStrip = (GradientTabStrip) findViewById(id);
+GradientTabStrip.GradientTabAdapter adapter = new GradientTabStrip.GradientTabAdapter () {
+    @Override
+    public Drawable getNormalDrawable(int position, Context context) {
+        return null;
+    }
+
+    @Override
+    public Drawable getSelectedDrawable(int position, Context context) {
+        return null;
+    }
   
-       @Override
-       public Drawable getSelectedDrawable(int position, Context context) {
-           return null;
-       }
+    @Override
+    public boolean isTagEnable(int position) {
+        return false;
+    }
   
-       @Override
-       public boolean isTagEnable(int position) {
-           return false;
-       }
-  
-       @Override
-       public String getTag(int position) {
-           return null;
-       }
-  };
-  tabStrip.bindViewPager(viewPager);
+    @Override
+    public String getTag(int position) {
+        return null;
+    }
+};
+tabStrip.bindViewPager(viewPager);
 ```
 ## 注意
 - 不要使用ViewPage的setCurrentItem(int)方法，其不会通知到GradientTabStrip进行刷新，使用GradientTabStrip的performClick(int)方法
