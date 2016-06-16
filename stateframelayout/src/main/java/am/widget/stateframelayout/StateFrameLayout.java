@@ -735,7 +735,8 @@ public class StateFrameLayout extends FrameLayout {
     public void onRestoreInstanceState(Parcelable state) {
         SavedState ss = (SavedState) state;
         setAlwaysDrawChild(ss.mAlwaysDrawChild);
-        setState(ss.mState);
+        mState = ss.mState;
+        invalidateState();
         super.onRestoreInstanceState(ss.getSuperState());
     }
 
