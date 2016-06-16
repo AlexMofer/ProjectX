@@ -206,19 +206,25 @@ public class DrawableRatingBar extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        final boolean superResult = super.onTouchEvent(event);
         boolean touch = false;
         if (mManually) {
             final int action = event.getAction();
-            final int oldRating = getRating();
-            final int rating = getRatingByX(event.getX());
+            final int oldRating = mRating;
+            final int rating = getRatingByMotionEvent(event);
+            if (rating == -1) {
+                return superResult;
+            }
             if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
                 touch = true;
-                setRating(rating);
+                mRating = rating;
+                invalidate();
                 if (oldRating != rating && listener != null)
                     listener.onRatingChanged(rating, oldRating);
             } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
                 touch = true;
-                setRating(rating);
+                mRating = rating;
+                invalidate();
                 if (listener != null) {
                     if (oldRating != rating)
                         listener.onRatingChanged(rating, oldRating);
@@ -226,24 +232,22 @@ public class DrawableRatingBar extends View {
                 }
             }
         }
-        return touch || super.onTouchEvent(event);
+        return touch || superResult;
     }
 
-    private int getRatingByX(float x) {
-        final int paddingStart = Compat.getPaddingStart(this);
-        final int paddingEnd = Compat.getPaddingEnd(this);
-        final float itemWidth = (getMeasuredWidth() - paddingStart - paddingEnd + mDrawablePadding) / (float) mMax;
-        int rating;
-        if (x < paddingStart)
-            rating = 0;
-        else if (x > getMeasuredWidth() - paddingEnd)
-            rating = mMax;
-        else {
-            rating = (int) Math.ceil((x - paddingStart + mDrawablePadding * 0.5f) / itemWidth);
+    private int getRatingByMotionEvent(MotionEvent event) {
+        final float x = event.getX();
+        final float y = event.getY();
+        int rating = -1;
+        if (mOnlyItemTouchable && (y < yOffset || y > yOffset + drawableHeight))
+            return -1;
+        for (int i = mMax; i >= 0; i--) {
+            if (x > xOffset + drawableWidth * i + mDrawablePadding * (i <= 0 ? 0 : i - 1)) {
+                rating = i;
+                break;
+            }
         }
-        if (rating < mMin)
-            rating = mMin;
-        return rating;
+        return rating < mMin ? mMin : rating;
     }
 
     /**
@@ -435,8 +439,20 @@ public class DrawableRatingBar extends View {
      * 评级变化监听
      */
     public interface OnRatingChangeListener {
+
+        /**
+         * 评级变化
+         *
+         * @param rating    新评级
+         * @param oldRating 旧评级
+         */
         void onRatingChanged(int rating, int oldRating);
 
+        /**
+         * 评级选中
+         *
+         * @param rating 评级
+         */
         void onRatingSelected(int rating);
     }
 }

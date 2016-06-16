@@ -36,6 +36,10 @@ TabStrip基础类，其实现了类似于PagerTabStrip的一些基础方法，�
 
 交替布局，配合TabStrip使用，达到伴随ViewPager动作而进行改变的效果
 
+- [DrawableRatingBar](https://github.com/AlexMofer/ProjectX/tree/master/drawableratingbar)
+
+双图片评级控件，可设置图片间距，支持拖动进度及点击进度，可控制最大值最小值，及是否可手动。
+
 ## Other
 - [SupportPlus](https://github.com/AlexMofer/ProjectX/tree/master/supportplus)
 
