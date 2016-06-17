@@ -1,9 +1,9 @@
 package am.project.x.widgets.animators;
 
 public interface AnimatorCallback {
-	public void isStart();
+	void isStart();
 
-	public void isStop();
+	void isStop();
 
-	public void isEnd();
+	void isEnd();
 }

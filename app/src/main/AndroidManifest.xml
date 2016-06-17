@@ -3,6 +3,7 @@
     package="am.project.x">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".ProjectXApplication"
@@ -141,7 +142,8 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.widgets.drawableratingbar.DrawableRatingBarActivity"
+        <activity
+            android:name=".activities.widgets.drawableratingbar.DrawableRatingBarActivity"
             android:label="@string/drawableratingbar_title">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -152,6 +154,20 @@
                 <data
                     android:host="github.com"
                     android:pathPrefix="/AlexMofer/ProjectX/tree/master/drawableratingbar"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.util.printer.PrinterActivity"
+            android:label="@string/printer_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="github.com"
+                    android:pathPrefix="/AlexMofer/ProjectX/tree/master/printer"
                     android:scheme="https" />
             </intent-filter>
         </activity>

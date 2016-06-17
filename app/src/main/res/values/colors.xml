@@ -6,4 +6,5 @@
     <color name="colorRipple">#803f51b5</color>
     <color name="colorBackground_welcome">#ff5591f5</color>
     <color name="white">#ffffffff</color>
+    <color name="transparent">#00000000</color>
 </resources>

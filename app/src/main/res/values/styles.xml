@@ -35,4 +35,19 @@
         <item name="android:singleLine">true</item>
     </style>
 
+    <style name="BaseDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="actionBarStyle">@style/ActionBarStyle</item>
+        <item name="toolbarStyle">@style/ActionBarStyle</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeBackground">?attr/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="TransparentDialogStyle" parent="BaseDialogStyle">
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
 </resources>

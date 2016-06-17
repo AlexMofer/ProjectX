@@ -45,32 +45,41 @@
 
     <string name="drawableratingbar_title">图片评级</string>
 
+    <string name="printer_title">打印</string>
+    <string name="printer_ip_hint">打印机IP</string>
+    <string name="printer_port_hint">打印机端口</string>
+    <string name="printer_port_text">9100</string>
+    <string name="printer_test">测试打印机</string>
+    <string name="printer_cancel">取消</string>
+    <string name="printer_determine">确定</string>
+    <string name="printer_edit_toast_1">请填写打印机IP地址</string>
+    <string name="printer_edit_toast_2">请正确填写打印机IP地址</string>
+    <string name="printer_edit_toast_3">请填写打印机端口号</string>
+    <string name="printer_edit_toast_4">请正确填写打印机端口号，0～65535</string>
+    <string name="printer_test_toast_0">开始测试&#8230;</string>
+    <string name="printer_test_toast_1">生成测试页面数据&#8230;</string>
+    <string name="printer_test_toast_2">生成数据成功，开始创建Socket连接&#8230;</string>
+    <string name="printer_test_toast_3">创建Socket成功，开始发送测试数据&#8230;</string>
+    <string name="printer_test_toast_4">获取输出流成功，开始写入测试页面数据&#8230;</string>
+    <string name="printer_test_toast_5">写入测试页面数据成功，正在完成测试&#8230;</string>
+    <string name="printer_result_toast_1">测试成功完成！</string>
+    <string name="printer_result_toast_2">生成测试页面数据失败！</string>
+    <string name="printer_result_toast_3">创建Socket失败！</string>
+    <string name="printer_result_toast_4">获取输出流失败！</string>
+    <string name="printer_result_toast_5">写入测试页面数据失败！</string>
+
     <string name="cd_welcome">welcome icon</string>
 
 
-    <string name="bilateralpane">三面板</string>
-    <string name="draggridview">拖动网格</string>
-    <string name="citylist">城市列表</string>
-    <string name="sharpcornerbox">尖角框</string>
-    <string name="connectimage">连接动画</string>
     <string name="left">左边</string>
     <string name="right">右边</string>
     <string name="connect">连接</string>
     <string name="failure">失败</string>
-    <string name="empty">空白</string>
     <string name="success">成功</string>
     <string name="text_scbd">There is TextView Content</string>
     <string name="text_scbd_v">There\nis\nTextView\nContent</string>
     <string name="title_activity_replace">ReplaceActivity</string>
-    <string name="printer">打印</string>
-    <string name="printer_ip">打印机IP:</string>
-    <string name="printer_port">打印机端口:</string>
-    <string name="printer_for">图片循环:</string>
-    <string name="printer_pic">打印图片</string>
     <string name="security_code">获取验证码</string>
-    <string name="loading_drawable">载入动画</string>
-    <string name="security_check">安全检测</string>
-    <string name="cipher">加密解密</string>
     <string name="message_digest">信息摘要</string>
     <string name="des">DES</string>
     <string name="aes">AES</string>
