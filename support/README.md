@@ -1,5 +1,4 @@
 # Support
-----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/support/icon.png)
 
 支持库，一些工具类及版本控制兼容类，一些特殊监听器，动画。
