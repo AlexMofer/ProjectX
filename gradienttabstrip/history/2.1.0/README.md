@@ -6,8 +6,10 @@
 ![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/gradienttabstrip/screenshots.gif)
 ## 要求
 - minSdkVersion 4
-- com.android.support:support-v4:24.0.0
+- com.android.support:support-v4:23.0.0(<24.0.0)
 
+## 警告
+不支持com.android.support:support-v4:24.0.0及以上版本，需要支持24.0.0，请使用最新版
 ## 引用
 ```java
 dependencies {
@@ -58,7 +60,4 @@ tabStrip.bindViewPager(viewPager);
 - 布局时，android:textColor指定的颜色可以使用选择器，其中android:state_selected="true"状态下的颜色会与普通状态下的颜色进行渐变
 - GradientTabAdapter中进行了改变GradientTabAdapter，需要手动通知GradientTabStrip进行刷新
 - 不需要Tag小红点，可以使用SimpleGradientTabAdapter替代GradientTabAdapter
-- 不支持com.android.support:support-v4:24.0.0以下的所有版本
-
-## 历史
-- [**2.1.0**](https://github.com/AlexMofer/ProjectX/tree/master/gradienttabstrip/history/2.1.0)
+- 不支持com.android.support:support-v4:24.0.0及以上版本

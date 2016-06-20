@@ -16,6 +16,7 @@ import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
 import am.widget.basetabstrip.BaseTabStrip;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPager;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 
@@ -24,6 +25,7 @@ import android.util.AttributeSet;
  *
  * @author Alex
  */
+@ViewPager.DecorView
 public class GradientTabStrip extends BaseTabStrip {
 
     private static final int DEFAULT_TEXT_SIZE = 14;// 默认字体大小dp
