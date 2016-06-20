@@ -1,5 +1,4 @@
 # ShapeImageView
-----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/shapeimageview/icon.png)
 
 图形裁剪ImageView，API 21 及以上 使用 setOutlineProvider 方式实现，支持动态图；以下使用 BitmapShader 方式实现。
