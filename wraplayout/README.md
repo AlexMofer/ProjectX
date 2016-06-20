@@ -1,5 +1,4 @@
 # WrapLayout
-----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/wraplayout/icon.png)
 
 自动换行布局，水平排列子项，并自动换行，支持不等长不等宽子项，且可以设置垂直间距与水平间距及子项对齐模式。
