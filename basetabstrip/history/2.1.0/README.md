@@ -6,6 +6,7 @@
 其实可以去掉ViewPager.Decor接口，其目的是作为子View放入ViewPager，并能够达到自动捆绑ViewPager与显示于其内部的上方或者下方，BaseTabStrip为基础类，仅实现了一些通用基础逻辑。具体的实现效果需要实现与重写部分方法。
 ## 要求
 minSdkVersion 4
+
 com.android.support:support-v4:23.0.0(<24.0.0)
 ## 警告
 不支持com.android.support:support-v4:24.0.0及以上版本，需要支持24.0.0，请使用最新版

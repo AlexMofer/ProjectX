@@ -101,5 +101,5 @@ dependencies {
 - OnItemClickListener中实现了：单击、点击已选中子项、双击三种点击事件
 - ItemTabAdapter为角标基本容器，需要实现角标，可以基于该接口
 - 不支持com.android.support:support-v4:24.0.0以下的所有版本
-## [历史](https://github.com/AlexMofer/ProjectX/tree/master/basetabstrip/history)
+## 历史
 - [**2.1.0**](https://github.com/AlexMofer/ProjectX/tree/master/basetabstrip/history/2.1.0)
