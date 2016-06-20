@@ -1,5 +1,4 @@
 # ReplaceLayout
-----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/replacelayout/icon.png)
 
 交替布局，配合TabStrip使用，达到伴随ViewPager动作而进行改变的效果，继承自FrameLayout，通过设置ReplaceAdapter来完成管理子项View的变化，并通过move(int, int, float)方法和moveTo(int)方法达到变化的效果。
