@@ -1,5 +1,4 @@
 # StateFrameLayout
-----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/stateframelayout/icon.png)
 
 状态帧布局，通常用于网络请求的四种状态，普通、载入、错误、空白。支持Drawable或者View来展示，也可以混搭。
