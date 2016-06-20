@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.v4.view;
+package am.widget.basetabstrip;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -24,8 +24,12 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,7 +44,7 @@ import java.util.ArrayList;
  *
  * @author Alex
  */
-public abstract class BaseTabStrip extends View implements ViewPager.Decor {
+public abstract class BaseTabStrip extends View {
 
     private ViewPager mPager;
     private final PageListener mPageListener = new PageListener();
@@ -100,14 +104,14 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         PagerAdapter oldAdapter = null;
         PagerAdapter newAdapter = null;
         if (mPager != null) {
-            mPager.setInternalPageChangeListener(null);
-            mPager.setOnAdapterChangeListener(null);
+            mPager.removeOnPageChangeListener(mPageListener);
+            mPager.removeOnAdapterChangeListener(mPageListener);
             oldAdapter = mPager.getAdapter();
         }
         mPager = pager;
         if (mPager != null) {
-            mPager.setInternalPageChangeListener(mPageListener);
-            mPager.setOnAdapterChangeListener(mPageListener);
+            mPager.addOnPageChangeListener(mPageListener);
+            mPager.addOnAdapterChangeListener(mPageListener);
             newAdapter = mPager.getAdapter();
         }
         bindPagerAdapter(oldAdapter, newAdapter);
@@ -426,8 +430,9 @@ public abstract class BaseTabStrip extends View implements ViewPager.Decor {
         }
 
         @Override
-        public void onAdapterChanged(PagerAdapter oldAdapter,
-                                     PagerAdapter newAdapter) {
+        public void onAdapterChanged(@NonNull ViewPager viewPager,
+                                     @Nullable PagerAdapter oldAdapter,
+                                     @Nullable PagerAdapter newAdapter) {
             bindPagerAdapter(oldAdapter, newAdapter);
         }
 

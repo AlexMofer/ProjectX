@@ -31,8 +31,9 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.BaseTabStrip;
+import am.widget.basetabstrip.BaseTabStrip;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPager;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 
@@ -42,6 +43,7 @@ import android.util.AttributeSet;
  *
  * @author Alex
  */
+@ViewPager.DecorView
 public class IndicatorTabStrip extends BaseTabStrip {
 
     private static final int[] ATTRS = new int[]{android.R.attr.textSize,

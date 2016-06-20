@@ -2,15 +2,18 @@
 ----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/basetabstrip/icon.png)
 
-继承自View，可自动捆绑ViewPager，BaseTabStrip为基础类，仅实现了一些通用基础逻辑。具体的实现效果需要实现与重写部分方法。
+继承自View，实现ViewPager.Decor接口（因其为包内私有接口，无法外部继承，故BaseTabStrip类必须存放在android.support.v4.view包中），版本兼容到API4(Android 1.6)，
+其实可以去掉ViewPager.Decor接口，其目的是作为子View放入ViewPager，并能够达到自动捆绑ViewPager与显示于其内部的上方或者下方，BaseTabStrip为基础类，仅实现了一些通用基础逻辑。具体的实现效果需要实现与重写部分方法。
 ## 要求
 minSdkVersion 4
-com.android.support:support-v4:24.0.0
+com.android.support:support-v4:23.0.0(<24.0.0)
+## 警告
+不支持com.android.support:support-v4:24.0.0及以上版本，需要支持24.0.0，请使用最新版
 ## 引用
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:basetabstrip:3.0.0'
+    compile 'am.widget:basetabstrip:2.1.0'
     ⋯
 }
 ```
@@ -93,12 +96,9 @@ dependencies {
         return background.getIntrinsicHeight() * 0.5f;
     }
 ```
-子项类实现@ViewPager.DecorView接口用于达到作为ViewPager子项显示
 ## 注意
 - 如果子类实现子项点击事件，需要在构造方法中setItemClickable(ture)，且同时可设置点击时是否平滑滚动setClickSmoothScroll(boolean)；
 - 可通过setItemBackground()来给子项设置背景，但背景并未在基类中绘画出来，因此需要在子类中自行将其绘制出来，如果不需要则可以忽略
 - OnItemClickListener中实现了：单击、点击已选中子项、双击三种点击事件
 - ItemTabAdapter为角标基本容器，需要实现角标，可以基于该接口
-- 不支持com.android.support:support-v4:24.0.0以下的所有版本
-## [历史](https://github.com/AlexMofer/ProjectX/tree/master/basetabstrip/history)
-- [**2.1.0**](https://github.com/AlexMofer/ProjectX/tree/master/basetabstrip/history/2.1.0)
+- 不支持com.android.support:support-v4:24.0.0及以上版本

@@ -1,18 +1,18 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.0"
     defaultConfig {
         minSdkVersion 4
-        targetSdkVersion 23
-        versionCode 24
-        versionName "2.1.0"
+        targetSdkVersion 24
+        versionCode 25
+        versionName "3.0.0"
     }
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.android.support:support-v4:24.0.0'
 }
 
 //apply from: "bintray.gradle"

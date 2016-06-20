@@ -3,7 +3,7 @@ package am.project.x.activities.widgets.indicatortabstrip;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.BaseTabStrip;
+import am.widget.basetabstrip.BaseTabStrip;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.Gravity;
