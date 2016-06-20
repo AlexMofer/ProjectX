@@ -1,5 +1,4 @@
 # Drawable
-----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/drawable/icon.png)
 
 实现特定功能的Drawable合集。
