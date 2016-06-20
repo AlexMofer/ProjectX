@@ -1,12 +1,11 @@
 # BaseTabStrip
-----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/basetabstrip/icon.png)
 
 继承自View，可自动捆绑ViewPager，BaseTabStrip为基础类，仅实现了一些通用基础逻辑。具体的实现效果需要实现与重写部分方法。
 ## 要求
-minSdkVersion 4
+- minSdkVersion 4
+- com.android.support:support-v4:24.0.0
 
-com.android.support:support-v4:24.0.0
 ## 引用
 ```java
 dependencies {
@@ -101,5 +100,6 @@ dependencies {
 - OnItemClickListener中实现了：单击、点击已选中子项、双击三种点击事件
 - ItemTabAdapter为角标基本容器，需要实现角标，可以基于该接口
 - 不支持com.android.support:support-v4:24.0.0以下的所有版本
+
 ## 历史
 - [**2.1.0**](https://github.com/AlexMofer/ProjectX/tree/master/basetabstrip/history/2.1.0)
