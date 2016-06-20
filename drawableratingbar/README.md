@@ -1,5 +1,4 @@
 # DrawableRatingBar
-----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/drawableratingbar/icon.png)
 
 图片评级,双图片评级控件，可设置图片间距，支持拖动进度及点击进度，可控制最大值最小值，及是否可手动。
