@@ -36,6 +36,7 @@ dependencies {
 - **MaterialCircleImageView**
 
     官方下拉刷新转动提示ImageView
+
 ## 注意
 - 最好是相同版本号的com.android.support:support-v4使用相同的版本
 - 不支持com.android.support:support-v4:24.0.0及以上版本
