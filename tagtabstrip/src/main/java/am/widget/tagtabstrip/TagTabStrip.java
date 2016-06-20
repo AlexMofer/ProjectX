@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import am.widget.basetabstrip.BaseTabStrip;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.view.View;
  *
  * @author Alex
  */
+@ViewPager.DecorView
 public class TagTabStrip extends BaseTabStrip {
 
     private final static int DEFAULT_SIZE = 8;// 默认图片dp

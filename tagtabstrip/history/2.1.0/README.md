@@ -1,5 +1,4 @@
 # TagTabStrip
-----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/tagtabstrip/icon.png)
 
 继承自BaseTabStrip，实现ViewPager标志小点，一般用于功能引导页面及新功能简介页，为ViewPager添加标志小点，并不仅限于小点，标志由设置的Drawable决定，普通模式为双Drawable交替模式，亦可设置为单Drawable缩放模式。
@@ -7,13 +6,15 @@
 ![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/tagtabstrip/screenshots.gif)
 ## 要求
 - minSdkVersion 4
-- com.android.support:support-v4:24.0.0
+- com.android.support:support-v4:23.0.0(<24.0.0)
 
+## 警告
+不支持com.android.support:support-v4:24.0.0及以上版本，需要支持24.0.0，请使用最新版
 ## 引用
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:tagtabstrip:3.0.0'
+    compile 'am.widget:tagtabstrip:2.1.0'
     ⋯
 }
 ```
@@ -42,6 +43,4 @@ ttsTags.bindViewPager(viewpager);
 - android:drawablePadding与app:ttsDrawablePadding等效，只需设置其中一个
 - 默认状态是颜色为0xff808080与0x80808080的大小为8dp的两个小圆点Drawable，之间没有间距
 - android:gravity默认值就是center，可以不设置
-
-## 历史
-- [**2.1.0**](https://github.com/AlexMofer/ProjectX/tree/master/tagtabstrip/history/2.1.0)
+- 不支持com.android.support:support-v4:24.0.0及以上版本
