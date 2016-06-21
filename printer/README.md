@@ -1,5 +1,4 @@
 # Printer
-----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/printer/icon.png)
 
 ES-POS打印

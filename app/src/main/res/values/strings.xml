@@ -49,6 +49,8 @@
     <string name="printer_ip_hint">打印机IP</string>
     <string name="printer_port_hint">打印机端口</string>
     <string name="printer_port_text">9100</string>
+    <string name="printer_type_80">80mm</string>
+    <string name="printer_type_58">58mm</string>
     <string name="printer_test">测试打印机</string>
     <string name="printer_cancel">取消</string>
     <string name="printer_determine">确定</string>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 
@@ -14,10 +15,12 @@ import am.project.x.activities.util.printer.dialogs.PrinterTestDialog;
 import am.project.x.utils.ImmUtils;
 import am.project.x.utils.StringUtils;
 
-public class PrinterActivity extends BaseActivity implements View.OnClickListener{
+public class PrinterActivity extends BaseActivity implements View.OnClickListener,
+        RadioGroup.OnCheckedChangeListener{
 
     private EditText edtIp;
     private EditText edtPort;
+    private int type = PrinterTestDialog.TYPE_80;
     private PrinterTestDialog printerTestDialog;
     @Override
     protected int getContentViewLayoutResources() {
@@ -30,7 +33,20 @@ public class PrinterActivity extends BaseActivity implements View.OnClickListene
         setSupportActionBar(R.id.printer_toolbar);
         edtIp = (EditText) findViewById(R.id.printer_edt_ip);
         edtPort = (EditText) findViewById(R.id.printer_edt_port);
+        ((RadioGroup) findViewById(R.id.printer_rg_type)).setOnCheckedChangeListener(this);
         findViewById(R.id.printer_btn_test_ip).setOnClickListener(this);
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+        switch (i) {
+            case R.id.printer_rb_80:
+                type = PrinterTestDialog.TYPE_80;
+                break;
+            case R.id.printer_rb_58:
+                type = PrinterTestDialog.TYPE_58;
+                break;
+        }
     }
 
     @Override
@@ -79,7 +95,7 @@ public class PrinterActivity extends BaseActivity implements View.OnClickListene
         if (printerTestDialog == null) {
             printerTestDialog = new PrinterTestDialog(this);
         }
-        printerTestDialog.startTest(ip, port);
+        printerTestDialog.startTest(ip, port, type);
     }
 
     public static void startActivity(Context context) {

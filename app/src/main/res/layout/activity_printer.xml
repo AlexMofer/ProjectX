@@ -60,6 +60,31 @@
                 android:maxLength="5"
                 android:text="@string/printer_port_text" />
 
+            <RadioGroup
+                android:id="@+id/printer_rg_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/printer_rb_80"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/printer_type_80" />
+
+                <RadioButton
+                    android:id="@+id/printer_rb_58"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/printer_type_58" />
+
+            </RadioGroup>
+
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/printer_btn_test_ip"
                 android:layout_width="match_parent"

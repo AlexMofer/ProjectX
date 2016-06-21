@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import am.project.x.R;
+import am.util.printer.PrinterWriter58mm;
 import am.util.printer.PrinterWriter80mm;
 import am.widget.MaterialProgressImageView;
 
@@ -24,11 +25,14 @@ import am.widget.MaterialProgressImageView;
  */
 public class PrinterTestDialog extends AppCompatDialog implements View.OnClickListener {
 
+    public static final int TYPE_80 = 0;
+    public static final int TYPE_58 = 1;
     private MaterialProgressImageView mivLoading;
     private TextView tvInfo;
     private Button btnOk;
     private String ip;
     private int port;
+    private int type;
     private PrintTask task;
 
     @SuppressWarnings("all")
@@ -41,9 +45,10 @@ public class PrinterTestDialog extends AppCompatDialog implements View.OnClickLi
         btnOk.setOnClickListener(this);
     }
 
-    public void startTest(String ip, int port) {
+    public void startTest(String ip, int port, int type) {
         this.ip = ip;
         this.port = port;
+        this.type = type;
         task = new PrintTask();
         show();
         task.execute();
@@ -92,7 +97,10 @@ public class PrinterTestDialog extends AppCompatDialog implements View.OnClickLi
             publishProgress(0);
             byte[] data;
             try {
-                data = getPrintData();
+                if (type == TYPE_80)
+                    data = getPrintData80();
+                else
+                    data = getPrintData58();
             } catch (Exception e) {
                 return -1;
             }
@@ -123,81 +131,158 @@ public class PrinterTestDialog extends AppCompatDialog implements View.OnClickLi
             return 0;
         }
 
-        private byte[] getPrintData() throws IOException{
-            PrinterWriter80mm printer80 = new PrinterWriter80mm();
-            printer80.setAlignCenter();
-            printer80.printDrawable(getContext().getResources(), R.drawable.ic_printer_logo);
-            printer80.setAlignLeft();
-            printer80.printLine();
-            printer80.printLineFeed();
+        private byte[] getPrintData80() throws IOException {
+            PrinterWriter80mm printer = new PrinterWriter80mm();
+            printer.setAlignCenter();
+            printer.printDrawable(getContext().getResources(), R.drawable.ic_printer_logo);
+            printer.setAlignLeft();
+            printer.printLine();
+            printer.printLineFeed();
 
-            printer80.printLineFeed();
-            printer80.setAlignCenter();
-            printer80.setEmphasizedOn();
-            printer80.setFontSize(1);
-            printer80.print("我的餐厅");
-            printer80.printLineFeed();
-            printer80.setFontSize(0);
-            printer80.setEmphasizedOff();
-            printer80.printLineFeed();
+            printer.printLineFeed();
+            printer.setAlignCenter();
+            printer.setEmphasizedOn();
+            printer.setFontSize(1);
+            printer.print("我的餐厅");
+            printer.printLineFeed();
+            printer.setFontSize(0);
+            printer.setEmphasizedOff();
+            printer.printLineFeed();
 
-            printer80.setLineHeight(80);
-            printer80.print("最时尚的明星餐厅");
-            printer80.printLineFeed();
-            printer80.print("客服电话：400-8008800");
-            printer80.printLineFeed();
+            printer.setLineHeight(80);
+            printer.print("最时尚的明星餐厅");
+            printer.printLineFeed();
+            printer.print("客服电话：400-8008800");
+            printer.printLineFeed();
 
-            printer80.setAlignLeft();
-            printer80.printLineFeed();
+            printer.setAlignLeft();
+            printer.printLineFeed();
 
-            printer80.print("订单号：88888888888888888");
-            printer80.printLineFeed();
+            printer.print("订单号：88888888888888888");
+            printer.printLineFeed();
 
-            printer80.print("预计送达：" +
+            printer.print("预计送达：" +
                     new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
                             .format(new Date(System.currentTimeMillis())));
-            printer80.printLineFeed();
+            printer.printLineFeed();
 
-            printer80.setEmphasizedOn();
-            printer80.print("#8（已付款）");
-            printer80.printLineFeed();
-            printer80.print("××区××路×××大厦××楼×××室");
-            printer80.printLineFeed();
-            printer80.setEmphasizedOff();
-            printer80.print("13843211234");
-            printer80.print("（张某某）");
-            printer80.printLineFeed();
-            printer80.print("备注：多加点辣椒，多加点香菜，多加点酸萝卜，多送点一次性手套");
-            printer80.printLineFeed();
+            printer.setEmphasizedOn();
+            printer.print("#8（已付款）");
+            printer.printLineFeed();
+            printer.print("××区××路×××大厦××楼×××室");
+            printer.printLineFeed();
+            printer.setEmphasizedOff();
+            printer.print("13843211234");
+            printer.print("（张某某）");
+            printer.printLineFeed();
+            printer.print("备注：多加点辣椒，多加点香菜，多加点酸萝卜，多送点一次性手套");
+            printer.printLineFeed();
 
-            printer80.printLine();
-            printer80.printLineFeed();
+            printer.printLine();
+            printer.printLineFeed();
 
-            printer80.printInOneLine("星级美食（豪华套餐）×1", "￥88.88", 0);
-            printer80.printLineFeed();
-            printer80.printInOneLine("星级美食（限量套餐）×1", "￥888.88", 0);
-            printer80.printLineFeed();
-            printer80.printInOneLine("餐具×1", "￥0.00", 0);
-            printer80.printLineFeed();
-            printer80.printInOneLine("配送费", "免费", 0);
-            printer80.printLineFeed();
+            printer.printInOneLine("星级美食（豪华套餐）×1", "￥88.88", 0);
+            printer.printLineFeed();
+            printer.printInOneLine("星级美食（限量套餐）×1", "￥888.88", 0);
+            printer.printLineFeed();
+            printer.printInOneLine("餐具×1", "￥0.00", 0);
+            printer.printLineFeed();
+            printer.printInOneLine("配送费", "免费", 0);
+            printer.printLineFeed();
 
-            printer80.printLine();
-            printer80.printLineFeed();
+            printer.printLine();
+            printer.printLineFeed();
 
-            printer80.setAlignRight();
-            printer80.print("合计：977.76");
-            printer80.printLineFeed();
-            printer80.printLineFeed();
+            printer.setAlignRight();
+            printer.print("合计：977.76");
+            printer.printLineFeed();
+            printer.printLineFeed();
 
-            printer80.setLineHeight(0);
-            printer80.setAlignCenter();
-            printer80.printDrawable(getContext().getResources(), R.drawable.ic_printer_qr);
-            printer80.printLineFeed();
-            printer80.print("扫一扫，查看详情");
+            printer.setLineHeight(0);
+            printer.setAlignCenter();
+            printer.printDrawable(getContext().getResources(), R.drawable.ic_printer_qr);
+            printer.printLineFeed();
+            printer.print("扫一扫，查看详情");
 
-            printer80.feedPaperCutPartial();
-            return printer80.getData();
+            printer.feedPaperCutPartial();
+            return printer.getData();
+        }
+
+        private byte[] getPrintData58() throws IOException {
+            PrinterWriter58mm printer = new PrinterWriter58mm();
+            printer.setAlignCenter();
+            printer.printDrawable(getContext().getResources(), R.drawable.ic_printer_logo);
+            printer.setAlignLeft();
+            printer.printLine();
+            printer.printLineFeed();
+
+            printer.printLineFeed();
+            printer.setAlignCenter();
+            printer.setEmphasizedOn();
+            printer.setFontSize(1);
+            printer.print("我的餐厅");
+            printer.printLineFeed();
+            printer.setFontSize(0);
+            printer.setEmphasizedOff();
+            printer.printLineFeed();
+
+            printer.setLineHeight(80);
+            printer.print("最时尚的明星餐厅");
+            printer.printLineFeed();
+            printer.print("客服电话：400-8008800");
+            printer.printLineFeed();
+
+            printer.setAlignLeft();
+            printer.printLineFeed();
+
+            printer.print("订单号：88888888888888888");
+            printer.printLineFeed();
+
+            printer.print("预计送达：" +
+                    new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
+                            .format(new Date(System.currentTimeMillis())));
+            printer.printLineFeed();
+
+            printer.setEmphasizedOn();
+            printer.print("#8（已付款）");
+            printer.printLineFeed();
+            printer.print("××区××路×××大厦××楼×××室");
+            printer.printLineFeed();
+            printer.setEmphasizedOff();
+            printer.print("13843211234");
+            printer.print("（张某某）");
+            printer.printLineFeed();
+            printer.print("备注：多加点辣椒，多加点香菜，多加点酸萝卜，多送点一次性手套");
+            printer.printLineFeed();
+
+            printer.printLine();
+            printer.printLineFeed();
+
+            printer.printInOneLine("星级美食（豪华套餐）×1", "￥88.88", 0);
+            printer.printLineFeed();
+            printer.printInOneLine("星级美食（限量套餐）×1", "￥888.88", 0);
+            printer.printLineFeed();
+            printer.printInOneLine("餐具×1", "￥0.00", 0);
+            printer.printLineFeed();
+            printer.printInOneLine("配送费", "免费", 0);
+            printer.printLineFeed();
+
+            printer.printLine();
+            printer.printLineFeed();
+
+            printer.setAlignRight();
+            printer.print("合计：977.76");
+            printer.printLineFeed();
+            printer.printLineFeed();
+
+            printer.setLineHeight(0);
+            printer.setAlignCenter();
+            printer.printDrawable(getContext().getResources(), R.drawable.ic_printer_qr);
+            printer.printLineFeed();
+            printer.print("扫一扫，查看详情");
+
+            printer.feedPaperCutPartial();
+            return printer.getData();
         }
 
         @Override
