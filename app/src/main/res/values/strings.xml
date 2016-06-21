@@ -46,6 +46,8 @@
     <string name="drawableratingbar_title">图片评级</string>
 
     <string name="printer_title">打印</string>
+    <string name="printer_ip">固定IP打印机</string>
+    <string name="printer_bluetooth">蓝牙打印机</string>
     <string name="printer_ip_hint">打印机IP</string>
     <string name="printer_port_hint">打印机端口</string>
     <string name="printer_port_text">9100</string>
@@ -69,6 +71,16 @@
     <string name="printer_result_toast_3">创建Socket失败！</string>
     <string name="printer_result_toast_4">获取输出流失败！</string>
     <string name="printer_result_toast_5">写入测试页面数据失败！</string>
+    <string name="printer_bluetooth_init">蓝牙初始化&#8230;</string>
+    <string name="printer_bluetooth_not_support">不支持蓝牙</string>
+    <string name="printer_bluetooth_open">开启蓝牙以继续</string>
+    <string name="printer_bluetooth_dlg_open">打开蓝牙，以便连接蓝牙打印设备。</string>
+    <string name="printer_bluetooth_dlg_close">是否需要关闭蓝牙？</string>
+    <string name="printer_allow">"允许"</string>
+    <string name="printer_deny">"拒绝"</string>
+    <string name="printer_yes">"是"</string>
+    <string name="printer_no">"否"</string>
+    <string name="printer_bluetooth_dlg_close_error">由于某些原因导致应用关闭蓝牙失败，请到系统设置中自行关闭</string>
 
     <string name="cd_welcome">welcome icon</string>
 
