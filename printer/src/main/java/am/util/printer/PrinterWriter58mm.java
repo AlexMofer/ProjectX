@@ -4,7 +4,6 @@ import java.io.IOException;
 
 /**
  * 纸宽58mm的打印机
- * 未验证
  * Created by Alex on 2016/6/17.
  */
 @SuppressWarnings("unused")
@@ -14,7 +13,7 @@ public class PrinterWriter58mm extends PrinterWriter {
 
     @Override
     protected int getLineWidth() {
-        return 17;
+        return 16;
     }
 
     @Override
@@ -22,7 +21,7 @@ public class PrinterWriter58mm extends PrinterWriter {
         switch (textSize) {
             default:
             case 0:
-                return 34;
+                return 31;
             case 1:
                 return 16;
         }
@@ -30,6 +29,6 @@ public class PrinterWriter58mm extends PrinterWriter {
 
     @Override
     protected int getDrawableMaxWidth() {
-        return 362;
+        return 380;
     }
 }

@@ -1,7 +1,6 @@
 package am.project.x.activities.util.printer.managers;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -10,24 +9,35 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import am.project.x.R;
+import am.project.x.activities.util.printer.adapters.DeviceAdapter;
+import am.project.x.activities.util.printer.data.PrinterData;
+import am.project.x.activities.util.printer.test.BluetoothPrinterTester;
+import am.project.x.activities.util.printer.viewholders.DeviceViewHolder;
+import am.project.x.widgets.divider.DividerItemDecoration;
 
 /**
  * 蓝牙打印管理器
  * Created by Alex on 2016/6/21.
  */
-public class BluetoothPrinterManager implements View.OnClickListener {
+public class BluetoothPrinterManager implements View.OnClickListener,
+        DeviceViewHolder.OnHolderListener {
 
     private static final int REQUEST_CODE_BLUETOOTH = 1088;
     private final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private Activity activity;
     private TextView tvBluetooth;
     private View vBluetoothContent;
+    private RadioGroup rgType;
     private AlertDialog dlgBluetoothOpen;
     private AlertDialog dlgBluetoothClose;
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -37,26 +47,7 @@ public class BluetoothPrinterManager implements View.OnClickListener {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                BluetoothDevice device = intent
-                        .getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
-//                    addBandDevices(device);
-                } else {
-//                    addUnbondDevices(device);
-                }
-            } else if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
-//                progressDialog = ProgressDialog.show(context, "请稍等...",
-//                        "搜索蓝牙设备中...", true);
-
-            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED
-                    .equals(action)) {
-                System.out.println("设备搜索完毕");
-//                progressDialog.dismiss();
-
-//                addUnbondDevicesToListView();
-//                addBondDevicesToListView();
-            } else if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
+            if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
                 if (enabled != bluetoothAdapter.isEnabled()) {
                     enabled = bluetoothAdapter.isEnabled();
                     if (resume) {
@@ -66,28 +57,38 @@ public class BluetoothPrinterManager implements View.OnClickListener {
                             if (dlgBluetoothClose == null) {
                                 checkBluetooth();
                             } else {
-                                dlgBluetoothClose.dismiss();
+                                dlgBluetoothClose.cancel();
                             }
                         }
                     }
                 }
+            } else if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
+                bondedAdapter.setDevices(bluetoothAdapter.getBondedDevices());
             }
         }
 
     };
     private boolean resume = false;
     private boolean isDeny = false;
+    private boolean shouldClose = false;
+    private DeviceAdapter bondedAdapter = new DeviceAdapter(this);
+    private BluetoothPrinterTester tester;
 
     public BluetoothPrinterManager(Activity activity) {
         this.activity = activity;
+        rgType = (RadioGroup) activity.findViewById(R.id.printer_rg_type);
         tvBluetooth = (TextView) activity.findViewById(R.id.printer_tv_bluetooth);
         vBluetoothContent = activity.findViewById(R.id.printer_lyt_bluetooth);
+        RecyclerView rvBonded = (RecyclerView) activity.findViewById(R.id.printer_rv_bonded);
         tvBluetooth.setOnClickListener(this);
+        rvBonded.setLayoutManager(new LinearLayoutManager(activity));
+        rvBonded.addItemDecoration(new DividerItemDecoration(
+                ContextCompat.getDrawable(activity, R.drawable.divider_printer),
+                DividerItemDecoration.VERTICAL_LIST));
+        rvBonded.setAdapter(bondedAdapter);
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BluetoothDevice.ACTION_FOUND);
-        intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-        intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         activity.registerReceiver(receiver, intentFilter);
     }
 
@@ -145,6 +146,7 @@ public class BluetoothPrinterManager implements View.OnClickListener {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            shouldClose = true;
                             forceTurnOnBluetooth();
                         }
                     });
@@ -175,9 +177,22 @@ public class BluetoothPrinterManager implements View.OnClickListener {
         activity.startActivityForResult(requestBluetoothOn, REQUEST_CODE_BLUETOOTH);
     }
 
+    @Override
+    public void onItemClicked(BluetoothDevice device) {
+        int id = rgType.getCheckedRadioButtonId();
+        int type = id == R.id.printer_rb_80 ? PrinterData.TYPE_80 : PrinterData.TYPE_58;
+        if (tester == null) {
+            tester = new BluetoothPrinterTester(activity);
+        }
+        tester.startTest(device, type);
+    }
+
     public void onActivityResult(int requestCode, int resultCode) {
         if (requestCode == REQUEST_CODE_BLUETOOTH) {
             switch (resultCode) {
+                case Activity.RESULT_OK:
+                    shouldClose = true;
+                    break;
                 case Activity.RESULT_CANCELED:
                     isDeny = true;
                     checkBluetooth();
@@ -189,8 +204,8 @@ public class BluetoothPrinterManager implements View.OnClickListener {
     public void onResume() {
         resume = true;
         checkBluetooth();
-        if (dlgBluetoothClose != null && !bluetoothAdapter.isEnabled()) {
-            dlgBluetoothClose.dismiss();
+        if (dlgBluetoothClose != null && dlgBluetoothClose.isShowing()) {
+            dlgBluetoothClose.cancel();
         }
     }
 
@@ -199,7 +214,7 @@ public class BluetoothPrinterManager implements View.OnClickListener {
     }
 
     public boolean onBackPressed() {
-        boolean showDialog = bluetoothAdapter != null && bluetoothAdapter.isEnabled();
+        boolean showDialog = bluetoothAdapter != null && bluetoothAdapter.isEnabled() && shouldClose;
         if (showDialog) {
             if (dlgBluetoothClose == null) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -247,14 +262,12 @@ public class BluetoothPrinterManager implements View.OnClickListener {
         tvBluetooth.setVisibility(View.INVISIBLE);
         tvBluetooth.setClickable(true);
         vBluetoothContent.setVisibility(View.VISIBLE);
-
-        // TODO
+        bondedAdapter.setDevices(bluetoothAdapter.getBondedDevices());
     }
 
     private void hideDevicesList() {
+        bondedAdapter.clear();
         tvBluetooth.setVisibility(View.VISIBLE);
         vBluetoothContent.setVisibility(View.INVISIBLE);
-
-        // TODO
     }
 }

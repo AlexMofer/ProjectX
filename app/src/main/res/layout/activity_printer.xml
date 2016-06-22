@@ -34,6 +34,41 @@
         android:padding="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:text="@string/printer_type"
+            android:textColor="#ff000000"
+            android:textSize="18sp" />
+
+        <RadioGroup
+            android:id="@+id/printer_rg_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/printer_rb_80"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="@string/printer_type_80" />
+
+            <RadioButton
+                android:id="@+id/printer_rb_58"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/printer_type_58" />
+
+        </RadioGroup>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,31 +104,6 @@
                 android:maxLength="5"
                 android:text="@string/printer_port_text" />
 
-            <RadioGroup
-                android:id="@+id/printer_rg_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/printer_rb_80"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:text="@string/printer_type_80" />
-
-                <RadioButton
-                    android:id="@+id/printer_rb_58"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/printer_type_58" />
-
-            </RadioGroup>
-
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/printer_btn_test_ip"
                 android:layout_width="match_parent"
@@ -119,53 +129,18 @@
                     android:gravity="center"
                     android:text="@string/printer_bluetooth"
                     android:textColor="#ff000000"
+                    android:layout_marginBottom="10dp"
                     android:textSize="18sp" />
 
-                <android.support.v7.widget.AppCompatButton
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="搜索蓝牙设备" />
+                    android:text="@string/printer_is_bonded" />
 
-                <LinearLayout
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/printer_rv_bonded"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="@drawable/divider_printer"
-                    android:showDividers="middle">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="已配对设备" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="未配对设备" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:divider="@drawable/divider_printer"
-                    android:showDividers="middle">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                </LinearLayout>
+                    android:layout_height="match_parent" />
 
 
             </LinearLayout>

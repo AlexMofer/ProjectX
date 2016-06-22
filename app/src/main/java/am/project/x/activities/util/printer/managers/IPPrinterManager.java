@@ -7,7 +7,8 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import am.project.x.R;
-import am.project.x.activities.util.printer.dialogs.PrinterTestDialog;
+import am.project.x.activities.util.printer.data.PrinterData;
+import am.project.x.activities.util.printer.test.IPPrinterTester;
 import am.project.x.utils.ImmUtils;
 import am.project.x.utils.StringUtils;
 
@@ -20,8 +21,8 @@ public class IPPrinterManager implements View.OnClickListener,
     private Activity activity;
     private EditText edtIp;
     private EditText edtPort;
-    private int type = PrinterTestDialog.TYPE_80;
-    private PrinterTestDialog dlgPrinterTest;
+    private int type = PrinterData.TYPE_80;
+    private IPPrinterTester tester;
 
     public IPPrinterManager(Activity activity) {
         this.activity = activity;
@@ -35,10 +36,10 @@ public class IPPrinterManager implements View.OnClickListener,
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
         switch (i) {
             case R.id.printer_rb_80:
-                type = PrinterTestDialog.TYPE_80;
+                type = PrinterData.TYPE_80;
                 break;
             case R.id.printer_rb_58:
-                type = PrinterTestDialog.TYPE_58;
+                type = PrinterData.TYPE_58;
                 break;
         }
     }
@@ -56,11 +57,15 @@ public class IPPrinterManager implements View.OnClickListener,
         String ip = edtIp.getText().toString().trim();
         if (ip.length() <= 0) {
             Toast.makeText(activity, R.string.printer_edit_toast_1, Toast.LENGTH_SHORT).show();
+            edtIp.requestFocus();
+            edtIp.requestFocusFromTouch();
             ImmUtils.showImm(activity, edtIp);
             return;
         } else if (!StringUtils.isIp(ip)) {
             Toast.makeText(activity, R.string.printer_edit_toast_2, Toast.LENGTH_SHORT).show();
             edtIp.setText(null);
+            edtIp.requestFocus();
+            edtIp.requestFocusFromTouch();
             ImmUtils.showImm(activity, edtIp);
             return;
         }
@@ -68,6 +73,8 @@ public class IPPrinterManager implements View.OnClickListener,
         String portStr = edtPort.getText().toString().trim();
         if (portStr.length() <= 0) {
             Toast.makeText(activity, R.string.printer_edit_toast_3, Toast.LENGTH_SHORT).show();
+            edtPort.requestFocus();
+            edtPort.requestFocusFromTouch();
             ImmUtils.showImm(activity, edtPort);
             return;
         } else {
@@ -79,6 +86,8 @@ public class IPPrinterManager implements View.OnClickListener,
             if (port < 0 || port > 65535) {
                 Toast.makeText(activity, R.string.printer_edit_toast_4, Toast.LENGTH_SHORT).show();
                 edtPort.setText(null);
+                edtPort.requestFocus();
+                edtPort.requestFocusFromTouch();
                 ImmUtils.showImm(activity, edtPort);
                 return;
             }
@@ -86,9 +95,9 @@ public class IPPrinterManager implements View.OnClickListener,
         edtIp.clearFocus();
         edtPort.clearFocus();
         ImmUtils.closeImm(activity);
-        if (dlgPrinterTest == null) {
-            dlgPrinterTest = new PrinterTestDialog(activity);
+        if (tester == null) {
+            tester = new IPPrinterTester(activity);
         }
-        dlgPrinterTest.startTest(ip, port, type);
+        tester.startTest(ip, port, type);
     }
 }

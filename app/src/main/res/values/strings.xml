@@ -46,6 +46,7 @@
     <string name="drawableratingbar_title">图片评级</string>
 
     <string name="printer_title">打印</string>
+    <string name="printer_type">打印机类型</string>
     <string name="printer_ip">固定IP打印机</string>
     <string name="printer_bluetooth">蓝牙打印机</string>
     <string name="printer_ip_hint">打印机IP</string>
@@ -53,24 +54,13 @@
     <string name="printer_port_text">9100</string>
     <string name="printer_type_80">80mm</string>
     <string name="printer_type_58">58mm</string>
-    <string name="printer_test">测试打印机</string>
+    <string name="printer_test">测试固定IP打印机</string>
     <string name="printer_cancel">取消</string>
     <string name="printer_determine">确定</string>
     <string name="printer_edit_toast_1">请填写打印机IP地址</string>
     <string name="printer_edit_toast_2">请正确填写打印机IP地址</string>
     <string name="printer_edit_toast_3">请填写打印机端口号</string>
     <string name="printer_edit_toast_4">请正确填写打印机端口号，0～65535</string>
-    <string name="printer_test_toast_0">开始测试&#8230;</string>
-    <string name="printer_test_toast_1">生成测试页面数据&#8230;</string>
-    <string name="printer_test_toast_2">生成数据成功，开始创建Socket连接&#8230;</string>
-    <string name="printer_test_toast_3">创建Socket成功，开始发送测试数据&#8230;</string>
-    <string name="printer_test_toast_4">获取输出流成功，开始写入测试页面数据&#8230;</string>
-    <string name="printer_test_toast_5">写入测试页面数据成功，正在完成测试&#8230;</string>
-    <string name="printer_result_toast_1">测试成功完成！</string>
-    <string name="printer_result_toast_2">生成测试页面数据失败！</string>
-    <string name="printer_result_toast_3">创建Socket失败！</string>
-    <string name="printer_result_toast_4">获取输出流失败！</string>
-    <string name="printer_result_toast_5">写入测试页面数据失败！</string>
     <string name="printer_bluetooth_init">蓝牙初始化&#8230;</string>
     <string name="printer_bluetooth_not_support">不支持蓝牙</string>
     <string name="printer_bluetooth_open">开启蓝牙以继续</string>
@@ -81,6 +71,18 @@
     <string name="printer_yes">"是"</string>
     <string name="printer_no">"否"</string>
     <string name="printer_bluetooth_dlg_close_error">由于某些原因导致应用关闭蓝牙失败，请到系统设置中自行关闭</string>
+    <string name="printer_is_bonded">已配对设备:</string>
+    <string name="printer_test_message_0">开始测试&#8230;</string>
+    <string name="printer_test_message_1">生成测试页面数据&#8230;</string>
+    <string name="printer_test_message_2">生成数据成功，开始创建Socket连接&#8230;</string>
+    <string name="printer_test_message_3">创建Socket成功，开始发送测试数据&#8230;</string>
+    <string name="printer_test_message_4">获取输出流成功，开始写入测试页面数据&#8230;</string>
+    <string name="printer_test_message_5">写入测试页面数据成功，正在完成测试&#8230;</string>
+    <string name="printer_result_message_1">测试成功完成！</string>
+    <string name="printer_result_message_2">生成测试页面数据失败！</string>
+    <string name="printer_result_message_3">创建Socket失败！</string>
+    <string name="printer_result_message_4">获取输出流失败！</string>
+    <string name="printer_result_message_5">写入测试页面数据失败！</string>
 
     <string name="cd_welcome">welcome icon</string>
 
