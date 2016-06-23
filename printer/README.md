@@ -19,6 +19,7 @@ dependencies {
 - 继承PrintTask来实现打印任务
 - 继承PrinterWriter来实现更多纸张类型的打印
 - PrinterUtils包含了众多打印指令
+
 ## 注意
 - 仅提供建立蓝牙连接打印，不包括蓝牙搜索及配对功能
 - 不包含二维码生成功能
