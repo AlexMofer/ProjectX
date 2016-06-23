@@ -1,4 +1,4 @@
-package am.project.x.security;
+package am.util.security;
 
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;

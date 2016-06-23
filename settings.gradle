@@ -1,1 +1,1 @@
-include ':app', ':gradienttabstrip', ':basetabstrip', ':tagtabstrip', ':indicatortabstrip', ':supportplus', ':support', ':shapeimageview', ':stateframelayout', ':wraplayout', ':replacelayout', ':drawableratingbar', ':drawable', ':printer'
+include ':app', ':gradienttabstrip', ':basetabstrip', ':tagtabstrip', ':indicatortabstrip', ':supportplus', ':support', ':shapeimageview', ':stateframelayout', ':wraplayout', ':replacelayout', ':drawableratingbar', ':drawable', ':printer', ':security'

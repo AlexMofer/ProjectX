@@ -1,29 +1,27 @@
-package am.project.x.security;
+package am.util.security;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESedeKeySpec;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
- * DES加密解密工具类
- * 最好使用AES加密
+ * AES加密解密工具类
  *
  * @author Mofer
  */
-public class DESedeUtil {
+public class AESUtil {
 
-    private final static String ALGORITHM = "DESede";
-    private final static String TRANSFORMATION = "DESede/ECB/PKCS5Padding";
-    private final static int SIZE = 192;// 仅支持128、168、192
+    private final static String ALGORITHM = "AES";
+    private final static String TRANSFORMATION = "AES/CBC/PKCS5Padding";
+    private final static int SIZE = 256;
+
 
     /**
      * 加密
@@ -31,26 +29,24 @@ public class DESedeUtil {
      * @param key   密钥字节
      * @param clear 明文字节
      * @return 密文字节
-     * @throws InvalidKeyException
-     * @throws InvalidKeySpecException
      * @throws NoSuchAlgorithmException
      * @throws NoSuchPaddingException
+     * @throws InvalidKeyException
+     * @throws InvalidAlgorithmParameterException
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
-    @SuppressWarnings("all")
     public static byte[] encrypt(byte[] key, byte[] clear) throws
             NoSuchAlgorithmException,
             NoSuchPaddingException,
             InvalidKeyException,
-            InvalidKeySpecException,
+            InvalidAlgorithmParameterException,
             IllegalBlockSizeException,
             BadPaddingException {
-        SecretKey secureKey = SecretKeyFactory.getInstance(ALGORITHM)
-                .generateSecret(new DESedeKeySpec(key));// 128 长度的Key不支持
-//        SecretKeySpec secureKey = new SecretKeySpec(key, KEY_ALGORITHM);// 168 长度的Key部分支持
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key, ALGORITHM);
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-        cipher.init(Cipher.ENCRYPT_MODE, secureKey);
+        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, new IvParameterSpec(
+                new byte[cipher.getBlockSize()]));
         return cipher.doFinal(clear);
     }
 
@@ -60,27 +56,24 @@ public class DESedeUtil {
      * @param key       密钥字节
      * @param encrypted 密文字节
      * @return 明文字节
-     * @throws InvalidKeyException
-     * @throws InvalidKeySpecException
      * @throws NoSuchAlgorithmException
      * @throws NoSuchPaddingException
+     * @throws InvalidKeyException
+     * @throws InvalidAlgorithmParameterException
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
-    @SuppressWarnings("all")
     public static byte[] decrypt(byte[] key, byte[] encrypted) throws
             NoSuchAlgorithmException,
             NoSuchPaddingException,
             InvalidKeyException,
-            InvalidKeySpecException,
+            InvalidAlgorithmParameterException,
             IllegalBlockSizeException,
             BadPaddingException {
-
-        SecretKey secureKey = SecretKeyFactory.getInstance(ALGORITHM)
-                .generateSecret(new DESedeKeySpec(key));// 128 长度的Key不支持
-//        SecretKeySpec secureKey = new SecretKeySpec(key, KEY_ALGORITHM);// 168 长度的Key部分支持
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key, ALGORITHM);
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-        cipher.init(Cipher.DECRYPT_MODE, secureKey);
+        cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, new IvParameterSpec(
+                new byte[cipher.getBlockSize()]));
         return cipher.doFinal(encrypted);
     }
 
@@ -99,27 +92,21 @@ public class DESedeUtil {
      *
      * @param seed 随机数种子
      * @return 密钥字节
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchProviderException
+     * @throws Exception
      */
-    public static byte[] getRandomKey(byte[] seed) throws
-            NoSuchAlgorithmException,
-            NoSuchProviderException {
+    public static byte[] getRandomKey(byte[] seed) throws Exception {
         return KeyUtil.getRandomKey(ALGORITHM, seed, SIZE);
     }
 
     /**
      * PBE口令密钥
      *
-     * @param password 口令
-     * @param salt     盐
+     * @param password       口令
+     * @param salt           盐
      * @return 密钥字节
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
+     * @throws Exception
      */
-    public static byte[] getPBEKey(char[] password, byte[] salt) throws
-            NoSuchAlgorithmException,
-            InvalidKeySpecException {
+    public static byte[] getPBEKey(char[] password, byte[] salt) throws Exception {
         return KeyUtil.getPBEKey(password, salt, SIZE);
     }
 }

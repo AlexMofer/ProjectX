@@ -28,10 +28,18 @@
                 android:paddingTop="18dp"
                 android:text="@string/printer_title" />
 
-            <View
+            <Button
+                android:id="@+id/other_btn_security"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_common_press"
+                android:drawablePadding="4dp"
+                android:drawableTop="@drawable/ic_util_security"
+                android:paddingBottom="18dp"
+                android:paddingTop="18dp"
+                android:text="@string/cipher_title" />
 
             <View
                 android:layout_width="match_parent"

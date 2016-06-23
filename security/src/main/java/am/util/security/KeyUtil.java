@@ -1,4 +1,4 @@
-package am.project.x.security;
+package am.util.security;
 
 
 import java.security.NoSuchAlgorithmException;
@@ -11,7 +11,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-import am.project.x.utils.PRNGFixes;
 
 /**
  * 密钥工具类

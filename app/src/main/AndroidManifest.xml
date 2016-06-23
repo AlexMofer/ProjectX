@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="am.project.x">
 
-    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />!-->
+    <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" />! -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -159,7 +159,8 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.util.printer.PrinterActivity"
+        <activity
+            android:name=".activities.util.printer.PrinterActivity"
             android:label="@string/printer_title">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -170,6 +171,20 @@
                 <data
                     android:host="github.com"
                     android:pathPrefix="/AlexMofer/ProjectX/tree/master/printer"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.util.security.CipherActivity"
+            android:label="@string/cipher_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="github.com"
+                    android:pathPrefix="/AlexMofer/ProjectX/tree/master/security"
                     android:scheme="https" />
             </intent-filter>
         </activity>

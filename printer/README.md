@@ -5,8 +5,9 @@
 ## 预览
 ![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/printer/screenshot.png)
 ## 要求
-minSdkVersion 5
-<uses-permission android:name="android.permission.BLUETOOTH" />
+- minSdkVersion 5
+- <uses-permission android:name="android.permission.BLUETOOTH" />
+
 ## 引用
 ```java
 dependencies {

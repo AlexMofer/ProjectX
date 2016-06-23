@@ -85,6 +85,8 @@
     <string name="printer_result_message_5">写入测试页面数据失败！</string>
     <string name="printer_result_message_6">必要的参数不能为空！</string>
 
+    <string name="cipher_title">加密解密</string>
+
     <string name="cd_welcome">welcome icon</string>
 
 
@@ -96,7 +98,6 @@
     <string name="text_scbd">There is TextView Content</string>
     <string name="text_scbd_v">There\nis\nTextView\nContent</string>
     <string name="title_activity_replace">ReplaceActivity</string>
-    <string name="security_code">获取验证码</string>
     <string name="message_digest">信息摘要</string>
     <string name="des">DES</string>
     <string name="aes">AES</string>

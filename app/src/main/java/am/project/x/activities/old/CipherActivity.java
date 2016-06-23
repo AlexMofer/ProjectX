@@ -11,11 +11,11 @@ import android.widget.Toast;
 import java.security.KeyPair;
 
 import am.project.x.R;
-import am.project.x.security.AESUtil;
-import am.project.x.security.DESedeUtil;
-import am.project.x.security.MessageDigestUtils;
-import am.project.x.security.RSAUtil;
 import am.project.x.utils.ImmUtils;
+import am.util.security.AESUtil;
+import am.util.security.DESedeUtil;
+import am.util.security.MessageDigestUtils;
+import am.util.security.RSAUtil;
 
 public class CipherActivity extends Activity implements View.OnClickListener {
 

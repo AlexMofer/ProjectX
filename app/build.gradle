@@ -8,8 +8,8 @@ android {
         applicationId "am.project.x"
         minSdkVersion 8
         targetSdkVersion 24
-        versionCode 53
-        versionName "2.1.3"
+        versionCode 57
+        versionName "2.2.5"
     }
     buildTypes {
         release {
@@ -53,4 +53,5 @@ dependencies {
     compile project(':supportplus')
     compile project(':support')
     compile project(':printer')
+    compile project(':security')
 }
