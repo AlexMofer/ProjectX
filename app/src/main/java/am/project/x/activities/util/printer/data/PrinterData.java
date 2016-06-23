@@ -17,9 +17,6 @@ import am.util.printer.PrinterWriter80mm;
  */
 public class PrinterData {
 
-    public static final int TYPE_80 = 0;
-    public static final int TYPE_58 = 1;
-
     public static byte[] getPrintData80(Resources res) throws IOException {
         PrinterWriter80mm printer = new PrinterWriter80mm();
         printer.setAlignCenter();

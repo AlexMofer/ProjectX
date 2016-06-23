@@ -3,7 +3,10 @@ package am.util.printer;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -242,10 +245,13 @@ public abstract class PrinterWriter {
      * @return 缩放后的图片
      */
     private Bitmap scalingBitmap(Resources res, int id, int maxWidth) {
+        if (res == null)
+            return null;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;// 设置只量取宽高
         BitmapFactory.decodeResource(res, id, options);// 量取宽高
         options.inJustDecodeBounds = false;
+        // 粗略缩放
         if (maxWidth > 0 && options.outWidth > maxWidth) {
             // 超过限定宽
             double ratio = options.outWidth / (double) maxWidth;// 计算缩放比
@@ -258,6 +264,7 @@ public abstract class PrinterWriter {
             Bitmap image = BitmapFactory.decodeResource(res, id, options);
             final int width = image.getWidth();
             final int height = image.getHeight();
+            // 精确缩放
             if (maxWidth <= 0 || width <= maxWidth) {
                 return image;
             }
@@ -271,6 +278,114 @@ public abstract class PrinterWriter {
             return null;
         }
     }
+
+    /**
+     * 打印 Drawable 图片
+     *
+     * @param drawable 图片
+     * @throws IOException
+     */
+    @SuppressWarnings("unused")
+    public void printDrawable(Drawable drawable) throws IOException {
+        int maxWidth = getDrawableMaxWidth();
+        Bitmap image = scalingBitmap(drawable, maxWidth);
+        if (image == null)
+            return;
+        byte[] command = PrinterUtils.decodeBitmap(image);
+        image.recycle();
+        try {
+            if (command != null) {
+                write(command);
+            }
+        } catch (IOException e) {
+            throw new IOException(e.getMessage());
+        }
+    }
+
+    /**
+     * 缩放图片
+     *
+     * @param drawable 图片
+     * @param maxWidth 最大宽
+     * @return 缩放后的图片
+     */
+    private Bitmap scalingBitmap(Drawable drawable, int maxWidth) {
+        if (drawable == null || drawable.getIntrinsicWidth() == 0
+                || drawable.getIntrinsicHeight() == 0)
+            return null;
+        final int width = drawable.getIntrinsicWidth();
+        final int height = drawable.getIntrinsicHeight();
+        try {
+            Bitmap image = Bitmap.createBitmap(width, height,
+                    drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+                            : Bitmap.Config.RGB_565);
+            Canvas canvas = new Canvas(image);
+            drawable.setBounds(0, 0, width, height);
+            drawable.draw(canvas);
+            // 精确缩放
+            if (maxWidth <= 0 || width <= maxWidth) {
+                return image;
+            }
+            final float scale = maxWidth / (float) width;
+            Matrix matrix = new Matrix();
+            matrix.postScale(scale, scale);
+            Bitmap resizeImage = Bitmap.createBitmap(image, 0, 0, width, height, matrix, true);
+            image.recycle();
+            return resizeImage;
+        } catch (OutOfMemoryError e) {
+            return null;
+        }
+    }
+
+    /**
+     * 打印 Bitmap 图片
+     *
+     * @param image 图片
+     * @throws IOException
+     */
+    @SuppressWarnings("unused")
+    public void printBitmap(Bitmap image) throws IOException {
+        int maxWidth = getDrawableMaxWidth();
+        Bitmap scalingImage = scalingBitmap(image, maxWidth);
+        if (scalingImage == null)
+            return;
+        byte[] command = PrinterUtils.decodeBitmap(scalingImage);
+        scalingImage.recycle();
+        try {
+            if (command != null) {
+                write(command);
+            }
+        } catch (IOException e) {
+            throw new IOException(e.getMessage());
+        }
+    }
+
+    /**
+     * 缩放图片
+     *
+     * @param image    图片
+     * @param maxWidth 最大宽
+     * @return 缩放后的图片
+     */
+    private Bitmap scalingBitmap(Bitmap image, int maxWidth) {
+        if (image == null || image.getWidth() <= 0 || image.getHeight() <= 0)
+            return null;
+        try {
+            final int width = image.getWidth();
+            final int height = image.getHeight();
+            // 精确缩放
+            float scale = 1;
+            if (maxWidth <= 0 || width <= maxWidth) {
+                scale = maxWidth / (float) width;
+            }
+            Matrix matrix = new Matrix();
+            matrix.postScale(scale, scale);
+            return Bitmap.createBitmap(image, 0, 0, width, height, matrix, true);
+        } catch (OutOfMemoryError e) {
+            return null;
+        }
+    }
+
 
     /**
      * 输出并换行

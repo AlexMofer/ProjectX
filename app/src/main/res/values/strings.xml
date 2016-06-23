@@ -83,6 +83,7 @@
     <string name="printer_result_message_3">创建Socket失败！</string>
     <string name="printer_result_message_4">获取输出流失败！</string>
     <string name="printer_result_message_5">写入测试页面数据失败！</string>
+    <string name="printer_result_message_6">必要的参数不能为空！</string>
 
     <string name="cd_welcome">welcome icon</string>
 

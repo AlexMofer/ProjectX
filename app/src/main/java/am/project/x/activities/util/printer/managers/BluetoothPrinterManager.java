@@ -21,9 +21,10 @@ import android.widget.Toast;
 import am.project.x.R;
 import am.project.x.activities.util.printer.adapters.DeviceAdapter;
 import am.project.x.activities.util.printer.data.PrinterData;
-import am.project.x.activities.util.printer.test.BluetoothPrinterTester;
+import am.project.x.activities.util.printer.data.PrinterTester;
 import am.project.x.activities.util.printer.viewholders.DeviceViewHolder;
 import am.project.x.widgets.divider.DividerItemDecoration;
+import am.util.printer.PrintTask;
 
 /**
  * 蓝牙打印管理器
@@ -72,7 +73,7 @@ public class BluetoothPrinterManager implements View.OnClickListener,
     private boolean isDeny = false;
     private boolean shouldClose = false;
     private DeviceAdapter bondedAdapter = new DeviceAdapter(this);
-    private BluetoothPrinterTester tester;
+    private PrinterTester tester;
 
     public BluetoothPrinterManager(Activity activity) {
         this.activity = activity;
@@ -180,9 +181,9 @@ public class BluetoothPrinterManager implements View.OnClickListener,
     @Override
     public void onItemClicked(BluetoothDevice device) {
         int id = rgType.getCheckedRadioButtonId();
-        int type = id == R.id.printer_rb_80 ? PrinterData.TYPE_80 : PrinterData.TYPE_58;
+        int type = id == R.id.printer_rb_80 ? PrintTask.TYPE_80 : PrintTask.TYPE_58;
         if (tester == null) {
-            tester = new BluetoothPrinterTester(activity);
+            tester = new PrinterTester(activity);
         }
         tester.startTest(device, type);
     }
