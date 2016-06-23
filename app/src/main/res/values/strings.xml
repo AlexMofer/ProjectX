@@ -86,6 +86,13 @@
     <string name="printer_result_message_6">必要的参数不能为空！</string>
 
     <string name="cipher_title">加密解密</string>
+    <string name="cipher_input">输入待处理文本</string>
+    <string name="cipher_message_digest">信息摘要</string>
+    <string name="cipher_des">DES</string>
+    <string name="cipher_aes">AES</string>
+    <string name="cipher_rsa">RSA</string>
+    <string name="cipher_output">输出信息：</string>
+    <string name="cipher_dlg_message">正在计算&#8230;</string>
 
     <string name="cd_welcome">welcome icon</string>
 
@@ -98,9 +105,5 @@
     <string name="text_scbd">There is TextView Content</string>
     <string name="text_scbd_v">There\nis\nTextView\nContent</string>
     <string name="title_activity_replace">ReplaceActivity</string>
-    <string name="message_digest">信息摘要</string>
-    <string name="des">DES</string>
-    <string name="aes">AES</string>
-    <string name="rsa">RSA</string>
 
 </resources>
