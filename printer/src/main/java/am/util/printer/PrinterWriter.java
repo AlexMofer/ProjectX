@@ -28,7 +28,7 @@ public abstract class PrinterWriter {
     /**
      * 重置
      *
-     * @throws IOException
+     * @throws IOException 异常
      */
     public void reset() throws IOException {
         bos = new ByteArrayOutputStream();
@@ -39,7 +39,7 @@ public abstract class PrinterWriter {
      * 获取预打印数据
      *
      * @return 预打印数据
-     * @throws IOException
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public byte[] getData() throws IOException {
@@ -55,9 +55,9 @@ public abstract class PrinterWriter {
      * 写入数据
      *
      * @param data 数据
-     * @throws IOException
+     * @throws IOException 异常
      */
-    private void write(byte[] data) throws IOException {
+    public void write(byte[] data) throws IOException {
         if (bos == null)
             reset();
         bos.write(data);
@@ -66,7 +66,7 @@ public abstract class PrinterWriter {
     /**
      * 设置居中
      *
-     * @throws IOException
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public void setAlignCenter() throws IOException {
@@ -76,7 +76,7 @@ public abstract class PrinterWriter {
     /**
      * 设置左对齐
      *
-     * @throws IOException
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public void setAlignLeft() throws IOException {
@@ -86,7 +86,7 @@ public abstract class PrinterWriter {
     /**
      * 设置右对齐
      *
-     * @throws IOException
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public void setAlignRight() throws IOException {
@@ -96,7 +96,7 @@ public abstract class PrinterWriter {
     /**
      * 开启着重
      *
-     * @throws IOException
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public void setEmphasizedOn() throws IOException {
@@ -106,7 +106,7 @@ public abstract class PrinterWriter {
     /**
      * 关闭着重
      *
-     * @throws IOException
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public void setEmphasizedOff() throws IOException {
@@ -117,7 +117,7 @@ public abstract class PrinterWriter {
      * 设置文字大小
      *
      * @param size 文字大小 （0～7）（默认0）
-     * @throws IOException
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public void setFontSize(int size) throws IOException {
@@ -128,7 +128,7 @@ public abstract class PrinterWriter {
      * 设置行高度
      *
      * @param height 行高度
-     * @throws IOException
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public void setLineHeight(int height) throws IOException {
@@ -140,7 +140,7 @@ public abstract class PrinterWriter {
      * 写入字符串
      *
      * @param string 字符串
-     * @throws IOException
+     * @throws IOException 异常
      */
     public void print(String string) throws IOException {
         if (string == null)
@@ -151,7 +151,7 @@ public abstract class PrinterWriter {
     /**
      * 写入一条横线
      *
-     * @throws IOException
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public void printLine() throws IOException {
@@ -174,8 +174,10 @@ public abstract class PrinterWriter {
     /**
      * 一行输出
      *
-     * @param str1 字符串
-     * @param str2 字符串
+     * @param str1     字符串
+     * @param str2     字符串
+     * @param textSize 文字大小
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public void printInOneLine(String str1, String str2, int textSize) throws IOException {
@@ -210,7 +212,7 @@ public abstract class PrinterWriter {
      *
      * @param res Resources
      * @param id  资源ID
-     * @throws IOException
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public void printDrawable(Resources res, int id) throws IOException {
@@ -283,7 +285,7 @@ public abstract class PrinterWriter {
      * 打印 Drawable 图片
      *
      * @param drawable 图片
-     * @throws IOException
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public void printDrawable(Drawable drawable) throws IOException {
@@ -341,7 +343,7 @@ public abstract class PrinterWriter {
      * 打印 Bitmap 图片
      *
      * @param image 图片
-     * @throws IOException
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public void printBitmap(Bitmap image) throws IOException {
@@ -390,7 +392,7 @@ public abstract class PrinterWriter {
     /**
      * 输出并换行
      *
-     * @throws IOException
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public void printLineFeed() throws IOException {
@@ -400,7 +402,7 @@ public abstract class PrinterWriter {
     /**
      * 进纸切割
      *
-     * @throws IOException
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public void feedPaperCut() throws IOException {
@@ -410,7 +412,7 @@ public abstract class PrinterWriter {
     /**
      * 进纸切割（留部分）
      *
-     * @throws IOException
+     * @throws IOException 异常
      */
     @SuppressWarnings("unused")
     public void feedPaperCutPartial() throws IOException {

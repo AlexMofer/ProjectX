@@ -1,5 +1,4 @@
 # ProjectX
-----------
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/ProjectX.png)
 
 整体项目合集，包括Widget、Drawable以及一些工具类。
@@ -31,11 +30,16 @@
 - [***DrawableRatingBar***](https://github.com/AlexMofer/ProjectX/tree/master/drawableratingbar)
 
     双图片评级控件，可设置图片间距，支持拖动进度及点击进度，可控制最大值最小值，及是否可手动。
+
 ## Drawable
 - [***DoubleCircleDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
 
     双圈动图，用作载入动画
+
 ## Other
+- [***Printer***](https://github.com/AlexMofer/ProjectX/tree/master/printer)
+
+    标准ES-POS命令打印，固定IP或蓝牙打印，支持黑白图片打印
 - [***SupportPlus***](https://github.com/AlexMofer/ProjectX/tree/master/supportplus)
 
     v4支持包拓展

@@ -102,7 +102,7 @@ public abstract class PrintTask extends AsyncTask<Void, Integer, Integer> {
      *
      * @param type 打印类型
      * @return 打印数据
-     * @throws Exception
+     * @throws Exception 异常
      */
     protected abstract byte[] getPrintData(int type) throws Exception;
 

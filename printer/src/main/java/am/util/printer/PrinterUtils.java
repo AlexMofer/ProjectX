@@ -891,6 +891,8 @@ public class PrinterUtils {
 
     /**
      * 16进制指令list转换为byte[]指令
+     * @param list 指令集
+     * @return byte[]指令
      */
     @SuppressWarnings("unused")
     public static byte[] hexListToByte(List<String> list) {
