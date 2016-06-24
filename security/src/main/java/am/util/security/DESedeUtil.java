@@ -17,7 +17,7 @@ import javax.crypto.spec.DESedeKeySpec;
  * DES加密解密工具类
  * 最好使用AES加密
  *
- * @author Mofer
+ * @author Alex
  */
 public class DESedeUtil {
 
@@ -31,12 +31,12 @@ public class DESedeUtil {
      * @param key   密钥字节
      * @param clear 明文字节
      * @return 密文字节
-     * @throws InvalidKeyException
-     * @throws InvalidKeySpecException
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchPaddingException
-     * @throws IllegalBlockSizeException
-     * @throws BadPaddingException
+     * @throws InvalidKeyException       异常
+     * @throws InvalidKeySpecException   异常
+     * @throws NoSuchAlgorithmException  异常
+     * @throws NoSuchPaddingException    异常
+     * @throws IllegalBlockSizeException 异常
+     * @throws BadPaddingException       异常
      */
     @SuppressWarnings("all")
     public static byte[] encrypt(byte[] key, byte[] clear) throws
@@ -60,12 +60,12 @@ public class DESedeUtil {
      * @param key       密钥字节
      * @param encrypted 密文字节
      * @return 明文字节
-     * @throws InvalidKeyException
-     * @throws InvalidKeySpecException
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchPaddingException
-     * @throws IllegalBlockSizeException
-     * @throws BadPaddingException
+     * @throws InvalidKeyException       异常
+     * @throws InvalidKeySpecException   异常
+     * @throws NoSuchAlgorithmException  异常
+     * @throws NoSuchPaddingException    异常
+     * @throws IllegalBlockSizeException 异常
+     * @throws BadPaddingException       异常
      */
     @SuppressWarnings("all")
     public static byte[] decrypt(byte[] key, byte[] encrypted) throws
@@ -88,7 +88,7 @@ public class DESedeUtil {
      * 生成密钥
      *
      * @return 密钥字节
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException 异常
      */
     public static byte[] generateKey() throws NoSuchAlgorithmException {
         return KeyUtil.generateKey(ALGORITHM, SIZE);
@@ -99,8 +99,8 @@ public class DESedeUtil {
      *
      * @param seed 随机数种子
      * @return 密钥字节
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchProviderException
+     * @throws NoSuchAlgorithmException 异常
+     * @throws NoSuchProviderException  异常
      */
     public static byte[] getRandomKey(byte[] seed) throws
             NoSuchAlgorithmException,
@@ -114,8 +114,8 @@ public class DESedeUtil {
      * @param password 口令
      * @param salt     盐
      * @return 密钥字节
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
+     * @throws NoSuchAlgorithmException 异常
+     * @throws InvalidKeySpecException  异常
      */
     public static byte[] getPBEKey(char[] password, byte[] salt) throws
             NoSuchAlgorithmException,

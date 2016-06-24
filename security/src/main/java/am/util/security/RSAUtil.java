@@ -36,12 +36,12 @@ public class RSAUtil {
      * @param key   密钥字节
      * @param clear 明文字节
      * @return 密文字节
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
-     * @throws NoSuchPaddingException
-     * @throws InvalidKeyException
-     * @throws IllegalBlockSizeException
-     * @throws BadPaddingException
+     * @throws NoSuchAlgorithmException  异常
+     * @throws InvalidKeySpecException   异常
+     * @throws NoSuchPaddingException    异常
+     * @throws InvalidKeyException       异常
+     * @throws IllegalBlockSizeException 异常
+     * @throws BadPaddingException       异常
      */
     @SuppressWarnings("all")
     public static byte[] encryptByPublicKey(byte[] key, byte[] clear) throws
@@ -64,12 +64,12 @@ public class RSAUtil {
      * @param key   密钥字节
      * @param clear 明文字节
      * @return 密文字节
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
-     * @throws NoSuchPaddingException
-     * @throws InvalidKeyException
-     * @throws IllegalBlockSizeException
-     * @throws BadPaddingException
+     * @throws NoSuchAlgorithmException  异常
+     * @throws InvalidKeySpecException   异常
+     * @throws NoSuchPaddingException    异常
+     * @throws InvalidKeyException       异常
+     * @throws IllegalBlockSizeException 异常
+     * @throws BadPaddingException       异常
      */
     @SuppressWarnings("all")
     public static byte[] encryptByPrivateKey(byte[] key, byte[] clear) throws
@@ -92,12 +92,12 @@ public class RSAUtil {
      * @param key       密钥字节
      * @param encrypted 密文字节
      * @return 明文字节
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
-     * @throws NoSuchPaddingException
-     * @throws InvalidKeyException
-     * @throws IllegalBlockSizeException
-     * @throws BadPaddingException
+     * @throws NoSuchAlgorithmException  异常
+     * @throws InvalidKeySpecException   异常
+     * @throws NoSuchPaddingException    异常
+     * @throws InvalidKeyException       异常
+     * @throws IllegalBlockSizeException 异常
+     * @throws BadPaddingException       异常
      */
     @SuppressWarnings("all")
     public static byte[] decryptByPublicKey(byte[] key, byte[] encrypted) throws
@@ -120,12 +120,12 @@ public class RSAUtil {
      * @param key       密钥字节
      * @param encrypted 密文字节
      * @return 明文字节
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
-     * @throws NoSuchPaddingException
-     * @throws InvalidKeyException
-     * @throws IllegalBlockSizeException
-     * @throws BadPaddingException
+     * @throws NoSuchAlgorithmException  异常
+     * @throws InvalidKeySpecException   异常
+     * @throws NoSuchPaddingException    异常
+     * @throws InvalidKeyException       异常
+     * @throws IllegalBlockSizeException 异常
+     * @throws BadPaddingException       异常
      */
     @SuppressWarnings("all")
     public static byte[] decryptByPrivateKey(byte[] key, byte[] encrypted) throws
@@ -149,10 +149,10 @@ public class RSAUtil {
      * @param key  私钥字节
      * @param data 数据字节
      * @return 签名字节
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
-     * @throws InvalidKeyException
-     * @throws SignatureException
+     * @throws NoSuchAlgorithmException 异常
+     * @throws InvalidKeySpecException  异常
+     * @throws InvalidKeyException      异常
+     * @throws SignatureException       异常
      */
     public static byte[] signature(byte[] key, byte[] data) throws
             NoSuchAlgorithmException,
@@ -174,10 +174,10 @@ public class RSAUtil {
      * @param data 数据字节
      * @param sign 签名字节
      * @return 是否通过校验
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
-     * @throws InvalidKeyException
-     * @throws SignatureException
+     * @throws NoSuchAlgorithmException 异常
+     * @throws InvalidKeySpecException  异常
+     * @throws InvalidKeyException      异常
+     * @throws SignatureException       异常
      */
     public static boolean verify(byte[] key, byte[] data, byte[] sign) throws
             NoSuchAlgorithmException,
@@ -196,7 +196,7 @@ public class RSAUtil {
      * 生成密钥
      *
      * @return 密钥对
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException 异常
      */
     public static KeyPair generateKeyPair() throws NoSuchAlgorithmException {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(ALGORITHM);

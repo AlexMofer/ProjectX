@@ -178,13 +178,15 @@ public class CipherActivity extends BaseActivity implements View.OnClickListener
 
     private void getMD5(StringBuffer buffer, String text) {
         buffer.append("MD5：");
-        buffer.append(MessageDigestUtils.getMD5(text.getBytes()));
+        byte[] md5 = MessageDigestUtils.getMD5(text.getBytes());
+        buffer.append(Base64.encodeToString(md5, Base64.DEFAULT));
         buffer.append("\n");
     }
 
     private void getSHA256(StringBuffer buffer, String text) {
         buffer.append("SHA-256：");
-        buffer.append(MessageDigestUtils.getSHA256(text.getBytes()));
+        byte[] sha256 = MessageDigestUtils.getSHA256(text.getBytes());
+        buffer.append(Base64.encodeToString(sha256, Base64.DEFAULT));
         buffer.append("\n");
     }
 

@@ -1,7 +1,5 @@
 package am.util.security;
 
-import android.util.Base64;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -16,14 +14,13 @@ public class MessageDigestUtils {
      *
      * @param src       数据源
      * @param algorithm 算法
-     * @return Base64编码的信息摘要
+     * @return 信息摘要
      */
-    public static String getMessageDigest(byte[] src, String algorithm) {
+    public static byte[] getMessageDigest(byte[] src, String algorithm) {
         if (src == null)
             return null;
         try {
-            return Base64.encodeToString(MessageDigest.getInstance(algorithm).digest(src),
-                    Base64.DEFAULT);
+            return MessageDigest.getInstance(algorithm).digest(src);
         } catch (NoSuchAlgorithmException e) {
             return null;
         }
@@ -33,9 +30,9 @@ public class MessageDigestUtils {
      * 获取MD5
      *
      * @param src 数据源
-     * @return Base64编码的MD5
+     * @return MD5
      */
-    public static String getMD5(byte[] src) {
+    public static byte[] getMD5(byte[] src) {
         return getMessageDigest(src, "MD5");
     }
 
@@ -43,9 +40,9 @@ public class MessageDigestUtils {
      * 获取SHA-256
      *
      * @param src 数据源
-     * @return Base64编码的SHA-256
+     * @return SHA-256
      */
-    public static String getSHA256(byte[] src) {
+    public static byte[] getSHA256(byte[] src) {
         return getMessageDigest(src, "SHA-256");
     }
 }

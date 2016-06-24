@@ -27,7 +27,7 @@ public class KeyUtil {
      * 生成密钥
      *
      * @return 密钥字节
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException 异常
      */
     public static byte[] generateKey(String algorithm, int size) throws NoSuchAlgorithmException {
         KeyGenerator kg = KeyGenerator.getInstance(algorithm);
@@ -45,8 +45,8 @@ public class KeyUtil {
      * @param seed         随机数种子
      * @param size         密钥长度
      * @return 密钥字节
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchProviderException
+     * @throws NoSuchAlgorithmException 异常
+     * @throws NoSuchProviderException  异常
      */
     public static byte[] getRandomKey(String keyAlgorithm, String rawAlgorithm, String provider,
                                       byte[] seed, int size) throws
@@ -71,8 +71,8 @@ public class KeyUtil {
      * @param iterationCount 迭代次数
      * @param size           密钥长度
      * @return 密钥字节
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
+     * @throws NoSuchAlgorithmException 异常
+     * @throws InvalidKeySpecException  异常
      */
     public static byte[] getPBEKey(String algorithm, char[] password, byte[] salt,
                                    int iterationCount, int size) throws
@@ -91,8 +91,8 @@ public class KeyUtil {
      * @param seed      随机数种子
      * @param size      密钥长度
      * @return 密钥字节
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchProviderException
+     * @throws NoSuchAlgorithmException 异常
+     * @throws NoSuchProviderException  异常
      */
     public static byte[] getRandomKey(String algorithm, byte[] seed, int size) throws
             NoSuchAlgorithmException,
@@ -103,12 +103,12 @@ public class KeyUtil {
     /**
      * PBE口令密钥
      *
-     * @param password       口令
-     * @param salt           盐
-     * @param size           密钥长度
+     * @param password 口令
+     * @param salt     盐
+     * @param size     密钥长度
      * @return 密钥字节
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
+     * @throws NoSuchAlgorithmException 异常
+     * @throws InvalidKeySpecException  异常
      */
     public static byte[] getPBEKey(char[] password, byte[] salt, int size) throws
             NoSuchAlgorithmException,

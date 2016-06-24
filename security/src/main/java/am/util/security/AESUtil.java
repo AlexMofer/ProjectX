@@ -14,7 +14,7 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * AES加密解密工具类
  *
- * @author Mofer
+ * @author Alex
  */
 public class AESUtil {
 
@@ -29,12 +29,12 @@ public class AESUtil {
      * @param key   密钥字节
      * @param clear 明文字节
      * @return 密文字节
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchPaddingException
-     * @throws InvalidKeyException
-     * @throws InvalidAlgorithmParameterException
-     * @throws IllegalBlockSizeException
-     * @throws BadPaddingException
+     * @throws NoSuchAlgorithmException           异常
+     * @throws NoSuchPaddingException             异常
+     * @throws InvalidKeyException                异常
+     * @throws InvalidAlgorithmParameterException 异常
+     * @throws IllegalBlockSizeException          异常
+     * @throws BadPaddingException                异常
      */
     public static byte[] encrypt(byte[] key, byte[] clear) throws
             NoSuchAlgorithmException,
@@ -56,12 +56,12 @@ public class AESUtil {
      * @param key       密钥字节
      * @param encrypted 密文字节
      * @return 明文字节
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchPaddingException
-     * @throws InvalidKeyException
-     * @throws InvalidAlgorithmParameterException
-     * @throws IllegalBlockSizeException
-     * @throws BadPaddingException
+     * @throws NoSuchAlgorithmException           异常
+     * @throws NoSuchPaddingException             异常
+     * @throws InvalidKeyException                异常
+     * @throws InvalidAlgorithmParameterException 异常
+     * @throws IllegalBlockSizeException          异常
+     * @throws BadPaddingException                异常
      */
     public static byte[] decrypt(byte[] key, byte[] encrypted) throws
             NoSuchAlgorithmException,
@@ -81,7 +81,7 @@ public class AESUtil {
      * 生成密钥
      *
      * @return 密钥字节
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException 异常
      */
     public static byte[] generateKey() throws NoSuchAlgorithmException {
         return KeyUtil.generateKey(ALGORITHM, SIZE);
@@ -92,7 +92,7 @@ public class AESUtil {
      *
      * @param seed 随机数种子
      * @return 密钥字节
-     * @throws Exception
+     * @throws Exception 异常
      */
     public static byte[] getRandomKey(byte[] seed) throws Exception {
         return KeyUtil.getRandomKey(ALGORITHM, seed, SIZE);
@@ -101,10 +101,10 @@ public class AESUtil {
     /**
      * PBE口令密钥
      *
-     * @param password       口令
-     * @param salt           盐
+     * @param password 口令
+     * @param salt     盐
      * @return 密钥字节
-     * @throws Exception
+     * @throws Exception 异常
      */
     public static byte[] getPBEKey(char[] password, byte[] salt) throws Exception {
         return KeyUtil.getPBEKey(password, salt, SIZE);
