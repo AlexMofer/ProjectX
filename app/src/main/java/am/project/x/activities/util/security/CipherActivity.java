@@ -1,8 +1,10 @@
 package am.project.x.activities.util.security;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
@@ -19,10 +21,12 @@ import am.util.security.DESedeUtil;
 import am.util.security.MessageDigestUtils;
 import am.util.security.RSAUtil;
 
-public class CipherActivity extends BaseActivity implements View.OnClickListener{
+public class CipherActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText edtInput;
     private TextView tvOutput;
+    private AlertDialog dlgCipher;
+
     @Override
     protected int getContentViewLayoutResources() {
         return R.layout.activity_cipher;
@@ -52,31 +56,95 @@ public class CipherActivity extends BaseActivity implements View.OnClickListener
         edtInput.clearFocus();
         switch (view.getId()) {
             case R.id.cipher_btn_message:
-                getMessage(input);
+                new CipherTask(CipherTask.MODE_MESSAGE).execute(input);
                 break;
             case R.id.cipher_btn_des:
-                getDES(input);
+                new CipherTask(CipherTask.MODE_DES).execute(input);
                 break;
             case R.id.cipher_btn_aes:
-                getAES(input);
+                new CipherTask(CipherTask.MODE_AES).execute(input);
                 break;
             case R.id.cipher_btn_rsa:
-                getRSA(input);
+                new CipherTask(CipherTask.MODE_RSA).execute(input);
                 break;
         }
     }
 
-    private void getMessage(String text) {
+    private class CipherTask extends AsyncTask<String, Void, StringBuffer>
+            implements DialogInterface.OnCancelListener {
+
+        public static final int MODE_MESSAGE = 0;
+        public static final int MODE_DES = 1;
+        public static final int MODE_AES = 2;
+        public static final int MODE_RSA = 3;
+        private int mode;
+
+        public CipherTask(int mode) {
+            this.mode = mode;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (dlgCipher == null) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CipherActivity.this);
+                builder.setMessage(R.string.cipher_dlg_message);
+                dlgCipher = builder.create();
+            }
+            dlgCipher.setOnCancelListener(this);
+            dlgCipher.show();
+        }
+
+        @Override
+        protected StringBuffer doInBackground(String... strings) {
+            if (strings == null || strings.length <= 0)
+                return null;
+            String input = strings[0];
+            switch (mode) {
+                case MODE_MESSAGE:
+                    return getMessage(input);
+                case MODE_DES:
+                    return getDES(input);
+                case MODE_AES:
+                    return getAES(input);
+                case MODE_RSA:
+                    return getRSA(input);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            if (dlgCipher != null && dlgCipher.isShowing())
+                dlgCipher.dismiss();
+        }
+
+        @Override
+        protected void onPostExecute(StringBuffer stringBuffer) {
+            super.onPostExecute(stringBuffer);
+            if (dlgCipher != null && dlgCipher.isShowing())
+                dlgCipher.dismiss();
+            tvOutput.setText(stringBuffer);
+        }
+
+        @Override
+        public void onCancel(DialogInterface dialogInterface) {
+            cancel(true);
+        }
+    }
+
+    private StringBuffer getMessage(String text) {
         StringBuffer buffer = new StringBuffer();
 
         getMD5(buffer, text);
 
         getSHA256(buffer, text);
 
-        tvOutput.setText(buffer);
+        return buffer;
     }
 
-    private void getDES(String text) {
+    private StringBuffer getDES(String text) {
         StringBuffer buffer = new StringBuffer();
 
         doDESede(buffer, text);
@@ -85,10 +153,10 @@ public class CipherActivity extends BaseActivity implements View.OnClickListener
 
         doDESedeWithPBEKey(buffer, text);
 
-        tvOutput.setText(buffer);
+        return buffer;
     }
 
-    private void getAES(String text) {
+    private StringBuffer getAES(String text) {
         StringBuffer buffer = new StringBuffer();
 
         doAES(buffer, text);
@@ -97,15 +165,15 @@ public class CipherActivity extends BaseActivity implements View.OnClickListener
 
         doAESWithPBEKey(buffer, text);
 
-        tvOutput.setText(buffer);
+        return buffer;
     }
 
-    private void getRSA(String text) {
+    private StringBuffer getRSA(String text) {
         StringBuffer buffer = new StringBuffer();
 
         doRSA(buffer, text);
 
-        tvOutput.setText(buffer);
+        return buffer;
     }
 
     private void getMD5(StringBuffer buffer, String text) {
