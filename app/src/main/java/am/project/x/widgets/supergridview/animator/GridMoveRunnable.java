@@ -4,10 +4,10 @@ import android.view.View;
 import android.view.animation.Interpolator;
 
 import am.project.x.widgets.animators.BaseAnimator;
-import am.project.x.widgets.headerfootergridview.HeaderFooterGridView;
-import am.project.x.widgets.headerfootergridview.HeaderFooterViewListAdapter;
 import am.project.x.widgets.supergridview.DragView;
 import am.project.x.utils.AnimatorViewCompat;
+import am.widget.headerfootergridview.HeaderFooterGridView;
+import am.widget.headerfootergridview.HeaderFooterViewListAdapter;
 
 
 /**

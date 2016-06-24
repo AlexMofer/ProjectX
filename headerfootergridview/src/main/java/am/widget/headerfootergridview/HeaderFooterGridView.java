@@ -1,5 +1,6 @@
-package am.project.x.widgets.headerfootergridview;
+package am.widget.headerfootergridview;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Build;
@@ -13,8 +14,6 @@ import android.widget.ListView;
 import android.widget.ListView.FixedViewInfo;
 
 import java.util.ArrayList;
-
-import am.project.x.widgets.headerfootergridview.support.GridViewCompat;
 
 
 /**
@@ -51,7 +50,7 @@ public class HeaderFooterGridView extends GridView {
 	}
 
 	public HeaderFooterGridView(Context context, AttributeSet attrs,
-			int defStyle) {
+								int defStyle) {
 		super(context, attrs, defStyle);
 
 	}
@@ -120,11 +119,11 @@ public class HeaderFooterGridView extends GridView {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		// 完成计算，为达到高精确度，进行一下高版本数据确认：
 		if (Build.VERSION.SDK_INT >= 11) {
-			mNumColumns = GridViewCompat.getNumColumns(this);
+			mNumColumns = getNumColumnsCompat();
 		}
 		if (Build.VERSION.SDK_INT >= 16) {
-			mHorizontalSpacing = GridViewCompat.getHorizontalSpacing(this);
-			mColumnWidth = GridViewCompat.getColumnWidth(this);
+			mHorizontalSpacing = getHorizontalSpacingCompat();
+			mColumnWidth = getColumnWidthCompat();
 		}
 		if (mAdapter != null && mAdapter.getNumColumns() != mNumColumns)
 			mAdapter.setNumColumns(mNumColumns);
@@ -132,7 +131,9 @@ public class HeaderFooterGridView extends GridView {
 				- getPaddingRight();
 	}
 
-	@Override
+
+
+    @Override
 	protected void layoutChildren() {
 		// 进行头尾View的长宽控制，View创建及Adapter更改才会调用
 		for (View header : mHeaderViews) {
@@ -282,7 +283,7 @@ public class HeaderFooterGridView extends GridView {
 
 	public int getVerticalSpacingCompat() {
 		if (Build.VERSION.SDK_INT >= 16)
-			return GridViewCompat.getVerticalSpacing(this);
+			return getVerticalSpacing();
 		else
 			return mVerticalSpacing;
 
@@ -296,14 +297,14 @@ public class HeaderFooterGridView extends GridView {
 
 	public int getHorizontalSpacingCompat() {
 		if (Build.VERSION.SDK_INT >= 16)
-			return GridViewCompat.getHorizontalSpacing(this);
+			return getHorizontalSpacing();
 		else
 			return mHorizontalSpacing;
 	}
 
 	public int getRequestedHorizontalSpacingCompat() {
 		if (Build.VERSION.SDK_INT >= 16)
-			return GridViewCompat.getRequestedHorizontalSpacing(this);
+			return getRequestedHorizontalSpacing();
 		else
 			return mRequestedHorizontalSpacing;
 	}
@@ -316,14 +317,14 @@ public class HeaderFooterGridView extends GridView {
 
 	public int getColumnWidthCompat() {
 		if (Build.VERSION.SDK_INT >= 16)
-			return GridViewCompat.getColumnWidth(this);
+			return getColumnWidth();
 		else
 			return mColumnWidth;
 	}
 
 	public int getRequestedColumnWidthCompat() {
 		if (Build.VERSION.SDK_INT >= 16)
-			return GridViewCompat.getRequestedColumnWidth(this);
+			return getRequestedColumnWidthCompat();
 		else
 			return mRequestedColumnWidth;
 	}
@@ -335,8 +336,8 @@ public class HeaderFooterGridView extends GridView {
 	}
 
 	public int getNumColumnsCompat() {
-		if (Build.VERSION.SDK_INT >= 16)
-			return GridViewCompat.getNumColumns(this);
+		if (Build.VERSION.SDK_INT >= 11)
+			return getNumColumns();
 		else
 			return mNumColumns;
 	}

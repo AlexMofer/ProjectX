@@ -1,4 +1,4 @@
-package am.project.x.widgets.headerfootergridview;
+package am.widget.headerfootergridview;
 
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
@@ -636,7 +636,7 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 		int height = simple.getMeasuredHeight();
 		if (height == 0) {
 			ViewGroup.LayoutParams p = simple.getLayoutParams();
-			if (p == null && !(p instanceof AbsListView.LayoutParams)) {
+			if (p == null || !(p instanceof AbsListView.LayoutParams)) {
 				p = new AbsListView.LayoutParams(
 						ViewGroup.LayoutParams.MATCH_PARENT,
 						ViewGroup.LayoutParams.WRAP_CONTENT, 0);

@@ -13,9 +13,9 @@ import android.widget.AdapterView;
 
 import java.util.ArrayList;
 
-import am.project.x.widgets.headerfootergridview.HeaderFooterGridView;
-import am.project.x.widgets.headerfootergridview.HeaderFooterViewListAdapter;
 import am.project.x.widgets.supergridview.animator.GridMoveRunnable;
+import am.widget.headerfootergridview.HeaderFooterGridView;
+import am.widget.headerfootergridview.HeaderFooterViewListAdapter;
 
 public class SuperGridView extends HeaderFooterGridView {
 

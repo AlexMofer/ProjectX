@@ -1,0 +1,17 @@
+# Gradle files
+.gradle/
+build/
+/*/build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Android Studio
+.idea/
+*.iml
+
+# Windows OS
+/*/Thumbs.db
+
+# Apple OS
+.DS_Store

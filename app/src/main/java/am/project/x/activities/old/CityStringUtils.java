@@ -4,7 +4,7 @@ package am.project.x.activities.old;
 import am.project.x.R;
 import am.project.x.widgets.citylistview.CitysUtils;
 
-public class CitysStringUtils {
+public class CityStringUtils {
 	public static final int ERROR_ID = 0;
 
 	/**
