@@ -7,11 +7,11 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import am.project.x.R;
-import am.project.x.activities.util.printer.data.PrinterData;
 import am.project.x.activities.util.printer.data.PrinterTester;
 import am.project.x.utils.ImmUtils;
 import am.project.x.utils.StringUtils;
-import am.util.printer.PrintTask;
+import am.util.printer.PrinterWriter58mm;
+import am.util.printer.PrinterWriter80mm;
 
 /**
  * 固定IP打印机
@@ -22,7 +22,7 @@ public class IPPrinterManager implements View.OnClickListener,
     private Activity activity;
     private EditText edtIp;
     private EditText edtPort;
-    private int type = PrintTask.TYPE_80;
+    private int type = PrinterWriter80mm.TYPE_80;
     private PrinterTester tester;
 
     public IPPrinterManager(Activity activity) {
@@ -37,10 +37,10 @@ public class IPPrinterManager implements View.OnClickListener,
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
         switch (i) {
             case R.id.printer_rb_80:
-                type = PrintTask.TYPE_80;
+                type = PrinterWriter80mm.TYPE_80;
                 break;
             case R.id.printer_rb_58:
-                type = PrintTask.TYPE_58;
+                type = PrinterWriter58mm.TYPE_58;
                 break;
         }
     }

@@ -8,6 +8,9 @@ import java.io.IOException;
  */
 @SuppressWarnings("unused")
 public class PrinterWriter58mm extends PrinterWriter {
+
+    public static final int TYPE_58 = 58;// 纸宽58mm
+
     public PrinterWriter58mm() throws IOException {
     }
 

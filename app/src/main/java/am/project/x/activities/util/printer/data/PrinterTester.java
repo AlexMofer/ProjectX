@@ -7,6 +7,8 @@ import android.support.v7.app.AlertDialog;
 
 import am.project.x.R;
 import am.util.printer.PrintTask;
+import am.util.printer.PrinterRequest;
+import am.util.printer.PrinterWriter80mm;
 
 /**
  * 测试器
@@ -59,7 +61,7 @@ public class PrinterTester {
 
         @Override
         protected byte[] getPrintData(int type) throws Exception {
-            return type == TYPE_80 ? PrinterData.getPrintData80(activity.getResources())
+            return type == PrinterWriter80mm.TYPE_80 ? PrinterData.getPrintData80(activity.getResources())
                     : PrinterData.getPrintData58(activity.getResources());
         }
 
@@ -67,19 +69,19 @@ public class PrinterTester {
         protected void onPrinterStateChanged(int state) {
             super.onPrinterStateChanged(state);
             switch (state) {
-                case STATE_0:
+                case PrinterRequest.STATE_0:
                     dlgInfo.setMessage(activity.getString(R.string.printer_test_message_1));
                     break;
-                case STATE_1:
+                case PrinterRequest.STATE_1:
                     dlgInfo.setMessage(activity.getString(R.string.printer_test_message_2));
                     break;
-                case STATE_2:
+                case PrinterRequest.STATE_2:
                     dlgInfo.setMessage(activity.getString(R.string.printer_test_message_3));
                     break;
-                case STATE_3:
+                case PrinterRequest.STATE_3:
                     dlgInfo.setMessage(activity.getString(R.string.printer_test_message_4));
                     break;
-                case STATE_4:
+                case PrinterRequest.STATE_4:
                     dlgInfo.setMessage(activity.getString(R.string.printer_test_message_5));
                     break;
             }
@@ -89,22 +91,22 @@ public class PrinterTester {
         protected void onResult(int errorCode) {
             super.onResult(errorCode);
             switch (errorCode) {
-                case ERROR_0:
+                case PrinterRequest.ERROR_0:
                     dlgInfo.setMessage(activity.getString(R.string.printer_result_message_1));
                     break;
-                case ERROR_1:
+                case PrinterRequest.ERROR_1:
                     dlgInfo.setMessage(activity.getString(R.string.printer_result_message_2));
                     break;
-                case ERROR_2:
+                case PrinterRequest.ERROR_2:
                     dlgInfo.setMessage(activity.getString(R.string.printer_result_message_3));
                     break;
-                case ERROR_3:
+                case PrinterRequest.ERROR_3:
                     dlgInfo.setMessage(activity.getString(R.string.printer_result_message_4));
                     break;
-                case ERROR_4:
+                case PrinterRequest.ERROR_4:
                     dlgInfo.setMessage(activity.getString(R.string.printer_result_message_5));
                     break;
-                case ERROR_5:
+                case PrinterRequest.ERROR_5:
                     dlgInfo.setMessage(activity.getString(R.string.printer_result_message_6));
                     break;
             }
