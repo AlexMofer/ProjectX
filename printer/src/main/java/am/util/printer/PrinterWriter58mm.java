@@ -26,7 +26,7 @@ public class PrinterWriter58mm extends PrinterWriter {
             case 0:
                 return 31;
             case 1:
-                return 16;
+                return 15;
         }
     }
 

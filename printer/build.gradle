@@ -8,7 +8,7 @@ android {
         minSdkVersion 5
         targetSdkVersion 24
         versionCode 3
-        versionName "1.1.1"
+        versionName "1.1.2"
     }
 }
 
