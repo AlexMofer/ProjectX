@@ -73,7 +73,7 @@ public abstract class PrintTask extends AsyncTask<Void, Integer, Integer> {
 
     }
 
-    private class SimplePrinterRequest extends PrinterRequest {
+    private class SimplePrinterRequest extends PrintRequest {
         public SimplePrinterRequest(BluetoothDevice device, int type) {
             super(device, type);
         }

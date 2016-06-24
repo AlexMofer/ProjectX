@@ -13,7 +13,7 @@ import java.util.UUID;
  * Created by Alex on 2016/6/24.
  */
 @SuppressWarnings("unused")
-public abstract class PrinterRequest {
+public abstract class PrintRequest {
 
     public static final int STATE_0 = 0;// 生成测试页面数据
     public static final int STATE_1 = 1;// 创建Socket连接
@@ -35,14 +35,42 @@ public abstract class PrinterRequest {
     private BluetoothSocket bluetoothSocket;
     private OutputStream out;
 
-    public PrinterRequest(BluetoothDevice device, int type) {
-        this.mDevice = device;
-        this.type = type;
+    public PrintRequest(BluetoothDevice device, int type) {
+        setDevice(device);
+        setType(type);
     }
 
-    public PrinterRequest(String ip, int port, int type) {
+    public PrintRequest(String ip, int port, int type) {
+        setIp(ip, port);
+        setType(type);
+    }
+
+    /**
+     * 设置IP及端口
+     *
+     * @param ip   IP
+     * @param port 端口
+     */
+    public void setIp(String ip, int port) {
         this.ip = ip;
         this.port = port;
+    }
+
+    /**
+     * 设置蓝牙
+     *
+     * @param device 设备
+     */
+    public void setDevice(BluetoothDevice device) {
+        this.mDevice = device;
+    }
+
+    /**
+     * 设置打印类型
+     *
+     * @param type 打印类型
+     */
+    public void setType(int type) {
         this.type = type;
     }
 
