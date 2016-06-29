@@ -174,7 +174,8 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.util.security.CipherActivity"
+        <activity
+            android:name=".activities.util.security.CipherActivity"
             android:label="@string/cipher_title">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -185,6 +186,20 @@
                 <data
                     android:host="github.com"
                     android:pathPrefix="/AlexMofer/ProjectX/tree/master/security"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.widgets.headerfootergridview.HeaderFooterGridViewActivity"
+            android:label="@string/headerfootergridview_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="github.com"
+                    android:pathPrefix="/AlexMofer/ProjectX/tree/master/headerfootergridview"
                     android:scheme="https" />
             </intent-filter>
         </activity>

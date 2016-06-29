@@ -201,15 +201,15 @@ public class GridMoveRunnable extends BaseAnimator {
 			HeaderFooterViewListAdapter.PositionType pt = mGridView
 					.getPositionType(position);
 			if (pt == HeaderFooterViewListAdapter.PositionType.NORMAL
-					|| pt == HeaderFooterViewListAdapter.PositionType.HEADERITEM) {
+					|| pt == HeaderFooterViewListAdapter.PositionType.HEADER_ITEM) {
 				AnimatorViewCompat.setTranslationX(child, x);
 				AnimatorViewCompat.setTranslationY(child, y);
-			} else if (pt == HeaderFooterViewListAdapter.PositionType.FOOTERITEM) {
+			} else if (pt == HeaderFooterViewListAdapter.PositionType.FOOTER_ITEM) {
 				AnimatorViewCompat.setTranslationX(child, x);
 				AnimatorViewCompat.setTranslationY(child, y);
-			} else if (pt == HeaderFooterViewListAdapter.PositionType.HEADERVIEW) {
+			} else if (pt == HeaderFooterViewListAdapter.PositionType.HEADER_VIEW) {
 				AnimatorViewCompat.setTranslationY(child, y);
-			} else if (pt == HeaderFooterViewListAdapter.PositionType.FOOTERVIEW) {
+			} else if (pt == HeaderFooterViewListAdapter.PositionType.FOOTER_VIEW) {
 				// TODO 动画效果，垂直上移
 			}
 		}

@@ -30,6 +30,9 @@
 - [***DrawableRatingBar***](https://github.com/AlexMofer/ProjectX/tree/master/drawableratingbar)
 
     双图片评级控件，可设置图片间距，支持拖动进度及点击进度，可控制最大值最小值，及是否可手动。
+- [***HeaderFooterGridView***](https://github.com/AlexMofer/ProjectX/tree/master/headerfootergridview)
+
+    头尾GridView，支持AUTO_FIT模式，头尾模式有两种，无反射代码。
 
 ## Drawable
 - [***DoubleCircleDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)

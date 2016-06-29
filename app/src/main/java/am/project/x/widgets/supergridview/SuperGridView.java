@@ -105,7 +105,7 @@ public class SuperGridView extends HeaderFooterGridView {
 						deleteAnimator = new DeleteAnimator();
 					deleteAnimator.setup();
 					dragListener.onDelete(mDragPosition,
-							getFristWrappedAdapterItemPosition(),
+							getFirstWrappedAdapterItemPosition(),
 							deleteAnimator);
 				}
 			}

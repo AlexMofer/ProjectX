@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import am.project.x.R;
+import am.project.x.activities.widgets.headerfootergridview.HeaderFooterGridViewActivity;
 import am.project.x.activities.widgets.replacelayout.ReplaceLayoutActivity;
 import am.project.x.activities.widgets.drawableratingbar.DrawableRatingBarActivity;
 import am.project.x.activities.widgets.gradienttabstrip.GradientTabStripActivity;
@@ -44,6 +45,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
         view.findViewById(R.id.widget_btn_wraplayout).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_replacelayout).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_drawableratingbar).setOnClickListener(this);
+        view.findViewById(R.id.widget_btn_headerfootergridview).setOnClickListener(this);
     }
 
     @Override
@@ -72,6 +74,9 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.widget_btn_drawableratingbar:
                 DrawableRatingBarActivity.startActivity(getContext());
+                break;
+            case R.id.widget_btn_headerfootergridview:
+                HeaderFooterGridViewActivity.startActivity(getContext());
                 break;
         }
     }

@@ -11,7 +11,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.WrapperListAdapter;
 
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
  * ListAdapter used when a ListView has header views. This ListAdapter wraps
  * another one and also keeps track of the header views and their associated
  * data objects.
- * <p/>
  * This is intended as a base class; you will probably not need to use this
  * class directly in your own code.
  */
@@ -28,9 +26,9 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
         Filterable {
 
     private ListAdapter mAdapter;
-    private final ArrayList<ListView.FixedViewInfo> mHeaderItemInfos;
-    private final ArrayList<ListView.FixedViewInfo> mFooterItemInfos;
-    static final ArrayList<ListView.FixedViewInfo> EMPTY_INFO_LIST = new ArrayList<>();
+    private final ArrayList<HeaderFooterGridView.FixedViewInfo> mHeaderItemInfo;
+    private final ArrayList<HeaderFooterGridView.FixedViewInfo> mFooterItemInfo;
+    static final ArrayList<HeaderFooterGridView.FixedViewInfo> EMPTY_INFO_LIST = new ArrayList<>();
     static final ArrayList<View> EMPTY_VIEW_LIST = new ArrayList<>();
     private final DataSetObservable mDataSetObservable = new DataSetObservable();
     boolean mAreAllFixedViewsSelectable;
@@ -41,32 +39,15 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
     private int unusedPositionCount = 0;
 
     public enum PositionType {
-        HEADEREMPTY, HEADERVIEW, HEADERITEM, NORMAL, FOOTERITEM, FOOTERVIEW, FOOTEREMPTY
+        HEADER_EMPTY, HEADER_VIEW, HEADER_ITEM, NORMAL, FOOTER_ITEM, FOOTER_VIEW, FOOTER_EMPTY
     }
 
     public HeaderFooterViewListAdapter(
-            ArrayList<ListView.FixedViewInfo> headerItemInfos,
-            ArrayList<ListView.FixedViewInfo> footerItemInfos,
+            ArrayList<HeaderFooterGridView.FixedViewInfo> headerItemInfo,
+            ArrayList<HeaderFooterGridView.FixedViewInfo> footerItemInfo,
             ListAdapter adapter, ArrayList<View> headerViews,
             ArrayList<View> footerViews, int numColumns) {
         mAdapter = adapter;
-        mIsFilterable = adapter instanceof Filterable;
-        if (headerItemInfos == null) {
-            mHeaderItemInfos = EMPTY_INFO_LIST;
-        } else {
-            mHeaderItemInfos = headerItemInfos;
-        }
-        if (footerItemInfos == null) {
-            mFooterItemInfos = EMPTY_INFO_LIST;
-        } else {
-            mFooterItemInfos = footerItemInfos;
-        }
-        mAreAllFixedViewsSelectable = areAllListInfosSelectable(mHeaderItemInfos)
-                && areAllListInfosSelectable(mFooterItemInfos);
-        if (numColumns > 0)
-            mNumColumns = numColumns;
-        else
-            mNumColumns = 1;
         if (headerViews == null) {
             mHeaderViews = EMPTY_VIEW_LIST;
         } else {
@@ -77,14 +58,32 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
         } else {
             mFooterViews = footerViews;
         }
+        mIsFilterable = adapter instanceof Filterable;
+        if (headerItemInfo == null) {
+            mHeaderItemInfo = EMPTY_INFO_LIST;
+        } else {
+            mHeaderItemInfo = headerItemInfo;
+        }
+        if (footerItemInfo == null) {
+            mFooterItemInfo = EMPTY_INFO_LIST;
+        } else {
+            mFooterItemInfo = footerItemInfo;
+        }
+        mAreAllFixedViewsSelectable = areAllListInfoSelectable(mHeaderItemInfo)
+                && areAllListInfoSelectable(mFooterItemInfo);
+        if (numColumns > 0)
+            mNumColumns = numColumns;
+        else
+            mNumColumns = 1;
+
     }
 
-    public int getHeaderItemCount() {
-        return mHeaderItemInfos.size();
+    public int getHeaderItemsCount() {
+        return mHeaderItemInfo.size();
     }
 
-    public int getFooterItemCount() {
-        return mFooterItemInfos.size();
+    public int getFooterItemsCount() {
+        return mFooterItemInfo.size();
     }
 
     @Override
@@ -92,11 +91,14 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
         return mAdapter == null || mAdapter.isEmpty();
     }
 
-    private boolean areAllListInfosSelectable(
-            ArrayList<ListView.FixedViewInfo> infos) {
-        if (infos != null) {
-            for (ListView.FixedViewInfo info : infos) {
-                if (!info.isSelectable) {
+    private boolean areAllListInfoSelectable(ArrayList<HeaderFooterGridView.FixedViewInfo> info) {
+        if (mHeaderViews != null && mHeaderViews.size() > 0)
+            return false;
+        if (mFooterViews != null && mFooterViews.size() > 0)
+            return false;
+        if (info != null) {
+            for (HeaderFooterGridView.FixedViewInfo i : info) {
+                if (!i.isSelectable) {
                     return false;
                 }
             }
@@ -105,13 +107,13 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
     }
 
     public boolean removeHeaderItem(View v) {
-        for (int i = 0; i < mHeaderItemInfos.size(); i++) {
-            ListView.FixedViewInfo info = mHeaderItemInfos.get(i);
+        for (int i = 0; i < mHeaderItemInfo.size(); i++) {
+            HeaderFooterGridView.FixedViewInfo info = mHeaderItemInfo.get(i);
             if (info.view == v) {
-                mHeaderItemInfos.remove(i);
+                mHeaderItemInfo.remove(i);
 
-                mAreAllFixedViewsSelectable = areAllListInfosSelectable(mHeaderItemInfos)
-                        && areAllListInfosSelectable(mFooterItemInfos);
+                mAreAllFixedViewsSelectable = areAllListInfoSelectable(mHeaderItemInfo)
+                        && areAllListInfoSelectable(mFooterItemInfo);
                 notifyDataSetChanged();
                 return true;
             }
@@ -121,13 +123,13 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
     }
 
     public boolean removeFooterItem(View v) {
-        for (int i = 0; i < mFooterItemInfos.size(); i++) {
-            ListView.FixedViewInfo info = mFooterItemInfos.get(i);
+        for (int i = 0; i < mFooterItemInfo.size(); i++) {
+            HeaderFooterGridView.FixedViewInfo info = mFooterItemInfo.get(i);
             if (info.view == v) {
-                mFooterItemInfos.remove(i);
+                mFooterItemInfo.remove(i);
 
-                mAreAllFixedViewsSelectable = areAllListInfosSelectable(mHeaderItemInfos)
-                        && areAllListInfosSelectable(mFooterItemInfos);
+                mAreAllFixedViewsSelectable = areAllListInfoSelectable(mHeaderItemInfo)
+                        && areAllListInfoSelectable(mFooterItemInfo);
                 notifyDataSetChanged();
                 return true;
             }
@@ -138,8 +140,8 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 
     @Override
     public int getCount() {
-        return getHeaderViewCount() + getHeaderItemCount() + getItemCount()
-                + getFooterItemCount() + getFooterViewCount();
+        return getHeaderViewsCount() + getHeaderItemsCount() + getItemCount()
+                + getFooterItemsCount() + getFooterViewsCount();
     }
 
     @Override
@@ -149,17 +151,17 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 
     @Override
     public boolean isEnabled(int position) {
-        if (position < getHeaderViewCount()) {
+        if (position < getHeaderViewsCount()) {
             // HeaderView
-            return true;
-        } else if (position < getHeaderViewCount() + getHeaderItemCount()
-                + getItemCount() + getFooterItemCount()) {
-            position = position - getHeaderViewCount();
+            return false;
+        } else if (position < getHeaderViewsCount() + getHeaderItemsCount()
+                + getItemCount() + getFooterItemsCount()) {
+            position = position - getHeaderViewsCount();
             // HeaderItem (negative positions will throw an
             // IndexOutOfBoundsException)
-            int numHeaders = getHeaderItemCount();
+            int numHeaders = getHeaderItemsCount();
             if (position < numHeaders) {
-                return mHeaderItemInfos.get(position).isSelectable;
+                return mHeaderItemInfo.get(position).isSelectable;
             }
 
             // Adapter
@@ -174,30 +176,30 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 
             // FooterItem (off-limits positions will throw an
             // IndexOutOfBoundsException)
-            return mFooterItemInfos.get(adjPosition - adapterCount).isSelectable;
+            return mFooterItemInfo.get(adjPosition - adapterCount).isSelectable;
         } else {
-            if (position < getHeaderViewCount() + getHeaderItemCount()
-                    + getItemCount() + getFooterItemCount()
+            if (position < getHeaderViewsCount() + getHeaderItemsCount()
+                    + getItemCount() + getFooterItemsCount()
                     + unusedPositionCount)
                 return false;
             // FooterView
-            return true;
+            return false;
         }
     }
 
     @Override
     public Object getItem(int position) {
-        if (position < getHeaderViewCount()) {
+        if (position < getHeaderViewsCount()) {
             // HeaderView
             return null;
-        } else if (position < getHeaderViewCount() + getHeaderItemCount()
-                + getItemCount() + getFooterItemCount()) {
-            position = position - getHeaderViewCount();
+        } else if (position < getHeaderViewsCount() + getHeaderItemsCount()
+                + getItemCount() + getFooterItemsCount()) {
+            position = position - getHeaderViewsCount();
             // HeaderItem (negative positions will throw an
             // IndexOutOfBoundsException)
-            int numHeaders = getHeaderItemCount();
+            int numHeaders = getHeaderItemsCount();
             if (position < numHeaders) {
-                return mHeaderItemInfos.get(position).data;
+                return mHeaderItemInfo.get(position).data;
             }
 
             // Adapter
@@ -212,7 +214,7 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 
             // FooterItem (off-limits positions will throw an
             // IndexOutOfBoundsException)
-            return mFooterItemInfos.get(adjPosition - adapterCount).data;
+            return mFooterItemInfo.get(adjPosition - adapterCount).data;
         } else {
             // FooterView
             return null;
@@ -222,7 +224,7 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
     @Override
     public long getItemId(int position) {
 
-        int numHeaders = getHeaderItemCount() + getHeaderViewCount();
+        int numHeaders = getHeaderItemsCount() + getHeaderViewsCount();
         if (mAdapter != null && position >= numHeaders) {
             int adjPosition = position - numHeaders;
             int adapterCount = mAdapter.getCount();
@@ -240,19 +242,19 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (position < getHeaderViewCount()) {
+        if (position < getHeaderViewsCount()) {
             // HeaderView
             return position % mNumColumns == 0 ? getHeader(position) :
                     getHideView(getHeader(position));
 
-        } else if (position < getHeaderViewCount() + getHeaderItemCount()
-                + getItemCount() + getFooterItemCount()) {
-            position = position - getHeaderViewCount();
+        } else if (position < getHeaderViewsCount() + getHeaderItemsCount()
+                + getItemCount() + getFooterItemsCount()) {
+            position = position - getHeaderViewsCount();
             // HeaderItem (negative positions will throw an
             // IndexOutOfBoundsException)
-            int numHeaders = getHeaderItemCount();
+            int numHeaders = getHeaderItemsCount();
             if (position < numHeaders) {
-                return mHeaderItemInfos.get(position).view;
+                return mHeaderItemInfo.get(position).view;
             }
             // Adapter
             final int adjPosition = position - numHeaders;
@@ -265,18 +267,18 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
             }
             // FooterItem (off-limits positions will throw an
             // IndexOutOfBoundsException)
-            return mFooterItemInfos.get(adjPosition - adapterCount).view;
-        } else if (position < getHeaderViewCount() + getHeaderItemCount()
-                + getItemCount() + getFooterItemCount()
+            return mFooterItemInfo.get(adjPosition - adapterCount).view;
+        } else if (position < getHeaderViewsCount() + getHeaderItemsCount()
+                + getItemCount() + getFooterItemsCount()
                 + unusedPositionCount) {
             View simple = null;
-            if (mFooterItemInfos.size() > 0)
-                simple = mFooterItemInfos.get(mFooterItemInfos.size() - 1).view;
+            if (mFooterItemInfo.size() > 0)
+                simple = mFooterItemInfo.get(mFooterItemInfo.size() - 1).view;
             else if (mAdapter != null && mAdapter.getCount() > 0)
                 simple = mAdapter.getView(mAdapter.getCount() - 1, null,
-                        null);
-            else if (mHeaderItemInfos.size() > 0)
-                simple = mHeaderItemInfos.get(mHeaderItemInfos.size() - 1).view;
+                        parent);
+            else if (mHeaderItemInfo.size() > 0)
+                simple = mHeaderItemInfo.get(mHeaderItemInfo.size() - 1).view;
             else if (mHeaderViews.size() > 0)
                 simple = mHeaderViews.get(mHeaderViews.size() - 1);
             return getHideView(simple);
@@ -289,7 +291,7 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 
     @Override
     public int getItemViewType(int position) {
-        int numHeaders = getHeaderItemCount() + getHeaderViewCount();
+        int numHeaders = getHeaderItemsCount() + getHeaderViewsCount();
         if (mAdapter != null && position >= numHeaders) {
             int adjPosition = position - numHeaders;
             int adapterCount = mAdapter.getCount();
@@ -353,23 +355,21 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 
     /**
      * 获取子项的第一项position（包含HeaderItem与FooterItem，不包含HeaderView及其占用的空白View）
-     * <p/>
      * 原Adapter无Item并且也无HeaderItem与FooterItem时，返回 AdapterView.INVALID_POSITION
      *
      * @return 子项的第一项position
      */
-    public int getFristItemPosition() {
+    public int getFirstItemPosition() {
         // adapter有值或者有HeaderItem
         if ((mAdapter != null && mAdapter.getCount() > 0)
-                || getHeaderItemCount() > 0 || getFooterItemCount() > 0)
-            return getHeaderViewCount();
+                || getHeaderItemsCount() > 0 || getFooterItemsCount() > 0)
+            return getHeaderViewsCount();
         else
             return AdapterView.INVALID_POSITION;
     }
 
     /**
      * 获取子项的最后项position（包含HeaderItem与FooterItem，不包含FooterView及其占用的空白View）
-     * <p/>
      * 原Adapter无Item并且也无HeaderItem与FooterItem时，返回 AdapterView.INVALID_POSITION
      *
      * @return 获取子项的最后项position
@@ -377,24 +377,24 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
     public int getLastItemPosition() {
         // adapter有值或者有HeaderItem
         if ((mAdapter != null && mAdapter.getCount() > 0)
-                || getHeaderItemCount() > 0 || getFooterItemCount() > 0)
-            return getHeaderViewCount() + getHeaderItemCount() + getItemCount()
-                    + getFooterItemCount() - 1;
+                || getHeaderItemsCount() > 0 || getFooterItemsCount() > 0)
+            return getHeaderViewsCount() + getHeaderItemsCount() + getItemCount()
+                    + getFooterItemsCount() - 1;
         else
             return AdapterView.INVALID_POSITION;
     }
 
     /**
      * 获取末个HeaderItem位置
-     * <p/>
      * 无HeaderItem则返回 AdapterView.INVALID_POSITION
      *
      * @return 末个HeaderItem位置
      */
+    @SuppressWarnings("unused")
     public int getLastHeaderItemPosition() {
         // Header
-        if (mHeaderItemInfos.size() > 0) {
-            return getHeaderViewCount() + getHeaderItemCount() - 1;
+        if (mHeaderItemInfo.size() > 0) {
+            return getHeaderViewsCount() + getHeaderItemsCount() - 1;
         } else {
             return AdapterView.INVALID_POSITION;
         }
@@ -402,15 +402,14 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 
     /**
      * 获取实际子项的第一项position
-     * <p/>
      * 原Adapter无Item时，返回 AdapterView.INVALID_POSITION
      *
      * @return 实际子项的第一项position
      */
-    public int getFristWrappedAdapterItemPosition() {
+    public int getFirstWrappedAdapterItemPosition() {
         // adapter有值
         if (mAdapter != null && mAdapter.getCount() > 0) {
-            return getHeaderViewCount() + getHeaderItemCount();
+            return getHeaderViewsCount() + getHeaderItemsCount();
         } else {
             return AdapterView.INVALID_POSITION;
         }
@@ -418,15 +417,14 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 
     /**
      * 获取首个FooterItem位置
-     * <p/>
      * 无FooterItem则返回 AdapterView.INVALID_POSITION
      *
      * @return 首个FooterItem位置
      */
     public int getFirstFooterItemPosition() {
         // Footer
-        if (mFooterItemInfos.size() > 0) {
-            return getHeaderViewCount() + getHeaderItemCount() + getItemCount();
+        if (mFooterItemInfo.size() > 0) {
+            return getHeaderViewsCount() + getHeaderItemsCount() + getItemCount();
         } else {
             return AdapterView.INVALID_POSITION;
         }
@@ -434,17 +432,17 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 
     /**
      * 获取头Item的集合位置
-     * <p/>
      * 返回 AdapterView.INVALID_POSITION 表明其对应的不是头Item
      *
      * @param position 位置
      * @return 头Item的集合位置
      */
+    @SuppressWarnings("unused")
     public int positionToHeaderItemIndex(int position) {
         final int firstFooterItem = getFirstFooterItemPosition();
-        if (getHeaderItemCount() > 0 && firstFooterItem > position
-                && position <= getHeaderViewCount()) {
-            return position - getHeaderViewCount();
+        if (getHeaderItemsCount() > 0 && firstFooterItem > position
+                && position <= getHeaderViewsCount()) {
+            return position - getHeaderViewsCount();
         } else {
             return AdapterView.INVALID_POSITION;
         }
@@ -452,16 +450,16 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 
     /**
      * 获取尾Item的集合位置
-     * <p/>
      * 返回 AdapterView.INVALID_POSITION 表明其对应的不是尾Item
      *
      * @param position 位置
      * @return 尾Item的集合位置
      */
+    @SuppressWarnings("unused")
     public int positionToFooterItemIndex(int position) {
         final int firstFooterItem = getFirstFooterItemPosition();
-        if (getFooterItemCount() > 0 && firstFooterItem >= position
-                && position < firstFooterItem + getFooterItemCount()) {
+        if (getFooterItemsCount() > 0 && firstFooterItem >= position
+                && position < firstFooterItem + getFooterItemsCount()) {
             return position - firstFooterItem;
         } else {
             return AdapterView.INVALID_POSITION;
@@ -470,7 +468,6 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 
     /**
      * 获取HeaderView的集合位置（HeaderView占用的空白位置也算作HeaderView）
-     * <p/>
      * 返回 AdapterView.INVALID_POSITION 表明其对应的不是HeaderView
      *
      * @param position 位置
@@ -478,7 +475,7 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
      */
     public int positionToHeaderViewIndex(int position) {
 
-        if (getHeaderViewCount() > 0 && position < getHeaderViewCount()) {
+        if (getHeaderViewsCount() > 0 && position < getHeaderViewsCount()) {
             return position / mNumColumns;
         } else {
             return AdapterView.INVALID_POSITION;
@@ -487,16 +484,15 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 
     /**
      * 获取FooterView的集合位置（FooterView占用的空白位置也算作FooterView）
-     * <p/>
      * 返回 AdapterView.INVALID_POSITION 表明其对应的不是FooterView
      *
      * @param position 位置
      * @return FooterView的集合位置
      */
     public int positionToFooterViewIndex(int position) {
-        int startPosition = getHeaderViewCount() + getHeaderItemCount()
-                + getItemCount() + getFooterItemCount() + unusedPositionCount;
-        if (getFooterViewCount() > 0 && position >= startPosition) {
+        int startPosition = getHeaderViewsCount() + getHeaderItemsCount()
+                + getItemCount() + getFooterItemsCount() + unusedPositionCount;
+        if (getFooterViewsCount() > 0 && position >= startPosition) {
             return (position - startPosition) / mNumColumns;
         } else {
             return AdapterView.INVALID_POSITION;
@@ -508,7 +504,7 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
      *
      * @return 包含HeaderView占用的位置
      */
-    public int getHeaderViewCount() {
+    public int getHeaderViewsCount() {
         return mHeaderViews.size() * mNumColumns;
     }
 
@@ -517,9 +513,9 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
      *
      * @return 包含FooterView占用的位置以及最后一行不足一行的几个剩余位置
      */
-    public int getFooterViewCount() {
-        int startPosition = getHeaderViewCount() + getHeaderItemCount()
-                + getItemCount() + getFooterItemCount();
+    public int getFooterViewsCount() {
+        int startPosition = getHeaderViewsCount() + getHeaderItemsCount()
+                + getItemCount() + getFooterItemsCount();
         int position = startPosition;
         unusedPositionCount = 0;
         for (int i = 0; i < mFooterViews.size(); position++) {
@@ -538,6 +534,7 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
      *
      * @return 无效Position
      */
+    @SuppressWarnings("unused")
     public int getUnusedPositionCount() {
         return unusedPositionCount;
     }
@@ -549,23 +546,23 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
      * @return 对应的类型
      */
     public PositionType getPositionType(int position) {
-        if (position < getHeaderViewCount() + getHeaderItemCount()) {
+        if (position < getHeaderViewsCount() + getHeaderItemsCount()) {
             if (position % mNumColumns == 0)
-                return PositionType.HEADERVIEW;
+                return PositionType.HEADER_VIEW;
             else
-                return PositionType.HEADEREMPTY;
-        } else if (position >= getHeaderViewCount() + getHeaderItemCount()
-                + getItemCount() + getFooterItemCount()) {
+                return PositionType.HEADER_EMPTY;
+        } else if (position >= getHeaderViewsCount() + getHeaderItemsCount()
+                + getItemCount() + getFooterItemsCount()) {
             if (position % mNumColumns == 0)
-                return PositionType.FOOTERVIEW;
+                return PositionType.FOOTER_VIEW;
             else
-                return PositionType.FOOTEREMPTY;
+                return PositionType.FOOTER_EMPTY;
         } else {
-            if (position < getHeaderViewCount() + getHeaderItemCount())
-                return PositionType.HEADERITEM;
-            else if (position >= getHeaderViewCount() + getHeaderItemCount()
+            if (position < getHeaderViewsCount() + getHeaderItemsCount())
+                return PositionType.HEADER_ITEM;
+            else if (position >= getHeaderViewsCount() + getHeaderItemsCount()
                     + getItemCount())
-                return PositionType.FOOTERITEM;
+                return PositionType.FOOTER_ITEM;
             else
                 return PositionType.NORMAL;
         }
@@ -577,7 +574,6 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 
     /**
      * 设置列数
-     * <p/>
      * 列数大于0才允许设置
      *
      * @param numColumns 列数
@@ -602,8 +598,8 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
 
     private View getFooter(int position) {
         View footer = null;
-        position = position - getHeaderViewCount() - getHeaderItemCount()
-                - getItemCount() - getFooterItemCount() - unusedPositionCount;
+        position = position - getHeaderViewsCount() - getHeaderItemsCount()
+                - getItemCount() - getFooterItemsCount() - unusedPositionCount;
         for (int i = 0; i <= mFooterViews.size(); i++) {
             if (position < (i + 1) * mNumColumns) {
                 footer = mFooterViews.get(i);
@@ -628,19 +624,20 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
                     MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
             height = simple.getMeasuredHeight();
         }
-        LinearLayout llyt = new LinearLayout(simple.getContext());
+        LinearLayout lyt = new LinearLayout(simple.getContext());
         View view = new View(simple.getContext());
-        llyt.addView(view);
+        lyt.addView(view);
         ViewGroup.LayoutParams lp = view.getLayoutParams();
         lp.height = height;
         view.setLayoutParams(lp);
-        return llyt;
+        return lyt;
     }
 
     public void notifyDataSetChanged() {
         mDataSetObservable.notifyChanged();
     }
 
+    @SuppressWarnings("unused")
     public void notifyDataSetInvalidated() {
         mDataSetObservable.notifyInvalidated();
     }

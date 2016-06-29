@@ -94,6 +94,19 @@
     <string name="cipher_output">输出信息：</string>
     <string name="cipher_dlg_message">正在计算&#8230;</string>
 
+    <string name="headerfootergridview_title">头尾网格</string>
+    <string name="headerfootergridview_header_view">头View</string>
+    <string name="headerfootergridview_header_item">头Item</string>
+    <string name="headerfootergridview_footer_view">尾View</string>
+    <string name="headerfootergridview_footer_item">尾Item</string>
+    <string name="headerfootergridview_item_number">子项数目：</string>
+    <string name="headerfootergridview_item">Item %1$d</string>
+    <string name="headerfootergridview_header">Header %1$d</string>
+    <string name="headerfootergridview_footer">Footer %1$d</string>
+    <string name="headerfootergridview_hv">Header View %1$d</string>
+    <string name="headerfootergridview_fv">Footer View %1$d</string>
+    <string name="headerfootergridview_toast">第%1$d个子项</string>
+
     <string name="cd_welcome">welcome icon</string>
 
 
@@ -104,6 +117,5 @@
     <string name="success">成功</string>
     <string name="text_scbd">There is TextView Content</string>
     <string name="text_scbd_v">There\nis\nTextView\nContent</string>
-    <string name="title_activity_replace">ReplaceActivity</string>
 
 </resources>
