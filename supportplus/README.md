@@ -18,9 +18,6 @@ dependencies {
 - **MaterialLoadingProgressDrawable**
 
     暴露android.support.v4.widget.MaterialProgressDrawable类，实现官方下拉刷新中的转动Drawable
-- **ProgressImageView**
-
-    暴露android.support.v4.widget.CircleImageView类，实现官方下拉刷新中的圆形白色ImageView
 - **RecyclePagerAdapter**
 
     可回收的PagerAdapter
@@ -28,13 +25,12 @@ dependencies {
 - **ViewsPagerAdapter**
 
     普通View列表PagerAdapter
-- **MaterialCircleImageView**
+- **MaterialProgressCircleImageView**
 
     官方下拉刷新转动提示ImageView
 
 ## 注意
 - 最好是相同版本号的com.android.support:support-v4使用相同的版本
-- 不支持com.android.support:support-v4:24.0.0以下的所有版本
 
 ## 历史
 - [**23.4.0**](https://github.com/AlexMofer/ProjectX/tree/master/supportplus/history/23.4.0)

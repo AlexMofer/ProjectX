@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="am.project.x">
 
-    <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" />! -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -189,7 +188,8 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.widgets.headerfootergridview.HeaderFooterGridViewActivity"
+        <activity
+            android:name=".activities.widgets.headerfootergridview.HeaderFooterGridViewActivity"
             android:label="@string/headerfootergridview_title">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -203,6 +203,9 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.drawable.loading.LoadingActivity"
+            android:label="@string/loading_title" />
     </application>
 
 </manifest>

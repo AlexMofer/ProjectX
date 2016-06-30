@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="am.project.x.activities.main.fragments.WidgetsFragment">
+    tools:context="am.project.x.activities.main.fragments.OthersFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,6 +40,33 @@
                 android:paddingBottom="18dp"
                 android:paddingTop="18dp"
                 android:text="@string/cipher_title" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
 
             <View
                 android:layout_width="match_parent"
