@@ -22,10 +22,8 @@ public class LoadingActivity extends BaseActivity {
         setSupportActionBar(R.id.loading_toolbar);
 
         ImageView iv01 = (ImageView) findViewById(R.id.loading_iv_01);
-        iv01.setImageDrawable(new MaterialLoadingProgressDrawable(iv01));
-        ImageView iv02 = (ImageView) findViewById(R.id.loading_iv_02);
         DoubleCircleDrawable drawable = new DoubleCircleDrawable(getResources().getDisplayMetrics().density);
-        iv02.setImageDrawable(drawable);
+        iv01.setImageDrawable(drawable);
         drawable.start();
     }
 
