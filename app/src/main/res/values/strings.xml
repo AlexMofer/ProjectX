@@ -108,9 +108,10 @@
     <string name="headerfootergridview_toast">第%1$d个子项</string>
 
     <string name="loading_title">载入动画</string>
+    <string name="center_title">中心图片</string>
 
     <string name="cd_welcome">welcome icon</string>
-    <string name="cd_loading">loading drawable</string>
+    <string name="cd_drawable">drawable</string>
 
 
     <string name="left">左边</string>

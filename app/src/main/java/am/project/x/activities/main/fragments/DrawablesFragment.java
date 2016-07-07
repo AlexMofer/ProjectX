@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import am.project.x.R;
+import am.project.x.activities.drawable.center.CenterActivity;
 import am.project.x.activities.drawable.loading.LoadingActivity;
 
 /**
@@ -30,6 +31,7 @@ public class DrawablesFragment extends Fragment implements View.OnClickListener 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.drawable_btn_loading).setOnClickListener(this);
+        view.findViewById(R.id.drawable_btn_center).setOnClickListener(this);
     }
 
     @Override
@@ -37,6 +39,9 @@ public class DrawablesFragment extends Fragment implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.drawable_btn_loading:
                 LoadingActivity.startActivity(getContext());
+                break;
+            case R.id.drawable_btn_center:
+                CenterActivity.startActivity(getContext());
                 break;
         }
     }

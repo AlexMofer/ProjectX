@@ -206,6 +206,8 @@
         <activity
             android:name=".activities.drawable.loading.LoadingActivity"
             android:label="@string/loading_title" />
+        <activity android:name=".activities.drawable.center.CenterActivity"
+            android:label="@string/center_title" />
     </application>
 
 </manifest>
