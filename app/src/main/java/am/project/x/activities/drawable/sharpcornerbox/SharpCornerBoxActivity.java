@@ -1,24 +1,29 @@
-package am.project.x.activities.old;
+package am.project.x.activities.drawable.sharpcornerbox;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
+import am.drawable.SharpCornerBoxDrawable;
 import am.project.support.view.CompatPlus;
 import am.project.x.R;
-import am.project.x.widgets.drawables.SharpCornerBoxDrawable;
+import am.project.x.activities.BaseActivity;
 
-
-public class SharpCornerBoxActivity extends Activity {
+public class SharpCornerBoxActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected int getContentViewLayoutResources() {
+        return R.layout.activity_sharpcornerbox;
+    }
+
+    @Override
+    protected void initResource(Bundle savedInstanceState) {
+        setSupportActionBar(R.id.scb_toolbar);
         final int color = 0xffc8e71c;// 0x14000000
         final int width = 42;
         final int height = 18;
         final int padding = 40;
         final float round = 20;
-        setContentView(R.layout.old_activity_sharpcornerbox);
         CompatPlus.setBackground(findViewById(R.id.scb_top_center),
                 new SharpCornerBoxDrawable(color, width, height));
         CompatPlus.setBackground(findViewById(R.id.scb_top_end),
@@ -76,5 +81,9 @@ public class SharpCornerBoxActivity extends Activity {
         CompatPlus.setBackground(findViewById(R.id.scb_null_rr),
                 new SharpCornerBoxDrawable(color, width, height, SharpCornerBoxDrawable.Direction.TOP,
                         round));
+    }
+
+    public static void startActivity(Context context) {
+        context.startActivity(new Intent(context, SharpCornerBoxActivity.class));
     }
 }

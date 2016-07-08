@@ -221,6 +221,7 @@ public class CenterDrawable extends Drawable {
 
     /**
      * 设置圆角半径
+     * 仅圆角矩形形状下有效
      *
      * @param radius 圆角半径
      */

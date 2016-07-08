@@ -12,7 +12,7 @@ import android.view.animation.Interpolator;
 
 /**
  * 双圈动图
- * @author Mofer
+ * @author Alex
  *
  */
 public class DoubleCircleDrawable extends Drawable implements Animatable {

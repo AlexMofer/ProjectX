@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import am.project.x.R;
 import am.project.x.activities.drawable.center.CenterActivity;
 import am.project.x.activities.drawable.loading.LoadingActivity;
+import am.project.x.activities.drawable.sharpcornerbox.SharpCornerBoxActivity;
 
 /**
  * 图形图像
@@ -32,6 +33,7 @@ public class DrawablesFragment extends Fragment implements View.OnClickListener 
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.drawable_btn_loading).setOnClickListener(this);
         view.findViewById(R.id.drawable_btn_center).setOnClickListener(this);
+        view.findViewById(R.id.drawable_btn_sharpcornerbox).setOnClickListener(this);
     }
 
     @Override
@@ -42,6 +44,9 @@ public class DrawablesFragment extends Fragment implements View.OnClickListener 
                 break;
             case R.id.drawable_btn_center:
                 CenterActivity.startActivity(getContext());
+                break;
+            case R.id.drawable_btn_sharpcornerbox:
+                SharpCornerBoxActivity.startActivity(getContext());
                 break;
         }
     }

@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package am.project.x.widgets.wheelview.adapters;
+package am.project.x.widgets.wheelview;
 
 import android.content.Context;
 

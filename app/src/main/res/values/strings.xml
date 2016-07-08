@@ -110,16 +110,21 @@
     <string name="loading_title">载入动画</string>
     <string name="center_title">中心图片</string>
 
+    <string name="sharpcornerbox_title">尖角框</string>
+    <string name="sharpcornerbox_text_horizontal">There is TextView Content</string>
+    <string name="sharpcornerbox_text_vertical">There\nis\nTextView\nContent</string>
+
     <string name="cd_welcome">welcome icon</string>
     <string name="cd_drawable">drawable</string>
 
+    <string name="dev_supergridview_title">拖拽网格</string>
+    <string name="dev_supergridview_add_header_item">Add HeaderItem</string>
+    <string name="dev_supergridview_remove_header_item">Remove HeaderItem</string>
+    <string name="dev_supergridview_add_footer_item">Add FooterItem</string>
+    <string name="dev_supergridview_remove_footer_item">Remove FooterItem</string>
+    <string name="dev_supergridview_set_adapter">Set Adapter</string>
+    <string name="dev_supergridview_change_adapter">Change Adapter</string>
 
-    <string name="left">左边</string>
-    <string name="right">右边</string>
-    <string name="connect">连接</string>
-    <string name="failure">失败</string>
-    <string name="success">成功</string>
-    <string name="text_scbd">There is TextView Content</string>
-    <string name="text_scbd_v">There\nis\nTextView\nContent</string>
+    <string name="dev_selectionview_title">快速跳选</string>
 
 </resources>

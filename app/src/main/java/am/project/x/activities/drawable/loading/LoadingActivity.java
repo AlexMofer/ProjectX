@@ -2,13 +2,12 @@ package am.project.x.activities.drawable.loading;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.widget.MaterialLoadingProgressDrawable;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import am.drawable.DoubleCircleDrawable;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
-import am.project.x.widgets.drawables.DoubleCircleDrawable;
 
 public class LoadingActivity extends BaseActivity {
 

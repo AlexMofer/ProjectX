@@ -2,14 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffffff"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
-    <GridView
-        android:id="@+id/grid"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+    <am.project.x.widgets.supergridview.SuperGridView
+        android:id="@+id/superGridView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent"
         android:columnWidth="64dp"
         android:gravity="center"

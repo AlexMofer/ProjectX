@@ -13,34 +13,35 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package am.project.x.widgets.wheelview.adapters;
+package am.project.x.widgets.wheelview;
+
 import android.content.Context;
 
+import java.util.List;
+
 /**
- * The simple Array wheel adapter
- * @param <T> the element type
+ * The List wheel adapter
  */
-public class ArrayWheelAdapter<T> extends AbstractWheelTextAdapter {
-    
+public class ListWheelAdapter extends AbstractWheelTextAdapter {
+
     // items
-    private T items[];
+    private List items;
 
     /**
      * Constructor
+     *
      * @param context the current context
-     * @param items the items
+     * @param items   the items
      */
-    public ArrayWheelAdapter(Context context, T items[]) {
+    public ListWheelAdapter(Context context, List items) {
         super(context);
-        
-        //setEmptyItemResource(TEXT_VIEW_ITEM_RESOURCE);
         this.items = items;
     }
-    
+
     @Override
     public CharSequence getItemText(int index) {
-        if (index >= 0 && index < items.length) {
-            T item = items[index];
+        if (index >= 0 && index < items.size()) {
+            Object item = items.get(index);
             if (item instanceof CharSequence) {
                 return (CharSequence) item;
             }
@@ -51,6 +52,6 @@ public class ArrayWheelAdapter<T> extends AbstractWheelTextAdapter {
 
     @Override
     public int getItemsCount() {
-        return items.length;
+        return items == null ? 0 : items.size();
     }
 }

@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package am.project.x.widgets.wheelview.adapters;
+package am.project.x.widgets.wheelview;
 
 import android.database.DataSetObserver;
 import android.view.View;
@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Abstract Wheel adapter.
  */
-public abstract class AbstractWheelAdapter implements WheelViewAdapter {
+public abstract class AbstractWheelAdapter implements WheelView.WheelViewAdapter {
     // Observers
     private List<DataSetObserver> datasetObservers;
     

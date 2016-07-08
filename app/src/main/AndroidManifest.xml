@@ -206,8 +206,17 @@
         <activity
             android:name=".activities.drawable.loading.LoadingActivity"
             android:label="@string/loading_title" />
-        <activity android:name=".activities.drawable.center.CenterActivity"
+        <activity
+            android:name=".activities.drawable.center.CenterActivity"
             android:label="@string/center_title" />
+        <activity
+            android:name=".activities.drawable.sharpcornerbox.SharpCornerBoxActivity"
+            android:label="@string/sharpcornerbox_title" />
+        <activity
+            android:name=".activities.develop.supergridview.SuperGridViewActivity"
+            android:label="@string/dev_supergridview_title" />
+        <activity android:name=".activities.develop.selectionview.SelectionViewActivity"
+            android:label="@string/dev_selectionview_title"/>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package am.project.x.activities.old;
+package am.project.x.activities.develop.selectionview;
 
 import android.content.Context;
 import android.view.LayoutInflater;
