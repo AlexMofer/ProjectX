@@ -221,6 +221,9 @@
         <activity
             android:name=".activities.drawable.combination.CombinationActivity"
             android:label="@string/combination_title" />
+        <activity
+            android:name=".activities.drawable.line.LineActivity"
+            android:label="@string/line_title" />
     </application>
 
 </manifest>

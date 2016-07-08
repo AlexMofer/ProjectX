@@ -10,31 +10,36 @@ import android.graphics.drawable.StateListDrawable;
 import android.view.Gravity;
 
 /**
- * 一横线Drawable
+ * 横线Drawable
  * 支持上下左右
  * Created by Alex on 2015/9/26.
  */
+@SuppressWarnings("all")
 public class LineDrawable extends Drawable {
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Rect mRect = new Rect();
     private int mBackgroundColor;
     private int mLineColor;
-    private int mLineHeight;
+    private int mLineSize;
     private int mGravity;
 
-
-    public LineDrawable(int backgroundColor, int lineColor, int lineHeight) {
-        this(backgroundColor, lineColor, lineHeight, Gravity.BOTTOM);
+    public LineDrawable(int lineColor, int lineSize) {
+        this(0x00000000, lineColor, lineSize);
     }
 
-    public LineDrawable(int backgroundColor, int lineColor, int lineHeight, int gravity) {
-        mBackgroundColor = backgroundColor;
-        mLineColor = lineColor;
-        mLineHeight = lineHeight;
-        mGravity = gravity;
+    public LineDrawable(int backgroundColor, int lineColor, int lineSize) {
+        this(backgroundColor, lineColor, lineSize, Gravity.BOTTOM);
+    }
+
+    public LineDrawable(int backgroundColor, int lineColor, int lineSize, int gravity) {
+        setBackground(backgroundColor);
+        setLineColor(lineColor);
+        setLineSize(lineSize);
+        setGravity(gravity);
     }
 
     @Override
+    @SuppressWarnings("all")
     public void draw(Canvas canvas) {
         final Rect bounds = getBounds();
         if (bounds == null)
@@ -42,34 +47,34 @@ public class LineDrawable extends Drawable {
         switch (mGravity) {
             default:
             case Gravity.BOTTOM:
-                mRect.set(bounds.left, bounds.top, bounds.right, bounds.bottom - mLineHeight);
+                mRect.set(bounds.left, bounds.top, bounds.right, bounds.bottom - mLineSize);
                 mPaint.setColor(mBackgroundColor);
                 canvas.drawRect(mRect, mPaint);
-                mRect.set(bounds.left, bounds.bottom - mLineHeight, bounds.right, bounds.bottom);
+                mRect.set(bounds.left, bounds.bottom - mLineSize, bounds.right, bounds.bottom);
                 mPaint.setColor(mLineColor);
                 canvas.drawRect(mRect, mPaint);
                 break;
             case Gravity.TOP:
-                mRect.set(bounds.left, bounds.top + mLineHeight, bounds.right, bounds.bottom);
+                mRect.set(bounds.left, bounds.top + mLineSize, bounds.right, bounds.bottom);
                 mPaint.setColor(mBackgroundColor);
                 canvas.drawRect(mRect, mPaint);
-                mRect.set(bounds.left, bounds.top, bounds.right, bounds.top + mLineHeight);
+                mRect.set(bounds.left, bounds.top, bounds.right, bounds.top + mLineSize);
                 mPaint.setColor(mLineColor);
                 canvas.drawRect(mRect, mPaint);
                 break;
             case Gravity.LEFT:
-                mRect.set(bounds.left + mLineHeight, bounds.top, bounds.right, bounds.bottom);
+                mRect.set(bounds.left + mLineSize, bounds.top, bounds.right, bounds.bottom);
                 mPaint.setColor(mBackgroundColor);
                 canvas.drawRect(mRect, mPaint);
-                mRect.set(bounds.left, bounds.top, bounds.left + mLineHeight, bounds.bottom);
+                mRect.set(bounds.left, bounds.top, bounds.left + mLineSize, bounds.bottom);
                 mPaint.setColor(mLineColor);
                 canvas.drawRect(mRect, mPaint);
                 break;
             case Gravity.RIGHT:
-                mRect.set(bounds.left, bounds.top, bounds.right - mLineHeight, bounds.bottom);
+                mRect.set(bounds.left, bounds.top, bounds.right - mLineSize, bounds.bottom);
                 mPaint.setColor(mBackgroundColor);
                 canvas.drawRect(mRect, mPaint);
-                mRect.set(bounds.right - mLineHeight, bounds.top, bounds.right, bounds.bottom);
+                mRect.set(bounds.right - mLineSize, bounds.top, bounds.right, bounds.bottom);
                 mPaint.setColor(mLineColor);
                 canvas.drawRect(mRect, mPaint);
                 break;
@@ -77,10 +82,10 @@ public class LineDrawable extends Drawable {
                 mRect.set(bounds.left, bounds.top, bounds.right, bounds.centerY());
                 mPaint.setColor(mBackgroundColor);
                 canvas.drawRect(mRect, mPaint);
-                mRect.set(bounds.left, bounds.centerY() + mLineHeight, bounds.right, bounds.bottom);
+                mRect.set(bounds.left, bounds.centerY() + mLineSize, bounds.right, bounds.bottom);
                 mPaint.setColor(mBackgroundColor);
                 canvas.drawRect(mRect, mPaint);
-                mRect.set(bounds.left, bounds.centerY(), bounds.right, bounds.centerY() + mLineHeight);
+                mRect.set(bounds.left, bounds.centerY(), bounds.right, bounds.centerY() + mLineSize);
                 mPaint.setColor(mLineColor);
                 canvas.drawRect(mRect, mPaint);
                 break;
@@ -88,23 +93,35 @@ public class LineDrawable extends Drawable {
                 mRect.set(bounds.left, bounds.top, bounds.centerX(), bounds.bottom);
                 mPaint.setColor(mBackgroundColor);
                 canvas.drawRect(mRect, mPaint);
-                mRect.set(bounds.centerX() + mLineHeight, bounds.top, bounds.right, bounds.bottom);
+                mRect.set(bounds.centerX() + mLineSize, bounds.top, bounds.right, bounds.bottom);
                 mPaint.setColor(mBackgroundColor);
                 canvas.drawRect(mRect, mPaint);
-                mRect.set(bounds.centerX(), bounds.top, bounds.centerX() + mLineHeight, bounds.bottom);
+                mRect.set(bounds.centerX(), bounds.top, bounds.centerX() + mLineSize, bounds.bottom);
                 mPaint.setColor(mLineColor);
                 canvas.drawRect(mRect, mPaint);
                 break;
             case Gravity.TOP | Gravity.BOTTOM:
-                mRect.set(bounds.left, bounds.top + mLineHeight, bounds.right, bounds.bottom - mLineHeight);
+                mRect.set(bounds.left, bounds.top + mLineSize, bounds.right, bounds.bottom - mLineSize);
                 mPaint.setColor(mBackgroundColor);
                 canvas.drawRect(mRect, mPaint);
-                mRect.set(bounds.left, bounds.top, bounds.right, bounds.top + mLineHeight);
+                mRect.set(bounds.left, bounds.top, bounds.right, bounds.top + mLineSize);
                 mPaint.setColor(mLineColor);
                 canvas.drawRect(mRect, mPaint);
-                mRect.set(bounds.left, bounds.bottom - mLineHeight, bounds.right, bounds.bottom);
+                mRect.set(bounds.left, bounds.bottom - mLineSize, bounds.right, bounds.bottom);
                 mPaint.setColor(mLineColor);
                 canvas.drawRect(mRect, mPaint);
+                break;
+            case Gravity.LEFT | Gravity.RIGHT:
+                mRect.set(bounds.left + mLineSize, bounds.top, bounds.right - mLineSize, bounds.bottom);
+                mPaint.setColor(mBackgroundColor);
+                canvas.drawRect(mRect, mPaint);
+                mRect.set(bounds.left, bounds.top, bounds.left + mLineSize, bounds.bottom);
+                mPaint.setColor(mLineColor);
+                canvas.drawRect(mRect, mPaint);
+                mRect.set(bounds.right - mLineSize, bounds.top, bounds.right, bounds.bottom);
+                mPaint.setColor(mLineColor);
+                canvas.drawRect(mRect, mPaint);
+                break;
         }
     }
 
@@ -125,15 +142,73 @@ public class LineDrawable extends Drawable {
         return PixelFormat.TRANSLUCENT;
     }
 
-
-    public static StateListDrawable getLineStateListDrawable(int backgroundColor, int normalColor, int focusColor, int lineHeight) {
-        return getLineStateListDrawable(backgroundColor, normalColor, focusColor, lineHeight, Gravity.BOTTOM);
+    /**
+     * 设置背景色
+     *
+     * @param color 背景色
+     */
+    public void setBackground(int color) {
+        mBackgroundColor = color;
+        invalidateSelf();
     }
 
-    public static StateListDrawable getLineStateListDrawable(int backgroundColor, int lineColor, int focusColor, int lineHeight, int gravity) {
+    /**
+     * 设置线条颜色
+     *
+     * @param color 线条颜色
+     */
+    public void setLineColor(int color) {
+        mLineColor = color;
+        invalidateSelf();
+    }
+
+    /**
+     * 设置线条粗细
+     *
+     * @param size 线条粗细
+     */
+    public void setLineSize(int size) {
+        mLineSize = size;
+        invalidateSelf();
+    }
+
+    /**
+     * 设置布局
+     *
+     * @param gravity 布局
+     */
+    public void setGravity(int gravity) {
+        mGravity = gravity;
+        invalidateSelf();
+    }
+
+    /**
+     * 获取StateListDrawable
+     *
+     * @param backgroundColor 背景色
+     * @param normalColor     普通情况线条颜色
+     * @param focusColor      选中情况线条颜色
+     * @param lineSize        线条粗细
+     * @return StateListDrawable
+     */
+    public static StateListDrawable getLineStateListDrawable(int backgroundColor, int normalColor, int focusColor, int lineSize) {
+        return getLineStateListDrawable(backgroundColor, normalColor, focusColor, lineSize, Gravity.BOTTOM);
+    }
+
+    /**
+     * 获取StateListDrawable
+     *
+     * @param backgroundColor 背景色
+     * @param normalColor     普通情况线条颜色
+     * @param focusColor      选中情况线条颜色
+     * @param lineSize        线条粗细
+     * @param gravity         布局
+     * @return StateListDrawable
+     */
+    public static StateListDrawable getLineStateListDrawable(int backgroundColor, int normalColor, int focusColor, int lineSize, int gravity) {
         StateListDrawable drawable = new StateListDrawable();
-        LineDrawable focus = new LineDrawable(backgroundColor, focusColor, lineHeight, gravity);
-        LineDrawable normal = new LineDrawable(backgroundColor, lineColor, lineHeight, gravity);
+        LineDrawable focus = new LineDrawable(backgroundColor, focusColor, lineSize, gravity);
+        LineDrawable normal = new LineDrawable(backgroundColor, normalColor, lineSize, gravity);
         drawable.addState(new int[]{android.R.attr.state_enabled, android.R.attr.state_focused}, focus);
         drawable.addState(new int[]{android.R.attr.state_focused}, focus);
         drawable.addState(new int[]{}, normal);

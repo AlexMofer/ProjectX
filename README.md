@@ -37,7 +37,16 @@
 ## Drawable
 - [***DoubleCircleDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
 
-    双圈动图，用作载入动画
+    双圈动图，用于载入提示。
+- [**CenterDrawable**](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
+
+    中心图片，背景可绘制形状，一般用于ImageView的src，保证缩放后，中心的Drawable不变形。用于一般background属性的话，无需使用本控件，直接使用layer-list来定义即可。
+- [**CombinationDrawable**](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
+
+    双层图片，与CenterDrawable类似，背景为另一Drawable，一般用于ImageView的src，保证缩放后，中心的Drawable不变形。用于一般background属性的话，无需使用本控件，直接使用layer-list来定义即可。
+- [**LineDrawable**](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
+
+    横线图片，主要是底色为透明或半透明色时有用，为不透明时，通过layer-list即可实现。
 
 ## Other
 - [***Printer***](https://github.com/AlexMofer/ProjectX/tree/master/printer)
