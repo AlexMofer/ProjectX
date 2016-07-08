@@ -87,10 +87,18 @@
                 android:paddingTop="18dp"
                 android:text="@string/line_title" />
 
-            <View
+            <Button
+                android:id="@+id/drawable_btn_list"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_common_press"
+                android:drawablePadding="4dp"
+                android:drawableTop="@drawable/ic_drawable_default"
+                android:paddingBottom="18dp"
+                android:paddingTop="18dp"
+                android:text="@string/list_title" />
 
             <View
                 android:layout_width="match_parent"

@@ -12,6 +12,7 @@ import am.project.x.R;
 import am.project.x.activities.drawable.center.CenterActivity;
 import am.project.x.activities.drawable.combination.CombinationActivity;
 import am.project.x.activities.drawable.line.LineActivity;
+import am.project.x.activities.drawable.list.ListActivity;
 import am.project.x.activities.drawable.loading.LoadingActivity;
 import am.project.x.activities.drawable.sharpcornerbox.SharpCornerBoxActivity;
 
@@ -38,6 +39,7 @@ public class DrawablesFragment extends Fragment implements View.OnClickListener 
         view.findViewById(R.id.drawable_btn_combination).setOnClickListener(this);
         view.findViewById(R.id.drawable_btn_sharpcornerbox).setOnClickListener(this);
         view.findViewById(R.id.drawable_btn_line).setOnClickListener(this);
+        view.findViewById(R.id.drawable_btn_list).setOnClickListener(this);
     }
 
     @Override
@@ -57,6 +59,9 @@ public class DrawablesFragment extends Fragment implements View.OnClickListener 
                 break;
             case R.id.drawable_btn_line:
                 LineActivity.startActivity(getContext());
+                break;
+            case R.id.drawable_btn_list:
+                ListActivity.startActivity(getContext());
                 break;
         }
     }

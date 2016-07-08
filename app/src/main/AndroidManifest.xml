@@ -224,6 +224,9 @@
         <activity
             android:name=".activities.drawable.line.LineActivity"
             android:label="@string/line_title" />
+        <activity
+            android:name=".activities.drawable.list.ListActivity"
+            android:label="@string/list_title" />
     </application>
 
 </manifest>
