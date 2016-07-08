@@ -215,8 +215,12 @@
         <activity
             android:name=".activities.develop.supergridview.SuperGridViewActivity"
             android:label="@string/dev_supergridview_title" />
-        <activity android:name=".activities.develop.selectionview.SelectionViewActivity"
-            android:label="@string/dev_selectionview_title"/>
+        <activity
+            android:name=".activities.develop.selectionview.SelectionViewActivity"
+            android:label="@string/dev_selectionview_title" />
+        <activity
+            android:name=".activities.drawable.combination.CombinationActivity"
+            android:label="@string/combination_title" />
     </application>
 
 </manifest>

@@ -8,8 +8,10 @@ import android.view.Gravity;
 
 /**
  * 双层Drawable
- * Created by Alex on 2015/11/4.
+ * 一般用于ImageView的src，保证缩放后，中心的Drawable不变形。
+ * 用于一般background属性的话，无需使用本控件，直接使用layer-list来定义即可。
  */
+@SuppressWarnings("unused")
 public class CombinationDrawable extends Drawable {
 
     private Drawable mBackground;
@@ -20,16 +22,21 @@ public class CombinationDrawable extends Drawable {
     private int mReservedRight;
     private int mReservedBottom;
 
-    public CombinationDrawable(Drawable background, Drawable foreground,
-                               int gravity, int reservedLeft, int reservedTop,
+    public CombinationDrawable(Drawable background, Drawable foreground) {
+        this(background, foreground, Gravity.CENTER);
+    }
+
+    public CombinationDrawable(Drawable background, Drawable foreground, int gravity) {
+        this(background, foreground, gravity, 0, 0, 0, 0);
+    }
+
+    public CombinationDrawable(Drawable background, Drawable foreground, int gravity,
+                               int reservedLeft, int reservedTop,
                                int reservedRight, int reservedBottom) {
-        mBackground = background;
-        mForeground = foreground;
-        mGravity = gravity;
-        mReservedLeft = reservedLeft;
-        mReservedTop = reservedTop;
-        mReservedRight = reservedRight;
-        mReservedBottom = reservedBottom;
+        setBackground(background);
+        setForeground(foreground);
+        setGravity(gravity);
+        setReservedSide(reservedLeft, reservedTop, reservedRight, reservedBottom);
     }
 
     @Override
@@ -83,6 +90,7 @@ public class CombinationDrawable extends Drawable {
      *
      * @param canvas 画布
      */
+    @SuppressWarnings("all")
     protected void drawForeground(Canvas canvas) {
         if (mForeground != null) {
             final int width = mForeground.getIntrinsicWidth();
@@ -92,30 +100,39 @@ public class CombinationDrawable extends Drawable {
             switch (mGravity) {
                 default:
                 case Gravity.LEFT:
-                    break;
-                case Gravity.CENTER_HORIZONTAL:
-                    canvas.translate(getBounds().centerX() - width * 0.5f, 0);
+                case Gravity.LEFT | Gravity.TOP:
+                case Gravity.TOP:
                     break;
                 case Gravity.RIGHT:
+                case Gravity.TOP | Gravity.RIGHT:
                     canvas.translate(getBounds().right - width, 0);
                     break;
-                case Gravity.CENTER_VERTICAL:
-                    canvas.translate(0, getBounds().centerY() - height * 0.5f);
+                case Gravity.RIGHT | Gravity.CENTER_VERTICAL:
+                    canvas.translate(getBounds().right - width,
+                            getBounds().centerY() - height * 0.5f);
                     break;
-                case Gravity.CENTER:
-                    canvas.translate(getBounds().centerX() - width * 0.5f, getBounds().centerY() - height * 0.5f);
-                    break;
-                case Gravity.CENTER_VERTICAL | Gravity.RIGHT:
-                    canvas.translate(getBounds().right - width, getBounds().centerY() - height * 0.5f);
+                case Gravity.RIGHT | Gravity.BOTTOM:
+                    canvas.translate(getBounds().right - width, getBounds().bottom - height);
                     break;
                 case Gravity.BOTTOM:
+                case Gravity.LEFT | Gravity.BOTTOM:
                     canvas.translate(0, getBounds().bottom - height);
                     break;
                 case Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL:
-                    canvas.translate(getBounds().centerX() - width * 0.5f, getBounds().bottom - height);
+                    canvas.translate(getBounds().centerX() - width * 0.5f,
+                            getBounds().bottom - height);
                     break;
-                case Gravity.BOTTOM | Gravity.RIGHT:
-                    canvas.translate(getBounds().right - width, getBounds().bottom - height);
+                case Gravity.CENTER_HORIZONTAL:
+                case Gravity.TOP | Gravity.CENTER_HORIZONTAL:
+                    canvas.translate(getBounds().centerX() - width * 0.5f, 0);
+                    break;
+                case Gravity.CENTER:
+                    canvas.translate(getBounds().centerX() - width * 0.5f,
+                            getBounds().centerY() - height * 0.5f);
+                    break;
+                case Gravity.CENTER_VERTICAL:
+                case Gravity.LEFT | Gravity.CENTER_VERTICAL:
+                    canvas.translate(0, getBounds().centerY() - height * 0.5f);
                     break;
             }
             mForeground.draw(canvas);
@@ -144,5 +161,52 @@ public class CombinationDrawable extends Drawable {
     @Override
     public int getOpacity() {
         return PixelFormat.TRANSLUCENT;
+    }
+
+    /**
+     * 设置背景
+     *
+     * @param background 背景
+     */
+    public void setBackground(Drawable background) {
+        mBackground = background;
+        invalidateSelf();
+    }
+
+    /**
+     * 设置前景
+     *
+     * @param foreground 前景
+     */
+    public void setForeground(Drawable foreground) {
+        mForeground = foreground;
+        invalidateSelf();
+    }
+
+    /**
+     * 设置前景布局
+     *
+     * @param gravity 布局
+     */
+    public void setGravity(int gravity) {
+        mGravity = gravity;
+        invalidateSelf();
+    }
+
+    /**
+     * 设置留边
+     *
+     * @param reservedLeft   左
+     * @param reservedTop    上
+     * @param reservedRight  右
+     * @param reservedBottom 下
+     */
+    public void setReservedSide(int reservedLeft, int reservedTop,
+                                int reservedRight, int reservedBottom) {
+        mReservedLeft = reservedLeft;
+        mReservedTop = reservedTop;
+        mReservedRight = reservedRight;
+        mReservedBottom = reservedBottom;
+        invalidateSelf();
     }
 }

@@ -15,4 +15,10 @@ dependencies {
 ## 详情
 - **DoubleCircleDrawable**
 
-    双圈动图
+    双圈动图，用于载入提示。
+- **CenterDrawable**
+
+    中心图片，背景可绘制形状，一般用于ImageView的src，保证缩放后，中心的Drawable不变形。用于一般background属性的话，无需使用本控件，直接使用layer-list来定义即可。
+- **CombinationDrawable**
+
+    双层图片，与CenterDrawable类似，背景为另一Drawable，一般用于ImageView的src，保证缩放后，中心的Drawable不变形。用于一般background属性的话，无需使用本控件，直接使用layer-list来定义即可。

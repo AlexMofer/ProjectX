@@ -110,6 +110,14 @@
     <string name="loading_title">载入动画</string>
     <string name="center_title">中心图片</string>
 
+    <string name="combination_title">双层图片</string>
+    <string name="combination_gravity_center">中心</string>
+    <string name="combination_gravity_left">左中</string>
+    <string name="combination_gravity_top">上中</string>
+    <string name="combination_gravity_right">右中</string>
+    <string name="combination_gravity_bottom">下中</string>
+    <string name="combination_reserved_width">留边宽度（0～20dp）：</string>
+
     <string name="sharpcornerbox_title">尖角框</string>
     <string name="sharpcornerbox_text_horizontal">There is TextView Content</string>
     <string name="sharpcornerbox_text_vertical">There\nis\nTextView\nContent</string>

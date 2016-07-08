@@ -42,6 +42,19 @@
                 android:text="@string/center_title" />
 
             <Button
+                android:id="@+id/drawable_btn_combination"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_common_press"
+                android:drawablePadding="4dp"
+                android:drawableTop="@drawable/ic_drawable_default"
+                android:paddingBottom="18dp"
+                android:paddingTop="18dp"
+                android:text="@string/combination_title" />
+
+            <Button
                 android:id="@+id/drawable_btn_sharpcornerbox"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
@@ -53,11 +66,6 @@
                 android:paddingBottom="18dp"
                 android:paddingTop="18dp"
                 android:text="@string/sharpcornerbox_title" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
         </LinearLayout>
 
         <LinearLayout
