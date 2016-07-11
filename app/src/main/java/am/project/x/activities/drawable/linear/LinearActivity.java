@@ -38,7 +38,6 @@ public class LinearActivity extends BaseActivity implements RadioGroup.OnChecked
     }
 
     @Override
-    @SuppressWarnings("all")
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.linear_rb_horizontal:

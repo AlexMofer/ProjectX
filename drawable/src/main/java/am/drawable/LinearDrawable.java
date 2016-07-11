@@ -4,8 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.view.View;
 
 /**
  * 线性Drawable
@@ -117,7 +115,7 @@ public class LinearDrawable extends Drawable {
     public void setItemDrawable(Drawable item) {
         mItem = item;
         invalidateSelf();
-        requestCallbackLayout();
+        DrawableHelper.requestCallbackLayout(this);
     }
 
     /**
@@ -130,7 +128,7 @@ public class LinearDrawable extends Drawable {
             return;
         mCount = count;
         invalidateSelf();
-        requestCallbackLayout();
+        DrawableHelper.requestCallbackLayout(this);
     }
 
     /**
@@ -141,7 +139,7 @@ public class LinearDrawable extends Drawable {
     public void setOrientation(int orientation) {
         mOrientation = orientation;
         invalidateSelf();
-        requestCallbackLayout();
+        DrawableHelper.requestCallbackLayout(this);
     }
 
     /**
@@ -152,18 +150,6 @@ public class LinearDrawable extends Drawable {
     public void setGap(int gap) {
         mGap = gap;
         invalidateSelf();
-        requestCallbackLayout();
-    }
-
-    /**
-     * 刷新回调布局
-     */
-    protected void requestCallbackLayout() {
-        if (Build.VERSION.SDK_INT >= 11) {
-            if (getCallback() instanceof View) {
-                View view = (View) getCallback();
-                view.requestLayout();
-            }
-        }
+        DrawableHelper.requestCallbackLayout(this);
     }
 }
