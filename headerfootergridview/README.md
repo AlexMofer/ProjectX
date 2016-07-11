@@ -5,7 +5,7 @@
 ## 预览
 ![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/headerfootergridview/screenshots.gif)
 ## 要求
-- minSdkVersion 4
+minSdkVersion 4
 
 ## 引用
 ```java
