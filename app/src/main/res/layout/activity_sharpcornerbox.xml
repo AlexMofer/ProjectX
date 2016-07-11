@@ -27,223 +27,194 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/scb_tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:maxWidth="120dp"
+                android:text="@string/sharpcornerbox_text" />
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/sharpcornerbox_direction" />
+
+            <RadioGroup
+                android:id="@+id/scb_rg_direction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/scb_top_center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:minHeight="48dp"
-                    android:minWidth="200dp"
-                    android:text="@string/sharpcornerbox_text_horizontal" />
-
-                <TextView
-                    android:id="@+id/scb_top_end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:minHeight="48dp"
-                    android:minWidth="200dp"
-                    android:text="@string/sharpcornerbox_text_horizontal" />
-
-                <TextView
-                    android:id="@+id/scb_top_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:minHeight="48dp"
-                    android:minWidth="200dp"
-                    android:text="@string/sharpcornerbox_text_horizontal" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/scb_bottom_center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:minHeight="48dp"
-                    android:minWidth="200dp"
-                    android:text="@string/sharpcornerbox_text_horizontal" />
-
-                <TextView
-                    android:id="@+id/scb_bottom_end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:minHeight="48dp"
-                    android:minWidth="200dp"
-                    android:text="@string/sharpcornerbox_text_horizontal" />
-
-                <TextView
-                    android:id="@+id/scb_bottom_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:minHeight="48dp"
-                    android:minWidth="200dp"
-                    android:text="@string/sharpcornerbox_text_horizontal" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/scb_left_center"
-                    android:layout_width="wrap_content"
+                <RadioButton
+                    android:id="@+id/scb_rb_top"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:minHeight="108dp"
-                    android:minWidth="84dp"
-                    android:text="@string/sharpcornerbox_text_vertical" />
+                    android:layout_weight="1"
+                    android:text="@string/sharpcornerbox_direction_top" />
 
-                <TextView
-                    android:id="@+id/scb_left_end"
-                    android:layout_width="wrap_content"
+                <RadioButton
+                    android:id="@+id/scb_rb_bottom"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:minHeight="108dp"
-                    android:minWidth="84dp"
-                    android:text="@string/sharpcornerbox_text_vertical" />
+                    android:layout_weight="1"
+                    android:text="@string/sharpcornerbox_direction_bottom" />
 
-                <TextView
-                    android:id="@+id/scb_left_start"
-                    android:layout_width="wrap_content"
+                <RadioButton
+                    android:id="@+id/scb_rb_left"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:minHeight="108dp"
-                    android:minWidth="84dp"
-                    android:text="@string/sharpcornerbox_text_vertical" />
-            </LinearLayout>
+                    android:layout_weight="1"
+                    android:text="@string/sharpcornerbox_direction_left" />
 
-            <LinearLayout
+                <RadioButton
+                    android:id="@+id/scb_rb_right"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/sharpcornerbox_direction_right" />
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sharpcornerbox_location" />
+
+            <RadioGroup
+                android:id="@+id/scb_rg_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/scb_right_center"
-                    android:layout_width="wrap_content"
+                <RadioButton
+                    android:id="@+id/scb_rb_center"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:minHeight="108dp"
-                    android:minWidth="84dp"
-                    android:text="@string/sharpcornerbox_text_vertical" />
+                    android:layout_weight="1"
+                    android:text="@string/sharpcornerbox_location_center" />
 
-                <TextView
-                    android:id="@+id/scb_right_end"
-                    android:layout_width="wrap_content"
+                <RadioButton
+                    android:id="@+id/scb_rb_start"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:minHeight="108dp"
-                    android:minWidth="84dp"
-                    android:text="@string/sharpcornerbox_text_vertical" />
+                    android:layout_weight="1"
+                    android:text="@string/sharpcornerbox_location_start" />
 
-                <TextView
-                    android:id="@+id/scb_right_start"
-                    android:layout_width="wrap_content"
+                <RadioButton
+                    android:id="@+id/scb_rb_end"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:minHeight="108dp"
-                    android:minWidth="84dp"
-                    android:text="@string/sharpcornerbox_text_vertical" />
-            </LinearLayout>
+                    android:layout_weight="1"
+                    android:text="@string/sharpcornerbox_location_end" />
 
-            <LinearLayout
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="invisible" />
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sharpcornerbox_corner_width" />
+
+            <SeekBar
+                android:id="@+id/scb_sb_width"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:max="10" />
 
-                <TextView
-                    android:id="@+id/scb_rr_center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:minHeight="48dp"
-                    android:minWidth="200dp"
-                    android:text="@string/sharpcornerbox_text_horizontal" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sharpcornerbox_corner_height" />
 
-                <TextView
-                    android:id="@+id/scb_rr_end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:minHeight="48dp"
-                    android:minWidth="200dp"
-                    android:text="@string/sharpcornerbox_text_horizontal" />
-
-                <TextView
-                    android:id="@+id/scb_rr_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:minHeight="48dp"
-                    android:minWidth="200dp"
-                    android:text="@string/sharpcornerbox_text_horizontal" />
-            </LinearLayout>
-
-            <LinearLayout
+            <SeekBar
+                android:id="@+id/scb_sb_height"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:max="5" />
 
-                <LinearLayout
-                    android:id="@+id/scb_null_r"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:orientation="vertical" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sharpcornerbox_corner_radius" />
 
-                <LinearLayout
-                    android:id="@+id/scb_null_rr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:orientation="vertical" />
-            </LinearLayout>
+            <SeekBar
+                android:id="@+id/scb_sb_cornerRadius"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sharpcornerbox_corner_margin" />
+
+            <SeekBar
+                android:id="@+id/scb_sb_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sharpcornerbox_stoke" />
+
+            <SeekBar
+                android:id="@+id/scb_sb_stoke"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sharpcornerbox_radius" />
+
+            <SeekBar
+                android:id="@+id/scb_sb_radius"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sharpcornerbox_padding" />
+
+            <SeekBar
+                android:id="@+id/scb_sb_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:max="5" />
         </LinearLayout>
 
-    </ScrollView>
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
