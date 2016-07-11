@@ -47,6 +47,9 @@
 - [**LineDrawable**](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
 
     横线图片，主要是底色为透明或半透明色时有用，为不透明时，通过layer-list即可实现。
+- [**LinearDrawable**](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
+    
+    线性图片，多张图片排列，支持设置间隔，主要用于替代多个ImageView排列，节省性能。
 
 ## Other
 - [***Printer***](https://github.com/AlexMofer/ProjectX/tree/master/printer)

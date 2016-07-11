@@ -98,7 +98,7 @@
                 android:drawableTop="@drawable/ic_drawable_default"
                 android:paddingBottom="18dp"
                 android:paddingTop="18dp"
-                android:text="@string/list_title" />
+                android:text="@string/linear_title" />
 
             <View
                 android:layout_width="match_parent"

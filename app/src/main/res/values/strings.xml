@@ -133,7 +133,11 @@
     <string name="line_gravity_leftAndRight">左右</string>
     <string name="line_line_size">线条粗细（1～10）：</string>
 
-    <string name="list_title">行列图片</string>
+    <string name="linear_title">线性图片</string>
+    <string name="linear_orientation_horizontal">水平</string>
+    <string name="linear_orientation_vertical">垂直</string>
+    <string name="linear_number">数目（1～6）：</string>
+    <string name="linear_gap">间隔（1～10dp）：</string>
 
     <string name="cd_welcome">welcome icon</string>
     <string name="cd_drawable">drawable</string>

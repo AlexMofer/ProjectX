@@ -25,3 +25,6 @@ dependencies {
 - **LineDrawable**
 
     横线图片，主要是底色为透明或半透明色时有用，为不透明时，通过layer-list即可实现。
+- **LinearDrawable**
+    
+    线性图片，多张图片排列，支持设置间隔，主要用于替代多个ImageView排列，节省性能。
