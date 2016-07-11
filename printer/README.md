@@ -9,7 +9,7 @@
 - ```<uses-permission android:name="android.permission.BLUETOOTH" />```
 
 ## 引用
-```
+```java
 dependencies {
     ⋯
     compile 'am.util:printer:1.0.0'
