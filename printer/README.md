@@ -6,10 +6,10 @@
 ![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/printer/screenshot.png)
 ## 要求
 - minSdkVersion 5
-- ```xml<uses-permission android:name="android.permission.BLUETOOTH" />```
+- ```<uses-permission android:name="android.permission.BLUETOOTH" />```
 
 ## 引用
-```java
+```
 dependencies {
     ⋯
     compile 'am.util:printer:1.0.0'
