@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 
 import am.drawable.SharpCornerBoxDrawable;
+import am.project.support.view.CompatPlus;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
 
@@ -20,6 +22,7 @@ public class SharpCornerBoxActivity extends BaseActivity
     }
 
     private SharpCornerBoxDrawable drawable;
+
     @Override
     protected void initResource(Bundle savedInstanceState) {
         setSupportActionBar(R.id.scb_toolbar);
@@ -36,17 +39,15 @@ public class SharpCornerBoxActivity extends BaseActivity
         ((SeekBar) findViewById(R.id.scb_sb_radius)).setOnSeekBarChangeListener(this);
         ((SeekBar) findViewById(R.id.scb_sb_padding)).setOnSeekBarChangeListener(this);
 
+        final float density = getResources().getDisplayMetrics().density;
+        final int color = ContextCompat.getColor(this, R.color.colorRipple);
+        final int width = (int) (10 * density);
+        final int height = (int) (5 * density);
+        drawable = new SharpCornerBoxDrawable(color, width, height);
+        drawable.setStokeColor(ContextCompat.getColor(this, R.color.colorAccent));
+        CompatPlus.setBackground(findViewById(R.id.scb_tv_content), drawable);
         rgDirection.check(R.id.scb_rb_top);
         rgLocation.check(R.id.scb_rb_center);
-
-
-        final int color = ContextCompat.getColor(this, R.color.colorPrimary);
-        final int width = 42;
-        final int height = 18;
-        final int padding = 40;
-        final float round = 20;
-//        CompatPlus.setBackground(findViewById(R.id.scb_top_center),
-//                new SharpCornerBoxDrawable(color, width, height));
     }
 
     @Override
@@ -54,21 +55,28 @@ public class SharpCornerBoxActivity extends BaseActivity
         if (group.getId() == R.id.scb_rg_direction) {
             switch (checkedId) {
                 case R.id.scb_rb_top:
+                    drawable.setDirection(Gravity.TOP);
                     break;
                 case R.id.scb_rb_bottom:
+                    drawable.setDirection(Gravity.BOTTOM);
                     break;
                 case R.id.scb_rb_left:
+                    drawable.setDirection(Gravity.LEFT);
                     break;
                 case R.id.scb_rb_right:
+                    drawable.setDirection(Gravity.RIGHT);
                     break;
             }
         } else {
             switch (checkedId) {
                 case R.id.scb_rb_center:
+                    drawable.setLocation(Gravity.CENTER);
                     break;
                 case R.id.scb_rb_start:
+                    drawable.setLocation(Gravity.LEFT);
                     break;
                 case R.id.scb_rb_end:
+                    drawable.setLocation(Gravity.RIGHT);
                     break;
             }
         }
@@ -76,20 +84,33 @@ public class SharpCornerBoxActivity extends BaseActivity
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        final float density = getResources().getDisplayMetrics().density;
         switch (seekBar.getId()) {
             case R.id.scb_sb_width:
+                final int width = (int) ((10 + progress) * density);
+                drawable.setCornerWidth(width);
                 break;
             case R.id.scb_sb_height:
+                final int height = (int) ((5 + progress) * density);
+                drawable.setCornerHeight(height);
                 break;
             case R.id.scb_sb_cornerRadius:
+                drawable.setCornerRadius(progress);
                 break;
             case R.id.scb_sb_margin:
+                final int margin = (int) (progress * density);
+                drawable.setCornerMargin(margin);
                 break;
             case R.id.scb_sb_stoke:
+                drawable.setStokeSize(progress);
                 break;
             case R.id.scb_sb_radius:
+                final int radius = (int) (progress * density);
+                drawable.setContentRadius(radius);
                 break;
             case R.id.scb_sb_padding:
+                final int padding = (int) (progress * density);
+                drawable.setPadding(padding, padding, padding, padding);
                 break;
         }
     }
