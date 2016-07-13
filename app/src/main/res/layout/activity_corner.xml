@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activities.drawable.sharpcornerbox.SharpCornerBoxActivity">
+    tools:context=".activities.drawable.corner.CornerActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:theme="@style/AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/scb_toolbar"
+            android:id="@+id/corner_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/sharpcornerbox_title" />
+                android:text="@string/corner_title" />
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
@@ -39,13 +39,13 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/scb_tv_content"
+                android:id="@+id/corner_tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:maxWidth="120dp"
-                android:text="@string/sharpcornerbox_text" />
+                android:text="@string/corner_text" />
         </FrameLayout>
 
         <LinearLayout
@@ -57,75 +57,75 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/sharpcornerbox_direction" />
+                android:text="@string/corner_direction" />
 
             <RadioGroup
-                android:id="@+id/scb_rg_direction"
+                android:id="@+id/corner_rg_direction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/scb_rb_top"
+                    android:id="@+id/corner_rb_top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/sharpcornerbox_direction_top" />
+                    android:text="@string/corner_direction_top" />
 
                 <RadioButton
-                    android:id="@+id/scb_rb_bottom"
+                    android:id="@+id/corner_rb_bottom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/sharpcornerbox_direction_bottom" />
+                    android:text="@string/corner_direction_bottom" />
 
                 <RadioButton
-                    android:id="@+id/scb_rb_left"
+                    android:id="@+id/corner_rb_left"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/sharpcornerbox_direction_left" />
+                    android:text="@string/corner_direction_left" />
 
                 <RadioButton
-                    android:id="@+id/scb_rb_right"
+                    android:id="@+id/corner_rb_right"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/sharpcornerbox_direction_right" />
+                    android:text="@string/corner_direction_right" />
 
             </RadioGroup>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sharpcornerbox_location" />
+                android:text="@string/corner_location" />
 
             <RadioGroup
-                android:id="@+id/scb_rg_location"
+                android:id="@+id/corner_rg_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/scb_rb_center"
+                    android:id="@+id/corner_rb_center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/sharpcornerbox_location_center" />
+                    android:text="@string/corner_location_center" />
 
                 <RadioButton
-                    android:id="@+id/scb_rb_start"
+                    android:id="@+id/corner_rb_start"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/sharpcornerbox_location_start" />
+                    android:text="@string/corner_location_start" />
 
                 <RadioButton
-                    android:id="@+id/scb_rb_end"
+                    android:id="@+id/corner_rb_end"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/sharpcornerbox_location_end" />
+                    android:text="@string/corner_location_end" />
 
                 <RadioButton
                     android:layout_width="match_parent"
@@ -138,10 +138,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sharpcornerbox_corner_width" />
+                android:text="@string/corner_corner_width" />
 
             <SeekBar
-                android:id="@+id/scb_sb_width"
+                android:id="@+id/corner_sb_width"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="10" />
@@ -149,10 +149,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sharpcornerbox_corner_height" />
+                android:text="@string/corner_corner_height" />
 
             <SeekBar
-                android:id="@+id/scb_sb_height"
+                android:id="@+id/corner_sb_height"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="10" />
@@ -160,10 +160,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sharpcornerbox_corner_radius" />
+                android:text="@string/corner_corner_radius" />
 
             <SeekBar
-                android:id="@+id/scb_sb_cornerRadius"
+                android:id="@+id/corner_sb_cornerRadius"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="5" />
@@ -171,10 +171,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sharpcornerbox_corner_margin" />
+                android:text="@string/corner_corner_margin" />
 
             <SeekBar
-                android:id="@+id/scb_sb_margin"
+                android:id="@+id/corner_sb_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="15" />
@@ -182,10 +182,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sharpcornerbox_stoke" />
+                android:text="@string/corner_stoke" />
 
             <SeekBar
-                android:id="@+id/scb_sb_stoke"
+                android:id="@+id/corner_sb_stoke"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="5" />
@@ -193,10 +193,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sharpcornerbox_radius" />
+                android:text="@string/corner_radius" />
 
             <SeekBar
-                android:id="@+id/scb_sb_radius"
+                android:id="@+id/corner_sb_radius"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="10" />
@@ -204,10 +204,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sharpcornerbox_padding" />
+                android:text="@string/corner_padding" />
 
             <SeekBar
-                android:id="@+id/scb_sb_padding"
+                android:id="@+id/corner_sb_padding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"

@@ -210,8 +210,8 @@
             android:name=".activities.drawable.center.CenterActivity"
             android:label="@string/center_title" />
         <activity
-            android:name=".activities.drawable.sharpcornerbox.SharpCornerBoxActivity"
-            android:label="@string/sharpcornerbox_title" />
+            android:name=".activities.drawable.corner.CornerActivity"
+            android:label="@string/corner_title" />
         <activity
             android:name=".activities.develop.supergridview.SuperGridViewActivity"
             android:label="@string/dev_supergridview_title" />

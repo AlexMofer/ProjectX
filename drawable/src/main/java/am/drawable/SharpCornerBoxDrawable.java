@@ -9,85 +9,321 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.view.Gravity;
-import android.view.View;
 
 /**
  * 尖角框
+ *
+ * @author Mofer
  */
 public class SharpCornerBoxDrawable extends Drawable {
+
+    /**
+     * 方向
+     *
+     * @author Mofer
+     */
+    public enum Direction {
+        LEFT, TOP, RIGHT, BOTTOM;
+    }
+
+    /**
+     * 位置
+     *
+     * @author Mofer
+     */
+    public enum Location {
+        START, CENTER, END;
+    }
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Rect mPaddingRect = new Rect();
     private final Path mPath = new Path();
-    private int mColor;// 颜色
-    private int mCornerWidth;// 尖角宽
-    private int mCornerHeight;// 尖角高
-    private float mCornerRadius;// 尖角圆角半径
-    private int mDirection = Gravity.TOP;//朝向
-    private int mLocation = Gravity.CENTER;// 位置
-    private int mCornerMargin;//尖角边距
-    private final Rect mContentPaddingRect = new Rect();// 内容间隔
-    private float mContentRadius;// 内容圆角半径
-    private int mStokeColor;// 描边颜色
-    private int mStokeSize;// 描边线宽
-
-    private int mIntrinsicWidth;
-    private int mIntrinsicHeight;
-
-    private RectF mTempRect = new RectF();
+    private final RectF mRoundRect = new RectF();
+    private Point mPoint;
+    private int mCornerWidth;
+    private int mCornerHeight;
+    private Direction mDirection;
+    private Location mLocation;
+    private int mPadding;
+    private float mRoundRectCorner;
+    private boolean considerCorner = true;
 
     public SharpCornerBoxDrawable(int color, int cornerWidth, int cornerHeight) {
-        this(color, cornerWidth, cornerHeight, 0, Gravity.TOP, Gravity.CENTER, 0);
+        this(color, cornerWidth, cornerHeight, Direction.TOP);
     }
 
-    public SharpCornerBoxDrawable(int color, int cornerWidth, int cornerHeight, float cornerRadius,
-                                  int direction, int location, float contentRadius) {
-        setColor(color);
-        setCornerWidth(cornerWidth);
-        setCornerHeight(cornerHeight);
-        setCornerRadius(cornerRadius);
-        setDirection(direction);
-        setLocation(location);
-        setContentRadius(contentRadius);
+    public SharpCornerBoxDrawable(int color, int cornerWidth, int cornerHeight,
+                                  float roundRectCorner) {
+        this(color, cornerWidth, cornerHeight, Direction.TOP, roundRectCorner);
     }
 
-    @Override
-    public void setBounds(Rect bounds) {
-        super.setBounds(bounds);
+    public SharpCornerBoxDrawable(int color, int cornerWidth, int cornerHeight,
+                                  Direction direction) {
+        this(color, cornerWidth, cornerHeight, direction, Location.CENTER, 0, 0);
+    }
 
+    public SharpCornerBoxDrawable(int color, int cornerWidth, int cornerHeight,
+                                  Direction direction, int padding) {
+        this(color, cornerWidth, cornerHeight, direction, Location.CENTER,
+                padding, 0);
+    }
+
+    public SharpCornerBoxDrawable(int color, int cornerWidth, int cornerHeight,
+                                  Direction direction, float roundRectCorner) {
+        this(color, cornerWidth, cornerHeight, direction, Location.CENTER, 0,
+                roundRectCorner);
+    }
+
+    public SharpCornerBoxDrawable(int color, int cornerWidth, int cornerHeight,
+                                  Direction direction, Location location, int padding) {
+        this(color, cornerWidth, cornerHeight, direction, location, padding, 0);
+
+    }
+
+    public SharpCornerBoxDrawable(int color, int cornerWidth, int cornerHeight,
+                                  Direction direction, Location location, float roundRectCorner) {
+        this(color, cornerWidth, cornerHeight, direction, location, 0,
+                roundRectCorner);
+
+    }
+
+    public SharpCornerBoxDrawable(int color, int cornerWidth, int cornerHeight,
+                                  Direction direction, Location location, int padding,
+                                  float roundRectCorner) {
+        mPaint.setColor(color);
+        mCornerWidth = cornerWidth;
+        mCornerHeight = cornerHeight;
+        mDirection = direction == null ? Direction.TOP : direction;
+        mLocation = location == null ? Location.CENTER : location;
+        mPadding = padding;
+        mRoundRectCorner = roundRectCorner;
+        if (mRoundRectCorner > mPadding * 0.5f) {
+            mPadding = (int) Math.ceil(mRoundRectCorner);
+        }
+        updatePaddingRect();
+    }
+
+    private void updatePaddingRect() {
+        switch (mDirection) {
+            case BOTTOM:
+                mPaddingRect.set(0, 0, 0, mCornerHeight);
+                break;
+            case LEFT:
+                mPaddingRect.set(mCornerHeight, 0, 0, 0);
+                break;
+            case RIGHT:
+                mPaddingRect.set(0, 0, mCornerHeight, 0);
+                break;
+            default:
+            case TOP:
+                mPaddingRect.set(0, mCornerHeight, 0, 0);
+                break;
+        }
     }
 
     @Override
     public void draw(Canvas canvas) {
-        // TODO 尖角位置，Path
+        final Rect bounds = getBounds();
+        if (bounds == null) {
+            return;
+        }
         mPath.rewind();
-        if (mCornerHeight == 0) {
-            if (mContentRadius == 0) {
-                mTempRect.set(getBounds());
-                mPath.addRect(mTempRect, Path.Direction.CW);
-            } else {
-                mTempRect.set(getBounds());
-                mPath.addRoundRect(mTempRect, mContentRadius, mContentRadius, Path.Direction.CCW);
+        switch (mDirection) {
+            case BOTTOM:
+                pathCornerBottom(bounds);
+                break;
+            case LEFT:
+                pathCornerLeft(bounds);
+                break;
+            case RIGHT:
+                pathCornerRight(bounds);
+                break;
+            default:
+            case TOP:
+                pathCornerTop(bounds);
+                break;
+        }
+        canvas.drawPath(mPath, mPaint);
+        if (mRoundRectCorner > 0) {
+            mRoundRect.set(bounds.left + mPaddingRect.left, bounds.top
+                            + mPaddingRect.top, bounds.right - mPaddingRect.right,
+                    bounds.bottom - mPaddingRect.bottom);
+            canvas.drawRoundRect(mRoundRect, mRoundRectCorner,
+                    mRoundRectCorner, mPaint);
+        } else {
+            canvas.drawRect(bounds.left + mPaddingRect.left, bounds.top
+                            + mPaddingRect.top, bounds.right - mPaddingRect.right,
+                    bounds.bottom - mPaddingRect.bottom, mPaint);
+        }
+
+    }
+
+    private void pathCornerLeft(Rect bounds) {
+        final float halfWidth = mCornerWidth * 0.5f;
+        final float mCornerPointX;
+        final float mCornerPointY;
+        mCornerPointX = bounds.left;
+        if (mPoint == null) {
+            switch (mLocation) {
+                default:
+                case CENTER:
+                    mCornerPointY = bounds.centerY();
+                    break;
+                case END:
+                    mCornerPointY = bounds.bottom - mPadding - halfWidth;
+                    break;
+                case START:
+                    mCornerPointY = bounds.top + mPadding + halfWidth;
+                    break;
             }
         } else {
-            if (mCornerRadius == 0) {
-
-            } else {
-
-            }
-
-
-            mPath.moveTo(0, 0);
-            mPath.lineTo(100, 0);
-            mPath.lineTo(100, 100);
-            mPath.lineTo(0, 100);
-            mPath.addCircle(100, 100, 50, Path.Direction.CCW);
-
+            mCornerPointY = mPoint.y;
         }
-        mPaint.setColor(mColor);
-        canvas.drawPath(mPath, mPaint);
+
+        mPath.moveTo(mCornerPointX, mCornerPointY);
+        mPath.lineTo(mCornerPointX + mCornerHeight, mCornerPointY + halfWidth);
+        mPath.lineTo(mCornerPointX + mCornerHeight, mCornerPointY - halfWidth);
+        mPath.close();
+    }
+
+    private void pathCornerTop(Rect bounds) {
+        final float halfWidth = mCornerWidth * 0.5f;
+        final float mCornerPointX;
+        final float mCornerPointY;
+        if (mPoint == null) {
+            switch (mLocation) {
+                default:
+                case CENTER:
+                    mCornerPointX = bounds.centerX();
+                    break;
+                case END:
+                    mCornerPointX = bounds.right - mPadding - halfWidth;
+                    break;
+                case START:
+                    mCornerPointX = bounds.left + mPadding + halfWidth;
+                    break;
+            }
+        } else {
+            mCornerPointX = mPoint.x;
+        }
+        mCornerPointY = bounds.top;
+        mPath.moveTo(mCornerPointX, mCornerPointY);
+        mPath.lineTo(mCornerPointX + halfWidth, mCornerPointY + mCornerHeight);
+        mPath.lineTo(mCornerPointX - halfWidth, mCornerPointY + mCornerHeight);
+        mPath.close();
+    }
+
+    private void pathCornerRight(Rect bounds) {
+        final float halfWidth = mCornerWidth * 0.5f;
+        final float mCornerPointX;
+        final float mCornerPointY;
+        mCornerPointX = bounds.right;
+        if (mPoint == null) {
+            switch (mLocation) {
+                default:
+                case CENTER:
+                    mCornerPointY = bounds.centerY();
+                    break;
+                case END:
+                    mCornerPointY = bounds.bottom - mPadding - halfWidth;
+                    break;
+                case START:
+                    mCornerPointY = bounds.top + mPadding + halfWidth;
+                    break;
+            }
+        } else {
+            mCornerPointY = mPoint.y;
+        }
+
+        mPath.moveTo(mCornerPointX, mCornerPointY);
+        mPath.lineTo(mCornerPointX - mCornerHeight, mCornerPointY + halfWidth);
+        mPath.lineTo(mCornerPointX - mCornerHeight, mCornerPointY - halfWidth);
+        mPath.close();
+    }
+
+    private void pathCornerBottom(Rect bounds) {
+        final float halfWidth = mCornerWidth * 0.5f;
+        final float mCornerPointX;
+        final float mCornerPointY;
+        if (mPoint == null) {
+            switch (mLocation) {
+                default:
+                case CENTER:
+                    mCornerPointX = bounds.centerX();
+                    break;
+                case END:
+                    mCornerPointX = bounds.right - mPadding - halfWidth;
+                    break;
+                case START:
+                    mCornerPointX = bounds.left + mPadding + halfWidth;
+                    break;
+            }
+        } else {
+            mCornerPointX = mPoint.x;
+        }
+        mCornerPointY = bounds.bottom;
+        mPath.moveTo(mCornerPointX, mCornerPointY);
+        mPath.lineTo(mCornerPointX + halfWidth, mCornerPointY - mCornerHeight);
+        mPath.lineTo(mCornerPointX - halfWidth, mCornerPointY - mCornerHeight);
+        mPath.close();
+    }
+
+    @Override
+    public int getIntrinsicHeight() {
+        int height;
+        switch (mDirection) {
+            case BOTTOM:
+                height = mCornerHeight;
+                break;
+            case LEFT:
+                height = mCornerWidth;
+                break;
+            case RIGHT:
+                height = mCornerWidth;
+                break;
+            default:
+            case TOP:
+                height = mCornerHeight;
+                break;
+        }
+        if (isConsiderCorner()) {
+            height += (int) Math.ceil(mRoundRectCorner * 2d);
+        }
+        return height;
+    }
+
+    @Override
+    public int getIntrinsicWidth() {
+        int width;
+        switch (mDirection) {
+            case BOTTOM:
+                width = mCornerWidth;
+                break;
+            case LEFT:
+                width = mCornerHeight;
+                break;
+            case RIGHT:
+                width = mCornerHeight;
+                break;
+            default:
+            case TOP:
+                width = mCornerWidth;
+                break;
+        }
+        if (isConsiderCorner()) {
+            width += (int) Math.ceil(mRoundRectCorner * 2d);
+        }
+        return width;
+    }
+
+    @Override
+    public boolean getPadding(Rect padding) {
+        if (mPaddingRect != null) {
+            padding.set(mPaddingRect);
+            return true;
+        } else {
+            return super.getPadding(padding);
+        }
     }
 
     @Override
@@ -107,235 +343,95 @@ public class SharpCornerBoxDrawable extends Drawable {
         return PixelFormat.TRANSLUCENT;
     }
 
-    @Override
-    public int getIntrinsicWidth() {
-        return mIntrinsicWidth;
+    public int getColor() {
+        return mPaint.getColor();
     }
 
-    @Override
-    public int getIntrinsicHeight() {
-        return mIntrinsicHeight;
-    }
-
-    @Override
-    @SuppressWarnings("all")
-    public boolean getPadding(Rect padding) {
-        padding.set(mPaddingRect);
-        return true;
-    }
-
-    /**
-     * 计算必要的数据
-     *
-     */
-    private void calculateValue() {
-        if (mCornerHeight <= 0) {
-            mPaddingRect.set(mContentPaddingRect);
-            mIntrinsicWidth = 0;
-            mIntrinsicHeight = 0;
-        } else {
-            switch (mDirection) {
-                case Gravity.LEFT:
-                    mPaddingRect.set(mContentPaddingRect.left + mCornerHeight,
-                            mContentPaddingRect.top, mContentPaddingRect.right,
-                            mContentPaddingRect.bottom);
-                    mIntrinsicWidth = mCornerHeight + (int) Math.ceil(mContentRadius * 2);
-                    mIntrinsicHeight = Math.max(mCornerWidth, (int) Math.ceil(mContentRadius * 2));
-                    break;
-                case Gravity.RIGHT:
-                    mPaddingRect.set(mContentPaddingRect.left,
-                            mContentPaddingRect.top, mContentPaddingRect.right + mCornerHeight,
-                            mContentPaddingRect.bottom);
-                    mIntrinsicWidth = mCornerHeight + (int) Math.ceil(mContentRadius * 2);
-                    mIntrinsicHeight = Math.max(mCornerWidth, (int) Math.ceil(mContentRadius * 2));
-                    break;
-                case Gravity.BOTTOM:
-                    mPaddingRect.set(mContentPaddingRect.left,
-                            mContentPaddingRect.top, mContentPaddingRect.right,
-                            mContentPaddingRect.bottom + mCornerHeight);
-                    mIntrinsicWidth = Math.max(mCornerWidth, (int) Math.ceil(mContentRadius * 2));
-                    mIntrinsicHeight = mCornerHeight + (int) Math.ceil(mContentRadius * 2);
-                    break;
-                default:
-                case Gravity.TOP:
-                    mPaddingRect.set(mContentPaddingRect.left,
-                            mContentPaddingRect.top + mCornerHeight, mContentPaddingRect.right,
-                            mContentPaddingRect.bottom);
-                    mIntrinsicWidth = Math.max(mCornerWidth, (int) Math.ceil(mContentRadius * 2));
-                    mIntrinsicHeight = mCornerHeight + (int) Math.ceil(mContentRadius * 2);
-                    break;
-            }
-
-        }
-        mCornerMargin = Math.max(mCornerMargin, (int) Math.ceil(mContentRadius * 2));
-    }
-
-
-    /**
-     * 设置颜色
-     *
-     * @param color 颜色
-     */
     public void setColor(int color) {
-        if (mColor != color) {
-            mColor = color;
+        if (getColor() != color) {
+            mPaint.setColor(color);
             invalidateSelf();
         }
     }
 
-    /**
-     * 设置尖角相对宽
-     *
-     * @param width 相对宽
-     */
+    public int getCornerWidth() {
+        return mCornerWidth;
+    }
+
     public void setCornerWidth(int width) {
-        if (width >= 0 && mCornerWidth != width) {
-            mCornerWidth = width;
-            calculateValue();
+        if (getCornerWidth() != width) {
+            this.mCornerWidth = width;
             invalidateSelf();
-            DrawableHelper.invalidateCallbackPadding(this);
-            DrawableHelper.requestCallbackLayout(this);
         }
     }
 
-    /**
-     * 设置尖角相对高
-     *
-     * @param height 相对高
-     */
+    public int getCornerHeight() {
+        return mCornerHeight;
+    }
+
     public void setCornerHeight(int height) {
-        if (height >= 0 && mCornerHeight != height) {
-            mCornerHeight = height;
-            calculateValue();
-            invalidateSelf();
-            DrawableHelper.invalidateCallbackPadding(this);
-            DrawableHelper.requestCallbackLayout(this);
-        }
-    }
-
-    /**
-     * 设置尖角圆角半径
-     *
-     * @param cornerRadius 尖角圆角半径
-     */
-    public void setCornerRadius(float cornerRadius) {
-        if (cornerRadius >= 0 && mCornerRadius != cornerRadius) {
-            mCornerRadius = cornerRadius;
+        if (getCornerHeight() != height) {
+            this.mCornerHeight = height;
+            updatePaddingRect();
             invalidateSelf();
         }
     }
 
-    /**
-     * 设置朝向
-     *
-     * @param direction 朝向
-     */
-    @SuppressWarnings("all")
-    public void setDirection(int direction) {
-        if (direction != Gravity.LEFT &&
-                direction != Gravity.TOP &&
-                direction != Gravity.RIGHT &&
-                direction != Gravity.BOTTOM)
-            return;
-        if (mDirection != direction) {
-            mDirection = direction;
-            calculateValue();
-            invalidateSelf();
-            DrawableHelper.invalidateCallbackPadding(this);
-            DrawableHelper.requestCallbackLayout(this);
-        }
+    public Direction getDirection() {
+        return mDirection;
     }
 
-    /**
-     * 设置位置
-     *
-     * @param location 位置
-     */
-    @SuppressWarnings("all")
-    public void setLocation(int location) {
-        if (location != Gravity.LEFT &&
-                location != Gravity.CENTER &&
-                location != Gravity.RIGHT)
-            return;
-
-        if (mLocation != location) {
-            mLocation = location;
+    public void setDirection(Direction direction) {
+        if (getDirection() != direction && direction != null) {
+            this.mDirection = direction;
+            updatePaddingRect();
             invalidateSelf();
         }
     }
 
-    /**
-     * 设置尖角左右间隔
-     *
-     * @param margin 左右间隔
-     */
-    public void setCornerMargin(int margin) {
-        if (margin >= 0 && mCornerMargin != margin) {
-            mCornerMargin = margin;
+    public Location getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(Location location) {
+        if (getLocation() != location && location != null) {
+            this.mLocation = location;
             invalidateSelf();
         }
     }
 
-    /**
-     * 设置Padding
-     *
-     * @param left   左
-     * @param top    上
-     * @param right  右
-     * @param bottom 下
-     */
-    public void setPadding(int left, int top, int right, int bottom) {
-        mContentPaddingRect.set(left, top, right, bottom);
-        calculateValue();
+    public int getPadding() {
+        return mPadding;
+    }
+
+    public void setPadding(int padding) {
+        if (getPadding() != padding) {
+            this.mPadding = padding;
+            invalidateSelf();
+        }
+    }
+
+    public float getRoundRectCorner() {
+        return mRoundRectCorner;
+    }
+
+    public void setRoundRectCorner(float corner) {
+        if (getRoundRectCorner() != corner) {
+            this.mRoundRectCorner = corner;
+            invalidateSelf();
+        }
+    }
+
+    public void setCornerPoint(Point point) {
+        mPoint = point;
         invalidateSelf();
-        DrawableHelper.invalidateCallbackPadding(this);
-        DrawableHelper.requestCallbackLayout(this);
     }
 
-    /**
-     * 设置Padding
-     *
-     * @param padding Padding
-     */
-    public void setPadding(Rect padding) {
-        if (padding != null) {
-            setPadding(padding.left, padding.top, padding.right, padding.bottom);
-        }
+    public boolean isConsiderCorner() {
+        return considerCorner;
     }
 
-    /**
-     * 设置内容圆角半径
-     *
-     * @param contentRadius 内容圆角半径
-     */
-    public void setContentRadius(float contentRadius) {
-        if (contentRadius >= 0 && mContentRadius != contentRadius) {
-            mContentRadius = contentRadius;
-            invalidateSelf();
-        }
-    }
-
-    /**
-     * 设置描边颜色
-     *
-     * @param color 描边颜色
-     */
-    public void setStokeColor(int color) {
-        if (color >= 0 && mStokeColor != color) {
-            mStokeColor = color;
-            invalidateSelf();
-        }
-    }
-
-    /**
-     * 设置描边线宽
-     *
-     * @param size 描边线宽
-     */
-    public void setStokeSize(int size) {
-        if (size >= 0 && mStokeSize != size) {
-            mStokeSize = size;
-            invalidateSelf();
-        }
+    public void setConsiderCorner(boolean considerCorner) {
+        this.considerCorner = considerCorner;
     }
 }

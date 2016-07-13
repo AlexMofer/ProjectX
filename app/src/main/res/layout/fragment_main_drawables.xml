@@ -65,7 +65,7 @@
                 android:drawableTop="@drawable/ic_drawable_default"
                 android:paddingBottom="18dp"
                 android:paddingTop="18dp"
-                android:text="@string/sharpcornerbox_title" />
+                android:text="@string/corner_title" />
         </LinearLayout>
 
         <LinearLayout

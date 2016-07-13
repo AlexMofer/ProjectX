@@ -14,7 +14,7 @@ import am.project.x.activities.drawable.combination.CombinationActivity;
 import am.project.x.activities.drawable.line.LineActivity;
 import am.project.x.activities.drawable.linear.LinearActivity;
 import am.project.x.activities.drawable.loading.LoadingActivity;
-import am.project.x.activities.drawable.sharpcornerbox.SharpCornerBoxActivity;
+import am.project.x.activities.drawable.corner.CornerActivity;
 
 /**
  * 图形图像
@@ -55,7 +55,7 @@ public class DrawablesFragment extends Fragment implements View.OnClickListener 
                 CombinationActivity.startActivity(getContext());
                 break;
             case R.id.drawable_btn_sharpcornerbox:
-                SharpCornerBoxActivity.startActivity(getContext());
+                CornerActivity.startActivity(getContext());
                 break;
             case R.id.drawable_btn_line:
                 LineActivity.startActivity(getContext());
