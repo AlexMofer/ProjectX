@@ -8,7 +8,7 @@ minSdkVersion 4
 ```java
 dependencies {
     ⋯
-    compile 'am.drawable:drawable:1.0.1'
+    compile 'am.drawable:drawable:1.1.0'
     ⋯
 }
 ```
