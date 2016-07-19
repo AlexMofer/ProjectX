@@ -100,8 +100,7 @@ public class CornerDrawable extends Drawable {
                         } else if (width <= mCornerWidth) {
                             makeTriangleRectPath();
                         } else {
-//                            makeRectPath();
-                            makeTriangleRectPath();
+                            makeRectPath();
                         }
                         break;
                     case Gravity.LEFT:
@@ -111,8 +110,7 @@ public class CornerDrawable extends Drawable {
                         } else if (height <= mCornerWidth) {
                             makeTriangleRectPath();
                         } else {
-//                            makeRectPath();
-                            makeTriangleRectPath();
+                            makeRectPath();
                         }
                         break;
                 }
@@ -179,6 +177,7 @@ public class CornerDrawable extends Drawable {
      * 矩形
      */
     @SuppressWarnings("all")
+    // TODO
     private void makeRectPath() {
         final int width = getBounds().width();
         final int height = getBounds().height();
@@ -324,6 +323,7 @@ public class CornerDrawable extends Drawable {
      * 圆角矩形
      */
     @SuppressWarnings("all")
+    // TODO
     private void makeRoundRect() {
         final int width = getBounds().width();
         final int height = getBounds().height();
@@ -658,50 +658,54 @@ public class CornerDrawable extends Drawable {
     }
 
     /**
-     * 矩形（三角形宽度等于矩形连接边）
+     * 矩形（三角形宽度小于等于矩形连接边）
      */
+    @SuppressWarnings("all")
     private void makeTriangleRectPath() {
-        // TODO
+        final int width = getBounds().width();
+        final int height = getBounds().height();
+        final float strokeSize = mStrokePaint != null ? mStrokePaint.getStrokeWidth() : 0;
+        final float halfStokeSize = strokeSize * 0.5f;
+        final float mCornerWidth = (mDirection == Gravity.TOP || mDirection == Gravity.BOTTOM) ? width : height;
+        final float halfCornerWidth = mCornerWidth * 0.5f;
+        final float cornerStokeVertical = (float) (Math.sqrt(halfCornerWidth * halfCornerWidth + mCornerHeight * mCornerHeight) * halfStokeSize / halfCornerWidth);
+        final float cornerHeightOffset = 2 * mCornerHeight * (mCornerWidth - strokeSize) / mCornerWidth - mCornerHeight + cornerStokeVertical;
         switch (mDirection) {
             case Gravity.TOP:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
+                mPath.moveTo(halfStokeSize, mCornerHeight + cornerHeightOffset);
+                makeCorner(halfStokeSize, mCornerHeight + cornerHeightOffset,
+                        width * 0.5f, cornerStokeVertical,
+                        width - halfStokeSize, mCornerHeight + cornerHeightOffset);
+                mPath.lineTo(width - halfStokeSize, height - halfStokeSize);
+                mPath.lineTo(halfStokeSize, height - halfStokeSize);
+                mPath.close();
                 break;
             case Gravity.BOTTOM:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
+                mPath.moveTo(width - halfStokeSize, height - mCornerHeight - cornerHeightOffset);
+                makeCorner(width - halfStokeSize, height - mCornerHeight - cornerHeightOffset,
+                        width * 0.5f, height - cornerStokeVertical,
+                        halfStokeSize, height - mCornerHeight - cornerHeightOffset);
+                mPath.lineTo(halfStokeSize, halfStokeSize);
+                mPath.lineTo(width - halfStokeSize, halfStokeSize);
+                mPath.close();
                 break;
             case Gravity.LEFT:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
+                mPath.moveTo(mCornerHeight + cornerHeightOffset, height - halfStokeSize);
+                makeCorner(mCornerHeight + cornerHeightOffset, height - halfStokeSize,
+                        cornerStokeVertical, height * 0.5f,
+                        mCornerHeight + cornerHeightOffset, halfStokeSize);
+                mPath.lineTo(width - halfStokeSize, halfStokeSize);
+                mPath.lineTo(width - halfStokeSize, height - halfStokeSize);
+                mPath.close();
                 break;
             case Gravity.RIGHT:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
+                mPath.moveTo(width - mCornerHeight - cornerHeightOffset, halfStokeSize);
+                makeCorner(width - mCornerHeight - cornerHeightOffset, halfStokeSize,
+                        width - cornerStokeVertical, height * 0.5f,
+                        width - mCornerHeight - cornerHeightOffset, height - halfStokeSize);
+                mPath.lineTo(halfStokeSize, height - halfStokeSize);
+                mPath.lineTo(halfStokeSize, halfStokeSize);
+                mPath.close();
                 break;
         }
     }
