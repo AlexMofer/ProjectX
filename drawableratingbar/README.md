@@ -10,7 +10,7 @@ minSdkVersion 4
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:drawableratingbar:1.1.0'
+    compile 'am.widget:drawableratingbar:1.1.1'
     ⋯
 }
 ```

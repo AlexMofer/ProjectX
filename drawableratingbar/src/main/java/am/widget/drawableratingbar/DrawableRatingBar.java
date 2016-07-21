@@ -210,11 +210,13 @@ public class DrawableRatingBar extends View {
         boolean touch = false;
         if (mManually) {
             final int action = event.getAction();
-            final int oldRating = mRating;
-            final int rating = getRatingByMotionEvent(event);
-            if (rating == -1) {
+            final float x = event.getX();
+            final float y = event.getY();
+            if (mOnlyItemTouchable && (y < yOffset || y > yOffset + drawableHeight)) {
                 return superResult;
             }
+            final int oldRating = mRating;
+            final int rating = getRatingByMotionEvent(x);
             if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
                 touch = true;
                 mRating = rating;
@@ -235,14 +237,10 @@ public class DrawableRatingBar extends View {
         return touch || superResult;
     }
 
-    private int getRatingByMotionEvent(MotionEvent event) {
-        final float x = event.getX();
-        final float y = event.getY();
-        int rating = -1;
-        if (mOnlyItemTouchable && (y < yOffset || y > yOffset + drawableHeight))
-            return -1;
-        for (int i = mMax; i >= 0; i--) {
-            if (x > xOffset + drawableWidth * i + mDrawablePadding * (i <= 0 ? 0 : i - 1)) {
+    private int getRatingByMotionEvent(float x) {
+        int rating = mMax;
+        for (int i = 0; i <= mMax; i++) {
+            if (x <= xOffset + drawableWidth * i + mDrawablePadding * (i > 0 ? i - 1 : 0)) {
                 rating = i;
                 break;
             }
