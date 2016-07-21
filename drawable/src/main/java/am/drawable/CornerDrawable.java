@@ -419,14 +419,25 @@ public class CornerDrawable extends Drawable {
         final float strokeSize = mStrokePaint != null ? mStrokePaint.getStrokeWidth() : 0;
         final float halfStokeSize = strokeSize * 0.5f;
         float margin;
+        float offset = 0;
         switch (mDirection) {
             case Gravity.TOP:
                 margin = mCornerMargin <= 0 ? 0 : (mCornerMargin + mCornerWidth > width ? width - mCornerWidth : mCornerMargin);
+                switch (mLocation) {
+                    case Gravity.CENTER:
+                        break;
+                    case Gravity.LEFT:
+                        offset = -(width - mCornerWidth) * 0.5f + margin;
+                        break;
+                    case Gravity.RIGHT:
+                        offset = (width + mCornerWidth) * 0.5f - margin;
+                        break;
+                }
                 mPath.moveTo(halfStokeSize, mCornerHeight + halfStokeSize);
                 mCornerLeft.set((width - mCornerWidth) * 0.5f, mCornerHeight);
                 mCornerCenter.set(width * 0.5f, 0);
                 mCornerRight.set((width + mCornerWidth) * 0.5f, mCornerHeight);
-                makeRectCornerPath(margin);
+                makeRectCornerPath(offset);
                 mPath.lineTo(width - halfStokeSize, mCornerHeight + halfStokeSize);
                 mPath.lineTo(width - halfStokeSize, height - halfStokeSize);
                 mPath.lineTo(halfStokeSize, height - halfStokeSize);
@@ -434,30 +445,60 @@ public class CornerDrawable extends Drawable {
                 break;
             case Gravity.RIGHT:
                 margin = mCornerMargin <= 0 ? 0 : (mCornerMargin + mCornerWidth > height ? height - mCornerWidth : mCornerMargin);
+                switch (mLocation) {
+                    case Gravity.CENTER:
+                        break;
+                    case Gravity.LEFT:
+                        offset = -(height - mCornerWidth) * 0.5f + margin;
+                        break;
+                    case Gravity.RIGHT:
+                        offset = (height + mCornerWidth) * 0.5f - margin;
+                        break;
+                }
                 mPath.moveTo(halfStokeSize, halfStokeSize);
                 mPath.lineTo(width - mCornerHeight - halfStokeSize, halfStokeSize);
                 mCornerLeft.set(width - mCornerHeight, (height - mCornerWidth) * 0.5f);
                 mCornerCenter.set(width, height * 0.5f);
                 mCornerRight.set(width - mCornerHeight, (height + mCornerWidth) * 0.5f);
-                makeRectCornerPath(margin);
+                makeRectCornerPath(offset);
                 mPath.lineTo(width - mCornerHeight - halfStokeSize, height - halfStokeSize);
                 mPath.lineTo(halfStokeSize, height - halfStokeSize);
                 mPath.close();
                 break;
             case Gravity.BOTTOM:
                 margin = mCornerMargin <= 0 ? 0 : (mCornerMargin + mCornerWidth > width ? width - mCornerWidth : mCornerMargin);
+                switch (mLocation) {
+                    case Gravity.CENTER:
+                        break;
+                    case Gravity.LEFT:
+                        offset = (width + mCornerWidth) * 0.5f - margin;
+                        break;
+                    case Gravity.RIGHT:
+                        offset = -(width - mCornerWidth) * 0.5f + margin;
+                        break;
+                }
                 mPath.moveTo(halfStokeSize, halfStokeSize);
                 mPath.lineTo(width - halfStokeSize, halfStokeSize);
                 mPath.lineTo(width - halfStokeSize, height - mCornerHeight - halfStokeSize);
                 mCornerLeft.set((width + mCornerWidth) * 0.5f, height - mCornerHeight);
                 mCornerCenter.set(width * 0.5f, height);
                 mCornerRight.set((width - mCornerWidth) * 0.5f, height - mCornerHeight);
-                makeRectCornerPath(margin);
+                makeRectCornerPath(offset);
                 mPath.lineTo(halfStokeSize, height - mCornerHeight - halfStokeSize);
                 mPath.close();
                 break;
             case Gravity.LEFT:
                 margin = mCornerMargin <= 0 ? 0 : (mCornerMargin + mCornerWidth > height ? height - mCornerWidth : mCornerMargin);
+                switch (mLocation) {
+                    case Gravity.CENTER:
+                        break;
+                    case Gravity.LEFT:
+                        offset = (height + mCornerWidth) * 0.5f - margin;
+                        break;
+                    case Gravity.RIGHT:
+                        offset = -(height - mCornerWidth) * 0.5f + margin;
+                        break;
+                }
                 mPath.moveTo(mCornerHeight + halfStokeSize, halfStokeSize);
                 mPath.lineTo(width - halfStokeSize, halfStokeSize);
                 mPath.lineTo(width - halfStokeSize, height - halfStokeSize);
@@ -465,13 +506,14 @@ public class CornerDrawable extends Drawable {
                 mCornerLeft.set(mCornerHeight, (height + mCornerWidth) * 0.5f);
                 mCornerCenter.set(0, height * 0.5f);
                 mCornerRight.set(mCornerHeight, (height - mCornerWidth) * 0.5f);
-                makeRectCornerPath(margin);
+                makeRectCornerPath(offset);
                 mPath.close();
                 break;
         }
     }
 
-    private void makeRectCornerPath(float margin) {
+    private void makeRectCornerPath(float offset) {
+        //TODO
         final int width = getBounds().width();
         final int height = getBounds().height();
         final float strokeSize = mStrokePaint != null ? mStrokePaint.getStrokeWidth() : 0;
@@ -481,7 +523,7 @@ public class CornerDrawable extends Drawable {
         float cornerXOffset = halfCornerWidth - halfCornerWidth * (mCornerHeight - cornerStokeVertical + halfStokeSize) / mCornerHeight;
         float cornerYOffset = halfStokeSize;
         float cornerEdgeOffset;
-        
+
     }
 
     /**
