@@ -110,14 +110,14 @@ public class CornerActivity extends BaseActivity
                 break;
             case R.id.corner_sb_margin:
                 final int margin = (int) (progress * density);
-                drawable.setCornerMargin(margin * 15);
+                drawable.setCornerMargin(margin);
                 break;
             case R.id.corner_sb_stoke:
                 drawable.setStroke(progress, stokeColor, 0, 0);
                 break;
             case R.id.corner_sb_radius:
                 final int radius = (int) (progress * density);
-                drawable.setContentRadius(radius * 15);
+                drawable.setContentRadius(radius);
                 break;
             case R.id.corner_sb_padding:
                 final int padding = (int) (progress * density);

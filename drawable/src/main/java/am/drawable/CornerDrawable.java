@@ -67,6 +67,7 @@ public class CornerDrawable extends Drawable {
     }
 
     @Override
+    @SuppressWarnings("all")
     public void draw(Canvas canvas) {
         // remember the alpha values, in case we temporarily overwrite them
         // when we modulate them with mAlpha
@@ -83,6 +84,8 @@ public class CornerDrawable extends Drawable {
         if (!haveFill && !haveStroke) {
             return;
         }
+        final float halfStokeSize = mStrokePaint != null ? mStrokePaint.getStrokeWidth() * 0.5f : 0;
+        float mContentRadius = this.mContentRadius > halfStokeSize ? this.mContentRadius : 0;
         mPath.rewind();
         if (mCornerHeight == 0) {
             if (mContentRadius == 0) {
@@ -122,50 +125,23 @@ public class CornerDrawable extends Drawable {
                 switch (mDirection) {
                     case Gravity.TOP:
                     case Gravity.BOTTOM:
-                        if (width > mCornerWidth + mContentRadius * 2 && height > mCornerHeight + mContentRadius * 2) {
-                            makeRoundRect();
-                        } else if (width >= mCornerWidth + mContentRadius * 2 && height > mCornerHeight) {
-                            makeTriangleRoundRectPath();
-                        } else if (width >= mCornerWidth + mContentRadius * 2) {
+                        if (height <= mCornerHeight) {
                             makeTrianglePath();
-                        } else if (width < mCornerWidth + mContentRadius * 2 && width > mCornerWidth) {
-                            makeRoundRectResizePath();
-                        } else if (width == mCornerWidth) {
-                            makeTriangleSemicirclePath();
                         } else {
-                            makeTrianglePath();
+                            makeRoundRect();
                         }
                         break;
                     case Gravity.LEFT:
                     case Gravity.RIGHT:
-                        if (height > mCornerWidth + mContentRadius * 2 && width > mCornerHeight + mContentRadius * 2) {
-                            makeRoundRect();
-                        } else if (height >= mCornerWidth + mContentRadius * 2 && width > mCornerHeight) {
-                            makeTriangleRoundRectPath();
-                        } else if (height >= mCornerWidth + mContentRadius * 2) {
+                        if (width <= mCornerHeight) {
                             makeTrianglePath();
-                        } else if (height < mCornerWidth + mContentRadius * 2 && height > mCornerWidth) {
-                            makeRoundRectResizePath();
-                        } else if (height == mCornerWidth) {
-                            makeTriangleSemicirclePath();
                         } else {
-                            makeTrianglePath();
+                            makeRoundRect();
                         }
                         break;
                 }
             }
         }
-        mFillPaint.setColor(0x8000ff00);
-        Rect rect = new Rect();
-        rect.set(0, 0, getBounds().width(), mCornerHeight);
-        canvas.drawRect(rect, mFillPaint);
-        rect.set(0, getBounds().height() - mCornerHeight, getBounds().width(), getBounds().height());
-        canvas.drawRect(rect, mFillPaint);
-        rect.set(0, 0, mCornerHeight, getBounds().height());
-        canvas.drawRect(rect, mFillPaint);
-        rect.set(getBounds().width() - mCornerHeight, 0, getBounds().width(), getBounds().height());
-        canvas.drawRect(rect, mFillPaint);
-
         if (haveFill) {
             mFillPaint.setAlpha(currFillAlpha);
             mFillPaint.setColor(mColor);
@@ -312,6 +288,7 @@ public class CornerDrawable extends Drawable {
         }
     }
 
+    // TODO 贝塞尔曲线
     @SuppressWarnings("all")
     private void makeTriangleCornerPath() {
         final int width = getBounds().width();
@@ -356,6 +333,7 @@ public class CornerDrawable extends Drawable {
 
     /**
      * 矩形（三角形宽度小于等于矩形连接边）
+     * TODO 修改方式
      */
     @SuppressWarnings("all")
     private void makeTriangleRectPath() {
@@ -406,6 +384,11 @@ public class CornerDrawable extends Drawable {
                 mPath.close();
                 break;
         }
+    }
+
+    // TODO 贝塞尔曲线
+    private void makeTriangleRectCornerPath() {
+
     }
 
     /**
@@ -511,6 +494,7 @@ public class CornerDrawable extends Drawable {
         }
     }
 
+    // TODO 贝塞尔曲线
     @SuppressWarnings("all")
     private void makeRectCornerPath(float offset) {
         final float strokeSize = mStrokePaint != null ? mStrokePaint.getStrokeWidth() : 0;
@@ -547,347 +531,262 @@ public class CornerDrawable extends Drawable {
     /**
      * 圆角矩形
      */
-    // TODO
+    @SuppressWarnings("all")
     private void makeRoundRect() {
         final int width = getBounds().width();
         final int height = getBounds().height();
+        final float halfStokeSize = mStrokePaint != null ? mStrokePaint.getStrokeWidth() * 0.5f : 0;
+        float maxContentRadius;
+        float mContentRadius;
+        float mCornerMove;
+        float margin;
+        float offset = 0;
+        switch (mDirection) {
+            case Gravity.TOP:
+                maxContentRadius = (width < height - mCornerHeight ? width : height - mCornerHeight) * 0.5f;
+                mContentRadius = this.mContentRadius > maxContentRadius ? maxContentRadius : this.mContentRadius;
+                mCornerMove = width - mContentRadius - mContentRadius - mCornerWidth;
+                mPath.moveTo(mContentRadius, mCornerHeight + halfStokeSize);
+                if (mCornerMove <= 0) {
+                    mCornerLeft.set(mContentRadius, mCornerHeight);
+                    mCornerCenter.set(width * 0.5f, 0);
+                    mCornerRight.set(width - mContentRadius, mCornerHeight);
+                } else {
+                    margin = mCornerMargin <= 0 ? 0 : (mCornerMargin > mCornerMove ? mCornerMove : mCornerMargin);
+                    switch (mLocation) {
+                        case Gravity.CENTER:
+                            break;
+                        case Gravity.LEFT:
+                            offset = -mCornerMove * 0.5f + margin;
+                            break;
+                        case Gravity.RIGHT:
+                            offset = mCornerMove * 0.5f - margin;
+                            break;
+                    }
+                    mCornerLeft.set((width - mCornerWidth) * 0.5f + offset, mCornerHeight);
+                    mCornerCenter.set(width * 0.5f + offset, 0);
+                    mCornerRight.set((width + mCornerWidth) * 0.5f + offset, mCornerHeight);
+                }
+                makeRoundRectCornerPath();
+                mPath.lineTo(width - mContentRadius, mCornerHeight + halfStokeSize);
+                mRoundRect.set(width - mContentRadius - mContentRadius + halfStokeSize,
+                        mCornerHeight + halfStokeSize,
+                        width - halfStokeSize,
+                        mCornerHeight + mContentRadius + mContentRadius - halfStokeSize);
+                mPath.arcTo(mRoundRect, -90, 90);
+                mPath.lineTo(width - halfStokeSize, height - mContentRadius);
+                mRoundRect.set(width - mContentRadius - mContentRadius + halfStokeSize,
+                        height - mContentRadius - mContentRadius + halfStokeSize,
+                        width - halfStokeSize,
+                        height - halfStokeSize);
+                mPath.arcTo(mRoundRect, 0, 90);
+                mPath.lineTo(mContentRadius, height - halfStokeSize);
+                mRoundRect.set(halfStokeSize,
+                        height - mContentRadius - mContentRadius + halfStokeSize,
+                        mContentRadius + mContentRadius - halfStokeSize,
+                        height - halfStokeSize);
+                mPath.arcTo(mRoundRect, 90, 90);
+                mPath.lineTo(halfStokeSize, mCornerHeight + mContentRadius);
+                mRoundRect.set(halfStokeSize,
+                        mCornerHeight + halfStokeSize,
+                        mContentRadius + mContentRadius - halfStokeSize,
+                        mCornerHeight + mContentRadius + mContentRadius - halfStokeSize);
+                mPath.arcTo(mRoundRect, 180, 90);
+                mPath.close();
+                break;
+            case Gravity.RIGHT:
+                maxContentRadius = (width - mCornerHeight < height ? width - mCornerHeight : height) * 0.5f;
+                mContentRadius = this.mContentRadius > maxContentRadius ? maxContentRadius : this.mContentRadius;
+                mCornerMove = height - mContentRadius - mContentRadius - mCornerWidth;
+                mPath.moveTo(width - mCornerHeight - halfStokeSize, mContentRadius);
+                if (mCornerMove <= 0) {
+                    mCornerLeft.set(width - mCornerHeight, mContentRadius);
+                    mCornerCenter.set(width, height * 0.5f);
+                    mCornerRight.set(width - mCornerHeight, height - mContentRadius);
+                } else {
+                    margin = mCornerMargin <= 0 ? 0 : (mCornerMargin > mCornerMove ? mCornerMove : mCornerMargin);
+                    switch (mLocation) {
+                        case Gravity.CENTER:
+                            break;
+                        case Gravity.LEFT:
+                            offset = -mCornerMove * 0.5f + margin;
+                            break;
+                        case Gravity.RIGHT:
+                            offset = mCornerMove * 0.5f - margin;
+                            break;
+                    }
+                    mCornerLeft.set(width - mCornerHeight, (height - mCornerWidth) * 0.5f + offset);
+                    mCornerCenter.set(width, height * 0.5f + offset);
+                    mCornerRight.set(width - mCornerHeight, (height + mCornerWidth) * 0.5f + offset);
+                }
+                makeRoundRectCornerPath();
+                mPath.lineTo(width - mCornerHeight - halfStokeSize, height - mContentRadius);
+                mRoundRect.set(width - mCornerHeight - mContentRadius - mContentRadius + halfStokeSize,
+                        height - mContentRadius - mContentRadius + halfStokeSize,
+                        width - mCornerHeight - halfStokeSize,
+                        height - halfStokeSize);
+                mPath.arcTo(mRoundRect, 0, 90);
+                mPath.lineTo(mContentRadius, height - halfStokeSize);
+                mRoundRect.set(halfStokeSize,
+                        height - mContentRadius - mContentRadius + halfStokeSize,
+                        mContentRadius + mContentRadius - halfStokeSize,
+                        height - halfStokeSize);
+                mPath.arcTo(mRoundRect, 90, 90);
+                mPath.lineTo(halfStokeSize, mContentRadius);
+                mRoundRect.set(halfStokeSize,
+                        halfStokeSize,
+                        mContentRadius + mContentRadius - halfStokeSize,
+                        mContentRadius + mContentRadius - halfStokeSize);
+                mPath.arcTo(mRoundRect, 180, 90);
+                mPath.lineTo(width - mCornerHeight - mContentRadius, halfStokeSize);
+                mRoundRect.set(width - mCornerHeight - mContentRadius - mContentRadius + halfStokeSize,
+                        halfStokeSize,
+                        width - mCornerHeight - halfStokeSize,
+                        mContentRadius + mContentRadius - halfStokeSize);
+                mPath.arcTo(mRoundRect, -90, 90);
+                mPath.close();
+                break;
+            case Gravity.BOTTOM:
+                maxContentRadius = (width < height - mCornerHeight ? width : height - mCornerHeight) * 0.5f;
+                mContentRadius = this.mContentRadius > maxContentRadius ? maxContentRadius : this.mContentRadius;
+                mCornerMove = width - mContentRadius - mContentRadius - mCornerWidth;
+                mPath.moveTo(width - mContentRadius, height - mCornerHeight - halfStokeSize);
+                if (mCornerMove <= 0) {
+                    mCornerLeft.set(width - mContentRadius, height - mCornerHeight);
+                    mCornerCenter.set(width * 0.5f, height);
+                    mCornerRight.set(mContentRadius, height - mCornerHeight);
+                } else {
+                    margin = mCornerMargin <= 0 ? 0 : (mCornerMargin > mCornerMove ? mCornerMove : mCornerMargin);
+                    switch (mLocation) {
+                        case Gravity.CENTER:
+                            break;
+                        case Gravity.LEFT:
+                            offset = mCornerMove * 0.5f - margin;
+                            break;
+                        case Gravity.RIGHT:
+                            offset = -mCornerMove * 0.5f + margin;
+                            break;
+                    }
+                    mCornerLeft.set((width + mCornerWidth) * 0.5f + offset, height - mCornerHeight);
+                    mCornerCenter.set(width * 0.5f + offset, height);
+                    mCornerRight.set((width - mCornerWidth) * 0.5f + offset, height - mCornerHeight);
+                }
+                makeRoundRectCornerPath();
+                mPath.lineTo(mContentRadius, height - mCornerHeight - halfStokeSize);
+                mRoundRect.set(halfStokeSize,
+                        height - mCornerHeight - mContentRadius - mContentRadius + halfStokeSize,
+                        mContentRadius + mContentRadius - halfStokeSize,
+                        height - mCornerHeight - halfStokeSize);
+                mPath.arcTo(mRoundRect, 90, 90);
+                mPath.lineTo(halfStokeSize, mContentRadius);
+                mRoundRect.set(halfStokeSize,
+                        halfStokeSize,
+                        mContentRadius + mContentRadius - halfStokeSize,
+                        mContentRadius + mContentRadius - halfStokeSize);
+                mPath.arcTo(mRoundRect, 180, 90);
+                mPath.lineTo(width - mContentRadius, halfStokeSize);
+                mRoundRect.set(width - mContentRadius - mContentRadius + halfStokeSize,
+                        halfStokeSize,
+                        width - halfStokeSize,
+                        mContentRadius + mContentRadius - halfStokeSize);
+                mPath.arcTo(mRoundRect, -90, 90);
+                mPath.lineTo(width - halfStokeSize, height - mCornerHeight - mContentRadius);
+                mRoundRect.set(width - mContentRadius - mContentRadius + halfStokeSize,
+                        height - mCornerHeight - mContentRadius - mContentRadius + halfStokeSize,
+                        width - halfStokeSize,
+                        height - mCornerHeight - halfStokeSize);
+                mPath.arcTo(mRoundRect, 0, 90);
+                break;
+            case Gravity.LEFT:
+                maxContentRadius = (width - mCornerHeight < height ? width - mCornerHeight : height) * 0.5f;
+                mContentRadius = this.mContentRadius > maxContentRadius ? maxContentRadius : this.mContentRadius;
+                mCornerMove = height - mContentRadius - mContentRadius - mCornerWidth;
+                mPath.moveTo(mCornerHeight + halfStokeSize, height - mContentRadius);
+                if (mCornerMove <= 0) {
+                    mCornerLeft.set(mCornerHeight, height - mContentRadius);
+                    mCornerCenter.set(0, height * 0.5f);
+                    mCornerRight.set(mCornerHeight, mContentRadius);
+                } else {
+                    margin = mCornerMargin <= 0 ? 0 : (mCornerMargin > mCornerMove ? mCornerMove : mCornerMargin);
+                    switch (mLocation) {
+                        case Gravity.CENTER:
+                            break;
+                        case Gravity.LEFT:
+                            offset = mCornerMove * 0.5f - margin;
+                            break;
+                        case Gravity.RIGHT:
+                            offset = -mCornerMove * 0.5f + margin;
+                            break;
+                    }
+                    mCornerLeft.set(mCornerHeight, (height + mCornerWidth) * 0.5f + offset);
+                    mCornerCenter.set(0, height * 0.5f + offset);
+                    mCornerRight.set(mCornerHeight, (height - mCornerWidth) * 0.5f + offset);
+                }
+                makeRoundRectCornerPath();
+                mPath.lineTo(mCornerHeight + halfStokeSize, mContentRadius);
+                mRoundRect.set(mCornerHeight + halfStokeSize,
+                        halfStokeSize,
+                        mCornerHeight + mContentRadius + mContentRadius - halfStokeSize,
+                        mContentRadius + mContentRadius - halfStokeSize);
+                mPath.arcTo(mRoundRect, 180, 90);
+                mPath.lineTo(width - mContentRadius, halfStokeSize);
+                mRoundRect.set(width - mContentRadius - mContentRadius + halfStokeSize,
+                        halfStokeSize,
+                        width - halfStokeSize,
+                        mContentRadius + mContentRadius - halfStokeSize);
+                mPath.arcTo(mRoundRect, -90, 90);
+                mPath.lineTo(width - halfStokeSize, height - mContentRadius);
+                mRoundRect.set(width - mContentRadius - mContentRadius + halfStokeSize,
+                        height - mContentRadius - mContentRadius + halfStokeSize,
+                        width - halfStokeSize,
+                        height - halfStokeSize);
+                mPath.arcTo(mRoundRect, 0, 90);
+                mPath.lineTo(mCornerHeight + mContentRadius, height - halfStokeSize);
+                mRoundRect.set(mCornerHeight + halfStokeSize,
+                        height - mContentRadius - mContentRadius + halfStokeSize,
+                        mCornerHeight + mContentRadius + mContentRadius - halfStokeSize,
+                        height - halfStokeSize);
+                mPath.arcTo(mRoundRect, 90, 90);
+                mPath.close();
+                break;
+        }
+    }
+
+    // TODO 贝塞尔曲线
+    @SuppressWarnings("all")
+    private void makeRoundRectCornerPath() {
         final float strokeSize = mStrokePaint != null ? mStrokePaint.getStrokeWidth() : 0;
         final float halfStokeSize = strokeSize * 0.5f;
+        final float mCornerWidth = (mDirection == Gravity.TOP || mDirection == Gravity.BOTTOM) ?
+                mCornerRight.x - mCornerLeft.x < 0 ? mCornerLeft.x - mCornerRight.x : mCornerRight.x - mCornerLeft.x :
+                mCornerRight.y - mCornerLeft.y < 0 ? mCornerLeft.y - mCornerRight.y : mCornerRight.y - mCornerLeft.y;
+        if (mCornerWidth == 0 || mCornerWidth < strokeSize)
+            return;
         final float halfCornerWidth = mCornerWidth * 0.5f;
-        final double temp = 2d * mCornerHeight * halfStokeSize / mCornerWidth;
-        final float cornerStokeVertical = (float) (Math.sqrt(halfStokeSize * halfStokeSize + temp * temp));
-        float cornerOffset = 0;
-        float margin;
-        switch (mDirection) {
-
-            case Gravity.TOP:
-                margin = mCornerMargin <= 0 ? 0 : (mCornerMargin + mCornerWidth > width ? width - mCornerWidth : mCornerMargin);
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        if (mCornerMargin <= 0) {
-                            cornerOffset = -(width - strokeSize) * 0.5f + halfCornerWidth + mContentRadius;
-                        } else if (mCornerMargin > width - strokeSize - mCornerWidth - mContentRadius * 2) {
-                            cornerOffset = (width - strokeSize) * 0.5f - halfCornerWidth - mContentRadius;
-                        } else {
-                            cornerOffset = -(width - strokeSize) * 0.5f + halfCornerWidth + mCornerMargin + mContentRadius;
-                        }
-                        break;
-                    case Gravity.RIGHT:
-                        if (mCornerMargin <= 0) {
-                            cornerOffset = (width - strokeSize) * 0.5f - halfCornerWidth - mContentRadius;
-                        } else if (mCornerMargin > width - strokeSize - mCornerWidth - mContentRadius * 2) {
-                            cornerOffset = -(width - strokeSize) * 0.5f + halfCornerWidth + mContentRadius;
-                        } else {
-                            cornerOffset = (width - strokeSize) * 0.5f - halfCornerWidth - mCornerMargin - mContentRadius;
-                        }
-                        break;
-                }
-                mPath.moveTo(halfStokeSize + mContentRadius, mCornerHeight + cornerStokeVertical);
-                makeCorner((width - mCornerWidth) * 0.5f + cornerOffset, mCornerHeight + cornerStokeVertical,
-                        width * 0.5f + cornerOffset, cornerStokeVertical,
-                        (width + mCornerWidth) * 0.5f + cornerOffset, mCornerHeight + cornerStokeVertical);
-                mPath.lineTo(width - halfStokeSize - mContentRadius, mCornerHeight + cornerStokeVertical);
-                mRoundRect.set(width - halfStokeSize - mContentRadius * 2, mCornerHeight + cornerStokeVertical,
-                        width - halfStokeSize, mCornerHeight + cornerStokeVertical + mContentRadius * 2);
-                mPath.arcTo(mRoundRect, -90, 90);
-                mPath.lineTo(width - halfStokeSize, height - halfStokeSize - mContentRadius);
-                mRoundRect.set(width - halfStokeSize - mContentRadius * 2,
-                        height - halfStokeSize - mContentRadius * 2, width - halfStokeSize, height - halfStokeSize);
-                mPath.arcTo(mRoundRect, 0, 90);
-                mPath.lineTo(halfStokeSize + mContentRadius * 2, height - halfStokeSize);
-                mRoundRect.set(halfStokeSize, height - halfStokeSize - mContentRadius * 2,
-                        halfStokeSize + mContentRadius * 2, height - halfStokeSize);
-                mPath.arcTo(mRoundRect, 90, 90);
-                mPath.lineTo(halfStokeSize, cornerStokeVertical + mCornerHeight + mContentRadius);
-                mRoundRect.set(halfStokeSize, cornerStokeVertical + mCornerHeight,
-                        halfStokeSize + mContentRadius * 2, cornerStokeVertical + mCornerHeight + mContentRadius * 2);
-                mPath.arcTo(mRoundRect, 180, 90);
-                mPath.close();
-                break;
-            case Gravity.BOTTOM:
-                margin = mCornerMargin <= 0 ? 0 : (mCornerMargin + mCornerWidth > width ? width - mCornerWidth : mCornerMargin);
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        if (mCornerMargin <= 0) {
-                            cornerOffset = (width - strokeSize) * 0.5f - halfCornerWidth - mContentRadius;
-                        } else if (mCornerMargin > width - strokeSize - mCornerWidth - mContentRadius * 2) {
-                            cornerOffset = -(width - strokeSize) * 0.5f + halfCornerWidth + mContentRadius;
-                        } else {
-                            cornerOffset = (width - strokeSize) * 0.5f - halfCornerWidth - mCornerMargin - mContentRadius;
-                        }
-                        break;
-                    case Gravity.RIGHT:
-                        if (mCornerMargin <= 0) {
-                            cornerOffset = -(width - strokeSize) * 0.5f + halfCornerWidth + mContentRadius;
-                        } else if (mCornerMargin > width - strokeSize - mCornerWidth - mContentRadius * 2) {
-                            cornerOffset = (width - strokeSize) * 0.5f - halfCornerWidth - mContentRadius;
-                        } else {
-                            cornerOffset = -(width - strokeSize) * 0.5f + halfCornerWidth + mCornerMargin + mContentRadius;
-                        }
-                        break;
-                }
-                mPath.moveTo(halfStokeSize + mContentRadius, halfStokeSize);
-                mPath.lineTo(width - halfStokeSize - mContentRadius, halfStokeSize);
-                mRoundRect.set(width - halfStokeSize - mContentRadius * 2, halfStokeSize,
-                        width - halfStokeSize, halfStokeSize + mContentRadius * 2);
-                mPath.arcTo(mRoundRect, -90, 90);
-                mPath.lineTo(width - halfStokeSize, height - cornerStokeVertical - mCornerHeight - mContentRadius);
-                mRoundRect.set(width - halfStokeSize - mContentRadius * 2, height - cornerStokeVertical - mCornerHeight - mContentRadius * 2,
-                        width - halfStokeSize, height - cornerStokeVertical - mCornerHeight);
-                mPath.arcTo(mRoundRect, 0, 90);
-                makeCorner((width + mCornerWidth) * 0.5f + cornerOffset, height - cornerStokeVertical - mCornerHeight,
-                        width * 0.5f + cornerOffset, height - cornerStokeVertical,
-                        (width - mCornerWidth) * 0.5f + cornerOffset, height - cornerStokeVertical - mCornerHeight);
-                mPath.lineTo(halfStokeSize + mContentRadius, height - cornerStokeVertical - mCornerHeight);
-                mRoundRect.set(halfStokeSize, height - cornerStokeVertical - mCornerHeight - mContentRadius * 2,
-                        halfStokeSize + mContentRadius * 2, height - cornerStokeVertical - mCornerHeight);
-                mPath.arcTo(mRoundRect, 90, 90);
-                mPath.lineTo(halfStokeSize, halfStokeSize + mContentRadius);
-                mRoundRect.set(halfStokeSize, halfStokeSize, halfStokeSize + mContentRadius * 2, halfStokeSize + mContentRadius * 2);
-                mPath.arcTo(mRoundRect, 180, 90);
-                mPath.close();
-                break;
-            case Gravity.LEFT:
-                margin = mCornerMargin <= 0 ? 0 : (mCornerMargin + mCornerWidth > height ? height - mCornerWidth : mCornerMargin);
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        if (mCornerMargin <= 0) {
-                            cornerOffset = (height - strokeSize) * 0.5f - halfCornerWidth - mContentRadius;
-                        } else if (mCornerMargin > height - strokeSize - mCornerWidth - mContentRadius * 2) {
-                            cornerOffset = -(height - strokeSize) * 0.5f + halfCornerWidth + mContentRadius;
-                        } else {
-                            cornerOffset = (height - strokeSize) * 0.5f - halfCornerWidth - mCornerMargin - mContentRadius;
-                        }
-                        break;
-                    case Gravity.RIGHT:
-                        if (mCornerMargin <= 0) {
-                            cornerOffset = -(height - strokeSize) * 0.5f + halfCornerWidth + mContentRadius;
-                        } else if (mCornerMargin > height - strokeSize - mCornerWidth - mContentRadius * 2) {
-                            cornerOffset = (height - strokeSize) * 0.5f - halfCornerWidth - mContentRadius;
-                        } else {
-                            cornerOffset = -(height - strokeSize) * 0.5f + halfCornerWidth + mCornerMargin + mContentRadius;
-                        }
-                        break;
-                }
-                mPath.moveTo(mCornerHeight + cornerStokeVertical + mContentRadius, halfStokeSize);
-                mPath.lineTo(width - halfStokeSize - mContentRadius, halfStokeSize);
-                mRoundRect.set(width - halfStokeSize - mContentRadius * 2, halfStokeSize,
-                        width - halfStokeSize, halfStokeSize + mContentRadius * 2);
-                mPath.arcTo(mRoundRect, -90, 90);
-                mPath.lineTo(width - halfStokeSize, height - halfStokeSize - mContentRadius);
-                mRoundRect.set(width - halfStokeSize - mContentRadius * 2, height - halfStokeSize - mContentRadius * 2,
-                        width - halfStokeSize, height - halfStokeSize);
-                mPath.arcTo(mRoundRect, 0, 90);
-                mPath.lineTo(mCornerHeight + cornerStokeVertical + mContentRadius, height - halfStokeSize);
-                mRoundRect.set(mCornerHeight + cornerStokeVertical, height - halfStokeSize - mContentRadius * 2,
-                        mCornerHeight + cornerStokeVertical + mContentRadius * 2, height - halfStokeSize);
-                mPath.arcTo(mRoundRect, 90, 90);
-                makeCorner(mCornerHeight + cornerStokeVertical, (height + mCornerWidth) * 0.5f + cornerOffset,
-                        cornerStokeVertical, height * 0.5f + cornerOffset,
-                        mCornerHeight + cornerStokeVertical, (height - mCornerWidth) * 0.5f + cornerOffset);
-                mPath.lineTo(mCornerHeight + cornerStokeVertical, halfStokeSize + mContentRadius);
-                mRoundRect.set(mCornerHeight + cornerStokeVertical, halfStokeSize,
-                        mCornerHeight + cornerStokeVertical + mContentRadius * 2, halfStokeSize + mContentRadius * 2);
-                mPath.arcTo(mRoundRect, 180, 90);
-                mPath.close();
-                break;
-            case Gravity.RIGHT:
-                margin = mCornerMargin <= 0 ? 0 : (mCornerMargin + mCornerWidth > height ? height - mCornerWidth : mCornerMargin);
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        if (mCornerMargin <= 0) {
-                            cornerOffset = -(height - strokeSize) * 0.5f + halfCornerWidth + mContentRadius;
-                        } else if (mCornerMargin > height - strokeSize - mCornerWidth - mContentRadius * 2) {
-                            cornerOffset = (height - strokeSize) * 0.5f - halfCornerWidth - mContentRadius;
-                        } else {
-                            cornerOffset = -(height - strokeSize) * 0.5f + halfCornerWidth + mCornerMargin + mContentRadius;
-                        }
-                        break;
-                    case Gravity.RIGHT:
-                        if (mCornerMargin <= 0) {
-                            cornerOffset = (height - strokeSize) * 0.5f - halfCornerWidth - mContentRadius;
-                        } else if (mCornerMargin > height - strokeSize - mCornerWidth - mContentRadius * 2) {
-                            cornerOffset = -(height - strokeSize) * 0.5f + halfCornerWidth + mContentRadius;
-                        } else {
-                            cornerOffset = (height - strokeSize) * 0.5f - halfCornerWidth - mCornerMargin - mContentRadius;
-                        }
-                        break;
-                }
-                mPath.moveTo(halfStokeSize + mContentRadius, halfStokeSize);
-                mPath.lineTo(width - mCornerHeight - cornerStokeVertical - mContentRadius, halfStokeSize);
-                mRoundRect.set(width - mCornerHeight - cornerStokeVertical - mContentRadius * 2, halfStokeSize,
-                        width - mCornerHeight - cornerStokeVertical, halfStokeSize + mContentRadius * 2);
-                mPath.arcTo(mRoundRect, -90, 90);
-                makeCorner(width - mCornerHeight - cornerStokeVertical, (height - mCornerWidth) * 0.5f + cornerOffset,
-                        width - cornerStokeVertical, height * 0.5f + cornerOffset,
-                        width - mCornerHeight - cornerStokeVertical, (height + mCornerWidth) * 0.5f + cornerOffset);
-                mPath.lineTo(width - mCornerHeight - cornerStokeVertical, height - halfStokeSize - mContentRadius);
-                mRoundRect.set(width - mCornerHeight - cornerStokeVertical - mContentRadius * 2, height - halfStokeSize - mContentRadius * 2,
-                        width - mCornerHeight - cornerStokeVertical, height - halfStokeSize);
-                mPath.arcTo(mRoundRect, 0, 90);
-                mPath.lineTo(halfStokeSize + mContentRadius * 2, height - halfStokeSize);
-                mRoundRect.set(halfStokeSize, height - halfStokeSize - mContentRadius * 2,
-                        halfStokeSize + mContentRadius * 2, height - halfStokeSize);
-                mPath.arcTo(mRoundRect, 90, 90);
-                mPath.lineTo(halfStokeSize, halfStokeSize + mContentRadius);
-                mRoundRect.set(halfStokeSize, halfStokeSize, halfStokeSize + mContentRadius * 2, halfStokeSize + mContentRadius * 2);
-                mPath.arcTo(mRoundRect, 180, 90);
-                mPath.close();
-                break;
-        }
-    }
-
-    /**
-     * 圆角矩形（三角形宽度加圆角直径小于等于连接边）
-     */
-    private void makeTriangleRoundRectPath() {
-        // TODO
+        final float cornerStokeVertical = (float) (Math.sqrt(halfCornerWidth * halfCornerWidth + mCornerHeight * mCornerHeight) * halfStokeSize / halfCornerWidth);
+        final float cornerStokeHorizontal = halfCornerWidth - halfCornerWidth * (mCornerHeight - cornerStokeVertical) / mCornerHeight;
+        final float cornerXOffset = cornerStokeHorizontal - halfCornerWidth * halfStokeSize / mCornerHeight;
+        final float cornerYOffset = halfStokeSize;
         switch (mDirection) {
             case Gravity.TOP:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
-                break;
-            case Gravity.BOTTOM:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
-                break;
-            case Gravity.LEFT:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
+                mPath.lineTo(mCornerLeft.x + cornerXOffset, mCornerLeft.y + cornerYOffset);
+                mPath.lineTo(mCornerCenter.x, mCornerCenter.y + cornerStokeVertical);
+                mPath.lineTo(mCornerRight.x - cornerXOffset, mCornerRight.y + cornerYOffset);
                 break;
             case Gravity.RIGHT:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
-                break;
-        }
-    }
-
-    /**
-     * 圆角矩形（圆角半径重新计算）
-     */
-    private void makeRoundRectResizePath() {
-        // TODO
-        switch (mDirection) {
-            case Gravity.TOP:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
+                mPath.lineTo(mCornerLeft.x - cornerYOffset, mCornerLeft.y + cornerXOffset);
+                mPath.lineTo(mCornerCenter.x - cornerStokeVertical, mCornerCenter.y);
+                mPath.lineTo(mCornerRight.x - cornerYOffset, mCornerRight.y - cornerXOffset);
                 break;
             case Gravity.BOTTOM:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
+                mPath.lineTo(mCornerLeft.x - cornerXOffset, mCornerLeft.y - cornerYOffset);
+                mPath.lineTo(mCornerCenter.x, mCornerCenter.y - cornerStokeVertical);
+                mPath.lineTo(mCornerRight.x + cornerXOffset, mCornerRight.y - cornerYOffset);
                 break;
             case Gravity.LEFT:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
-                break;
-            case Gravity.RIGHT:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
-                break;
-        }
-    }
-
-    /**
-     * 半圆
-     */
-    private void makeTriangleSemicirclePath() {
-        // TODO
-        switch (mDirection) {
-            case Gravity.TOP:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
-                break;
-            case Gravity.BOTTOM:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
-                break;
-            case Gravity.LEFT:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
-                break;
-            case Gravity.RIGHT:
-                switch (mLocation) {
-                    case Gravity.CENTER:
-                        break;
-                    case Gravity.LEFT:
-                        break;
-                    case Gravity.RIGHT:
-                        break;
-                }
+                mPath.lineTo(mCornerLeft.x + cornerYOffset, mCornerLeft.y - cornerXOffset);
+                mPath.lineTo(mCornerCenter.x + cornerStokeVertical, mCornerCenter.y);
+                mPath.lineTo(mCornerRight.x + cornerYOffset, mCornerRight.y + cornerXOffset);
                 break;
         }
     }

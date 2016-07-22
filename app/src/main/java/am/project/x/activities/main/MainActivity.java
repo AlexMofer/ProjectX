@@ -37,11 +37,16 @@ public class MainActivity extends AppCompatActivity {
         ViewPager vpFragments = (ViewPager) findViewById(R.id.main_vp_fragments);
         GradientTabStrip gtsTabs = (GradientTabStrip) findViewById(R.id.main_gts_tabs);
         MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager(), this);
-        if (vpFragments != null && gtsTabs != null) {
-            vpFragments.setAdapter(adapter);
-            gtsTabs.setAdapter(adapter);
-            gtsTabs.bindViewPager(vpFragments);
-        }
+        vpFragments.setAdapter(adapter);
+        gtsTabs.setAdapter(adapter);
+        gtsTabs.bindViewPager(vpFragments);
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        ViewPager vpFragments = (ViewPager) findViewById(R.id.main_vp_fragments);
+        GradientTabStrip gtsTabs = (GradientTabStrip) findViewById(R.id.main_gts_tabs);
+        gtsTabs.bindViewPager(vpFragments);
+    }
 }
