@@ -15,6 +15,7 @@ import android.view.animation.Interpolator;
  * @author Alex
  *
  */
+@SuppressWarnings("unused")
 public class DoubleCircleDrawable extends Drawable implements Animatable {
 
 	private static final long FRAME_DURATION = 1000 / 60;

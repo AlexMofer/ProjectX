@@ -80,7 +80,7 @@ public class ReplaceDrawable extends Drawable {
 
     @Override
     public int getOpacity() {
-        return 0;
+        return mBackground == FIRST ? mFirst.getOpacity() : mSecond.getOpacity();
     }
 
     /**

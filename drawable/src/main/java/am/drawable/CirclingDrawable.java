@@ -3,7 +3,6 @@ package am.drawable;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
 import android.graphics.RectF;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -16,10 +15,11 @@ import android.view.animation.Interpolator;
  *
  * @author Mofer
  */
+@SuppressWarnings("unused")
 public class CirclingDrawable extends Drawable implements Animatable {
 
     private static final long FRAME_DURATION = 1000 / 60;
-    private static final float SWEEPANGLE = 0.5f;
+    private static final float SWEEP_ANGLE = 0.5f;
     private static final int COLOR = 0xff308530;
     private static final int STROKE = 4;// dp
 
@@ -33,7 +33,7 @@ public class CirclingDrawable extends Drawable implements Animatable {
     private boolean mIsRunning;
     private int mColor;
     private int mProgress = 0;
-    private float mAnimatAngle;
+    private float mAnimateAngle;
 
     public CirclingDrawable(float density, Drawable center) {
         this((int) Math.ceil(STROKE * density), COLOR, center);
@@ -62,6 +62,12 @@ public class CirclingDrawable extends Drawable implements Animatable {
     }
 
     @Override
+    public void setBounds(int left, int top, int right, int bottom) {
+        mDrawableCenter.setBounds(left + mStroke, top + mStroke, right - mStroke, bottom - mStroke);
+        super.setBounds(left, top, right, bottom);
+    }
+
+    @Override
     public void start() {
         if (!isRunning()) {
             mIsRunning = true;
@@ -86,17 +92,15 @@ public class CirclingDrawable extends Drawable implements Animatable {
     @Override
     public void draw(Canvas canvas) {
         canvas.save();
-        mDrawableCenter.setBounds(mStroke, mStroke, mWidth
-                - mStroke, mHeight - mStroke);
         mDrawableCenter.draw(canvas);
         if (mIsRunning) {
             canvas.rotate(-90, mWidth * 0.5f, mHeight * 0.5f);
             mPaint.setColor(mColor);
             mRectF.set(mStroke * 0.5f, mStroke * 0.5f, mWidth
                     - mStroke * 0.5f, mHeight - mStroke * 0.5f);
-            canvas.drawArc(mRectF, mAnimatAngle, SWEEPANGLE, false, mPaint);
+            canvas.drawArc(mRectF, mAnimateAngle, SWEEP_ANGLE, false, mPaint);
+            canvas.restore();
         }
-        canvas.restore();
     }
 
     @Override
@@ -109,12 +113,13 @@ public class CirclingDrawable extends Drawable implements Animatable {
     @Override
     public void setColorFilter(ColorFilter cf) {
         mPaint.setColorFilter(cf);
+        mDrawableCenter.setColorFilter(cf);
         invalidateSelf();
     }
 
     @Override
     public int getOpacity() {
-        return PixelFormat.TRANSLUCENT;
+        return mDrawableCenter.getOpacity();
     }
 
     private final Runnable mUpdater = new Runnable() {
@@ -126,7 +131,7 @@ public class CirclingDrawable extends Drawable implements Animatable {
                 } else {
                     mProgress++;
                 }
-                mAnimatAngle = 360 * mInterpolator
+                mAnimateAngle = 360 * mInterpolator
                         .getInterpolation(mProgress * 0.02f);
                 scheduleSelf(mUpdater, SystemClock.uptimeMillis()
                         + FRAME_DURATION);

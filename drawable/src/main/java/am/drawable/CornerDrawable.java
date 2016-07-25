@@ -16,6 +16,7 @@ import android.view.Gravity;
  * 尖角框
  * 注意：使用该Drawable时，会改变View的Padding值。
  */
+@SuppressWarnings("unused")
 public class CornerDrawable extends Drawable {
 
     private final Paint mFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -55,12 +56,6 @@ public class CornerDrawable extends Drawable {
         setDirection(direction);
         setLocation(location);
         setContentRadius(contentRadius);
-    }
-
-    @Override
-    public void setBounds(Rect bounds) {
-        super.setBounds(bounds);
-
     }
 
     @Override
