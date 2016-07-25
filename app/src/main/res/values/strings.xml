@@ -129,13 +129,11 @@
     <string name="corner_location_center">居中</string>
     <string name="corner_location_start">靠左</string>
     <string name="corner_location_end">靠右</string>
-    <string name="corner_bezier">贝塞尔尖角：</string>
-    <string name="corner_bezier_no">否</string>
-    <string name="corner_bezier_yes">是</string>
     <string name="corner_corner_width">尖角宽度（20dp～30dp）：</string>
     <string name="corner_corner_height">尖角高度（10dp～20dp）：</string>
     <string name="corner_corner_radius">尖角圆角（0px～5px）：</string>
     <string name="corner_corner_margin">尖角边距（0dp～15dp）：</string>
+    <string name="corner_bezier">贝塞尔尖角（0～1）：</string>
     <string name="corner_stoke">描边线宽（0px～20px）：</string>
     <string name="corner_radius">内容圆角（0dp～10dp）：</string>
     <string name="corner_padding">内容间隔（0dp～10dp）：</string>

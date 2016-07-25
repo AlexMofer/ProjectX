@@ -31,13 +31,12 @@ public class CornerActivity extends BaseActivity
 
         RadioGroup rgDirection = (RadioGroup) findViewById(R.id.corner_rg_direction);
         RadioGroup rgLocation = (RadioGroup) findViewById(R.id.corner_rg_location);
-        RadioGroup rgBezier = (RadioGroup) findViewById(R.id.corner_rg_bezier);
         rgDirection.setOnCheckedChangeListener(this);
         rgLocation.setOnCheckedChangeListener(this);
-        rgBezier.setOnCheckedChangeListener(this);
         ((SeekBar) findViewById(R.id.corner_sb_width)).setOnSeekBarChangeListener(this);
         ((SeekBar) findViewById(R.id.corner_sb_height)).setOnSeekBarChangeListener(this);
         ((SeekBar) findViewById(R.id.corner_sb_margin)).setOnSeekBarChangeListener(this);
+        ((SeekBar) findViewById(R.id.corner_sb_bezier)).setOnSeekBarChangeListener(this);
         ((SeekBar) findViewById(R.id.corner_sb_stoke)).setOnSeekBarChangeListener(this);
         ((SeekBar) findViewById(R.id.corner_sb_radius)).setOnSeekBarChangeListener(this);
         ((SeekBar) findViewById(R.id.corner_sb_padding)).setOnSeekBarChangeListener(this);
@@ -51,7 +50,6 @@ public class CornerActivity extends BaseActivity
         CompatPlus.setBackground(findViewById(R.id.corner_tv_content), drawable);
         rgDirection.check(R.id.corner_rb_top);
         rgLocation.check(R.id.corner_rb_center);
-        rgBezier.check(R.id.corner_rb_no);
     }
 
     @Override
@@ -84,15 +82,6 @@ public class CornerActivity extends BaseActivity
                     drawable.setLocation(Gravity.RIGHT);
                     break;
             }
-        } else {
-            switch (checkedId) {
-                case R.id.corner_rb_no:
-                    drawable.setCornerBezier(false);
-                    break;
-                case R.id.corner_rb_yes:
-                    drawable.setCornerBezier(true);
-                    break;
-            }
         }
     }
 
@@ -111,6 +100,10 @@ public class CornerActivity extends BaseActivity
             case R.id.corner_sb_margin:
                 final int margin = (int) (progress * density);
                 drawable.setCornerMargin(margin);
+                break;
+            case R.id.corner_sb_bezier:
+                final float bezier = progress * 0.01f;
+                drawable.setCornerBezier(bezier);
                 break;
             case R.id.corner_sb_stoke:
                 drawable.setStroke(progress, stokeColor, 0, 0);
