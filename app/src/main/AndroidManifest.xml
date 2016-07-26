@@ -203,6 +203,20 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.widgets.multiactiontextview.MultiActionTextViewActivity"
+            android:label="@string/multiactiontextview_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="github.com"
+                    android:pathPrefix="/AlexMofer/ProjectX/tree/master/multiactiontextview"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.drawable.loading.LoadingActivity"
             android:label="@string/loading_title" />
@@ -227,6 +241,7 @@
         <activity
             android:name=".activities.drawable.linear.LinearActivity"
             android:label="@string/linear_title" />
+
     </application>
 
 </manifest>

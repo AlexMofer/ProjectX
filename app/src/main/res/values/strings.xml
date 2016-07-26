@@ -155,6 +155,8 @@
     <string name="linear_number">数目（1～6）：</string>
     <string name="linear_gap">间隔（1dp～10dp）：</string>
 
+    <string name="multiactiontextview_title">文本点击</string>
+
     <string name="cd_welcome">welcome icon</string>
     <string name="cd_drawable">drawable</string>
 

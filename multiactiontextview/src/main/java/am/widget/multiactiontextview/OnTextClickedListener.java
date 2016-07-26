@@ -1,4 +1,4 @@
-package am.project.x.widgets.multiactiontextview;
+package am.widget.multiactiontextview;
 
 import android.view.View;
 
