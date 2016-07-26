@@ -1,5 +1,7 @@
 package am.project.x.activities.widgets.multiactiontextview;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -18,5 +20,9 @@ public class MultiActionTextViewActivity extends BaseActivity {
     protected void initResource(Bundle savedInstanceState) {
         setSupportActionBar(R.id.mat_toolbar);
         MultiActionTextView textView = (MultiActionTextView) findViewById(R.id.mat_tv_content);
+    }
+
+    public static void startActivity(Context context) {
+        context.startActivity(new Intent(context, MultiActionTextViewActivity.class));
     }
 }
