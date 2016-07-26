@@ -56,3 +56,7 @@ mRating.setOnRatingChangeListener(OnRatingChangeListener);
 - app:drbMin定义最小值，默认0
 - app:drbOnlyItemTouchable定义是否仅图片区域触发评级修改，默认否
 - app:drbRating定义评级
+
+## 历史
+- [**1.1.0**](https://bintray.com/alexmofer/maven/DrawableRatingBar/1.1.0)
+- [**1.0.1**](https://bintray.com/alexmofer/maven/DrawableRatingBar/1.0.1)

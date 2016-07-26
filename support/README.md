@@ -31,3 +31,6 @@ dependencies {
 - **CompatPlus**
 
     版本兼容控制器
+
+## 历史
+- [**1.0.0**](https://bintray.com/alexmofer/maven/Support/1.0.0)

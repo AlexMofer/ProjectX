@@ -46,3 +46,6 @@ sivCircle.setImageShape(new RoundRectImageShape(radius));
 ## 注意
 - 基本可以通过布局实现基础代码
 - 布局sivRoundRectRadius属性只在sivShape="RoundRect"时有效
+
+## 历史
+- [**1.0.0**](https://bintray.com/alexmofer/maven/ShapeImageView/1.0.0)

@@ -12,7 +12,7 @@
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:gradienttabstrip:3.0.0'
+    compile 'am.widget:gradienttabstrip:3.1.1'
     ⋯
 }
 ```
@@ -59,6 +59,10 @@ tabStrip.bindViewPager(viewPager);
 - GradientTabAdapter中进行了改变GradientTabAdapter，需要手动通知GradientTabStrip进行刷新
 - 不需要Tag小红点，可以使用SimpleGradientTabAdapter替代GradientTabAdapter
 - 不支持com.android.support:support-v4:24.0.0以下的所有版本
+- 最好使用com.android.support:support-v4:24.1.1
 
 ## 历史
-- [**2.1.0**](https://github.com/AlexMofer/ProjectX/tree/master/gradienttabstrip/history/2.1.0)
+- [**3.1.0**](https://bintray.com/alexmofer/maven/GradientTabStrip/3.1.0)
+- [**3.0.0**](https://bintray.com/alexmofer/maven/GradientTabStrip/3.0.0)
+- [**2.1.0**](https://bintray.com/alexmofer/maven/GradientTabStrip/2.1.0)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/gradienttabstrip/history/2.1.0)）
+- [**2.0.3**](https://bintray.com/alexmofer/maven/GradientTabStrip/2.0.3)

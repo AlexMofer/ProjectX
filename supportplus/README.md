@@ -10,7 +10,7 @@
 ```java
 dependencies {
     ⋯
-    compile 'am.project:supportplus:24.0.0'
+    compile 'am.project:supportplus:24.1.1'
     ⋯
 }
 ```
@@ -31,6 +31,10 @@ dependencies {
 
 ## 注意
 - 最好是相同版本号的com.android.support:support-v4使用相同的版本
+- 最好使用com.android.support:support-v4:24.1.1
 
 ## 历史
-- [**23.4.0**](https://github.com/AlexMofer/ProjectX/tree/master/supportplus/history/23.4.0)
+- [**24.1.0**](https://bintray.com/alexmofer/maven/SupportPlus/24.1.0)
+- [**24.0.0**](https://bintray.com/alexmofer/maven/SupportPlus/24.0.0)
+- [**23.4.1**](https://bintray.com/alexmofer/maven/SupportPlus/23.4.1)
+- [**23.4.0**](https://bintray.com/alexmofer/maven/SupportPlus/23.4.0)（- [**说明**](https://github.com/AlexMofer/ProjectX/tree/master/supportplus/history/23.4.0)）

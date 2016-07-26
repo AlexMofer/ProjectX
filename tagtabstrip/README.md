@@ -12,7 +12,7 @@
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:tagtabstrip:3.0.0'
+    compile 'am.widget:tagtabstrip:3.1.1'
     ⋯
 }
 ```
@@ -42,6 +42,10 @@ ttsTags.bindViewPager(viewpager);
 - 默认状态是颜色为0xff808080与0x80808080的大小为8dp的两个小圆点Drawable，之间没有间距
 - android:gravity默认值就是center，可以不设置
 - 不支持com.android.support:support-v4:24.0.0以下的所有版本
+- 最好使用com.android.support:support-v4:24.1.1
 
 ## 历史
-- [**2.1.0**](https://github.com/AlexMofer/ProjectX/tree/master/tagtabstrip/history/2.1.0)
+- [**3.1.0**](https://bintray.com/alexmofer/maven/TagTabStrip/3.1.0)
+- [**3.0.0**](https://bintray.com/alexmofer/maven/TagTabStrip/3.0.0)
+- [**2.1.0**](https://bintray.com/alexmofer/maven/TagTabStrip/2.1.0)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/tagtabstrip/history/2.1.0)）
+- [**2.0.3**](https://bintray.com/alexmofer/maven/TagTabStrip/2.0.3)

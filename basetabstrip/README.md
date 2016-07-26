@@ -10,7 +10,7 @@
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:basetabstrip:3.0.0'
+    compile 'am.widget:basetabstrip:3.1.1'
     ⋯
 }
 ```
@@ -100,6 +100,10 @@ dependencies {
 - OnItemClickListener中实现了：单击、点击已选中子项、双击三种点击事件
 - ItemTabAdapter为角标基本容器，需要实现角标，可以基于该接口
 - 不支持com.android.support:support-v4:24.0.0以下的所有版本
+- 最好使用com.android.support:support-v4:24.1.1
 
 ## 历史
-- [**2.1.0**](https://github.com/AlexMofer/ProjectX/tree/master/basetabstrip/history/2.1.0)
+- [**3.1.0**](https://bintray.com/alexmofer/maven/BaseTabStrip/3.1.0)
+- [**3.0.0**](https://bintray.com/alexmofer/maven/BaseTabStrip/3.0.0)
+- [**2.1.0**](https://bintray.com/alexmofer/maven/BaseTabStrip/2.1.0)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/basetabstrip/history/2.1.0)）
+- [**2.0.3**](https://bintray.com/alexmofer/maven/BaseTabStrip/2.0.3)

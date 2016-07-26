@@ -70,3 +70,7 @@
 - [***Support***](https://github.com/AlexMofer/ProjectX/tree/master/support)
 
     支持包
+
+## 历史
+- [**1.0.1**](https://bintray.com/alexmofer/maven/WrapLayout/1.0.1)
+- [**1.0.0**](https://bintray.com/alexmofer/maven/WrapLayout/1.0.0)

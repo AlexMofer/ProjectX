@@ -34,3 +34,8 @@ dependencies {
 - **CornerDrawable**
     
     尖角框，使用该Drawable时，会改变View的Padding值。
+
+## 历史
+- [**1.1.0**](https://bintray.com/alexmofer/maven/Drawable/1.1.0)
+- [**1.0.1**](https://bintray.com/alexmofer/maven/Drawable/1.0.1)
+- [**1.0.0**](https://bintray.com/alexmofer/maven/Drawable/1.0.0)

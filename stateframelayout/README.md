@@ -10,7 +10,7 @@ minSdkVersion 4
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:stateframelayout:1.0.0'
+    compile 'am.widget:stateframelayout:1.0.3'
     ⋯
 }
 ```
@@ -39,3 +39,8 @@ lytState.setStateViews(mLoadingView, mErrorView, mEmptyView);
 - 继承自帧布局
 - 各种状态下都不拦截子View的点击事件，除Normal状态且isAlwaysDrawChild() == true时，内容子项不会被绘制及显示
 - setAlwaysDrawChild(true)强制各种状态下都显示内容子项
+
+## 历史
+- [**1.0.2**](https://bintray.com/alexmofer/maven/StateFrameLayout/1.0.2)
+- [**1.0.1**](https://bintray.com/alexmofer/maven/StateFrameLayout/1.0.1)
+- [**1.0.0**](https://bintray.com/alexmofer/maven/StateFrameLayout/1.0.0)
