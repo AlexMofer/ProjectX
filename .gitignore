@@ -15,3 +15,6 @@ local.properties
 
 # Apple OS
 .DS_Store
+
+# Key
+*.jks

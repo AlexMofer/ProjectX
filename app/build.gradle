@@ -3,7 +3,14 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
-
+    signingConfigs {
+        Release {
+            keyAlias 'projectx'
+            keyPassword 'alexpx'
+            storeFile file('Alex.jks')
+            storePassword 'alex0330'
+        }
+    }
     defaultConfig {
         applicationId "am.project.x"
         minSdkVersion 11
@@ -13,12 +20,14 @@ android {
     }
     buildTypes {
         release {
+            signingConfig signingConfigs.Release
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
             enforceUniquePackageName false
         }
         debug {
+            signingConfig signingConfigs.Release
             minifyEnabled false
             debuggable true
             enforceUniquePackageName false
@@ -29,6 +38,9 @@ android {
     }
 
     productFlavors {
+        rel {
+            minSdkVersion 11
+        }
         dev {
             minSdkVersion 21
         }
