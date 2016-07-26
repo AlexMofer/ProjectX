@@ -41,19 +41,19 @@
 - [***CirclingDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
 
     外围小点转圈动图。
-- [**CenterDrawable**](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
+- [***CenterDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
 
     中心图片，背景可绘制形状，一般用于ImageView的src，保证缩放后，中心的Drawable不变形。用于一般background属性的话，无需使用本控件，直接使用layer-list来定义即可。
-- [**CombinationDrawable**](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
+- [***CombinationDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
 
     双层图片，与CenterDrawable类似，背景为另一Drawable，一般用于ImageView的src，保证缩放后，中心的Drawable不变形。用于一般background属性的话，无需使用本控件，直接使用layer-list来定义即可。
-- [**CornerDrawable**](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
+- [***CornerDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
     
     尖角框，使用该Drawable时，会改变View的Padding值。
-- [**LineDrawable**](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
+- [***LineDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
 
     横线图片，主要是底色为透明或半透明色时有用，为不透明时，通过layer-list即可实现。
-- [**LinearDrawable**](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
+- [***LinearDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
     
     线性图片，多张图片排列，支持设置间隔，主要用于替代多个ImageView排列，节省性能。
 

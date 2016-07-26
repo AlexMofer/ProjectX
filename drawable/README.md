@@ -16,7 +16,7 @@ dependencies {
 - **DoubleCircleDrawable**
 
     双圈动图，用于载入提示。
-- ***CirclingDrawable***
+- **CirclingDrawable**
 
     外围小点转圈动图。
 - **CenterDrawable**
