@@ -33,6 +33,9 @@
 - [***HeaderFooterGridView***](https://github.com/AlexMofer/ProjectX/tree/master/headerfootergridview)
 
     头尾GridView，支持AUTO_FIT模式，头尾模式有两种，无反射代码。
+- [***MultiActionTextView***](https://github.com/AlexMofer/ProjectX/tree/master/multiactiontextview)
+
+    文字可点击TextView，设置文字部分可点击，点击执行不同操作。
 
 ## Drawable
 - [***DoubleCircleDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
