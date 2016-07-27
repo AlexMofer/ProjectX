@@ -156,6 +156,8 @@
     <string name="linear_gap">间隔（1dp～10dp）：</string>
 
     <string name="multiactiontextview_title">文本点击</string>
+    <string name="multiactiontextview_content">Android最初由安迪·鲁宾（Andy Rubin）等人开发制作，最初开发这个系统的目的是创建一个数码相机的先进操作系统；但是后来发现市场需求不够大，加上智能手机市场快速成长，于是Android被改造为一款面向智能手机的操作系统。于2005年7月11日被美国科技企业Google收购。2007年11月，Google与84家硬件制造商、软件开发商及电信营运商成立开放手持设备联盟来共同研发改良Android，随后，Google以Apache免费开放源代码许可证的授权方式，发布了Android的源代码，让生产商推出搭载Android的智能手机，Android后来更逐渐拓展到平板电脑及其他领域上。\n2010年末数据显示，仅正式推出两年的Android操作系统在市场占有率上已经超越称霸逾十年的诺基亚Symbian系统，成为全球第一大智能手机操作系统。\n在2014年Google I/O开发者大会上Google宣布过去30天里有10亿台活跃的安卓设备，相较于2013年6月则是5.38亿。</string>
+    <string name="multiactiontextview_toast">点击整个文本</string>
 
     <string name="cd_welcome">welcome icon</string>
     <string name="cd_drawable">drawable</string>

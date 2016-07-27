@@ -27,22 +27,13 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
+    <am.widget.multiactiontextview.MultiActionTextView
+        android:id="@+id/mat_tv_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <am.widget.multiactiontextview.MultiActionTextView
-            android:id="@+id/mat_tv_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:maxWidth="200dp"
-            android:text="@string/corner_text"
-            android:textSize="18sp" />
-
-
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/multiactiontextview_content"
+        android:textSize="18sp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </android.support.design.widget.CoordinatorLayout>
