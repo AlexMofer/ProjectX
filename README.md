@@ -75,4 +75,4 @@
     支持包
 
 ## 下载
-[<img src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" height="45px" />](https://play.google.com/store/apps/details?id=am.project.x)[<img src="https://github.com/AlexMofer/ProjectX/blob/master/release/ic_download.png" height="45px" />](https://github.com/AlexMofer/ProjectX/blob/master/release/ProjectX-2.2.5.apk)
+[<img src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" height="45px" />](https://play.google.com/store/apps/details?id=am.project.x)[<img src="https://github.com/AlexMofer/ProjectX/blob/master/release/ic_download.png" height="45px" />](https://github.com/AlexMofer/ProjectX/blob/master/release/ProjectX.apk)
