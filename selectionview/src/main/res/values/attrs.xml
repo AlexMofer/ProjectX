@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SelectionView">
+        <attr name="svBarStyle" format="enum">
+            <enum name="List" value="0" />
+            <enum name="Slider" value="1" />
+        </attr>
+        <attr name="svBarBackground" format="reference" />
+        <attr name="svBarPadding" format="dimension" />
+        <attr name="svBarPaddingLeft" format="dimension" />
+        <attr name="svBarPaddingTop" format="dimension" />
+        <attr name="svBarPaddingRight" format="dimension" />
+        <attr name="svBarPaddingBottom" format="dimension" />
+        <attr name="svBarWidth" format="dimension" />
+        <attr name="svBarItemHeight" format="dimension" />
+        <attr name="svBarSlider" format="reference" />
+        <attr name="svNoticeLocation" format="enum">
+            <enum name="ViewCenter" value="0" />
+            <enum name="SliderTop" value="1" />
+        </attr>
+        <attr name="svNoticeWidth" format="dimension" />
+        <attr name="svNoticeHeight" format="dimension" />
+        <attr name="svNoticeBackground" format="reference" />
+        <attr name="svNoticePadding" format="dimension" />
+        <attr name="svNoticePaddingLeft" format="dimension" />
+        <attr name="svNoticePaddingTop" format="dimension" />
+        <attr name="svNoticePaddingRight" format="dimension" />
+        <attr name="svNoticePaddingBottom" format="dimension" />
+    </declare-styleable>
+</resources>

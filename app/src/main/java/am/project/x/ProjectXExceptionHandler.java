@@ -23,17 +23,11 @@ public class ProjectXExceptionHandler implements Thread.UncaughtExceptionHandler
      * @param thread 错误线程
      * @param ex     错误
      */
+    @SuppressWarnings("unused")
     private void handleException(Thread thread, Throwable ex) {
         // 上报日志
         if (ex != null) {
             String message = ex.getMessage();
-//            try {
-//                // 设备打印错误日志
-//                LogUtils.e(thread.getName(), message);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
         }
-
     }
 }

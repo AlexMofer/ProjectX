@@ -62,6 +62,7 @@ dependencies {
     compile project(':drawableratingbar')
     compile project(':headerfootergridview')
     compile project(':multiactiontextview')
+    compile project(':selectionview')
     compile project(':drawable')
     compile project(':supportplus')
     compile project(':support')
