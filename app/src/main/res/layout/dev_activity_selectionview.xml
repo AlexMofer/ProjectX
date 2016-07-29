@@ -37,11 +37,19 @@
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-        <am.widget.selectionview.SelectionView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        <am.widget.selectionview.SelectionView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:svBarStyle="List"/>
+            app:svBarItemHeight="24dp"
+            app:svBarPadding="10dp"
+            app:svBarStyle="List"
+            app:svBarWidth="24dp"
+            app:svNoticeBackground="@drawable/bg_selection_notice"
+            app:svNoticeHeight="64dp"
+            app:svNoticeLocation="ViewCenter"
+            app:svNoticePadding="5dp"
+            app:svNoticeWidth="64dp" />
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
