@@ -14,6 +14,7 @@ import android.text.TextPaint;
 /**
  * 文字Drawable
  */
+@SuppressWarnings("unused")
 public class TextDrawable extends Drawable {
 
     private final TextPaint mTextPaint;// 文字画笔

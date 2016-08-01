@@ -8,7 +8,7 @@ minSdkVersion 4
 ```java
 dependencies {
     ⋯
-    compile 'am.drawable:drawable:1.2.0'
+    compile 'am.drawable:drawable:1.2.1'
     ⋯
 }
 ```
@@ -34,8 +34,12 @@ dependencies {
 - **CornerDrawable**
     
     尖角框，使用该Drawable时，会改变View的Padding值。
+- **TextDrawable**
+    
+    文字图片。
 
 ## 历史
+- [**1.2.0**](https://bintray.com/alexmofer/maven/Drawable/1.2.0)
 - [**1.1.0**](https://bintray.com/alexmofer/maven/Drawable/1.1.0)
 - [**1.0.1**](https://bintray.com/alexmofer/maven/Drawable/1.0.1)
 - [**1.0.0**](https://bintray.com/alexmofer/maven/Drawable/1.0.0)
