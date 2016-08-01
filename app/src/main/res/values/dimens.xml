@@ -1,4 +1,5 @@
 <resources>
     <dimen name="textSize_9">9sp</dimen>
     <dimen name="textSize_Toolbar">18sp</dimen>
+    <dimen name="textSize_drawable">45sp</dimen>
 </resources>

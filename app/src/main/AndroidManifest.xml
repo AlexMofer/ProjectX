@@ -203,7 +203,8 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.widgets.multiactiontextview.MultiActionTextViewActivity"
+        <activity
+            android:name=".activities.widgets.multiactiontextview.MultiActionTextViewActivity"
             android:label="@string/multiactiontextview_title">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -241,7 +242,9 @@
         <activity
             android:name=".activities.drawable.linear.LinearActivity"
             android:label="@string/linear_title" />
-
+        <activity
+            android:name=".activities.drawable.text.TextActivity"
+            android:label="@string/text_title" />
     </application>
 
 </manifest>

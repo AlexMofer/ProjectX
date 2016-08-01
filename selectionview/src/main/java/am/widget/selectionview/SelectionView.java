@@ -3,7 +3,6 @@ package am.widget.selectionview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -25,7 +24,10 @@ public class SelectionView extends View {
     private Drawable mBarBackground;
     private final Rect mBarPadding = new Rect();
     private int mBarWidth;
+    private int mBarHeight;
     private int mBarItemHeight;
+    private int mItemWidthActual;
+    private float mItemHeightActual;
     private Drawable mBarSlider;
     private int mNoticeLocation;
     private int mNoticeWidth;
@@ -33,8 +35,6 @@ public class SelectionView extends View {
     private Drawable mNoticeBackground;
     private final Rect mNoticePadding = new Rect();
     private Selection mSelection;
-
-    private float mItemHeightActual;
 
     public SelectionView(Context context) {
         this(context, null);
@@ -108,35 +108,66 @@ public class SelectionView extends View {
         final int paddingTop = getPaddingTop();
         final int paddingEnd = Compat.getPaddingEnd(this);
         final int paddingBottom = getPaddingBottom();
-//        final int progressDrawableWidth = mProgressDrawable == null ?
-//                0 : mProgressDrawable.getIntrinsicWidth();
-//        final int progressDrawableHeight = mProgressDrawable == null ?
-//                0 : mProgressDrawable.getIntrinsicHeight();
-//        final int secondaryProgressWidth = mSecondaryProgress == null ?
-//                0 : mSecondaryProgress.getIntrinsicWidth();
-//        final int secondaryProgressHeight = mSecondaryProgress == null ?
-//                0 : mSecondaryProgress.getIntrinsicHeight();
-//        drawableWidth = Math.max(progressDrawableWidth, secondaryProgressWidth);
-//        drawableHeight = Math.max(progressDrawableHeight, secondaryProgressHeight);
-//        final int itemWidth = drawableWidth * mMax + mDrawablePadding * (mMax - 1);
-//        final int width = Math.max(itemWidth + paddingStart + paddingEnd, suggestedMinimumWidth);
-//        final int height = Math.max(drawableHeight + paddingTop + paddingBottom,
-//                suggestedMinimumHeight);
-//        setMeasuredDimension(resolveSize(width, widthMeasureSpec),
-//                resolveSize(height, heightMeasureSpec));
-
-
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int contentWidth = 0;
+        switch (mNoticeLocation) {
+            case LOCATION_SLIDER_TOP:
+                contentWidth = mNoticeWidth + mBarWidth;
+                break;
+            case LOCATION_VIEW_CENTER:
+                contentWidth = mBarWidth + mNoticeWidth + mBarWidth;
+                break;
+        }
+        final int barHeight = mBarPadding.top + mBarPadding.bottom +
+                (mSelection == null ? 0 : mSelection.getItemCount()) * mBarItemHeight;
+        int contentHeight = Math.max(barHeight, mNoticeHeight);
+        final int width = Math.max(
+                contentWidth + paddingStart + paddingEnd, suggestedMinimumWidth);
+        final int height = Math.max(
+                contentHeight + paddingTop + paddingBottom, suggestedMinimumHeight);
+        setMeasuredDimension(
+                resolveSize(width, widthMeasureSpec), resolveSize(height, heightMeasureSpec));
+        final int measuredHeight = getMeasuredHeight();
+        mBarHeight = measuredHeight - paddingTop - paddingBottom;
+        mItemWidthActual = mBarWidth - mBarPadding.left - mBarPadding.right;
+        mItemHeightActual = (mBarHeight - mBarPadding.top - mBarPadding.bottom) /
+                ((mSelection == null || mSelection.getItemCount() == 0) ?
+                        1 : mSelection.getItemCount());
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        final int width = getWidth();
-        final int height = getHeight();
-        Paint paint = new Paint();
-        paint.setColor(0xff00ff00);
-        canvas.drawRect(width * 0.5f - 50, height * 0.5f - 50, width * 0.5f + 50, height * 0.5f + 50, paint);
+        drawBarBackground(canvas);
+        drawBarItems(canvas);
+    }
+
+    private void drawBarBackground(Canvas canvas) {
+        if (mBarBackground == null)
+            return;
+        final int paddingEnd = Compat.getPaddingEnd(this);
+        mBarBackground.setBounds(0, 0, mBarWidth, mBarHeight);
+        canvas.save();
+        canvas.translate(getWidth() - paddingEnd - mBarWidth, getPaddingTop());
+        mBarBackground.draw(canvas);
+        canvas.restore();
+    }
+
+    private void drawBarItems(Canvas canvas) {
+        if (mSelection == null || mSelection.getItemCount() <= 0)
+            return;
+        final int paddingEnd = Compat.getPaddingEnd(this);
+        canvas.save();
+        canvas.translate(getWidth() - paddingEnd - mBarWidth + mBarPadding.left,
+                getPaddingTop() + mBarPadding.top);
+        for (int position = 0; position < mSelection.getItemCount(); position++) {
+            Drawable item = mSelection.getItemBar(position);
+            if (item != null) {
+                item.setBounds(0, 0, mItemWidthActual, (int) mItemHeightActual);
+                item.draw(canvas);
+            }
+            canvas.translate(0, mItemHeightActual);
+        }
+        canvas.restore();
     }
 
     @Override
@@ -144,9 +175,57 @@ public class SelectionView extends View {
         boolean touch = false;
         final int width = getWidth();
         final int height = getHeight();
-        if (event.getX() < width * 0.5f + 50 && event.getX() > width * 0.5f - 50 && event.getY() < height * 0.5f + 50 && event.getY() > height * 0.5f - 50)
+        final int paddingTop = getPaddingTop();
+        final int paddingBottom = getPaddingBottom();
+        final int paddingEnd = Compat.getPaddingEnd(this);
+        final int startX = width - paddingEnd - mBarWidth;
+        if (mBarBackground != null)
+            Compat.setHotspot(mBarBackground, event.getX() - startX, event.getY() - paddingTop);
+        if (event.getX() > startX) {
+            // TODO
+            setClickable(true);
             touch = true;
-        return super.onTouchEvent(event) || touch;
+        }
+        boolean superTouch = super.onTouchEvent(event);
+        if (isClickable() && (event.getAction() == MotionEvent.ACTION_UP ||
+                event.getAction() == MotionEvent.ACTION_CANCEL)) {
+            setClickable(false);
+        }
+        return superTouch || touch;
+    }
+
+    @Override
+    protected void drawableStateChanged() {
+        if (mBarBackground != null && mBarBackground.isStateful()) {
+            mBarBackground.setState(getDrawableState());
+        }
+        super.drawableStateChanged();
+
+    }
+
+    @Override
+    protected boolean verifyDrawable(Drawable who) {
+        boolean isPress = false;
+        if (mBarBackground != null && who == mBarBackground) {
+            isPress = true;
+        }
+        return super.verifyDrawable(who) || isPress;
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (mBarBackground != null) {
+            mBarBackground.setCallback(this);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        if (mBarBackground != null) {
+            mBarBackground.setCallback(null);
+        }
+        super.onDetachedFromWindow();
     }
 
     /**

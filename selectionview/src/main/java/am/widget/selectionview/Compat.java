@@ -1,6 +1,8 @@
 package am.widget.selectionview;
 
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 /**
@@ -11,6 +13,7 @@ class Compat {
     interface CompatPlusImpl {
         int getPaddingStart(View view);
         int getPaddingEnd(View view);
+        void setHotspot(Drawable drawable, float x, float y);
     }
 
     static class BaseCompatPlusImpl implements CompatPlusImpl {
@@ -22,6 +25,11 @@ class Compat {
         @Override
         public int getPaddingEnd(View view) {
             return view.getPaddingRight();
+        }
+
+        @Override
+        public void setHotspot(Drawable drawable, float x, float y) {
+            // do nothing
         }
     }
 
@@ -38,11 +46,21 @@ class Compat {
         }
     }
 
+    @TargetApi(21)
+    static class LollipopCompatPlusImpl extends JbMr1CompatPlusImpl {
+        @Override
+        public void setHotspot(Drawable drawable, float x, float y) {
+            drawable.setHotspot(x, y);
+        }
+    }
+
     static final CompatPlusImpl IMPL;
 
     static {
         final int version = android.os.Build.VERSION.SDK_INT;
-        if (version >= 17) {
+        if (version >= 21) {
+            IMPL = new LollipopCompatPlusImpl();
+        } else if (version >= 17) {
             IMPL = new JbMr1CompatPlusImpl();
         } else {
             IMPL = new BaseCompatPlusImpl();
@@ -55,5 +73,9 @@ class Compat {
 
     public static int getPaddingEnd(View view) {
         return IMPL.getPaddingEnd(view);
+    }
+
+    public static void setHotspot(Drawable drawable, float x, float y) {
+        IMPL.setHotspot(drawable, x, y);
     }
 }

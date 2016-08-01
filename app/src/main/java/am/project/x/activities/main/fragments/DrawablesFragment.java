@@ -15,6 +15,7 @@ import am.project.x.activities.drawable.line.LineActivity;
 import am.project.x.activities.drawable.linear.LinearActivity;
 import am.project.x.activities.drawable.loading.LoadingActivity;
 import am.project.x.activities.drawable.corner.CornerActivity;
+import am.project.x.activities.drawable.text.TextActivity;
 
 /**
  * 图形图像
@@ -40,6 +41,7 @@ public class DrawablesFragment extends Fragment implements View.OnClickListener 
         view.findViewById(R.id.drawable_btn_sharpcornerbox).setOnClickListener(this);
         view.findViewById(R.id.drawable_btn_line).setOnClickListener(this);
         view.findViewById(R.id.drawable_btn_list).setOnClickListener(this);
+        view.findViewById(R.id.drawable_btn_text).setOnClickListener(this);
     }
 
     @Override
@@ -62,6 +64,9 @@ public class DrawablesFragment extends Fragment implements View.OnClickListener 
                 break;
             case R.id.drawable_btn_list:
                 LinearActivity.startActivity(getContext());
+                break;
+            case R.id.drawable_btn_text:
+                TextActivity.startActivity(getContext());
                 break;
         }
     }

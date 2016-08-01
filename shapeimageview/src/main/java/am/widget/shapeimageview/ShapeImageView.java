@@ -129,11 +129,6 @@ public class ShapeImageView extends ImageView {
     }
 
     @Override
-    protected void dispatchDraw(Canvas canvas) {
-        super.dispatchDraw(canvas);
-    }
-
-    @Override
     protected void onDraw(Canvas canvas) {
         checkHelper();
         if (mShape != null) {

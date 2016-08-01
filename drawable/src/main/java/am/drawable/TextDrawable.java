@@ -24,6 +24,7 @@ public class TextDrawable extends Drawable {
     private int mIntrinsicWidth;
     private int mIntrinsicHeight;
     private float mTextDesc;
+    private boolean autoScale = false;
 
     public TextDrawable(Context context, float textSize, int textColor, String text) {
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
@@ -54,9 +55,7 @@ public class TextDrawable extends Drawable {
     @Override
     public void setBounds(int left, int top, int right, int bottom) {
         super.setBounds(left, top, right, bottom);
-        mTextPaint.setTextSize(getBounds().height());
-        Paint.FontMetricsInt metrics = mTextPaint.getFontMetricsInt();
-        mTextDesc = metrics.bottom;
+
     }
 
     @Override
@@ -67,6 +66,10 @@ public class TextDrawable extends Drawable {
         final int height = getBounds().height();
         if (width <= 0 || height <= 0)
             return;
+        if (autoScale)
+            mTextPaint.setTextSize(getBounds().height());
+        Paint.FontMetricsInt metrics = mTextPaint.getFontMetricsInt();
+        mTextDesc = metrics.bottom;
         mTextPaint.getTextBounds(mText, 0, mText.length(), mMeasureRect);
         final int textWidth = mMeasureRect.width();
         final int textHeight = mMeasureRect.height();
@@ -77,12 +80,15 @@ public class TextDrawable extends Drawable {
         float scaleHeight = (float) textHeight / height;
         scale = Math.min(scaleWidth, scaleHeight);
         canvas.save();
-        final float offsetY = getBounds().centerY() + mTextDesc;
-        canvas.translate(getBounds().centerX(), offsetY);
-        if (scale != 1) {
-            canvas.scale(scale, scale, 0, -offsetY + getBounds().centerY());
-        }
-        canvas.drawText(mText, 0, 0, mTextPaint);
+        canvas.translate(getBounds().centerX(), getBounds().centerY());
+        canvas.drawText(mText, mMeasureRect.left, mMeasureRect.top, mTextPaint);
+
+//        final float offsetY = getBounds().centerY() + mTextDesc;
+//        canvas.translate(getBounds().centerX(), offsetY);
+//        if (scale != 1 && autoScale) {
+//            canvas.scale(scale, scale, 0, -offsetY + getBounds().centerY());
+//        }
+//        canvas.drawText(mText, 0, 0, mTextPaint);
         canvas.restore();
     }
 
@@ -145,6 +151,18 @@ public class TextDrawable extends Drawable {
             mTextPaint.getTextBounds(mText, 0, mText.length(), mMeasureRect);
             mIntrinsicWidth = mMeasureRect.width();
             mIntrinsicHeight = mMeasureRect.height();
+            invalidateSelf();
+        }
+    }
+
+    /**
+     * 设置文字大小是否根据Bound自动缩放
+     *
+     * @param auto 自动缩放
+     */
+    public void setAutoScale(boolean auto) {
+        if (autoScale != auto) {
+            autoScale = auto;
             invalidateSelf();
         }
     }

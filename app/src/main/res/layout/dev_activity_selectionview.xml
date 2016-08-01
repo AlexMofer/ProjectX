@@ -36,14 +36,17 @@
         <am.project.x.widgets.citylistview.CitysListView
             android:id="@+id/list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="invisible"/>
 
         <am.widget.selectionview.SelectionView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/selection"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:svBarItemHeight="24dp"
             app:svBarPadding="10dp"
             app:svBarStyle="List"
+            app:svBarBackground="@drawable/bg_selection_bar"
             app:svBarWidth="24dp"
             app:svNoticeBackground="@drawable/bg_selection_notice"
             app:svNoticeHeight="64dp"

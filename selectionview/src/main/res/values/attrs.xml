@@ -5,7 +5,7 @@
             <enum name="List" value="0" />
             <enum name="Slider" value="1" />
         </attr>
-        <attr name="svBarBackground" format="reference" />
+        <attr name="svBarBackground" format="reference|color" />
         <attr name="svBarPadding" format="dimension" />
         <attr name="svBarPaddingLeft" format="dimension" />
         <attr name="svBarPaddingTop" format="dimension" />
@@ -20,7 +20,7 @@
         </attr>
         <attr name="svNoticeWidth" format="dimension" />
         <attr name="svNoticeHeight" format="dimension" />
-        <attr name="svNoticeBackground" format="reference" />
+        <attr name="svNoticeBackground" format="reference|color" />
         <attr name="svNoticePadding" format="dimension" />
         <attr name="svNoticePaddingLeft" format="dimension" />
         <attr name="svNoticePaddingTop" format="dimension" />
