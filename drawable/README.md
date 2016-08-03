@@ -8,7 +8,7 @@ minSdkVersion 4
 ```java
 dependencies {
     ⋯
-    compile 'am.drawable:drawable:1.2.1'
+    compile 'am.drawable:drawable:1.2.2'
     ⋯
 }
 ```
@@ -39,6 +39,7 @@ dependencies {
     文字图片。
 
 ## 历史
+- [**1.2.1**](https://bintray.com/alexmofer/maven/Drawable/1.2.1)
 - [**1.2.0**](https://bintray.com/alexmofer/maven/Drawable/1.2.0)
 - [**1.1.0**](https://bintray.com/alexmofer/maven/Drawable/1.1.0)
 - [**1.0.1**](https://bintray.com/alexmofer/maven/Drawable/1.0.1)
