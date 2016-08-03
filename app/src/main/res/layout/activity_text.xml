@@ -34,15 +34,23 @@
         android:padding="5dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ImageView
-            android:id="@+id/text_iv_image"
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="64dp"
-            android:background="@drawable/bg_drawable_center"
-            android:contentDescription="@string/cd_drawable"
-            android:scaleType="centerInside" />
+            android:layout_gravity="center">
+
+            <View
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/bg_drawable_center" />
+
+            <View
+                android:id="@+id/text_v_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
+
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

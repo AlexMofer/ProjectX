@@ -3,12 +3,12 @@ package am.project.x.activities.drawable.text;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.Switch;
 
 import am.drawable.TextDrawable;
+import am.project.support.view.CompatPlus;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
 
@@ -23,14 +23,11 @@ public class TextActivity extends BaseActivity implements CompoundButton.OnCheck
     @Override
     protected void initResource(Bundle savedInstanceState) {
         setSupportActionBar(R.id.text_toolbar);
-        ImageView ivImage = (ImageView) findViewById(R.id.text_iv_image);
+        View view = findViewById(R.id.text_v_image);
         ((Switch) findViewById(R.id.text_sh_scale)).setOnCheckedChangeListener(this);
-        final int textSize = getResources().getDimensionPixelOffset(R.dimen.textSize_drawable);
-        final int color = ContextCompat.getColor(this, R.color.colorPrimary);
-        final String text = getString(R.string.text_drawable);
-        drawable = new TextDrawable(getApplicationContext(), textSize, color, text);
-        drawable.setAutoScale(false);
-        ivImage.setImageDrawable(drawable);
+        drawable = new TextDrawable(getApplicationContext(), R.dimen.textSize_drawable,
+                R.color.colorPrimary, R.string.text_drawable);
+        CompatPlus.setBackground(view, drawable);
     }
 
     @Override

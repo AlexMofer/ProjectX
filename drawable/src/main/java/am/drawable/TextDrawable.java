@@ -17,20 +17,26 @@ import android.text.TextPaint;
 @SuppressWarnings("unused")
 public class TextDrawable extends Drawable {
 
+    private final float density;
     private final TextPaint mTextPaint;// 文字画笔
     private float mTextSize;
     private final Rect mMeasureRect = new Rect();
     private String mText;
     private int mIntrinsicWidth;
     private int mIntrinsicHeight;
-    private float mTextDesc;
     private boolean autoScale = false;
 
+    public TextDrawable(Context context, int dimen, int colorId, int strId) {
+        this(context, context.getResources().getDimension(dimen),
+                Compat.getColor(context, colorId), context.getString(strId));
+    }
+
     public TextDrawable(Context context, float textSize, int textColor, String text) {
+        density = context.getResources().getDisplayMetrics().density;
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setTextAlign(Paint.Align.CENTER);
         if (Build.VERSION.SDK_INT > 4) {
-            updateTextPaintDensity(context);
+            updateTextPaintDensity();
         }
         setTextSize(textSize);
         setTextColor(textColor);
@@ -38,8 +44,8 @@ public class TextDrawable extends Drawable {
     }
 
     @TargetApi(5)
-    private void updateTextPaintDensity(Context context) {
-        mTextPaint.density = context.getResources().getDisplayMetrics().density;
+    private void updateTextPaintDensity() {
+        mTextPaint.density = density;
     }
 
     @Override
@@ -67,28 +73,29 @@ public class TextDrawable extends Drawable {
         if (width <= 0 || height <= 0)
             return;
         if (autoScale)
-            mTextPaint.setTextSize(getBounds().height());
-        Paint.FontMetricsInt metrics = mTextPaint.getFontMetricsInt();
-        mTextDesc = metrics.bottom;
+            mTextPaint.setTextSize(Math.min(width, height));
+        else
+            mTextPaint.setTextSize(mTextSize);
         mTextPaint.getTextBounds(mText, 0, mText.length(), mMeasureRect);
         final int textWidth = mMeasureRect.width();
         final int textHeight = mMeasureRect.height();
         if (textWidth <= 0 || textHeight <= 0)
             return;
-        float scale;
-        float scaleWidth = (float) textWidth / width;
-        float scaleHeight = (float) textHeight / height;
-        scale = Math.min(scaleWidth, scaleHeight);
         canvas.save();
-        canvas.translate(getBounds().centerX(), getBounds().centerY());
-        canvas.drawText(mText, mMeasureRect.left, mMeasureRect.top, mTextPaint);
-
-//        final float offsetY = getBounds().centerY() + mTextDesc;
-//        canvas.translate(getBounds().centerX(), offsetY);
-//        if (scale != 1 && autoScale) {
-//            canvas.scale(scale, scale, 0, -offsetY + getBounds().centerY());
-//        }
-//        canvas.drawText(mText, 0, 0, mTextPaint);
+        if (autoScale) {
+            float scale;
+            float scaleWidth = width / (float) textWidth;
+            float scaleHeight = height / (float) textHeight;
+            scale = Math.min(scaleWidth, scaleHeight);
+            canvas.translate(getBounds().centerX(), getBounds().centerY());
+            canvas.scale(scale, scale, 0, 0);
+            canvas.translate(0, textHeight * 0.5f);
+            canvas.drawText(mText, 0, -mMeasureRect.bottom, mTextPaint);
+        } else {
+            canvas.translate(getBounds().centerX(), getBounds().centerY());
+            canvas.translate(0, textHeight * 0.5f);
+            canvas.drawText(mText, 0, -mMeasureRect.bottom, mTextPaint);
+        }
         canvas.restore();
     }
 
