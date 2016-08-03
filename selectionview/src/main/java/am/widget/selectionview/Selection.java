@@ -10,7 +10,7 @@ public interface Selection {
 
     int getItemCount();
 
-    Drawable getItemBar(int position);
+    Drawable getBar(int position);
 
-    Drawable getItemNotice(int position);
+    Drawable getNotice(int position);
 }

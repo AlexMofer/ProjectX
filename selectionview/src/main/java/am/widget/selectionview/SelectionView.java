@@ -34,7 +34,10 @@ public class SelectionView extends View {
     private int mNoticeHeight;
     private Drawable mNoticeBackground;
     private final Rect mNoticePadding = new Rect();
+    private boolean showNotice = false;
+    private int mNoticePosition = 0;
     private Selection mSelection;
+    private OnSelectedListener listener;
 
     public SelectionView(Context context) {
         this(context, null);
@@ -138,7 +141,8 @@ public class SelectionView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawBarBackground(canvas);
-        drawBarItems(canvas);
+        drawBar(canvas);
+        drawNotice(canvas);
     }
 
     private void drawBarBackground(Canvas canvas) {
@@ -152,15 +156,26 @@ public class SelectionView extends View {
         canvas.restore();
     }
 
-    private void drawBarItems(Canvas canvas) {
+    private void drawBar(Canvas canvas) {
         if (mSelection == null || mSelection.getItemCount() <= 0)
             return;
+        switch (mBarStyle) {
+            case STYLE_LIST:
+                drawBarList(canvas);
+                break;
+            case STYLE_SLIDER:
+                drawBarSlider(canvas);
+                break;
+        }
+    }
+
+    private void drawBarList(Canvas canvas) {
         final int paddingEnd = Compat.getPaddingEnd(this);
         canvas.save();
         canvas.translate(getWidth() - paddingEnd - mBarWidth + mBarPadding.left,
                 getPaddingTop() + mBarPadding.top);
         for (int position = 0; position < mSelection.getItemCount(); position++) {
-            Drawable item = mSelection.getItemBar(position);
+            Drawable item = mSelection.getBar(position);
             if (item != null) {
                 item.setBounds(0, 0, mItemWidthActual, (int) mItemHeightActual);
                 item.draw(canvas);
@@ -170,28 +185,171 @@ public class SelectionView extends View {
         canvas.restore();
     }
 
+    private void drawBarSlider(Canvas canvas) {
+        // TODO
+    }
+
+    private void drawNotice(Canvas canvas) {
+        if (!showNotice)
+            return;
+        switch (mNoticeLocation) {
+            case LOCATION_VIEW_CENTER:
+                drawNoticeViewCenter(canvas);
+                break;
+            case LOCATION_SLIDER_TOP:
+                drawNoticeSliderTop(canvas);
+                break;
+        }
+    }
+
+    private void drawNoticeViewCenter(Canvas canvas) {
+        final int paddingStart = Compat.getPaddingStart(this);
+        final int paddingTop = getPaddingTop();
+        final int paddingEnd = Compat.getPaddingEnd(this);
+        final int paddingBottom = getPaddingBottom();
+        final int width = getWidth();
+        final int height = getHeight();
+        canvas.save();
+        canvas.translate(paddingStart + (width - paddingStart - paddingEnd) * 0.5f -
+                        mNoticeWidth * 0.5f,
+                paddingTop + (height - paddingTop - paddingBottom) * 0.5f -
+                        mNoticeHeight * 0.5f);
+        if (mNoticeBackground != null) {
+            mNoticeBackground.setBounds(0, 0, mNoticeWidth, mNoticeHeight);
+            mNoticeBackground.draw(canvas);
+        }
+        if (mSelection == null || mSelection.getItemCount() <= 0)
+            return;
+        Drawable notice = mSelection.getNotice(mNoticePosition);
+        if (notice != null) {
+            notice.setBounds(mNoticePadding.left, mNoticePadding.top,
+                    mNoticeWidth - mNoticePadding.right, mNoticeHeight - mNoticePadding.bottom);
+            notice.draw(canvas);
+        }
+    }
+
+    private void drawNoticeSliderTop(Canvas canvas) {
+        // TODO
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         boolean touch = false;
+        final int action = event.getAction();
+        final float x = event.getX();
+        final float y = event.getY();
+        final int width = getWidth();
+        final int paddingTop = getPaddingTop();
+        final int paddingEnd = Compat.getPaddingEnd(this);
+        if (mBarBackground != null)
+            Compat.setHotspot(mBarBackground, x - (width - paddingEnd - mBarWidth), y - paddingTop);
+        boolean superTouch;
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                if (startTouch(x, y)) {
+                    setClickable(true);
+                    touch = true;
+                    showNotice = true;
+                    mNoticePosition = getTouchPosition(x, y);
+                    invalidate();
+                    notifyListener();
+                }
+                superTouch = super.onTouchEvent(event);
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                superTouch = super.onTouchEvent(event);
+                if (showNotice) {
+                    showNotice = false;
+                    invalidate();
+                }
+                if (isClickable())
+                    setClickable(false);
+                break;
+            default:
+                if (showNotice) {
+                    touch = true;
+                    int position = getTouchPosition(x, y);
+                    if (mNoticePosition != position) {
+                        mNoticePosition = position;
+                        invalidate();
+                        notifyListener();
+                    }
+                }
+                superTouch = super.onTouchEvent(event);
+                break;
+        }
+        return superTouch || touch;
+    }
+
+    private boolean startTouch(float x, float y) {
+        switch (mBarStyle) {
+            case STYLE_LIST:
+                return startTouchList(x, y);
+            case STYLE_SLIDER:
+                return startTouchSlider(x, y);
+        }
+        return false;
+    }
+
+    private boolean startTouchList(float x, float y) {
         final int width = getWidth();
         final int height = getHeight();
         final int paddingTop = getPaddingTop();
         final int paddingBottom = getPaddingBottom();
         final int paddingEnd = Compat.getPaddingEnd(this);
-        final int startX = width - paddingEnd - mBarWidth;
-        if (mBarBackground != null)
-            Compat.setHotspot(mBarBackground, event.getX() - startX, event.getY() - paddingTop);
-        if (event.getX() > startX) {
-            // TODO
-            setClickable(true);
-            touch = true;
+        final int startX = width - paddingEnd - mBarWidth + mBarPadding.left;
+        final int endX = width - paddingEnd - mBarPadding.right;
+        final int startY = paddingTop + mBarPadding.top;
+        final int endY = height - paddingBottom - mBarPadding.bottom;
+        return x >= startX && x <= endX && y >= startY && y <= endY;
+    }
+
+    private boolean startTouchSlider(float x, float y) {
+        // TODO
+        return false;
+    }
+
+    private int getTouchPosition(float x, float y) {
+        switch (mBarStyle) {
+            case STYLE_LIST:
+                return getTouchPositionList(x, y);
+            case STYLE_SLIDER:
+                return getTouchPositionSlider(x, y);
         }
-        boolean superTouch = super.onTouchEvent(event);
-        if (isClickable() && (event.getAction() == MotionEvent.ACTION_UP ||
-                event.getAction() == MotionEvent.ACTION_CANCEL)) {
-            setClickable(false);
+        return 0;
+    }
+
+    private int getTouchPositionList(float x, float y) {
+        if (mSelection == null || mSelection.getItemCount() <= 0)
+            return 0;
+        final int width = getWidth();
+        final int height = getHeight();
+        final int paddingTop = getPaddingTop();
+        final int paddingBottom = getPaddingBottom();
+        final int paddingEnd = Compat.getPaddingEnd(this);
+        final int startX = width - paddingEnd - mBarWidth + mBarPadding.left;
+        final int endX = width - paddingEnd - mBarPadding.right;
+        final int startY = paddingTop + mBarPadding.top;
+        final int endY = height - paddingBottom - mBarPadding.bottom;
+        if (x >= startX && x <= endX && y >= startY && y <= endY) {
+            int position = (int) Math.floor((y - startY) / mItemHeightActual);
+            position = position < 0 ? 0 :
+                    (position >= mSelection.getItemCount() ?
+                            mSelection.getItemCount() - 1 : position);
+            return position;
         }
-        return superTouch || touch;
+        return mNoticePosition;
+    }
+
+    private int getTouchPositionSlider(float x, float y) {
+        // TODO
+        return 0;
+    }
+
+    private void notifyListener() {
+        if (listener != null)
+            listener.onSelected(mNoticePosition);
     }
 
     @Override
@@ -402,5 +560,18 @@ public class SelectionView extends View {
             requestLayout();
             invalidate();
         }
+    }
+
+    /**
+     * 设置选择监听器
+     *
+     * @param listener 监听器
+     */
+    public void setOnSelectedListener(OnSelectedListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnSelectedListener {
+        void onSelected(int position);
     }
 }

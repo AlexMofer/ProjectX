@@ -33,25 +33,24 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <am.project.x.widgets.citylistview.CitysListView
+        <ListView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible"/>
+            android:scrollbars="none" />
 
         <am.widget.selectionview.SelectionView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/selection"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:svBarItemHeight="24dp"
-            app:svBarPadding="10dp"
-            app:svBarStyle="List"
             app:svBarBackground="@drawable/bg_selection_bar"
-            app:svBarWidth="24dp"
+            app:svBarItemHeight="32dp"
+            app:svBarStyle="List"
+            app:svBarWidth="32dp"
             app:svNoticeBackground="@drawable/bg_selection_notice"
             app:svNoticeHeight="64dp"
             app:svNoticeLocation="ViewCenter"
-            app:svNoticePadding="5dp"
+            app:svNoticePadding="10dp"
             app:svNoticeWidth="64dp" />
     </FrameLayout>
 
