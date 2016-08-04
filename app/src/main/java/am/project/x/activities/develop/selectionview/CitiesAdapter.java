@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import am.project.x.widgets.citylistview.CitysUtils;
 
 /**
  * CitiesAdapter
@@ -17,7 +16,7 @@ import am.project.x.widgets.citylistview.CitysUtils;
  */
 public class CitiesAdapter extends BaseAdapter {
 
-    private List<CitysUtils.CityDto> citys;
+    private List<CitiesUtils.CityDto> cities;
 
     private Context context;
     private int textViewResourceId;
@@ -25,7 +24,7 @@ public class CitiesAdapter extends BaseAdapter {
     public CitiesAdapter(Context context, int textViewResourceId) {
         this.context = context;
         this.textViewResourceId = textViewResourceId;
-        citys = getCitysByPinyin();
+        cities = getCitiesByPinyin();
     }
 
     @Override
@@ -36,19 +35,19 @@ public class CitiesAdapter extends BaseAdapter {
             view = inflater.inflate(textViewResourceId, parent, false);
         }
         TextView textView = (TextView) view.findViewById(android.R.id.text1);
-        CitysUtils.CityDto country = getItem(position);
+        CitiesUtils.CityDto country = getItem(position);
         textView.setText(country.getCityName());
         return view;
     }
 
     @Override
     public int getCount() {
-        return citys.size();
+        return cities.size();
     }
 
     @Override
-    public CitysUtils.CityDto getItem(int position) {
-        return citys.get(position);
+    public CitiesUtils.CityDto getItem(int position) {
+        return cities.get(position);
     }
 
     @Override
@@ -137,23 +136,23 @@ public class CitiesAdapter extends BaseAdapter {
     /**
      * 获取拼音排序好的城市集合
      *
-     * @return
+     * @return 城市集合
      */
-    private List<CitysUtils.CityDto> getCitysByPinyin() {
-        List<CitysUtils.CityDto> citys = CitysUtils.getCityList();
+    private List<CitiesUtils.CityDto> getCitiesByPinyin() {
+        List<CitiesUtils.CityDto> cities = CitiesUtils.getCityList();
         // 添加热门城市
-        citys.add(0, new CitysUtils.CityDto(CitysUtils.City.XI_AN));
-        citys.add(0, new CitysUtils.CityDto(CitysUtils.City.CHENG_DOU));
-        citys.add(0, new CitysUtils.CityDto(CitysUtils.City.WU_HAN));
-        citys.add(0, new CitysUtils.CityDto(CitysUtils.City.NAN_JING));
-        citys.add(0, new CitysUtils.CityDto(CitysUtils.City.SHEN_YANG));
-        citys.add(0, new CitysUtils.CityDto(CitysUtils.City.CHONG_QING));
-        citys.add(0, new CitysUtils.CityDto(CitysUtils.City.TIAN_JIN));
-        citys.add(0, new CitysUtils.CityDto(CitysUtils.City.SHEN_ZHEN));
-        citys.add(0, new CitysUtils.CityDto(CitysUtils.City.GUANG_ZHOU));
-        citys.add(0, new CitysUtils.CityDto(CitysUtils.City.SHANG_HAI));
-        citys.add(0, new CitysUtils.CityDto(CitysUtils.City.BEI_JING));
-        return citys;
+        cities.add(0, new CitiesUtils.CityDto(CitiesUtils.City.XI_AN));
+        cities.add(0, new CitiesUtils.CityDto(CitiesUtils.City.CHENG_DOU));
+        cities.add(0, new CitiesUtils.CityDto(CitiesUtils.City.WU_HAN));
+        cities.add(0, new CitiesUtils.CityDto(CitiesUtils.City.NAN_JING));
+        cities.add(0, new CitiesUtils.CityDto(CitiesUtils.City.SHEN_YANG));
+        cities.add(0, new CitiesUtils.CityDto(CitiesUtils.City.CHONG_QING));
+        cities.add(0, new CitiesUtils.CityDto(CitiesUtils.City.TIAN_JIN));
+        cities.add(0, new CitiesUtils.CityDto(CitiesUtils.City.SHEN_ZHEN));
+        cities.add(0, new CitiesUtils.CityDto(CitiesUtils.City.GUANG_ZHOU));
+        cities.add(0, new CitiesUtils.CityDto(CitiesUtils.City.SHANG_HAI));
+        cities.add(0, new CitiesUtils.CityDto(CitiesUtils.City.BEI_JING));
+        return cities;
     }
 
 }

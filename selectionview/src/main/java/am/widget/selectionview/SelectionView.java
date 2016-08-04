@@ -8,6 +8,8 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 
 
 /**
@@ -20,6 +22,9 @@ public class SelectionView extends View {
     public static final int STYLE_SLIDER = 1;// 滑块模式
     public static final int LOCATION_VIEW_CENTER = 0;// View中央
     public static final int LOCATION_SLIDER_TOP = 1;// 与滑块顶部对齐
+    private static final float MAX_ALPHA = 30;
+    private static final int FRAME = 10;
+    private static final Interpolator INTERPOLATOR = new DecelerateInterpolator();
     private int mBarStyle;
     private Drawable mBarBackground;
     private final Rect mBarPadding = new Rect();
@@ -36,6 +41,10 @@ public class SelectionView extends View {
     private final Rect mNoticePadding = new Rect();
     private boolean showNotice = false;
     private int mNoticePosition = 0;
+    private boolean mNoticeAnimation;
+    private int mNoticeAlpha = 0;
+    private float mTouchY = 0;
+    private float mSliderCenter = 0;
     private Selection mSelection;
     private OnSelectedListener listener;
 
@@ -68,6 +77,7 @@ public class SelectionView extends View {
         int noticePaddingTop;
         int noticePaddingRight;
         int noticePaddingBottom;
+        boolean animation;
         TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.SelectionView);
         barStyle = custom.getInt(R.styleable.SelectionView_svBarStyle, barStyle);
         barBackground = custom.getDrawable(R.styleable.SelectionView_svBarBackground);
@@ -88,6 +98,7 @@ public class SelectionView extends View {
         noticePaddingTop = custom.getDimensionPixelOffset(R.styleable.SelectionView_svNoticePaddingTop, noticePadding);
         noticePaddingRight = custom.getDimensionPixelOffset(R.styleable.SelectionView_svNoticePaddingRight, noticePadding);
         noticePaddingBottom = custom.getDimensionPixelOffset(R.styleable.SelectionView_svNoticePaddingBottom, noticePadding);
+        animation = custom.getBoolean(R.styleable.SelectionView_svNoticeAnimation, false);
         custom.recycle();
         setBarStyle(barStyle);
         setBarBackground(barBackground);
@@ -101,6 +112,7 @@ public class SelectionView extends View {
         setNoticeBackground(noticeBackground);
         setNoticePadding(noticePaddingLeft, noticePaddingTop, noticePaddingRight,
                 noticePaddingBottom);
+        setNoticeAnimation(animation);
     }
 
     @Override
@@ -186,23 +198,53 @@ public class SelectionView extends View {
     }
 
     private void drawBarSlider(Canvas canvas) {
-        // TODO
+        if (mBarSlider == null)
+            return;
+        int sliderWidth = mBarSlider.getIntrinsicWidth();
+        int sliderHeight = mBarSlider.getIntrinsicHeight();
+        if (sliderWidth > mBarWidth - mBarPadding.left - mBarPadding.right) {
+            sliderWidth = mBarWidth - mBarPadding.left - mBarPadding.right;
+            sliderHeight = sliderHeight * sliderWidth / mBarSlider.getIntrinsicWidth();
+        }
+        final float centerStartY = getPaddingTop() + mBarPadding.top + sliderHeight * 0.5f;
+        final float centerEndY = getHeight() - getPaddingBottom() - mBarPadding.bottom
+                - sliderHeight * 0.5f;
+        final float center = mTouchY < centerStartY ? centerStartY :
+                (mTouchY > centerEndY ? centerEndY : mTouchY);
+        final int paddingEnd = Compat.getPaddingEnd(this);
+        canvas.save();
+        canvas.translate(getWidth() - paddingEnd - mBarPadding.right -
+                (mBarWidth - mBarPadding.left - mBarPadding.right) * 0.5f - sliderWidth * 0.5f,
+                center - sliderHeight * 0.5f);
+        mBarSlider.setBounds(0, 0, sliderWidth, sliderHeight);
+        mBarSlider.draw(canvas);
+        canvas.restore();
     }
 
     private void drawNotice(Canvas canvas) {
-        if (!showNotice)
+        if (!showNotice && mNoticeAlpha <= 0)
             return;
+        int alpha = (int) (255 * INTERPOLATOR.getInterpolation(mNoticeAlpha / MAX_ALPHA));
         switch (mNoticeLocation) {
             case LOCATION_VIEW_CENTER:
-                drawNoticeViewCenter(canvas);
+                drawNoticeViewCenter(canvas, alpha);
                 break;
             case LOCATION_SLIDER_TOP:
-                drawNoticeSliderTop(canvas);
+                drawNoticeSliderTop(canvas, alpha);
                 break;
+        }
+        if (showNotice) {
+            if (mNoticeAlpha < MAX_ALPHA) {
+                mNoticeAlpha++;
+                postInvalidateDelayed(FRAME);
+            }
+        } else {
+            mNoticeAlpha--;
+            postInvalidateDelayed(FRAME);
         }
     }
 
-    private void drawNoticeViewCenter(Canvas canvas) {
+    private void drawNoticeViewCenter(Canvas canvas, int alpha) {
         final int paddingStart = Compat.getPaddingStart(this);
         final int paddingTop = getPaddingTop();
         final int paddingEnd = Compat.getPaddingEnd(this);
@@ -216,6 +258,7 @@ public class SelectionView extends View {
                         mNoticeHeight * 0.5f);
         if (mNoticeBackground != null) {
             mNoticeBackground.setBounds(0, 0, mNoticeWidth, mNoticeHeight);
+            mNoticeBackground.setAlpha(alpha);
             mNoticeBackground.draw(canvas);
         }
         if (mSelection == null || mSelection.getItemCount() <= 0)
@@ -224,12 +267,37 @@ public class SelectionView extends View {
         if (notice != null) {
             notice.setBounds(mNoticePadding.left, mNoticePadding.top,
                     mNoticeWidth - mNoticePadding.right, mNoticeHeight - mNoticePadding.bottom);
+            notice.setAlpha(alpha);
             notice.draw(canvas);
         }
     }
 
-    private void drawNoticeSliderTop(Canvas canvas) {
-        // TODO
+    private void drawNoticeSliderTop(Canvas canvas, int alpha) {
+        final int paddingTop = getPaddingTop();
+        final int paddingEnd = Compat.getPaddingEnd(this);
+        final int paddingBottom = getPaddingBottom();
+        final int width = getWidth();
+        final int height = getHeight();
+        canvas.save();
+        final int noticeEndY = height - paddingBottom - mNoticeHeight;
+        float moveY = mTouchY - mNoticeHeight;
+        moveY = moveY < paddingTop ? paddingTop : moveY;
+        moveY = moveY > noticeEndY ? noticeEndY : moveY;
+        canvas.translate(width - paddingEnd - mBarWidth - mNoticeWidth, moveY);
+        if (mNoticeBackground != null) {
+            mNoticeBackground.setBounds(0, 0, mNoticeWidth, mNoticeHeight);
+            mNoticeBackground.setAlpha(alpha);
+            mNoticeBackground.draw(canvas);
+        }
+        if (mSelection == null || mSelection.getItemCount() <= 0)
+            return;
+        Drawable notice = mSelection.getNotice(mNoticePosition);
+        if (notice != null) {
+            notice.setBounds(mNoticePadding.left, mNoticePadding.top,
+                    mNoticeWidth - mNoticePadding.right, mNoticeHeight - mNoticePadding.bottom);
+            notice.setAlpha(alpha);
+            notice.draw(canvas);
+        }
     }
 
     @Override
@@ -261,21 +329,42 @@ public class SelectionView extends View {
                 superTouch = super.onTouchEvent(event);
                 if (showNotice) {
                     showNotice = false;
+                    int positionOld = mNoticePosition;
+                    mNoticePosition = getTouchPosition(x, y);
                     invalidate();
+                    if (positionOld != mNoticePosition) {
+                        notifyListener();
+                    }
                 }
                 if (isClickable())
                     setClickable(false);
                 break;
-            default:
+            case MotionEvent.ACTION_MOVE:
                 if (showNotice) {
                     touch = true;
                     int position = getTouchPosition(x, y);
+                    boolean isPositionChanged = false;
                     if (mNoticePosition != position) {
                         mNoticePosition = position;
-                        invalidate();
-                        notifyListener();
+                        isPositionChanged = true;
+                    }
+                    switch (mNoticeLocation) {
+                        case LOCATION_VIEW_CENTER:
+                            if (isPositionChanged) {
+                                invalidate();
+                                notifyListener();
+                            }
+                            break;
+                        case LOCATION_SLIDER_TOP:
+                            invalidate();
+                            if (isPositionChanged)
+                                notifyListener();
+                            break;
                     }
                 }
+                superTouch = super.onTouchEvent(event);
+                break;
+            default:
                 superTouch = super.onTouchEvent(event);
                 break;
         }
@@ -307,7 +396,7 @@ public class SelectionView extends View {
 
     private boolean startTouchSlider(float x, float y) {
         // TODO
-        return false;
+        return true;
     }
 
     private int getTouchPosition(float x, float y) {
@@ -337,6 +426,7 @@ public class SelectionView extends View {
             position = position < 0 ? 0 :
                     (position >= mSelection.getItemCount() ?
                             mSelection.getItemCount() - 1 : position);
+            mTouchY = y;
             return position;
         }
         return mNoticePosition;
@@ -357,6 +447,9 @@ public class SelectionView extends View {
         if (mBarBackground != null && mBarBackground.isStateful()) {
             mBarBackground.setState(getDrawableState());
         }
+        if (mBarSlider != null && mBarSlider.isStateful()) {
+            mBarSlider.setState(getDrawableState());
+        }
         super.drawableStateChanged();
 
     }
@@ -365,6 +458,9 @@ public class SelectionView extends View {
     protected boolean verifyDrawable(Drawable who) {
         boolean isPress = false;
         if (mBarBackground != null && who == mBarBackground) {
+            isPress = true;
+        }
+        if (mBarSlider != null && who == mBarSlider) {
             isPress = true;
         }
         return super.verifyDrawable(who) || isPress;
@@ -376,12 +472,18 @@ public class SelectionView extends View {
         if (mBarBackground != null) {
             mBarBackground.setCallback(this);
         }
+        if (mBarSlider != null) {
+            mBarSlider.setCallback(this);
+        }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         if (mBarBackground != null) {
             mBarBackground.setCallback(null);
+        }
+        if (mBarSlider != null) {
+            mBarSlider.setCallback(null);
         }
         super.onDetachedFromWindow();
     }
@@ -473,7 +575,8 @@ public class SelectionView extends View {
             mBarSlider = slider;
             if (mBarSlider != null)
                 mBarSlider.setCallback(this);
-            invalidate();
+            if (mBarStyle == STYLE_SLIDER)
+                invalidate();
         }
     }
 
@@ -530,6 +633,16 @@ public class SelectionView extends View {
     }
 
     /**
+     * 设置提示背景
+     *
+     * @param background 背景
+     */
+    @SuppressWarnings("unused")
+    public void setNoticeBackground(int background) {
+        setNoticeBackground(Compat.getDrawable(getContext(), background));
+    }
+
+    /**
      * 设置提示Padding
      *
      * @param left   左
@@ -546,6 +659,17 @@ public class SelectionView extends View {
                 right != mNoticePadding.right || bottom != mNoticePadding.bottom) {
             mNoticePadding.set(left, top, right, bottom);
             invalidate();
+        }
+    }
+
+    /**
+     * 设置提示动画
+     *
+     * @param animation 开关提示动画
+     */
+    public void setNoticeAnimation(boolean animation) {
+        if (mNoticeAnimation != animation) {
+            mNoticeAnimation = animation;
         }
     }
 

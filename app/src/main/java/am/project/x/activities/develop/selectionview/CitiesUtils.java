@@ -1,4 +1,4 @@
-package am.project.x.widgets.citylistview;
+package am.project.x.activities.develop.selectionview;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author Mofer
  */
-public class CitysUtils {
+public class CitiesUtils {
 
     /**
      * 省份枚举

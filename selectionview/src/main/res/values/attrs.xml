@@ -26,5 +26,6 @@
         <attr name="svNoticePaddingTop" format="dimension" />
         <attr name="svNoticePaddingRight" format="dimension" />
         <attr name="svNoticePaddingBottom" format="dimension" />
+        <attr name="svNoticeAnimation" format="boolean" />
     </declare-styleable>
 </resources>
