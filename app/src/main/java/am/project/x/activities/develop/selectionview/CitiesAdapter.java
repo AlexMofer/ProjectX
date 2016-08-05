@@ -133,6 +133,56 @@ public class CitiesAdapter extends BaseAdapter {
         return position;
     }
 
+    public final int getPosition(int selection) {
+        if (selection < 11) {
+            return 0;
+        } else if (selection < 22) {
+            return 1;
+        } else if (selection < 41) {
+            return 2;
+        } else if (selection < 60) {
+            return 3;
+        } else if (selection < 74) {
+            return 4;
+        } else if (selection < 77) {
+            return 5;
+        } else if (selection < 84) {
+            return 6;
+        } else if (selection < 95) {
+            return 7;
+        } else if (selection < 130) {
+            return 8;
+        } else if (selection < 151) {
+            return 9;
+        } else if (selection < 156) {
+            return 10;
+        } else if (selection < 184) {
+            return 11;
+        } else if (selection < 190) {
+            return 12;
+        } else if (selection < 202) {
+            return 13;
+        } else if (selection < 210) {
+            return 14;
+        } else if (selection < 223) {
+            return 15;
+        } else if (selection < 225) {
+            return 16;
+        } else if (selection < 254) {
+            return 17;
+        } else if (selection < 270) {
+            return 18;
+        } else if (selection < 284) {
+            return 19;
+        } else if (selection < 305) {
+            return 20;
+        } else if (selection < 330) {
+            return 21;
+        } else {
+            return 22;
+        }
+    }
+
     /**
      * 获取拼音排序好的城市集合
      *
