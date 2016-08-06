@@ -15,6 +15,7 @@ import am.project.x.activities.widgets.replacelayout.ReplaceLayoutActivity;
 import am.project.x.activities.widgets.drawableratingbar.DrawableRatingBarActivity;
 import am.project.x.activities.widgets.gradienttabstrip.GradientTabStripActivity;
 import am.project.x.activities.widgets.indicatortabstrip.IndicatorTabStripActivity;
+import am.project.x.activities.widgets.selectionview.SelectionViewActivity;
 import am.project.x.activities.widgets.shapeimageview.ShapeImageViewActivity;
 import am.project.x.activities.widgets.stateframelayout.StateFrameLayoutActivity;
 import am.project.x.activities.widgets.tagtabstrip.TagTabStripActivity;
@@ -48,6 +49,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
         view.findViewById(R.id.widget_btn_drawableratingbar).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_headerfootergridview).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_multiactiontextview).setOnClickListener(this);
+        view.findViewById(R.id.widget_btn_selectionview).setOnClickListener(this);
     }
 
     @Override
@@ -82,6 +84,9 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.widget_btn_multiactiontextview:
                 MultiActionTextViewActivity.startActivity(getContext());
+                break;
+            case R.id.widget_btn_selectionview:
+                SelectionViewActivity.startActivity(getContext());
                 break;
         }
     }

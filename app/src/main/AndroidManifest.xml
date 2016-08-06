@@ -219,6 +219,21 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.widgets.selectionview.SelectionViewActivity"
+            android:label="@string/selectionview_title" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="github.com"
+                    android:pathPrefix="/AlexMofer/ProjectX/tree/master/selectionview"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activities.drawable.loading.LoadingActivity"
             android:label="@string/loading_title" />
         <activity
@@ -230,9 +245,7 @@
         <activity
             android:name=".activities.develop.supergridview.SuperGridViewActivity"
             android:label="@string/dev_supergridview_title" />
-        <activity
-            android:name=".activities.develop.selectionview.SelectionViewActivity"
-            android:label="@string/dev_selectionview_title" />
+
         <activity
             android:name=".activities.drawable.combination.CombinationActivity"
             android:label="@string/combination_title" />

@@ -598,7 +598,8 @@ public class SelectionView extends View {
     public void setBarBackground(int background) {
         if (background == 0)
             setBarBackground(null);
-        setBarBackground(Compat.getDrawable(getContext(), background));
+        else
+            setBarBackground(Compat.getDrawable(getContext(), background));
     }
 
     /**
@@ -726,7 +727,8 @@ public class SelectionView extends View {
     public void setNoticeBackground(int background) {
         if (background == 0)
             setNoticeBackground(null);
-        setNoticeBackground(Compat.getDrawable(getContext(), background));
+        else
+            setNoticeBackground(Compat.getDrawable(getContext(), background));
     }
 
     /**

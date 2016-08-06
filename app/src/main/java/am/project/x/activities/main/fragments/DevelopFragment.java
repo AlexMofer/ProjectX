@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import am.project.x.R;
-import am.project.x.activities.develop.selectionview.SelectionViewActivity;
+import am.project.x.activities.widgets.selectionview.SelectionViewActivity;
 import am.project.x.activities.develop.supergridview.SuperGridViewActivity;
 
 /**
@@ -30,7 +30,6 @@ public class DevelopFragment extends Fragment implements View.OnClickListener{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.develop_btn_supergridview).setOnClickListener(this);
-        view.findViewById(R.id.develop_btn_selectionview).setOnClickListener(this);
     }
 
     @Override
@@ -38,9 +37,6 @@ public class DevelopFragment extends Fragment implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.develop_btn_supergridview:
                 SuperGridViewActivity.startActivity(getContext());
-                break;
-            case R.id.develop_btn_selectionview:
-                SelectionViewActivity.startActivity(getContext());
                 break;
         }
     }

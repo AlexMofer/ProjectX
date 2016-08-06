@@ -1,4 +1,4 @@
-package am.project.x.activities.develop.selectionview;
+package am.project.x.activities.widgets.selectionview;
 
 import java.util.ArrayList;
 
