@@ -36,6 +36,9 @@
 - [***MultiActionTextView***](https://github.com/AlexMofer/ProjectX/tree/master/multiactiontextview)
 
     文字可点击TextView，设置文字部分可点击，点击执行不同操作。
+- [***SelectionView***](https://github.com/AlexMofer/ProjectX/tree/master/selectionview)
+
+    快速跳选，常用于联系人列表快速选取。
 
 ## Drawable
 - [***DoubleCircleDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
