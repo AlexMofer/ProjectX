@@ -47,9 +47,10 @@
             android:background="@drawable/bg_gradienttabstrip_tab"
             android:textColor="@color/color_gradienttabstrip_tab"
             android:textSize="12sp"
+            app:gtsBackground="@drawable/bg_common_press"
+            app:gtsDrawablePadding="4dp"
             app:gtsTagPaddingLeft="2dp"
-            app:gtsTagPaddingRight="2dp"
-            app:gtsBackground="@drawable/bg_common_press"/>
+            app:gtsTagPaddingRight="2dp" />
 
     </LinearLayout>
 

@@ -14,7 +14,9 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
+
 import am.widget.basetabstrip.BaseTabStrip;
+
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextPaint;
@@ -30,9 +32,7 @@ public class GradientTabStrip extends BaseTabStrip {
 
     private static final int DEFAULT_TEXT_SIZE = 14;// 默认字体大小dp
     private static final int DEFAULT_TEXT_COLOR = 0xff000000;// 默认字体颜色
-    private static final int DEFAULT_ITEM_WIDTH = 64;// 最小子项宽度dp
-    private static final int DEFAULT_ITEM_HEIGHT = 32;// 最小子项高度dp
-    private static final int DEFAULT_TAG_TEXT_SIZE = 11;// 默认Tag字体大小dp
+    private static final int DEFAULT_TAG_TEXT_SIZE = 11;// 默认Tag字体大小sp
     private static final int DEFAULT_TAG_TEXT_COLOR = 0xffffffff;// 默认Tag文字颜色
     private static final int DEFAULT_TAG_MIN_SIZE = 15;// 默认Tag最小大小dp
     public static final int TAG_MIN_SIZE_MODE_HAS_TEXT = 0;// 当图片最小宽高更小时，按图片计算
@@ -41,15 +41,12 @@ public class GradientTabStrip extends BaseTabStrip {
             android.R.attr.textColor, android.R.attr.drawablePadding};
     private final TextPaint mTextPaint;// 文字画笔
     private float mTextSize;// 文字大小
-    private float mTextDesc;// 文字偏移
     private ColorStateList mTextColor;// 文字颜色
     private int mDrawablePadding;// 图文间距
     private Drawable mInterval;// 子项间隔
     private int mMinItemWidth;// 最小子项宽度
-    private int mMinItemHeight;// 最小子项高度
     private GradientTabAdapter mAdapter;// Tag
     private float mTagTextSize;// Tag文字大小
-    private float mTagTextDesc;// Tag文字偏移
     private int mTagTextColor;// Tag文字颜色
     private Drawable mTagBackground;// Tag文字背景
     private int mTagMinSizeMode;// Tag文字大小模式
@@ -57,12 +54,14 @@ public class GradientTabStrip extends BaseTabStrip {
     private int mTagMinHeight;// Tag文字最小高度
     private TagLocation mTagLocation;// Tag布局
     private Rect mTextMeasureBounds = new Rect();// 文字测量
-    private int mTextHeight;// 文字高度
+    private int mItemHeight;// 高度
+    private float mItemWidth;// 宽度
     private int mMaxDrawableWidth;// 最大图片宽
     private int mMaxDrawableHeight;// 最大图片高
     private int mCurrentPager = 0;
     private int mNextPager = 0;
     private float mOffset = 1;
+
     public GradientTabStrip(Context context) {
         this(context, null);
     }
@@ -104,8 +103,7 @@ public class GradientTabStrip extends BaseTabStrip {
         a.recycle();
         Drawable itemBackground = null;
         Drawable interval = null;
-        int minItemWidth = (int) (DEFAULT_ITEM_WIDTH * density);
-        int minItemHeight = (int) (DEFAULT_ITEM_HEIGHT * density);
+        int minItemWidth = 0;
         int tagTextSize = (int) (DEFAULT_TAG_TEXT_SIZE * density);
         int tagTextColor = DEFAULT_TAG_TEXT_COLOR;
         Drawable tagBackground = getDefaultTagBackground();
@@ -132,8 +130,6 @@ public class GradientTabStrip extends BaseTabStrip {
             interval = custom.getDrawable(R.styleable.GradientTabStrip_gtsInterval);
         minItemWidth = custom.getDimensionPixelOffset(R.styleable.GradientTabStrip_gtsMinItemWidth,
                 minItemWidth);
-        minItemHeight = custom.getDimensionPixelOffset(R.styleable.GradientTabStrip_gtsMinItemHeight,
-                minItemHeight);
         tagTextSize = custom.getDimensionPixelSize(R.styleable.GradientTabStrip_gtsTagTextSize,
                 tagTextSize);
         tagTextColor = custom.getColor(R.styleable.GradientTabStrip_gtsTagTextColor,
@@ -189,7 +185,6 @@ public class GradientTabStrip extends BaseTabStrip {
         setItemBackground(itemBackground);
         setInterval(interval);
         setMinItemWidth(minItemWidth);
-        setMinItemHeight(minItemHeight);
         if (isInEditMode()) {
             setAdapter(new TestAdapter(context));
         }
@@ -211,57 +206,38 @@ public class GradientTabStrip extends BaseTabStrip {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        final int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        final int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         mTextPaint.setTextSize(mTextSize);
-        Paint.FontMetricsInt metrics = mTextPaint.getFontMetricsInt();
-        mTextHeight = metrics.bottom - metrics.top;
-        mTextDesc = metrics.bottom;
+        int maxTextWidth = 0;
+        for (int i = 0; i < getItemCount(); i++) {
+            if (getItemText(i) != null) {
+                String text = getItemText(i).toString();
+                mTextPaint.getTextBounds(text, 0, text.length(), mTextMeasureBounds);
+                maxTextWidth = Math.max(maxTextWidth, mTextMeasureBounds.width());
+            }
+        }
         mMaxDrawableWidth = getMaxDrawableWidth();
         mMaxDrawableHeight = getMaxDrawableHeight();
-        int width;
-        if (widthMode == MeasureSpec.EXACTLY) {
-            width = widthSize;
-        } else {
-            int maxTextWidth = 0;
-            for (int i = 0; i < getItemCount(); i++) {
-                if (getItemText(i) != null) {
-                    String text = getItemText(i).toString();
-                    mTextPaint.getTextBounds(text, 0, text.length(), mTextMeasureBounds);
-                    maxTextWidth = Math.max(maxTextWidth, mTextMeasureBounds.width());
-                }
-            }
-            final int itemBackgroundWith = getMinItemBackgroundWidth();
-            final int itemWidth = Math.max(Math.max(maxTextWidth, mMaxDrawableWidth),
-                    Math.max(mMinItemWidth, itemBackgroundWith));
-            final int intervalWidth = getIntervalWidth();
-            final int totalWidth = itemWidth * getItemCount() +
-                    intervalWidth * (getItemCount() - 1) +
-                    ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this);
-            width = Math.max(totalWidth, getMinWidth());
-            if (widthMode == MeasureSpec.AT_MOST)
-                width = Math.min(width, widthSize);
-        }
+        final int itemBackgroundWith = getMinItemBackgroundWidth();
+        final int itemWidth = Math.max(Math.max(maxTextWidth, mMaxDrawableWidth),
+                Math.max(mMinItemWidth, itemBackgroundWith));
+        final int intervalWidth = getIntervalWidth();
+        final int totalWidth = itemWidth * getItemCount() +
+                intervalWidth * (getItemCount() - 1) +
+                ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this);
+        final int width = Math.max(totalWidth, getSuggestedMinimumWidth());
 
-        int height;
-        if (heightMode == MeasureSpec.EXACTLY) {
-            height = heightSize;
-        } else {
-            final int contentHeight = mMaxDrawableHeight + mDrawablePadding + mTextHeight;
-            final int itemBackgroundHeight = getMinItemBackgroundHeight();
-            final int intervalHeight = mInterval == null ? 0 : mInterval.getIntrinsicHeight();
-            final int itemHeight = Math.max(Math.max(contentHeight, intervalHeight),
-                    Math.max(mMinItemHeight, itemBackgroundHeight));
-            height = Math.max(itemHeight + getPaddingTop() + getPaddingBottom(), getMinHeight());
-            if (heightMode == MeasureSpec.AT_MOST)
-                height = Math.min(height, heightSize);
-        }
-        setMeasuredDimension(width, height);
-        mTextPaint.setTextSize(mTagTextSize);
-        metrics = mTextPaint.getFontMetricsInt();
-        mTagTextDesc = metrics.bottom;
+        mItemHeight = mMaxDrawableHeight + mDrawablePadding + mTextMeasureBounds.height();
+        final int itemBackgroundHeight = getMinItemBackgroundHeight();
+        final int intervalHeight = mInterval == null ? 0 : mInterval.getIntrinsicHeight();
+        final int itemHeight = Math.max(Math.max(mItemHeight, intervalHeight),
+                itemBackgroundHeight);
+        final int height = Math.max(itemHeight + getPaddingTop() + getPaddingBottom(),
+                getSuggestedMinimumHeight());
+        setMeasuredDimension(resolveSize(width, widthMeasureSpec),
+                resolveSize(height, heightMeasureSpec));
+        mItemWidth = (float) (getMeasuredWidth() - ViewCompat.getPaddingStart(this)
+                - ViewCompat.getPaddingEnd(this) - getIntervalWidth() * (getItemCount() - 1))
+                / getItemCount();
     }
 
     /**
@@ -317,46 +293,6 @@ public class GradientTabStrip extends BaseTabStrip {
         return mInterval == null ? 0 : mInterval.getIntrinsicWidth();
     }
 
-    /**
-     * 获取子项宽度
-     *
-     * @return 子项宽度
-     */
-    protected float getItemWidth() {
-        float width = getWidth() - ViewCompat.getPaddingStart(this) - ViewCompat.getPaddingEnd(this)
-                - getIntervalWidth() * (getItemCount() - 1);
-        return width / getItemCount();
-    }
-
-    /**
-     * 获取子项宽度（非精确）
-     *
-     * @return 子项宽度（非精确）
-     */
-    protected int getDrawItemWidth() {
-        return Math.round(getItemWidth());
-    }
-
-    /**
-     * 获取最后一个子项宽度（非精确）
-     *
-     * @return 最后一个子项宽度（非精确）
-     */
-    protected int getLastItemWidth() {
-        return getWidth() - ViewCompat.getPaddingStart(this) - ViewCompat.getPaddingEnd(this)
-                - getIntervalWidth() * (getItemCount() - 1)
-                - getDrawItemWidth() * (getItemCount() - 1);
-    }
-
-    /**
-     * 获取子项高度
-     *
-     * @return 子项高度
-     */
-    protected int getItemHeight() {
-        return getHeight() - getPaddingTop() - getPaddingBottom();
-    }
-
     @Override
     protected void jumpTo(int current) {
         mCurrentPager = -1;
@@ -389,11 +325,10 @@ public class GradientTabStrip extends BaseTabStrip {
             return -1;
         }
         int position = -1;
-        final float itemWidth = getItemWidth();
         final int intervalWidth = getIntervalWidth();
         for (int i = 0; i < getItemCount(); i++) {
-            float l = ViewCompat.getPaddingStart(this) + intervalWidth * i + itemWidth * i;
-            float r = l + itemWidth;
+            float l = ViewCompat.getPaddingStart(this) + intervalWidth * i + mItemWidth * i;
+            float r = l + mItemWidth;
             if (x >= l && x <= r) {
                 position = i;
                 break;
@@ -404,8 +339,7 @@ public class GradientTabStrip extends BaseTabStrip {
 
     @Override
     protected float getHotspotX(Drawable background, int position, float motionX, float motionY) {
-        return motionX - getPaddingLeft() - getIntervalWidth() * position
-                - getItemWidth() * position;
+        return motionX - getPaddingLeft() - getIntervalWidth() * position - mItemWidth * position;
     }
 
     @Override
@@ -432,7 +366,9 @@ public class GradientTabStrip extends BaseTabStrip {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        drawItem(canvas);
+        for (int position = 0; position < getItemCount(); position++) {
+            drawItem(canvas, position);
+        }
     }
 
     /**
@@ -440,38 +376,35 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @param canvas 画布
      */
-    protected void drawItem(Canvas canvas) {
-        final int itemWidth = getDrawItemWidth();
-        final int itemHeight = getItemHeight();
-        for (int position = 0; position < getItemCount(); position++) {
-            drawItemBackground(canvas, position, itemWidth, itemHeight);
-            drawInterval(canvas, position, itemWidth, itemHeight);
-            drawDrawable(canvas, position, itemWidth, itemHeight);
-            drawText(canvas, position, itemWidth, itemHeight);
-            drawTag(canvas, position, itemWidth, itemHeight);
-        }
+    protected void drawItem(Canvas canvas, int position) {
+        drawItemBackground(canvas, position);
+        drawInterval(canvas, position);
+        drawDrawable(canvas, position);
+        drawText(canvas, position);
+        drawTag(canvas, position);
     }
 
     /**
      * 绘制背景
      *
-     * @param canvas     画布
-     * @param position   子项坐标
-     * @param itemWidth  子项宽
-     * @param itemHeight 子项高
+     * @param canvas   画布
+     * @param position 子项坐标
      */
-    protected void drawItemBackground(Canvas canvas, int position, int itemWidth, int itemHeight) {
+    protected void drawItemBackground(Canvas canvas, int position) {
         if (!hasItemBackgrounds())
             return;
         Drawable tag = getItemBackground(position);
         if (position == getItemCount() - 1) {
-            int restWidth = getLastItemWidth();
-            tag.setBounds(0, 0, restWidth, itemHeight);
+            int restWidth = getWidth() - ViewCompat.getPaddingStart(this)
+                    - ViewCompat.getPaddingEnd(this) - getIntervalWidth() * (getItemCount() - 1)
+                    - (int) mItemWidth * (getItemCount() - 1);
+            tag.setBounds(0, 0, restWidth, getHeight() - getPaddingTop() - getPaddingBottom());
         } else {
-            tag.setBounds(0, 0, itemWidth, itemHeight);
+            tag.setBounds(0, 0, (int) mItemWidth,
+                    getHeight() - getPaddingTop() - getPaddingBottom());
         }
         final float moveX = ViewCompat.getPaddingStart(this) +
-                (itemWidth + getIntervalWidth()) * position;
+                (mItemWidth + getIntervalWidth()) * position;
         final float moveY = getPaddingTop();
         canvas.save();
         canvas.translate(moveX, moveY);
@@ -482,20 +415,19 @@ public class GradientTabStrip extends BaseTabStrip {
     /**
      * 绘制间隔
      *
-     * @param canvas     画布
-     * @param position   子项坐标
-     * @param itemWidth  子项宽
-     * @param itemHeight 子项高
+     * @param canvas   画布
+     * @param position 子项坐标
      */
-    protected void drawInterval(Canvas canvas, int position, int itemWidth, int itemHeight) {
+    protected void drawInterval(Canvas canvas, int position) {
         if (mInterval == null || mInterval.getIntrinsicWidth() <= 0
                 || position == getItemCount() - 1)
             return;
-        final int intervalHeight = mInterval.getIntrinsicHeight() <= 0 ? itemHeight :
-                mInterval.getIntrinsicHeight();
+        final int intervalHeight = mInterval.getIntrinsicHeight() <= 0 ? getHeight()
+                - getPaddingTop() - getPaddingBottom() : mInterval.getIntrinsicHeight();
         mInterval.setBounds(0, 0, getIntervalWidth(), intervalHeight);
-        final int moveX = ViewCompat.getPaddingStart(this) + itemWidth * position;
-        final float moveY = getPaddingTop() + (itemHeight - intervalHeight) * 0.5f;
+        final float moveX = ViewCompat.getPaddingStart(this) + mItemWidth * position;
+        final float moveY = getPaddingTop() +
+                (getHeight() - getPaddingTop() - getPaddingBottom()) * 0.5f - intervalHeight * 0.5f;
         canvas.save();
         canvas.translate(moveX, moveY);
         mInterval.draw(canvas);
@@ -505,12 +437,10 @@ public class GradientTabStrip extends BaseTabStrip {
     /**
      * 绘制图片
      *
-     * @param canvas     画布
-     * @param position   子项坐标
-     * @param itemWidth  子项宽
-     * @param itemHeight 子项高
+     * @param canvas   画布
+     * @param position 子项坐标
      */
-    protected void drawDrawable(Canvas canvas, int position, int itemWidth, int itemHeight) {
+    protected void drawDrawable(Canvas canvas, int position) {
         if (mAdapter == null)
             return;
         Drawable normal = mAdapter.getNormalDrawable(position, getContext());
@@ -529,40 +459,31 @@ public class GradientTabStrip extends BaseTabStrip {
             alphaNormal = 1;
             alphaSelected = 0;
         }
-        int normalWidth = 0;
-        int normalHeight = 0;
+        final float drawableCenterX = ViewCompat.getPaddingStart(this) +
+                (mItemWidth + getIntervalWidth()) * position + mItemWidth * 0.5f;
+        final float drawableCenterY = getPaddingTop() + (getHeight() - getPaddingTop()
+                - getPaddingBottom()) * 0.5f - mItemHeight * 0.5f + mMaxDrawableHeight * 0.5f;
+        canvas.save();
+        canvas.translate(drawableCenterX, drawableCenterY);
         if (normal != null) {
-            normalWidth = normal.getIntrinsicWidth();
-            normalHeight = normal.getIntrinsicHeight();
+            final int normalWidth = normal.getIntrinsicWidth();
+            final int normalHeight = normal.getIntrinsicHeight();
             normal.setAlpha((int) Math.ceil(0xFF * alphaNormal));
             normal.setBounds(0, 0, normalWidth, normalHeight);
+            canvas.save();
+            canvas.translate(-normalWidth * 0.5f, -normalHeight * 0.5f);
+            normal.draw(canvas);
+            canvas.restore();
         }
-        int selectedWidth = 0;
-        int selectedHeight = 0;
         if (selected != null) {
-            selectedWidth = selected.getIntrinsicWidth();
-            selectedHeight = selected.getIntrinsicHeight();
+            final int selectedWidth = selected.getIntrinsicWidth();
+            final int selectedHeight = selected.getIntrinsicHeight();
             selected.setAlpha((int) Math.ceil(0xFF * alphaSelected));
             selected.setBounds(0, 0, selectedWidth, selectedHeight);
-        }
-        final int contentHeight = mMaxDrawableHeight + mDrawablePadding + mTextHeight;
-        final float centerX = ViewCompat.getPaddingStart(this) +
-                (itemWidth + getIntervalWidth()) * ((float) position + 0.5f);
-        final float centerY = getPaddingTop() + itemHeight * 0.5f;
-        final float maxDrawableCenterY = centerY + (mMaxDrawableHeight - contentHeight) * 0.5f;
-        final float normalLeft = centerX - normalWidth * 0.5f;
-        final float normalTop = maxDrawableCenterY - normalHeight * 0.5f;
-        final float selectedLeft = centerX - selectedWidth * 0.5f;
-        final float selectedTop = maxDrawableCenterY - selectedHeight * 0.5f;
-        canvas.save();
-        if (normal != null) {
-            canvas.translate(normalLeft, normalTop);
-            normal.draw(canvas);
-            canvas.translate(-normalLeft, -normalTop);
-        }
-        if (selected != null) {
-            canvas.translate(selectedLeft, selectedTop);
+            canvas.save();
+            canvas.translate(-selectedWidth * 0.5f, -selectedHeight * 0.5f);
             selected.draw(canvas);
+            canvas.restore();
         }
         canvas.restore();
     }
@@ -570,18 +491,18 @@ public class GradientTabStrip extends BaseTabStrip {
     /**
      * 绘制文字
      *
-     * @param canvas     画布
-     * @param position   子项坐标
-     * @param itemWidth  子项宽
-     * @param itemHeight 子项高
+     * @param canvas    画布
+     * @param position  子项坐标
      */
-    protected void drawText(Canvas canvas, int position, int itemWidth, int itemHeight) {
+    protected void drawText(Canvas canvas, int position) {
         if (getItemText(position) == null)
             return;
         String text = getItemText(position).toString();
         if (text.length() <= 0)
             return;
         mTextPaint.setTextSize(mTextSize);
+        mTextPaint.getTextBounds(text, 0, text.length(), mTextMeasureBounds);
+        final int textHeight = mTextMeasureBounds.height();
         if (mTextColor == null) {
             mTextPaint.setColor(DEFAULT_TEXT_COLOR);
         } else {
@@ -595,13 +516,14 @@ public class GradientTabStrip extends BaseTabStrip {
                 mTextPaint.setColor(normalColor);
             }
         }
-        final int contentHeight = mMaxDrawableHeight + mDrawablePadding + mTextHeight;
+        final int contentHeight = mMaxDrawableHeight + mDrawablePadding + textHeight;
         final float centerX = ViewCompat.getPaddingStart(this) +
-                (itemWidth + getIntervalWidth()) * ((float) position + 0.5f);
-        final float centerY = getPaddingTop() + itemHeight * 0.5f;
+                (mItemWidth + getIntervalWidth()) * (position + 0.5f);
+        final float centerY = getPaddingTop()
+                + (getHeight() - getPaddingTop() - getPaddingBottom()) * 0.5f;
         canvas.save();
-        canvas.translate(centerX, centerY + (contentHeight - mTextHeight) * 0.5f + mTextDesc);
-        canvas.drawText(text, 0, 0, mTextPaint);
+        canvas.translate(centerX, centerY + contentHeight * 0.5f - textHeight);
+        canvas.drawText(text, 0, -mTextMeasureBounds.top, mTextPaint);
         canvas.restore();
     }
 
@@ -610,10 +532,8 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @param canvas     画布
      * @param position   子项坐标
-     * @param itemWidth  子项宽
-     * @param itemHeight 子项高
      */
-    protected void drawTag(Canvas canvas, int position, int itemWidth, int itemHeight) {
+    protected void drawTag(Canvas canvas, int position) {
         if (mAdapter == null || !mAdapter.isTagEnable(position))
             return;
         String text = mAdapter.getTag(position) == null ? "" : mAdapter.getTag(position);
@@ -631,7 +551,7 @@ public class GradientTabStrip extends BaseTabStrip {
         switch (mTagMinSizeMode) {
             default:
             case TAG_MIN_SIZE_MODE_HAS_TEXT:
-                if ("".equals(text)) {
+                if (text.length() == 0) {
                     tagWidth = Math.min(mTagMinWidth, tagBackgroundWidth);
                     tagHeight = Math.min(mTagMinHeight, tagBackgroundHeight);
                     break;
@@ -645,26 +565,28 @@ public class GradientTabStrip extends BaseTabStrip {
                         Math.max(mTagMinHeight, tagBackgroundHeight));
                 break;
         }
-        final int contentHeight = mMaxDrawableHeight + mDrawablePadding + mTextHeight;
         final float centerX = ViewCompat.getPaddingStart(this) +
-                (itemWidth + getIntervalWidth()) * ((float) position + 0.5f);
-        final float centerY = getPaddingTop() + itemHeight * 0.5f;
+                (mItemWidth + getIntervalWidth()) * ((float) position + 0.5f);
+        final float centerY = getPaddingTop()
+                + (getHeight() - getPaddingTop() - getPaddingBottom()) * 0.5f;
         final float tagCenterX = centerX + mMaxDrawableWidth * 0.5f;
-        final float tagCenterY = centerY - contentHeight * 0.5f + tagHeight * 0.5f;
+        final float tagCenterY = centerY - mItemHeight * 0.5f + tagHeight * 0.5f;
         final float tagLeft = tagCenterX - tagWidth * 0.5f + mTagLocation.getMarginLeft();
         final float tagTop = tagCenterY - tagHeight * 0.5f - mTagLocation.getMarginBottom();
         canvas.save();
+        canvas.translate(tagLeft, tagTop);
         if (mTagBackground != null) {
             mTagBackground.setBounds(0, 0, tagWidth, tagHeight);
-            canvas.translate(tagLeft, tagTop);
             mTagBackground.draw(canvas);
-            if (!"".equals(text)) {
-                canvas.translate(tagWidth * 0.5f, tagHeight * 0.5f + mTagTextDesc);
-                canvas.drawText(text, 0, 0, mTextPaint);
+        }
+        if (text.length() > 0) {
+            canvas.translate(mTagLocation.getPaddingLeft() +
+                    (tagWidth - mTagLocation.getPaddingLeft() - mTagLocation.getPaddingRight())
+                            * 0.5f, mTagLocation.getPaddingTop());
+            if (tagHeight > textHeight) {
+                canvas.translate(0, (tagHeight - textHeight) * 0.5f);
             }
-        } else {
-            canvas.translate(tagCenterX, tagCenterY + mTagTextDesc);
-            canvas.drawText(text, 0, 0, mTextPaint);
+            canvas.drawText(text, 0, -mTextMeasureBounds.top, mTextPaint);
         }
         canvas.restore();
     }
@@ -796,29 +718,6 @@ public class GradientTabStrip extends BaseTabStrip {
     public void setMinItemWidth(int width) {
         if (width >= 0 && width != mMinItemWidth) {
             mMinItemWidth = width;
-            requestLayout();
-            invalidate();
-        }
-    }
-
-    /**
-     * 获取子项最小高度
-     *
-     * @return 子项最小高度
-     */
-    @SuppressWarnings("unused")
-    public int getMinItemHeight() {
-        return mMinItemHeight;
-    }
-
-    /**
-     * 设置子项最小高度
-     *
-     * @param height 子项最小高度
-     */
-    public void setMinItemHeight(int height) {
-        if (height >= 0 && height != mMinItemHeight) {
-            mMinItemHeight = height;
             requestLayout();
             invalidate();
         }

@@ -113,7 +113,7 @@ public class TagTabStrip extends BaseTabStrip {
         if (widthMode == MeasureSpec.EXACTLY) {
             width = widthSize;
         } else {
-            width = Math.max(totalWidth, getMinWidth());
+            width = Math.max(totalWidth, getSuggestedMinimumWidth());
             if (widthMode == MeasureSpec.AT_MOST)
                 width = Math.min(width, widthSize);
         }
@@ -121,7 +121,7 @@ public class TagTabStrip extends BaseTabStrip {
         if (heightMode == MeasureSpec.EXACTLY) {
             height = heightSize;
         } else {
-            height = Math.max(totalHeight, getMinHeight());
+            height = Math.max(totalHeight, getSuggestedMinimumHeight());
             if (heightMode == MeasureSpec.AT_MOST)
                 height = Math.min(height, heightSize);
         }

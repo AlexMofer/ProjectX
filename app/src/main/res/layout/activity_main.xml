@@ -46,7 +46,8 @@
             android:background="@drawable/bg_main_tab_bar"
             android:textColor="@color/color_main_tabs"
             android:textSize="@dimen/textSize_9"
-            app:gtsBackground="@drawable/bg_common_press"/>
+            app:gtsBackground="@drawable/bg_common_press"
+            app:gtsDrawablePadding="4dp" />
 
     </LinearLayout>
 

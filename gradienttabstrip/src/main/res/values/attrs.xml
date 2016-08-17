@@ -7,7 +7,6 @@
         <attr name="gtsBackground" format="reference"/>
         <attr name="gtsInterval" format="reference" />
         <attr name="gtsMinItemWidth" format="dimension"/>
-        <attr name="gtsMinItemHeight" format="dimension"/>
         <attr name="gtsTagTextSize" format="dimension" />
         <attr name="gtsTagTextColor" format="color" />
         <attr name="gtsTagBackground" format="reference" />

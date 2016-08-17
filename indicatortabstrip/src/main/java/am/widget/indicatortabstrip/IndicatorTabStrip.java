@@ -294,7 +294,7 @@ public class IndicatorTabStrip extends BaseTabStrip {
                     ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this);
             final int dividerWidth = mDivider == null ? 0 : mDivider.getIntrinsicWidth() +
                     ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this);
-            width = Math.max(Math.max(totalWidth, dividerWidth), getMinWidth());
+            width = Math.max(Math.max(totalWidth, dividerWidth), getSuggestedMinimumWidth());
             if (widthMode == MeasureSpec.AT_MOST)
                 width = Math.min(width, widthSize);
         }
@@ -310,7 +310,7 @@ public class IndicatorTabStrip extends BaseTabStrip {
             final int itemHeight = Math.max(Math.max(maxTextHeight, intervalHeight),
                     Math.max(mMinItemHeight, itemBackgroundHeight));
             height = Math.max(dividerHeight + itemHeight + getPaddingTop() + getPaddingBottom(),
-                    getMinHeight());
+                    getSuggestedMinimumHeight());
             if (heightMode == MeasureSpec.AT_MOST)
                 height = Math.min(height, heightSize);
         }

@@ -32,6 +32,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewParent;
@@ -175,6 +176,7 @@ public abstract class BaseTabStrip extends View {
             if (clickListener != null && notifyListener) {
                 clickListener.onItemClick(mPosition);
             }
+            playSoundEffect(SoundEffectConstants.CLICK);
             return true;
         }
         return false;
@@ -827,36 +829,6 @@ public abstract class BaseTabStrip extends View {
     }
 
     /**
-     * 获取最小宽度
-     *
-     * @return 最小宽度
-     */
-    @SuppressWarnings("unused")
-    protected int getMinWidth() {
-        int minWidth = 0;
-        final Drawable bg = getBackground();
-        if (bg != null) {
-            minWidth = bg.getIntrinsicWidth();
-        }
-        return Math.max(0, minWidth);
-    }
-
-    /**
-     * 获取最小高度
-     *
-     * @return 最小高度
-     */
-    @SuppressWarnings("unused")
-    protected int getMinHeight() {
-        int minHeight = 0;
-        final Drawable bg = getBackground();
-        if (bg != null) {
-            minHeight = bg.getIntrinsicHeight();
-        }
-        return Math.max(0, minHeight);
-    }
-
-    /**
      * 获取子项背景最小宽度
      *
      * @return 子项背景最小宽度
@@ -865,7 +837,7 @@ public abstract class BaseTabStrip extends View {
     protected int getMinItemBackgroundWidth() {
         if (!hasItemBackgrounds())
             return 0;
-        return mTabItemBackground.getIntrinsicWidth();
+        return mTabItemBackground.getMinimumWidth();
     }
 
     /**
@@ -877,7 +849,7 @@ public abstract class BaseTabStrip extends View {
     protected int getMinItemBackgroundHeight() {
         if (!hasItemBackgrounds())
             return 0;
-        return mTabItemBackground.getIntrinsicHeight();
+        return mTabItemBackground.getMinimumHeight();
     }
 
     /**
@@ -911,6 +883,7 @@ public abstract class BaseTabStrip extends View {
      *
      * @param dirty 区域集
      */
+    @SuppressWarnings("unused")
     public void invalidate(int... dirty) {
         if (dirty == null || dirty.length <= 0)
             return;
