@@ -3,94 +3,100 @@ apply plugin: 'com.jfrog.bintray'
 
 // load properties
 Properties properties = new Properties()
-File localPropertiesFile = project.file("local.properties");
-if(localPropertiesFile.exists()){
-    properties.load(localPropertiesFile.newDataInputStream())
-}
+
 File projectPropertiesFile = project.file("project.properties");
-if(projectPropertiesFile.exists()){
+if (projectPropertiesFile.exists()) {
     properties.load(projectPropertiesFile.newDataInputStream())
 }
-
 // read properties
 def projectName = properties.getProperty("project.name")
+def projectDesc = properties.getProperty("project.desc")
 def projectGroupId = properties.getProperty("project.groupId")
 def projectArtifactId = properties.getProperty("project.artifactId")
 def projectVersionName = android.defaultConfig.versionName
 def projectPackaging = properties.getProperty("project.packaging")
 def projectSiteUrl = properties.getProperty("project.siteUrl")
 def projectGitUrl = properties.getProperty("project.gitUrl")
-
+def projectIssueTrackerUrl = properties.getProperty("project.issueTrackerUrl")
 def developerId = properties.getProperty("developer.id")
 def developerName = properties.getProperty("developer.name")
 def developerEmail = properties.getProperty("developer.email")
-
-def bintrayUser = properties.getProperty("bintray.user")
-def bintrayApikey = properties.getProperty("bintray.apikey")
-
 def javadocName = properties.getProperty("javadoc.name")
 
-group = projectGroupId
+File localPropertiesFile = project.file("local.properties");
+if (localPropertiesFile.exists()) {
+    properties.load(localPropertiesFile.newDataInputStream())
+}
+def bintrayUser = properties.getProperty("bintray.user")
+def bintrayApikey = properties.getProperty("bintray.apikey")
 
 // This generates POM.xml with proper parameters
 install {
     repositories.mavenInstaller {
-        pom {
-            project {
-                name projectName
-                groupId projectGroupId
-                artifactId projectArtifactId
-                version projectVersionName
-                packaging projectPackaging
+        configuration = configurations.archives
+        pom.groupId = projectGroupId
+        pom.artifactId = projectArtifactId
+        pom.version = projectVersionName
+        pom.packaging = projectPackaging
+        pom.project {
+            name projectName
+            groupId projectGroupId
+            artifactId projectArtifactId
+            version projectVersionName
+            packaging projectPackaging
+            url projectSiteUrl
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                }
+            }
+            developers {
+                developer {
+                    id developerId
+                    name developerName
+                    email developerEmail
+                }
+            }
+            scm {
+                connection projectGitUrl
+                developerConnection projectGitUrl
                 url projectSiteUrl
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id developerId
-                        name developerName
-                        email developerEmail
-                    }
-                }
-                scm {
-                    connection projectGitUrl
-                    developerConnection projectGitUrl
-                    url projectSiteUrl
-                }
             }
         }
     }
 }
 
-// This generates sources.jar
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
+task androidJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.source
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }
 
-// This generates javadoc.jar
-task javadocJar(type: Jar, dependsOn: javadoc) {
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    from androidJavadocs.destinationDir
     classifier = 'javadoc'
-    from javadoc.destinationDir
+}
+
+task androidSourcesJar(type: Jar) {
+    from android.sourceSets.main.java.source
+    classifier = 'sources'
+}
+
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
 }
 
 artifacts {
-    archives javadocJar
-    archives sourcesJar
+    archives androidSourcesJar
+    archives androidJavadocsJar
 }
 
-// javadoc configuration
-javadoc {
-    options{
+androidJavadocs {
+    options {
         encoding "UTF-8"
         charSet 'UTF-8'
         author true
@@ -98,48 +104,23 @@ javadoc {
         links "http://docs.oracle.com/javase/7/docs/api"
         title javadocName
     }
-    return true
-}
-
-// android Javadoc
-android.libraryVariants.all { variant ->
-    println variant.javaCompile.classpath.files
-    if (variant.name == 'release') { //我们只需 release 的 javadoc
-        task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
-            // title = ''
-            // description = ''
-            source = variant.javaCompile.source
-            classpath = files(variant.javaCompile.classpath.files, project.android.getBootClasspath())
-            options {
-                encoding "utf-8"
-                links "http://docs.oracle.com/javase/7/docs/api/"
-                linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
-            }
-            exclude '**/BuildConfig.java'
-            exclude '**/R.java'
-        }
-        task("javadoc${variant.name.capitalize()}Jar", type: Jar, dependsOn: "generate${variant.name.capitalize()}Javadoc") {
-            classifier = 'javadoc'
-            from tasks.getByName("generate${variant.name.capitalize()}Javadoc").destinationDir
-        }
-        artifacts {
-            archives tasks.getByName("javadoc${variant.name.capitalize()}Jar")
-        }
-    }
 }
 
 // bintray configuration
 bintray {
     user = bintrayUser
     key = bintrayApikey
+    group = projectGroupId
     configurations = ['archives']
     pkg {
         repo = "maven"
         name = projectName
         websiteUrl = projectSiteUrl
         vcsUrl = projectGitUrl
+        desc = projectDesc
+        issueTrackerUrl = projectIssueTrackerUrl
         licenses = ["Apache-2.0"]
         publish = true
+        publicDownloadNumbers = true
     }
 }
-
