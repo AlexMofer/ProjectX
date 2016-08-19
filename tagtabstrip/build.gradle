@@ -5,16 +5,16 @@ android {
     buildToolsVersion "24.0.1"
 
     defaultConfig {
-        minSdkVersion 4
+        minSdkVersion 9
         targetSdkVersion 24
-        versionCode 25
-        versionName "3.1.1"
+        versionCode 26
+        versionName "24.2.0"
     }
 }
 
 dependencies {
     compile project(':basetabstrip')
-    //compile 'am.widget:basetabstrip:3.1.1'
+//    compile 'am.widget:basetabstrip:24.2.0'
 }
 
 //apply from: "bintray.gradle"
