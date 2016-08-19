@@ -3,14 +3,14 @@
 
 继承自View，可自动捆绑ViewPager，BaseTabStrip为基础类，仅实现了一些通用基础逻辑。具体的实现效果需要实现与重写部分方法。
 ## 要求
-- minSdkVersion 9
-- com.android.support:support-v4:24.2.0(无需手动导入，项目会自动导入，需保持跟其他官方支持版本一致)
+- minSdkVersion 4
+- com.android.support:support-v4:24.0.0
 
 ## 引用
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:basetabstrip:24.2.0'
+    compile 'am.widget:basetabstrip:3.1.1'
     ⋯
 }
 ```
@@ -99,10 +99,10 @@ dependencies {
 - 可通过setItemBackground()来给子项设置背景，但背景并未在基类中绘画出来，因此需要在子类中自行将其绘制出来，如果不需要则可以忽略
 - OnItemClickListener中实现了：单击、点击已选中子项、双击三种点击事件
 - ItemTabAdapter为角标基本容器，需要实现角标，可以基于该接口
-- 请保持跟官方其他支持库版本一致
+- 不支持com.android.support:support-v4:24.0.0以下的所有版本
+- 最好使用com.android.support:support-v4:24.1.1
 
 ## 历史
-- [**3.1.1**](https://bintray.com/alexmofer/maven/BaseTabStrip/3.1.1)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/basetabstrip/history/3.1.1)）
 - [**3.1.0**](https://bintray.com/alexmofer/maven/BaseTabStrip/3.1.0)
 - [**3.0.0**](https://bintray.com/alexmofer/maven/BaseTabStrip/3.0.0)
 - [**2.1.0**](https://bintray.com/alexmofer/maven/BaseTabStrip/2.1.0)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/basetabstrip/history/2.1.0)）

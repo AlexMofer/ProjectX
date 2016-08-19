@@ -263,58 +263,41 @@ public class IndicatorTabStrip extends BaseTabStrip {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        final int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        final int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         mTextPaint.setTextSize(mTextSize);
         Paint.FontMetricsInt metrics = mTextPaint.getFontMetricsInt();
         final int textHeight = metrics.bottom - metrics.top;
         mTextDesc = metrics.bottom;
-        int width;
-        if (widthMode == MeasureSpec.EXACTLY) {
-            width = widthSize;
-        } else {
-            int textWidth = 0;
-            for (int i = 0; i < getItemCount(); i++) {
-                if (getItemText(i) != null) {
-                    String text = getItemText(i).toString();
-                    mTextPaint.getTextBounds(text, 0, text.length(), mTextMeasureBounds);
-                    textWidth = Math.max(textWidth, mTextMeasureBounds.width());
-                }
+        int textWidth = 0;
+        for (int i = 0; i < getItemCount(); i++) {
+            if (getItemText(i) != null) {
+                String text = getItemText(i).toString();
+                mTextPaint.getTextBounds(text, 0, text.length(), mTextMeasureBounds);
+                textWidth = Math.max(textWidth, mTextMeasureBounds.width());
             }
-            final int maxTextWidth = mTextScale > 1 ?
-                    (int) (Math.ceil((float) textWidth * mTextScale) + 1) : textWidth;
-            final int itemBackgroundWith = getMinItemBackgroundWidth();
-            final int itemWidth = Math.max(maxTextWidth,
-                    Math.max(mMinItemWidth, itemBackgroundWith));
-            final int intervalWidth = getIntervalWidth();
-            final int totalWidth = itemWidth * getItemCount() +
-                    intervalWidth * (getItemCount() - 1) +
-                    ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this);
-            final int dividerWidth = mDivider == null ? 0 : mDivider.getIntrinsicWidth() +
-                    ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this);
-            width = Math.max(Math.max(totalWidth, dividerWidth), getSuggestedMinimumWidth());
-            if (widthMode == MeasureSpec.AT_MOST)
-                width = Math.min(width, widthSize);
         }
-        int height;
-        if (heightMode == MeasureSpec.EXACTLY) {
-            height = heightSize;
-        } else {
-            final int maxTextHeight = mTextScale > 1 ?
-                    (int) (Math.ceil((float) textHeight * mTextScale) + 1) : textHeight;
-            final int itemBackgroundHeight = getMinItemBackgroundHeight();
-            final int intervalHeight = mInterval == null ? 0 : mInterval.getIntrinsicHeight();
-            final int dividerHeight = getDividerHeight();
-            final int itemHeight = Math.max(Math.max(maxTextHeight, intervalHeight),
-                    Math.max(mMinItemHeight, itemBackgroundHeight));
-            height = Math.max(dividerHeight + itemHeight + getPaddingTop() + getPaddingBottom(),
-                    getSuggestedMinimumHeight());
-            if (heightMode == MeasureSpec.AT_MOST)
-                height = Math.min(height, heightSize);
-        }
-        setMeasuredDimension(width, height);
+        final int maxTextWidth = mTextScale > 1 ?
+                (int) (Math.ceil((float) textWidth * mTextScale) + 1) : textWidth;
+        final int itemBackgroundWith = getMinItemBackgroundWidth();
+        final int itemWidth = Math.max(maxTextWidth,
+                Math.max(mMinItemWidth, itemBackgroundWith));
+        final int intervalWidth = getIntervalWidth();
+        final int totalWidth = itemWidth * getItemCount() +
+                intervalWidth * (getItemCount() - 1) +
+                ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this);
+        final int dividerWidth = mDivider == null ? 0 : mDivider.getIntrinsicWidth() +
+                ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this);
+        final int width = Math.max(Math.max(totalWidth, dividerWidth), getSuggestedMinimumWidth());
+        final int maxTextHeight = mTextScale > 1 ?
+                (int) (Math.ceil((float) textHeight * mTextScale) + 1) : textHeight;
+        final int itemBackgroundHeight = getMinItemBackgroundHeight();
+        final int intervalHeight = mInterval == null ? 0 : mInterval.getIntrinsicHeight();
+        final int dividerHeight = getDividerHeight();
+        final int itemHeight = Math.max(Math.max(maxTextHeight, intervalHeight),
+                Math.max(mMinItemHeight, itemBackgroundHeight));
+        final int height = Math.max(dividerHeight + itemHeight + getPaddingTop() + getPaddingBottom(),
+                getSuggestedMinimumHeight());
+        setMeasuredDimension(resolveSize(width, widthMeasureSpec),
+                resolveSize(height, heightMeasureSpec));
         mTextPaint.setTextSize(mTagTextSize);
         metrics = mTextPaint.getFontMetricsInt();
         mTagTextDesc = metrics.bottom;

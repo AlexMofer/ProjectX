@@ -21,7 +21,6 @@ def projectIssueTrackerUrl = properties.getProperty("project.issueTrackerUrl")
 def developerId = properties.getProperty("developer.id")
 def developerName = properties.getProperty("developer.name")
 def developerEmail = properties.getProperty("developer.email")
-def javadocName = properties.getProperty("javadoc.name")
 
 File localPropertiesFile = project.file("local.properties");
 if (localPropertiesFile.exists()) {
@@ -40,10 +39,6 @@ install {
         pom.packaging = projectPackaging
         pom.project {
             name projectName
-            groupId projectGroupId
-            artifactId projectArtifactId
-            version projectVersionName
-            packaging projectPackaging
             url projectSiteUrl
             licenses {
                 license {
@@ -70,6 +65,7 @@ install {
 task androidJavadocs(type: Javadoc) {
     source = android.sourceSets.main.java.source
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    options.encoding = "UTF-8"
 }
 
 task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
@@ -93,17 +89,6 @@ if (JavaVersion.current().isJava8Compatible()) {
 artifacts {
     archives androidSourcesJar
     archives androidJavadocsJar
-}
-
-androidJavadocs {
-    options {
-        encoding "UTF-8"
-        charSet 'UTF-8'
-        author true
-        version projectVersionName
-        links "http://docs.oracle.com/javase/7/docs/api"
-        title javadocName
-    }
 }
 
 // bintray configuration
