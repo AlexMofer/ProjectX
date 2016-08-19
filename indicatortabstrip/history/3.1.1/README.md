@@ -5,14 +5,14 @@
 ## 预览
 ![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/indicatortabstrip/screenshots.gif)
 ## 要求
-- minSdkVersion 9
-- 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7）
+- minSdkVersion 4
+- com.android.support:support-v4:24.0.0
 
 ## 引用
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:indicatortabstrip:24.2.0'
+    compile 'am.widget:indicatortabstrip:3.1.1'
     ⋯
 }
 ```
@@ -70,10 +70,10 @@ tabs.bindViewPager(viewPager);
 ## 注意
 - 不要使用ViewPage的setCurrentItem(int)方法，其不会通知到IndicatorTabStrip进行刷新，使用IndicatorTabStrip的performClick(int)方法
 - 布局时，android:textColor指定的颜色可以使用选择器，其中android:state_selected="true"状态下的颜色会与普通状态下的颜色进行渐变
-- 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7），否则可能出现错误
+- 不支持com.android.support:support-v4:24.0.0以下的所有版本
+- 最好使用com.android.support:support-v4:24.1.1
 
 ## 历史
-- [**3.1.1**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/3.1.1)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/indicatortabstrip/history/3.1.1)）
 - [**3.1.0**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/3.1.0)
 - [**3.0.0**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/3.0.0)
 - [**2.1.0**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/2.1.0)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/indicatortabstrip/history/2.1.0)）
