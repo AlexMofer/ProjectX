@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
  *
  * @author Alex
  */
+@SuppressWarnings("unused")
 public class StringUtils {
 
     /**
@@ -639,5 +640,18 @@ public class StringUtils {
                 return true;
         }
         return false;
+    }
+
+    /**
+     * 获取文字字符数
+     *
+     * @param s 字符串
+     * @return 字符数
+     */
+    public int getWordCount(String s) {
+        if (s == null)
+            return 0;
+        s = s.replaceAll("[^\\x00-\\xff]", "**");
+        return s.length();
     }
 }
