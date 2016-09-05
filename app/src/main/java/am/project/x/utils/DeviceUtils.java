@@ -10,6 +10,7 @@ import android.telephony.TelephonyManager;
  * 设备工具类
  * Created by Alex on 2015/8/20.
  */
+@SuppressWarnings("unused")
 public class DeviceUtils {
 
     public static final String NO_DEVICEID = "Cannot create an unique deviceId";
@@ -141,6 +142,6 @@ public class DeviceUtils {
      */
     public static String md5DeviceUUID(Context context, String charsetName, String value) {
         String deviceUUID = value == null ? getDeviceUUID(context) : getDeviceUUID(context) + value;
-        return StringUtils.MD5(deviceUUID, charsetName);
+        return StringUtils.getMD5(deviceUUID, charsetName, true);
     }
 }

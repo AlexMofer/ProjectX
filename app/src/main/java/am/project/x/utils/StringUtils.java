@@ -1,19 +1,12 @@
 package am.project.x.utils;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.text.DecimalFormat;
+import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.regex.Pattern;
+
 
 /**
  * 字符串工具
@@ -23,18 +16,6 @@ import java.util.regex.Pattern;
 @SuppressWarnings("unused")
 public class StringUtils {
 
-    /**
-     * 格式化总价
-     *
-     * @param fee 总价
-     * @return 格式化后的总价字符串
-     */
-    public static String getFormatFee(int fee) {
-        DecimalFormat df = new DecimalFormat("0.00");
-        Double totalfee = Double.parseDouble(fee + "");
-        return df.format(totalfee / 100);
-    }
-
 
     /**
      * 判断字符串是否为数字
@@ -43,8 +24,7 @@ public class StringUtils {
      * @return 是否为数字
      */
     public static boolean isNumeric(String str) {
-        Pattern pattern = Pattern.compile("[0-9]*");
-        return pattern.matcher(str).matches();
+        return Pattern.compile("[0-9]*").matcher(str).matches();
     }
 
     /**
@@ -77,6 +57,7 @@ public class StringUtils {
         return str == null ? "null" : str;
     }
 
+
     /**
      * BASE64 编码
      *
@@ -85,21 +66,12 @@ public class StringUtils {
      * @param encodingOut 输出编码格式
      * @return 编码字符串
      */
-    public static String codingBASE64(String str, String encodingIn,
-                                      String encodingOut) {
-        if (str == null || str.length() == 0) {
+    public static String encodingBASE64(String str, String encodingIn, String encodingOut) {
+        try {
+            return new String(Base64.encode(str.getBytes(encodingIn), Base64.DEFAULT), encodingOut);
+        } catch (Exception e) {
             return null;
         }
-        String strBase64 = null;
-        try {
-            byte[] encode = str.getBytes(encodingIn);
-            strBase64 = new String(Base64.encode(encode, Base64.DEFAULT),
-                    encodingOut);
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return strBase64;
     }
 
     /**
@@ -110,21 +82,12 @@ public class StringUtils {
      * @param encodingOut 输出编码格式
      * @return 编码字符串
      */
-    public static String decodingBASE64(String str, String encodingIn,
-                                        String encodingOut) {
-        if (str == null || str.length() == 0) {
+    public static String decodingBASE64(String str, String encodingIn, String encodingOut) {
+        try {
+            return new String(Base64.decode(str.getBytes(encodingIn), Base64.DEFAULT), encodingOut);
+        } catch (Exception e) {
             return null;
         }
-        String strBase64 = null;
-        try {
-            byte[] encode = str.getBytes(encodingIn);
-            strBase64 = new String(Base64.decode(encode, Base64.DEFAULT),
-                    encodingOut);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        return strBase64;
     }
 
     /**
@@ -146,46 +109,47 @@ public class StringUtils {
     }
 
     /**
-     * MD5加码
+     * 获取信息摘要
      *
-     * @param data      待计数据
+     * @param src       数据源
+     * @param algorithm 算法
+     * @return 信息摘要
+     */
+    public static byte[] getMessageDigest(byte[] src, String algorithm) {
+        if (src == null)
+            return null;
+        try {
+            return MessageDigest.getInstance(algorithm).digest(src);
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        }
+    }
+
+    /**
+     * 获取MD5
+     *
+     * @param src 数据源
+     * @return MD5
+     */
+    public static byte[] getMD5(byte[] src) {
+        return getMessageDigest(src, "MD5");
+    }
+
+    /**
+     * 获取MD5
+     *
+     * @param src       待计数据
      * @param lowerCase 是否小写
      * @return MD5值
      */
-    public static String MD5(byte[] data, boolean lowerCase) {
-        try {
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
-            md5.update(data);
-            StringBuilder builder = new StringBuilder();
-            for (byte b : md5.digest()) {
-                builder.append(Integer.toHexString((b >> 4) & 0xf));
-                builder.append(Integer.toHexString(b & 0xf));
-            }
-            if (lowerCase)
-                return builder.toString();
-            else
-                return builder.toString().toUpperCase(Locale.getDefault());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * MD5加码
-     *
-     * @param str         待计算字符串
-     * @param charsetName 编码格式
-     * @param lowerCase   是否小写
-     * @return MD5值
-     */
-    public static String MD5(String str, String charsetName, boolean lowerCase) {
-        try {
-            return MD5(str.getBytes(charsetName), lowerCase);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static String getMD5(byte[] src, boolean lowerCase) {
+        StringBuilder builder = new StringBuilder();
+        byte[] md5 = getMD5(src);
+        builder.append(Base64.encodeToString(md5, Base64.DEFAULT));
+        if (lowerCase)
+            return builder.toString();
+        else
+            return builder.toString().toUpperCase(Locale.getDefault());
     }
 
     /**
@@ -195,162 +159,35 @@ public class StringUtils {
      * @param charsetName 编码格式
      * @return MD5值
      */
-    public static String MD5(String str, String charsetName) {
-        return MD5(str, charsetName, true);
-    }
-
-    /**
-     * 获取SpannableStringBuilder
-     *
-     * @param text        字符串源
-     * @param colors      颜色
-     * @param foregrounds 是否为前景
-     * @param args        修改的文字
-     * @return SpannableStringBuilder
-     */
-    public static SpannableStringBuilder getSpannableStringBuilder(String text,
-                                                                   int[] colors, boolean[] foregrounds, String... args) {
-        SpannableStringBuilder style = new SpannableStringBuilder(text);
-        int start = 0;
-        int end = 0;
-        for (int i = 0; i < args.length; i++) {
-            start = text.indexOf(args[i]);
-            if (start == -1) {
-                continue;
-            }
-            end = start + args[i].length();
-            boolean f;
-            if (i < foregrounds.length) {
-                f = foregrounds[i];
-            } else {
-                f = foregrounds[foregrounds.length - 1];
-            }
-            if (f) {
-                style.setSpan(
-                        new ForegroundColorSpan(colors[i % colors.length]),
-                        start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            } else {
-                style.setSpan(
-                        new BackgroundColorSpan(colors[i % colors.length]),
-                        start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
+    public static String getMD5(String str, String charsetName, boolean lowerCase) {
+        try {
+            return getMD5(str.getBytes(charsetName), lowerCase);
+        } catch (Exception e) {
+            return null;
         }
-        return style;
-    }
-
-    /**
-     * 插值并获取前景SpannableStringBuilder
-     *
-     * @param strRes 字符串源
-     * @param color  颜色
-     * @param args   插值参数
-     * @return SpannableStringBuilder
-     */
-    public static SpannableStringBuilder getFormatedForegroundSpannableStringBuilder(
-            String strRes, int color, Object... args) {
-        return getFormatedSpannableStringBuilder(strRes, new int[]{color},
-                new boolean[]{true}, args);
-    }
-
-    /**
-     * 插值并获取前景SpannableStringBuilder(多个字符串源，多个插值参数)
-     *
-     * @param color    颜色
-     * @param hintInfo 参数格式按 hintInfo[0]字符串源 hintInfo[1] 插值参数   hintInfo长度必须为偶数
-     * @return SpannableStringBuilder
-     */
-    public static SpannableStringBuilder getMuchFormatedForegroundSpannableStringBuilder(
-            int color, Object... hintInfo) {
-        if (hintInfo.length % 2 != 0) {
-            throw new IllegalArgumentException("Illegal argument exception: The length of hintInfo must be even");
-        }
-        SpannableStringBuilder colorInfo = new SpannableStringBuilder();
-        for (int index = 0; index < hintInfo.length; index = index + 2) {
-
-            if (!(hintInfo[index] instanceof String)) {
-                throw new ClassCastException("Class cast exception: Even the value of the index must be java.lang.String");
-            }
-            colorInfo.append(StringUtils.getFormatedForegroundSpannableStringBuilder(
-                    (String) hintInfo[index],
-                    color,
-                    hintInfo[index + 1]));
-        }
-        return colorInfo;
-    }
-
-    /**
-     * 插值并获取背景SpannableStringBuilder
-     *
-     * @param strRes 字符串源
-     * @param color  颜色
-     * @param args   插值参数
-     * @return SpannableStringBuilder
-     */
-    public static SpannableStringBuilder getFormatedBackgroundSpannableStringBuilder(
-            String strRes, int color, Object... args) {
-        return getFormatedSpannableStringBuilder(strRes, new int[]{color},
-                new boolean[]{false}, args);
-    }
-
-    /**
-     * 插值并获取SpannableStringBuilder
-     *
-     * @param strRes      字符串源
-     * @param colors      颜色
-     * @param foregrounds 是否为前景
-     * @param args        插值参数
-     * @return SpannableStringBuilder
-     */
-    public static SpannableStringBuilder getFormatedSpannableStringBuilder(
-            String strRes, int[] colors, boolean[] foregrounds, Object... args) {
-        String strResult = String.format(Locale.getDefault(), strRes, args);
-        SpannableStringBuilder style = new SpannableStringBuilder(strResult);
-        int start = 0;
-        int end = 0;
-        int total = 0;
-        for (int i = 0; i < args.length; i++) {
-            start = strRes.indexOf("%" + (i + 1) + "$") + total - 4 * i;
-            if (start == -1) {
-                continue;
-            }
-            final int number = args[i].toString().length();
-            end = start + number;
-            total += number;
-            boolean f = true;
-            if (i < foregrounds.length) {
-                f = foregrounds[i];
-            } else {
-                f = foregrounds[foregrounds.length - 1];
-            }
-            if (f) {
-                style.setSpan(
-                        new ForegroundColorSpan(colors[i % colors.length]),
-                        start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            } else {
-                style.setSpan(
-                        new BackgroundColorSpan(colors[i % colors.length]),
-                        start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-        }
-        return style;
     }
 
     /**
      * 二进制转十六进制
      *
-     * @param buf 二进制数组
+     * @param data 二进制数组
      * @return 十六进制字符
      */
-    public static String parseByte2HexStr(byte buf[]) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < buf.length; i++) {
-            String hex = Integer.toHexString(buf[i] & 0xFF);
+    public static String parseByte2HexStr(byte[] data, boolean lowerCase) {
+        if (data == null || data.length <= 0)
+            return null;
+        StringBuilder builder = new StringBuilder();
+        for (byte b : data) {
+            String hex = Integer.toHexString(b & 0xFF);
             if (hex.length() == 1) {
                 hex = '0' + hex;
             }
-            sb.append(hex.toUpperCase());
+            builder.append(hex);
         }
-        return sb.toString();
+        if (lowerCase)
+            return builder.toString();
+        else
+            return builder.toString().toUpperCase(Locale.getDefault());
     }
 
     /**
@@ -360,13 +197,12 @@ public class StringUtils {
      * @return 二进制数组
      */
     public static byte[] parseHexStr2Byte(String hexStr) {
-        if (hexStr.length() < 1)
+        if (hexStr == null || hexStr.length() <= 0)
             return null;
         byte[] result = new byte[hexStr.length() / 2];
         for (int i = 0; i < hexStr.length() / 2; i++) {
             int high = Integer.parseInt(hexStr.substring(i * 2, i * 2 + 1), 16);
-            int low = Integer.parseInt(hexStr.substring(i * 2 + 1, i * 2 + 2),
-                    16);
+            int low = Integer.parseInt(hexStr.substring(i * 2 + 1, i * 2 + 2), 16);
             result[i] = (byte) (high * 16 + low);
         }
         return result;
@@ -375,10 +211,10 @@ public class StringUtils {
     /**
      * 获取长宽
      *
-     * @param location 长宽
+     * @param size 长宽
      */
-    public static void getLocationByUrl(String url, int[] location) {
-        if (url == null)
+    public static void getSizeByUrl(String url, int[] size) {
+        if (url == null || url.length() <= 0 || size == null || size.length < 2)
             return;
         int width = 0;
         int height = 0;
@@ -395,109 +231,8 @@ public class StringUtils {
                 }
             }
         }
-        location[0] = width;
-        location[1] = height;
-    }
-
-    /**
-     * dp与px转换
-     *
-     * @param pxValue px
-     */
-    public static int px2dp(Context context, float pxValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (pxValue / scale + 0.5f);
-    }
-
-    /**
-     * 字符串转换成int
-     *
-     * @param strValue     字符串
-     * @param defaultValue 默认值
-     * @return
-     */
-    public static int convert2Int(String strValue, int defaultValue) {
-        if (strValue == null || "".equals(strValue.trim())) {
-            return defaultValue;
-        }
-        try {
-            return Integer.valueOf(strValue);
-        } catch (Exception e) {
-            try {
-                return Double.valueOf(strValue).intValue();
-            } catch (Exception e1) {
-                return defaultValue;
-            }
-        }
-    }
-
-    /**
-     * 字符串转换成放大倍数的int
-     *
-     * @param strValue     字符串
-     * @param multiple     放大倍数
-     * @param defaultValue 默认值
-     * @return
-     */
-    public static int convert2MultipleInt(String strValue, int multiple, int defaultValue) {
-        if (strValue == null || "".equals(strValue.trim())) {
-            return defaultValue;
-        }
-        try {
-            return Integer.valueOf(strValue) * multiple;
-        } catch (Exception e) {
-            try {
-                return (int) Math.floor(Double.valueOf(strValue) * multiple);
-            } catch (Exception e1) {
-                return defaultValue;
-            }
-        }
-    }
-
-    /**
-     * 字符串转换成long
-     *
-     * @param strValue     字符串
-     * @param defaultValue 默认值
-     * @return
-     */
-    public static long convert2Long(String strValue, int defaultValue) {
-        if (strValue == null || "".equals(strValue.trim())) {
-            return defaultValue;
-        }
-        try {
-            return Long.valueOf(strValue);
-        } catch (Exception e) {
-            try {
-                return Double.valueOf(strValue).longValue();
-            } catch (Exception e1) {
-                return defaultValue;
-            }
-        }
-    }
-
-    /**
-     * 获取字符串自定义的字节数(2字节以上的字符一律按2字节统计)
-     *
-     * @param strValue 字符串
-     * @return 自定义字符串字节数
-     */
-    public static int getCustomBytes(String strValue) {
-        int count = 0;
-        if (strValue == null || "".equals(strValue.trim())) {
-            return 0;
-        }
-        int length = strValue.length();
-        for (int index = 0; index < length; index++) {
-            String s = strValue.charAt(index) + "";
-            byte[] by = s.getBytes();
-            if (by.length == 1) {
-                count++;
-            } else {
-                count = count + 2;
-            }
-        }
-        return count;
+        size[0] = width;
+        size[1] = height;
     }
 
     public static boolean isMobilePhoneNum(String phoneNum) {
@@ -512,7 +247,7 @@ public class StringUtils {
      * @param behindLen *后面预留长度
      * @return 加*后的字符串
      */
-    public static String convert2Star(String str, int frontLen, int behindLen) {
+    public static String getPrivateStr(String str, int frontLen, int behindLen) {
         int strLen = str.length();
         if (frontLen >= strLen || behindLen >= strLen || frontLen + behindLen >= strLen) {
             return str;
@@ -527,56 +262,12 @@ public class StringUtils {
     }
 
     /**
-     * 时间字符串转换为分钟数,比如10:00就是600,11:40就是700
-     *
-     * @param str 要转换的时间字符串(包含":")
-     * @return 大于-1转换成功
-     */
-    public static int timeConvert2Minutes(String str) {
-
-        int minutes = -1;
-
-        if (str.contains(":")) {
-            String[] convertedTime;
-            convertedTime = str.split(":");
-            if (convertedTime.length == 2) {
-                int h = convert2Int(convertedTime[0], -1);
-                int m = convert2Int(convertedTime[1], -1);
-
-                //小时分钟都转换成功
-                if (h != -1 && m != -1)
-                    minutes = h * 60 + m;
-            }
-        }
-
-        return minutes;
-    }
-
-    /**
-     * 改变规定位置的字符串颜色与字号*
-     *
-     * @param str   变更目标内容
-     * @param size  变更位置的字号（px）
-     * @param star  变更起点
-     * @param end   变更终点
-     * @param color 变更颜色
-     * @return 变更完成后的 SpannableStringBuilder
-     */
-    public static SpannableStringBuilder getSpannableStringBuilder(String str, int size, int star, int end, String color) {
-        SpannableStringBuilder style = new SpannableStringBuilder(str);
-        if (size != 0)
-            style.setSpan(new AbsoluteSizeSpan(size), star, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        style.setSpan(new ForegroundColorSpan(Color.parseColor(color)), star, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return style;
-    }
-
-    /**
      * 去掉字符串前后所有的空格
      *
      * @param str 字符串
      * @return 字符串
      */
-    public static String trim(String str) {
+    public static String trimStartAndEnd(String str) {
         while (str.startsWith(" ")) {
             str = str.substring(1, str.length()).trim();
         }
@@ -594,7 +285,7 @@ public class StringUtils {
      */
     public static boolean isIp(String IP) {
         boolean b = false;
-        IP = trim(IP);
+        IP = trimStartAndEnd(IP);
         if (IP.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
             String s[] = IP.split("\\.");
             if (Integer.parseInt(s[0]) < 255)
@@ -643,15 +334,46 @@ public class StringUtils {
     }
 
     /**
-     * 获取文字字符数
+     * 获取文字字节数(2字节以上的字符一律按2字节统计)
      *
      * @param s 字符串
-     * @return 字符数
+     * @return 字节数
      */
-    public int getWordCount(String s) {
+    public static int getWordCount(String s) {
         if (s == null)
             return 0;
-        s = s.replaceAll("[^\\x00-\\xff]", "**");
-        return s.length();
+        return s.replaceAll("[^\\x00-\\xff]", "\u002A\u002A").length();
+    }
+
+    /**
+     * 检测是否有emoji字符
+     *
+     * @param source 字符串
+     * @return 一旦含有就抛出
+     */
+
+    public static boolean containsEmoji(String source) {
+        if (isNullOrEmpty(source)) {
+            return false;
+        }
+        int len = source.length();
+        for (int i = 0; i < len; i++) {
+            char codePoint = source.charAt(i);
+            if (!isNotEmojiCharacter(codePoint)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private static boolean isNotEmojiCharacter(char codePoint) {
+        return codePoint == 0x0 ||
+                codePoint == 0x9 ||
+                codePoint == 0xA ||
+                codePoint == 0xD ||
+                (codePoint >= 0x20 && codePoint <= 0xD7FF) ||
+                (codePoint >= 0xE000 && codePoint <= 0xFFFD) ||
+                codePoint >= 0x10000;
     }
 }
