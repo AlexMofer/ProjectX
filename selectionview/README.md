@@ -1,7 +1,7 @@
 # SelectionView
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/selectionview/icon.png)
 
-快速跳选，常用于联系人列表快速选取。
+快速跳选View，与列表视图搭配使用（ListView、RecyclerView），常用于联系人列表快速选取。
 ## 预览
 ![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/selectionview/screenshots.gif)
 ## 要求
