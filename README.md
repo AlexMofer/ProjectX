@@ -62,6 +62,12 @@
 - [***LinearDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
     
     线性图片，多张图片排列，支持设置间隔，主要用于替代多个ImageView排列，节省性能。
+- [***TextDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
+    
+    文字图片。
+- [***CircleExpandDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
+    
+    圆圈扩大图片。
 
 ## Other
 - [***Printer***](https://github.com/AlexMofer/ProjectX/tree/master/printer)
@@ -77,5 +83,5 @@
 
     支持包
 
-## 下载
+## Demo
 [<img src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" height="45px" />](https://play.google.com/store/apps/details?id=am.project.x)[<img src="https://github.com/AlexMofer/ProjectX/blob/master/release/ic_download.png" height="45px" />](https://github.com/AlexMofer/ProjectX/blob/master/release/ProjectX.apk)

@@ -8,7 +8,7 @@ minSdkVersion 4
 ```java
 dependencies {
     ⋯
-    compile 'am.drawable:drawable:1.2.2'
+    compile 'am.drawable:drawable:1.3.0'
     ⋯
 }
 ```
@@ -37,8 +37,12 @@ dependencies {
 - **TextDrawable**
     
     文字图片。
+- **CircleExpandDrawable**
+    
+    圆圈扩大图片。
 
 ## 历史
+- [**1.2.2**](https://bintray.com/alexmofer/maven/Drawable/1.2.2)
 - [**1.2.1**](https://bintray.com/alexmofer/maven/Drawable/1.2.1)
 - [**1.2.0**](https://bintray.com/alexmofer/maven/Drawable/1.2.0)
 - [**1.1.0**](https://bintray.com/alexmofer/maven/Drawable/1.1.0)
