@@ -376,4 +376,32 @@ public class StringUtils {
                 (codePoint >= 0xE000 && codePoint <= 0xFFFD) ||
                 codePoint >= 0x10000;
     }
+
+    /**
+     * 获取编码类型（非精准）
+     *
+     * @param first3bytes 前三个字节
+     * @return 编码类型
+     */
+    public static String getCharset(byte[] first3bytes) {
+        String charset = "GBK";
+        if (first3bytes == null || first3bytes.length < 3) {
+            return charset;
+        }
+        if (first3bytes[0] == (byte) 0xEF && first3bytes[1] == (byte) 0xBB
+                && first3bytes[2] == (byte) 0xBF) {
+            // utf-8
+            charset = "utf-8";
+        } else if (first3bytes[0] == (byte) 0xFF && first3bytes[1] == (byte) 0xFE) {
+            charset = "unicode";
+        } else if (first3bytes[0] == (byte) 0xFE && first3bytes[1] == (byte) 0xFF) {
+            charset = "utf-16be";
+        } else if (first3bytes[0] == (byte) 0xFF && first3bytes[1] == (byte) 0xFF) {
+            charset = "utf-16le";
+        } else {
+            // 添加更多判断方法
+            charset = "GBK";
+        }
+        return charset;
+    }
 }
