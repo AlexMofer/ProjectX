@@ -16,4 +16,4 @@ dependencies {
     compile 'com.android.support:support-v4:24.2.1'
 }
 
-apply from: "bintray.gradle"
+//apply from: "bintray.gradle"
