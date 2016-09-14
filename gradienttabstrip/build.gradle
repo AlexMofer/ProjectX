@@ -2,19 +2,19 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 24
         versionCode 27
-        versionName "24.2.0"
+        versionName "24.2.1"
     }
 }
 
 dependencies {
     compile project(':basetabstrip')
-//    compile 'am.widget:basetabstrip:24.2.0'
+//    compile 'am.widget:basetabstrip:24.2.1'
 }
 
 //apply from: "bintray.gradle"
