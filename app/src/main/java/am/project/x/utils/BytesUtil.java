@@ -6,6 +6,7 @@ import java.util.Locale;
  * 字节工具类
  * Created by Alex on 2016/4/26.
  */
+@SuppressWarnings("unused")
 public class BytesUtil {
 
     /**
@@ -45,6 +46,31 @@ public class BytesUtil {
             int low = Integer.parseInt(hexStr.substring(i * 2 + 1, i * 2 + 2),
                     16);
             result[i] = (byte) (high * 16 + low);
+        }
+        return result;
+    }
+
+    /**
+     * 合并byte数组
+     *
+     * @param items byte数组
+     * @return 合并结果
+     */
+    public static byte[] byteMerger(byte[]... items) {
+        if (items == null || items.length <= 0)
+            return null;
+        if (items.length == 1) {
+            return items[0];
+        }
+        int count = 0;
+        for (byte[] item : items) {
+            count += item.length;
+        }
+        byte[] result = new byte[count];
+        count = 0;
+        for (byte[] item : items) {
+            System.arraycopy(item, 0, result, count, item.length);
+            count += item.length;
         }
         return result;
     }
