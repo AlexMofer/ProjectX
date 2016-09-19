@@ -16,6 +16,19 @@
             android:padding="10dp">
 
             <Button
+                android:id="@+id/develop_btn_test"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_common_press"
+                android:drawablePadding="4dp"
+                android:drawableTop="@drawable/ic_develop_image"
+                android:paddingBottom="18dp"
+                android:paddingTop="18dp"
+                android:text="@string/dev_test" />
+
+            <Button
                 android:id="@+id/develop_btn_supergridview"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
@@ -27,11 +40,6 @@
                 android:paddingBottom="18dp"
                 android:paddingTop="18dp"
                 android:text="@string/dev_supergridview_title" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
 
             <View
                 android:layout_width="match_parent"

@@ -220,7 +220,7 @@
         </activity>
         <activity
             android:name=".activities.widgets.selectionview.SelectionViewActivity"
-            android:label="@string/selectionview_title" >
+            android:label="@string/selectionview_title">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -233,6 +233,8 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.develop.test.TestActivity"
+            android:label="@string/dev_test"/>
         <activity
             android:name=".activities.drawable.loading.LoadingActivity"
             android:label="@string/loading_title" />
@@ -245,7 +247,6 @@
         <activity
             android:name=".activities.develop.supergridview.SuperGridViewActivity"
             android:label="@string/dev_supergridview_title" />
-
         <activity
             android:name=".activities.drawable.combination.CombinationActivity"
             android:label="@string/combination_title" />

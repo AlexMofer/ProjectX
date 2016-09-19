@@ -170,6 +170,7 @@
     <string name="cd_welcome">welcome icon</string>
     <string name="cd_drawable">drawable</string>
 
+    <string name="dev_test">测试</string>
     <string name="dev_supergridview_title">拖拽网格</string>
     <string name="dev_supergridview_add_header_item">Add HeaderItem</string>
     <string name="dev_supergridview_remove_header_item">Remove HeaderItem</string>
