@@ -167,6 +167,11 @@
     <string name="selectionview_list">List</string>
     <string name="selectionview_slider">Slider</string>
 
+    <string name="recyclepager_title">回收Pager</string>
+    <string name="recyclepager_remove">减少页面</string>
+    <string name="recyclepager_add">增加页面</string>
+    <string name="recyclepager_page">第%1$d页</string>
+
     <string name="cd_welcome">welcome icon</string>
     <string name="cd_drawable">drawable</string>
 

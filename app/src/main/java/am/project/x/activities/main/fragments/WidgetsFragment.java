@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import am.project.x.R;
 import am.project.x.activities.widgets.headerfootergridview.HeaderFooterGridViewActivity;
 import am.project.x.activities.widgets.multiactiontextview.MultiActionTextViewActivity;
+import am.project.x.activities.widgets.recyclepager.RecyclePagerActivity;
 import am.project.x.activities.widgets.replacelayout.ReplaceLayoutActivity;
 import am.project.x.activities.widgets.drawableratingbar.DrawableRatingBarActivity;
 import am.project.x.activities.widgets.gradienttabstrip.GradientTabStripActivity;
@@ -50,6 +51,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
         view.findViewById(R.id.widget_btn_headerfootergridview).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_multiactiontextview).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_selectionview).setOnClickListener(this);
+        view.findViewById(R.id.widget_btn_recyclepager).setOnClickListener(this);
     }
 
     @Override
@@ -87,6 +89,9 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.widget_btn_selectionview:
                 SelectionViewActivity.startActivity(getContext());
+                break;
+            case R.id.widget_btn_recyclepager:
+                RecyclePagerActivity.startActivity(getContext());
                 break;
         }
     }

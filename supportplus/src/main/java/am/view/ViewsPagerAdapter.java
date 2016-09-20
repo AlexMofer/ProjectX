@@ -5,6 +5,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -53,6 +54,14 @@ public class ViewsPagerAdapter extends PagerAdapter {
 
     @Override
     @SuppressWarnings("all")
+    public final int getItemPosition(Object object) {
+        if (mListViews == null || mListViews.size() <= 0)
+            return POSITION_NONE;
+        return mListViews.contains(object) ? POSITION_UNCHANGED : POSITION_NONE;
+    }
+
+    @Override
+    @SuppressWarnings("all")
     @Deprecated
     public void destroyItem(View container, int position, Object object) {
         destroyItem((ViewPager) container, position, object);
@@ -68,5 +77,40 @@ public class ViewsPagerAdapter extends PagerAdapter {
     public void setViews(List<View> views) {
         mListViews = views;
         notifyDataSetChanged();
+    }
+
+    @SuppressWarnings("unused")
+    public void addView(View view) {
+        if (mListViews == null)
+            mListViews = new ArrayList<>();
+        mListViews.add(view);
+        notifyDataSetChanged();
+    }
+
+    @SuppressWarnings("unused")
+    public void addView(int position, View view) {
+        if (mListViews == null)
+            mListViews = new ArrayList<>();
+        mListViews.add(position, view);
+        notifyDataSetChanged();
+    }
+
+    @SuppressWarnings("unused")
+    public void removeView(View view) {
+        if (mListViews == null || mListViews.size() <= 0)
+            return;
+        if (mListViews.remove(view)) {
+            notifyDataSetChanged();
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public void removeView(int position) {
+        if (mListViews == null || mListViews.size() <= 0)
+            return;
+        if (position >= 0 && position < mListViews.size()) {
+            mListViews.remove(position);
+            notifyDataSetChanged();
+        }
     }
 }

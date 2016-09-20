@@ -14,7 +14,6 @@ import java.util.ArrayList;
  */
 public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerViewHolder> extends PagerAdapter {
 
-    public static final int NO_POSITION = -1;
     private ArrayList<VH> holderList = new ArrayList<>();
     private SparseArray<ArrayList<VH>> holderSparse = new SparseArray<>();
 
@@ -35,6 +34,7 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
         ArrayList<VH> recycleHolders = holderSparse.get(viewType);
         if (recycleHolders != null && recycleHolders.size() > 0) {
             holder = recycleHolders.remove(0);
+            holder.mPosition = POSITION_UNCHANGED;
         } else {
             holder = createViewHolder(container, viewType);
         }
@@ -48,7 +48,7 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
         VH holder = (VH) object;
         container.removeView(holder.itemView);
         holder.isRecycled = true;
-        holder.mPosition = NO_POSITION;
+        holder.mPosition = POSITION_NONE;
         int viewType = getItemViewType(position);
         ArrayList<VH> recycleHolders = holderSparse.get(viewType, new ArrayList<VH>());
         recycleHolders.add(holder);
@@ -71,15 +71,17 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
     }
 
     @Override
+    @SuppressWarnings("all")
     public final int getItemPosition(Object object) {
+        int position = POSITION_UNCHANGED;
         if (object != null) {
-            for (VH holder : holderList) {
-                if (holder == object) {
-                    return holder.mPosition;
-                }
+            VH holder = (VH) object;
+            if (holderList.contains(holder)) {
+                position = holder.mPosition;
+                position = position >= getItemCount() ? POSITION_NONE : position;
             }
         }
-        return NO_POSITION;
+        return position;
     }
 
     public abstract int getItemCount();
@@ -131,7 +133,7 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
 
     public static abstract class PagerViewHolder {
         public final View itemView;
-        int mPosition = NO_POSITION;
+        int mPosition = POSITION_UNCHANGED;
         boolean isRecycled = false;
 
         public PagerViewHolder(View itemView) {
