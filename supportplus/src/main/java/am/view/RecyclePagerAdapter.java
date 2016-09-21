@@ -71,7 +71,7 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
     }
 
     @Override
-    @SuppressWarnings("all")
+    @SuppressWarnings("unchecked")
     public final int getItemPosition(Object object) {
         int position = POSITION_UNCHANGED;
         if (object != null) {
