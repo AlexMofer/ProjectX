@@ -82,8 +82,7 @@ public class MyRecyclePagerAdapter extends RecyclePagerAdapter<MyPagerViewHolder
 ```
 ## 原理
 ViewPager最多构造四个相同类型的页面，但是现实时最多需要当前页面及左右两个页面，第四个页面就可以存起来复用。
-Adapter使用一个ArrayList<VH>来存放所有的Holder，当刷新页面时需要重新一个个onBindViewHolder；
-再用一个SparseArray<ArrayList<VH>>来根据viewType存放在destroyItem时候被回收的不同类型的Holder集合，在instantiateItem时候优先从其内部获取，在没有时再重新创建。
+Adapter使用一个ArrayList\<VH\>来存放所有的Holder；再用一个SparseArray\<ArrayList\<VH\>\>来根据viewType存放在destroyItem时候被回收的不同类型的Holder集合，在instantiateItem时候优先从其内部获取，在没有时再重新创建。
 
 ## 注意
 - notifyDataSetChanged()方法会将所有的未被回收的Holder重新onBindViewHolder一遍，并不是每一个ViewPager的页面都会刷新，但当前显示的绝对会刷新；
