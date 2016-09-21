@@ -15,8 +15,8 @@ android {
         applicationId "am.project.x"
         minSdkVersion 11
         targetSdkVersion 24
-        versionCode 60
-        versionName "2.3.0"
+        versionCode 65
+        versionName "2.4.0"
     }
     buildTypes {
         release {
