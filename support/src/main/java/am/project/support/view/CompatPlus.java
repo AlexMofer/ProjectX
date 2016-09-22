@@ -11,6 +11,10 @@ import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
+import android.webkit.ValueCallback;
+import android.webkit.WebView;
+
+import java.lang.ref.WeakReference;
 
 /**
  * 版本兼容控制器
@@ -23,8 +27,19 @@ public class CompatPlus {
     public static final int SHAPE_RECT = 0;
     public static final int SHAPE_ROUNDRECT = 1;
     public static final int SHAPE_OVAL = 2;
+    /**
+     * A callback interface used to provide values asynchronously.
+     */
+    public interface ValueCallbackCompat {
+        /**
+         * Invoked when the value is available.
+         *
+         * @param value The value.
+         */
+        void onReceiveValue(String value);
+    }
 
-    interface CompatPlusImpl {
+    private interface CompatPlusImpl {
         void setBackground(View view, Drawable drawable);
 
         void setOutlineProvider(View view, int shape, int left, int top,
@@ -41,9 +56,13 @@ public class CompatPlus {
         void setTranslucentStatus(Window window);
 
         void setTranslucentNavigation(Window window);
+
+        boolean isSupportEvaluateJavascript();
+
+        void evaluateJavascript(WebView webView, String script, ValueCallbackCompat callback);
     }
 
-    static class BaseCompatPlusImpl implements CompatPlusImpl {
+    private static class BaseCompatPlusImpl implements CompatPlusImpl {
 
         @SuppressWarnings("deprecation")
         @Override
@@ -90,20 +109,30 @@ public class CompatPlus {
             // do nothing until api 19
         }
 
+        @Override
+        public boolean isSupportEvaluateJavascript() {
+            return false;
+        }
+
+        @Override
+        public void evaluateJavascript(WebView webView, String script, ValueCallbackCompat callback) {
+            // do nothing
+        }
+
     }
 
     @TargetApi(7)
-    static class EclairMr1CompatPlusImpl extends BaseCompatPlusImpl {
+    private static class EclairMr1CompatPlusImpl extends BaseCompatPlusImpl {
 
     }
 
     @TargetApi(9)
-    static class GBCompatPlusImpl extends EclairMr1CompatPlusImpl {
+    private static class GBCompatPlusImpl extends EclairMr1CompatPlusImpl {
 
     }
 
     @TargetApi(11)
-    static class HCCompatPlusImpl extends GBCompatPlusImpl {
+    private static class HCCompatPlusImpl extends GBCompatPlusImpl {
         @Override
         public boolean isLargeHeap(Context context) {
             return (context.getApplicationInfo().flags & ApplicationInfo.FLAG_LARGE_HEAP) != 0;
@@ -116,12 +145,12 @@ public class CompatPlus {
     }
 
     @TargetApi(14)
-    static class ICSCompatPlusImpl extends HCCompatPlusImpl {
+    private static class ICSCompatPlusImpl extends HCCompatPlusImpl {
 
     }
 
     @TargetApi(16)
-    static class JBCompatPlusImpl extends ICSCompatPlusImpl {
+    private static class JBCompatPlusImpl extends ICSCompatPlusImpl {
         @Override
         public void setBackground(View view, Drawable drawable) {
             view.setBackground(drawable);
@@ -129,12 +158,15 @@ public class CompatPlus {
     }
 
     @TargetApi(17)
-    static class JbMr1CompatPlusImpl extends JBCompatPlusImpl {
+    private static class JbMr1CompatPlusImpl extends JBCompatPlusImpl {
 
     }
 
     @TargetApi(19)
-    static class KitKatCompatPlusImpl extends JbMr1CompatPlusImpl {
+    private static class KitKatCompatPlusImpl extends JbMr1CompatPlusImpl implements ValueCallback<String> {
+
+        private WeakReference<ValueCallbackCompat> callbackCompatWeakReference;
+
         @Override
         public void setTranslucentStatus(Window window) {
             window.setFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS,
@@ -146,10 +178,30 @@ public class CompatPlus {
             window.setFlags(LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
                     LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
+
+        @Override
+        public boolean isSupportEvaluateJavascript() {
+            return true;
+        }
+
+        @Override
+        public void evaluateJavascript(WebView webView, String script, ValueCallbackCompat callback) {
+            callbackCompatWeakReference = new WeakReference<>(callback);
+            webView.evaluateJavascript(script, this);
+        }
+
+        @Override
+        public void onReceiveValue(String value) {
+            try {
+                callbackCompatWeakReference.get().onReceiveValue(value);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @TargetApi(21)
-    static class LollipopCompatPlusImpl extends KitKatCompatPlusImpl {
+    private static class LollipopCompatPlusImpl extends KitKatCompatPlusImpl {
 
         @Override
         public void setOutlineProvider(View view, final int shape,
@@ -186,7 +238,7 @@ public class CompatPlus {
         }
     }
 
-    static final CompatPlusImpl IMPL;
+    private static final CompatPlusImpl IMPL;
 
     static {
         final int version = android.os.Build.VERSION.SDK_INT;
@@ -242,5 +294,14 @@ public class CompatPlus {
 
     public static void setTranslucentNavigation(Window window) {
         IMPL.setTranslucentNavigation(window);
+    }
+
+    public static boolean isSupportEvaluateJavascript() {
+        return IMPL.isSupportEvaluateJavascript();
+    }
+
+    public static void evaluateJavascript(WebView webView, String script,
+                                          ValueCallbackCompat callback) {
+        IMPL.evaluateJavascript(webView, script, callback);
     }
 }
