@@ -37,6 +37,10 @@
 
     <string name="wraplayout_title">自换行布局</string>
     <string name="wraplayout_text">文本框</string>
+    <string name="wraplayout_text_gravity">布局：</string>
+    <string name="wraplayout_gravity_top">上</string>
+    <string name="wraplayout_gravity_center">中</string>
+    <string name="wraplayout_gravity_bottom">下</string>
     <string name="wraplayout_text_horizontal">水平间距（0dp～30dp）：</string>
     <string name="wraplayout_text_vertical">垂直间距（0dp～30dp）：</string>
 

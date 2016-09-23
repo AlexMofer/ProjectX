@@ -173,6 +173,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:text="@string/wraplayout_text_gravity" />
+
+        <RadioGroup
+            android:id="@+id/wly_rg_gravity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/wly_rb_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/wraplayout_gravity_top" />
+
+            <RadioButton
+                android:id="@+id/wly_rb_center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/wraplayout_gravity_center" />
+
+            <RadioButton
+                android:id="@+id/wly_rb_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/wraplayout_gravity_bottom" />
+
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/wraplayout_text_horizontal" />
 
         <SeekBar
