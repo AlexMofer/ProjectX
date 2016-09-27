@@ -10,4 +10,4 @@ URLConnection通常使用URL的openConnection()方法获得，而URL是根据其
 - 使用URLConnection抓取到重定向，就使用重定向的地址重新人为openConnection()一个新的URLConnection重新请求。
 - 使用第三方请求框架，如OKHttp。
 
-　　具体项目具体分析，方法一是可行的，但是处理起来就很麻烦了。而方案而，则更可选，应为URLConnection与OKHttp用法其实差不了多远。
+　　具体项目具体分析，方法一是可行的，但是处理起来就很麻烦了。而方案二则更可选，因为URLConnection与OKHttp用法其实差不了多远。
