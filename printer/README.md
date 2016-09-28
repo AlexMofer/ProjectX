@@ -24,6 +24,7 @@ dependencies {
 
 ##使用
 1.添加蓝牙权限```<uses-permission android:name="android.permission.BLUETOOTH" />```
+
 2.继承PrintTask类，实现具体打印任务：
 ```java
 private class TestPrintTask extends PrintTask {
@@ -111,11 +112,13 @@ private class TestPrintTask extends PrintTask {
     }
 }
 ```
+
 3.执行打印：
 ```java
 new TestPrintTask(device, type).execute();
 new TestPrintTask(ip, port, type).execute();
 ```
+
 如果你要实现自己的打印机PrinterWriter，那么你需要继承
 ```java
 public class PrinterWriter80mm extends PrinterWriter{
