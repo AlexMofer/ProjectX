@@ -197,5 +197,5 @@
 
 ##注意
 - Git一定要忽略掉local.properties文件
-- build.gradle中的 apply from: "bintray.gradle" 要记得注释掉
+- 发布完毕以后，build.gradle中的 apply from: "bintray.gradle" 要记得注释掉，否则会干扰其他开源项目提交
 - bintray.gradle不单单是发布处理，还包括中文注释乱码处理
