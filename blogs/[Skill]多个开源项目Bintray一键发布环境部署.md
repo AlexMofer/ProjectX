@@ -1,25 +1,35 @@
 #多个开源项目Bintray一键发布环境部署
+
 　　我们发布到Bintray上共享的一般是一些库，而不是完整的App，而这些库是依附在我的主项目之中，如果我们主项目只维护一个共享库，那没什么问题，但维护多个开源库呢？不规划一下打包发布的流程，那么就会浪费我更很多的时间在打包发布上。截至至撰文时，笔者的ProjectX主项目已经管理维护者16个开源库，不规划一套打包方案，那么妥妥的能把笔者累死。
+
 ##基础Plugin载入
+
 　　需要实现自动化发包，就必须载入[***gradle-bintray-plugin***](https://github.com/bintray/gradle-bintray-plugin)与[***android-maven-gradle-plugin***](https://github.com/dcendents/android-maven-gradle-plugin)。载入方式有两种：
 
 - 传统方式
+
     ```java
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
     }
     ```
+    
 - 新型方式(Gradle 2.1)
+
     ```java
     plugins {
         id "com.jfrog.bintray" version "1.7.1"
         id "com.github.dcendents.android-maven" version "1.5"
     }
     ```
+    
 　　使用新型方式导入的gradle-bintray-plugin会提交不成功，不知AS更新以后是否解决，但是笔者出错的版本是1.7.1，新版本没出来前gradle-bintray-plugin还是建议使用传统方式，android-maven-gradle-plugin可以选择新型方式。
+
 ##部署方案
+
 1. 在库根目录（不是项目根目录）创建bintray.gradle文件，文件内容（可以直接拷贝给其他项目使用）：
+
     ```java
     apply plugin: 'com.github.dcendents.android-maven'
     apply plugin: 'com.jfrog.bintray'
@@ -139,7 +149,9 @@
         }
     }
     ```
+    
 2. 在库根目录创建project.properties用于配置项目信息（不同项目需要配置不同值）：
+
     ```java
     #project
     project.name=BaseTabStrip
@@ -151,7 +163,9 @@
     project.gitUrl=https://github.com/AlexMofer/ProjectX.git
     project.issueTrackerUrl=https://github.com/AlexMofer/ProjectX/issues
     ```
+    
 3. 在库根目录创建local.properties用于配置bintray登录信息（可以直接拷贝给其他项目使用，需要加入git忽略列表）：
+
     ```java
     ##必须Git忽略此文件，其包含隐私信息
     #bintray
@@ -163,17 +177,24 @@
     developer.name=***
     developer.email=*******@****.com
     ```
+    
 4. git添加bintray.gradle与project.properties，忽略local.properties ：
+
     ```java
     # Local configuration file (sdk path, etc)
     local.properties
     ```
+    
 5. 在库的build.gradle最后加入：
+
     ```java
     //apply from: "bintray.gradle"
     ```
+    
 ##发布
+
 　　将要提交的开源库的build.gradle中的 apply from: "bintray.gradle" 去掉注释，保证 versionName 是你想要发布的，那么控制台输入gradlew bintrayUpload就可以了，成功以后再将 apply from: "bintray.gradle" 注释掉就不会干扰其他开源项目的提交了。
+
 ##注意
 - Git一定要忽略掉local.properties文件
 - build.gradle中的 apply from: "bintray.gradle" 要记得注释掉
