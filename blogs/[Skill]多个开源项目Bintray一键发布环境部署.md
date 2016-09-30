@@ -4,7 +4,7 @@
 
 ##基础Plugin载入
 
-　　需要实现自动化发包，就必须载入[***gradle-bintray-plugin***](https://github.com/bintray/gradle-bintray-plugin)与[***android-maven-gradle-plugin***](https://github.com/dcendents/android-maven-gradle-plugin)。载入方式有两种：
+　　需要实现自动化发包，就必须载入[***gradle-bintray-plugin***](https://github.com/bintray/gradle-bintray-plugin/releases)与[***android-maven-gradle-plugin***](https://github.com/dcendents/android-maven-gradle-plugin/releases)（点击链接查看最新版本号，使用最新版本插件）。载入方式有两种：
 
 - 传统方式
 
