@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    buildToolsVersion "24.0.3"
     signingConfigs {
         Release {
             keyAlias 'projectx'
@@ -52,6 +52,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
+    compile 'com.google.zxing:core:3.3.0'
     compile project(':gradienttabstrip')
     compile project(':tagtabstrip')
     compile project(':indicatortabstrip')

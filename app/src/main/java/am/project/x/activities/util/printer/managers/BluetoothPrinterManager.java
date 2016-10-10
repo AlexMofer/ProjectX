@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -185,7 +186,8 @@ public class BluetoothPrinterManager implements View.OnClickListener,
         if (tester == null) {
             tester = new PrinterTester(activity);
         }
-        tester.startTest(device, type);
+        tester.startTest(device, type,
+                ((EditText) activity.findViewById(R.id.printer_edt_code)).getText().toString());
     }
 
     public void onActivityResult(int requestCode, int resultCode) {

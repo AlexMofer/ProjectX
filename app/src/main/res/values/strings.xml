@@ -53,6 +53,8 @@
     <string name="printer_type">打印机类型</string>
     <string name="printer_ip">固定IP打印机</string>
     <string name="printer_bluetooth">蓝牙打印机</string>
+    <string name="printer_qr">二维码内容</string>
+    <string name="printer_qr_hint">输入内容以生成特定二维码</string>
     <string name="printer_ip_hint">打印机IP</string>
     <string name="printer_port_hint">打印机端口</string>
     <string name="printer_port_text">9100</string>

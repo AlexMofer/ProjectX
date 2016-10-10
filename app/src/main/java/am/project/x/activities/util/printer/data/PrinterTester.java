@@ -23,29 +23,33 @@ public class PrinterTester {
         this.activity = activity;
     }
 
-    public void startTest(String ip, int port, int type) {
+    public void startTest(String ip, int port, int type, String qrContent) {
         if (dlgInfo == null) {
             dlgInfo = new AlertDialog.Builder(activity).create();
         }
-        new TestPrintTask(ip, port, type).execute();
+        new TestPrintTask(ip, port, type, qrContent).execute();
     }
 
-    public void startTest(BluetoothDevice device, int type) {
+    public void startTest(BluetoothDevice device, int type, String qrContent) {
         if (dlgInfo == null) {
             dlgInfo = new AlertDialog.Builder(activity).create();
         }
-        new TestPrintTask(device, type).execute();
+        new TestPrintTask(device, type, qrContent).execute();
     }
 
     private class TestPrintTask extends PrintTask implements
             DialogInterface.OnCancelListener, DialogInterface.OnClickListener {
 
-        public TestPrintTask(BluetoothDevice device, int type) {
+        private String qrContent;
+
+        public TestPrintTask(BluetoothDevice device, int type, String qrContent) {
             super(device, type);
+            this.qrContent = qrContent;
         }
 
-        public TestPrintTask(String ip, int port, int type) {
+        public TestPrintTask(String ip, int port, int type, String qrContent) {
             super(ip, port, type);
+            this.qrContent = qrContent;
         }
 
         @Override
@@ -61,8 +65,8 @@ public class PrinterTester {
 
         @Override
         protected byte[] getPrintData(int type) throws Exception {
-            return type == PrinterWriter80mm.TYPE_80 ? PrinterData.getPrintData80(activity.getResources())
-                    : PrinterData.getPrintData58(activity.getResources());
+            return type == PrinterWriter80mm.TYPE_80 ? PrinterData.getPrintData80(activity.getApplicationContext(), qrContent)
+                    : PrinterData.getPrintData58(activity.getApplicationContext(), qrContent);
         }
 
         @Override

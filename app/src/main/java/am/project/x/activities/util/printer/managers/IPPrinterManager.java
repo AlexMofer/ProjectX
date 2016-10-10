@@ -99,6 +99,7 @@ public class IPPrinterManager implements View.OnClickListener,
         if (tester == null) {
             tester = new PrinterTester(activity);
         }
-        tester.startTest(ip, port, type);
+        tester.startTest(ip, port, type,
+                ((EditText) activity.findViewById(R.id.printer_edt_code)).getText().toString());
     }
 }

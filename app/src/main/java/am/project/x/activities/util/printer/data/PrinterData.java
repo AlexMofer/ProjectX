@@ -1,6 +1,8 @@
 package am.project.x.activities.util.printer.data;
 
-import android.content.res.Resources;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -8,6 +10,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import am.project.x.R;
+import am.project.x.utils.FileUtils;
+import am.project.x.utils.QRCodeUtil;
 import am.util.printer.PrinterWriter58mm;
 import am.util.printer.PrinterWriter80mm;
 
@@ -15,12 +19,12 @@ import am.util.printer.PrinterWriter80mm;
  * 打印数据
  * Created by Alex on 2016/6/22.
  */
-public class PrinterData {
+class PrinterData {
 
-    public static byte[] getPrintData80(Resources res) throws IOException {
+    static byte[] getPrintData80(Context context, String qrContent) throws IOException {
         PrinterWriter80mm printer = new PrinterWriter80mm();
         printer.setAlignCenter();
-        printer.printDrawable(res, R.drawable.ic_printer_logo);
+        printer.printDrawable(context.getResources(), R.drawable.ic_printer_logo);
         printer.setAlignLeft();
         printer.printLine();
         printer.printLineFeed();
@@ -86,7 +90,17 @@ public class PrinterData {
 
         printer.setLineHeight(0);
         printer.setAlignCenter();
-        printer.printDrawable(res, R.drawable.ic_printer_qr);
+
+        String bitmapPath = FileUtils.getExternalFilesDir(context, "Temp") + "tmp_qr.jpg";
+        if (QRCodeUtil.createQRImage(qrContent, 200, 200, null, bitmapPath)) {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = false;
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            Bitmap bitmapQR = BitmapFactory.decodeFile(bitmapPath, options);
+            printer.printBitmap(bitmapQR);
+        } else {
+            printer.printDrawable(context.getResources(), R.drawable.ic_printer_qr);
+        }
         printer.printLineFeed();
         printer.print("扫一扫，查看详情");
         printer.printLineFeed();
@@ -99,10 +113,10 @@ public class PrinterData {
         return printer.getData();
     }
 
-    public static byte[] getPrintData58(Resources res) throws IOException {
+    static byte[] getPrintData58(Context context, String qrContent) throws IOException {
         PrinterWriter58mm printer = new PrinterWriter58mm();
         printer.setAlignCenter();
-        printer.printDrawable(res, R.drawable.ic_printer_logo);
+        printer.printDrawable(context.getResources(), R.drawable.ic_printer_logo);
         printer.setAlignLeft();
         printer.printLine();
         printer.printLineFeed();
@@ -166,7 +180,18 @@ public class PrinterData {
         printer.printLineFeed();
 
         printer.setAlignCenter();
-        printer.printDrawable(res, R.drawable.ic_printer_qr);
+
+
+        String bitmapPath = FileUtils.getExternalFilesDir(context, "Temp") + "tmp_qr.jpg";
+        if (QRCodeUtil.createQRImage(qrContent, 200, 200, null, bitmapPath)) {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = false;
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            Bitmap bitmapQR = BitmapFactory.decodeFile(bitmapPath, options);
+            printer.printBitmap(bitmapQR);
+        } else {
+            printer.printDrawable(context.getResources(), R.drawable.ic_printer_qr);
+        }
         printer.printLineFeed();
         printer.print("扫一扫，查看详情");
         printer.printLineFeed();

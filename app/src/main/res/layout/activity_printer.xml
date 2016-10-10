@@ -69,6 +69,25 @@
 
         </RadioGroup>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:text="@string/printer_qr"
+            android:textColor="#ff000000"
+            android:textSize="18sp" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/printer_edt_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/printer_qr_hint"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
