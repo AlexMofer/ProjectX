@@ -1,8 +1,6 @@
 package am.project.x.activities.util.printer.data;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -93,11 +91,7 @@ class PrinterData {
 
         String bitmapPath = FileUtils.getExternalFilesDir(context, "Temp") + "tmp_qr.jpg";
         if (QRCodeUtil.createQRImage(qrContent, 200, 200, null, bitmapPath)) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = false;
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            Bitmap bitmapQR = BitmapFactory.decodeFile(bitmapPath, options);
-            printer.printBitmap(bitmapQR);
+            printer.printImageFile(bitmapPath);
         } else {
             printer.printDrawable(context.getResources(), R.drawable.ic_printer_qr);
         }
@@ -184,11 +178,7 @@ class PrinterData {
 
         String bitmapPath = FileUtils.getExternalFilesDir(context, "Temp") + "tmp_qr.jpg";
         if (QRCodeUtil.createQRImage(qrContent, 200, 200, null, bitmapPath)) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = false;
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            Bitmap bitmapQR = BitmapFactory.decodeFile(bitmapPath, options);
-            printer.printBitmap(bitmapQR);
+            printer.printImageFile(bitmapPath);
         } else {
             printer.printDrawable(context.getResources(), R.drawable.ic_printer_qr);
         }

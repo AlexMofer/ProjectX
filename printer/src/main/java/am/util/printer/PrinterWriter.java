@@ -143,9 +143,20 @@ public abstract class PrinterWriter {
      * @throws IOException 异常
      */
     public void print(String string) throws IOException {
+        print(string, CHARSET);
+    }
+
+    /**
+     * 写入字符串
+     *
+     * @param string      字符串
+     * @param charsetName 编码方式
+     * @throws IOException 异常
+     */
+    public void print(String string, String charsetName) throws IOException {
         if (string == null)
             return;
-        write(string.getBytes(CHARSET));
+        write(string.getBytes(charsetName));
     }
 
     /**
@@ -181,6 +192,20 @@ public abstract class PrinterWriter {
      */
     @SuppressWarnings("unused")
     public void printInOneLine(String str1, String str2, int textSize) throws IOException {
+        printInOneLine(str1, str2, textSize, CHARSET);
+    }
+
+    /**
+     * 一行输出
+     *
+     * @param str1        字符串
+     * @param str2        字符串
+     * @param textSize    文字大小
+     * @param charsetName 编码方式
+     * @throws IOException 异常
+     */
+    @SuppressWarnings("unused")
+    public void printInOneLine(String str1, String str2, int textSize, String charsetName) throws IOException {
         int lineLength = getLineStringWidth(textSize);
         int needEmpty = lineLength - (getStringWidth(str1) + getStringWidth(str2)) % lineLength;
         String empty = "";
@@ -188,7 +213,7 @@ public abstract class PrinterWriter {
             empty += " ";
             needEmpty--;
         }
-        print(str1 + empty + str2);
+        print(str1 + empty + str2, charsetName);
     }
 
     /**
@@ -290,7 +315,7 @@ public abstract class PrinterWriter {
     @SuppressWarnings("unused")
     public void printDrawable(Drawable drawable) throws IOException {
         int maxWidth = getDrawableMaxWidth();
-        Bitmap image = scalingBitmap(drawable, maxWidth);
+        Bitmap image = scalingDrawable(drawable, maxWidth);
         if (image == null)
             return;
         byte[] command = PrinterUtils.decodeBitmap(image);
@@ -311,7 +336,7 @@ public abstract class PrinterWriter {
      * @param maxWidth 最大宽
      * @return 缩放后的图片
      */
-    private Bitmap scalingBitmap(Drawable drawable, int maxWidth) {
+    private Bitmap scalingDrawable(Drawable drawable, int maxWidth) {
         if (drawable == null || drawable.getIntrinsicWidth() == 0
                 || drawable.getIntrinsicHeight() == 0)
             return null;
@@ -386,6 +411,34 @@ public abstract class PrinterWriter {
         } catch (OutOfMemoryError e) {
             return null;
         }
+    }
+
+    /**
+     * 打印图片文件
+     *
+     * @param filePath 图片
+     * @throws IOException 异常
+     */
+    @SuppressWarnings("unused")
+    public void printImageFile(String filePath) throws IOException {
+        Bitmap image;
+        try {
+            int width;
+            int height;
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(filePath, options);
+            width = options.outWidth;
+            height = options.outHeight;
+            if (width <= 0 || height <= 0)
+                return;
+            options.inJustDecodeBounds = false;
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            image = BitmapFactory.decodeFile(filePath, options);
+        } catch (OutOfMemoryError | Exception e) {
+            return;
+        }
+        printBitmap(image);
     }
 
 
