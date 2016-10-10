@@ -7,13 +7,14 @@
 ![打印样例](https://github.com/AlexMofer/ProjectX/blob/master/printer/printer_example.jpg)
 ## 要求
 - minSdkVersion 5
+- ```<uses-permission android:name="android.permission.INTERNET" />```
 - ```<uses-permission android:name="android.permission.BLUETOOTH" />```
 
 ## 引用
 ```java
 dependencies {
     ⋯
-    compile 'am.util:printer:1.1.2'
+    compile 'am.util:printer:1.1.3'
     ⋯
 }
 ```
@@ -23,7 +24,7 @@ dependencies {
 - PrinterUtils包含了众多打印指令
 
 ##使用
-1.添加蓝牙权限```<uses-permission android:name="android.permission.BLUETOOTH" />```
+1.添加蓝牙权限```<uses-permission android:name="android.permission.BLUETOOTH" />```或者网络请求权限```<uses-permission android:name="android.permission.INTERNET" />```
 
 2.继承PrintTask类，实现具体打印任务：
 ```java
