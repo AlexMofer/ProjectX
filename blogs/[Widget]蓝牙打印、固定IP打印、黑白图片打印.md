@@ -158,9 +158,3 @@ public class PrinterWriter80mm extends PrinterWriter{
 ## 注意
 - 仅提供建立蓝牙连接打印，不包括蓝牙搜索及配对功能
 - 不包含二维码生成功能
-
-## 历史
-- [**1.1.2**](https://bintray.com/alexmofer/maven/Printer/1.1.2)
-- [**1.1.1**](https://bintray.com/alexmofer/maven/Printer/1.1.1)
-- [**1.1.0**](https://bintray.com/alexmofer/maven/Printer/1.1.0)
-- [**1.0.0**](https://bintray.com/alexmofer/maven/Printer/1.0.0)
