@@ -35,6 +35,7 @@ import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import java.lang.ref.WeakReference;
@@ -46,7 +47,7 @@ import java.util.ArrayList;
  * @author Alex
  */
 @ViewPager.DecorView
-public abstract class BaseTabStrip extends View {
+public abstract class BaseTabStripGroup extends ViewGroup {
 
     private ViewPager mPager;
     private final PageListener mPageListener = new PageListener();
@@ -66,15 +67,15 @@ public abstract class BaseTabStrip extends View {
     private final Rect mRefreshRect = new Rect();
     private final Rect mRefreshTempRect = new Rect();
 
-    public BaseTabStrip(Context context) {
+    public BaseTabStripGroup(Context context) {
         this(context, null);
     }
 
-    public BaseTabStrip(Context context, AttributeSet attrs) {
+    public BaseTabStripGroup(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public BaseTabStrip(Context context, AttributeSet attrs, int defStyleAttr) {
+    public BaseTabStripGroup(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setItemClickable(false);
         setClickSmoothScroll(false);

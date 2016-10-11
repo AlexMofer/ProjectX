@@ -103,15 +103,17 @@ bintray {
     key = bintrayApikey
     group = projectGroupId
     configurations = ['archives']
+    dryRun = false
+    publish = true
+    override = true
     pkg {
         repo = "maven"
         name = projectName
-        websiteUrl = projectSiteUrl
-        vcsUrl = projectGitUrl
         desc = projectDesc
+        websiteUrl = projectSiteUrl
         issueTrackerUrl = projectIssueTrackerUrl
+        vcsUrl = projectGitUrl
         licenses = ["Apache-2.0"]
-        publish = true
         publicDownloadNumbers = true
     }
 }

@@ -3,11 +3,15 @@ apply plugin: 'com.jfrog.bintray'
 
 // load properties
 Properties properties = new Properties()
-
+File localPropertiesFile = project.file("local.properties");
+if (localPropertiesFile.exists()) {
+    properties.load(localPropertiesFile.newDataInputStream())
+}
 File projectPropertiesFile = project.file("project.properties");
 if (projectPropertiesFile.exists()) {
     properties.load(projectPropertiesFile.newDataInputStream())
 }
+
 // read properties
 def projectName = properties.getProperty("project.name")
 def projectDesc = properties.getProperty("project.desc")
@@ -21,29 +25,19 @@ def projectIssueTrackerUrl = properties.getProperty("project.issueTrackerUrl")
 def developerId = properties.getProperty("developer.id")
 def developerName = properties.getProperty("developer.name")
 def developerEmail = properties.getProperty("developer.email")
-def javadocName = properties.getProperty("javadoc.name")
 
-File localPropertiesFile = project.file("local.properties");
-if (localPropertiesFile.exists()) {
-    properties.load(localPropertiesFile.newDataInputStream())
-}
 def bintrayUser = properties.getProperty("bintray.user")
 def bintrayApikey = properties.getProperty("bintray.apikey")
 
 // This generates POM.xml with proper parameters
 install {
     repositories.mavenInstaller {
-        configuration = configurations.archives
-        pom.groupId = projectGroupId
-        pom.artifactId = projectArtifactId
-        pom.version = projectVersionName
-        pom.packaging = projectPackaging
         pom.project {
             name projectName
-//            groupId projectGroupId
-//            artifactId projectArtifactId
-//            version projectVersionName
-//            packaging projectPackaging
+            groupId projectGroupId
+            artifactId projectArtifactId
+            version projectVersionName
+            packaging projectPackaging
             url projectSiteUrl
             licenses {
                 license {
@@ -70,7 +64,14 @@ install {
 task androidJavadocs(type: Javadoc) {
     source = android.sourceSets.main.java.source
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    options.encoding = "UTF-8"
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version projectVersionName
+        links "http://docs.oracle.com/javase/7/docs/api"
+        title projectName
+    }
 }
 
 task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
@@ -96,32 +97,23 @@ artifacts {
     archives androidJavadocsJar
 }
 
-//androidJavadocs {
-//    options {
-//        encoding "UTF-8"
-//        charSet 'UTF-8'
-//        author true
-//        version projectVersionName
-//        links "http://docs.oracle.com/javase/7/docs/api"
-//        title javadocName
-//    }
-//}
-
 // bintray configuration
 bintray {
     user = bintrayUser
     key = bintrayApikey
     group = projectGroupId
     configurations = ['archives']
+    dryRun = false
+    publish = true
+    override = true
     pkg {
         repo = "maven"
         name = projectName
-        websiteUrl = projectSiteUrl
-        vcsUrl = projectGitUrl
         desc = projectDesc
+        websiteUrl = projectSiteUrl
         issueTrackerUrl = projectIssueTrackerUrl
+        vcsUrl = projectGitUrl
         licenses = ["Apache-2.0"]
-        publish = true
         publicDownloadNumbers = true
     }
 }

@@ -26,5 +26,6 @@
         </attr>
         <attr name="gtsTagMinWidth" format="dimension" />
         <attr name="gtsTagMinHeight" format="dimension" />
+        <attr name="gtsCenterGap" format="dimension"/>
     </declare-styleable>
 </resources>

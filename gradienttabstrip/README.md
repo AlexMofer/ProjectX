@@ -12,7 +12,7 @@
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:gradienttabstrip:24.2.1'
+    compile 'am.widget:gradienttabstrip:24.2.1.1'
     ⋯
 }
 ```
@@ -58,9 +58,11 @@ tabStrip.bindViewPager(viewPager);
 - 布局时，android:textColor指定的颜色可以使用选择器，其中android:state_selected="true"状态下的颜色会与普通状态下的颜色进行渐变
 - GradientTabAdapter中进行了改变GradientTabAdapter，需要手动通知GradientTabStrip进行刷新
 - 不需要Tag小红点，可以使用SimpleGradientTabAdapter替代GradientTabAdapter
+- 要实现微博底部栏效果，可为其添加中间间隔，对应布局属性gtsCenterGap
 - 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7），否则可能出现错误
 
 ## 历史
+- [**24.2.1**](https://bintray.com/alexmofer/maven/GradientTabStrip/24.2.1)
 - [**24.2.0**](https://bintray.com/alexmofer/maven/GradientTabStrip/24.2.0)
 - [**3.1.1**](https://bintray.com/alexmofer/maven/GradientTabStrip/3.1.1)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/gradienttabstrip/history/3.1.1)）
 - [**3.1.0**](https://bintray.com/alexmofer/maven/GradientTabStrip/3.1.0)

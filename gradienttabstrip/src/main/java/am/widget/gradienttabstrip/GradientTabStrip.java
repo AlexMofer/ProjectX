@@ -58,6 +58,7 @@ public class GradientTabStrip extends BaseTabStrip {
     private float mItemWidth;// 宽度
     private int mMaxDrawableWidth;// 最大图片宽
     private int mMaxDrawableHeight;// 最大图片高
+    private int mCenterGap;// 中间间隔
     private int mCurrentPager = 0;
     private int mNextPager = 0;
     private float mOffset = 1;
@@ -118,6 +119,7 @@ public class GradientTabStrip extends BaseTabStrip {
         int tagMarginTop = 0;
         int tagMarginRight = 0;
         int tagMarginBottom = 0;
+        int centerGap = 0;
         TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.GradientTabStrip);
         textSize = custom.getDimensionPixelSize(R.styleable.GradientTabStrip_gtsTextSize, textSize);
         if (custom.hasValue(R.styleable.GradientTabStrip_gtsTextColor))
@@ -174,6 +176,8 @@ public class GradientTabStrip extends BaseTabStrip {
                 R.styleable.GradientTabStrip_gtsTagMarginRight, tagMarginRight);
         tagMarginBottom = custom.getDimensionPixelOffset(
                 R.styleable.GradientTabStrip_gtsTagMarginBottom, tagMarginBottom);
+        centerGap = custom.getDimensionPixelOffset(
+                R.styleable.GradientTabStrip_gtsCenterGap, centerGap);
         custom.recycle();
         setTextSize(textSize);
         if (textColors != null) {
@@ -196,7 +200,7 @@ public class GradientTabStrip extends BaseTabStrip {
         setTagMinHeight(tagMinHeight);
         setTagPadding(tagPaddingLeft, tagPaddingTop, tagPaddingRight, tagPaddingBottom);
         setTagMargin(tagMarginLeft, tagMarginTop, tagMarginRight, tagMarginBottom);
-
+        setCenterGap(centerGap);
     }
 
     @TargetApi(5)
@@ -223,7 +227,7 @@ public class GradientTabStrip extends BaseTabStrip {
         final int intervalWidth = getIntervalWidth();
         final int totalWidth = itemWidth * getItemCount() +
                 intervalWidth * (getItemCount() - 1) +
-                ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this);
+                ViewCompat.getPaddingStart(this) + ViewCompat.getPaddingEnd(this) + mCenterGap;
         final int width = Math.max(totalWidth, getSuggestedMinimumWidth());
 
         mItemHeight = mMaxDrawableHeight + mDrawablePadding + mTextMeasureBounds.height();
@@ -236,7 +240,8 @@ public class GradientTabStrip extends BaseTabStrip {
         setMeasuredDimension(resolveSize(width, widthMeasureSpec),
                 resolveSize(height, heightMeasureSpec));
         mItemWidth = (float) (getMeasuredWidth() - ViewCompat.getPaddingStart(this)
-                - ViewCompat.getPaddingEnd(this) - getIntervalWidth() * (getItemCount() - 1))
+                - ViewCompat.getPaddingEnd(this) - (getItemCount() % 2 == 0 ? mCenterGap : 0)
+                - getIntervalWidth() * (getItemCount() - 1))
                 / getItemCount();
     }
 
@@ -327,7 +332,8 @@ public class GradientTabStrip extends BaseTabStrip {
         int position = -1;
         final int intervalWidth = getIntervalWidth();
         for (int i = 0; i < getItemCount(); i++) {
-            float l = ViewCompat.getPaddingStart(this) + intervalWidth * i + mItemWidth * i;
+            float l = ViewCompat.getPaddingStart(this) + intervalWidth * i + mItemWidth * i +
+                    ((i * 2 >= getItemCount() - 1 && getItemCount() % 2 == 0) ? mCenterGap : 0);
             float r = l + mItemWidth;
             if (x >= l && x <= r) {
                 position = i;
@@ -339,7 +345,8 @@ public class GradientTabStrip extends BaseTabStrip {
 
     @Override
     protected float getHotspotX(Drawable background, int position, float motionX, float motionY) {
-        return motionX - getPaddingLeft() - getIntervalWidth() * position - mItemWidth * position;
+        return motionX - getPaddingLeft() - getIntervalWidth() * position - mItemWidth * position
+                - ((position * 2 >= getItemCount() - 1 && getItemCount() % 2 == 0) ? mCenterGap : 0);
     }
 
     @Override
@@ -404,7 +411,8 @@ public class GradientTabStrip extends BaseTabStrip {
                     getHeight() - getPaddingTop() - getPaddingBottom());
         }
         final float moveX = ViewCompat.getPaddingStart(this) +
-                (mItemWidth + getIntervalWidth()) * position;
+                (mItemWidth + getIntervalWidth()) * position
+                + ((position * 2 >= getItemCount() - 1 && getItemCount() % 2 == 0) ? mCenterGap : 0);
         final float moveY = getPaddingTop();
         canvas.save();
         canvas.translate(moveX, moveY);
@@ -422,10 +430,13 @@ public class GradientTabStrip extends BaseTabStrip {
         if (mInterval == null || mInterval.getIntrinsicWidth() <= 0
                 || position == getItemCount() - 1)
             return;
+        if (getItemCount() % 2 == 0 && position + 1 == getItemCount() / 2)
+            return;
         final int intervalHeight = mInterval.getIntrinsicHeight() <= 0 ? getHeight()
                 - getPaddingTop() - getPaddingBottom() : mInterval.getIntrinsicHeight();
         mInterval.setBounds(0, 0, getIntervalWidth(), intervalHeight);
-        final float moveX = ViewCompat.getPaddingStart(this) + mItemWidth * position;
+        final float moveX = ViewCompat.getPaddingStart(this) + mItemWidth * position
+                + ((position * 2 >= getItemCount() - 1 && getItemCount() % 2 == 0) ? mCenterGap : 0);
         final float moveY = getPaddingTop() +
                 (getHeight() - getPaddingTop() - getPaddingBottom()) * 0.5f - intervalHeight * 0.5f;
         canvas.save();
@@ -460,7 +471,8 @@ public class GradientTabStrip extends BaseTabStrip {
             alphaSelected = 0;
         }
         final float drawableCenterX = ViewCompat.getPaddingStart(this) +
-                (mItemWidth + getIntervalWidth()) * position + mItemWidth * 0.5f;
+                (mItemWidth + getIntervalWidth()) * position + mItemWidth * 0.5f +
+                ((position * 2 >= getItemCount() - 1 && getItemCount() % 2 == 0) ? mCenterGap : 0);
         final float drawableCenterY = getPaddingTop() + (getHeight() - getPaddingTop()
                 - getPaddingBottom()) * 0.5f - mItemHeight * 0.5f + mMaxDrawableHeight * 0.5f;
         canvas.save();
@@ -491,8 +503,8 @@ public class GradientTabStrip extends BaseTabStrip {
     /**
      * 绘制文字
      *
-     * @param canvas    画布
-     * @param position  子项坐标
+     * @param canvas   画布
+     * @param position 子项坐标
      */
     protected void drawText(Canvas canvas, int position) {
         if (getItemText(position) == null)
@@ -518,7 +530,8 @@ public class GradientTabStrip extends BaseTabStrip {
         }
         final int contentHeight = mMaxDrawableHeight + mDrawablePadding + textHeight;
         final float centerX = ViewCompat.getPaddingStart(this) +
-                (mItemWidth + getIntervalWidth()) * (position + 0.5f);
+                (mItemWidth + getIntervalWidth()) * (position + 0.5f) +
+                ((position * 2 >= getItemCount() - 1 && getItemCount() % 2 == 0) ? mCenterGap : 0);
         final float centerY = getPaddingTop()
                 + (getHeight() - getPaddingTop() - getPaddingBottom()) * 0.5f;
         canvas.save();
@@ -530,8 +543,8 @@ public class GradientTabStrip extends BaseTabStrip {
     /**
      * 绘制Tag
      *
-     * @param canvas     画布
-     * @param position   子项坐标
+     * @param canvas   画布
+     * @param position 子项坐标
      */
     protected void drawTag(Canvas canvas, int position) {
         if (mAdapter == null || !mAdapter.isTagEnable(position))
@@ -566,7 +579,8 @@ public class GradientTabStrip extends BaseTabStrip {
                 break;
         }
         final float centerX = ViewCompat.getPaddingStart(this) +
-                (mItemWidth + getIntervalWidth()) * ((float) position + 0.5f);
+                (mItemWidth + getIntervalWidth()) * ((float) position + 0.5f) +
+                ((position * 2 >= getItemCount() - 1 && getItemCount() % 2 == 0) ? mCenterGap : 0);
         final float centerY = getPaddingTop()
                 + (getHeight() - getPaddingTop() - getPaddingBottom()) * 0.5f;
         final float tagCenterX = centerX + mMaxDrawableWidth * 0.5f;
@@ -918,6 +932,19 @@ public class GradientTabStrip extends BaseTabStrip {
     }
 
     /**
+     * 设置中间间隔，仅双数Item有效，单数无效
+     *
+     * @param gap 间隔
+     */
+    public void setCenterGap(int gap) {
+        if (gap > 0 && gap != mCenterGap) {
+            mCenterGap = gap;
+            requestLayout();
+            invalidate();
+        }
+    }
+
+    /**
      * 数据容器Adapter
      *
      * @author Alex
@@ -982,7 +1009,7 @@ public class GradientTabStrip extends BaseTabStrip {
         private GradientDrawable selected;
         private GradientDrawable normal;
 
-        public TestAdapter(Context context) {
+        TestAdapter(Context context) {
             final int size = (int) (context.getResources().getDisplayMetrics().density * 10);
             selected = new GradientDrawable();
             selected.setShape(GradientDrawable.OVAL);
