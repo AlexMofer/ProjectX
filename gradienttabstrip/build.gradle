@@ -14,7 +14,7 @@ android {
 
 dependencies {
     compile project(':basetabstrip')
-    compile 'am.widget:basetabstrip:24.2.1'
+    //compile 'am.widget:basetabstrip:24.2.1'
 }
 
-apply from: "bintray.gradle"
+//apply from: "bintray.gradle"
