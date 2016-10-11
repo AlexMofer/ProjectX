@@ -3,7 +3,7 @@
 
 ##Widget
 - [***RecyclePagerAdapter-实现ViewPager复用回收的PagerAdapter***](https://github.com/AlexMofer/ProjectX/blob/master/blogs/%5BWidget%5DRecyclePagerAdapter-%E5%AE%9E%E7%8E%B0ViewPager%E5%A4%8D%E7%94%A8%E5%9B%9E%E6%94%B6%E7%9A%84PagerAdapter.md)
-- [***Android蓝牙打印、固定IP打印、黑白图片打印***](https://github.com/AlexMofer/ProjectX/blob/master/blogs/%5BWidget%5DAndroid%E8%93%9D%E7%89%99%E6%89%93%E5%8D%B0%E3%80%81%E5%9B%BA%E5%AE%9AIP%E6%89%93%E5%8D%B0%E3%80%81%E9%BB%91%E7%99%BD%E5%9B%BE%E7%89%87%E6%89%93%E5%8D%B0.md)
+- [***Android小票打印，蓝牙打印、固定IP打印、黑白图片打印***](https://github.com/AlexMofer/ProjectX/blob/master/blogs/%5BWidget%5DAndroid%E5%B0%8F%E7%A5%A8%E6%89%93%E5%8D%B0%EF%BC%8C%E8%93%9D%E7%89%99%E6%89%93%E5%8D%B0%E3%80%81%E5%9B%BA%E5%AE%9AIP%E6%89%93%E5%8D%B0%E3%80%81%E9%BB%91%E7%99%BD%E5%9B%BE%E7%89%87%E6%89%93%E5%8D%B0.md)
 
 ##Skill
 - [***慎用onBackPressed***](https://github.com/AlexMofer/ProjectX/blob/master/blogs/%5BSkill%5D%E6%85%8E%E7%94%A8onBackPressed().md)
