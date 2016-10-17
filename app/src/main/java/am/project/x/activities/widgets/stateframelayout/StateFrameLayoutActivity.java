@@ -73,6 +73,7 @@ public class StateFrameLayoutActivity extends BaseActivity
                 break;
             case R.id.sfl_rbt_loading:
                 lytState.loading();
+                mLoadingView.start();
                 break;
             case R.id.sfl_rbt_error:
                 lytState.error();
@@ -86,6 +87,7 @@ public class StateFrameLayoutActivity extends BaseActivity
                 break;
             case R.id.sfl_rbt_view:
                 lytState.setStateViews(mLoadingView, mErrorView, mEmptyView);
+                mLoadingView.start();
                 break;
         }
     }
