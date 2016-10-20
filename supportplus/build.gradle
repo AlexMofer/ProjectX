@@ -15,4 +15,4 @@ dependencies {
     compile 'com.android.support:support-core-ui:25.0.0'
 }
 
-apply from: "bintray.gradle"
+//apply from: "bintray.gradle"
