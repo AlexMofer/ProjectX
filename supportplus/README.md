@@ -10,7 +10,7 @@
 ```java
 dependencies {
     ⋯
-    compile 'am.project:supportplus:24.2.1.1'
+    compile 'am.project:supportplus:25.0.0'
     ⋯
 }
 ```
@@ -33,6 +33,7 @@ dependencies {
 - 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7），否则可能出现错误
 
 ## 历史
+- [**24.2.1.1**](https://bintray.com/alexmofer/maven/SupportPlus/24.2.1.1)
 - [**24.2.1**](https://bintray.com/alexmofer/maven/SupportPlus/24.2.1)
 - [**24.2.0**](https://bintray.com/alexmofer/maven/SupportPlus/24.2.0)
 - [**24.1.1**](https://bintray.com/alexmofer/maven/SupportPlus/24.1.1)（- [**说明**](https://github.com/AlexMofer/ProjectX/tree/master/supportplus/history/24.1.1)）
