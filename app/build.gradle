@@ -63,6 +63,7 @@ dependencies {
     compile project(':headerfootergridview')
     compile project(':multiactiontextview')
     compile project(':selectionview')
+    compile project(':circleprogressbar')
     compile project(':drawable')
     compile project(':supportplus')
     compile project(':support')

@@ -1,12 +1,16 @@
 package am.project.x.widgets.circleprogressbar;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.FontMetricsInt;
+import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.RectF;
+import android.graphics.SweepGradient;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -23,7 +27,10 @@ import android.view.animation.OvershootInterpolator;
 
 import am.project.x.widgets.animators.BaseNextAnimator;
 
-
+/**
+ * 高度可定制
+ *
+ */
 public class CircleProgressBar extends View {
 
 	private static final int MAX_WIDTH = 300;
@@ -76,6 +83,11 @@ public class CircleProgressBar extends View {
 	private boolean isSetup = false;
 	private final ProgressAnimator mProgressAnimator;
 	private final Interpolator mProgressInterpolator;
+
+	private ValueAnimator progressAnimator;
+	private PaintFlagsDrawFilter mDrawFilter;
+	private SweepGradient sweepGradient;
+    private Matrix rotateMatrix;
 
 	public CircleProgressBar(Context context) {
 		this(context, null);
