@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CircleProgressBar">
-        <attr name="cpb" format="reference|color" />
+        <attr name="cpbRadius" format="dimension" />
+        <attr name="cpbStartAngle" format="integer"/>
+        <attr name="cpbSweepAngle" format="integer"/>
+        <attr name="cpbBackgroundSize" format="dimension" />
+        <attr name="cpbBackgroundColor" format="color"/>
+        <attr name="cpbProgressSize" format="dimension" />
+        <attr name="cpbMax" format="integer"/>
+        <attr name="cpbProgress" format="integer"/>
+        <attr name="cpbFirstGradientColors" format="color"/>
+        <attr name="cpbSecondGradientColors" format="color"/>
+        <attr name="cpbThirdGradientColors" format="color"/>
+        <attr name="cpbFourthGradientColors" format="color"/>
+        <attr name="cpbFirstGradientPositions" format="float"/>
+        <attr name="cpbSecondGradientPositions" format="float"/>
+        <attr name="cpbThirdGradientPositions" format="float"/>
+        <attr name="cpbFourthGradientPositions" format="float"/>
+        <attr name="cpbDialGap" format="dimension" />
+        <attr name="cpbDialUnit" format="integer"/>
+        <attr name="cpbDialHeight" format="dimension"/>
+        <attr name="cpbDialWidth" format="dimension"/>
 
     </declare-styleable>
 </resources>
