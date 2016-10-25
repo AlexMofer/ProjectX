@@ -2,25 +2,39 @@
 <resources>
     <declare-styleable name="CircleProgressBar">
         <attr name="cpbRadius" format="dimension" />
-        <attr name="cpbStartAngle" format="integer"/>
-        <attr name="cpbSweepAngle" format="integer"/>
+        <attr name="cpbStartAngle" format="integer" />
+        <attr name="cpbSweepAngle" format="integer" />
         <attr name="cpbBackgroundSize" format="dimension" />
-        <attr name="cpbBackgroundColor" format="color"/>
+        <attr name="cpbBackgroundColor" format="color" />
         <attr name="cpbProgressSize" format="dimension" />
-        <attr name="cpbMax" format="integer"/>
-        <attr name="cpbProgress" format="integer"/>
-        <attr name="cpbFirstGradientColors" format="color"/>
-        <attr name="cpbSecondGradientColors" format="color"/>
-        <attr name="cpbThirdGradientColors" format="color"/>
-        <attr name="cpbFourthGradientColors" format="color"/>
-        <attr name="cpbFirstGradientPositions" format="float"/>
-        <attr name="cpbSecondGradientPositions" format="float"/>
-        <attr name="cpbThirdGradientPositions" format="float"/>
-        <attr name="cpbFourthGradientPositions" format="float"/>
+        <attr name="cpbMax" format="integer" />
+        <attr name="cpbProgress" format="integer" />
+        <attr name="cpbFirstGradientColors" format="color" />
+        <attr name="cpbSecondGradientColors" format="color" />
+        <attr name="cpbThirdGradientColors" format="color" />
+        <attr name="cpbFourthGradientColors" format="color" />
+        <attr name="cpbFirstGradientPositions" format="float" />
+        <attr name="cpbSecondGradientPositions" format="float" />
+        <attr name="cpbThirdGradientPositions" format="float" />
+        <attr name="cpbFourthGradientPositions" format="float" />
         <attr name="cpbDialGap" format="dimension" />
-        <attr name="cpbDialUnit" format="integer"/>
-        <attr name="cpbDialHeight" format="dimension"/>
-        <attr name="cpbDialWidth" format="dimension"/>
+        <attr name="cpbDialAngle" format="integer" />
+        <attr name="cpbDialHeight" format="dimension" />
+        <attr name="cpbDialWidth" format="dimension" />
+        <attr name="cpbDialColor" format="color" />
+        <attr name="cpbDialSpecialUnit" format="integer" />
+        <attr name="cpbDialSpecialHeight" format="dimension" />
+        <attr name="cpbDialSpecialWidth" format="dimension" />
+        <attr name="cpbDialSpecialColor" format="color" />
+        <attr name="cpbDialGravity" format="enum">
+            <enum name="Center" value="0" />
+            <enum name="Top" value="1" />
+            <enum name="Bottom" value="2" />
+        </attr>
+        <attr name="cpbShowSpecialDialValue" format="boolean" />
+        <attr name="cpbSpecialDialValueGap" format="dimension"/>
+        <attr name="cpbSpecialDialValueTextSize" format="dimension"/>
+        <attr name="cpbSpecialDialValueTextColor" format="color"/>
 
     </declare-styleable>
 </resources>
