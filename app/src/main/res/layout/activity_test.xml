@@ -37,7 +37,7 @@
 
         <am.widget.circleprogressbar.CircleProgressBar
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="480dp"
             app:cpbRadius="160dp"
             app:cpbStartAngle="135"
             app:cpbSweepAngle="270"
@@ -61,6 +61,19 @@
             app:cpbShowSpecialDialValue="true"
             app:cpbSpecialDialValueGap="2dp"
             app:cpbSpecialDialValueTextSize="12sp"
+            app:cpbSpecialDialValueTextColor="#ff99cc00"
+            app:cpbShowProgressValue="true"
+            app:cpbProgressValueTextSize="72sp"
+            app:cpbProgressValueTextColor="#ff33b5e5"
+            app:cpbTopText="步数"
+            app:cpbTopTextSize="20sp"
+            app:cpbTopTextGap="10dp"
+            app:cpbTopTextColor="@color/colorPrimary"
+            app:cpbBottomText="km/s"
+            app:cpbBottomTextSize="16sp"
+            app:cpbBottomTextGap="15dp"
+            app:cpbBottomTextColor="#ffffbb33"
+            app:cpbScaleType="Crop"
             android:background="@color/white"/>
 
     </LinearLayout>

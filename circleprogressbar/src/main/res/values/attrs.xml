@@ -32,9 +32,25 @@
             <enum name="Bottom" value="2" />
         </attr>
         <attr name="cpbShowSpecialDialValue" format="boolean" />
-        <attr name="cpbSpecialDialValueGap" format="dimension"/>
-        <attr name="cpbSpecialDialValueTextSize" format="dimension"/>
-        <attr name="cpbSpecialDialValueTextColor" format="color"/>
+        <attr name="cpbSpecialDialValueGap" format="dimension" />
+        <attr name="cpbSpecialDialValueTextSize" format="dimension" />
+        <attr name="cpbSpecialDialValueTextColor" format="color" />
+        <attr name="cpbShowProgressValue" format="boolean" />
+        <attr name="cpbProgressValueTextSize" format="dimension" />
+        <attr name="cpbProgressValueTextColor" format="color" />
+        <attr name="cpbTopText" format="string" />
+        <attr name="cpbTopTextGap" format="dimension" />
+        <attr name="cpbTopTextSize" format="dimension" />
+        <attr name="cpbTopTextColor" format="color" />
+        <attr name="cpbBottomText" format="string" />
+        <attr name="cpbBottomTextGap" format="dimension" />
+        <attr name="cpbBottomTextSize" format="dimension" />
+        <attr name="cpbBottomTextColor" format="color" />
+        <attr name="cpbScaleType">
+            <flag name="None" value="0" />
+            <flag name="Inside" value="1" />
+            <flag name="Crop" value="2" />
+        </attr>
 
     </declare-styleable>
 </resources>
