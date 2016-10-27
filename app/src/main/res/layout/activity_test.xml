@@ -38,6 +38,8 @@
         <am.widget.circleprogressbar.CircleProgressBar
             android:layout_width="match_parent"
             android:layout_height="480dp"
+            android:padding="2dp"
+            app:cpbGravity="center"
             app:cpbRadius="160dp"
             app:cpbStartAngle="135"
             app:cpbSweepAngle="270"
@@ -73,7 +75,11 @@
             app:cpbBottomTextSize="16sp"
             app:cpbBottomTextGap="15dp"
             app:cpbBottomTextColor="#ffffbb33"
-            app:cpbScaleType="Crop"
+            app:cpbScaleType="None"
+            app:cpbProgressDuration="2000"
+            app:cpbProgressMode="Loading"
+            app:cpbLoadingStartAngle="-90"
+            app:cpbLoadingDuration="3000"
             android:background="@color/white"/>
 
     </LinearLayout>

@@ -1,6 +1,7 @@
 package am.widget.circleprogressbar;
 
 import android.annotation.TargetApi;
+import android.view.Gravity;
 import android.view.View;
 
 /**
@@ -8,6 +9,16 @@ import android.view.View;
  */
 class Compat {
 
+    /** Raw bit controlling whether the layout direction is relative or not (START/END instead of
+     * absolute LEFT/RIGHT).
+     */
+    private static final int RELATIVE_LAYOUT_DIRECTION = 0x00800000;
+
+    /** Push object to x-axis position at the start of its container, not changing its size. */
+    static final int START = RELATIVE_LAYOUT_DIRECTION | Gravity.LEFT;
+
+    /** Push object to x-axis position at the end of its container, not changing its size. */
+    static final int END = RELATIVE_LAYOUT_DIRECTION | Gravity.RIGHT;
     private interface CompatPlusImpl {
         int getPaddingStart(View view);
         int getPaddingEnd(View view);
