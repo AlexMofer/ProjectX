@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import am.project.x.R;
+import am.project.x.activities.widgets.circleprogressbar.CircleProgressBarActivity;
 import am.project.x.activities.widgets.headerfootergridview.HeaderFooterGridViewActivity;
 import am.project.x.activities.widgets.multiactiontextview.MultiActionTextViewActivity;
 import am.project.x.activities.widgets.recyclepager.RecyclePagerActivity;
@@ -52,6 +53,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
         view.findViewById(R.id.widget_btn_multiactiontextview).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_selectionview).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_recyclepager).setOnClickListener(this);
+        view.findViewById(R.id.widget_btn_circleprogressbar).setOnClickListener(this);
     }
 
     @Override
@@ -92,6 +94,9 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.widget_btn_recyclepager:
                 RecyclePagerActivity.startActivity(getContext());
+                break;
+            case R.id.widget_btn_circleprogressbar:
+                CircleProgressBarActivity.startActivity(getContext());
                 break;
         }
     }

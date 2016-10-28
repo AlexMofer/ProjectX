@@ -192,10 +192,18 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
-            <View
+            <Button
+                android:id="@+id/widget_btn_circleprogressbar"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_common_press"
+                android:drawablePadding="4dp"
+                android:drawableTop="@drawable/ic_widget_circleprogressbar"
+                android:paddingBottom="18dp"
+                android:paddingTop="18dp"
+                android:text="@string/circleprogressbar_title" />
 
             <View
                 android:layout_width="match_parent"

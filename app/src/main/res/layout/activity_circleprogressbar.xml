@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".activities.widgets.circleprogressbar.CircleProgressBarActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/circleprogressbar_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/ToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/circleprogressbar_title" />
+
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:orientation="vertical"
+        android:padding="5dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <am.widget.circleprogressbar.CircleProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="480dp"
+            android:padding="2dp"
+            app:cpbGravity="center"
+            app:cpbRadius="160dp"
+            app:cpbStartAngle="135"
+            app:cpbSweepAngle="270"
+            app:cpbBackgroundSize="2dp"
+            app:cpbBackgroundColor="@color/colorPrimary"
+            app:cpbProgressSize="20dp"
+            app:cpbMax="810"
+            app:cpbProgress="315"
+            app:cpbFirstGradientColors="#ff33b5e5"
+            app:cpbSecondGradientColors="#ff99cc00"
+            app:cpbThirdGradientColors="#ffffbb33"
+            app:cpbFourthGradientColors="#ffff4444"
+            app:cpbDialGap="4dp"
+            app:cpbDialAngle="5"
+            app:cpbDialHeight="10dp"
+            app:cpbDialWidth="2dp"
+            app:cpbDialColor="@color/colorPrimary"
+            app:cpbDialSpecialUnit="3"
+            app:cpbDialSpecialHeight="15dp"
+            app:cpbDialSpecialColor="@color/colorAccent"
+            app:cpbShowSpecialDialValue="true"
+            app:cpbSpecialDialValueGap="2dp"
+            app:cpbSpecialDialValueTextSize="12sp"
+            app:cpbSpecialDialValueTextColor="#ff99cc00"
+            app:cpbShowProgressValue="true"
+            app:cpbProgressValueTextSize="72sp"
+            app:cpbProgressValueTextColor="#ff33b5e5"
+            app:cpbTopText="步数"
+            app:cpbTopTextSize="20sp"
+            app:cpbTopTextGap="10dp"
+            app:cpbTopTextColor="@color/colorPrimary"
+            app:cpbBottomText="km/s"
+            app:cpbBottomTextSize="16sp"
+            app:cpbBottomTextGap="15dp"
+            app:cpbBottomTextColor="#ffffbb33"
+            app:cpbScaleType="None"
+            app:cpbProgressDuration="2000"
+            app:cpbProgressMode="Loading"
+            app:cpbLoadingDuration="3000"
+            app:cpbLoadingRepeatMode="Reverse"
+            app:cpbLoadingDrawOther="true"
+            app:cpbLoadingText="载入"/>
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

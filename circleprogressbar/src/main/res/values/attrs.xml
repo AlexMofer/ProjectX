@@ -68,7 +68,13 @@
             <enum name="Loading" value="1" />
         </attr>
         <attr name="cpbLoadingStartAngle" format="integer" />
+        <attr name="cpbLoadingSweepAngle" format="integer" />
         <attr name="cpbLoadingDuration" format="integer" />
-
+        <attr name="cpbLoadingRepeatMode" format="enum">
+            <enum name="Restart" value="1" />
+            <enum name="Reverse" value="2" />
+        </attr>
+        <attr name="cpbLoadingDrawOther" format="boolean" />
+        <attr name="cpbLoadingText" format="string"/>
     </declare-styleable>
 </resources>

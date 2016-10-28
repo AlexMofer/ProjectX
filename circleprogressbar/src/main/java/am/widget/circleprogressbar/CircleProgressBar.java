@@ -21,7 +21,6 @@ import android.view.View;
 /**
  * 环形进度条
  * Created by Alex on 2016/10/21.
- * TODO 结束角度、动画方式、是否绘制其他元素
  */
 
 public class CircleProgressBar extends View {
@@ -90,9 +89,11 @@ public class CircleProgressBar extends View {
     private ValueAnimator.AnimatorUpdateListener mAnimatorListener;//动画更新监听
 
     private int mLoadingStartAngle;// 载入开始角度
+    private int mLoadingSweepAngle;// 载入扫描角度
     private final ValueAnimator mLoadingAnimator = ValueAnimator.ofFloat(0f, 1f);// 载入动画
-    private float mLoadingOffset = 0;
-
+    private float mLoadingOffset = 0;// 动画偏移
+    private boolean mLoadingDrawOther = false;// 是否绘制其他
+    private String mLoadingText = null;// 载入进度值
 
     public enum ProgressMode {
         PROGRESS(0),
@@ -118,6 +119,17 @@ public class CircleProgressBar extends View {
 
     private ProgressMode mProgressMode = ProgressMode.PROGRESS;//进度条模式
 
+    /**
+     * 计算器
+     */
+    public interface Calculator {
+        String getDialValue(CircleProgressBar bar, int dialPosition, int dialCount, int max);
+
+        String getProgressValue(CircleProgressBar bar, int animatorProgress,
+                                ProgressMode mode, String loadingText, int progress);
+    }
+
+    private Calculator mCalculator = null;//文字计算器
 
     public CircleProgressBar(Context context) {
         super(context);
@@ -200,8 +212,12 @@ public class CircleProgressBar extends View {
         int scaleType = ST_NONE;
         int progressDuration = 1000;
         int progressMode = ProgressMode.PROGRESS.nativeInt;
-        int loadingStartAngle = 0;
+        int loadingStartAngle;
+        int loadingSweepAngle;
         int loadingDuration = 1000;
+        int loadingRepeatMode = 1;
+        boolean loadingDrawOther;
+        String loadingText;
         gravity = custom.getInt(R.styleable.CircleProgressBar_cpbGravity, gravity);
         radius = custom.getDimension(R.styleable.CircleProgressBar_cpbRadius, radius);
         startAngle = custom.getInteger(R.styleable.CircleProgressBar_cpbStartAngle, startAngle);
@@ -295,9 +311,16 @@ public class CircleProgressBar extends View {
                 progressDuration);
         progressMode = custom.getInt(R.styleable.CircleProgressBar_cpbProgressMode, progressMode);
         loadingStartAngle = custom.getInteger(R.styleable.CircleProgressBar_cpbLoadingStartAngle,
-                loadingStartAngle);
+                startAngle);
+        loadingSweepAngle = custom.getInteger(R.styleable.CircleProgressBar_cpbLoadingSweepAngle,
+                sweepAngle);
         loadingDuration = custom.getInteger(R.styleable.CircleProgressBar_cpbLoadingDuration,
                 loadingDuration);
+        loadingRepeatMode = custom.getInt(R.styleable.CircleProgressBar_cpbLoadingRepeatMode,
+                loadingRepeatMode);
+        loadingDrawOther = custom.getBoolean(R.styleable.CircleProgressBar_cpbLoadingDrawOther,
+                false);
+        loadingText = custom.getString(R.styleable.CircleProgressBar_cpbLoadingText);
         custom.recycle();
         setProgressDuration(progressDuration);
         setLoadingDuration(loadingDuration);
@@ -338,8 +361,13 @@ public class CircleProgressBar extends View {
         setBottomTextSize(bottomTextSize);
         setBottomTextColor(bottomTextColor);
         setScaleType(scaleType);
-        setProgressMode(ProgressMode.valueOf(progressMode));
         setLoadingStartAngle(loadingStartAngle);
+        setLoadingSweepAngle(loadingSweepAngle);
+        setLoadingRepeatMode(loadingRepeatMode == 1 ? ValueAnimator.RESTART
+                : ValueAnimator.REVERSE);
+        setLoadingDrawOther(loadingDrawOther);
+        setLoadingText(loadingText);
+        setProgressMode(ProgressMode.valueOf(progressMode));
     }
 
     private int[] addColor(int[] colors, int color) {
@@ -406,7 +434,16 @@ public class CircleProgressBar extends View {
                 drawBottomText(canvas);
                 break;
             case LOADING:
+                if (mLoadingDrawOther) {
+                    drawBackground(canvas);
+                    drawDial(canvas);
+                }
                 drawLoading(canvas);
+                if (mLoadingDrawOther) {
+                    drawProgressValue(canvas);
+                    drawTopText(canvas);
+                    drawBottomText(canvas);
+                }
                 break;
         }
         canvas.restore();
@@ -629,6 +666,8 @@ public class CircleProgressBar extends View {
      * @return 刻度值
      */
     protected String getDialValue(int dialPosition, int dialCount, int max) {
+        if (mCalculator != null)
+            return mCalculator.getDialValue(this, dialPosition, dialCount, max);
         return Integer.toString(dialPosition * (max / dialCount));
     }
 
@@ -684,6 +723,11 @@ public class CircleProgressBar extends View {
      * @return 进度值
      */
     protected String getProgressValue(int progress) {
+        if (mCalculator != null)
+            return mCalculator.getProgressValue(this, progress, mProgressMode, mLoadingText,
+                    mProgress);
+        if (mProgressMode == ProgressMode.LOADING)
+            return mLoadingText;
         return Integer.toString(progress);
     }
 
@@ -757,19 +801,19 @@ public class CircleProgressBar extends View {
      * @param canvas 画布
      */
     protected void drawLoading(Canvas canvas) {
-        // TODO
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeWidth(mProgressSize);
         final float halfCircleSize = mProgressSize * 0.5f;
         SweepGradient sweepGradient = new SweepGradient(0, 0, mGradientColors, mGradientPositions);
-        mRotateMatrix.setRotate(mStartAngle - mLoadingStartAngle - 360 * mLoadingOffset, 0, 0);
+        mRotateMatrix.setRotate(mStartAngle - mLoadingStartAngle -
+                mLoadingSweepAngle * mLoadingOffset, 0, 0);
         sweepGradient.setLocalMatrix(mRotateMatrix);
         mPaint.setShader(sweepGradient);
         canvas.save();
         canvas.rotate(mLoadingStartAngle);
-        canvas.rotate(360 * mLoadingOffset);
+        canvas.rotate(mLoadingSweepAngle * mLoadingOffset);
         canvas.drawPoint(mRadius - halfCircleSize, 0, mPaint);
         canvas.restore();
     }
@@ -1269,6 +1313,15 @@ public class CircleProgressBar extends View {
     }
 
     /**
+     * 设置载入扫描角度
+     *
+     * @param angle 角度
+     */
+    public void setLoadingSweepAngle(int angle) {
+        mLoadingSweepAngle = angle;
+    }
+
+    /**
      * 设置载入动画循环时长
      *
      * @param duration 时长
@@ -1284,5 +1337,46 @@ public class CircleProgressBar extends View {
      */
     public void setLoadingInterpolator(TimeInterpolator interpolator) {
         mLoadingAnimator.setInterpolator(interpolator);
+    }
+
+    /**
+     * 设置载入动画循环模式
+     *
+     * @param mode 模式
+     */
+    public void setLoadingRepeatMode(int mode) {
+        if (mode != ValueAnimator.RESTART && mode != ValueAnimator.REVERSE)
+            return;
+        mLoadingAnimator.setRepeatMode(mode);
+    }
+
+    /**
+     * 载入模式下是否绘制其他元素
+     *
+     * @param draw 是否绘制
+     */
+    public void setLoadingDrawOther(boolean draw) {
+        mLoadingDrawOther = draw;
+        invalidate();
+    }
+
+    /**
+     * 设置载入时进度文字
+     *
+     * @param text 文字
+     */
+    public void setLoadingText(String text) {
+        mLoadingText = text;
+        invalidate();
+    }
+
+    /**
+     * 设置自定义刻度与进度输出计算器
+     *
+     * @param calculator 输出计算器
+     */
+    public void setCalculator(Calculator calculator) {
+        mCalculator = calculator;
+        invalidate();
     }
 }

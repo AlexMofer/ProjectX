@@ -178,6 +178,8 @@
     <string name="recyclepager_add">增加页面</string>
     <string name="recyclepager_page">第%1$d页</string>
 
+    <string name="circleprogressbar_title">环形进度条</string>
+
     <string name="cd_welcome">welcome icon</string>
     <string name="cd_drawable">drawable</string>
 
