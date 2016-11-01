@@ -22,7 +22,7 @@ import android.view.View;
  * 环形进度条
  * Created by Alex on 2016/10/21.
  */
-
+@SuppressWarnings("unused")
 public class CircleProgressBar extends View {
 
     public static final int DIAL_GRAVITY_CENTER = 0;//长短刻度剧中显示
@@ -824,9 +824,20 @@ public class CircleProgressBar extends View {
      * @param gravity 排版方式
      */
     public void setGravity(int gravity) {
+        if (mGravity == gravity)
+            return;
         mGravity = gravity;
         requestLayout();
         invalidate();
+    }
+
+    /**
+     * 获取排版方式
+     *
+     * @return 排版方式
+     */
+    public int getGravity() {
+        return mGravity;
     }
 
     /**
@@ -835,9 +846,20 @@ public class CircleProgressBar extends View {
      * @param radius 环形半径
      */
     public void setRadius(float radius) {
+        if (mRadius == radius)
+            return;
         mRadius = radius;
         requestLayout();
         invalidate();
+    }
+
+    /**
+     * 获取环形半径
+     *
+     * @return 环形半径
+     */
+    public float getRadius() {
+        return mRadius;
     }
 
     /**
@@ -846,8 +868,19 @@ public class CircleProgressBar extends View {
      * @param angle 角度
      */
     public void setStartAngle(int angle) {
+        if (mStartAngle == angle)
+            return;
         mStartAngle = angle;
         invalidate();
+    }
+
+    /**
+     * 获取起始角度
+     *
+     * @return 起始角度
+     */
+    public int getStartAngle() {
+        return mStartAngle;
     }
 
     /**
@@ -856,9 +889,20 @@ public class CircleProgressBar extends View {
      * @param angle 角度
      */
     public void setSweepAngle(int angle) {
+        if (mSweepAngle == angle)
+            return;
         mSweepAngle = angle;
         mDialCount = mDialAngle <= 0 ? 0 : mSweepAngle / mDialAngle;
         invalidate();
+    }
+
+    /**
+     * 获取扫描角度
+     *
+     * @return 扫描角度
+     */
+    public int getSweepAngle() {
+        return mSweepAngle;
     }
 
     /**
@@ -867,8 +911,19 @@ public class CircleProgressBar extends View {
      * @param size 尺寸
      */
     public void setBackgroundSize(float size) {
+        if (mBackgroundSize == size)
+            return;
         mBackgroundSize = size;
         invalidate();
+    }
+
+    /**
+     * 获取背景尺寸
+     *
+     * @return 背景尺寸
+     */
+    public float getBackgroundSize() {
+        return mBackgroundSize;
     }
 
     /**
@@ -877,8 +932,19 @@ public class CircleProgressBar extends View {
      * @param color 背景颜色
      */
     public void setBackgroundColor(int color) {
+        if (mBackgroundColor == color)
+            return;
         mBackgroundColor = color;
         invalidate();
+    }
+
+    /**
+     * 获取背景颜色
+     *
+     * @return 背景颜色
+     */
+    public int getBackgroundColor() {
+        return mBackgroundColor;
     }
 
     /**
@@ -887,9 +953,20 @@ public class CircleProgressBar extends View {
      * @param size 尺寸
      */
     public void setProgressSize(float size) {
+        if (mProgressSize == size)
+            return;
         mProgressSize = size;
         requestLayout();
         invalidate();
+    }
+
+    /**
+     * 获取环形尺寸
+     *
+     * @return 环形尺寸
+     */
+    public float getProgressSize() {
+        return mProgressSize;
     }
 
     /**
@@ -898,8 +975,27 @@ public class CircleProgressBar extends View {
      * @param max 最大值
      */
     public void setMax(int max) {
+        if (mMax == max)
+            return;
         mMax = max;
+        if (mProgress > mMax) {
+            mProgress = mMax;
+            mProgressAngle = mSweepAngle * ((float) mProgress / mMax);
+            if (mProgressAnimator == null || !mProgressAnimator.isRunning()) {
+                mAnimatorProgress = mProgress;
+                mAnimatorProgressAngle = mProgressAngle;
+            }
+        }
         invalidate();
+    }
+
+    /**
+     * 获取最大值
+     *
+     * @return 最大值
+     */
+    public int getMax() {
+        return mMax;
     }
 
     /**
@@ -917,6 +1013,15 @@ public class CircleProgressBar extends View {
         mAnimatorProgress = mProgress;
         mAnimatorProgressAngle = mProgressAngle;
         invalidate();
+    }
+
+    /**
+     * 获取进度
+     *
+     * @return 进度
+     */
+    public int getProgress() {
+        return mProgress;
     }
 
     /**
@@ -948,6 +1053,8 @@ public class CircleProgressBar extends View {
      * @param colors 渐变色
      */
     public void setGradientColors(int... colors) {
+        if (mGradientColors == colors)
+            return;
         mGradientColors = colors;
         invalidate();
     }
@@ -958,6 +1065,8 @@ public class CircleProgressBar extends View {
      * @param positions 渐变点
      */
     public void setGradientPositions(float... positions) {
+        if (mGradientPositions == positions)
+            return;
         mGradientPositions = positions;
         invalidate();
     }
@@ -968,9 +1077,20 @@ public class CircleProgressBar extends View {
      * @param gap 间隔
      */
     public void setDialGap(float gap) {
+        if (mDialGap == gap)
+            return;
         mDialGap = gap;
         requestLayout();
         invalidate();
+    }
+
+    /**
+     * 获取刻度间隔
+     *
+     * @return 刻度间隔
+     */
+    public float getDialGap() {
+        return mDialGap;
     }
 
     /**
@@ -979,10 +1099,21 @@ public class CircleProgressBar extends View {
      * @param angle 角度
      */
     public void setDialAngle(int angle) {
+        if (mDialAngle == angle)
+            return;
         mDialAngle = angle;
         mDialCount = mDialAngle <= 0 ? 0 : mSweepAngle / mDialAngle;
         requestLayout();
         invalidate();
+    }
+
+    /**
+     * 获取刻度角度
+     *
+     * @return 刻度角度
+     */
+    public int getDialAngle() {
+        return mDialAngle;
     }
 
     /**
@@ -991,9 +1122,20 @@ public class CircleProgressBar extends View {
      * @param height 高
      */
     public void setDialHeight(float height) {
+        if (mDialHeight == height)
+            return;
         mDialHeight = height;
         requestLayout();
         invalidate();
+    }
+
+    /**
+     * 获取刻度高
+     *
+     * @return 刻度高
+     */
+    public float getDialHeight() {
+        return mDialHeight;
     }
 
     /**
@@ -1002,9 +1144,20 @@ public class CircleProgressBar extends View {
      * @param width 宽
      */
     public void setDialWidth(float width) {
+        if (mDialWidth == width)
+            return;
         mDialWidth = width;
         requestLayout();
         invalidate();
+    }
+
+    /**
+     * 获取刻度宽
+     *
+     * @return 刻度宽
+     */
+    public float getDialWidth() {
+        return mDialWidth;
     }
 
     /**
@@ -1013,19 +1166,41 @@ public class CircleProgressBar extends View {
      * @param color 颜色
      */
     public void setDialColor(int color) {
+        if (mDialColor == color)
+            return;
         mDialColor = color;
         invalidate();
     }
 
     /**
-     * 设置特殊刻度与普通刻度的间隔
+     * 获取刻度颜色
+     *
+     * @return 刻度颜色
+     */
+    public int getDialColor() {
+        return mDialColor;
+    }
+
+    /**
+     * 设置特殊刻度之间间隔
      * 单位以普通刻度为参考，设置为2时，第1个普通刻度、第3个普通刻度等每隔一个普通刻度都变为特殊刻度
      *
      * @param unit 刻度
      */
     public void setDialSpecialUnit(int unit) {
+        if (mDialSpecialUnit == unit)
+            return;
         mDialSpecialUnit = unit;
         invalidate();
+    }
+
+    /**
+     * 获取特殊刻度之间间隔
+     *
+     * @return 特殊刻度之间间隔
+     */
+    public int getDialSpecialUnit() {
+        return mDialSpecialUnit;
     }
 
     /**
@@ -1034,9 +1209,20 @@ public class CircleProgressBar extends View {
      * @param height 高
      */
     public void setDialSpecialHeight(float height) {
+        if (mDialSpecialHeight == height)
+            return;
         mDialSpecialHeight = height;
         requestLayout();
         invalidate();
+    }
+
+    /**
+     * 获取特殊刻度的高
+     *
+     * @return 特殊刻度的高
+     */
+    public float getDialSpecialHeight() {
+        return mDialSpecialHeight;
     }
 
     /**
@@ -1045,8 +1231,19 @@ public class CircleProgressBar extends View {
      * @param width 宽
      */
     public void setDialSpecialWidth(float width) {
+        if (mDialSpecialWidth == width)
+            return;
         mDialSpecialWidth = width;
         invalidate();
+    }
+
+    /**
+     * 获取特殊刻度的宽
+     *
+     * @return 特殊刻度的宽
+     */
+    public float getDialSpecialWidth() {
+        return mDialSpecialWidth;
     }
 
     /**
@@ -1055,8 +1252,19 @@ public class CircleProgressBar extends View {
      * @param color 颜色
      */
     public void setDialSpecialColor(int color) {
+        if (mDialSpecialColor == color)
+            return;
         mDialSpecialColor = color;
         invalidate();
+    }
+
+    /**
+     * 获取特殊刻度颜色
+     *
+     * @return 特殊刻度颜色
+     */
+    public int getDialSpecialColor() {
+        return mDialSpecialColor;
     }
 
     /**
@@ -1065,8 +1273,19 @@ public class CircleProgressBar extends View {
      * @param gravity 对齐方式
      */
     public void setDialGravity(int gravity) {
+        if (mDialGravity == gravity)
+            return;
         mDialGravity = gravity;
         invalidate();
+    }
+
+    /**
+     * 获取长短刻度的对齐方式
+     *
+     * @return 长短刻度的对齐方式
+     */
+    public int getDialGravity() {
+        return mDialGravity;
     }
 
     /**
@@ -1075,9 +1294,20 @@ public class CircleProgressBar extends View {
      * @param show 是否显示
      */
     public void setShowSpecialDialValue(boolean show) {
+        if (mShowSpecialDialValue == show)
+            return;
         mShowSpecialDialValue = show;
         requestLayout();
         invalidate();
+    }
+
+    /**
+     * 判断是否显示特殊刻度值
+     *
+     * @return 是否显示特殊刻度值
+     */
+    public boolean isShowSpecialDialValue() {
+        return mShowSpecialDialValue;
     }
 
     /**
@@ -1086,9 +1316,20 @@ public class CircleProgressBar extends View {
      * @param gap 间距
      */
     public void setSpecialDialValueGap(float gap) {
+        if (mSpecialDialValueGap == gap)
+            return;
         mSpecialDialValueGap = gap;
         requestLayout();
         invalidate();
+    }
+
+    /**
+     * 获取特殊刻度值间距
+     *
+     * @return 特殊刻度值间距
+     */
+    public float getSpecialDialValueGap() {
+        return mSpecialDialValueGap;
     }
 
     /**
@@ -1097,9 +1338,20 @@ public class CircleProgressBar extends View {
      * @param textSize 文字大小
      */
     public void setSpecialDialValueTextSize(float textSize) {
+        if (mSpecialDialValueTextSize == textSize)
+            return;
         mSpecialDialValueTextSize = textSize;
         requestLayout();
         invalidate();
+    }
+
+    /**
+     * 获取特殊刻度值文字大小
+     *
+     * @return 特殊刻度值文字大小
+     */
+    public float getSpecialDialValueTextSize() {
+        return mSpecialDialValueTextSize;
     }
 
     /**
@@ -1108,8 +1360,19 @@ public class CircleProgressBar extends View {
      * @param color 文字颜色
      */
     public void setSpecialDialValueTextColor(int color) {
+        if (mSpecialDialValueTextColor == color)
+            return;
         mSpecialDialValueTextColor = color;
         invalidate();
+    }
+
+    /**
+     * 获取特殊刻度值文字颜色
+     *
+     * @return 特殊刻度值文字颜色
+     */
+    public int getSpecialDialValueTextColor() {
+        return mSpecialDialValueTextColor;
     }
 
     /**
@@ -1118,6 +1381,8 @@ public class CircleProgressBar extends View {
      * @param show 是否显示
      */
     public void setShowProgressValue(boolean show) {
+        if (mShowProgressValue == show)
+            return;
         mShowProgressValue = show;
         String value = getProgressValue(mProgress);
         if (value == null)
@@ -1132,11 +1397,22 @@ public class CircleProgressBar extends View {
     }
 
     /**
+     * 判断是否显示进度值
+     *
+     * @return 是否显示进度值
+     */
+    public boolean isShowProgressValue() {
+        return mShowProgressValue;
+    }
+
+    /**
      * 设置进度值文字
      *
      * @param textSize 进度值文字
      */
     public void setProgressValueTextSize(float textSize) {
+        if (mProgressValueTextSize == textSize)
+            return;
         mProgressValueTextSize = textSize;
         String value = getProgressValue(mProgress);
         if (value == null)
@@ -1151,13 +1427,33 @@ public class CircleProgressBar extends View {
     }
 
     /**
+     * 获取进度值文字
+     *
+     * @return 进度值文字
+     */
+    public float getProgressValueTextSize() {
+        return mProgressValueTextSize;
+    }
+
+    /**
      * 设置进度值文字颜色
      *
      * @param color 文字颜色
      */
     public void setProgressValueTextColor(int color) {
+        if (mProgressValueTextColor == color)
+            return;
         mProgressValueTextColor = color;
         invalidate();
+    }
+
+    /**
+     * 获取进度值文字颜色
+     *
+     * @return 进度值文字颜色
+     */
+    public int getProgressValueTextColor() {
+        return mProgressValueTextColor;
     }
 
     /**
@@ -1166,8 +1462,19 @@ public class CircleProgressBar extends View {
      * @param text 文字
      */
     public void setTopText(String text) {
+        if (mTopText != null && mTopText.equals(text))
+            return;
         mTopText = text;
         invalidate();
+    }
+
+    /**
+     * 获取进度值顶部文字
+     *
+     * @return 进度值顶部文字
+     */
+    public String getTopText() {
+        return mTopText;
     }
 
     /**
@@ -1176,8 +1483,19 @@ public class CircleProgressBar extends View {
      * @param gap 间隔
      */
     public void setTopTextGap(float gap) {
+        if (mTopTextGap == gap)
+            return;
         mTopTextGap = gap;
         invalidate();
+    }
+
+    /**
+     * 获取进度值顶部文字间隔
+     *
+     * @return 进度值顶部文字间隔
+     */
+    public float getTopTextGap() {
+        return mTopTextGap;
     }
 
     /**
@@ -1186,8 +1504,19 @@ public class CircleProgressBar extends View {
      * @param textSize 大小
      */
     public void setTopTextSize(float textSize) {
+        if (mTopTextSize == textSize)
+            return;
         mTopTextSize = textSize;
         invalidate();
+    }
+
+    /**
+     * 获取进度值顶部文字大小
+     *
+     * @return 进度值顶部文字大小
+     */
+    public float getTopTextSize() {
+        return mTopTextSize;
     }
 
     /**
@@ -1196,8 +1525,19 @@ public class CircleProgressBar extends View {
      * @param color 文字颜色
      */
     public void setTopTextColor(int color) {
+        if (mTopTextColor == color)
+            return;
         mTopTextColor = color;
         invalidate();
+    }
+
+    /**
+     * 获取进度值顶部文字颜色
+     *
+     * @return 进度值顶部文字颜色
+     */
+    public int getTopTextColor() {
+        return mTopTextColor;
     }
 
     /**
@@ -1206,8 +1546,19 @@ public class CircleProgressBar extends View {
      * @param text 文字
      */
     public void setBottomText(String text) {
+        if (mBottomText != null && mBottomText.equals(text))
+            return;
         mBottomText = text;
         invalidate();
+    }
+
+    /**
+     * 获取进度值底部文字
+     *
+     * @return 进度值底部文字
+     */
+    public String getBottomText() {
+        return mBottomText;
     }
 
     /**
@@ -1216,8 +1567,19 @@ public class CircleProgressBar extends View {
      * @param gap 间隔
      */
     public void setBottomTextGap(float gap) {
+        if (mBottomTextGap == gap)
+            return;
         mBottomTextGap = gap;
         invalidate();
+    }
+
+    /**
+     * 获取进度值底部文字间隔
+     *
+     * @return 进度值底部文字间隔
+     */
+    public float getBottomTextGap() {
+        return mBottomTextGap;
     }
 
     /**
@@ -1226,8 +1588,19 @@ public class CircleProgressBar extends View {
      * @param textSize 大小
      */
     public void setBottomTextSize(float textSize) {
+        if (mBottomTextSize == textSize)
+            return;
         mBottomTextSize = textSize;
         invalidate();
+    }
+
+    /**
+     * 获取进度值底部文字大小
+     *
+     * @return 进度值底部文字大小
+     */
+    public float getBottomTextSize() {
+        return mBottomTextSize;
     }
 
     /**
@@ -1236,8 +1609,19 @@ public class CircleProgressBar extends View {
      * @param color 文字颜色
      */
     public void setBottomTextColor(int color) {
+        if (mBottomTextColor == color)
+            return;
         mBottomTextColor = color;
         invalidate();
+    }
+
+    /**
+     * 获取进度值底部文字颜色
+     *
+     * @return 进度值底部文字颜色
+     */
+    public int getBottomTextColor() {
+        return mBottomTextColor;
     }
 
     /**
@@ -1246,8 +1630,19 @@ public class CircleProgressBar extends View {
      * @param scaleType 缩放类型
      */
     public void setScaleType(int scaleType) {
+        if (mScaleType == scaleType)
+            return;
         mScaleType = scaleType;
         invalidate();
+    }
+
+    /**
+     * 获取缩放类型
+     *
+     * @return 缩放类型
+     */
+    public int getScaleType() {
+        return mScaleType;
     }
 
     /**
@@ -1261,6 +1656,15 @@ public class CircleProgressBar extends View {
     }
 
     /**
+     * 获取进度动画时长
+     *
+     * @return 进度动画时长
+     */
+    public long getProgressDuration() {
+        return mProgressDuration;
+    }
+
+    /**
      * 设置进度动画补帧器
      * 下次动画才有效
      *
@@ -1268,6 +1672,15 @@ public class CircleProgressBar extends View {
      */
     public void setProgressInterpolator(TimeInterpolator interpolator) {
         mProgressInterpolator = interpolator;
+    }
+
+    /**
+     * 获取进度动画补帧器
+     *
+     * @return 进度动画补帧器
+     */
+    public TimeInterpolator getProgressInterpolator() {
+        return mProgressInterpolator;
     }
 
     /**
@@ -1293,6 +1706,15 @@ public class CircleProgressBar extends View {
     }
 
     /**
+     * 获取进度模式
+     *
+     * @return 进度模式
+     */
+    public ProgressMode getProgressMode() {
+        return mProgressMode;
+    }
+
+    /**
      * 设置字体样式
      *
      * @param tf 字体样式
@@ -1313,12 +1735,30 @@ public class CircleProgressBar extends View {
     }
 
     /**
+     * 获取载入起始角度
+     *
+     * @return 载入起始角度
+     */
+    public int getLoadingStartAngle() {
+        return mLoadingStartAngle;
+    }
+
+    /**
      * 设置载入扫描角度
      *
      * @param angle 角度
      */
     public void setLoadingSweepAngle(int angle) {
         mLoadingSweepAngle = angle;
+    }
+
+    /**
+     * 获取载入扫描角度
+     *
+     * @return 载入扫描角度
+     */
+    public int getLoadingSweepAngle() {
+        return mLoadingSweepAngle;
     }
 
     /**
@@ -1331,12 +1771,30 @@ public class CircleProgressBar extends View {
     }
 
     /**
+     * 获取载入动画循环时长
+     *
+     * @return 载入动画循环时长
+     */
+    public long getLoadingDuration() {
+        return mLoadingAnimator.getDuration();
+    }
+
+    /**
      * 设置载入动画补帧器
      *
      * @param interpolator 补帧器
      */
     public void setLoadingInterpolator(TimeInterpolator interpolator) {
         mLoadingAnimator.setInterpolator(interpolator);
+    }
+
+    /**
+     * 获取载入动画补帧器
+     *
+     * @return 载入动画补帧器
+     */
+    public TimeInterpolator getLoadingInterpolator() {
+        return mLoadingAnimator.getInterpolator();
     }
 
     /**
@@ -1350,14 +1808,29 @@ public class CircleProgressBar extends View {
         mLoadingAnimator.setRepeatMode(mode);
     }
 
+    public int getLoadingRepeatMode() {
+        return mLoadingAnimator.getRepeatMode();
+    }
+
     /**
      * 载入模式下是否绘制其他元素
      *
      * @param draw 是否绘制
      */
     public void setLoadingDrawOther(boolean draw) {
+        if (mLoadingDrawOther == draw)
+            return;
         mLoadingDrawOther = draw;
         invalidate();
+    }
+
+    /**
+     * 判断载入模式下是否绘制其他元素
+     *
+     * @return 载入模式下是否绘制其他元素
+     */
+    public boolean isLoadingDrawOther() {
+        return mLoadingDrawOther;
     }
 
     /**
@@ -1366,8 +1839,19 @@ public class CircleProgressBar extends View {
      * @param text 文字
      */
     public void setLoadingText(String text) {
+        if (mLoadingText != null && mLoadingText.equals(text))
+            return;
         mLoadingText = text;
         invalidate();
+    }
+
+    /**
+     * 获取载入时进度文字
+     *
+     * @return 载入时进度文字
+     */
+    public String getLoadingText() {
+        return mLoadingText;
     }
 
     /**
@@ -1376,6 +1860,8 @@ public class CircleProgressBar extends View {
      * @param calculator 输出计算器
      */
     public void setCalculator(Calculator calculator) {
+        if (mCalculator == calculator)
+            return;
         mCalculator = calculator;
         invalidate();
     }

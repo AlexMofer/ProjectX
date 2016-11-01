@@ -1,16 +1,16 @@
-# FlagProgressBar
-![ICON](https://github.com/AlexMofer/ProjectX/blob/master/flagprogressbar/icon.png)
+# CircleProgressBar
+![ICON](https://github.com/AlexMofer/ProjectX/blob/master/circleprogressbar/icon.png)
 
 可标记的进度条，主要用于展示任务进度。
 ## 预览
-![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/flagprogressbar/screenshots.gif)
+![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/circleprogressbar/screenshots.gif)
 ## 要求
 minSdkVersion 1
 ## 引用
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:flagprogressbar:1.0.0'
+    compile 'am.widget:circleprogressbar:1.0.1'
     ⋯
 }
 ```
