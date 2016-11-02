@@ -36,6 +36,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <am.widget.circleprogressbar.CircleProgressBar
+            android:id="@+id/circleprogressbar_cpb_demo"
             android:layout_width="match_parent"
             android:layout_height="480dp"
             android:padding="2dp"
@@ -67,7 +68,7 @@
             app:cpbShowProgressValue="true"
             app:cpbProgressValueTextSize="72sp"
             app:cpbProgressValueTextColor="#ff33b5e5"
-            app:cpbTopText="步数"
+            app:cpbTopText="速度"
             app:cpbTopTextSize="20sp"
             app:cpbTopTextGap="10dp"
             app:cpbTopTextColor="@color/colorPrimary"
@@ -82,6 +83,17 @@
             app:cpbLoadingRepeatMode="Reverse"
             app:cpbLoadingDrawOther="true"
             app:cpbLoadingText="载入"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 

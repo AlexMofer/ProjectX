@@ -456,13 +456,6 @@ public class CircleProgressBar extends View {
      */
     @SuppressWarnings("all")
     protected void editCanvas(Canvas canvas) {
-        String value = getProgressValue(mAnimatorProgress);
-        if (mShowProgressValue && value != null) {
-            mPaint.setTextSize(mProgressValueTextSize);
-            mPaint.getTextBounds(value, 0, value.length(), mTextMeasureBounds);
-            mProgressValueTextHeight = mTextMeasureBounds.height();
-            mProgressValueTextBottom = mTextMeasureBounds.bottom;
-        }
         float scale = 1;
         final int paddingStart = Compat.getPaddingStart(this);
         final int paddingTop = getPaddingTop();
@@ -1415,14 +1408,13 @@ public class CircleProgressBar extends View {
             return;
         mProgressValueTextSize = textSize;
         String value = getProgressValue(mProgress);
-        if (value == null)
-            return;
-        if (mShowProgressValue) {
-            mPaint.setTextSize(mProgressValueTextSize);
-            mPaint.getTextBounds(value, 0, value.length(), mTextMeasureBounds);
-            mProgressValueTextHeight = mTextMeasureBounds.height();
-            mProgressValueTextBottom = mTextMeasureBounds.bottom;
+        if (value == null) {
+            value = "88";
         }
+        mPaint.setTextSize(mProgressValueTextSize);
+        mPaint.getTextBounds(value, 0, value.length(), mTextMeasureBounds);
+        mProgressValueTextHeight = mTextMeasureBounds.height();
+        mProgressValueTextBottom = mTextMeasureBounds.bottom;
         invalidate();
     }
 

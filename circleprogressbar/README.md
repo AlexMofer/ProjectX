@@ -1,16 +1,16 @@
 # CircleProgressBar
 ![ICON](https://github.com/AlexMofer/ProjectX/blob/master/circleprogressbar/icon.png)
 
-可标记的进度条，主要用于展示任务进度。
+带载入动画的环形进度条，可高度配置，支持配置成表盘。
 ## 预览
 ![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/circleprogressbar/screenshots.gif)
 ## 要求
-minSdkVersion 1
+minSdkVersion 11
 ## 引用
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:circleprogressbar:1.0.1'
+    compile 'am.widget:circleprogressbar:1.0.2'
     ⋯
 }
 ```
