@@ -592,6 +592,8 @@ public class CircleProgressBar extends View {
             mPaint.setStrokeWidth(mDialWidth);
             mPaint.setColor(mDialColor);
             for (int i = 0; i <= mDialCount; i++) {
+                if (i * mDialAngle >= 360)
+                    break;
                 canvas.drawLine(mRadius + mDialGap + mDialHeight - halfDialWidth, 0,
                         mRadius + mDialGap + halfDialWidth, 0, mPaint);
                 canvas.rotate(mDialAngle);
@@ -603,6 +605,8 @@ public class CircleProgressBar extends View {
                     mDialSpecialHeight : mDialHeight;
             final float centerX = mRadius + mDialGap + maxDialHeight * 0.5f;
             for (int i = 0; i <= mDialCount; i++) {
+                if (i * mDialAngle >= 360)
+                    break;
                 if (i % mDialSpecialUnit == 0) {
                     mPaint.setStrokeWidth(mDialSpecialWidth);
                     mPaint.setColor(mDialSpecialColor);

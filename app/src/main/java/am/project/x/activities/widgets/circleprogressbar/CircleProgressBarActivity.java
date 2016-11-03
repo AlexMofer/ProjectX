@@ -3,6 +3,7 @@ package am.project.x.activities.widgets.circleprogressbar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import am.project.x.R;
