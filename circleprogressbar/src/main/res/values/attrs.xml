@@ -28,6 +28,11 @@
         <attr name="cpbSecondGradientPositions" format="float" />
         <attr name="cpbThirdGradientPositions" format="float" />
         <attr name="cpbFourthGradientPositions" format="float" />
+        <attr name="cpbDialVisibility" format="enum">
+            <enum name="visible" value="0"/>
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8"/>
+        </attr>
         <attr name="cpbDialGap" format="dimension" />
         <attr name="cpbDialAngle" format="integer" />
         <attr name="cpbDialHeight" format="dimension" />

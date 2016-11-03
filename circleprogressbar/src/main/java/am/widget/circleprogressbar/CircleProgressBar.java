@@ -50,6 +50,7 @@ public class CircleProgressBar extends View {
     private float mProgressAngle;// 进度角度
     private int[] mGradientColors;// 渐变颜色
     private float[] mGradientPositions;// 渐变点
+    private int mDialVisibility = VISIBLE;
     private float mDialGap;// 刻度条与进度条间隔
     private int mDialCount = 0; // 刻度条数目
     private int mDialAngle;// 刻度角度
@@ -184,6 +185,7 @@ public class CircleProgressBar extends View {
         int progress = 0;
         int[] colors = new int[]{};
         float[] positions = null;
+        int dialVisibility;
         float dialGap = 0;
         int dialAngle = 0;
         float dialHeight = 0;
@@ -265,6 +267,7 @@ public class CircleProgressBar extends View {
                         R.styleable.CircleProgressBar_cpbFourthGradientPositions, 0));
             positions = addPosition(positions, 1);
         }
+        dialVisibility = custom.getInt(R.styleable.CircleProgressBar_cpbDialVisibility, VISIBLE);
         dialGap = custom.getDimension(R.styleable.CircleProgressBar_cpbDialGap, dialGap);
         dialAngle = custom.getInteger(R.styleable.CircleProgressBar_cpbDialAngle, dialAngle);
         dialHeight = custom.getDimension(R.styleable.CircleProgressBar_cpbDialHeight, dialHeight);
@@ -335,6 +338,7 @@ public class CircleProgressBar extends View {
         setProgress(progress);
         setGradientColors(addColor(colors, colors[0]));
         setGradientPositions(positions);
+        setDialVisibility(dialVisibility);
         setDialGap(dialGap);
         setDialAngle(dialAngle);
         setDialHeight(dialHeight);
@@ -395,7 +399,8 @@ public class CircleProgressBar extends View {
         final int paddingEnd = Compat.getPaddingEnd(this);
         final int paddingBottom = getPaddingBottom();
         mItemSize = mRadius * 2;
-        if (mDialCount > 0 && (mDialHeight > 0 || mDialSpecialHeight > 0)) {
+        if (mDialVisibility != GONE && mDialCount > 0 &&
+                (mDialHeight > 0 || mDialSpecialHeight > 0)) {
             mItemSize += mDialGap * 2;
             mItemSize += (mDialHeight > mDialSpecialHeight ? mDialHeight : mDialSpecialHeight) * 2;
         }
@@ -571,6 +576,8 @@ public class CircleProgressBar extends View {
      * @param canvas 画布
      */
     protected void drawDial(Canvas canvas) {
+        if (mDialVisibility != VISIBLE)
+            return;
         if (mDialCount <= 0 || (mDialHeight <= 0 && mDialSpecialHeight <= 0))
             return;
         mPaint.setTextSize(mSpecialDialValueTextSize);
@@ -1048,7 +1055,12 @@ public class CircleProgressBar extends View {
     public void setGradientColors(int... colors) {
         if (mGradientColors == colors)
             return;
-        mGradientColors = colors;
+        if (colors.length <= 0)
+            mGradientColors = new int[]{0x00000000, 0x00000000};
+        else if (colors.length == 1)
+            mGradientColors = new int[]{colors[0], colors[0]};
+        else
+            mGradientColors = colors;
         invalidate();
     }
 
@@ -1062,6 +1074,28 @@ public class CircleProgressBar extends View {
             return;
         mGradientPositions = positions;
         invalidate();
+    }
+
+    /**
+     * 设置刻度表盘是否显示
+     *
+     * @param visibility 刻度表盘是否显示
+     */
+    public void setDialVisibility(int visibility) {
+        if (mDialVisibility == visibility)
+            return;
+        mDialVisibility = visibility;
+        requestLayout();
+        invalidate();
+    }
+
+    /**
+     * 获取刻度表盘是否显示
+     *
+     * @return 刻度表盘是否显示
+     */
+    public int getDialVisibility() {
+        return mDialVisibility;
     }
 
     /**
