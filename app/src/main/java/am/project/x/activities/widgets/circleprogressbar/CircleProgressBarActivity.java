@@ -25,7 +25,7 @@ public class CircleProgressBarActivity extends BaseActivity {
             public void run() {
                 cpbDemo.setProgress(0);
                 cpbDemo.setProgressMode(CircleProgressBar.ProgressMode.PROGRESS);
-                cpbDemo.animationToProgress(600);
+                cpbDemo.animationToProgress(800);
             }
         }, 12000);
     }
