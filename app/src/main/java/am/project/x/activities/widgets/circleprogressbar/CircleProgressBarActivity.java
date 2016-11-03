@@ -1,5 +1,6 @@
 package am.project.x.activities.widgets.circleprogressbar;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,25 +23,30 @@ public class CircleProgressBarActivity extends BaseActivity {
     protected void initResource(Bundle savedInstanceState) {
         setSupportActionBar(R.id.circleprogressbar_toolbar);
         cpbDemo = (CircleProgressBar) findViewById(R.id.circleprogressbar_cpb_demo);
-//        cpbDemo.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                cpbDemo.setProgress(0);
-//                cpbDemo.setProgressMode(CircleProgressBar.ProgressMode.PROGRESS);
-//                cpbDemo.animationToProgress(800);
-//            }
-//        }, 12000);
+
         cpbDemo.setStartAngle(-90);
         cpbDemo.setSweepAngle(360);
         cpbDemo.setGradientColors(0xffff4444);
         cpbDemo.setBackgroundSize(0);
-        cpbDemo.setProgress(520);
+        cpbDemo.setProgress(0);
         cpbDemo.setProgressSize(64);
         cpbDemo.setDialVisibility(View.GONE);
-        cpbDemo.setProgressMode(CircleProgressBar.ProgressMode.PROGRESS);
+        cpbDemo.setLoadingStartAngle(-90);
+        cpbDemo.setLoadingSweepAngle(360);
+        cpbDemo.setLoadingRepeatMode(ValueAnimator.RESTART);
+        cpbDemo.setProgressMode(CircleProgressBar.ProgressMode.LOADING);
         cpbDemo.setShowProgressValue(true);
         cpbDemo.setTopText("步数");
         cpbDemo.setBottomText(null);
+
+        cpbDemo.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                cpbDemo.setProgress(0);
+                cpbDemo.setProgressMode(CircleProgressBar.ProgressMode.PROGRESS);
+                cpbDemo.animationToProgress(678);
+            }
+        }, 12000);
     }
 
     public static void startActivity(Context context) {
