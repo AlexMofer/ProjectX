@@ -130,7 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/combination_reserved_width" />
+                android:text="@string/line_line_size" />
 
             <SeekBar
                 android:id="@+id/line_sb_size"

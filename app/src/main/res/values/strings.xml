@@ -179,6 +179,29 @@
     <string name="recyclepager_page">第%1$d页</string>
 
     <string name="circleprogressbar_title">环形进度条</string>
+    <string name="circleprogressbar_gravity">布局：</string>
+    <string name="circleprogressbar_gravity_left">左</string>
+    <string name="circleprogressbar_gravity_center_horizontal">水平居中</string>
+    <string name="circleprogressbar_gravity_right">右</string>
+    <string name="circleprogressbar_gravity_center_vertical">垂直居中</string>
+    <string name="circleprogressbar_gravity_center">居中</string>
+    <string name="circleprogressbar_gravity_center_vertical_right">垂直居中靠右</string>
+    <string name="circleprogressbar_gravity_bottom_left">底部靠左</string>
+    <string name="circleprogressbar_gravity_bottom_center_horizontal">底部水平居中</string>
+    <string name="circleprogressbar_gravity_bottom_right">底部靠右</string>
+    <string name="circleprogressbar_radius">进度条半径：（100dp～200dp）</string>
+    <string name="circleprogressbar_start_angle">进度起始角度：</string>
+    <string name="circleprogressbar_sweep_angle">进度扫描角度：</string>
+    <string name="circleprogressbar_background_size">背景尺寸大小：（0dp～30dp）</string>
+    <string name="circleprogressbar_progress_size">进度尺寸大小：（0dp～30dp）</string>
+    <string name="circleprogressbar_progress">进度值：(0～810)</string>
+    <string name="circleprogressbar_gradient">进度渐变色：</string>
+    <string name="circleprogressbar_visibility">进度刻度可见状态：</string>
+    <string name="circleprogressbar_visibility_visible">visible</string>
+    <string name="circleprogressbar_visibility_invisible">invisible</string>
+    <string name="circleprogressbar_visibility_gone">gone</string>
+    <string name="circleprogressbar_dial_gap">刻度表盘间距：（0dp～10dp）</string>
+    <string name="circleprogressbar_dial_angle">刻度角度：(0～10)</string>
 
     <string name="cd_welcome">welcome icon</string>
     <string name="cd_drawable">drawable</string>

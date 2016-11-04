@@ -3,7 +3,6 @@ package am.project.x.activities.drawable.line;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.ImageView;
@@ -76,7 +75,6 @@ public class LineActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 rgGravityNormal.setOnCheckedChangeListener(this);
                 break;
             case R.id.line_rb_vertical:
-                rgGravityNormal.clearCheck();
                 drawable.setGravity(Gravity.CENTER_VERTICAL);
                 rgGravityNormal.setOnCheckedChangeListener(null);
                 rgGravityNormal.clearCheck();

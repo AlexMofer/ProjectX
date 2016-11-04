@@ -38,60 +38,294 @@
         <am.widget.circleprogressbar.CircleProgressBar
             android:id="@+id/circleprogressbar_cpb_demo"
             android:layout_width="match_parent"
-            android:layout_height="480dp"
-            android:padding="2dp"
-            app:cpbGravity="center"
-            app:cpbRadius="160dp"
-            app:cpbStartAngle="135"
-            app:cpbSweepAngle="270"
-            app:cpbBackgroundSize="2dp"
+            android:layout_height="400dp"
+            android:background="@drawable/bg_drawable_center"
             app:cpbBackgroundColor="@color/colorPrimary"
-            app:cpbProgressSize="20dp"
-            app:cpbMax="810"
-            app:cpbProgress="315"
-            app:cpbFirstGradientColors="#ff33b5e5"
-            app:cpbSecondGradientColors="#ff99cc00"
-            app:cpbThirdGradientColors="#ffffbb33"
-            app:cpbFourthGradientColors="#ffff4444"
-            app:cpbDialGap="4dp"
-            app:cpbDialAngle="5"
-            app:cpbDialHeight="10dp"
-            app:cpbDialWidth="2dp"
-            app:cpbDialColor="@color/colorPrimary"
-            app:cpbDialSpecialUnit="3"
-            app:cpbDialSpecialHeight="15dp"
-            app:cpbDialSpecialColor="@color/colorAccent"
-            app:cpbShowSpecialDialValue="true"
-            app:cpbSpecialDialValueGap="2dp"
-            app:cpbSpecialDialValueTextSize="12sp"
-            app:cpbSpecialDialValueTextColor="#ff99cc00"
-            app:cpbShowProgressValue="true"
-            app:cpbProgressValueTextSize="72sp"
-            app:cpbProgressValueTextColor="#ff33b5e5"
-            app:cpbTopText="速度"
-            app:cpbTopTextSize="20sp"
-            app:cpbTopTextGap="10dp"
-            app:cpbTopTextColor="@color/colorPrimary"
+            app:cpbBackgroundSize="2dp"
             app:cpbBottomText="km/s"
-            app:cpbBottomTextSize="16sp"
-            app:cpbBottomTextGap="15dp"
             app:cpbBottomTextColor="#ffffbb33"
-            app:cpbScaleType="None"
-            app:cpbProgressDuration="2000"
-            app:cpbProgressMode="Loading"
+            app:cpbBottomTextGap="40dp"
+            app:cpbBottomTextSize="16sp"
+            app:cpbDialAngle="5"
+            app:cpbDialColor="@color/colorPrimary"
+            app:cpbDialGap="4dp"
+            app:cpbDialHeight="10dp"
+            app:cpbDialSpecialColor="@color/colorAccent"
+            app:cpbDialSpecialHeight="15dp"
+            app:cpbDialSpecialUnit="3"
+            app:cpbDialWidth="2dp"
+            app:cpbFirstGradientColors="#ff33b5e5"
+            app:cpbFourthGradientColors="#ffff4444"
+            app:cpbGravity="center"
+            app:cpbLoadingDrawOther="true"
             app:cpbLoadingDuration="3000"
             app:cpbLoadingRepeatMode="Reverse"
-            app:cpbLoadingDrawOther="true"
-            app:cpbLoadingText="载入"/>
+            app:cpbLoadingText="载入"
+            app:cpbMax="810"
+            app:cpbProgress="315"
+            app:cpbProgressDuration="2000"
+            app:cpbProgressMode="Loading"
+            app:cpbProgressSize="20dp"
+            app:cpbProgressValueTextColor="#ff33b5e5"
+            app:cpbProgressValueTextSize="72sp"
+            app:cpbRadius="160dp"
+            app:cpbScaleType="None"
+            app:cpbSecondGradientColors="#ff99cc00"
+            app:cpbShowProgressValue="true"
+            app:cpbShowSpecialDialValue="true"
+            app:cpbSpecialDialValueGap="2dp"
+            app:cpbSpecialDialValueTextColor="#ff99cc00"
+            app:cpbSpecialDialValueTextSize="12sp"
+            app:cpbStartAngle="135"
+            app:cpbSweepAngle="270"
+            app:cpbThirdGradientColors="#ffffbb33"
+            app:cpbTopText="速度"
+            app:cpbTopTextColor="@color/colorPrimary"
+            app:cpbTopTextGap="40dp"
+            app:cpbTopTextSize="20sp" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/circleprogressbar_gravity" />
+
+                <RadioGroup
+                    android:id="@+id/cpb_rg_gravity_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/cpb_rb_left"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/circleprogressbar_gravity_left" />
+
+                    <RadioButton
+                        android:id="@+id/cpb_rb_center_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/circleprogressbar_gravity_center_horizontal" />
+
+                    <RadioButton
+                        android:id="@+id/cpb_rb_right"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/circleprogressbar_gravity_right" />
+                </RadioGroup>
+
+                <RadioGroup
+                    android:id="@+id/cpb_rg_gravity_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/cpb_rb_center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/circleprogressbar_gravity_center_vertical" />
+
+                    <RadioButton
+                        android:id="@+id/cpb_rb_center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="@string/circleprogressbar_gravity_center" />
+
+                    <RadioButton
+                        android:id="@+id/cpb_rb_center_vertical_right"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/circleprogressbar_gravity_center_vertical_right" />
+                </RadioGroup>
+
+                <RadioGroup
+                    android:id="@+id/cpb_rg_gravity_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/cpb_rb_bottom_left"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/circleprogressbar_gravity_bottom_left" />
+
+                    <RadioButton
+                        android:id="@+id/cpb_rb_bottom_center_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/circleprogressbar_gravity_bottom_center_horizontal" />
+
+                    <RadioButton
+                        android:id="@+id/cpb_rb_bottom_right"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/circleprogressbar_gravity_bottom_right" />
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/circleprogressbar_radius" />
+
+                <SeekBar
+                    android:id="@+id/cpb_sb_radius"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="60" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/circleprogressbar_start_angle" />
+
+                <SeekBar
+                    android:id="@+id/cpb_sb_start_angle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="360"
+                    android:progress="135" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/circleprogressbar_sweep_angle" />
+
+                <SeekBar
+                    android:id="@+id/cpb_sb_sweep_angle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="360"
+                    android:progress="270" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/circleprogressbar_background_size" />
+
+                <SeekBar
+                    android:id="@+id/cpb_sb_background_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="30"
+                    android:progress="2" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/circleprogressbar_progress_size" />
+
+                <SeekBar
+                    android:id="@+id/cpb_sb_progress_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="30"
+                    android:progress="20" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/circleprogressbar_progress" />
+
+                <SeekBar
+                    android:id="@+id/cpb_sb_progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="810"
+                    android:progress="315" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/circleprogressbar_gradient" />
+
+                <Switch
+                    android:id="@+id/cpb_st_gradient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/circleprogressbar_visibility" />
+                <RadioGroup
+                    android:id="@+id/cpb_rg_dial_visibility"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/cpb_rb_visible"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="@string/circleprogressbar_visibility_visible" />
+
+                    <RadioButton
+                        android:id="@+id/cpb_rb_invisible"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/circleprogressbar_visibility_invisible" />
+
+                    <RadioButton
+                        android:id="@+id/cpb_rb_gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/circleprogressbar_visibility_gone" />
+                </RadioGroup>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/circleprogressbar_dial_gap" />
+
+                <SeekBar
+                    android:id="@+id/cpb_sb_dial_gap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="10"
+                    android:progress="4" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/circleprogressbar_dial_angle" />
+
+                <SeekBar
+                    android:id="@+id/cpb_sb_dial_angle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="10"
+                    android:progress="5" />
             </LinearLayout>
         </ScrollView>
 
