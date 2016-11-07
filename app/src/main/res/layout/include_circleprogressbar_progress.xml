@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/circleprogressbar_start_angle" />
+
+    <SeekBar
+        android:id="@+id/cpb_sb_start_angle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="360"
+        android:progress="135" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/circleprogressbar_sweep_angle" />
+
+    <SeekBar
+        android:id="@+id/cpb_sb_sweep_angle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="360"
+        android:progress="270" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/circleprogressbar_background_size" />
+
+    <SeekBar
+        android:id="@+id/cpb_sb_background_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="30"
+        android:progress="2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/circleprogressbar_progress_size" />
+
+    <SeekBar
+        android:id="@+id/cpb_sb_progress_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="30"
+        android:progress="20" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/circleprogressbar_progress_progress" />
+
+    <SeekBar
+        android:id="@+id/cpb_sb_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="810"
+        android:progress="315" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/circleprogressbar_gradient" />
+
+    <Switch
+        android:id="@+id/cpb_st_gradient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/circleprogressbar_progress_value" />
+
+    <Switch
+        android:id="@+id/cpb_st_progress_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/circleprogressbar_progress_value_text_size" />
+
+    <SeekBar
+        android:id="@+id/cpb_sb_progress_value_text_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="50"
+        android:progress="22" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/circleprogressbar_top_text_gap" />
+
+    <SeekBar
+        android:id="@+id/cpb_sb_top_text_gap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="50"
+        android:progress="40" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/circleprogressbar_top_text_size" />
+
+    <SeekBar
+        android:id="@+id/cpb_sb_top_text_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="30"
+        android:progress="10" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/circleprogressbar_bottom_text_gap" />
+
+    <SeekBar
+        android:id="@+id/cpb_sb_bottom_text_gap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="50"
+        android:progress="40" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/circleprogressbar_bottom_text_size" />
+
+    <SeekBar
+        android:id="@+id/cpb_sb_bottom_text_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="30"
+        android:progress="6" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/circleprogressbar_progress_duration" />
+
+    <SeekBar
+        android:id="@+id/cpb_sb_progress_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="49"
+        android:progress="19" />
+
+    <Button
+        android:id="@+id/cpb_btn_progress_animator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/circleprogressbar_progress_animator" />
+</LinearLayout>

@@ -25,9 +25,9 @@ import android.view.View;
 @SuppressWarnings("unused")
 public class CircleProgressBar extends View {
 
-    public static final int DIAL_GRAVITY_CENTER = 0;//长短刻度剧中显示
-    public static final int DIAL_GRAVITY_TOP = 1;//长短刻度顶部对齐
-    public static final int DIAL_GRAVITY_BOTTOM = 2;//长短刻度底部对齐
+    public static final int DIAL_GRAVITY_CENTER = 17;//长短刻度剧中显示
+    public static final int DIAL_GRAVITY_TOP = 48;//长短刻度顶部对齐
+    public static final int DIAL_GRAVITY_BOTTOM = 80;//长短刻度底部对齐
     public static final int ST_NONE = 0;// 无缩放
     public static final int ST_INSIDE = 1;// 内部缩放
     public static final int ST_CROP = 2;// 环绕
@@ -71,7 +71,6 @@ public class CircleProgressBar extends View {
     private float mProgressValueTextSize;// 进度值文字大小
     private int mProgressValueTextColor;// 进度值文字颜色
     private int mProgressValueTextHeight = 0;// 进度值文字高度
-    private int mProgressValueTextBottom = 0;// 进度值文字基线
     private String mTopText;// 进度值顶部文字
     private float mTopTextGap;// 进度值顶部文字与进度值间距
     private float mTopTextSize;// 进度值顶部文字大小
@@ -594,8 +593,9 @@ public class CircleProgressBar extends View {
             for (int i = 0; i <= mDialCount; i++) {
                 if (i * mDialAngle >= 360)
                     break;
-                canvas.drawLine(mRadius + mDialGap + mDialHeight - halfDialWidth, 0,
-                        mRadius + mDialGap + halfDialWidth, 0, mPaint);
+                if (mDialHeight > 0 && mDialWidth > 0)
+                    canvas.drawLine(mRadius + mDialGap + mDialHeight - halfDialWidth, 0,
+                            mRadius + mDialGap + halfDialWidth, 0, mPaint);
                 canvas.rotate(mDialAngle);
             }
         } else {
@@ -610,48 +610,53 @@ public class CircleProgressBar extends View {
                 if (i % mDialSpecialUnit == 0) {
                     mPaint.setStrokeWidth(mDialSpecialWidth);
                     mPaint.setColor(mDialSpecialColor);
-                    switch (mDialGravity) {
-                        default:
-                        case DIAL_GRAVITY_CENTER:
-                            canvas.drawLine(centerX + mDialSpecialHeight * 0.5f - halfDialSpecialWidth,
-                                    0, centerX - mDialSpecialHeight * 0.5f + halfDialSpecialWidth, 0, mPaint);
-                            break;
-                        case DIAL_GRAVITY_TOP:
-                            canvas.drawLine(mRadius + mDialGap + maxDialHeight - halfDialSpecialWidth,
-                                    0, mRadius + mDialGap + maxDialHeight - mDialSpecialHeight + halfDialSpecialWidth, 0, mPaint);
-                            break;
-                        case DIAL_GRAVITY_BOTTOM:
-                            canvas.drawLine(
-                                    mRadius + mDialGap + mDialSpecialHeight - halfDialSpecialWidth,
-                                    0, mRadius + mDialGap + halfDialSpecialWidth, 0, mPaint);
-                            break;
+                    if (mDialSpecialHeight > 0 && mDialSpecialWidth > 0) {
+                        switch (mDialGravity) {
+                            default:
+                            case DIAL_GRAVITY_CENTER:
+                                canvas.drawLine(centerX + mDialSpecialHeight * 0.5f - halfDialSpecialWidth,
+                                        0, centerX - mDialSpecialHeight * 0.5f + halfDialSpecialWidth, 0, mPaint);
+                                break;
+                            case DIAL_GRAVITY_TOP:
+                                canvas.drawLine(mRadius + mDialGap + maxDialHeight - halfDialSpecialWidth,
+                                        0, mRadius + mDialGap + maxDialHeight - mDialSpecialHeight + halfDialSpecialWidth, 0, mPaint);
+                                break;
+                            case DIAL_GRAVITY_BOTTOM:
+                                canvas.drawLine(
+                                        mRadius + mDialGap + mDialSpecialHeight - halfDialSpecialWidth,
+                                        0, mRadius + mDialGap + halfDialSpecialWidth, 0, mPaint);
+                                break;
+                        }
                     }
-                    canvas.rotate(90);
-                    mPaint.setStyle(Paint.Style.FILL);
-                    mPaint.setColor(mSpecialDialValueTextColor);
-                    canvas.drawText(getDialValue(i, mDialCount, mMax), 0,
-                            -mRadius - mDialGap - mDialSpecialHeight - mSpecialDialValueGap - mSpecialDialValueTextBottom,
-                            mPaint);
-                    canvas.rotate(-90);
-                    mPaint.setStyle(Paint.Style.STROKE);
-
+                    if (mShowSpecialDialValue) {
+                        canvas.rotate(90);
+                        mPaint.setStyle(Paint.Style.FILL);
+                        mPaint.setColor(mSpecialDialValueTextColor);
+                        canvas.drawText(getDialValue(i, mDialCount, mMax), 0,
+                                -mRadius - mDialGap - maxDialHeight - mSpecialDialValueGap - mSpecialDialValueTextBottom,
+                                mPaint);
+                        canvas.rotate(-90);
+                        mPaint.setStyle(Paint.Style.STROKE);
+                    }
                 } else {
                     mPaint.setStrokeWidth(mDialWidth);
                     mPaint.setColor(mDialColor);
-                    switch (mDialGravity) {
-                        default:
-                        case DIAL_GRAVITY_CENTER:
-                            canvas.drawLine(centerX + mDialHeight * 0.5f - halfDialSpecialWidth,
-                                    0, centerX - mDialHeight * 0.5f + halfDialSpecialWidth, 0, mPaint);
-                            break;
-                        case DIAL_GRAVITY_TOP:
-                            canvas.drawLine(mRadius + mDialGap + maxDialHeight - halfDialSpecialWidth,
-                                    0, mRadius + mDialGap + maxDialHeight - mDialHeight + halfDialSpecialWidth, 0, mPaint);
-                            break;
-                        case DIAL_GRAVITY_BOTTOM:
-                            canvas.drawLine(mRadius + mDialGap + mDialHeight - halfDialWidth, 0,
-                                    mRadius + mDialGap + halfDialWidth, 0, mPaint);
-                            break;
+                    if (mDialHeight > 0 && mDialWidth > 0) {
+                        switch (mDialGravity) {
+                            default:
+                            case DIAL_GRAVITY_CENTER:
+                                canvas.drawLine(centerX + mDialHeight * 0.5f - halfDialSpecialWidth,
+                                        0, centerX - mDialHeight * 0.5f + halfDialSpecialWidth, 0, mPaint);
+                                break;
+                            case DIAL_GRAVITY_TOP:
+                                canvas.drawLine(mRadius + mDialGap + maxDialHeight - halfDialSpecialWidth,
+                                        0, mRadius + mDialGap + maxDialHeight - mDialHeight + halfDialSpecialWidth, 0, mPaint);
+                                break;
+                            case DIAL_GRAVITY_BOTTOM:
+                                canvas.drawLine(mRadius + mDialGap + mDialHeight - halfDialWidth, 0,
+                                        mRadius + mDialGap + halfDialWidth, 0, mPaint);
+                                break;
+                        }
                     }
 
                 }
@@ -712,12 +717,12 @@ public class CircleProgressBar extends View {
             return;
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setShader(null);
+        mPaint.setStrokeWidth(0);
         mPaint.setTextSize(mProgressValueTextSize);
         mPaint.setColor(mProgressValueTextColor);
-        canvas.save();
-        canvas.drawText(value, 0, mProgressValueTextHeight * 0.5f - mProgressValueTextBottom,
+        mPaint.getTextBounds(value, 0, value.length(), mTextMeasureBounds);
+        canvas.drawText(value, 0, mTextMeasureBounds.height() * 0.5f - mTextMeasureBounds.bottom,
                 mPaint);
-        canvas.restore();
     }
 
     /**
@@ -749,9 +754,8 @@ public class CircleProgressBar extends View {
         mPaint.setColor(mTopTextColor);
         mPaint.getTextBounds(mTopText, 0, mTopText.length(), mTextMeasureBounds);
         canvas.save();
-        canvas.drawText(mTopText, 0, -mProgressValueTextHeight * 0.5f - mTopTextGap
-                        - mTextMeasureBounds.bottom,
-                mPaint);
+        canvas.drawText(mTopText, 0, -mProgressValueTextHeight * 0.5f
+                - mTopTextGap - mTextMeasureBounds.bottom, mPaint);
         canvas.restore();
     }
 
@@ -1044,8 +1048,6 @@ public class CircleProgressBar extends View {
      * @param progress 结束进度
      */
     public void animationToProgress(int start, int progress) {
-        if (mProgress == progress)
-            return;
         mProgress = progress > mMax ? mMax : progress;
         mProgressAngle = mSweepAngle * ((float) mProgress / mMax);
         makeProgressAnimation(start, progress > mMax ? mMax : progress);
@@ -1415,15 +1417,6 @@ public class CircleProgressBar extends View {
         if (mShowProgressValue == show)
             return;
         mShowProgressValue = show;
-        String value = getProgressValue(mProgress);
-        if (value == null)
-            return;
-        if (mShowProgressValue) {
-            mPaint.setTextSize(mProgressValueTextSize);
-            mPaint.getTextBounds(value, 0, value.length(), mTextMeasureBounds);
-            mProgressValueTextHeight = mTextMeasureBounds.height();
-            mProgressValueTextBottom = mTextMeasureBounds.bottom;
-        }
         invalidate();
     }
 
@@ -1445,14 +1438,9 @@ public class CircleProgressBar extends View {
         if (mProgressValueTextSize == textSize)
             return;
         mProgressValueTextSize = textSize;
-        String value = getProgressValue(mProgress);
-        if (value == null) {
-            value = "88";
-        }
         mPaint.setTextSize(mProgressValueTextSize);
-        mPaint.getTextBounds(value, 0, value.length(), mTextMeasureBounds);
-        mProgressValueTextHeight = mTextMeasureBounds.height();
-        mProgressValueTextBottom = mTextMeasureBounds.bottom;
+        Paint.FontMetricsInt metrics = mPaint.getFontMetricsInt();
+        mProgressValueTextHeight = metrics.descent - metrics.ascent;
         invalidate();
     }
 

@@ -43,9 +43,9 @@
         <attr name="cpbDialSpecialWidth" format="dimension" />
         <attr name="cpbDialSpecialColor" format="color" />
         <attr name="cpbDialGravity" format="enum">
-            <enum name="Center" value="0" />
-            <enum name="Top" value="1" />
-            <enum name="Bottom" value="2" />
+            <enum name="Center" value="17" />
+            <enum name="Top" value="48" />
+            <enum name="Bottom" value="80" />
         </attr>
         <attr name="cpbShowSpecialDialValue" format="boolean" />
         <attr name="cpbSpecialDialValueGap" format="dimension" />

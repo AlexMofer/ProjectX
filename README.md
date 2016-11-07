@@ -39,6 +39,9 @@
 - [***SelectionView***](https://github.com/AlexMofer/ProjectX/tree/master/selectionview)
 
     快速跳选，常用于联系人列表快速选取。
+- [***CircleProgressBar***](https://github.com/AlexMofer/ProjectX/tree/master/circleprogressbar)
+
+    带载入动画的环形进度条，可高度配置，支持配置成表盘。
 
 ## Drawable
 - [***DoubleCircleDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
