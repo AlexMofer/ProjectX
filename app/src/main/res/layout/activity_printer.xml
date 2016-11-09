@@ -75,6 +75,44 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:gravity="center"
+            android:text="@string/printer_image_width"
+            android:textColor="#ff000000"
+            android:textSize="18sp" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/printer_edt_width"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="@string/printer_image_width_default"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:text="@string/printer_image_height_parting"
+            android:textColor="#ff000000"
+            android:textSize="18sp" />
+
+        <SeekBar
+            android:id="@+id/printer_sb_height"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="254"
+            android:progress="254"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
             android:text="@string/printer_qr"
             android:textColor="#ff000000"
             android:textSize="18sp" />
@@ -87,6 +125,19 @@
             android:hint="@string/printer_qr_hint"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/printer_btn_test_ip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/printer_test_ip" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/printer_btn_test_bluetooth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/printer_test_bluetooth" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -122,12 +173,6 @@
                 android:inputType="number"
                 android:maxLength="5"
                 android:text="@string/printer_port_text" />
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/printer_btn_test_ip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/printer_test" />
 
         </LinearLayout>
 

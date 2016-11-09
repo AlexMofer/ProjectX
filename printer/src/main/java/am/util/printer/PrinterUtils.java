@@ -716,11 +716,12 @@ public class PrinterUtils {
     /**
      * 解码图片
      *
-     * @param image 图片
+     * @param image   图片
+     * @param parting 高度分割值
      * @return 数据流
      */
     @SuppressWarnings("unused")
-    public static byte[] decodeBitmap(Bitmap image) {
+    public static byte[] decodeBitmap(Bitmap image, int parting) {
         if (image == null)
             return null;
         final int width = image.getWidth();
@@ -739,7 +740,7 @@ public class PrinterUtils {
             } catch (OutOfMemoryError e) {
                 return null;
             }
-            byte[] data = decodeBitmap(resizeImage);
+            byte[] data = decodeBitmap(resizeImage, parting);
             resizeImage.recycle();
             return data;
         }
@@ -763,10 +764,10 @@ public class PrinterUtils {
             }
         }
         ArrayList<String> commandList = new ArrayList<>();
-        // 高度每255像素进行一次分割
-        int time = height % 255 == 0 ? height / 255 : (height / 255 + 1);// 循环打印次数
+        // 高度每parting像素进行一次分割
+        int time = height % parting == 0 ? height / parting : (height / parting + 1);// 循环打印次数
         for (int t = 0; t < time; t++) {
-            int partHeight = t == time - 1 ? height % 255 : 255;// 分段高度
+            int partHeight = t == time - 1 ? height % parting : parting;// 分段高度
 
             // 高命令
             String heightHexString = Integer.toHexString(partHeight);
@@ -789,7 +790,7 @@ public class PrinterUtils {
                 sb.delete(0, sb.length());
                 for (int j = 0; j < width; j++) {
                     // 实际在图片中的高度
-                    int startHeight = t * 255 + i;
+                    int startHeight = t * parting + i;
                     //得到当前像素的值
                     int color = image.getPixel(j, startHeight);
                     int red, green, blue;
@@ -843,6 +844,17 @@ public class PrinterUtils {
     }
 
     /**
+     * 解码图片
+     *
+     * @param image   图片
+     * @return 数据流
+     */
+    @SuppressWarnings("unused")
+    public static byte[] decodeBitmap(Bitmap image) {
+        return decodeBitmap(image, PrinterWriter.HEIGHT_PARTING_DEFAULT);
+    }
+
+    /**
      * 合并byte数组
      *
      * @param byteArray byte数组
@@ -891,6 +903,7 @@ public class PrinterUtils {
 
     /**
      * 16进制指令list转换为byte[]指令
+     *
      * @param list 指令集
      * @return byte[]指令
      */

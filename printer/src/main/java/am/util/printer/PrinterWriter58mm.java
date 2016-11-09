@@ -14,6 +14,10 @@ public class PrinterWriter58mm extends PrinterWriter {
     public PrinterWriter58mm() throws IOException {
     }
 
+    public PrinterWriter58mm(int parting) throws IOException {
+        super(parting);
+    }
+
     @Override
     protected int getLineWidth() {
         return 16;

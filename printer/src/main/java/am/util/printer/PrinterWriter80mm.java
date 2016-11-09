@@ -7,11 +7,15 @@ import java.io.IOException;
  * Created by Alex on 2016/6/17.
  */
 @SuppressWarnings("unused")
-public class PrinterWriter80mm extends PrinterWriter{
+public class PrinterWriter80mm extends PrinterWriter {
 
     public static final int TYPE_80 = 80;// 纸宽80mm
 
     public PrinterWriter80mm() throws IOException {
+    }
+
+    public PrinterWriter80mm(int parting) throws IOException {
+        super(parting);
     }
 
     @Override

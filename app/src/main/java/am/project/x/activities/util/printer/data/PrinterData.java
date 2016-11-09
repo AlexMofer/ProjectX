@@ -19,8 +19,8 @@ import am.util.printer.PrinterWriter80mm;
  */
 class PrinterData {
 
-    static byte[] getPrintData80(Context context, String qrContent) throws IOException {
-        PrinterWriter80mm printer = new PrinterWriter80mm();
+    static byte[] getPrintData80(Context context, String qrContent, int width) throws IOException {
+        PrinterWriter80mm printer = new PrinterWriter80mm1(width);
         printer.setAlignCenter();
         printer.printDrawable(context.getResources(), R.drawable.ic_printer_logo);
         printer.setAlignLeft();
@@ -107,8 +107,8 @@ class PrinterData {
         return printer.getData();
     }
 
-    static byte[] getPrintData58(Context context, String qrContent) throws IOException {
-        PrinterWriter58mm printer = new PrinterWriter58mm();
+    static byte[] getPrintData58(Context context, String qrContent, int width) throws IOException {
+        PrinterWriter58mm printer = new PrinterWriter58mm1(width);
         printer.setAlignCenter();
         printer.printDrawable(context.getResources(), R.drawable.ic_printer_logo);
         printer.setAlignLeft();
@@ -192,5 +192,27 @@ class PrinterData {
 
         printer.feedPaperCutPartial();
         return printer.getData();
+    }
+
+    private static class PrinterWriter80mm1 extends PrinterWriter80mm {
+        private int width;
+        public PrinterWriter80mm1(int width) throws IOException {
+            this.width = width;
+        }
+        @Override
+        protected int getDrawableMaxWidth() {
+            return width;
+        }
+    }
+
+    private static class PrinterWriter58mm1 extends PrinterWriter58mm {
+        private int width;
+        public PrinterWriter58mm1(int width) throws IOException {
+            this.width = width;
+        }
+        @Override
+        protected int getDrawableMaxWidth() {
+            return width;
+        }
     }
 }

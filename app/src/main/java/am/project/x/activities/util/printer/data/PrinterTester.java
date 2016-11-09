@@ -6,8 +6,8 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
 import am.project.x.R;
-import am.util.printer.PrintTask;
 import am.util.printer.PrintRequest;
+import am.util.printer.PrintTask;
 import am.util.printer.PrinterWriter80mm;
 
 /**
@@ -23,11 +23,11 @@ public class PrinterTester {
         this.activity = activity;
     }
 
-    public void startTest(String ip, int port, int type, String qrContent) {
+    public void startTest(String ip, int port, int type, String qrContent, int width) {
         if (dlgInfo == null) {
             dlgInfo = new AlertDialog.Builder(activity).create();
         }
-        new TestPrintTask(ip, port, type, qrContent).execute();
+        new TestPrintTask(ip, port, type, qrContent,width).execute();
     }
 
     public void startTest(BluetoothDevice device, int type, String qrContent) {
@@ -41,15 +41,17 @@ public class PrinterTester {
             DialogInterface.OnCancelListener, DialogInterface.OnClickListener {
 
         private String qrContent;
+        private int width = 300;
 
         public TestPrintTask(BluetoothDevice device, int type, String qrContent) {
             super(device, type);
             this.qrContent = qrContent;
         }
 
-        public TestPrintTask(String ip, int port, int type, String qrContent) {
+        public TestPrintTask(String ip, int port, int type, String qrContent, int width) {
             super(ip, port, type);
             this.qrContent = qrContent;
+            this.width = width;
         }
 
         @Override
@@ -65,8 +67,8 @@ public class PrinterTester {
 
         @Override
         protected byte[] getPrintData(int type) throws Exception {
-            return type == PrinterWriter80mm.TYPE_80 ? PrinterData.getPrintData80(activity.getApplicationContext(), qrContent)
-                    : PrinterData.getPrintData58(activity.getApplicationContext(), qrContent);
+            return type == PrinterWriter80mm.TYPE_80 ? PrinterData.getPrintData80(activity.getApplicationContext(), qrContent, width)
+                    : PrinterData.getPrintData58(activity.getApplicationContext(), qrContent, width);
         }
 
         @Override

@@ -22,6 +22,7 @@ public class IPPrinterManager implements View.OnClickListener,
     private Activity activity;
     private EditText edtIp;
     private EditText edtPort;
+    private EditText edtWidth;
     private int type = PrinterWriter80mm.TYPE_80;
     private PrinterTester tester;
 
@@ -29,8 +30,9 @@ public class IPPrinterManager implements View.OnClickListener,
         this.activity = activity;
         edtIp = (EditText) activity.findViewById(R.id.printer_edt_ip);
         edtPort = (EditText) activity.findViewById(R.id.printer_edt_port);
+        edtWidth = (EditText) activity.findViewById(R.id.printer_edt_width);
         ((RadioGroup) activity.findViewById(R.id.printer_rg_type)).setOnCheckedChangeListener(this);
-        activity.findViewById(R.id.printer_btn_test_ip).setOnClickListener(this);
+//        activity.findViewById(R.id.printer_btn_test_ip).setOnClickListener(this);
     }
 
     @Override
@@ -55,6 +57,12 @@ public class IPPrinterManager implements View.OnClickListener,
     }
 
     private void testIp() {
+        int width;
+        try {
+            width = Integer.valueOf(edtWidth.getText().toString());
+        } catch (Exception e) {
+            width = 500;
+        }
         String ip = edtIp.getText().toString().trim();
         if (ip.length() <= 0) {
             Toast.makeText(activity, R.string.printer_edit_toast_1, Toast.LENGTH_SHORT).show();
@@ -100,6 +108,6 @@ public class IPPrinterManager implements View.OnClickListener,
             tester = new PrinterTester(activity);
         }
         tester.startTest(ip, port, type,
-                ((EditText) activity.findViewById(R.id.printer_edt_code)).getText().toString());
+                ((EditText) activity.findViewById(R.id.printer_edt_code)).getText().toString(), width);
     }
 }

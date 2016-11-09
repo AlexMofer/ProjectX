@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:text="@string/printer_ip"
+        android:textColor="#ff000000"
+        android:textSize="18sp" />
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/printer_edt_ip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:digits="0123456789."
+        android:hint="@string/printer_ip_hint"
+        android:imeOptions="actionDone"
+        android:inputType="numberDecimal"
+        android:maxLength="15" />
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/printer_edt_port"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/printer_port_hint"
+        android:imeOptions="actionDone"
+        android:inputType="number"
+        android:maxLength="5"
+        android:text="@string/printer_port_text" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="2"
+        android:text="打印机状态" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/printer_btn_test_connect"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:text="连接" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/printer_btn_test_print"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="打印" />
+    </LinearLayout>
+
+</LinearLayout>

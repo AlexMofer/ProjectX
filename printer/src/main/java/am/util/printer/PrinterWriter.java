@@ -18,11 +18,22 @@ import java.io.IOException;
  */
 public abstract class PrinterWriter {
 
+    public static final int HEIGHT_PARTING_DEFAULT = 255;
     private static final String CHARSET = "gb2312";
     private ByteArrayOutputStream bos;
+    private int heightParting;
 
     public PrinterWriter() throws IOException {
+        this(HEIGHT_PARTING_DEFAULT);
+    }
+
+    public PrinterWriter(int parting) throws IOException {
         reset();
+        if (parting <= 0 || parting > HEIGHT_PARTING_DEFAULT)
+            heightParting = HEIGHT_PARTING_DEFAULT;
+        else
+            heightParting = parting;
+        heightParting = 128;
     }
 
     /**
@@ -245,7 +256,7 @@ public abstract class PrinterWriter {
         Bitmap image = scalingBitmap(res, id, maxWidth);
         if (image == null)
             return;
-        byte[] command = PrinterUtils.decodeBitmap(image);
+        byte[] command = PrinterUtils.decodeBitmap(image, heightParting);
         image.recycle();
         try {
             if (command != null) {
@@ -318,7 +329,7 @@ public abstract class PrinterWriter {
         Bitmap image = scalingDrawable(drawable, maxWidth);
         if (image == null)
             return;
-        byte[] command = PrinterUtils.decodeBitmap(image);
+        byte[] command = PrinterUtils.decodeBitmap(image, heightParting);
         image.recycle();
         try {
             if (command != null) {
@@ -376,7 +387,7 @@ public abstract class PrinterWriter {
         Bitmap scalingImage = scalingBitmap(image, maxWidth);
         if (scalingImage == null)
             return;
-        byte[] command = PrinterUtils.decodeBitmap(scalingImage);
+        byte[] command = PrinterUtils.decodeBitmap(scalingImage, heightParting);
         scalingImage.recycle();
         try {
             if (command != null) {
@@ -470,6 +481,29 @@ public abstract class PrinterWriter {
     @SuppressWarnings("unused")
     public void feedPaperCutPartial() throws IOException {
         write(PrinterUtils.feedPaperCutPartial());
+    }
+
+    /**
+     * 设置图片打印高度分割值
+     * 最大允许255像素
+     *
+     * @param parting 高度分割值
+     */
+    @SuppressWarnings("unused")
+    public void setHeightParting(int parting) {
+        if (parting <= 0 || parting > HEIGHT_PARTING_DEFAULT)
+            return;
+        heightParting = parting;
+    }
+
+    /**
+     * 获取图片打印高度分割值
+     *
+     * @return 高度分割值
+     */
+    @SuppressWarnings("unused")
+    public int getHeightParting() {
+        return heightParting;
     }
 
     /**

@@ -60,7 +60,11 @@
     <string name="printer_port_text">9100</string>
     <string name="printer_type_80">80mm</string>
     <string name="printer_type_58">58mm</string>
-    <string name="printer_test">测试固定IP打印机</string>
+    <string name="printer_image_width">图片宽度</string>
+    <string name="printer_image_width_default">300</string>
+    <string name="printer_image_height_parting">图片高度分段像素值</string>
+    <string name="printer_test_ip">测试固定IP打印机</string>
+    <string name="printer_test_bluetooth">测试蓝牙打印机</string>
     <string name="printer_cancel">取消</string>
     <string name="printer_determine">确定</string>
     <string name="printer_edit_toast_1">请填写打印机IP地址</string>
