@@ -160,6 +160,7 @@
         </activity>
         <activity
             android:name=".activities.util.printer.PrinterActivity"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/printer_title">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

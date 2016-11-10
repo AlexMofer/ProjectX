@@ -17,9 +17,9 @@ import am.util.printer.PrinterWriter80mm;
  * 打印数据
  * Created by Alex on 2016/6/22.
  */
-class PrinterData {
+public class PrinterData {
 
-    static byte[] getPrintData80(Context context, String qrContent, int width) throws IOException {
+    public static byte[] getPrintData80(Context context, String qrContent, int width) throws IOException {
         PrinterWriter80mm printer = new PrinterWriter80mm1(width);
         printer.setAlignCenter();
         printer.printDrawable(context.getResources(), R.drawable.ic_printer_logo);
@@ -107,7 +107,7 @@ class PrinterData {
         return printer.getData();
     }
 
-    static byte[] getPrintData58(Context context, String qrContent, int width) throws IOException {
+    public static byte[] getPrintData58(Context context, String qrContent, int width) throws IOException {
         PrinterWriter58mm printer = new PrinterWriter58mm1(width);
         printer.setAlignCenter();
         printer.printDrawable(context.getResources(), R.drawable.ic_printer_logo);

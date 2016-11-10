@@ -721,7 +721,7 @@ public class PrinterUtils {
      * @return 数据流
      */
     @SuppressWarnings("unused")
-    public static byte[] decodeBitmap(Bitmap image, int parting) {
+    public static ArrayList<byte[]> decodeBitmapToDataList(Bitmap image, int parting) {
         if (image == null)
             return null;
         final int width = image.getWidth();
@@ -740,7 +740,7 @@ public class PrinterUtils {
             } catch (OutOfMemoryError e) {
                 return null;
             }
-            byte[] data = decodeBitmap(resizeImage, parting);
+            ArrayList<byte[]> data = decodeBitmapToDataList(resizeImage, parting);
             resizeImage.recycle();
             return data;
         }
@@ -840,7 +840,34 @@ public class PrinterUtils {
             // 数据指令
             commandList.addAll(bmpHexList);
         }
-        return hexListToByte(commandList);
+        ArrayList<byte[]> data = new ArrayList<>();
+        for (String hexStr : commandList) {
+            data.add(hexStringToBytes(hexStr));
+        }
+        return data;
+    }
+
+    /**
+     * 解码图片
+     *
+     * @param image   图片
+     * @param parting 高度分割值
+     * @return 数据流
+     */
+    @SuppressWarnings("unused")
+    public static byte[] decodeBitmap(Bitmap image, int parting) {
+        ArrayList<byte[]> data = decodeBitmapToDataList(image, parting);
+        int len = 0;
+        for (byte[] srcArray : data) {
+            len += srcArray.length;
+        }
+        byte[] destArray = new byte[len];
+        int destLen = 0;
+        for (byte[] srcArray : data) {
+            System.arraycopy(srcArray, 0, destArray, destLen, srcArray.length);
+            destLen += srcArray.length;
+        }
+        return destArray;
     }
 
     /**
@@ -909,7 +936,7 @@ public class PrinterUtils {
      */
     @SuppressWarnings("unused")
     public static byte[] hexListToByte(List<String> list) {
-        List<byte[]> commandList = new ArrayList<>();
+        ArrayList<byte[]> commandList = new ArrayList<>();
         for (String hexStr : list) {
             commandList.add(hexStringToBytes(hexStr));
         }

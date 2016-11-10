@@ -7,5 +7,5 @@
     android:gravity="center"
     android:minHeight="48dp"
     android:singleLine="true"
-    android:textColor="#ff000000"
+    android:textColor="@color/color_device"
     android:textSize="16sp" />

@@ -15,7 +15,7 @@ import java.security.KeyPair;
 
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
-import am.project.x.utils.ImmUtils;
+import am.project.x.utils.InputMethodUtils;
 import am.util.security.AESUtil;
 import am.util.security.DESedeUtil;
 import am.util.security.MessageDigestUtils;
@@ -47,13 +47,10 @@ public class CipherActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View view) {
         String input = edtInput.getText().toString();
         if (input.length() <= 0) {
-            edtInput.requestFocus();
-            edtInput.requestFocusFromTouch();
-            ImmUtils.showImm(this, edtInput);
+            InputMethodUtils.openInputMethod(edtInput);
             return;
         }
-        ImmUtils.closeImm(this, edtInput);
-        edtInput.clearFocus();
+        InputMethodUtils.closeInputMethod(edtInput);
         switch (view.getId()) {
             case R.id.cipher_btn_message:
                 new CipherTask(CipherTask.MODE_MESSAGE).execute(input);

@@ -79,8 +79,6 @@ public class BluetoothPrinterManager implements View.OnClickListener,
     public BluetoothPrinterManager(Activity activity) {
         this.activity = activity;
         rgType = (RadioGroup) activity.findViewById(R.id.printer_rg_type);
-        tvBluetooth = (TextView) activity.findViewById(R.id.printer_tv_bluetooth);
-        vBluetoothContent = activity.findViewById(R.id.printer_lyt_bluetooth);
         RecyclerView rvBonded = (RecyclerView) activity.findViewById(R.id.printer_rv_bonded);
         tvBluetooth.setOnClickListener(this);
         rvBonded.setLayoutManager(new LinearLayoutManager(activity));
@@ -96,13 +94,6 @@ public class BluetoothPrinterManager implements View.OnClickListener,
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.printer_tv_bluetooth:
-                tvBluetooth.setClickable(false);
-                isDeny = false;
-                checkBluetooth();
-                break;
-        }
     }
 
     private void checkBluetooth() {

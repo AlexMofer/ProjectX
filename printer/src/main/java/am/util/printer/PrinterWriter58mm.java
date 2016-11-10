@@ -10,12 +10,18 @@ import java.io.IOException;
 public class PrinterWriter58mm extends PrinterWriter {
 
     public static final int TYPE_58 = 58;// 纸宽58mm
+    public int width = 380;
 
     public PrinterWriter58mm() throws IOException {
     }
 
     public PrinterWriter58mm(int parting) throws IOException {
         super(parting);
+    }
+
+    public PrinterWriter58mm(int parting, int width) throws IOException {
+        super(parting);
+        this.width = width;
     }
 
     @Override
@@ -36,6 +42,6 @@ public class PrinterWriter58mm extends PrinterWriter {
 
     @Override
     protected int getDrawableMaxWidth() {
-        return 380;
+        return width;
     }
 }

@@ -27,7 +27,7 @@ public class PrinterTester {
         if (dlgInfo == null) {
             dlgInfo = new AlertDialog.Builder(activity).create();
         }
-        new TestPrintTask(ip, port, type, qrContent,width).execute();
+        new TestPrintTask(ip, port, type, qrContent, width).execute();
     }
 
     public void startTest(BluetoothDevice device, int type, String qrContent) {

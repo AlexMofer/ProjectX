@@ -8,6 +8,7 @@ import android.os.AsyncTask;
  * Created by Alex on 2016/6/23.
  */
 @SuppressWarnings("unused")
+@Deprecated
 public abstract class PrintTask extends AsyncTask<Void, Integer, Integer> {
 
     private SimplePrinterRequest request;

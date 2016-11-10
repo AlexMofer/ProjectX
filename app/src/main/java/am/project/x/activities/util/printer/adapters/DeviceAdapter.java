@@ -13,7 +13,8 @@ import am.project.x.activities.util.printer.viewholders.DeviceViewHolder;
  * DeviceAdapter
  * Created by Alex on 2016/6/22.
  */
-public class DeviceAdapter extends RecyclerView.Adapter<DeviceViewHolder> {
+public class DeviceAdapter extends RecyclerView.Adapter<DeviceViewHolder> implements
+        DeviceViewHolder.OnHolderListener{
 
     private DeviceViewHolder.OnHolderListener listener;
     private ArrayList<BluetoothDevice> mData = new ArrayList<>();
@@ -24,7 +25,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceViewHolder> {
 
     @Override
     public DeviceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new DeviceViewHolder(parent, listener);
+        return new DeviceViewHolder(parent, this);
     }
 
     @Override
@@ -35,6 +36,13 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceViewHolder> {
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    @Override
+    public void onItemClicked(BluetoothDevice device) {
+        notifyItemRangeChanged(0, getItemCount());
+        if (listener != null)
+            listener.onItemClicked(device);
     }
 
     public void setDevices(Set<BluetoothDevice> devices) {
