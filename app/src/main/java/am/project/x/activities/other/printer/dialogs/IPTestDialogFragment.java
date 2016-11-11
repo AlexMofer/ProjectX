@@ -25,6 +25,7 @@ import am.util.printer.PrinterWriter80mm;
  * 地址选择对话框Fragment
  * Created by Alex on 2015/11/14.
  */
+
 public class IPTestDialogFragment extends DialogFragment {
 
     private static final String EXTRA_TYPE = "type";
@@ -43,7 +44,7 @@ public class IPTestDialogFragment extends DialogFragment {
         return dialog;
     }
 
-    public class IPTestDialog extends AppCompatDialog implements View.OnClickListener,
+    class IPTestDialog extends AppCompatDialog implements View.OnClickListener,
             PrintSocketHolder.OnStateChangedListener, PrintExecutor.OnPrintResultListener {
 
         private int type;
@@ -55,7 +56,8 @@ public class IPTestDialogFragment extends DialogFragment {
         private PrintExecutor executor;
         private TestPrintDataMaker maker;
 
-        public IPTestDialog(Context context, int type, int width, int height, String qr) {
+        @SuppressWarnings("all")
+        IPTestDialog(Context context, int type, int width, int height, String qr) {
             super(context);
             this.type = type;
             setContentView(R.layout.dlg_printer_ip);
@@ -68,13 +70,13 @@ public class IPTestDialogFragment extends DialogFragment {
             maker = new TestPrintDataMaker(context, qr, width, height);
         }
 
-        public void setEditable(boolean editable) {
+        private void setEditable(boolean editable) {
             edtIp.setEnabled(editable);
             edtPort.setEnabled(editable);
             btnPrint.setEnabled(editable);
         }
 
-        public void setState(int resId) {
+        private void setState(int resId) {
             tvState.setText(resId);
         }
 
