@@ -1,4 +1,4 @@
-package am.project.x.activities.util.printer.adapters;
+package am.project.x.activities.other.printer.adapters;
 
 import android.bluetooth.BluetoothDevice;
 import android.support.v7.widget.RecyclerView;
@@ -7,17 +7,18 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Set;
 
-import am.project.x.activities.util.printer.viewholders.DeviceViewHolder;
+import am.project.x.activities.other.printer.viewholders.DeviceViewHolder;
 
 /**
  * DeviceAdapter
  * Created by Alex on 2016/6/22.
  */
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceViewHolder> implements
-        DeviceViewHolder.OnHolderListener{
+        DeviceViewHolder.OnHolderListener {
 
     private DeviceViewHolder.OnHolderListener listener;
     private ArrayList<BluetoothDevice> mData = new ArrayList<>();
+    private BluetoothDevice selectedDevice;
 
     public DeviceAdapter(DeviceViewHolder.OnHolderListener listener) {
         this.listener = listener;
@@ -30,7 +31,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceViewHolder> implem
 
     @Override
     public void onBindViewHolder(DeviceViewHolder holder, int position) {
-        holder.setData(mData.get(position));
+        BluetoothDevice device = mData.get(position);
+        holder.setData(device, device == selectedDevice);
     }
 
     @Override
@@ -40,7 +42,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceViewHolder> implem
 
     @Override
     public void onItemClicked(BluetoothDevice device) {
-        notifyItemRangeChanged(0, getItemCount());
+        BluetoothDevice oldDevice = selectedDevice;
+        selectedDevice = device;
+        if (oldDevice != null && mData != null)
+            notifyItemChanged(mData.indexOf(oldDevice));
         if (listener != null)
             listener.onItemClicked(device);
     }

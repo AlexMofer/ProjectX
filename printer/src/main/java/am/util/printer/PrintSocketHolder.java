@@ -14,7 +14,7 @@ import java.util.UUID;
  * 打印Socket
  * Created by Alex on 2016/11/10.
  */
-
+@SuppressWarnings("all")
 public class PrintSocketHolder {
     public static final int STATE_0 = 0;// 生成测试页面数据
     public static final int STATE_1 = 1;// 创建Socket连接

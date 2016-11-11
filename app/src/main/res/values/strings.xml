@@ -71,9 +71,7 @@
     <string name="printer_edit_toast_2">请正确填写打印机IP地址</string>
     <string name="printer_edit_toast_3">请填写打印机端口号</string>
     <string name="printer_edit_toast_4">请正确填写打印机端口号，0～65535</string>
-    <string name="printer_bluetooth_init">蓝牙初始化&#8230;</string>
     <string name="printer_bluetooth_not_support">不支持蓝牙</string>
-    <string name="printer_bluetooth_open">开启蓝牙以继续</string>
     <string name="printer_bluetooth_dlg_open">打开蓝牙，以便连接蓝牙打印设备。</string>
     <string name="printer_bluetooth_dlg_close">是否需要关闭蓝牙？</string>
     <string name="printer_allow">"允许"</string>
@@ -94,6 +92,8 @@
     <string name="printer_result_message_4">获取输出流失败！</string>
     <string name="printer_result_message_5">写入测试页面数据失败！</string>
     <string name="printer_result_message_6">必要的参数不能为空！</string>
+    <string name="printer_result_message_7">关闭Socket出错！</string>
+    <string name="printer_result_message_8">打印失败！</string>
 
     <string name="cipher_title">加密解密</string>
     <string name="cipher_input">输入待处理文本</string>

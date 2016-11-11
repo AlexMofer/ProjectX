@@ -1,28 +1,21 @@
-package am.project.x.activities.util.printer.dialogs;
+package am.project.x.activities.other.printer.dialogs;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import am.project.x.R;
-import am.project.x.activities.util.printer.adapters.DeviceAdapter;
-import am.project.x.activities.util.printer.data.TestPrintDataMaker;
-import am.project.x.activities.util.printer.viewholders.DeviceViewHolder;
+import am.project.x.activities.other.printer.data.TestPrintDataMaker;
 import am.project.x.utils.InputMethodUtils;
 import am.project.x.utils.StringUtils;
-import am.project.x.widgets.divider.DividerItemDecoration;
 import am.util.printer.PrintExecutor;
 import am.util.printer.PrintSocketHolder;
 import am.util.printer.PrinterWriter;
@@ -32,13 +25,12 @@ import am.util.printer.PrinterWriter80mm;
  * 地址选择对话框Fragment
  * Created by Alex on 2015/11/14.
  */
-public class BluetoothTestDialogFragment extends DialogFragment {
+public class IPTestDialogFragment extends DialogFragment {
 
     private static final String EXTRA_TYPE = "type";
     private static final String EXTRA_WIDTH = "width";
     private static final String EXTRA_HEIGHT = "height";
     private static final String EXTRA_QR = "qr";
-    private final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private IPTestDialog dialog;
 
     @Override
@@ -52,28 +44,23 @@ public class BluetoothTestDialogFragment extends DialogFragment {
     }
 
     public class IPTestDialog extends AppCompatDialog implements View.OnClickListener,
-            PrintSocketHolder.OnStateChangedListener, PrintExecutor.OnPrintResultListener,
-            DeviceViewHolder.OnHolderListener{
+            PrintSocketHolder.OnStateChangedListener, PrintExecutor.OnPrintResultListener {
 
         private int type;
+        private EditText edtIp;
+        private EditText edtPort;
         private TextView tvState;
         private Button btnPrint;
-        private DeviceAdapter bondedAdapter = new DeviceAdapter(this);
-        private BluetoothDevice mDevice;
+
         private PrintExecutor executor;
         private TestPrintDataMaker maker;
 
         public IPTestDialog(Context context, int type, int width, int height, String qr) {
             super(context);
             this.type = type;
-            setContentView(R.layout.dlg_printer_bluetooth);
-            RecyclerView rvBonded = (RecyclerView) findViewById(R.id.printer_rv_bonded);
-            rvBonded.setLayoutManager(new LinearLayoutManager(getContext()));
-            rvBonded.addItemDecoration(new DividerItemDecoration(
-                    ContextCompat.getDrawable(getContext(), R.drawable.divider_printer),
-                    DividerItemDecoration.VERTICAL_LIST));
-            rvBonded.setAdapter(bondedAdapter);
-            bondedAdapter.setDevices(bluetoothAdapter.getBondedDevices());
+            setContentView(R.layout.dlg_printer_ip);
+            edtIp = (EditText) findViewById(R.id.printer_edt_ip);
+            edtPort = (EditText) findViewById(R.id.printer_edt_port);
             tvState = (TextView) findViewById(R.id.printer_tv_state);
             btnPrint = (Button) findViewById(R.id.printer_btn_test_print);
             btnPrint.setOnClickListener(this);
@@ -82,16 +69,13 @@ public class BluetoothTestDialogFragment extends DialogFragment {
         }
 
         public void setEditable(boolean editable) {
+            edtIp.setEnabled(editable);
+            edtPort.setEnabled(editable);
             btnPrint.setEnabled(editable);
         }
 
         public void setState(int resId) {
             tvState.setText(resId);
-        }
-
-        @Override
-        public void onItemClicked(BluetoothDevice device) {
-            mDevice = device;
         }
 
         @Override
@@ -104,14 +88,48 @@ public class BluetoothTestDialogFragment extends DialogFragment {
         }
 
         private void print() {
-            if (mDevice == null)
+            String ip = edtIp.getText().toString().trim();
+            if (ip.length() <= 0) {
+                Toast.makeText(getContext(), R.string.printer_edit_toast_1, Toast.LENGTH_SHORT).show();
+                InputMethodUtils.openInputMethod(edtIp);
                 return;
+            } else if (!StringUtils.isIp(ip)) {
+                Toast.makeText(getContext(), R.string.printer_edit_toast_2, Toast.LENGTH_SHORT).show();
+                edtIp.setText(null);
+                InputMethodUtils.openInputMethod(edtIp);
+                return;
+            }
+            int port;
+            String portStr = edtPort.getText().toString().trim();
+            if (portStr.length() <= 0) {
+                Toast.makeText(getContext(), R.string.printer_edit_toast_3, Toast.LENGTH_SHORT).show();
+                InputMethodUtils.openInputMethod(edtPort);
+                return;
+            } else {
+                try {
+                    port = Integer.valueOf(portStr);
+                } catch (Exception e) {
+                    port = -1;
+                }
+                if (port < 0 || port > 65535) {
+                    Toast.makeText(getContext(), R.string.printer_edit_toast_4, Toast.LENGTH_SHORT).show();
+                    edtPort.setText(null);
+                    InputMethodUtils.openInputMethod(edtPort);
+                    return;
+                }
+            }
+            if (edtIp.isFocused()) {
+                InputMethodUtils.closeInputMethod(edtIp);
+            }
+            if (edtPort.isFocused()) {
+                InputMethodUtils.closeInputMethod(edtPort);
+            }
             if (executor == null) {
-                executor = new PrintExecutor(mDevice, type);
+                executor = new PrintExecutor(ip, port, type);
                 executor.setOnStateChangedListener(this);
                 executor.setOnPrintResultListener(this);
             }
-            executor.setDevice(mDevice);
+            executor.setIp(ip, port);
             executor.doPrinterRequestAsync(maker);
         }
 
@@ -171,8 +189,8 @@ public class BluetoothTestDialogFragment extends DialogFragment {
         }
     }
 
-    public static BluetoothTestDialogFragment getFragment(int type, int width, int height, String qr) {
-        BluetoothTestDialogFragment fragment = new BluetoothTestDialogFragment();
+    public static IPTestDialogFragment getFragment(int type, int width, int height, String qr) {
+        IPTestDialogFragment fragment = new IPTestDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(EXTRA_TYPE, type);
         bundle.putInt(EXTRA_WIDTH, width);

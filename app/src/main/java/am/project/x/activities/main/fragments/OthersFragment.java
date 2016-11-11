@@ -9,9 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import am.project.x.R;
-import am.project.x.activities.util.printer.PrinterActivity;
-import am.project.x.activities.util.security.CipherActivity;
-import am.project.x.activities.widgets.gradienttabstrip.GradientTabStripActivity;
+import am.project.x.activities.other.printer.PrinterActivity;
+import am.project.x.activities.other.security.CipherActivity;
 
 /**
  * 其他

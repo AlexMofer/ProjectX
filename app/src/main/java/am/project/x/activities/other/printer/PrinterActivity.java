@@ -1,13 +1,16 @@
-package am.project.x.activities.util.printer;
+package am.project.x.activities.other.printer;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
@@ -18,9 +21,8 @@ import android.widget.Toast;
 
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
-import am.project.x.activities.util.printer.dialogs.BluetoothTestDialogFragment;
-import am.project.x.activities.util.printer.dialogs.IPTestDialogFragment;
-import am.project.x.activities.util.printer.managers.BluetoothPrinterManager;
+import am.project.x.activities.other.printer.dialogs.BluetoothTestDialogFragment;
+import am.project.x.activities.other.printer.dialogs.IPTestDialogFragment;
 import am.util.printer.PrinterWriter;
 import am.util.printer.PrinterWriter58mm;
 import am.util.printer.PrinterWriter80mm;
@@ -28,7 +30,6 @@ import am.util.printer.PrinterWriter80mm;
 public class PrinterActivity extends BaseActivity implements
         RadioGroup.OnCheckedChangeListener, SeekBar.OnSeekBarChangeListener, View.OnClickListener {
 
-    private static final int REQUEST_CODE_BLUETOOTH = 1088;
     private static final String FRAGMENT_IP = "ip";
     private static final String FRAGMENT_BLUETOOTH = "bluetooth";
     private PrinterActivity me = this;
@@ -38,7 +39,38 @@ public class PrinterActivity extends BaseActivity implements
     private int height = PrinterWriter.HEIGHT_PARTING_DEFAULT;
     private final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private AlertDialog dlgBluetoothOpen;
+    private boolean shouldOpen = false;
+    private boolean shouldClose = false;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
+                if (bluetoothAdapter.isEnabled()) {
+                    if (shouldOpen) {
+                        shouldOpen = false;
+                        showBluetoothTest();
+                        shouldClose = true;
+                    }
+                } else {
+                    Fragment fragment = getFragmentManager().findFragmentByTag(FRAGMENT_BLUETOOTH);
+                    if (fragment != null && fragment instanceof BluetoothTestDialogFragment) {
+                        BluetoothTestDialogFragment bluetooth =
+                                (BluetoothTestDialogFragment) fragment;
+                        bluetooth.dismissAllowingStateLoss();
+                    }
+                }
+            } else if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
+                Fragment fragment = getFragmentManager().findFragmentByTag(FRAGMENT_BLUETOOTH);
+                if (fragment != null && fragment instanceof BluetoothTestDialogFragment) {
+                    BluetoothTestDialogFragment bluetooth = (BluetoothTestDialogFragment) fragment;
+                    bluetooth.updateAdapter();
+                }
+            }
+        }
+
+    };
 
     @Override
     protected int getContentViewLayoutResources() {
@@ -55,6 +87,16 @@ public class PrinterActivity extends BaseActivity implements
         edtQRCode = (EditText) findViewById(R.id.printer_edt_code);
         ((RadioGroup) findViewById(R.id.printer_rg_type)).setOnCheckedChangeListener(me);
         ((SeekBar) findViewById(R.id.printer_sb_height)).setOnSeekBarChangeListener(me);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+        registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
     }
 
     @Override
@@ -165,11 +207,11 @@ public class PrinterActivity extends BaseActivity implements
             dlgBluetoothOpen = builder.create();
         }
         dlgBluetoothOpen.show();
-
     }
 
     private void forceTurnOnBluetooth() {
         final boolean open = bluetoothAdapter.isEnabled() || bluetoothAdapter.enable();
+        shouldOpen = true;
         if (!open) {
             showSystemTurnOnBluetoothDialog();
         }
@@ -179,18 +221,51 @@ public class PrinterActivity extends BaseActivity implements
         Intent requestBluetoothOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         requestBluetoothOn.setAction(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         requestBluetoothOn.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 120);
-        startActivityForResult(requestBluetoothOn, REQUEST_CODE_BLUETOOTH);
+        startActivity(requestBluetoothOn);
     }
 
+
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_BLUETOOTH) {
-            switch (resultCode) {
-                case Activity.RESULT_OK:
-                    showBluetoothTest();
-                    break;
-            }
+    public void onBackPressed() {
+        if (shouldClose && bluetoothAdapter != null && bluetoothAdapter.isEnabled()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(me);
+            builder.setMessage(R.string.printer_bluetooth_dlg_close);
+            builder.setNegativeButton(R.string.printer_no,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            shouldClose = false;
+                            onBackPressed();
+                        }
+                    });
+            builder.setPositiveButton(R.string.printer_yes,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if (bluetoothAdapter.disable()) {
+                                shouldClose = false;
+                                onBackPressed();
+                            } else {
+                                Toast.makeText(me,
+                                        R.string.printer_bluetooth_dlg_close_error,
+                                        Toast.LENGTH_SHORT).show();
+                                shouldClose = false;
+                                onBackPressed();
+                                startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
+                            }
+                        }
+                    });
+            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    shouldClose = false;
+                    onBackPressed();
+                }
+            });
+            builder.create().show();
+        } else {
+            super.onBackPressed();
         }
     }
 

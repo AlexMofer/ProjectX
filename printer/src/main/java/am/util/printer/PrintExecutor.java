@@ -10,11 +10,11 @@ import java.util.List;
  * 打印执行者
  * Created by Alex on 2016/11/10.
  */
-
+@SuppressWarnings("unused")
 public class PrintExecutor {
     private int type;
     private PrintSocketHolder holder;
-    private int mReconnectTimes = 3;
+    private int mReconnectTimes = 0;
     private int time = 0;
     private PrintSocketHolder.OnStateChangedListener listener;
     private WeakReference<OnPrintResultListener> mListener;
@@ -35,7 +35,7 @@ public class PrintExecutor {
      * @return 错误代码
      */
     private int doRequest(PrintDataMaker maker) {
-        if (mReconnectTimes == 1) {
+        if (mReconnectTimes == 0) {
             holder.onPrinterStateChanged(PrintSocketHolder.STATE_0);
             List<byte[]> data = maker.getPrintData(type);
             if (!holder.isSocketPrepared()) {
@@ -87,6 +87,9 @@ public class PrintExecutor {
         }
     }
 
+    /**
+     * 异步执行打印请求
+     */
     public void doPrinterRequestAsync(PrintDataMaker maker) {
         new PrintTask().execute(maker);
     }
@@ -188,10 +191,18 @@ public class PrintExecutor {
         this.listener = listener;
     }
 
+    /**
+     * 设置重连次数
+     * @param times 次数
+     */
     public void setReconnectTimes(int times) {
         mReconnectTimes = times;
     }
 
+    /**
+     * 设置结果回调
+     * @param listener 回调
+     */
     public void setOnPrintResultListener(OnPrintResultListener listener) {
         mListener = new WeakReference<>(listener);
     }

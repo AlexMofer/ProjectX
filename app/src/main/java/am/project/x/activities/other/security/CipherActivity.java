@@ -1,4 +1,4 @@
-package am.project.x.activities.util.security;
+package am.project.x.activities.other.security;
 
 import android.content.Context;
 import android.content.DialogInterface;

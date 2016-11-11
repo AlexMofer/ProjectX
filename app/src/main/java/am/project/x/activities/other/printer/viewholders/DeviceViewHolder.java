@@ -1,4 +1,4 @@
-package am.project.x.activities.util.printer.viewholders;
+package am.project.x.activities.other.printer.viewholders;
 
 import android.bluetooth.BluetoothDevice;
 import android.support.v7.widget.RecyclerView;
@@ -31,8 +31,8 @@ public class DeviceViewHolder extends RecyclerView.ViewHolder implements View.On
         view.setSelected(true);
     }
 
-    public void setData(BluetoothDevice device) {
-        itemView.setSelected(false);
+    public void setData(BluetoothDevice device, boolean isSelected) {
+        itemView.setSelected(isSelected);
         mDevice = device;
         if (itemView instanceof TextView && mDevice != null) {
             TextView tvName = (TextView) itemView;

@@ -11,6 +11,7 @@ import java.util.List;
  * ESC-POS指令集
  * Created by Alex on 2015/9/22.
  */
+@SuppressWarnings("all")
 public class PrinterUtils {
 
     private static String hexStr = "0123456789ABCDEF";
@@ -722,13 +723,14 @@ public class PrinterUtils {
      */
     @SuppressWarnings("unused")
     public static ArrayList<byte[]> decodeBitmapToDataList(Bitmap image, int parting) {
+        if (parting <= 0 || parting > 255)
+            parting = 255;
         if (image == null)
             return null;
         final int width = image.getWidth();
         final int height = image.getHeight();
         if (width <= 0 || height <= 0)
             return null;
-
         if (width > 2040) {
             // 8位9针，宽度限制2040像素（但一般纸张都没法打印那么宽，但并不影响打印）
             final float scale = 2040 / (float) width;
@@ -873,7 +875,7 @@ public class PrinterUtils {
     /**
      * 解码图片
      *
-     * @param image   图片
+     * @param image 图片
      * @return 数据流
      */
     @SuppressWarnings("unused")
