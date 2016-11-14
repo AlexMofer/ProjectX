@@ -19,7 +19,7 @@ dependencies {
 }
 ```
 ## 详情
-- 继承PrintTask来实现打印任务
+- 实现PrintDataMaker接口来实现打印任务
 - 继承PrinterWriter来实现更多纸张类型的打印
 - PrinterUtils包含了众多打印指令
 
@@ -214,7 +214,7 @@ executor.setOnPrintResultListener(new PrintExecutor.OnPrintResultListener() {
 ```
 5.执行打印：
 ```java
-executor.doPrinterRequest(PrintDataMaker maker);//同步
+int result = executor.doPrinterRequest(PrintDataMaker maker);//同步
 executor.doPrinterRequestAsync(PrintDataMaker maker);//异步
 ```
 
