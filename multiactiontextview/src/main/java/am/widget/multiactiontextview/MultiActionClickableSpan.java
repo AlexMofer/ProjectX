@@ -81,6 +81,10 @@ public class MultiActionClickableSpan extends ClickableSpan {
         return mTag;
     }
 
+    boolean needRequestFocus() {
+        return mListener != null;
+    }
+
     /**
      * 文字点击监听
      */

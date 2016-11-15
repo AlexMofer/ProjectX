@@ -70,19 +70,12 @@ public class MultiActionTextView extends TextView {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        if (!isFocusable()) {
-            setFocusable(true);
-        }
-        if (!isFocusableInTouchMode()) {
-            setFocusableInTouchMode(true);
-        }
-        if (!isFocused()) {
-            requestFocus();
-            requestFocusFromTouch();
-        }
         final int action = event.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                if (!isFocused()) {
+                    requestFocus();
+                }
                 setInterceptClick(false);
                 super.setHighlightColor(mHighlightColor);
                 break;
@@ -141,11 +134,17 @@ public class MultiActionTextView extends TextView {
             setText(text);
             return;
         }
+        boolean needRequestFocus = false;
         SpannableString spannable = new SpannableString(text);
         for (MultiActionClickableSpan action : actions) {
             spannable.setSpan(action, action.getStart(), action.getEnd(),
                     SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+            if (action.needRequestFocus())
+                needRequestFocus = true;
         }
         setText(spannable);
+        if (needRequestFocus) {
+            super.setOnClickListener(mListener);
+        }
     }
 }
