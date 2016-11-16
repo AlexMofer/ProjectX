@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
@@ -18,7 +19,6 @@ public class MultiActionTextView extends TextView {
 
     private static final int[] ATTRS = new int[]{android.R.attr.textColorHighlight};
     private int mHighlightColor = Color.TRANSPARENT;
-    private OnClickListener mListener;
     private OnClickListener mSetListener;
     private boolean interceptClick = false;
 
@@ -53,14 +53,9 @@ public class MultiActionTextView extends TextView {
         if (!isFocusableInTouchMode()) {
             setFocusableInTouchMode(true);
         }
-        mListener = new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (interceptClick || mSetListener == null)
-                    return;
-                mSetListener.onClick(view);
-            }
-        };
+        requestFocus();
+        requestFocusFromTouch();
+        super.setOnClickListener(new MultiActionListener());
         if (attrs == null)
             return;
         final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
@@ -73,9 +68,6 @@ public class MultiActionTextView extends TextView {
         final int action = event.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                if (!isFocused()) {
-                    requestFocus();
-                }
                 setInterceptClick(false);
                 super.setHighlightColor(mHighlightColor);
                 break;
@@ -89,6 +81,23 @@ public class MultiActionTextView extends TextView {
         return super.dispatchTouchEvent(event);
     }
 
+    protected void onFocusChanged(boolean focused, int direction,
+                                  Rect previouslyFocusedRect) {
+        if (focused)
+            super.onFocusChanged(true, direction, previouslyFocusedRect);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean focused) {
+        if (focused)
+            super.onWindowFocusChanged(true);
+    }
+
+    @Override
+    public boolean isFocused() {
+        return true;//一直返回true，假装这个控件一直获取着焦点
+    }
+
     @Override
     public void setHighlightColor(int color) {
         mHighlightColor = color;
@@ -98,11 +107,6 @@ public class MultiActionTextView extends TextView {
     @Override
     public void setOnClickListener(OnClickListener l) {
         mSetListener = l;
-        if (mSetListener == null) {
-            super.setOnClickListener(null);
-        } else {
-            super.setOnClickListener(mListener);
-        }
     }
 
     void setInterceptClick(boolean intercept) {
@@ -134,17 +138,22 @@ public class MultiActionTextView extends TextView {
             setText(text);
             return;
         }
-        boolean needRequestFocus = false;
         SpannableString spannable = new SpannableString(text);
         for (MultiActionClickableSpan action : actions) {
             spannable.setSpan(action, action.getStart(), action.getEnd(),
                     SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-            if (action.needRequestFocus())
-                needRequestFocus = true;
         }
         setText(spannable);
-        if (needRequestFocus) {
-            super.setOnClickListener(mListener);
+    }
+
+    private class MultiActionListener implements OnClickListener {
+        @Override
+        public void onClick(View view) {
+            if (mSetListener == null)
+                return;
+            if (interceptClick)
+                return;
+            mSetListener.onClick(view);
         }
     }
 }
