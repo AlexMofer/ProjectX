@@ -9,7 +9,7 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 
 import am.drawable.CornerDrawable;
-import am.project.support.view.CompatPlus;
+import am.project.support.compat.AMViewCompat;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
 
@@ -47,7 +47,7 @@ public class CornerActivity extends BaseActivity
         final int width = (int) (20 * density);
         final int height = (int) (10 * density);
         drawable = new CornerDrawable(color, width, height);
-        CompatPlus.setBackground(findViewById(R.id.corner_tv_content), drawable);
+        AMViewCompat.setBackground(findViewById(R.id.corner_tv_content), drawable);
         rgDirection.check(R.id.corner_rb_top);
         rgLocation.check(R.id.corner_rb_center);
     }

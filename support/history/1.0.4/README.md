@@ -8,11 +8,23 @@ minSdkVersion 4
 ```java
 dependencies {
     ⋯
-    compile 'am.project:support:1.0.5'
+    compile 'am.project:support:1.0.4'
     ⋯
 }
 ```
 ## 详情
+- **~~AnimatorCallback~~**
+
+    使用 ValueAnimator.AnimatorUpdateListener 配合ValueAnimator来实现（将在下一个版本去除）
+- **~~BaseAnimator~~**
+
+    使用ValueAnimator来实现（将在下一个版本去除）
+- **~~BaseNextAnimator~~**
+
+    使用ValueAnimator替代，在其设置的AnimatorUpdateListener的onAnimationUpdate(ValueAnimator animator)方法中对动画进行pause()操作，在其他适当的地方进行resume()操作。（将在下一个版本去除）
+- **~~CompatPlus~~**
+
+    使用AMViewCompat替代（将在下一个版本去除）
 - **AMActivityManagerCompat**
 
     ActivityManager 版本兼容器，兼容getLargeMemoryClass
@@ -51,6 +63,5 @@ dependencies {
     ScrollView的OnScrollChangeListener兼容版本
 
 ## 历史
-- [**1.0.4**](https://bintray.com/alexmofer/maven/Support/1.0.4)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/support/history/1.0.4)）
 - [**1.0.3**](https://bintray.com/alexmofer/maven/Support/1.0.3)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/support/history/1.0.3)）
 - [**1.0.0**](https://bintray.com/alexmofer/maven/Support/1.0.0)

@@ -8,7 +8,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import am.drawable.TextDrawable;
-import am.project.support.view.CompatPlus;
+import am.project.support.compat.AMViewCompat;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
 
@@ -27,7 +27,7 @@ public class TextActivity extends BaseActivity implements CompoundButton.OnCheck
         ((Switch) findViewById(R.id.text_sh_scale)).setOnCheckedChangeListener(this);
         drawable = new TextDrawable(getApplicationContext(), R.dimen.textSize_drawable,
                 R.color.colorPrimary, R.string.text_drawable);
-        CompatPlus.setBackground(view, drawable);
+        AMViewCompat.setBackground(view, drawable);
     }
 
     @Override

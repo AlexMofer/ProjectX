@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 
-import am.drawable.CombinationDrawable;
 import am.drawable.LineDrawable;
-import am.project.support.view.CompatPlus;
+import am.project.support.compat.AMViewCompat;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
 
@@ -31,7 +29,7 @@ public class LineActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     protected void initResource(Bundle savedInstanceState) {
         setSupportActionBar(R.id.line_toolbar);
         drawable = new LineDrawable(ContextCompat.getColor(this, R.color.colorPrimary), 1);
-        CompatPlus.setBackground(findViewById(R.id.line_tv_text), drawable);
+        AMViewCompat.setBackground(findViewById(R.id.line_tv_text), drawable);
         rgGravityNormal = (RadioGroup) findViewById(R.id.line_rg_gravity);
         rgGravityPlus = (RadioGroup) findViewById(R.id.line_rg_gravity_plus);
         rgGravityNormal.setOnCheckedChangeListener(this);
