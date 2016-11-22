@@ -5,7 +5,10 @@ import android.view.animation.Interpolator;
 
 /**
  * 基础动画
+ * 使用ValueAnimator来实现
+ * 将在下一个版本去除
  */
+@Deprecated
 public abstract class BaseAnimator implements Runnable {
 
     protected static final long DEFAULT_FRAME_DELAY = 10;

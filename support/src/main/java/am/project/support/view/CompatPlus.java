@@ -18,10 +18,11 @@ import java.lang.ref.WeakReference;
 
 /**
  * 版本兼容控制器
- *
+ * 使用AMViewCompat替代，下一版本将删除
  * @author Mofer
  */
 @SuppressWarnings("unused")
+@Deprecated
 public class CompatPlus {
 
     public static final int SHAPE_RECT = 0;

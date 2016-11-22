@@ -29,8 +29,6 @@ public class NetworkUtils {
 		if (connectivityManager != null) {
 			NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
 			return ni != null && ni.isConnected();
-		} else {
-			Log.e("NetworkUtils", "Can't get ConnectivityManager");
 		}
 		return false;
 	}

@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 import java.security.KeyPair;
 
+import am.project.support.utils.InputMethodUtils;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
-import am.project.x.utils.InputMethodUtils;
 import am.util.security.AESUtil;
 import am.util.security.DESedeUtil;
 import am.util.security.MessageDigestUtils;

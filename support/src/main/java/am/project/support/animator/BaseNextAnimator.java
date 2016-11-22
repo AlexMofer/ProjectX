@@ -5,9 +5,11 @@ import android.view.animation.Interpolator;
 
 /**
  * 基础动画
- *
+ * 使用ValueAnimator替代，在其设置的AnimatorUpdateListener的onAnimationUpdate(ValueAnimator animator)方法中对动画进行pause()操作，在其他适当的地方进行resume()操作。
+ * 将在下一个版本去除
  * @author Mofer
  */
+@Deprecated
 @SuppressWarnings("unused")
 public abstract class BaseNextAnimator extends BaseAnimator {
 

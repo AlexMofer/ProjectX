@@ -4,8 +4,11 @@ import android.view.View;
 
 /**
  * 每秒动画
+ * 使用ValueAnimator及其setFrameDelay(long frameDelay)方法替代
+ * 将在下一个版本去除
  * Created by Alex on 2016/6/17.
  */
+@Deprecated
 public class SecondAnimator implements Runnable {
     protected static final long DEFAULT_FRAME_DELAY = 1000;
     private View mView;

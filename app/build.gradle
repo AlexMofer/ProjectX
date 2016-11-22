@@ -36,15 +36,17 @@ android {
     lintOptions {
         abortOnError false
     }
-
     productFlavors {
         rel {
             minSdkVersion 14
+            return true
         }
         dev {
             minSdkVersion 21
+            return true
         }
     }
+    return true
 }
 
 dependencies {

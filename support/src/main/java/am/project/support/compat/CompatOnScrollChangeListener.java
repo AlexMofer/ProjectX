@@ -13,7 +13,10 @@ import android.view.View;
  * to listen for changes in list scroll position.
  *
  * setOnScrollChangeListener(View.OnScrollChangeListener)
+ * 请使用AMViewCompat.OnScrollChangeListener
+ * 下一个版本删除
  */
+@Deprecated
 public interface CompatOnScrollChangeListener {
     /**
      * Called when the scroll position of a view changes.

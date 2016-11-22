@@ -1,4 +1,4 @@
-package am.project.x.utils;
+package am.project.support.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.view.inputmethod.InputMethodManager;
  * 输入法工具类
  * Created by Alex on 2016/11/10.
  */
-
+@SuppressWarnings("all")
 public class InputMethodUtils {
 
     /**
@@ -19,7 +19,6 @@ public class InputMethodUtils {
      * @param activity Activity
      * @return 是否已开启输入法
      */
-    @SuppressWarnings("unused")
     public static boolean isInputMethodOpen(Activity activity) {
         return activity != null && activity.getWindow().getAttributes().softInputMode ==
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED;
@@ -31,7 +30,6 @@ public class InputMethodUtils {
      *
      * @param view View
      */
-    @SuppressWarnings("unused")
     public static void openInputMethod(View view) {
         if (null == view) {
             return;
@@ -48,7 +46,6 @@ public class InputMethodUtils {
      *
      * @param view 焦点View
      */
-    @SuppressWarnings("unused")
     public static void closeInputMethod(View view) {
         closeInputMethod(view, true);
     }
@@ -59,7 +56,6 @@ public class InputMethodUtils {
      * @param view       焦点View
      * @param clearFocus 是否清除焦点
      */
-    @SuppressWarnings("unused")
     public static void closeInputMethod(View view, boolean clearFocus) {
         if (null == view) {
             return;
@@ -77,7 +73,6 @@ public class InputMethodUtils {
      *
      * @param activity Activity
      */
-    @SuppressWarnings("unused")
     public static void closeInputMethod(Activity activity) {
         closeInputMethod(activity, true);
     }
@@ -87,7 +82,6 @@ public class InputMethodUtils {
      *
      * @param activity Activity
      */
-    @SuppressWarnings("unused")
     public static void closeInputMethod(Activity activity, boolean clearFocus) {
         if (null == activity) {
             return;

@@ -6,6 +6,7 @@ import android.widget.AbsListView.OnScrollListener;
 /**
  * 滚动边缘监听
  */
+@SuppressWarnings("all")
 public abstract class EdgeScrollListener implements OnScrollListener {
 
     private ScrollLocation mScrollLocation = ScrollLocation.NULL;

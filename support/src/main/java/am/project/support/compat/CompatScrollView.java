@@ -9,7 +9,9 @@ import android.widget.ScrollView;
 
 /**
  * 兼容性ScrollView
+ *
  */
+@Deprecated
 @SuppressWarnings("unused")
 public class CompatScrollView extends ScrollView {
 

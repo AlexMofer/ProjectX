@@ -12,9 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import am.project.support.utils.InputMethodUtils;
 import am.project.x.R;
 import am.project.x.activities.other.printer.data.TestPrintDataMaker;
-import am.project.x.utils.InputMethodUtils;
 import am.project.x.utils.StringUtils;
 import am.util.printer.PrintExecutor;
 import am.util.printer.PrintSocketHolder;
