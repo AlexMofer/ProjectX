@@ -34,8 +34,6 @@ import android.util.Log;
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
 
-import am.project.x.R;
-
 
 final class DecodeHandler extends Handler {
 

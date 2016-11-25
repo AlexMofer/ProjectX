@@ -38,8 +38,6 @@ import android.util.Log;
 import java.util.Collection;
 import java.util.Map;
 
-import am.project.x.R;
-
 
 /**
  * This class handles all the messaging which comprises the state machine for capture.
