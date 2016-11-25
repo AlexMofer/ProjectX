@@ -34,7 +34,9 @@
         android:orientation="vertical"
         android:padding="5dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
+        <com.google.zxing.client.android.widget.ZxingScanView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

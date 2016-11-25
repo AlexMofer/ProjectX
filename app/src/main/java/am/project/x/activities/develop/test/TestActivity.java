@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.zxing.client.android.CaptureActivity;
+
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
 
@@ -20,6 +22,6 @@ public class TestActivity extends BaseActivity {
     }
 
     public static void startActivity(Context context) {
-        context.startActivity(new Intent(context, TestActivity.class));
+        context.startActivity(new Intent(context, CaptureActivity.class));
     }
 }
