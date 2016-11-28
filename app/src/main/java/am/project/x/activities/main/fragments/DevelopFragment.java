@@ -31,6 +31,7 @@ public class DevelopFragment extends Fragment implements View.OnClickListener{
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.develop_btn_test).setOnClickListener(this);
         view.findViewById(R.id.develop_btn_supergridview).setOnClickListener(this);
+        view.findViewById(R.id.develop_btn_test2).setOnClickListener(this);
     }
 
     @Override
@@ -41,6 +42,9 @@ public class DevelopFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.develop_btn_supergridview:
                 SuperGridViewActivity.startActivity(getContext());
+                break;
+            case R.id.develop_btn_test2:
+                TestActivity.startCaptureActivity(getContext());
                 break;
         }
     }

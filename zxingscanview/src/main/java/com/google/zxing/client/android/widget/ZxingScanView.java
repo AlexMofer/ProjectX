@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -12,15 +13,16 @@ import com.google.zxing.client.android.util.Compat;
 
 /**
  * ZxingScanView
- * Created by alexm on 2016/11/24.
+ * Created by Alex on 2016/11/24.
  */
 
 public class ZxingScanView extends SurfaceView {
 
     public static final int ERROR_CODE_0 = 0;//开启摄像头失败
-    private SurfaceHolder mHolder;
     private CameraManager mCameraManager;
     private OnScanListener mListener;
+    private AmbientLightManager mAmbientLightManager;
+    private ScanFeedbackManager mScanFeedbackManager;
 
     public ZxingScanView(Context context) {
         super(context);
@@ -44,22 +46,14 @@ public class ZxingScanView extends SurfaceView {
     }
 
     private void initView(AttributeSet attrs) {
-        mCameraManager = new CameraManager(getContext());
-        getHolder().addCallback(new CameraCallBack());
-    }
+        // TODO 灯光模式
 
-    private void openCamera() {
-        if (mHolder == null)
-            return;// 已经销毁
-        if (mCameraManager.isOpen())
-            return;// 摄像头已经打开
-        try {
-            mCameraManager.openDriver(mHolder);
-            mCameraManager.startPreview();
-        } catch (Exception e) {
-            if (mListener != null)
-                mListener.onError(ERROR_CODE_0);
-        }
+        setFocusable(true);
+        setFocusableInTouchMode(true);
+        setKeepScreenOn(true);
+        mAmbientLightManager = new AmbientLightManager(getContext(), new AmbientLightCallBack());
+        mScanFeedbackManager = new ScanFeedbackManager(getContext());
+        getHolder().addCallback(new CameraCallBack());
     }
 
     @Override
@@ -70,14 +64,32 @@ public class ZxingScanView extends SurfaceView {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        mAmbientLightManager.release();
+        mScanFeedbackManager.release();
+    }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_FOCUS:
+            case KeyEvent.KEYCODE_CAMERA:
+                // Handle these events so they don't launch the Camera app
+                return true;
+            // Use volume up/down to turn on light
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                mAmbientLightManager.setMode(AmbientLightManager.MODE_CLOSE);
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                mAmbientLightManager.setMode(AmbientLightManager.MODE_OPEN);
+                return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     private class CameraCallBack implements SurfaceHolder.Callback {
         @Override
         public void surfaceCreated(SurfaceHolder surfaceHolder) {
-            mHolder = surfaceHolder;
-            openCamera();
+            openDriver(surfaceHolder);
         }
 
         @Override
@@ -87,7 +99,39 @@ public class ZxingScanView extends SurfaceView {
 
         @Override
         public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-            mHolder = null;
+            closeDriver();
+        }
+    }
+
+    private void openDriver(SurfaceHolder surfaceHolder) {
+        mCameraManager = new CameraManager(getContext());
+        if (surfaceHolder == null)
+            return;// 已经销毁
+        if (mCameraManager.isOpen())
+            return;// 摄像头已经打开
+        try {
+            mCameraManager.openDriver(surfaceHolder);
+            mCameraManager.startPreview();
+        } catch (Exception e) {
+            if (mListener != null)
+                mListener.onError(ERROR_CODE_0);
+            return;
+        }
+        mAmbientLightManager.resume();
+    }
+
+    private void closeDriver() {
+        mCameraManager.stopPreview();
+        mAmbientLightManager.pause();
+        mCameraManager.closeDriver();
+        mCameraManager = null;
+    }
+
+    private class AmbientLightCallBack implements AmbientLightManager.AmbientLightCallBack {
+        @Override
+        public void onChange(boolean on) {
+            if (mCameraManager != null)
+                mCameraManager.setTorch(on);
         }
     }
 
