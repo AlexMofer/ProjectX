@@ -16,11 +16,7 @@
 
 package com.google.zxing.client.android;
 
-import android.content.ActivityNotFoundException;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.BitmapFactory;
-import android.provider.Browser;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
@@ -28,14 +24,10 @@ import com.google.zxing.Result;
 import com.google.zxing.client.android.camera.CameraManager;
 import com.google.zxing.client.android.decode.DecodeThread;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import java.util.Collection;
 import java.util.Map;
@@ -47,8 +39,6 @@ import java.util.Map;
  * @author dswitkin@google.com (Daniel Switkin)
  */
 public final class CaptureActivityHandler extends Handler {
-
-    private static final String TAG = CaptureActivityHandler.class.getSimpleName();
 
     private final CaptureActivity activity;
     private final DecodeThread decodeThread;
@@ -106,38 +96,6 @@ public final class CaptureActivityHandler extends Handler {
                 state = State.PREVIEW;
                 cameraManager.requestPreviewFrame(decodeThread.getHandler(), ID.decode);
                 break;
-            case ID.return_scan_result:
-                activity.setResult(Activity.RESULT_OK, (Intent) message.obj);
-                activity.finish();
-                break;
-            case ID.launch_product_query:
-                String url = (String) message.obj;
-
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                intent.setData(Uri.parse(url));
-
-                ResolveInfo resolveInfo =
-                        activity.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                String browserPackageName = null;
-                if (resolveInfo != null && resolveInfo.activityInfo != null) {
-                    browserPackageName = resolveInfo.activityInfo.packageName;
-                    Log.d(TAG, "Using browser in package " + browserPackageName);
-                }
-
-                // Needed for default Android browser / Chrome only apparently
-                if ("com.android.browser".equals(browserPackageName) || "com.android.chrome".equals(browserPackageName)) {
-                    intent.setPackage(browserPackageName);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra(Browser.EXTRA_APPLICATION_ID, browserPackageName);
-                }
-
-                try {
-                    activity.startActivity(intent);
-                } catch (ActivityNotFoundException ignored) {
-                    Log.w(TAG, "Can't find anything to handle VIEW of URI " + url);
-                }
-                break;
         }
     }
 
@@ -152,7 +110,6 @@ public final class CaptureActivityHandler extends Handler {
         } catch (InterruptedException e) {
             // continue
         }
-
         // Be absolutely sure we don't send any queued up messages
         removeMessages(ID.decode_succeeded);
         removeMessages(ID.decode_failed);

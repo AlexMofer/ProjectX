@@ -9,8 +9,6 @@ public class ID {
     public static final int decode = 8748800;
     public static final int decode_failed = 8748801;
     public static final int decode_succeeded = 8748802;
-    public static final int launch_product_query = 8748803;
     public static final int quit = 8748804;
     public static final int restart_preview = 8748805;
-    public static final int return_scan_result = 8748806;
 }

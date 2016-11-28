@@ -79,7 +79,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private CaptureActivityHandler handler;
     private ViewfinderView viewfinderView;
     private boolean hasSurface;
-    private InactivityTimer inactivityTimer;
     private BeepManager beepManager;
     private AmbientLightManager ambientLightManager;
 
@@ -104,9 +103,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         setContentView(R.layout.capture);
 
         hasSurface = false;
-        inactivityTimer = new InactivityTimer(this);
         beepManager = new BeepManager(this);
-        ambientLightManager = new AmbientLightManager(this);
+        ambientLightManager = new AmbientLightManager();
     }
 
     @Override
@@ -125,11 +123,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
 
         beepManager.updatePrefs();
-        ambientLightManager.start(cameraManager);
+        ambientLightManager.start(this, cameraManager);
 
-        inactivityTimer.onResume();
 
-        Intent intent = getIntent();
 
 //        cameraManager.setManualCameraId(-1);
         DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -171,8 +167,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             handler.quitSynchronously();
             handler = null;
         }
-        inactivityTimer.onPause();
-        ambientLightManager.stop();
+        ambientLightManager.stop(this);
         beepManager.close();
         cameraManager.closeDriver();
         if (!hasSurface) {
@@ -181,12 +176,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             surfaceHolder.removeCallback(this);
         }
         super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        inactivityTimer.shutdown();
-        super.onDestroy();
     }
 
     @Override
@@ -236,7 +225,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
      * @param barcode     A greyscale bitmap of the camera data which was decoded.
      */
     public void handleDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
-        inactivityTimer.onActivity();
         ParsedResult result = ResultParser.parseResult(rawResult);
 
         boolean fromLiveScan = barcode != null;
@@ -302,7 +290,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
     // Put up our own UI for how to handle the decoded contents.
     private void handleDecodeInternally(Result rawResult, ParsedResult result) {
-        // TODO 处理结果
         final String format = "格式：" + rawResult.getBarcodeFormat().toString();
         final String type = "类型：" + result.getType().toString();
         DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
