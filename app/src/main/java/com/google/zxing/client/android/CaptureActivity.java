@@ -22,6 +22,7 @@ import com.google.zxing.ResultMetadataType;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.camera.CameraManager;
 import com.google.zxing.client.android.camera.CameraPreferences;
+import com.google.zxing.client.android.widget.ScanFeedbackManager;
 import com.google.zxing.client.result.ParsedResult;
 import com.google.zxing.client.result.ResultParser;
 
@@ -29,6 +30,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -36,8 +38,10 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -79,15 +83,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private CaptureActivityHandler handler;
     private ViewfinderView viewfinderView;
     private boolean hasSurface;
-    private BeepManager beepManager;
+    private ScanFeedbackManager scanFeedbackManager;
     private AmbientLightManager ambientLightManager;
 
     ViewfinderView getViewfinderView() {
         return viewfinderView;
-    }
-
-    public Handler getHandler() {
-        return handler;
     }
 
     CameraManager getCameraManager() {
@@ -103,7 +103,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         setContentView(R.layout.capture);
 
         hasSurface = false;
-        beepManager = new BeepManager(this);
+        scanFeedbackManager = new ScanFeedbackManager(this);
         ambientLightManager = new AmbientLightManager();
     }
 
@@ -122,7 +122,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         setRequestedOrientation(getCurrentOrientation());
 
 
-        beepManager.updatePrefs();
         ambientLightManager.start(this, cameraManager);
 
 
@@ -168,14 +167,21 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
             handler = null;
         }
         ambientLightManager.stop(this);
-        beepManager.close();
         cameraManager.closeDriver();
         if (!hasSurface) {
             SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
             SurfaceHolder surfaceHolder = surfaceView.getHolder();
             surfaceHolder.removeCallback(this);
+            surfaceView.setHapticFeedbackEnabled(true);
+            surfaceView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
         }
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        scanFeedbackManager.release();
     }
 
     @Override
@@ -230,7 +236,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         boolean fromLiveScan = barcode != null;
         if (fromLiveScan) {
             // Then not from history, so beep/vibrate and we have an image to draw on
-            beepManager.playBeepSoundAndVibrate();
+            scanFeedbackManager.performScanFeedback();
             drawResultPoints(barcode, scaleFactor, rawResult);
         }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);

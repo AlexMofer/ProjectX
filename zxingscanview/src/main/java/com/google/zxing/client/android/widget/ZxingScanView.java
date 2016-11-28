@@ -2,14 +2,13 @@ package com.google.zxing.client.android.widget;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.google.zxing.client.android.camera.CameraManager;
-
-import java.io.IOException;
+import com.google.zxing.client.android.util.Compat;
 
 /**
  * ZxingScanView
@@ -22,6 +21,7 @@ public class ZxingScanView extends SurfaceView {
     private SurfaceHolder mHolder;
     private CameraManager mCameraManager;
     private OnScanListener mListener;
+
     public ZxingScanView(Context context) {
         super(context);
         initView(null);
@@ -43,7 +43,7 @@ public class ZxingScanView extends SurfaceView {
         initView(attrs);
     }
 
-    private void initView(AttributeSet attrs){
+    private void initView(AttributeSet attrs) {
         mCameraManager = new CameraManager(getContext());
         getHolder().addCallback(new CameraCallBack());
     }
@@ -60,6 +60,17 @@ public class ZxingScanView extends SurfaceView {
             if (mListener != null)
                 mListener.onError(ERROR_CODE_0);
         }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
     }
 
     private class CameraCallBack implements SurfaceHolder.Callback {
@@ -86,5 +97,16 @@ public class ZxingScanView extends SurfaceView {
 
     public interface OnScanListener {
         void onError(int errorCode);
+    }
+
+    /**
+     * 检查权限
+     *
+     * @param permission 权限
+     * @return 是否拥有权限
+     */
+    private boolean lacksPermission(String permission) {
+        return Compat.checkSelfPermission(getContext(), permission) ==
+                PackageManager.PERMISSION_DENIED;
     }
 }
