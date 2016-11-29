@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ZxingScanView">
+        <attr name="zsvAmbientLight" format="enum">
+            <enum name="auto" value="0" />
+            <enum name="open" value="1" />
+            <enum name="close" value="2" />
+        </attr>
+        <attr name="zsvFeedback" format="enum">
+            <enum name="auto" value="0" />
+            <enum name="audio_only" value="1" />
+            <enum name="vibrator_only" value="2" />
+            <enum name="audio_vibrator" value="3" />
+        </attr>
+        <attr name="zsvAudioAssetsFileName" format="string" />
+        <attr name="zsvAudioRaw" format="reference" />
+        <attr name="zsvVibrateMilliseconds" format="integer" />
+        <attr name="zsvScanWidth" format="dimension">
+            <enum name="match_parent" value="-1" />
+        </attr>
+        <attr name="zsvScanHeight" format="dimension">
+            <enum name="match_parent" value="-1" />
+        </attr>
+        <attr name="zsvCameraId" format="integer" />
+        <attr name="zsvOpenDrawable" format="reference" />
+    </declare-styleable>
+</resources>

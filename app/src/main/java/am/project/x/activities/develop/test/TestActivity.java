@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.zxing.client.android.CaptureActivity;
-import com.google.zxing.client.android.widget.ZxingScanView;
+import com.google.zxing.client.android.ZxingScanView;
 
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;

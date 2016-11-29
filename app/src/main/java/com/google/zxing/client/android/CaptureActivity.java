@@ -36,8 +36,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -102,12 +100,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         viewfinderView.setCameraManager(cameraManager);
 
         handler = null;
-
-
-
-//        cameraManager.setManualCameraId(-1);
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        cameraManager.setManualFramingRect(metrics.widthPixels - 100, metrics.heightPixels - 200);
 
         SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
         SurfaceHolder surfaceHolder = surfaceView.getHolder();

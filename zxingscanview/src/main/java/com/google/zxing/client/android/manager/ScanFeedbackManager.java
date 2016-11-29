@@ -1,4 +1,4 @@
-package com.google.zxing.client.android.widget;
+package com.google.zxing.client.android.manager;
 
 import android.app.Service;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Vibrator;
+import android.view.View;
 
 import com.google.zxing.client.android.util.Utils;
 
@@ -18,17 +19,20 @@ import com.google.zxing.client.android.util.Utils;
 @SuppressWarnings("all")
 public class ScanFeedbackManager implements MediaPlayer.OnCompletionListener {
 
-
-    private static final long TIME = 200;
+    public static final int MODE_AUTO = 0;//自动模式
+    public static final int MODE_AUDIO_ONLY = 1;//铃声
+    public static final int MODE_VIBRATOR_ONLY = 2;//震动（需要权限）
+    public static final int MODE_AUDIO_VIBRATOR = 3;//铃声与震动
+    public static final int DEFAUT_MILLISECONDS = 200;
     private final MediaPlayer player = new MediaPlayer();
     private final AudioManager audioManager;
     private final Vibrator vibrator;
     private final Context context;
     private String assetsFileName;
-    private int rawId;
+    private int rawId = View.NO_ID;
     private long mVibrateMilliseconds;
-    private boolean forceAudio = false;
-    private boolean forceVibrator = false;
+    private boolean isAudio = false;
+    private boolean isVibrator = false;
 
 
     public ScanFeedbackManager(Context context) {
@@ -36,7 +40,7 @@ public class ScanFeedbackManager implements MediaPlayer.OnCompletionListener {
         audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         vibrator = (Vibrator) context.getSystemService(Service.VIBRATOR_SERVICE);
         player.setOnCompletionListener(this);
-        setVibrateMilliseconds(TIME);
+        setVibrateMilliseconds(DEFAUT_MILLISECONDS);
     }
 
     /**
@@ -45,6 +49,8 @@ public class ScanFeedbackManager implements MediaPlayer.OnCompletionListener {
      * @param fileName 文件名
      */
     public void setAudioAssetsFileName(String fileName) {
+        if (fileName == null || fileName.length() <= 0)
+            return;
         assetsFileName = fileName;
     }
 
@@ -67,33 +73,42 @@ public class ScanFeedbackManager implements MediaPlayer.OnCompletionListener {
     }
 
     /**
-     * 强制响铃
+     * 设置反馈模式
      *
-     * @param force 强制
+     * @param mode 反馈模式
      */
-    public void setForceAudio(boolean force) {
-        forceAudio = force;
-    }
-
-    /**
-     * 强制震动
-     *
-     * @param force 强制
-     */
-    public void setForceVibrator(boolean force) {
-        forceVibrator = force;
+    public void setMode(int mode) {
+        switch (mode) {
+            case MODE_AUDIO_VIBRATOR:
+                isAudio = true;
+                isVibrator = true;
+                break;
+            case MODE_AUDIO_ONLY:
+                isAudio = true;
+                isVibrator = false;
+                break;
+            case MODE_VIBRATOR_ONLY:
+                isAudio = false;
+                isVibrator = true;
+                break;
+            default:
+            case MODE_AUTO:
+                isAudio = false;
+                isVibrator = false;
+                break;
+        }
     }
 
     /**
      * 执行扫描反馈
      */
     public void performScanFeedback() {
-        if (forceAudio && forceVibrator) {
+        if (isAudio && isVibrator) {
             playSoundEffect();
             playVibrateEffect();
-        } else if (forceAudio) {
+        } else if (isAudio) {
             playSoundEffect();
-        } else if (forceVibrator) {
+        } else if (isVibrator) {
             playVibrateEffect();
         } else {
             switch (audioManager.getRingerMode()) {
@@ -156,7 +171,7 @@ public class ScanFeedbackManager implements MediaPlayer.OnCompletionListener {
                 return null;
             }
         }
-        if (rawId != 0) {
+        if (rawId != View.NO_ID) {
             try {
                 return context.getResources().openRawResourceFd(rawId);
             } catch (Exception e) {

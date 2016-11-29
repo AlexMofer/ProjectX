@@ -1,4 +1,4 @@
-package com.google.zxing.client.android.widget;
+package com.google.zxing.client.android.manager;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -12,7 +12,6 @@ import android.hardware.SensorManager;
  */
 @SuppressWarnings("all")
 public class AmbientLightManager implements SensorEventListener {
-
     public static final int MODE_AUTO = 0;
     public static final int MODE_OPEN = 1;
     public static final int MODE_CLOSE = 2;
@@ -26,13 +25,22 @@ public class AmbientLightManager implements SensorEventListener {
     private final AmbientLightCallBack mCallBack;
 
     public AmbientLightManager(Context context, AmbientLightCallBack callBack) {
+        this(context, callBack, MODE_AUTO);
+    }
+
+    public AmbientLightManager(Context context, AmbientLightCallBack callBack, int mode) {
         mCallBack = callBack;
-        setMode(MODE_AUTO);
+        setMode(mode);
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         setMaxLux(LUX_BRIGHT_ENOUGH);
         setMinLux(LUX_TOO_DARK);
     }
 
+    /**
+     * 设置背光模式
+     *
+     * @param mode 背光模式
+     */
     public void setMode(int mode) {
         if (mode != MODE_AUTO && mode != MODE_CLOSE && mode != MODE_OPEN)
             return;
@@ -119,6 +127,7 @@ public class AmbientLightManager implements SensorEventListener {
     public interface AmbientLightCallBack {
         /**
          * 状态变化
+         *
          * @param on 打开还是关闭
          */
         void onChange(boolean on);

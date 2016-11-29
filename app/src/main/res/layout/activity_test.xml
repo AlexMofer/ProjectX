@@ -32,12 +32,17 @@
         android:layout_height="match_parent"
         android:background="@color/transparent"
         android:orientation="vertical"
-        android:padding="5dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <com.google.zxing.client.android.widget.ZxingScanView
+
+        <com.google.zxing.client.android.ZxingScanView
             android:id="@+id/test_zsv_scan"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:zsvAmbientLight="auto"
+            app:zsvScanWidth="match_parent"
+            app:zsvScanHeight="match_parent"
+            app:zsvOpenDrawable="@drawable/ic_drawable_center"
+            app:zsvFeedback="auto" />
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
