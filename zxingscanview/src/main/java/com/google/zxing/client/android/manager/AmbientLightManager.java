@@ -62,10 +62,16 @@ public class AmbientLightManager implements SensorEventListener {
                 }
                 break;
             case MODE_OPEN:
+                if (sensorManager != null) {
+                    sensorManager.unregisterListener(this);
+                }
                 if (mCallBack != null)
                     mCallBack.onChange(true);
                 break;
             case MODE_CLOSE:
+                if (sensorManager != null) {
+                    sensorManager.unregisterListener(this);
+                }
                 if (mCallBack != null)
                     mCallBack.onChange(false);
                 break;

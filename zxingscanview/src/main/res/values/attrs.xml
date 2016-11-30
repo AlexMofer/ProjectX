@@ -22,6 +22,15 @@
             <enum name="match_parent" value="-1" />
         </attr>
         <attr name="zsvCameraId" format="integer" />
-        <attr name="zsvOpenDrawable" format="reference" />
+
+    </declare-styleable>
+    <declare-styleable name="ZxingForegroundView">
+        <attr name="zfvOpenDrawable" format="reference" />
+        <attr name="zfvErrorDrawable" format="reference" />
+        <attr name="zfvZxingScanView" format="reference" />
+        <attr name="zfvMode" format="enum">
+            <enum name="open" value="0"/>
+            <enum name="error" value="1"/>
+        </attr>
     </declare-styleable>
 </resources>

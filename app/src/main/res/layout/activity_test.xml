@@ -27,11 +27,10 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/transparent"
-        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.google.zxing.client.android.ZxingScanView
@@ -39,10 +38,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:zsvAmbientLight="auto"
-            app:zsvScanWidth="match_parent"
+            app:zsvFeedback="auto"
             app:zsvScanHeight="match_parent"
-            app:zsvOpenDrawable="@drawable/ic_drawable_center"
-            app:zsvFeedback="auto" />
-    </LinearLayout>
+            app:zsvScanWidth="match_parent" />
+
+        <com.google.zxing.client.android.ZxingForegroundView
+            android:id="@+id/test_zfv_foreground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:zfvZxingScanView="@id/test_zsv_scan"
+            app:zfvErrorDrawable="@drawable/ic_drawable_center"
+            app:zfvOpenDrawable="@drawable/ic_drawable_center" />
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

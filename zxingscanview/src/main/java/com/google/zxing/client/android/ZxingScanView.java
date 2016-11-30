@@ -3,13 +3,8 @@ package com.google.zxing.client.android;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.drawable.Animatable;
-import android.graphics.drawable.Animatable2;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
@@ -18,7 +13,9 @@ import com.google.zxing.client.android.camera.CameraManager;
 import com.google.zxing.client.android.camera.open.OpenCameraInterface;
 import com.google.zxing.client.android.manager.AmbientLightManager;
 import com.google.zxing.client.android.manager.ScanFeedbackManager;
-import com.google.zxing.client.android.util.Compat;
+import com.google.zxing.client.android.util.Utils;
+
+import java.util.ArrayList;
 
 /**
  * ZxingScanView
@@ -27,15 +24,19 @@ import com.google.zxing.client.android.util.Compat;
 
 public class ZxingScanView extends SurfaceView {
 
+    public static final int ERROR_CODE_NULL = -1;//无错误
     public static final int ERROR_CODE_0 = 0;//开启摄像头失败
+    public static final int ERROR_CODE_1 = 1;//无开启摄像头权限
     private CameraManager mCameraManager;
-    private OnScanListener mListener;
     private AmbientLightManager mAmbientLightManager;
     private ScanFeedbackManager mScanFeedbackManager;
     private int mScanWidth;
     private int mScanHeight;
     private int mCameraId;
-    private Drawable mOpenDrawable;
+    private int mErrorCode = ERROR_CODE_NULL;
+    private ArrayList<OnScanListener> mListeners = new ArrayList<>();
+    private ArrayList<OnStateListener> mStateListeners = new ArrayList<>();
+
 
     public ZxingScanView(Context context) {
         super(context);
@@ -67,7 +68,7 @@ public class ZxingScanView extends SurfaceView {
         int scanHeight = ViewGroup.LayoutParams.MATCH_PARENT;
         int cameraId = OpenCameraInterface.NO_REQUESTED_CAMERA;
         int milliseconds = ScanFeedbackManager.DEFAUT_MILLISECONDS;
-        Drawable open;
+
         TypedArray custom = getContext().obtainStyledAttributes(attrs, R.styleable.ZxingScanView);
         mode = custom.getInt(R.styleable.ZxingScanView_zsvAmbientLight, mode);
         feedback = custom.getInt(R.styleable.ZxingScanView_zsvFeedback, feedback);
@@ -78,14 +79,11 @@ public class ZxingScanView extends SurfaceView {
         scanWidth = custom.getLayoutDimension(R.styleable.ZxingScanView_zsvScanWidth, scanWidth);
         scanHeight = custom.getLayoutDimension(R.styleable.ZxingScanView_zsvScanHeight, scanHeight);
         cameraId = custom.getInteger(R.styleable.ZxingScanView_zsvCameraId, cameraId);
-        open = custom.getDrawable(R.styleable.ZxingScanView_zsvOpenDrawable);
+
         custom.recycle();
         setScanWidth(scanWidth);
         setScanHeight(scanHeight);
         setCameraId(cameraId);
-        setOpenDrawable(open);
-        // TODO
-
         setFocusable(true);
         setFocusableInTouchMode(true);
         setKeepScreenOn(true);
@@ -102,59 +100,10 @@ public class ZxingScanView extends SurfaceView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        drawOpen(canvas);
-    }
-
-    private void drawOpen(Canvas canvas) {
-        if (isOpen())
-            return;
-        if (mOpenDrawable == null)
-            return;
-        final int width = mOpenDrawable.getIntrinsicWidth();
-        final int height = mOpenDrawable.getIntrinsicHeight();
-        mOpenDrawable.setBounds(0, 0, width, height);
-        final float xMove = (getWidth() - width) * 0.5f;
-        final float yMove = (getHeight() - height) * 0.5f;
-        canvas.save();
-        canvas.translate(xMove, yMove);
-        mOpenDrawable.draw(canvas);
-        canvas.restore();
-    }
-
-    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mAmbientLightManager.release();
         mScanFeedbackManager.release();
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                if (mOpenDrawable != null)
-                    Compat.setHotspot(mOpenDrawable, ev.getX(), ev.getY());
-                break;
-        }
-        return super.onTouchEvent(ev);
-    }
-
-    @Override
-    protected void drawableStateChanged() {
-        if (mOpenDrawable != null && mOpenDrawable.isStateful()) {
-            mOpenDrawable.setState(getDrawableState());
-        }
-        super.drawableStateChanged();
-    }
-
-    @Override
-    @SuppressWarnings("all")
-    protected boolean verifyDrawable(Drawable who) {
-        if (mOpenDrawable == null)
-            return super.verifyDrawable(who);
-        return who == mOpenDrawable || super.verifyDrawable(who);
     }
 
     @Override
@@ -197,10 +146,16 @@ public class ZxingScanView extends SurfaceView {
     }
 
     private void openDriver(SurfaceHolder surfaceHolder) {
+        notifyListenerPrepareOpen();
         if (surfaceHolder == null)
             return;// 已经销毁
-        if (mCameraManager != null && mCameraManager.isOpen())
+        if (isOpen())
             return;// 摄像头已经打开
+        if (Utils.lacksPermission(getContext(), Utils.PERMISSION_CAMERA)) {
+            mErrorCode = ERROR_CODE_1;
+            notifyListenerError();
+            return;
+        }
         mCameraManager = new CameraManager(getContext());
         if (mCameraId != OpenCameraInterface.NO_REQUESTED_CAMERA)
             mCameraManager.setManualCameraId(mCameraId);
@@ -213,22 +168,24 @@ public class ZxingScanView extends SurfaceView {
             mCameraManager.openDriver(surfaceHolder);
             mCameraManager.startPreview();
         } catch (Exception e) {
-            if (mListener != null)
-                mListener.onError(ERROR_CODE_0);
+            mErrorCode = ERROR_CODE_0;
+            notifyListenerError();
             return;
         }
         mAmbientLightManager.resume();
-    }
-
-    public boolean isOpen() {
-        return getHolder().isCreating() && mCameraManager != null && mCameraManager.isOpen();
+        notifyListenerOpened();
     }
 
     private void closeDriver() {
-        mCameraManager.stopPreview();
+        notifyListenerPrepareClose();
+        mErrorCode = ERROR_CODE_NULL;
+        if (mCameraManager != null)
+            mCameraManager.stopPreview();
         mAmbientLightManager.pause();
-        mCameraManager.closeDriver();
+        if (mCameraManager != null)
+            mCameraManager.closeDriver();
         mCameraManager = null;
+        notifyListenerClosed();
     }
 
     private class AmbientLightCallBack implements AmbientLightManager.AmbientLightCallBack {
@@ -239,14 +196,87 @@ public class ZxingScanView extends SurfaceView {
         }
     }
 
+    private void notifyListenerError() {
+        for (OnScanListener listener : mListeners) {
+            listener.onError(this);
+        }
+    }
+
+    private void notifyListenerPrepareOpen() {
+        for (OnStateListener listener : mStateListeners) {
+            listener.onPrepareOpen(this);
+        }
+    }
+
+    private void notifyListenerOpened() {
+        for (OnStateListener listener : mStateListeners) {
+            listener.onOpened(this);
+        }
+    }
+
+    private void notifyListenerPrepareClose() {
+        for (OnStateListener listener : mStateListeners) {
+            listener.onPrepareClose(this);
+        }
+    }
+
+    private void notifyListenerClosed() {
+        for (OnStateListener listener : mStateListeners) {
+            listener.onClosed(this);
+        }
+    }
+
+    public void open() {
+        openDriver(getHolder());
+    }
+
     /**
-     * 设置扫描监听
+     * 扫描是否已打开
+     *
+     * @return 是否打开
+     */
+    public boolean isOpen() {
+        return mCameraManager != null && mCameraManager.isOpen();
+    }
+
+    /**
+     * 添加扫描监听
      *
      * @param listener 监听器
      */
-    @SuppressWarnings("unused")
-    public void setOnScanListener(OnScanListener listener) {
-        mListener = listener;
+    public void addOnScanListener(OnScanListener listener) {
+        if (listener != null)
+            mListeners.add(listener);
+    }
+
+    /**
+     * 移除扫描监听器
+     *
+     * @param listener 监听器
+     * @return 是否移除成功
+     */
+    public boolean removeOnScanListener(OnScanListener listener) {
+        return listener != null && mListeners.remove(listener);
+    }
+
+    /**
+     * 添加状态监听
+     *
+     * @param listener 状态监听
+     */
+    public void addOnStateListener(OnStateListener listener) {
+        if (listener != null)
+            mStateListeners.add(listener);
+    }
+
+    /**
+     * 移除状态监听
+     *
+     * @param listener 状态监听
+     * @return 是否成功移除
+     */
+    public boolean removeOnStateListener(OnStateListener listener) {
+        return listener != null && mStateListeners.remove(listener);
     }
 
     /**
@@ -329,24 +359,30 @@ public class ZxingScanView extends SurfaceView {
     }
 
     /**
-     * 设置开启动画
+     * 获取错误代码
      *
-     * @param drawable Drawable
+     * @return 错误代码
      */
-    public void setOpenDrawable(Drawable drawable) {
-        if (mOpenDrawable == drawable)
-            return;
-        if (mOpenDrawable != null) {
-            if (mOpenDrawable instanceof Animatable)
-                ((Animatable) mOpenDrawable).stop();
-            mOpenDrawable.setCallback(null);
-        }
-        mOpenDrawable = drawable;
-        if (mOpenDrawable != null) {
-            mOpenDrawable.setCallback(this);
-            if (mOpenDrawable instanceof Animatable)
-                ((Animatable) mOpenDrawable).start();
-        }
+    public int getErrorCode() {
+        return mErrorCode;
+    }
+
+    /**
+     * 获取扫描宽度
+     *
+     * @return 扫描宽度
+     */
+    public int getScanWidth() {
+        return mScanWidth;
+    }
+
+    /**
+     * 获取扫描高度
+     *
+     * @return 扫描高度
+     */
+    public int getScanHeight() {
+        return mScanHeight;
     }
 
     /**
@@ -356,8 +392,18 @@ public class ZxingScanView extends SurfaceView {
         /**
          * 出现错误
          *
-         * @param errorCode 错误代码
+         * @param scanView ZxingScanView
          */
-        void onError(int errorCode);
+        void onError(ZxingScanView scanView);
+    }
+
+    public interface OnStateListener {
+        void onPrepareOpen(ZxingScanView scanView);
+
+        void onOpened(ZxingScanView scanView);
+
+        void onPrepareClose(ZxingScanView scanView);
+
+        void onClosed(ZxingScanView scanView);
     }
 }
