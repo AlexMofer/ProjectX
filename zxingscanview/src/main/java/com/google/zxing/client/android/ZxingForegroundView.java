@@ -19,6 +19,9 @@ import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.util.Compat;
 
+import java.util.ArrayList;
+import java.util.ListIterator;
+
 /**
  * 前景视图
  * Created by Alex on 2016/11/30.
@@ -42,6 +45,7 @@ public class ZxingForegroundView extends View {
     private Drawable mScanFlagDrawable;
     private final ValueAnimator mLoadingAnimator = ValueAnimator.ofFloat(0f, 1f);// 载入动画
     private float mOffset = 0;
+    private final ArrayList<ResultPoint> mResultPoints = new ArrayList<>();
 
     public ZxingForegroundView(Context context) {
         super(context);
@@ -237,7 +241,12 @@ public class ZxingForegroundView extends View {
     }
 
     private void drawScanPoint(Canvas canvas) {
+        //  使用迭代器避免在循环时并发添加与删除操作
+        ListIterator iterator = mResultPoints.listIterator();
+        while (iterator.hasNext()) {
+            ResultPoint point = (ResultPoint) iterator.next();
 
+        }
     }
 
     /**
@@ -491,7 +500,8 @@ public class ZxingForegroundView extends View {
 
         @Override
         public void foundPossibleResultPoint(ZxingScanView scanView, ResultPoint point) {
-            // TODO
+            mResultPoints.add(point);
+            // TODO 另起线程用于删除点
         }
 
         @Override
