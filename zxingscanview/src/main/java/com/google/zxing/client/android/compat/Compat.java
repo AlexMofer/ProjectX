@@ -1,4 +1,4 @@
-package com.google.zxing.client.android.util;
+package com.google.zxing.client.android.compat;
 
 import android.annotation.TargetApi;
 import android.content.Context;

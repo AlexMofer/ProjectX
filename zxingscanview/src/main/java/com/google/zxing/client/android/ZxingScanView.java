@@ -1,15 +1,20 @@
 package com.google.zxing.client.android;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
 
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.camera.CameraManager;
@@ -17,7 +22,7 @@ import com.google.zxing.client.android.camera.open.OpenCameraInterface;
 import com.google.zxing.client.android.decode.ScanHandler;
 import com.google.zxing.client.android.manager.AmbientLightManager;
 import com.google.zxing.client.android.manager.ScanFeedbackManager;
-import com.google.zxing.client.android.util.Utils;
+import com.google.zxing.client.android.compat.Compat;
 
 import java.util.ArrayList;
 
@@ -159,7 +164,8 @@ public class ZxingScanView extends SurfaceView {
             return;// 已经销毁
         if (isOpen())
             return;// 摄像头已经打开
-        if (Utils.lacksPermission(getContext(), Utils.PERMISSION_CAMERA)) {
+        if (Compat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED) {
             mErrorCode = ERROR_CODE_1;
             notifyListenerError();
             return;
@@ -472,6 +478,9 @@ public class ZxingScanView extends SurfaceView {
         void onResult(ZxingScanView scanView, Result result, Bitmap barcode, float scaleFactor);
     }
 
+    /**
+     * 状态监听器
+     */
     public interface OnStateListener {
         void onPrepareOpen(ZxingScanView scanView);
 
@@ -482,5 +491,50 @@ public class ZxingScanView extends SurfaceView {
         void onPrepareClose(ZxingScanView scanView);
 
         void onClosed(ZxingScanView scanView);
+    }
+
+    /**
+     * 为结果图添加识别效果
+     *
+     * @param result      扫描结果
+     * @param barcode     结果图片
+     * @param scaleFactor 缩放比
+     * @param color       颜色
+     */
+    @SuppressWarnings("unused")
+    public static void addResultPoints(Result result, Bitmap barcode, float scaleFactor, int color) {
+        ResultPoint[] points = result.getResultPoints();
+        if (points != null && points.length > 0) {
+            Canvas canvas = new Canvas(barcode);
+            Paint paint = new Paint();
+            paint.setColor(color);
+            if (points.length == 2) {
+                paint.setStrokeWidth(4.0f);
+                drawLine(canvas, paint, points[0], points[1], scaleFactor);
+            } else if (points.length == 4 &&
+                    (result.getBarcodeFormat() == BarcodeFormat.UPC_A ||
+                            result.getBarcodeFormat() == BarcodeFormat.EAN_13)) {
+                // Hacky special case -- draw two lines, for the barcode and metadata
+                drawLine(canvas, paint, points[0], points[1], scaleFactor);
+                drawLine(canvas, paint, points[2], points[3], scaleFactor);
+            } else {
+                paint.setStrokeWidth(10.0f);
+                for (ResultPoint point : points) {
+                    if (point != null) {
+                        canvas.drawPoint(scaleFactor * point.getX(), scaleFactor * point.getY(), paint);
+                    }
+                }
+            }
+        }
+    }
+
+    private static void drawLine(Canvas canvas, Paint paint, ResultPoint a, ResultPoint b, float scaleFactor) {
+        if (a != null && b != null) {
+            canvas.drawLine(scaleFactor * a.getX(),
+                    scaleFactor * a.getY(),
+                    scaleFactor * b.getX(),
+                    scaleFactor * b.getY(),
+                    paint);
+        }
     }
 }

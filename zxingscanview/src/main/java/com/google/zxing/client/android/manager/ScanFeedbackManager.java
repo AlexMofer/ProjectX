@@ -1,7 +1,9 @@
 package com.google.zxing.client.android.manager;
 
+import android.Manifest;
 import android.app.Service;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -10,7 +12,7 @@ import android.net.Uri;
 import android.os.Vibrator;
 import android.view.View;
 
-import com.google.zxing.client.android.util.Utils;
+import com.google.zxing.client.android.compat.Compat;
 
 /**
  * 扫描反馈管理器
@@ -159,7 +161,10 @@ public class ScanFeedbackManager implements MediaPlayer.OnCompletionListener {
     }
 
     private void playVibrateEffect() {
-        if (!Utils.lacksPermission(context, Utils.PERMISSION_VIBRATE) && vibrator.hasVibrator())
+        if (Compat.checkSelfPermission(context, Manifest.permission.VIBRATE)
+                == PackageManager.PERMISSION_DENIED)
+            return;
+        if (vibrator != null && vibrator.hasVibrator())
             vibrator.vibrate(mVibrateMilliseconds);
     }
 
