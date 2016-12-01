@@ -14,6 +14,7 @@ import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.camera.CameraManager;
 import com.google.zxing.client.android.camera.open.OpenCameraInterface;
+import com.google.zxing.client.android.decode.ScanHandler;
 import com.google.zxing.client.android.manager.AmbientLightManager;
 import com.google.zxing.client.android.manager.ScanFeedbackManager;
 import com.google.zxing.client.android.util.Utils;
@@ -60,6 +61,7 @@ public class ZxingScanView extends SurfaceView {
     }
 
     @TargetApi(21)
+    @SuppressWarnings("unused")
     public ZxingScanView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initView(attrs);
@@ -257,7 +259,13 @@ public class ZxingScanView extends SurfaceView {
 
         @Override
         public void foundPossibleResultPoint(ResultPoint point) {
-            // TODO
+            notifyListenerFoundPossibleResultPoint(point);
+        }
+    }
+
+    private void notifyListenerFoundPossibleResultPoint(ResultPoint point) {
+        for (OnStateListener listener : mStateListeners) {
+            listener.foundPossibleResultPoint(this, point);
         }
     }
 
@@ -426,7 +434,7 @@ public class ZxingScanView extends SurfaceView {
     @SuppressWarnings("unused")
     public void restartScan() {
         if (mScanHandler != null) {
-            mScanHandler.sendEmptyMessage(ID.restart_preview);
+            mScanHandler.restartScan();
         }
     }
 
@@ -438,7 +446,7 @@ public class ZxingScanView extends SurfaceView {
     @SuppressWarnings("unused")
     public void restartScanDelay(long delay) {
         if (mScanHandler != null) {
-            mScanHandler.sendEmptyMessageDelayed(ID.restart_preview, delay);
+            mScanHandler.restartScanDelay(delay);
         }
     }
 
@@ -468,6 +476,8 @@ public class ZxingScanView extends SurfaceView {
         void onPrepareOpen(ZxingScanView scanView);
 
         void onOpened(ZxingScanView scanView);
+
+        void foundPossibleResultPoint(ZxingScanView scanView, ResultPoint point);
 
         void onPrepareClose(ZxingScanView scanView);
 

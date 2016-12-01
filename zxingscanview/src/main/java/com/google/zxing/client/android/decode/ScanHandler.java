@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.zxing.client.android;
+package com.google.zxing.client.android.decode;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,6 +28,7 @@ import com.google.zxing.Result;
 import com.google.zxing.ResultPointCallback;
 import com.google.zxing.client.android.camera.CameraManager;
 import com.google.zxing.client.android.decode.DecodeThread;
+import com.google.zxing.client.android.decode.ID;
 
 import java.util.Collection;
 import java.util.Map;
@@ -118,6 +119,22 @@ public final class ScanHandler extends Handler {
             state = State.PREVIEW;
             cameraManager.requestPreviewFrame(decodeThread.getHandler(), ID.decode);
         }
+    }
+
+    /**
+     * 重新开始扫描
+     */
+    public void restartScan() {
+        sendEmptyMessage(ID.restart_preview);
+    }
+
+    /**
+     * 一段时间后重新你开始扫描
+     *
+     * @param delay 时间
+     */
+    public void restartScanDelay(long delay) {
+        sendEmptyMessageDelayed(ID.restart_preview, delay);
     }
 
     public interface OnResultListener {

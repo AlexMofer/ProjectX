@@ -16,18 +16,14 @@
 
 package com.google.zxing.client.android.decode;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.ResultPointCallback;
 import com.google.zxing.client.android.camera.CameraManager;
-import com.google.zxing.client.android.camera.CameraPreferences;
 
 import java.util.Collection;
 import java.util.EnumMap;
@@ -41,7 +37,7 @@ import java.util.concurrent.CountDownLatch;
  *
  * @author dswitkin@google.com (Daniel Switkin)
  */
-public class DecodeThread extends Thread {
+class DecodeThread extends Thread {
 
     private static final Set<BarcodeFormat> PRODUCT_FORMATS;
     private static final Set<BarcodeFormat> INDUSTRIAL_FORMATS;
@@ -138,7 +134,7 @@ public class DecodeThread extends Thread {
         Log.i("DecodeThread", "Hints: " + hints);
     }
 
-    public Handler getHandler() {
+    Handler getHandler() {
         try {
             handlerInitLatch.await();
         } catch (InterruptedException ie) {

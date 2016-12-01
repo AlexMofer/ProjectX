@@ -299,10 +299,6 @@
             android:name=".activities.drawable.text.TextActivity"
             android:label="@string/text_title" />
 
-        <activity
-            android:name="com.google.zxing.client.android.CaptureActivity"
-            android:label="扫描" />
-
     </application>
 
 </manifest>

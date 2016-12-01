@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewParent;
 
 import com.google.zxing.Result;
+import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.util.Compat;
 
 /**
@@ -486,6 +487,11 @@ public class ZxingForegroundView extends View {
         @Override
         public void onOpened(ZxingScanView scanView) {
             invalidate();
+        }
+
+        @Override
+        public void foundPossibleResultPoint(ZxingScanView scanView, ResultPoint point) {
+            // TODO
         }
 
         @Override

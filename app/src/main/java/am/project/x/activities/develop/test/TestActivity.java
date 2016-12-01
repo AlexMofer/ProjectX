@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.google.zxing.Result;
 import com.google.zxing.ResultMetadataType;
-import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.ZxingForegroundView;
 import com.google.zxing.client.android.ZxingScanView;
 import com.google.zxing.client.result.ParsedResult;
@@ -119,9 +118,5 @@ public class TestActivity extends BaseActivity implements ZxingScanView.OnScanLi
 
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, TestActivity.class));
-    }
-
-    public static void startCaptureActivity(Context context) {
-        context.startActivity(new Intent(context, CaptureActivity.class));
     }
 }
