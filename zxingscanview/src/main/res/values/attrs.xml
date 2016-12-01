@@ -29,8 +29,16 @@
         <attr name="zfvErrorDrawable" format="reference" />
         <attr name="zfvZxingScanView" format="reference" />
         <attr name="zfvMode" format="enum">
-            <enum name="open" value="0"/>
-            <enum name="error" value="1"/>
+            <enum name="open" value="0" />
+            <enum name="error" value="1" />
+        </attr>
+        <attr name="zfvCoverColor" format="color" />
+        <attr name="zfvScanRectDrawable" format="reference" />
+        <attr name="zfvScanFlagDrawable" format="reference" />
+        <attr name="zfvFlagAnimatorDuration" format="integer" />
+        <attr name="zfvFlagAnimatorRepeatMode" format="enum">
+            <enum name="Restart" value="1" />
+            <enum name="Reverse" value="2" />
         </attr>
     </declare-styleable>
 </resources>

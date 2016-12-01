@@ -78,7 +78,7 @@ public class DecodeThread extends Thread {
     public final CameraManager cameraManager;
     public final Handler mHandler;
 
-    public DecodeThread(Context context, CameraManager cameraManager, Handler mHandler,
+    public DecodeThread(CameraManager cameraManager, Handler mHandler,
                  Collection<BarcodeFormat> decodeFormats,
                  Map<DecodeHintType, ?> baseHints,
                  String characterSet,
@@ -95,27 +95,40 @@ public class DecodeThread extends Thread {
 
         // The prefs can't change while the thread is running, so pick them up once here.
         if (decodeFormats == null || decodeFormats.isEmpty()) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
-            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_1D_PRODUCT, true)) {
-                decodeFormats.addAll(PRODUCT_FORMATS);
-            }
-            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_1D_INDUSTRIAL, true)) {
-                decodeFormats.addAll(INDUSTRIAL_FORMATS);
-            }
-            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_QR, true)) {
-                decodeFormats.addAll(QR_CODE_FORMATS);
-            }
-            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_DATA_MATRIX, true)) {
-                decodeFormats.addAll(DATA_MATRIX_FORMATS);
-            }
-            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_AZTEC, false)) {
-                decodeFormats.addAll(AZTEC_FORMATS);
-            }
-            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_PDF417, false)) {
-                decodeFormats.addAll(PDF417_FORMATS);
-            }
+            // TODO
+            decodeFormats.addAll(PRODUCT_FORMATS);
+            decodeFormats.addAll(INDUSTRIAL_FORMATS);
+            decodeFormats.addAll(QR_CODE_FORMATS);
+            decodeFormats.addAll(DATA_MATRIX_FORMATS);
         }
+
+//        if (decodeFormats == null || decodeFormats.isEmpty()) {
+//            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+//            decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
+//            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_1D_PRODUCT, true)) {
+//                decodeFormats.addAll(PRODUCT_FORMATS);
+//            }
+//            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_1D_INDUSTRIAL, true)) {
+//                decodeFormats.addAll(INDUSTRIAL_FORMATS);
+//            }
+//            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_QR, true)) {
+//                decodeFormats.addAll(QR_CODE_FORMATS);
+//            }
+//            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_DATA_MATRIX, true)) {
+//                decodeFormats.addAll(DATA_MATRIX_FORMATS);
+//            }
+//            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_AZTEC, false)) {
+//                decodeFormats.addAll(AZTEC_FORMATS);
+//            }
+//            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_PDF417, false)) {
+//                decodeFormats.addAll(PDF417_FORMATS);
+//            }
+//        }
+
+
+
+
         hints.put(DecodeHintType.POSSIBLE_FORMATS, decodeFormats);
 
         if (characterSet != null) {

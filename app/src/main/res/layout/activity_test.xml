@@ -37,18 +37,21 @@
             android:id="@+id/test_zsv_scan"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:zsvAmbientLight="auto"
+            app:zsvAmbientLight="close"
             app:zsvFeedback="auto"
-            app:zsvScanHeight="match_parent"
-            app:zsvScanWidth="match_parent" />
+            app:zsvScanHeight="400dp"
+            app:zsvScanWidth="300dp" />
 
         <com.google.zxing.client.android.ZxingForegroundView
             android:id="@+id/test_zfv_foreground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:zfvZxingScanView="@id/test_zsv_scan"
+            app:zfvCoverColor="@color/colorRipple"
             app:zfvErrorDrawable="@drawable/ic_drawable_center"
-            app:zfvOpenDrawable="@drawable/ic_drawable_center" />
+            app:zfvOpenDrawable="@drawable/ic_drawable_center"
+            app:zfvScanFlagDrawable="@drawable/ic_zxing_scan"
+            app:zfvScanRectDrawable="@drawable/ic_zxing_rect"
+            app:zfvZxingScanView="@id/test_zsv_scan" />
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

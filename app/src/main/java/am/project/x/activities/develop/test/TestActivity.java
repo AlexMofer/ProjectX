@@ -4,14 +4,26 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.MaterialLoadingProgressDrawable;
+import android.widget.Toast;
 
+import com.google.zxing.Result;
+import com.google.zxing.ResultMetadataType;
 import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.ZxingForegroundView;
 import com.google.zxing.client.android.ZxingScanView;
+import com.google.zxing.client.result.ParsedResult;
+import com.google.zxing.client.result.ResultParser;
+
+import java.text.DateFormat;
+import java.util.Collection;
+import java.util.Date;
+import java.util.EnumSet;
+import java.util.Map;
 
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
@@ -19,6 +31,11 @@ import am.project.x.activities.BaseActivity;
 public class TestActivity extends BaseActivity implements ZxingScanView.OnScanListener {
 
     private static final int PERMISSIONS_REQUEST_CAMERA = 108;
+    private static final Collection<ResultMetadataType> DISPLAYABLE_METADATA_TYPES =
+            EnumSet.of(ResultMetadataType.ISSUE_NUMBER,
+                    ResultMetadataType.SUGGESTED_PRICE,
+                    ResultMetadataType.ERROR_CORRECTION_LEVEL,
+                    ResultMetadataType.POSSIBLE_COUNTRY);
     private ZxingScanView scanView;
     private ZxingForegroundView foregroundView;
 
@@ -45,14 +62,43 @@ public class TestActivity extends BaseActivity implements ZxingScanView.OnScanLi
                 break;
             case ZxingScanView.ERROR_CODE_1:
                 // 缺少打开相机的权限
-//                if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
-//                        Manifest.permission.CAMERA)) {
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.CAMERA)) {
                     ActivityCompat.requestPermissions(this,
                             new String[]{Manifest.permission.CAMERA},
                             PERMISSIONS_REQUEST_CAMERA);
-//                }
+                }
                 break;
         }
+    }
+
+    @Override
+    public void onResult(ZxingScanView scanView, Result result, Bitmap barcode,
+                         float scaleFactor) {
+        ParsedResult parsedResult = ResultParser.parseResult(result);
+        final String format = "格式：" + result.getBarcodeFormat().toString();
+        final String type = "类型：" + parsedResult.getType().toString();
+        DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+        final String date = "时间：" + formatter.format(new Date(result.getTimestamp()));
+        String meta = "";
+        Map<ResultMetadataType, Object> metadata = result.getResultMetadata();
+        if (metadata != null) {
+            StringBuilder metadataText = new StringBuilder(20);
+            for (Map.Entry<ResultMetadataType, Object> entry : metadata.entrySet()) {
+                if (DISPLAYABLE_METADATA_TYPES.contains(entry.getKey())) {
+                    metadataText.append(entry.getValue()).append('\n');
+                }
+            }
+            if (metadataText.length() > 0) {
+                metadataText.setLength(metadataText.length() - 1);
+                meta = metadataText.toString();
+            }
+        }
+        CharSequence displayContents = parsedResult.getDisplayResult();
+        Toast.makeText(this, format + "\n" + type + "\n" + date + "\n" + meta + "\n" + displayContents,
+                Toast.LENGTH_SHORT).show();
+        // 重新扫描
+        scanView.restartScanDelay(3000);
     }
 
     @Override
@@ -64,6 +110,8 @@ public class TestActivity extends BaseActivity implements ZxingScanView.OnScanLi
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     scanView.open();
+                } else {
+                    foregroundView.setMode(ZxingForegroundView.MODE_ERROR);
                 }
             }
         }

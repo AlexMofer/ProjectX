@@ -3,12 +3,15 @@ package com.google.zxing.client.android;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
 
+import com.google.zxing.Result;
+import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.camera.CameraManager;
 import com.google.zxing.client.android.camera.open.OpenCameraInterface;
 import com.google.zxing.client.android.manager.AmbientLightManager;
@@ -36,6 +39,9 @@ public class ZxingScanView extends SurfaceView {
     private int mErrorCode = ERROR_CODE_NULL;
     private ArrayList<OnScanListener> mListeners = new ArrayList<>();
     private ArrayList<OnStateListener> mStateListeners = new ArrayList<>();
+    private ScanHandler mScanHandler;
+    private OnResultListener resultListener = new OnResultListener();
+    private ResultPointCallback resultPointCallback = new ResultPointCallback();
 
 
     public ZxingScanView(Context context) {
@@ -167,6 +173,8 @@ public class ZxingScanView extends SurfaceView {
         try {
             mCameraManager.openDriver(surfaceHolder);
             mCameraManager.startPreview();
+            mScanHandler = new ScanHandler(resultListener, null, null, null, mCameraManager,
+                    resultPointCallback);
         } catch (Exception e) {
             mErrorCode = ERROR_CODE_0;
             notifyListenerError();
@@ -179,6 +187,10 @@ public class ZxingScanView extends SurfaceView {
     private void closeDriver() {
         notifyListenerPrepareClose();
         mErrorCode = ERROR_CODE_NULL;
+        if (mScanHandler != null) {
+            mScanHandler.quitSynchronously();
+            mScanHandler = null;
+        }
         if (mCameraManager != null)
             mCameraManager.stopPreview();
         mAmbientLightManager.pause();
@@ -223,6 +235,29 @@ public class ZxingScanView extends SurfaceView {
     private void notifyListenerClosed() {
         for (OnStateListener listener : mStateListeners) {
             listener.onClosed(this);
+        }
+    }
+
+    private class OnResultListener implements ScanHandler.OnResultListener {
+
+        @Override
+        public void onResult(Result result, Bitmap barcode, float scaleFactor) {
+            mScanFeedbackManager.performScanFeedback();
+            notifyListenerResult(result, barcode, scaleFactor);
+        }
+    }
+
+    private void notifyListenerResult(Result result, Bitmap barcode, float scaleFactor) {
+        for (OnScanListener listener : mListeners) {
+            listener.onResult(this, result, barcode, scaleFactor);
+        }
+    }
+
+    private class ResultPointCallback implements com.google.zxing.ResultPointCallback {
+
+        @Override
+        public void foundPossibleResultPoint(ResultPoint point) {
+            // TODO
         }
     }
 
@@ -386,6 +421,28 @@ public class ZxingScanView extends SurfaceView {
     }
 
     /**
+     * 重新开始扫描
+     */
+    @SuppressWarnings("unused")
+    public void restartScan() {
+        if (mScanHandler != null) {
+            mScanHandler.sendEmptyMessage(ID.restart_preview);
+        }
+    }
+
+    /**
+     * 一段时间后重新你开始扫描
+     *
+     * @param delay 时间
+     */
+    @SuppressWarnings("unused")
+    public void restartScanDelay(long delay) {
+        if (mScanHandler != null) {
+            mScanHandler.sendEmptyMessageDelayed(ID.restart_preview, delay);
+        }
+    }
+
+    /**
      * 扫描监听
      */
     public interface OnScanListener {
@@ -395,6 +452,16 @@ public class ZxingScanView extends SurfaceView {
          * @param scanView ZxingScanView
          */
         void onError(ZxingScanView scanView);
+
+        /**
+         * 扫描结果
+         *
+         * @param scanView    ZxingScanView
+         * @param result      结果
+         * @param barcode     图片
+         * @param scaleFactor 缩放比
+         */
+        void onResult(ZxingScanView scanView, Result result, Bitmap barcode, float scaleFactor);
     }
 
     public interface OnStateListener {

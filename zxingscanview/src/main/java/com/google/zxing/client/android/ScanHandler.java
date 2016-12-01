@@ -16,18 +16,18 @@
 
 package com.google.zxing.client.android;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
+import com.google.zxing.ResultPointCallback;
 import com.google.zxing.client.android.camera.CameraManager;
 import com.google.zxing.client.android.decode.DecodeThread;
-
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 
 import java.util.Collection;
 import java.util.Map;
@@ -38,9 +38,9 @@ import java.util.Map;
  *
  * @author dswitkin@google.com (Daniel Switkin)
  */
-public final class CaptureActivityHandler extends Handler {
+public final class ScanHandler extends Handler {
 
-    private final CaptureActivity activity;
+    private final OnResultListener listener;
     private final DecodeThread decodeThread;
     private State state;
     private final CameraManager cameraManager;
@@ -51,21 +51,18 @@ public final class CaptureActivityHandler extends Handler {
         DONE
     }
 
-    CaptureActivityHandler(CaptureActivity activity,
-                           Collection<BarcodeFormat> decodeFormats,
-                           Map<DecodeHintType, ?> baseHints,
-                           String characterSet,
-                           CameraManager cameraManager) {
-        this.activity = activity;
-        decodeThread = new DecodeThread(activity, activity.getCameraManager(),
-                this, decodeFormats, baseHints, characterSet,
-                new ViewfinderResultPointCallback(activity.getViewfinderView()));
-        decodeThread.start();
-        state = State.SUCCESS;
-
+    public ScanHandler(OnResultListener listener,
+                Collection<BarcodeFormat> decodeFormats,
+                Map<DecodeHintType, ?> baseHints,
+                String characterSet,
+                CameraManager cameraManager, ResultPointCallback resultPointCallback) {
+        this.listener = listener;
         // Start ourselves capturing previews and decoding.
         this.cameraManager = cameraManager;
-        cameraManager.startPreview();
+        decodeThread = new DecodeThread(cameraManager,
+                this, decodeFormats, baseHints, characterSet, resultPointCallback);
+        decodeThread.start();
+        state = State.SUCCESS;
         restartPreviewAndDecode();
     }
 
@@ -89,7 +86,8 @@ public final class CaptureActivityHandler extends Handler {
                     }
                     scaleFactor = bundle.getFloat(DecodeThread.BARCODE_SCALED_FACTOR);
                 }
-                activity.handleDecode((Result) message.obj, barcode, scaleFactor);
+                if (listener != null)
+                    listener.onResult((Result) message.obj, barcode, scaleFactor);
                 break;
             case ID.decode_failed:
                 // We're decoding as fast as possible, so when one decode fails, start another.
@@ -119,8 +117,11 @@ public final class CaptureActivityHandler extends Handler {
         if (state == State.SUCCESS) {
             state = State.PREVIEW;
             cameraManager.requestPreviewFrame(decodeThread.getHandler(), ID.decode);
-            activity.drawViewfinder();
         }
+    }
+
+    public interface OnResultListener {
+        void onResult(Result result, Bitmap barcode, float scaleFactor);
     }
 
 }

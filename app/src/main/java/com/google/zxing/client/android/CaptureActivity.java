@@ -32,7 +32,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -55,7 +54,8 @@ import am.project.x.R;
  * @author dswitkin@google.com (Daniel Switkin)
  * @author Sean Owen
  */
-public final class CaptureActivity extends Activity implements SurfaceHolder.Callback {
+public final class CaptureActivity extends Activity implements SurfaceHolder.Callback,
+        ScanHandler.OnResultListener{
 
     private static final String TAG = CaptureActivity.class.getSimpleName();
 
@@ -68,17 +68,10 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
                     ResultMetadataType.POSSIBLE_COUNTRY);
 
     private CameraManager cameraManager;
-    private CaptureActivityHandler handler;
+    private ScanHandler handler;
     private ViewfinderView viewfinderView;
     private boolean hasSurface;
 
-    ViewfinderView getViewfinderView() {
-        return viewfinderView;
-    }
-
-    CameraManager getCameraManager() {
-        return cameraManager;
-    }
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -146,6 +139,11 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
+    }
+
+    @Override
+    public void onResult(Result result, Bitmap barcode, float scaleFactor) {
+        handleDecode(result, barcode, scaleFactor);
     }
 
     /**
@@ -254,8 +252,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         }
         try {
             cameraManager.openDriver(surfaceHolder);
+            cameraManager.startPreview();
             if (handler == null) {
-                handler = new CaptureActivityHandler(this, null, null, null, cameraManager);
+                handler = new ScanHandler(this, null, null, null, cameraManager, new ViewfinderResultPointCallback(viewfinderView));
             }
         } catch (Exception e) {
             displayFrameworkBugMessageAndExit();
@@ -270,10 +269,5 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         if (handler != null) {
             handler.sendEmptyMessageDelayed(ID.restart_preview, delayMS);
         }
-    }
-
-
-    public void drawViewfinder() {
-        viewfinderView.drawViewfinder();
     }
 }
