@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activities.develop.test.TestActivity">
+    tools:context=".activities.widgets.zxingscanview.ZxingScanViewActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:theme="@style/AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/test_toolbar"
+            android:id="@+id/zxingscanview_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/dev_test" />
+                android:text="@string/zxingscanview_title" />
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
@@ -33,6 +33,26 @@
         android:background="@color/transparent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <am.widget.zxingscanview.ZxingScanView
+            android:id="@+id/zxingscanview_zsv_scan"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:zsvAmbientLight="close"
+            app:zsvFeedback="auto"
+            app:zsvScanHeight="400dp"
+            app:zsvScanWidth="300dp" />
+
+        <am.widget.zxingscanview.ZxingForegroundView
+            android:id="@+id/zxingscanview_zfv_foreground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:zfvCoverColor="@color/colorRipple"
+            app:zfvErrorDrawable="@drawable/ic_drawable_center"
+            app:zfvOpenDrawable="@drawable/ic_drawable_center"
+            app:zfvResultPointsColor="@color/colorAccent"
+            app:zfvScanFlagDrawable="@drawable/ic_zxing_scan"
+            app:zfvScanRectDrawable="@drawable/ic_zxing_rect"
+            app:zfvZxingScanView="@id/zxingscanview_zsv_scan" />
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

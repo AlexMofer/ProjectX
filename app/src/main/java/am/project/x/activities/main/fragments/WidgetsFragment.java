@@ -22,6 +22,7 @@ import am.project.x.activities.widgets.shapeimageview.ShapeImageViewActivity;
 import am.project.x.activities.widgets.stateframelayout.StateFrameLayoutActivity;
 import am.project.x.activities.widgets.tagtabstrip.TagTabStripActivity;
 import am.project.x.activities.widgets.wraplayout.WrapLayoutActivity;
+import am.project.x.activities.widgets.zxingscanview.ZxingScanViewActivity;
 
 /**
  * 控件
@@ -54,6 +55,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
         view.findViewById(R.id.widget_btn_selectionview).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_recyclepager).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_circleprogressbar).setOnClickListener(this);
+        view.findViewById(R.id.widget_btn_zxingscanview).setOnClickListener(this);
     }
 
     @Override
@@ -97,6 +99,9 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.widget_btn_circleprogressbar:
                 CircleProgressBarActivity.startActivity(getContext());
+                break;
+            case R.id.widget_btn_zxingscanview:
+                ZxingScanViewActivity.startActivity(getContext());
                 break;
         }
     }

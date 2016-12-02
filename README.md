@@ -42,6 +42,9 @@
 - [***CircleProgressBar***](https://github.com/AlexMofer/ProjectX/tree/master/circleprogressbar)
 
     带载入动画的环形进度条，可高度配置，支持配置成表盘。
+- [***ZxingScanView***](https://github.com/AlexMofer/ProjectX/tree/master/zxingscanview)
+
+    一个View实现zxing条码扫描视图。
 
 ## Drawable
 - [***DoubleCircleDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)

@@ -6,8 +6,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.VIBRATE" />
-
-
     <uses-permission android:name="android.permission.CAMERA" />
 
 
@@ -268,6 +266,21 @@
                 <data
                     android:host="github.com"
                     android:pathPrefix="/AlexMofer/CircleProgressBar"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.widgets.zxingscanview.ZxingScanViewActivity"
+            android:label="@string/zxingscanview_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="github.com"
+                    android:pathPrefix="/AlexMofer/ZxingScanView"
                     android:scheme="https" />
             </intent-filter>
         </activity>
