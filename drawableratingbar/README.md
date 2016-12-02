@@ -1,9 +1,9 @@
 # DrawableRatingBar
-![ICON](https://github.com/AlexMofer/ProjectX/blob/master/drawableratingbar/icon.png)
+![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/drawableratingbar/icon.png)
 
 图片评级,双图片评级控件，可设置图片间距，支持拖动进度及点击进度，可控制最大值最小值，及是否可手动。
 ## 预览
-![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/drawableratingbar/screenshots.gif)
+![Screenshots](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/drawableratingbar/screenshots.gif)
 ## 要求
 minSdkVersion 4
 ## 引用

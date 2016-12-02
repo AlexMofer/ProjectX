@@ -1,10 +1,10 @@
 # Printer
-![ICON](https://github.com/AlexMofer/ProjectX/blob/master/printer/icon.png)
+![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/printer/icon.png)
 
 标准ES-POS命令打印，固定IP或蓝牙打印，支持黑白图片打印
 ## 预览
-![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/printer/screenshot.png)
-![打印样例](https://github.com/AlexMofer/ProjectX/blob/master/printer/printer_example.jpg)
+![Screenshots](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/printer/screenshot.png)
+![打印样例](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/printer/printer_example.jpg)
 ## 要求
 - minSdkVersion 5
 - ```<uses-permission android:name="android.permission.INTERNET" />```

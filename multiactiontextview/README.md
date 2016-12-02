@@ -1,9 +1,9 @@
 # MultiActionTextView
-![ICON](https://github.com/AlexMofer/ProjectX/blob/master/multiactiontextview/icon.png)
+![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/multiactiontextview/icon.png)
 
 文字可点击TextView，设置文字部分可点击，点击执行不同操作。
 ## 预览
-![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/multiactiontextview/screenshots.gif)
+![Screenshots](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/multiactiontextview/screenshots.gif)
 ## 要求
 无
 

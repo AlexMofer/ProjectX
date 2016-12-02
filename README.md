@@ -1,5 +1,5 @@
 # ProjectX
-![ICON](https://github.com/AlexMofer/ProjectX/blob/master/ProjectX.png)
+![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/ProjectX.png)
 
 整体项目合集，包括Widget、Drawable以及一些工具类。
 ## Widget
@@ -90,4 +90,4 @@
     支持包
 
 ## Demo
-[<img src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" height="45px" />](https://play.google.com/store/apps/details?id=am.project.x)[<img src="https://raw.githubusercontent.com/AlexMofer/ProjectX/master/release/ic_download.png" height="45px" />](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/release/ProjectX.apk)
+[<img src="https://play.google.com/intl/zh_cn/badges/images/apps/en-play-badge.png" width="164px" height="48px" />](https://play.google.com/store/apps/details?id=am.project.x)[<img src="https://raw.githubusercontent.com/AlexMofer/ProjectX/master/release/ic_download.png" height="45px" />](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/release/ProjectX.apk)

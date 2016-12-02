@@ -1,5 +1,5 @@
 # Security
-![ICON](https://github.com/AlexMofer/ProjectX/blob/master/security/icon.png)
+![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/security/icon.png)
 
 加密解密，主要为3DES、AES、RSA加密算法的整理
 ## 要求

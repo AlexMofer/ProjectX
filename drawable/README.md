@@ -1,5 +1,5 @@
 # Drawable
-![ICON](https://github.com/AlexMofer/ProjectX/blob/master/drawable/icon.png)
+![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/drawable/icon.png)
 
 实现特定功能的Drawable合集。
 ## 要求

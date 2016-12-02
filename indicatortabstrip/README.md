@@ -1,9 +1,9 @@
 # IndicatorTabStrip
-![ICON](https://github.com/AlexMofer/ProjectX/blob/master/indicatortabstrip/icon.png)
+![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/indicatortabstrip/icon.png)
 
 继承自BaseTabStrip，移动式下标渐变缩放Tab，Item不建议超过5个，为ViewPager添加如PagerTitleStrip一样的Tab，但支持更多自定义功能，并支持为Tab增加标记点功能，并可以自定义标记点各自的位置及显示状态以及背景等。
 ## 预览
-![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/indicatortabstrip/screenshots.gif)
+![Screenshots](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/indicatortabstrip/screenshots.gif)
 ## 要求
 - minSdkVersion 9
 - 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7）

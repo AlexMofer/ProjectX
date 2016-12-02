@@ -1,10 +1,10 @@
 # CircleProgressBar
-![ICON](https://github.com/AlexMofer/ProjectX/blob/master/circleprogressbar/icon.png)
+![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/circleprogressbar/icon.png)
 
 带载入动画的环形进度条，可高度配置，支持配置成表盘。
 ## 预览
-![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/circleprogressbar/screenshots.gif)
-![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/circleprogressbar/screenshot_2.gif)
+![Screenshots](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/circleprogressbar/screenshots.gif)
+![Screenshots](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/circleprogressbar/screenshot_2.gif)
 ## 要求
 minSdkVersion 11
 ## 引用

@@ -1,9 +1,9 @@
 # TagTabStrip
-![ICON](https://github.com/AlexMofer/ProjectX/blob/master/tagtabstrip/icon.png)
+![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/tagtabstrip/icon.png)
 
 继承自BaseTabStrip，实现ViewPager标志小点，一般用于功能引导页面及新功能简介页，为ViewPager添加标志小点，并不仅限于小点，标志由设置的Drawable决定，普通模式为双Drawable交替模式，亦可设置为单Drawable缩放模式。
 ## 预览
-![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/tagtabstrip/screenshots.gif)
+![Screenshots](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/tagtabstrip/screenshots.gif)
 ## 要求
 - minSdkVersion 9
 - 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7）
