@@ -13,10 +13,10 @@ android {
     }
     defaultConfig {
         applicationId "am.project.x"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 25
-        versionCode 68
-        versionName "2.5.1"
+        versionCode 70
+        versionName "2.6.0"
     }
     buildTypes {
         release {
@@ -38,7 +38,7 @@ android {
     }
     productFlavors {
         rel {
-            minSdkVersion 14
+            minSdkVersion 15
             return true
         }
         dev {
