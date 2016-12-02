@@ -53,15 +53,15 @@ public final class ScanHandler extends Handler {
     }
 
     public ScanHandler(OnResultListener listener,
-                Collection<BarcodeFormat> decodeFormats,
-                Map<DecodeHintType, ?> baseHints,
-                String characterSet,
-                CameraManager cameraManager, ResultPointCallback resultPointCallback) {
+                       int barcodeType,
+                       Map<DecodeHintType, ?> baseHints,
+                       String characterSet,
+                       CameraManager cameraManager, ResultPointCallback resultPointCallback) {
         this.listener = listener;
         // Start ourselves capturing previews and decoding.
         this.cameraManager = cameraManager;
         decodeThread = new DecodeThread(cameraManager,
-                this, decodeFormats, baseHints, characterSet, resultPointCallback);
+                this, barcodeType, baseHints, characterSet, resultPointCallback);
         decodeThread.start();
         state = State.SUCCESS;
         restartPreviewAndDecode();

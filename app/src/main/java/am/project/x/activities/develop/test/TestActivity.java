@@ -13,8 +13,6 @@ import android.widget.Toast;
 
 import com.google.zxing.Result;
 import com.google.zxing.ResultMetadataType;
-import com.google.zxing.client.android.ZxingForegroundView;
-import com.google.zxing.client.android.ZxingScanView;
 import com.google.zxing.client.result.ParsedResult;
 import com.google.zxing.client.result.ResultParser;
 
@@ -26,6 +24,8 @@ import java.util.Map;
 
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
+import am.widget.zxingscanview.ZxingForegroundView;
+import am.widget.zxingscanview.ZxingScanView;
 
 public class TestActivity extends BaseActivity implements ZxingScanView.OnScanListener {
 

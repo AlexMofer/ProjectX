@@ -33,7 +33,7 @@
         android:background="@color/transparent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.google.zxing.client.android.ZxingScanView
+        <am.widget.zxingscanview.ZxingScanView
             android:id="@+id/test_zsv_scan"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -42,13 +42,14 @@
             app:zsvScanHeight="400dp"
             app:zsvScanWidth="300dp" />
 
-        <com.google.zxing.client.android.ZxingForegroundView
+        <am.widget.zxingscanview.ZxingForegroundView
             android:id="@+id/test_zfv_foreground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:zfvCoverColor="@color/colorRipple"
             app:zfvErrorDrawable="@drawable/ic_drawable_center"
             app:zfvOpenDrawable="@drawable/ic_drawable_center"
+            app:zfvResultPointsColor="@color/colorAccent"
             app:zfvScanFlagDrawable="@drawable/ic_zxing_scan"
             app:zfvScanRectDrawable="@drawable/ic_zxing_rect"
             app:zfvZxingScanView="@id/test_zsv_scan" />

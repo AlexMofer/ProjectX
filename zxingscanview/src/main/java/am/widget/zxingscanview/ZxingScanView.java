@@ -1,4 +1,4 @@
-package com.google.zxing.client.android;
+package am.widget.zxingscanview;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -15,16 +15,19 @@ import android.view.SurfaceView;
 import android.view.ViewGroup;
 
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.camera.CameraManager;
 import com.google.zxing.client.android.camera.open.OpenCameraInterface;
+import com.google.zxing.client.android.decode.BarcodeType;
 import com.google.zxing.client.android.decode.ScanHandler;
 import com.google.zxing.client.android.manager.AmbientLightManager;
 import com.google.zxing.client.android.manager.ScanFeedbackManager;
 import com.google.zxing.client.android.compat.Compat;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * ZxingScanView
@@ -48,6 +51,9 @@ public class ZxingScanView extends SurfaceView {
     private ScanHandler mScanHandler;
     private OnResultListener resultListener = new OnResultListener();
     private ResultPointCallback resultPointCallback = new ResultPointCallback();
+    private int mBarcodeType;
+    private String mCharacterSet;
+    private Map<DecodeHintType, ?> mBaseHints;
 
 
     public ZxingScanView(Context context) {
@@ -81,7 +87,8 @@ public class ZxingScanView extends SurfaceView {
         int scanHeight = ViewGroup.LayoutParams.MATCH_PARENT;
         int cameraId = OpenCameraInterface.NO_REQUESTED_CAMERA;
         int milliseconds = ScanFeedbackManager.DEFAUT_MILLISECONDS;
-
+        int barcodeType = BarcodeType.DEFAULT;
+        String characterSet;
         TypedArray custom = getContext().obtainStyledAttributes(attrs, R.styleable.ZxingScanView);
         mode = custom.getInt(R.styleable.ZxingScanView_zsvAmbientLight, mode);
         feedback = custom.getInt(R.styleable.ZxingScanView_zsvFeedback, feedback);
@@ -92,11 +99,14 @@ public class ZxingScanView extends SurfaceView {
         scanWidth = custom.getLayoutDimension(R.styleable.ZxingScanView_zsvScanWidth, scanWidth);
         scanHeight = custom.getLayoutDimension(R.styleable.ZxingScanView_zsvScanHeight, scanHeight);
         cameraId = custom.getInteger(R.styleable.ZxingScanView_zsvCameraId, cameraId);
-
+        barcodeType = custom.getInt(R.styleable.ZxingScanView_zsvBarcode, barcodeType);
+        characterSet = custom.getString(R.styleable.ZxingScanView_zsvCharacterSet);
         custom.recycle();
         setScanWidth(scanWidth);
         setScanHeight(scanHeight);
         setCameraId(cameraId);
+        setScanBarcodeType(barcodeType);
+        setScanCharacterSet(characterSet);
         setFocusable(true);
         setFocusableInTouchMode(true);
         setKeepScreenOn(true);
@@ -181,7 +191,8 @@ public class ZxingScanView extends SurfaceView {
         try {
             mCameraManager.openDriver(surfaceHolder);
             mCameraManager.startPreview();
-            mScanHandler = new ScanHandler(resultListener, null, null, null, mCameraManager,
+            mScanHandler = new ScanHandler(resultListener, mBarcodeType, mBaseHints,
+                    mCharacterSet, mCameraManager,
                     resultPointCallback);
         } catch (Exception e) {
             mErrorCode = ERROR_CODE_0;
@@ -432,6 +443,25 @@ public class ZxingScanView extends SurfaceView {
      */
     public int getScanHeight() {
         return mScanHeight;
+    }
+
+    /**
+     * 设置扫码类型
+     *
+     * @param type 类型
+     */
+    public void setScanBarcodeType(int type) {
+        mBarcodeType = type;
+    }
+
+
+    public void setScanCharacterSet(String characterSet) {
+        mCharacterSet = characterSet;
+    }
+
+    @SuppressWarnings("unused")
+    public void setScanBaseHints(Map<DecodeHintType, ?> hints) {
+        mBaseHints = hints;
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.google.zxing.client.android;
+package am.widget.zxingscanview;
 
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
@@ -14,13 +15,15 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewParent;
+import android.view.animation.CycleInterpolator;
+import android.view.animation.Interpolator;
 
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.compat.Compat;
 
-import java.util.ArrayList;
 import java.util.ListIterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 前景视图
@@ -31,6 +34,7 @@ public class ZxingForegroundView extends View {
 
     public static final int MODE_OPEN = 0;
     public static final int MODE_ERROR = 1;
+    private static final long DEFAULT_FRAME_DELAY = 10;//丢失超过30帧就会报警
     private Drawable mOpenDrawable;
     private Drawable mErrorDrawable;
     private ZxingScanView mScanView;
@@ -45,7 +49,13 @@ public class ZxingForegroundView extends View {
     private Drawable mScanFlagDrawable;
     private final ValueAnimator mLoadingAnimator = ValueAnimator.ofFloat(0f, 1f);// 载入动画
     private float mOffset = 0;
-    private final ArrayList<ResultPoint> mResultPoints = new ArrayList<>();
+    private final CopyOnWriteArrayList<ResultPointItem> mResultPoints = new CopyOnWriteArrayList<>();
+    private boolean mShowResultPoints;
+    private long mResultPointsAnimatorDuration;
+    private final Interpolator mInterpolator = new CycleInterpolator(1);
+    private int mMaxResultPointsNumber;
+    private int mResultPointsColor;
+    private float mResultPointsSize;
 
     public ZxingForegroundView(Context context) {
         super(context);
@@ -79,6 +89,11 @@ public class ZxingForegroundView extends View {
         Drawable scanFlag;
         int duration = 2000;
         int repeatMode = 1;
+        boolean showResultPoints;
+        int resultPointsAnimatorDuration = 500;
+        int maxNumber = 10;
+        int resultPointsColor = 0xc0ffbd21;
+        float resultPointsSize = 6;
         TypedArray custom = getContext().obtainStyledAttributes(attrs,
                 R.styleable.ZxingForegroundView);
         open = custom.getDrawable(R.styleable.ZxingForegroundView_zfvOpenDrawable);
@@ -92,6 +107,17 @@ public class ZxingForegroundView extends View {
                 duration);
         repeatMode = custom.getInt(R.styleable.ZxingForegroundView_zfvFlagAnimatorRepeatMode,
                 repeatMode);
+        showResultPoints = custom.getBoolean(R.styleable.ZxingForegroundView_zfvShowResultPoints,
+                false);
+        resultPointsAnimatorDuration = custom.getInteger(
+                R.styleable.ZxingForegroundView_zfvResultPointsAnimatorDuration,
+                resultPointsAnimatorDuration);
+        maxNumber = custom.getInteger(R.styleable.ZxingForegroundView_zfvMaxResultPointsNumber,
+                maxNumber);
+        resultPointsColor = custom.getColor(R.styleable.ZxingForegroundView_zfvResultPointsColor,
+                resultPointsColor);
+        resultPointsSize = custom.getDimension(R.styleable.ZxingForegroundView_zfvResultPointsSize,
+                resultPointsSize);
         custom.recycle();
         mScanViewId = scanId;
         setOpenDrawable(open);
@@ -106,10 +132,17 @@ public class ZxingForegroundView extends View {
         } else {
             setFlagAnimatorRepeatMode(ValueAnimator.REVERSE);
         }
+        setShowResultPoints(showResultPoints);
+        setResultPointsAnimatorDuration(resultPointsAnimatorDuration);
+        setMaxResultPointsNumber(maxNumber);
+        setResultPointsColor(resultPointsColor);
+        setResultPointsSize(resultPointsSize);
         mLoadingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animator) {
                 mOffset = (float) animator.getAnimatedValue();
+                if (mShowResultPoints)
+                    editResultPoints();
                 if (mScanFlagDrawable != null)
                     invalidate();
             }
@@ -236,16 +269,45 @@ public class ZxingForegroundView extends View {
             mScanRectDrawable.draw(canvas);
             canvas.restore();
         }
-        drawScanPoint(canvas);
+        drawScanPoint(canvas, scanWidth, scanHeight);
         drawScanFlag(canvas, mScanFlagDrawable, scanWidth, scanHeight, mOffset);
     }
 
-    private void drawScanPoint(Canvas canvas) {
-        //  使用迭代器避免在循环时并发添加与删除操作
+    @SuppressWarnings("all")
+    private void drawScanPoint(Canvas canvas, int scanWidth, int scanHeight) {
+        if (!mShowResultPoints)
+            return;
+        final float scaleX = scanWidth / (float) getWidth();
+        final float scaleY = scanHeight / (float) getHeight();
+        final int coverX = (getWidth() - scanWidth) / 2;
+        final int coverY = (getHeight() - scanHeight) / 2;
         ListIterator iterator = mResultPoints.listIterator();
         while (iterator.hasNext()) {
-            ResultPoint point = (ResultPoint) iterator.next();
+            ResultPointItem point = (ResultPointItem) iterator.next();
+            final float offset = mInterpolator.getInterpolation(1 - point.getValue());
+            mPaint.setColor(getColor(mResultPointsColor, offset));
+            // TODO 扫描基准点问题导致XY不对
+            canvas.drawCircle(coverX + (int) (point.point.getX() * scaleX),
+                    coverY + (int) (point.point.getY() * scaleY),
+                    mResultPointsSize * offset, mPaint);
+        }
+    }
 
+    private int getColor(int color, float offset) {
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        int alpha = (int) Math.ceil(255 * offset);
+        return Color.argb(alpha, red, green, blue);
+    }
+
+    @SuppressWarnings("all")
+    private void editResultPoints() {
+        ListIterator<ResultPointItem> iterator = mResultPoints.listIterator();
+        while (iterator.hasNext()) {
+            ResultPointItem point = iterator.next();
+            if (!point.cutDuration(DEFAULT_FRAME_DELAY))
+                mResultPoints.remove(point);
         }
     }
 
@@ -474,6 +536,54 @@ public class ZxingForegroundView extends View {
         mLoadingAnimator.setRepeatMode(mode);
     }
 
+    /**
+     * 设置是否显示结果点
+     *
+     * @param show 是否显示
+     */
+    public void setShowResultPoints(boolean show) {
+        if (mShowResultPoints == show)
+            return;
+        mShowResultPoints = show;
+        invalidate();
+    }
+
+    /**
+     * 设置结果点动画时长
+     *
+     * @param duration 时长
+     */
+    public void setResultPointsAnimatorDuration(long duration) {
+        mResultPointsAnimatorDuration = duration;
+    }
+
+    /**
+     * 设置最大结果点数目
+     *
+     * @param max 最大数目
+     */
+    public void setMaxResultPointsNumber(int max) {
+        mMaxResultPointsNumber = max;
+    }
+
+    /**
+     * 设置结果点的颜色
+     *
+     * @param color 颜色
+     */
+    public void setResultPointsColor(int color) {
+        mResultPointsColor = color;
+    }
+
+    /**
+     * 设置结果点的大小
+     *
+     * @param size 大小
+     */
+    public void setResultPointsSize(float size) {
+        mResultPointsSize = size;
+    }
+
     private class OnScanListener implements ZxingScanView.OnScanListener {
         @Override
         public void onError(ZxingScanView scanView) {
@@ -500,8 +610,10 @@ public class ZxingForegroundView extends View {
 
         @Override
         public void foundPossibleResultPoint(ZxingScanView scanView, ResultPoint point) {
-            mResultPoints.add(point);
-            // TODO 另起线程用于删除点
+            if (!mShowResultPoints)
+                return;
+            if (mResultPoints.size() < mMaxResultPointsNumber)
+                mResultPoints.add(new ResultPointItem(point, mResultPointsAnimatorDuration));
         }
 
         @Override
@@ -512,6 +624,25 @@ public class ZxingForegroundView extends View {
         @Override
         public void onClosed(ZxingScanView scanView) {
             invalidate();
+        }
+    }
+
+    private class ResultPointItem {
+        ResultPoint point;
+        long duration;
+
+        ResultPointItem(ResultPoint point, long duration) {
+            this.point = point;
+            this.duration = duration;
+        }
+
+        boolean cutDuration(long value) {
+            duration -= value;
+            return duration >= 0;
+        }
+
+        float getValue() {
+            return duration / (float) mResultPointsAnimatorDuration;
         }
     }
 }

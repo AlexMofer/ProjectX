@@ -22,8 +22,17 @@
             <enum name="match_parent" value="-1" />
         </attr>
         <attr name="zsvCameraId" format="integer" />
-
+        <attr name="zsvBarcode">
+            <flag name="Product_1D" value="1" />
+            <flag name="Industrial_1D" value="2" />
+            <flag name="QR" value="4" />
+            <flag name="Data_Matrix" value="8" />
+            <flag name="Aztec" value="16" />
+            <flag name="PDF417" value="32" />
+        </attr>
+        <attr name="zsvCharacterSet" format="string" />
     </declare-styleable>
+
     <declare-styleable name="ZxingForegroundView">
         <attr name="zfvOpenDrawable" format="reference" />
         <attr name="zfvErrorDrawable" format="reference" />
@@ -40,5 +49,10 @@
             <enum name="Restart" value="1" />
             <enum name="Reverse" value="2" />
         </attr>
+        <attr name="zfvShowResultPoints" format="boolean" />
+        <attr name="zfvResultPointsAnimatorDuration" format="integer" />
+        <attr name="zfvMaxResultPointsNumber" format="integer" />
+        <attr name="zfvResultPointsColor" format="color" />
+        <attr name="zfvResultPointsSize" format="dimension" />
     </declare-styleable>
 </resources>

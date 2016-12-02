@@ -75,7 +75,7 @@ class DecodeThread extends Thread {
     public final Handler mHandler;
 
     public DecodeThread(CameraManager cameraManager, Handler mHandler,
-                 Collection<BarcodeFormat> decodeFormats,
+                 int barcodeType,
                  Map<DecodeHintType, ?> baseHints,
                  String characterSet,
                  ResultPointCallback resultPointCallback) {
@@ -89,41 +89,25 @@ class DecodeThread extends Thread {
             hints.putAll(baseHints);
         }
 
-        // The prefs can't change while the thread is running, so pick them up once here.
-        if (decodeFormats == null || decodeFormats.isEmpty()) {
-            decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
-            // TODO
+        Collection<BarcodeFormat> decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
+        if ((barcodeType & BarcodeType.PRODUCT_1D) == BarcodeType.PRODUCT_1D) {
             decodeFormats.addAll(PRODUCT_FORMATS);
+        }
+        if ((barcodeType & BarcodeType.INDUSTRIAL_1D) == BarcodeType.INDUSTRIAL_1D) {
             decodeFormats.addAll(INDUSTRIAL_FORMATS);
+        }
+        if ((barcodeType & BarcodeType.QR) == BarcodeType.QR) {
             decodeFormats.addAll(QR_CODE_FORMATS);
+        }
+        if ((barcodeType & BarcodeType.DATA_MATRIX) == BarcodeType.DATA_MATRIX) {
             decodeFormats.addAll(DATA_MATRIX_FORMATS);
         }
-
-//        if (decodeFormats == null || decodeFormats.isEmpty()) {
-//            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-//            decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
-//            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_1D_PRODUCT, true)) {
-//                decodeFormats.addAll(PRODUCT_FORMATS);
-//            }
-//            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_1D_INDUSTRIAL, true)) {
-//                decodeFormats.addAll(INDUSTRIAL_FORMATS);
-//            }
-//            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_QR, true)) {
-//                decodeFormats.addAll(QR_CODE_FORMATS);
-//            }
-//            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_DATA_MATRIX, true)) {
-//                decodeFormats.addAll(DATA_MATRIX_FORMATS);
-//            }
-//            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_AZTEC, false)) {
-//                decodeFormats.addAll(AZTEC_FORMATS);
-//            }
-//            if (prefs.getBoolean(CameraPreferences.KEY_DECODE_PDF417, false)) {
-//                decodeFormats.addAll(PDF417_FORMATS);
-//            }
-//        }
-
-
-
+        if ((barcodeType & BarcodeType.AZTEC) == BarcodeType.AZTEC) {
+            decodeFormats.addAll(AZTEC_FORMATS);
+        }
+        if ((barcodeType & BarcodeType.PDF417) == BarcodeType.PDF417) {
+            decodeFormats.addAll(PDF417_FORMATS);
+        }
 
         hints.put(DecodeHintType.POSSIBLE_FORMATS, decodeFormats);
 
