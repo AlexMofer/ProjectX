@@ -8,9 +8,6 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-
-
-
     <application
         android:name=".ProjectXApplication"
         android:allowBackup="true"
