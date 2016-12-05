@@ -251,10 +251,14 @@
     <string name="zxingscanview_error">很遗憾，相机出现问题。你可能需要重启设备。</string>
 
     <string name="smoothinputlayout_title">输入面板</string>
+    <string name="smoothinputlayout_voice">按住 说话</string>
 
     <string name="cd_welcome">welcome icon</string>
     <string name="cd_drawable">drawable</string>
     <string name="cd_smoothinputlayout_voice">语音</string>
+    <string name="cd_smoothinputlayout_emoji">Emoji</string>
+    <string name="cd_smoothinputlayout_more">更多</string>
+    <string name="cd_smoothinputlayout_send">发送消息</string>
 
     <string name="dev_test">测试</string>
     <string name="dev_supergridview_title">拖拽网格</string>

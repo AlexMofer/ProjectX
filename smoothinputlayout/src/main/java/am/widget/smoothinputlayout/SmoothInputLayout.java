@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -154,5 +153,20 @@ public class SmoothInputLayout extends LinearLayout {
         // TODO 关闭其他面板
     }
 
+    /**
+     * 打开输入面板
+     */
+    @SuppressWarnings("unused")
+    public void showInput() {
+        if (mInputEditText == null) {
+            return;
+        }
+        mInputEditText.requestFocus();
+        mInputEditText.requestFocusFromTouch();
+        InputMethodManager imm = ((InputMethodManager) (getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE)));
+        imm.showSoftInput(mInputEditText, InputMethodManager.SHOW_IMPLICIT);
+        // TODO 关闭其他面板
+    }
 
 }

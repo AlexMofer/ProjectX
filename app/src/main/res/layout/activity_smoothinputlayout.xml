@@ -49,7 +49,7 @@
             android:orientation="horizontal"
             android:padding="5dp">
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/sil_ibtn_voice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,35 +67,45 @@
                 android:inputType="textMultiLine"
                 android:layout_weight="1" />
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/sil_ibtn_emoji"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="@color/transparent"
                 android:padding="5dp"
+                android:contentDescription="@string/cd_smoothinputlayout_emoji"
                 android:src="@drawable/ic_smoothinputlayout_emoji" />
 
-            <Button
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/sil_btn_send_voice"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:text="@string/smoothinputlayout_voice"
+                android:background="@drawable/bg_smoothinputlayout_voice"
+                android:textColor="#ff959595"
                 android:visibility="gone"
                 android:layout_weight="1"/>
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/sil_ibtn_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="@color/transparent"
                 android:padding="5dp"
+                android:contentDescription="@string/cd_smoothinputlayout_more"
                 android:src="@drawable/ic_smoothinputlayout_more" />
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/sil_ibtn_send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="@color/transparent"
                 android:padding="5dp"
                 android:visibility="gone"
+                android:contentDescription="@string/cd_smoothinputlayout_send"
                 android:src="@drawable/ic_smoothinputlayout_send" />
 
         </LinearLayout>

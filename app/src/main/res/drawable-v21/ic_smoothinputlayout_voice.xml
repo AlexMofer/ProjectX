@@ -11,5 +11,12 @@
             </item>
         </layer-list>
     </item>
-    <item android:drawable="@drawable/ic_smoothinputlayout_voice_normal" />
+    <item>
+        <selector>
+            <item
+                android:drawable="@drawable/ic_smoothinputlayout_imm_normal"
+                android:state_selected="true" />
+            <item android:drawable="@drawable/ic_smoothinputlayout_voice_normal" />
+        </selector>
+    </item>
 </ripple>
