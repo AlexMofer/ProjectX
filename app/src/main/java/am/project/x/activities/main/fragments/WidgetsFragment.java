@@ -19,6 +19,7 @@ import am.project.x.activities.widgets.gradienttabstrip.GradientTabStripActivity
 import am.project.x.activities.widgets.indicatortabstrip.IndicatorTabStripActivity;
 import am.project.x.activities.widgets.selectionview.SelectionViewActivity;
 import am.project.x.activities.widgets.shapeimageview.ShapeImageViewActivity;
+import am.project.x.activities.widgets.smoothinputlayout.SmoothInputLayoutActivity;
 import am.project.x.activities.widgets.stateframelayout.StateFrameLayoutActivity;
 import am.project.x.activities.widgets.tagtabstrip.TagTabStripActivity;
 import am.project.x.activities.widgets.wraplayout.WrapLayoutActivity;
@@ -56,6 +57,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
         view.findViewById(R.id.widget_btn_recyclepager).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_circleprogressbar).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_zxingscanview).setOnClickListener(this);
+        view.findViewById(R.id.widget_btn_smoothinputlayout).setOnClickListener(this);
     }
 
     @Override
@@ -102,6 +104,9 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.widget_btn_zxingscanview:
                 ZxingScanViewActivity.startActivity(getContext());
+                break;
+            case R.id.widget_btn_smoothinputlayout:
+                SmoothInputLayoutActivity.startActivity(getContext());
                 break;
         }
     }

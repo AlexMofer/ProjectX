@@ -66,6 +66,7 @@ dependencies {
     compile project(':selectionview')
     compile project(':circleprogressbar')
     compile project(':zxingscanview')
+    compile project(':smoothinputlayout')
     compile project(':drawable')
     compile project(':supportplus')
     compile project(':support')

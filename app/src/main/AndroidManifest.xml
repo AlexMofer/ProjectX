@@ -282,6 +282,22 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.widgets.smoothinputlayout.SmoothInputLayoutActivity"
+            android:label="@string/smoothinputlayout_title"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="github.com"
+                    android:pathPrefix="/AlexMofer/SmoothInputLayout"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activities.develop.test.TestActivity"
             android:label="@string/dev_test" />
         <activity
