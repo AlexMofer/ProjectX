@@ -57,7 +57,6 @@ public class SmoothInputLayout extends LinearLayout {
                 mInputEditTextId);
         custom.recycle();
         setDefaultInputHeight(defaultInputHeight);
-        System.out.println("initView()");
 
     }
 
@@ -67,7 +66,6 @@ public class SmoothInputLayout extends LinearLayout {
         if (mInputEditTextId != NO_ID) {
             setInputEditText((EditText) findViewById(mInputEditTextId));
         }
-        System.out.println("onFinishInflate()");
     }
 
     @Override
