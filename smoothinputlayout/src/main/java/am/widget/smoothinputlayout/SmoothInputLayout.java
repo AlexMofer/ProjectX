@@ -30,6 +30,9 @@ public class SmoothInputLayout extends LinearLayout {
     private int mInputPaneId;
     private View mInputPane;
     private OnVisibilityChangeListener mListener;
+    private OnKeyboardChangeListener keyboardChangeListener;
+    private boolean mAutoSaveKeyboardHeight;
+    private KeyboardProcessor mKeyboardProcessor;
     private boolean tShowInputPane = false;
 
     public SmoothInputLayout(Context context) {
@@ -63,6 +66,7 @@ public class SmoothInputLayout extends LinearLayout {
                 getResources().getDisplayMetrics().density);
         mInputViewId = NO_ID;
         mInputPaneId = NO_ID;
+        boolean autoSave;
         TypedArray custom = getContext().obtainStyledAttributes(attrs,
                 R.styleable.SmoothInputLayout);
         defaultInputHeight = custom.getDimensionPixelOffset(
@@ -73,9 +77,12 @@ public class SmoothInputLayout extends LinearLayout {
                 mInputViewId);
         mInputPaneId = custom.getResourceId(R.styleable.SmoothInputLayout_silInputPane,
                 mInputPaneId);
+        autoSave = custom.getBoolean(R.styleable.SmoothInputLayout_silAutoSaveKeyboardHeight,
+                true);
         custom.recycle();
         setDefaultKeyboardHeight(defaultInputHeight);
         setMinKeyboardHeight(minInputHeight);
+        setAutoSaveKeyboardHeight(autoSave);
     }
 
     @Override
@@ -97,8 +104,10 @@ public class SmoothInputLayout extends LinearLayout {
         }
         final int heightChange = mMaxKeyboardHeight - heightSize;
         if (heightChange > mMinKeyboardHeight) {
-            mKeyboardHeight = heightChange;
-            saveKeyboardHeight();
+            if (mKeyboardHeight != heightChange) {
+                mKeyboardHeight = heightChange;
+                saveKeyboardHeight();
+            }
             mKeyboardOpen = true;
             // 输入法弹出，隐藏功能面板
             if (mInputPane != null && mInputPane.getVisibility() == VISIBLE) {
@@ -122,8 +131,16 @@ public class SmoothInputLayout extends LinearLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
+    @Override
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        if (keyboardChangeListener != null)
+            keyboardChangeListener.onKeyboardChanged(mKeyboardOpen);
+    }
+
     /**
      * 获取键盘SP
+     *
      * @return 键盘SP
      */
     private SharedPreferences getKeyboardSharedPreferences() {
@@ -134,7 +151,12 @@ public class SmoothInputLayout extends LinearLayout {
      * 存储键盘高度
      */
     private void saveKeyboardHeight() {
-        getKeyboardSharedPreferences().edit().putInt(KEY_HEIGHT, mKeyboardHeight).commit();
+        if (mAutoSaveKeyboardHeight)
+            getKeyboardSharedPreferences().edit().putInt(KEY_HEIGHT, mKeyboardHeight).commit();
+        else {
+            if (mKeyboardProcessor != null)
+                mKeyboardProcessor.onSaveKeyboardHeight(mKeyboardHeight);
+        }
     }
 
     /**
@@ -153,7 +175,11 @@ public class SmoothInputLayout extends LinearLayout {
     }
 
     private int getKeyboardHeight(int defaultHeight) {
-        return getKeyboardSharedPreferences().getInt(KEY_HEIGHT, defaultHeight);
+        if (mAutoSaveKeyboardHeight)
+            return getKeyboardSharedPreferences().getInt(KEY_HEIGHT, defaultHeight);
+        else
+            return mKeyboardProcessor != null ?
+                    mKeyboardProcessor.getSavedKeyboardHeight(defaultHeight) : defaultHeight;
     }
 
     /**
@@ -204,6 +230,36 @@ public class SmoothInputLayout extends LinearLayout {
     @SuppressWarnings("unused")
     public void setOnVisibilityChangeListener(OnVisibilityChangeListener listener) {
         mListener = listener;
+    }
+
+    /**
+     * 设置键盘改变监听
+     *
+     * @param listener 键盘改变监听
+     */
+    @SuppressWarnings("unused")
+    public void setOnKeyboardChangeListener(OnKeyboardChangeListener listener) {
+        keyboardChangeListener = listener;
+    }
+
+    /**
+     * 设置自动保存键盘高度
+     *
+     * @param auto 是否自动
+     */
+    public void setAutoSaveKeyboardHeight(boolean auto) {
+        mAutoSaveKeyboardHeight = auto;
+    }
+
+    /**
+     * 设置键盘处理器
+     * 仅在关闭自动保存键盘高度时设置的处理器才有效{@link #setAutoSaveKeyboardHeight(boolean)}
+     *
+     * @param processor 处理器
+     */
+    @SuppressWarnings("unused")
+    public void setKeyboardProcessor(KeyboardProcessor processor) {
+        mKeyboardProcessor = processor;
     }
 
     /**
@@ -311,5 +367,32 @@ public class SmoothInputLayout extends LinearLayout {
      */
     public interface OnVisibilityChangeListener {
         void onVisibilityChange(int visibility);
+    }
+
+    /**
+     * 键盘改变监听
+     */
+    public interface OnKeyboardChangeListener {
+        void onKeyboardChanged(boolean open);
+    }
+
+    /**
+     * 键盘处理器
+     */
+    public interface KeyboardProcessor {
+        /**
+         * 存储键盘高度
+         *
+         * @param height 高度
+         */
+        void onSaveKeyboardHeight(int height);
+
+        /**
+         * 获取存储的键盘高度
+         *
+         * @param defaultHeight 默认高度
+         * @return 键盘高度
+         */
+        int getSavedKeyboardHeight(int defaultHeight);
     }
 }

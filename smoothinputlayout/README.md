@@ -10,7 +10,7 @@ minSdkVersion 4
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:smoothinputlayout:1.0.0'
+    compile 'am.widget:smoothinputlayout:1.1.0'
     ⋯
 }
 ```
@@ -141,3 +141,5 @@ lytContent.showInputPane(true);//显示面板
 - app:silInputView 用于指定输入框，一般是EditText，此处用+id，否则会报错，在该EditText上用@id即可，也可以通过setInputView(View edit)从代码上实现
 - app:silInputPane 用于指定输入面板，此处也是用+id，否则会报错，在该面板View上用@id即可，也可以通过setInputPane(View edit)从代码上实现
 - 控件按钮间的逻辑关系参照样例Activity
+## 历史
+- [**1.0.0**](https://bintray.com/alexmofer/maven/SmoothInputLayout/1.0.0)
