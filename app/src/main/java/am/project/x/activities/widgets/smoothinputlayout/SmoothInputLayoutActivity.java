@@ -58,12 +58,13 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.sil_ibtn_voice:
+                btnMore.setSelected(false);
+                btnEmoji.setSelected(false);
                 if (btnVoice.isSelected()) {
                     btnVoice.setSelected(false);
                     showInputWidget();
                 } else {
                     btnVoice.setSelected(true);
-                    btnMore.setSelected(false);
                     lytContent.closeInputPane();
                     lytContent.closeKeyboard(true);
                     showVoiceWidget();
@@ -74,6 +75,7 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
                         Toast.LENGTH_SHORT).show();
                 break;
             case R.id.sil_ibtn_emoji:
+                btnMore.setSelected(false);
                 if (btnEmoji.isSelected()) {
                     btnEmoji.setSelected(false);
                     showInput();
@@ -83,6 +85,8 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
                 }
                 break;
             case R.id.sil_ibtn_more:
+                btnEmoji.setSelected(false);
+                btnVoice.setSelected(false);
                 if (btnMore.isSelected()) {
                     btnMore.setSelected(false);
                     showInput();
@@ -140,12 +144,9 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
      * 显示更多面板
      */
     private void showMore() {
-        if (btnVoice.isSelected()) {
-            btnVoice.setSelected(false);
-            edtInput.setVisibility(View.VISIBLE);
-            btnEmoji.setVisibility(View.VISIBLE);
-            btnSendVoice.setVisibility(View.GONE);
-        }
+        edtInput.setVisibility(View.VISIBLE);
+        btnEmoji.setVisibility(View.VISIBLE);
+        btnSendVoice.setVisibility(View.GONE);
         vEmoji.setVisibility(View.GONE);
         vMore.setVisibility(View.VISIBLE);
         lytContent.showInputPane(false);
@@ -195,6 +196,9 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
                 lytContent.closeInputPane();
                 break;
             case R.id.sil_edt_input:
+                btnVoice.setSelected(false);
+                btnEmoji.setSelected(false);
+                btnMore.setSelected(false);
                 afterTextChanged(edtInput.getText());
                 break;
         }
