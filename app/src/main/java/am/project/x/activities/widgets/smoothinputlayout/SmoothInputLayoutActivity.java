@@ -15,7 +15,7 @@ import am.project.x.activities.BaseActivity;
 import am.widget.smoothinputlayout.SmoothInputLayout;
 
 public class SmoothInputLayoutActivity extends BaseActivity implements View.OnClickListener,
-        View.OnTouchListener, TextWatcher {
+        View.OnTouchListener, TextWatcher, SmoothInputLayout.OnVisibilityChangeListener{
 
     private SmoothInputLayout lytContent;
     private View btnVoice;
@@ -24,6 +24,8 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
     private View btnSendVoice;
     private View btnMore;
     private View btnSend;
+    private View vEmoji;
+    private View vMore;
     @Override
     protected int getContentViewLayoutResources() {
         return R.layout.activity_smoothinputlayout;
@@ -39,6 +41,9 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
         btnSendVoice = findViewById(R.id.sil_btn_send_voice);
         btnMore = findViewById(R.id.sil_ibtn_more);
         btnSend = findViewById(R.id.sil_ibtn_send);
+        vEmoji = findViewById(R.id.sil_lyt_emoji);
+        vMore = findViewById(R.id.sil_lyt_more);
+        lytContent.setOnVisibilityChangeListener(this);
         btnVoice.setOnClickListener(this);
         edtInput.addTextChangedListener(this);
         btnEmoji.setOnClickListener(this);
@@ -55,10 +60,10 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
                 if (btnVoice.isSelected()) {
                     btnVoice.setSelected(false);
                     showInputWidget();
-                    showInput();
                 } else {
                     btnVoice.setSelected(true);
-                    lytContent.closeInput(true);
+                    lytContent.closeInputPane();
+                    lytContent.closeKeyboard(true);
                     showVoiceWidget();
                 }
                 break;
@@ -92,6 +97,7 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
         btnEmoji.setVisibility(View.VISIBLE);
         btnSendVoice.setVisibility(View.GONE);
         afterTextChanged(edtInput.getText());
+        showInput();
     }
 
     /**
@@ -109,21 +115,26 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
      * 显示输入面板
      */
     private void showInput() {
-        lytContent.showInput();
+        lytContent.showKeyboard();
     }
 
     /**
      *  显示Emoji面板
      */
     private void showEmoji() {
-        // TODO
+        vEmoji.setVisibility(View.VISIBLE);
+        vMore.setVisibility(View.GONE);
+        lytContent.showInputPane(true);
     }
 
     /**
      * 显示更多面板
      */
     private void showMore() {
-        // TODO
+        vEmoji.setVisibility(View.GONE);
+        vMore.setVisibility(View.VISIBLE);
+        lytContent.showInputPane(false);
+        btnEmoji.setSelected(false);
     }
 
     private void sendMessage() {
@@ -153,9 +164,28 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
     }
 
     @Override
+    public void onVisibilityChange(int visibility) {
+        if (visibility == View.GONE) {
+            btnEmoji.setSelected(false);
+        } else {
+            btnEmoji.setSelected(vEmoji.getVisibility() == View.VISIBLE);
+        }
+    }
+
+    @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        lytContent.closeInput(true);
+        lytContent.closeKeyboard(true);
+        lytContent.closeInputPane();
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (lytContent.isInputPaneOpen()) {
+            lytContent.closeInputPane();
+            return;
+        }
+        super.onBackPressed();
     }
 
     public static void startActivity(Context context) {

@@ -34,7 +34,8 @@
         android:background="@color/transparent"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:silInputEditText="@+id/sil_edt_input">
+        app:silInputView="@+id/sil_edt_input"
+        app:silInputPane="@+id/sil_lyt_pane">
 
         <View
             android:id="@+id/sil_v_list"
@@ -107,8 +108,25 @@
                 android:visibility="gone"
                 android:contentDescription="@string/cd_smoothinputlayout_send"
                 android:src="@drawable/ic_smoothinputlayout_send" />
-
         </LinearLayout>
+
+        <FrameLayout
+            android:id="@id/sil_lyt_pane"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <View
+                android:id="@+id/sil_lyt_emoji"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"/>
+            <View
+                android:id="@+id/sil_lyt_more"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"/>
+        </FrameLayout>
 
     </am.widget.smoothinputlayout.SmoothInputLayout>
 

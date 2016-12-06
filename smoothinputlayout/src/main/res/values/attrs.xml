@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="SmoothInputLayout">
-        <attr name="silDefaultInputHeight" format="integer"/>
-        <attr name="silInputEditText" format="reference"/>
+        <attr name="silDefaultKeyboardHeight" format="integer"/>
+        <attr name="silMinKeyboardHeight" format="integer"/>
+        <attr name="silInputView" format="reference"/>
+        <attr name="silInputPane" format="reference"/>
     </declare-styleable>
 </resources>
