@@ -136,7 +136,8 @@ lytContent.showKeyboard();// 显示键盘
 lytContent.showInputPane(true);//显示面板
 ```
 ## 注意
-- app:silInputView 用于指定输入框，一般是EditText，此处用+id，否则会报错，在该EditText上用@id即可
-- app:silInputPane 用于指定输入面板，此处也是用+id，否则会报错，在该面板View上用@id即可
+- 在Activity声明时必须设置android:windowSoftInputMode="adjustResize"，否则无效
+- Activity的主题背景颜色会影响键盘收起时的效果（android:windowBackground），如果是透明背景，在键盘收起时会一黑一黑或者透视到下一层。
+- app:silInputView 用于指定输入框，一般是EditText，此处用+id，否则会报错，在该EditText上用@id即可，也可以通过setInputView(View edit)从代码上实现
+- app:silInputPane 用于指定输入面板，此处也是用+id，否则会报错，在该面板View上用@id即可，也可以通过setInputPane(View edit)从代码上实现
 - 控件按钮间的逻辑关系参照样例Activity
-- 控件的目的是防止键盘的出现与消失导致特殊输入面板的顶起与塌陷。
