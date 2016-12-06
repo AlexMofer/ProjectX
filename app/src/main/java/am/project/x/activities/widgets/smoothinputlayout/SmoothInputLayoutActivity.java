@@ -50,6 +50,7 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
         btnSendVoice.setOnClickListener(this);
         btnMore.setOnClickListener(this);
         btnSend.setOnClickListener(this);
+        edtInput.setOnTouchListener(this);
         findViewById(R.id.sil_v_list).setOnTouchListener(this);
     }
 
@@ -62,6 +63,7 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
                     showInputWidget();
                 } else {
                     btnVoice.setSelected(true);
+                    btnMore.setSelected(false);
                     lytContent.closeInputPane();
                     lytContent.closeKeyboard(true);
                     showVoiceWidget();
@@ -81,7 +83,13 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
                 }
                 break;
             case R.id.sil_ibtn_more:
-                showMore();
+                if (btnMore.isSelected()) {
+                    btnMore.setSelected(false);
+                    showInput();
+                } else {
+                    btnMore.setSelected(true);
+                    showMore();
+                }
                 break;
             case R.id.sil_ibtn_send:
                 sendMessage();
@@ -116,6 +124,7 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
      */
     private void showInput() {
         lytContent.showKeyboard();
+        afterTextChanged(edtInput.getText());
     }
 
     /**
@@ -131,6 +140,12 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
      * 显示更多面板
      */
     private void showMore() {
+        if (btnVoice.isSelected()) {
+            btnVoice.setSelected(false);
+            edtInput.setVisibility(View.VISIBLE);
+            btnEmoji.setVisibility(View.VISIBLE);
+            btnSendVoice.setVisibility(View.GONE);
+        }
         vEmoji.setVisibility(View.GONE);
         vMore.setVisibility(View.VISIBLE);
         lytContent.showInputPane(false);
@@ -174,8 +189,16 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        lytContent.closeKeyboard(true);
-        lytContent.closeInputPane();
+        switch (view.getId()) {
+            case R.id.sil_v_list:
+                lytContent.closeKeyboard(true);
+                lytContent.closeInputPane();
+                break;
+            case R.id.sil_edt_input:
+                afterTextChanged(edtInput.getText());
+                break;
+        }
+
         return false;
     }
 
