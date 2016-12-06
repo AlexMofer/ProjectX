@@ -1,7 +1,7 @@
 # SmoothInputLayout
 ![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/smoothinputlayout/icon.png)
 
-仿微信式，平滑输入面板，防止键盘的出现与消失导致特殊输入面板的顶起于塌陷。
+仿微信式，平滑输入面板，防止键盘的出现与消失导致特殊输入面板的顶起与塌陷。
 ## 预览
 ![Screenshots](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/smoothinputlayout/screenshots.gif)
 ## 要求
@@ -139,4 +139,4 @@ lytContent.showInputPane(true);//显示面板
 - app:silInputView 用于指定输入框，一般是EditText，此处用+id，否则会报错，在该EditText上用@id即可
 - app:silInputPane 用于指定输入面板，此处也是用+id，否则会报错，在该面板View上用@id即可
 - 控件按钮间的逻辑关系参照样例Activity
-- 控件的目的是防止键盘的出现与消失导致特殊输入面板的顶起于塌陷。
+- 控件的目的是防止键盘的出现与消失导致特殊输入面板的顶起与塌陷。

@@ -47,7 +47,7 @@
     一个View实现zxing条码扫描视图。
 - [***SmoothInputLayout***](https://github.com/AlexMofer/ProjectX/tree/master/smoothinputlayout)
 
-    仿微信式，平滑输入面板，防止键盘的出现与消失导致特殊输入面板的顶起于塌陷。
+    仿微信式，平滑输入面板，防止键盘的出现与消失导致特殊输入面板的顶起与塌陷。
 ## Drawable
 - [***DoubleCircleDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
 
