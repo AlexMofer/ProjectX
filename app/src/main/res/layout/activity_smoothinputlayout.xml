@@ -118,16 +118,25 @@
             android:layout_height="wrap_content"
             android:visibility="gone">
 
-            <View
+            <LinearLayout
                 android:id="@+id/sil_lyt_emoji"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorAccent"/>
-            <View
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/merge_smoothinputlayout_emoji"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/sil_lyt_more"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/merge_smoothinputlayout_more"/>
+
+            </LinearLayout>
         </FrameLayout>
 
     </am.widget.smoothinputlayout.SmoothInputLayout>
