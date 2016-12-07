@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DragLayout">
+        <attr name="dlDragPadding" format="dimension"/>
+        <attr name="dlDragPaddingStartTop" format="dimension"/>
+        <attr name="dlDragPaddingStartBottom" format="dimension"/>
+        <attr name="dlDragPaddingEndTop" format="dimension"/>
+        <attr name="dlDragPaddingEndBottom" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="DragLayout_Layout">
+        <attr name="layout_gravity" format="enum">
+            <enum name="start_top" value="0"/>
+            <enum name="end_top" value="1"/>
+            <enum name="start_center" value="2"/>
+            <enum name="end_center" value="3"/>
+            <enum name="start_bottom" value="4"/>
+            <enum name="end_bottom" value="5"/>
+        </attr>
+    </declare-styleable>
+</resources>

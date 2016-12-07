@@ -33,6 +33,35 @@
         android:background="@color/transparent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <am.widget.draglayout.DragLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+            app:dlDragPadding="80dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="show"
+                android:gravity="center"
+                app:layout_gravity="start_top">
+
+                <View
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@color/colorPrimary"/>
+
+                <View
+                    android:id="@+id/temp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@color/colorAccent"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+        </am.widget.draglayout.DragLayout>
+
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
