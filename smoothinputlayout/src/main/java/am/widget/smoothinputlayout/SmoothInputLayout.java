@@ -132,8 +132,8 @@ public class SmoothInputLayout extends LinearLayout {
     }
 
     @Override
-    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        super.onScrollChanged(l, t, oldl, oldt);
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
         if (keyboardChangeListener != null)
             keyboardChangeListener.onKeyboardChanged(mKeyboardOpen);
     }
