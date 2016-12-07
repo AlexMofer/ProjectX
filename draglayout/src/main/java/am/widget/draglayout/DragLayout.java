@@ -3,12 +3,9 @@ package am.widget.draglayout;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Rect;
-import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +19,8 @@ public class DragLayout extends ViewGroup {
 
     private final DragPadding mDragPadding = new DragPadding();
     private boolean draggable = true;
-    private boolean dragging = false;
     private ViewDragHelper mDragHelper;
     private final Callback callback = new Callback();
-    private final Rect mCheckRect = new Rect();
-    private View mDraggingChild;
 
     public DragLayout(Context context) {
         super(context);
@@ -78,7 +72,6 @@ public class DragLayout extends ViewGroup {
         custom.recycle();
         setDragPadding(startTop, startBottom, endTop, endBottom);
         mDragHelper = ViewDragHelper.create(this, 0.5f, callback);
-        mDragHelper.setMinVelocity(400 * getResources().getDisplayMetrics().density);
     }
 
     @Override
@@ -171,69 +164,6 @@ public class DragLayout extends ViewGroup {
         }
     }
 
-    private boolean checkDragging(int x, int y) {
-        boolean dragging = false;
-        mDraggingChild = null;
-        final int childCount = getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = getChildAt(i);
-            child.getHitRect(mCheckRect);
-            if (mCheckRect.contains(x, y)) {
-                mDraggingChild = child;
-                dragging = true;
-                break;
-            }
-        }
-        return dragging;
-    }
-
-    private void drag(MotionEvent e1, MotionEvent e2,
-                      float distanceX, float distanceY) {
-
-        // 拖动
-        // TODO
-    }
-
-    private void fling(final MotionEvent e1,
-                       final MotionEvent e2, final float velocityX,
-                       final float velocityY) {
-        // 飞行
-        // TODO
-    }
-
-    /**
-     * 设置拖动填充
-     *
-     * @param startTop    左上
-     * @param startBottom 左下
-     * @param endTop      右上
-     * @param endBottom   右下
-     */
-    public void setDragPadding(int startTop, int startBottom, int endTop, int endBottom) {
-        mDragPadding.set(startTop, startBottom, endTop, endBottom);
-        requestLayout();
-    }
-
-    /**
-     * 判断是否可拖动
-     *
-     * @return 是否可拖动
-     */
-    @SuppressWarnings("unused")
-    public boolean isDraggable() {
-        return draggable;
-    }
-
-    /**
-     * 设置是否可拖动
-     *
-     * @param draggable 是否可拖动
-     */
-    @SuppressWarnings("unused")
-    public void setDraggable(boolean draggable) {
-        this.draggable = draggable;
-    }
-
     public static class LayoutParams extends ViewGroup.LayoutParams {
 
         private static final int GRAVITY_START_TOP = 0;
@@ -319,7 +249,6 @@ public class DragLayout extends ViewGroup {
                     mCenterY = parentHeight - paddingBottom - dragPadding.mStartBottom;
                     break;
             }
-            // TODO
         }
     }
 
@@ -328,14 +257,6 @@ public class DragLayout extends ViewGroup {
         int mEndTop;
         int mStartBottom;
         int mEndBottom;
-
-        public DragPadding() {
-            this(0, 0, 0, 0);
-        }
-
-        public DragPadding(int startTop, int startBottom, int endTop, int endBottom) {
-            set(startTop, startBottom, endTop, endBottom);
-        }
 
         public void set(int startTop, int startBottom, int endTop, int endBottom) {
             mStartTop = startTop;
@@ -354,40 +275,91 @@ public class DragLayout extends ViewGroup {
 
         @Override
         public int clampViewPositionHorizontal(View child, int left, int dx) {
-            System.out.println("left=" + left + ";dx=" + dx);
             return left;
         }
 
         @Override
         public int clampViewPositionVertical(View child, int top, int dy) {
-            System.out.println("top=" + top + ";dx=" + dy);
             return top;
         }
 
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             super.onViewReleased(releasedChild, xvel, yvel);
+            int finalLeft = 0;
+            int finalTop = 0;
+            if (xvel == 0 && yvel == 0) {
+                // 无飞行操作
+            } else if (xvel == 0) {
+                // 垂直飞行
+            } else if (yvel == 0) {
+                // 水平飞行
+            } else if (xvel > 0 && yvel < 0) {
+                // 第一象限
+            } else if (xvel < 0 && yvel < 0) {
+                // 第二象限
+            } else if (xvel < 0 && yvel > 0) {
+                // 第三象限
+            } else {
+                // 第四象限
+            }
+
             System.out.println("xvel=" + xvel + ";yvel=" + yvel);
             // TODO
-            mDragHelper.settleCapturedViewAt(0, 0);
+            mDragHelper.settleCapturedViewAt(finalLeft, finalTop);
             invalidate();
         }
 
         @Override
-        public int getViewHorizontalDragRange(View child)
-        {
-            return getMeasuredWidth()-child.getMeasuredWidth();
+        public int getViewHorizontalDragRange(View child) {
+            return getMeasuredWidth();
         }
 
         @Override
-        public int getViewVerticalDragRange(View child)
-        {
-            return getMeasuredHeight()-child.getMeasuredHeight();
+        public int getViewVerticalDragRange(View child) {
+            return getMeasuredHeight();
         }
 
         @Override
         public void onViewDragStateChanged(int state) {
             super.onViewDragStateChanged(state);
+            if (state == ViewDragHelper.STATE_IDLE) {
+                // 更新位置
+                // TODO
+            }
         }
+    }
+
+    /**
+     * 设置拖动填充
+     *
+     * @param startTop    左上
+     * @param startBottom 左下
+     * @param endTop      右上
+     * @param endBottom   右下
+     */
+    public void setDragPadding(int startTop, int startBottom, int endTop, int endBottom) {
+        mDragPadding.set(startTop, startBottom, endTop, endBottom);
+        requestLayout();
+    }
+
+    /**
+     * 判断是否可拖动
+     *
+     * @return 是否可拖动
+     */
+    @SuppressWarnings("unused")
+    public boolean isDraggable() {
+        return draggable;
+    }
+
+    /**
+     * 设置是否可拖动
+     *
+     * @param draggable 是否可拖动
+     */
+    @SuppressWarnings("unused")
+    public void setDraggable(boolean draggable) {
+        this.draggable = draggable;
     }
 }
