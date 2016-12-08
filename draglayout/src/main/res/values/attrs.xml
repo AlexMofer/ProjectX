@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="DragLayout">
-        <attr name="dlDragPadding" format="dimension"/>
-        <attr name="dlDragPaddingStartTop" format="dimension"/>
-        <attr name="dlDragPaddingStartBottom" format="dimension"/>
-        <attr name="dlDragPaddingEndTop" format="dimension"/>
-        <attr name="dlDragPaddingEndBottom" format="dimension"/>
-    </declare-styleable>
     <declare-styleable name="DragLayout_Layout">
+        <attr name="dlDragPadding" format="dimension"/>
+        <attr name="dlDragPaddingStart" format="dimension"/>
+        <attr name="dlDragPaddingTop" format="dimension"/>
+        <attr name="dlDragPaddingEnd" format="dimension"/>
+        <attr name="dlDragPaddingBottom" format="dimension"/>
         <attr name="layout_gravity" format="enum">
             <enum name="start_top" value="0"/>
             <enum name="end_top" value="1"/>
