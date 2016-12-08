@@ -12,12 +12,14 @@ import android.view.ViewGroup;
 
 /**
  * 拖动视图
+ * TODO 增加不控制贴边处理
  * Created by Alex on 2016/12/7.
  */
 
 public class DragLayout extends ViewGroup {
 
     private final DragPadding mDragPadding = new DragPadding();
+    private float mCenterLine;
     private boolean draggable = true;
     private ViewDragHelper mDragHelper;
     private final Callback callback = new Callback();
@@ -110,20 +112,25 @@ public class DragLayout extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         final int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         final int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        final int paddingStart = Compat.getPaddingStart(this);
+        final int paddingStart = ViewCompat.getPaddingStart(this);
         final int paddingTop = getPaddingTop();
-        final int paddingEnd = Compat.getPaddingEnd(this);
+        final int paddingEnd = ViewCompat.getPaddingEnd(this);
         final int paddingBottom = getPaddingBottom();
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
             LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
-            layoutParams.setLocation(mDragPadding, widthSize, heightSize,
-                    paddingStart, paddingTop, paddingEnd, paddingBottom);
+            if (layoutParams.shouldSetLocation())
+                layoutParams.setLocation(mDragPadding, widthSize, heightSize,
+                        paddingStart, paddingTop, paddingEnd, paddingBottom);
+            else
+                layoutParams.checkLocation(mDragPadding, widthSize, heightSize,
+                        paddingStart, paddingTop, paddingEnd, paddingBottom);
         }
         setMeasuredDimension(resolveSize(widthSize, widthMeasureSpec),
                 resolveSize(heightSize, heightMeasureSpec));
+        mCenterLine = (getMeasuredWidth() - paddingStart - paddingBottom) * 0.5f;
     }
 
     @SuppressWarnings("all")
@@ -133,8 +140,8 @@ public class DragLayout extends ViewGroup {
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
             LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
-            final int childLeft = layoutParams.isOnStartSide() ? layoutParams.mX :
-                    (layoutParams.mX - child.getMeasuredWidth());
+            final int childLeft = layoutParams.isOnStartSide() ? layoutParams.mEdge :
+                    (layoutParams.mEdge - child.getMeasuredWidth());
             final int childTop = layoutParams.mCenterY - child.getMeasuredHeight() / 2;
             child.layout(childLeft, childTop,
                     childLeft + child.getMeasuredWidth(), childTop + child.getMeasuredHeight());
@@ -164,6 +171,7 @@ public class DragLayout extends ViewGroup {
         }
     }
 
+    @SuppressWarnings("all")
     public static class LayoutParams extends ViewGroup.LayoutParams {
 
         private static final int GRAVITY_START_TOP = 0;
@@ -173,10 +181,11 @@ public class DragLayout extends ViewGroup {
         private static final int GRAVITY_START_BOTTOM = 4;
         private static final int GRAVITY_END_BOTTOM = 5;
 
-        private int mX;
-        private int mCenterY;
         private int mGravity = GRAVITY_START_TOP;
+        private int mEdge = -1;
+        private int mCenterY = -1;
         private int mPaddingStart;
+
 
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
@@ -201,7 +210,9 @@ public class DragLayout extends ViewGroup {
 
         public LayoutParams(LayoutParams source) {
             super(source);
-            // TODO
+            mGravity = source.mGravity;
+            mEdge = source.mEdge;
+            mCenterY = source.mCenterY;
         }
 
         public void setGravity(int gravity) {
@@ -209,7 +220,11 @@ public class DragLayout extends ViewGroup {
         }
 
         public boolean isOnStartSide() {
-            return mX == mPaddingStart;
+            return mEdge == mPaddingStart;
+        }
+
+        public boolean shouldSetLocation() {
+            return mEdge == -1 || mCenterY == -1;
         }
 
         public void setLocation(DragPadding dragPadding, int parentWidth, int parentHeight,
@@ -221,34 +236,62 @@ public class DragLayout extends ViewGroup {
             switch (mGravity) {
                 default:
                 case GRAVITY_START_TOP:
-                    mX = paddingStart;
+                    mEdge = paddingStart;
                     mCenterY = paddingTop + dragPadding.mStartTop;
                     break;
                 case GRAVITY_END_TOP:
-                    mX = parentWidth - paddingEnd;
-                    mCenterY = paddingTop + dragPadding.mStartTop;
+                    mEdge = parentWidth - paddingEnd;
+                    mCenterY = paddingTop + dragPadding.mEndTop;
                     break;
                 case GRAVITY_START_CENTER:
-                    mX = paddingStart;
+                    mEdge = paddingStart;
                     mCenterY = paddingTop + dragPadding.mStartTop +
                             (parentHeight - paddingTop - paddingBottom
                                     - dragPadding.mStartTop - dragPadding.mStartBottom) / 2;
                     break;
                 case GRAVITY_END_CENTER:
-                    mX = parentWidth - paddingEnd;
+                    mEdge = parentWidth - paddingEnd;
                     mCenterY = paddingTop + dragPadding.mStartTop +
                             (parentHeight - paddingTop - paddingBottom
-                                    - dragPadding.mStartTop - dragPadding.mStartBottom) / 2;
+                                    - dragPadding.mStartTop - dragPadding.mEndBottom) / 2;
                     break;
                 case GRAVITY_START_BOTTOM:
-                    mX = paddingStart;
+                    mEdge = paddingStart;
                     mCenterY = parentHeight - paddingBottom - dragPadding.mStartBottom;
                     break;
                 case GRAVITY_END_BOTTOM:
-                    mX = parentWidth - paddingEnd;
-                    mCenterY = parentHeight - paddingBottom - dragPadding.mStartBottom;
+                    mEdge = parentWidth - paddingEnd;
+                    mCenterY = parentHeight - paddingBottom - dragPadding.mEndBottom;
                     break;
             }
+        }
+
+        public void checkLocation(DragPadding dragPadding, int parentWidth, int parentHeight,
+                                  int paddingStart, int paddingTop, int paddingEnd,
+                                  int paddingBottom) {
+            final int startTop = paddingTop + dragPadding.mStartTop;
+            final int endTop = paddingTop + dragPadding.mEndTop;
+            final int startBottom = parentHeight - paddingBottom - dragPadding.mStartBottom;
+            final int endBottom = parentHeight - paddingBottom - dragPadding.mEndBottom;
+            if (mEdge != paddingStart && mEdge != parentWidth - paddingEnd) {
+                if (Math.abs(mEdge - paddingStart) > Math.abs(parentWidth - paddingEnd - mEdge)) {
+                    mEdge = parentWidth - paddingEnd;
+                } else {
+                    mEdge = paddingStart;
+                }
+            }
+            if (isOnStartSide()) {
+                mCenterY = mCenterY < startTop ? startTop : mCenterY;
+                mCenterY = mCenterY > startBottom ? startBottom : mCenterY;
+            } else {
+                mCenterY = mCenterY < endTop ? endTop : mCenterY;
+                mCenterY = mCenterY > endBottom ? endBottom : mCenterY;
+            }
+        }
+
+        public void updateLocation(int edge, int centerY) {
+            mEdge = edge;
+            mCenterY = centerY;
         }
     }
 
@@ -286,26 +329,188 @@ public class DragLayout extends ViewGroup {
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             super.onViewReleased(releasedChild, xvel, yvel);
-            int finalLeft = 0;
-            int finalTop = 0;
+            final int paddingStart = ViewCompat.getPaddingStart(DragLayout.this);
+            final int paddingTop = getPaddingTop();
+            final int paddingEnd = ViewCompat.getPaddingEnd(DragLayout.this);
+            final int paddingBottom = getPaddingBottom();
+            final int startTop = paddingTop + mDragPadding.mStartTop;
+            final int endTop = paddingTop + mDragPadding.mEndTop;
+            final int startBottom = getMeasuredHeight() - paddingBottom - mDragPadding.mStartBottom;
+            final int endBottom = getMeasuredHeight() - paddingBottom - mDragPadding.mEndBottom;
+            LayoutParams layoutParams = (LayoutParams) releasedChild.getLayoutParams();
+            final float centerX = releasedChild.getLeft() + releasedChild.getMeasuredWidth() * 0.5f;
+            final float centerY = releasedChild.getTop() + releasedChild.getMeasuredHeight() * 0.5f;
+            final float topCenter = (startTop + endTop) * 0.5f;
+            final float bottomCenter = (startBottom + endBottom) * 0.5f;
+            int velTop;
+            int mEdge;
+            int mCenterY;
+            int finalLeft;
+            int finalTop;
             if (xvel == 0 && yvel == 0) {
                 // 无飞行操作
+                velTop = releasedChild.getTop();
+                if (centerX < mCenterLine) {
+                    // 左边
+                    mEdge = paddingStart;
+                    finalLeft = mEdge;
+                    finalTop = velTop;
+                    finalTop = (float) finalTop < (startTop - releasedChild.getMeasuredHeight() * 0.5f) ?
+                            startTop - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
+                    finalTop = (float) finalTop > (startBottom - releasedChild.getMeasuredHeight() * 0.5f) ?
+                            startBottom - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
+
+                } else {
+                    // 右边
+                    mEdge = getMeasuredWidth() - paddingEnd;
+                    finalLeft = mEdge - releasedChild.getMeasuredWidth();
+                    finalTop = velTop;
+                    finalTop = (float) finalTop < (endTop - releasedChild.getMeasuredHeight() * 0.5f) ?
+                            endTop - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
+                    finalTop = (float) finalTop > (endBottom - releasedChild.getMeasuredHeight() * 0.5f) ?
+                            endBottom - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
+                }
             } else if (xvel == 0) {
                 // 垂直飞行
+                if (yvel > 0) {
+                    // 向下垂直飞行
+                    if (centerX < mCenterLine) {
+                        // 左边
+                        mEdge = paddingStart;
+                        finalLeft = mEdge;
+                        finalTop = startBottom - (int) (releasedChild.getMeasuredHeight() * 0.5f);
+
+                    } else {
+                        // 右边
+                        mEdge = getMeasuredWidth() - paddingEnd;
+                        finalLeft = mEdge - releasedChild.getMeasuredWidth();
+                        finalTop = endBottom - (int) (releasedChild.getMeasuredHeight() * 0.5f);
+                    }
+                } else {
+                    // 向上垂直飞行
+                    if (centerX < mCenterLine) {
+                        // 左边
+                        mEdge = paddingStart;
+                        finalLeft = mEdge;
+                        finalTop = startTop - (int) (releasedChild.getMeasuredHeight() * 0.5f);
+
+                    } else {
+                        // 右边
+                        mEdge = getMeasuredWidth() - paddingEnd;
+                        finalLeft = mEdge - releasedChild.getMeasuredWidth();
+                        finalTop = endTop - (int) (releasedChild.getMeasuredHeight() * 0.5f);
+                    }
+                }
             } else if (yvel == 0) {
                 // 水平飞行
-            } else if (xvel > 0 && yvel < 0) {
-                // 第一象限
-            } else if (xvel < 0 && yvel < 0) {
-                // 第二象限
-            } else if (xvel < 0 && yvel > 0) {
-                // 第三象限
+                velTop = releasedChild.getTop();
+                if (xvel > 0) {
+                    // 向右飞行
+                    mEdge = getMeasuredWidth() - paddingEnd;
+                    finalLeft = mEdge - releasedChild.getMeasuredWidth();
+                    finalTop = velTop;
+                    finalTop = (float) finalTop < (endTop - releasedChild.getMeasuredHeight() * 0.5f) ?
+                            endTop - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
+                    finalTop = (float) finalTop > (endBottom - releasedChild.getMeasuredHeight() * 0.5f) ?
+                            endBottom - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
+                } else {
+                    // 向左飞行
+                    mEdge = paddingStart;
+                    finalLeft = mEdge;
+                    finalTop = velTop;
+                    finalTop = (float) finalTop < (startTop - releasedChild.getMeasuredHeight() * 0.5f) ?
+                            startTop - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
+                    finalTop = (float) finalTop > (startBottom - releasedChild.getMeasuredHeight() * 0.5f) ?
+                            startBottom - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
+                }
+            } else if (xvel > 0) {
+                // 第一象限、第四象限
+                mEdge = getMeasuredWidth() - paddingEnd;
+                finalLeft = mEdge - releasedChild.getMeasuredWidth();
+                if (centerX > getMeasuredWidth() - paddingEnd) {
+                    // 右边线外部
+                    velTop = releasedChild.getTop();
+                } else {
+                    // 右边线内部
+                    velTop = releasedChild.getTop() - (int) (-yvel / xvel * (getMeasuredWidth() - paddingEnd - centerX));
+                }
+                finalTop = velTop;
+                finalTop = (float) finalTop < (endTop - releasedChild.getMeasuredHeight() * 0.5f) ?
+                        endTop - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
+                finalTop = (float) finalTop > (endBottom - releasedChild.getMeasuredHeight() * 0.5f) ?
+                        endBottom - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
+                if (centerX < mCenterLine) {
+                    // 在二、三象限
+                    if (yvel < 0) {
+                        // 飞往第一象限
+                        boolean stay2 = -yvel / xvel > (centerY - topCenter) / (mCenterLine - centerX);
+                        if (centerY < topCenter || stay2) {
+                            // 控制范围外飞行
+                            // 不能飞入第一象限
+                            // 留在第二象限顶部
+                            mEdge = paddingStart;
+                            finalLeft = mEdge;
+                            finalTop = startTop - (int) (releasedChild.getMeasuredHeight() * 0.5f);
+                        }
+                    } else {
+                        // 飞往第四象限
+                        boolean stay3 = yvel / xvel > (bottomCenter - centerY) / (mCenterLine - centerX);
+                        if (centerY > bottomCenter || stay3) {
+                            // 控制范围外飞行
+                            // 不能飞入第四象限
+                            // 留在第三象限底部
+                            mEdge = paddingStart;
+                            finalLeft = mEdge;
+                            finalTop = startBottom - (int) (releasedChild.getMeasuredHeight() * 0.5f);
+                        }
+                    }
+                }
             } else {
-                // 第四象限
-            }
+                // 第二象限、第三象限
+                mEdge = paddingStart;
+                finalLeft = mEdge;
+                if (centerX < paddingStart) {
+                    // 左边线外部
+                    velTop = releasedChild.getTop();
+                } else {
+                    // 左边线内部
+                    velTop = releasedChild.getTop() - (int) (yvel / xvel * (centerX - paddingStart));
+                }
+                finalTop = velTop;
+                finalTop = (float) finalTop < (startTop - releasedChild.getMeasuredHeight() * 0.5f) ?
+                        startTop - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
+                finalTop = (float) finalTop > (startBottom - releasedChild.getMeasuredHeight() * 0.5f) ?
+                        startBottom - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
+                if (centerX > mCenterLine) {
+                    // 在一、四象限
+                    if (yvel < 0) {
+                        // 飞往第二象限
+                        boolean stay1 = yvel / xvel > (centerY - topCenter) / (centerX - mCenterLine);
+                        if (centerY < topCenter || stay1) {
+                            // 控制范围外飞行
+                            // 不能飞入第二象限
+                            // 留在第一象限顶部
+                            mEdge = getMeasuredWidth() - paddingEnd;
+                            finalLeft = mEdge - releasedChild.getMeasuredWidth();
+                            finalTop = endTop - (int) (releasedChild.getMeasuredHeight() * 0.5f);
+                        }
+                    } else {
+                        // 飞往第三象限
+                        boolean stay4 = yvel / -xvel > (bottomCenter - centerY) / (centerX - mCenterLine);
+                        if (centerY > bottomCenter || stay4) {
+                            // 控制范围外飞行
+                            // 不能飞入第三象限
+                            // 留在第四象限底部
+                            mEdge = getMeasuredWidth() - paddingEnd;
+                            finalLeft = mEdge - releasedChild.getMeasuredWidth();
+                            finalTop = endBottom - (int) (releasedChild.getMeasuredHeight() * 0.5f);
+                        }
+                    }
+                }
 
-            System.out.println("xvel=" + xvel + ";yvel=" + yvel);
-            // TODO
+            }
+            mCenterY = finalTop + (int) (releasedChild.getMeasuredHeight() * 0.5f);
+            layoutParams.updateLocation(mEdge, mCenterY);
             mDragHelper.settleCapturedViewAt(finalLeft, finalTop);
             invalidate();
         }
@@ -325,7 +530,7 @@ public class DragLayout extends ViewGroup {
             super.onViewDragStateChanged(state);
             if (state == ViewDragHelper.STATE_IDLE) {
                 // 更新位置
-                // TODO
+                requestLayout();
             }
         }
     }
