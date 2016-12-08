@@ -68,6 +68,7 @@ dependencies {
     compile project(':zxingscanview')
     compile project(':smoothinputlayout')
     compile project(':draglayout')
+    compile project(':expandlayout')
     compile project(':drawable')
     compile project(':supportplus')
     compile project(':support')

@@ -39,26 +39,20 @@
             android:padding="20dp"
             app:dlDragPadding="80dp">
 
-            <LinearLayout
+            <am.widget.expandlayout.ExpandLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="show"
                 android:gravity="center"
+                android:background="@color/colorRipple"
                 app:layout_gravity="start_top">
 
-                <View
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:background="@color/colorPrimary"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="show"
+                    android:src="@drawable/ic_develop_image"/>
 
-                <View
-                    android:id="@+id/temp"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:background="@color/colorAccent"
-                    android:visibility="gone"/>
-
-            </LinearLayout>
+            </am.widget.expandlayout.ExpandLayout>
 
         </am.widget.draglayout.DragLayout>
 

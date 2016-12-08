@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
+import am.widget.expandlayout.ExpandLayout;
 
 public class TestActivity extends BaseActivity {
 
@@ -23,8 +24,8 @@ public class TestActivity extends BaseActivity {
     }
 
     public void show(View view) {
-        Toast.makeText(this, "点击", Toast.LENGTH_SHORT).show();
-        findViewById(R.id.temp).setVisibility(View.VISIBLE);
+        ExpandLayout expandLayout = (ExpandLayout) view.getParent();
+        expandLayout.setExpand(!expandLayout.isExpand());
     }
 
     public static void startActivity(Context context) {
