@@ -1,4 +1,4 @@
-package am.widget.expandlayout;
+package am.widget.treelayout;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -9,31 +9,31 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * 展开布局
+ * 树布局
  * Created by Alex on 2016/12/8.
  */
 
-public class ExpandLayout extends ViewGroup {
+public class TreeLayout extends ViewGroup {
 
     private View mMarkView;
     private boolean mExpand = false;
     private final Rect mMarkRect = new Rect();
 
-    public ExpandLayout(Context context) {
+    public TreeLayout(Context context) {
         super(context);
     }
 
-    public ExpandLayout(Context context, AttributeSet attrs) {
+    public TreeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @TargetApi(11)
-    public ExpandLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TreeLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(21)
-    public ExpandLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public TreeLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

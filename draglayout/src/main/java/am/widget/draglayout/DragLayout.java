@@ -3,23 +3,22 @@ package am.widget.draglayout;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 /**
  * 拖动视图
- * TODO 增加不控制贴边处理
  * Created by Alex on 2016/12/7.
  */
 
 public class DragLayout extends ViewGroup {
 
-
-    private float mCenterLine;
     private ViewDragHelper mDragHelper;
     private final Callback callback = new Callback();
 
@@ -84,36 +83,46 @@ public class DragLayout extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        final int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        final int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         final int paddingStart = ViewCompat.getPaddingStart(this);
         final int paddingTop = getPaddingTop();
         final int paddingEnd = ViewCompat.getPaddingEnd(this);
         final int paddingBottom = getPaddingBottom();
+        int width = 0;
+        int height = 0;
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
             LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
-            if (layoutParams.shouldSetLocation())
-                layoutParams.setLocation(widthSize, heightSize,
-                        paddingStart, paddingTop, paddingEnd, paddingBottom);
-            else
-                layoutParams.checkLocation(widthSize, heightSize,
-                        paddingStart, paddingTop, paddingEnd, paddingBottom);
+            final int childWidth = child.getMeasuredWidth() + layoutParams.mDragPaddingStart +
+                    layoutParams.mDragPaddingEnd;
+            final int childHeight = child.getMeasuredHeight() + layoutParams.mDragPaddingTop +
+                    layoutParams.mDragPaddingBottom;
+            width = width < childWidth ? childWidth : width;
+            height = height < childHeight ? childHeight : height;
         }
-        setMeasuredDimension(resolveSize(widthSize, widthMeasureSpec),
-                resolveSize(heightSize, heightMeasureSpec));
-        mCenterLine = (getMeasuredWidth() - paddingStart - paddingBottom) * 0.5f;
+        width += paddingStart + paddingEnd;
+        height += paddingTop + paddingBottom;
+        setMeasuredDimension(resolveSize(Math.max(width, getSuggestedMinimumWidth()),
+                widthMeasureSpec),
+                resolveSize(Math.max(height, getSuggestedMinimumHeight()), heightMeasureSpec));
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        final int width = getMeasuredWidth();
+        final int height = getMeasuredHeight();
+        final int paddingStart = ViewCompat.getPaddingStart(this);
+        final int paddingTop = getPaddingTop();
+        final int paddingEnd = ViewCompat.getPaddingEnd(this);
+        final int paddingBottom = getPaddingBottom();
 
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
             LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
+            layoutParams.updateLocation(width, height,
+                    paddingStart, paddingTop, paddingEnd, paddingBottom);
             final int dragStart = ViewCompat.getPaddingStart(this) + layoutParams.mDragPaddingStart;
             final int childLeft;
             if (layoutParams.mEdge == dragStart)
@@ -148,22 +157,17 @@ public class DragLayout extends ViewGroup {
     @SuppressWarnings("all")
     public static class LayoutParams extends ViewGroup.LayoutParams {
 
-        private static final int GRAVITY_START_TOP = 0;
-        private static final int GRAVITY_END_TOP = 1;
-        private static final int GRAVITY_START_CENTER = 2;
-        private static final int GRAVITY_END_CENTER = 3;
-        private static final int GRAVITY_START_BOTTOM = 4;
-        private static final int GRAVITY_END_BOTTOM = 5;
-
         private boolean draggable = true;
         private int mDragPaddingStart = 0;
         private int mDragPaddingTop = 0;
         private int mDragPaddingEnd = 0;
         private int mDragPaddingBottom = 0;
+        private boolean dragged = false;
 
-        private int mGravity = GRAVITY_START_TOP;
+        private int mGravity = GravityCompat.START;
         private int mEdge = -1;
         private int mCenterY = -1;
+        private float mCenterLineX;
 
 
         public LayoutParams(Context c, AttributeSet attrs) {
@@ -172,7 +176,7 @@ public class DragLayout extends ViewGroup {
             int top = 0;
             int end = 0;
             int bottom = 0;
-            int gravity = GRAVITY_START_TOP;
+            int gravity = GravityCompat.START;
             TypedArray custom = c.obtainStyledAttributes(attrs, R.styleable.DragLayout_Layout);
             if (custom.hasValue(R.styleable.DragLayout_Layout_dlDragPadding)) {
                 final int padding = custom.getDimensionPixelOffset(
@@ -260,42 +264,102 @@ public class DragLayout extends ViewGroup {
             mGravity = gravity;
         }
 
-
-
-        public boolean shouldSetLocation() {
-            return mEdge == -1 || mCenterY == -1;
+        public void setDragged(boolean dragged) {
+            this.dragged = dragged;
         }
 
-        public void setLocation(int parentWidth, int parentHeight,
+        public boolean isDragged() {
+            return dragged;
+        }
+
+        public void updateLocation(int edge, int centerY) {
+            mEdge = edge;
+            mCenterY = centerY;
+        }
+
+        public void updateLocation(int parentWidth, int parentHeight,
+                                   int paddingStart, int paddingTop,
+                                   int paddingEnd, int paddingBottom) {
+            mCenterLineX = paddingStart + mDragPaddingStart + (parentWidth - paddingStart -
+                    paddingEnd - mDragPaddingStart - mDragPaddingEnd) * 0.5f;
+            if (dragged)
+                checkLocation(parentWidth, parentHeight, paddingStart,
+                        paddingTop, paddingEnd, paddingBottom);
+            else
+                setLocationByGravity(parentWidth, parentHeight, paddingStart,
+                        paddingTop, paddingEnd, paddingBottom);
+        }
+
+
+
+        public void setLocationByGravity(int parentWidth, int parentHeight,
                                 int paddingStart, int paddingTop,
                                 int paddingEnd, int paddingBottom) {
             switch (mGravity) {
                 default:
-                case GRAVITY_START_TOP:
+                case GravityCompat.START:
+                case Gravity.LEFT:
+                case Gravity.TOP:
+                case GravityCompat.START | Gravity.TOP:
+                case Gravity.LEFT | Gravity.TOP:
+                    // 左上角
                     mEdge = paddingStart + mDragPaddingStart;
                     mCenterY = paddingTop + mDragPaddingTop;
                     break;
-                case GRAVITY_END_TOP:
+                case Gravity.CENTER_HORIZONTAL:
+                case Gravity.CENTER_HORIZONTAL | Gravity.TOP:
+                    // 水平居中靠上
+                    // TODO 贴边与不贴边区别 强制左上角
+                    mEdge = paddingStart + mDragPaddingStart;
+                    mCenterY = paddingTop + mDragPaddingTop;
+                    break;
+                case GravityCompat.END:
+                case Gravity.RIGHT:
+                case GravityCompat.END | Gravity.TOP:
+                case Gravity.RIGHT | Gravity.TOP:
+                    // 右上角
                     mEdge = parentWidth - paddingEnd - mDragPaddingEnd;
                     mCenterY = paddingTop + mDragPaddingTop;
                     break;
-                case GRAVITY_START_CENTER:
+                case Gravity.CENTER_VERTICAL:
+                case Gravity.CENTER_VERTICAL | GravityCompat.START:
+                case Gravity.CENTER_VERTICAL | Gravity.LEFT:
+                    // 垂直居中靠左
                     mEdge = paddingStart + mDragPaddingStart;
                     mCenterY = paddingTop + mDragPaddingTop +
                             (parentHeight - paddingTop - paddingBottom
                                     - mDragPaddingTop - mDragPaddingBottom) / 2;
                     break;
-                case GRAVITY_END_CENTER:
+                case Gravity.CENTER:
+                    // 居中
+                    // TODO 贴边与不贴边区别 强制左上角
+                    mEdge = paddingStart + mDragPaddingStart;
+                    mCenterY = paddingTop + mDragPaddingTop;
+                    break;
+                case Gravity.CENTER_VERTICAL | GravityCompat.END:
+                case Gravity.CENTER_VERTICAL | Gravity.RIGHT:
+                    // 垂直居中靠右
                     mEdge = parentWidth - paddingEnd - mDragPaddingEnd;
                     mCenterY = paddingTop + mDragPaddingTop +
                             (parentHeight - paddingTop - paddingBottom
                                     - mDragPaddingTop - mDragPaddingBottom) / 2;
                     break;
-                case GRAVITY_START_BOTTOM:
+                case Gravity.BOTTOM:
+                case Gravity.BOTTOM | GravityCompat.START:
+                case Gravity.BOTTOM | Gravity.LEFT:
+                    // 左下角
                     mEdge = paddingStart + mDragPaddingStart;
                     mCenterY = parentHeight - paddingBottom - mDragPaddingBottom;
                     break;
-                case GRAVITY_END_BOTTOM:
+                case Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL:
+                    // 水平居中靠下
+                    // TODO 贴边与不贴边区别 强制左下角
+                    mEdge = paddingStart + mDragPaddingStart;
+                    mCenterY = parentHeight - paddingBottom - mDragPaddingBottom;
+                    break;
+                case Gravity.BOTTOM | GravityCompat.END:
+                case Gravity.BOTTOM | Gravity.RIGHT:
+                    // 右下角
                     mEdge = parentWidth - paddingEnd - mDragPaddingEnd;
                     mCenterY = parentHeight - paddingBottom - mDragPaddingBottom;
                     break;
@@ -324,10 +388,7 @@ public class DragLayout extends ViewGroup {
             }
         }
 
-        public void updateLocation(int edge, int centerY) {
-            mEdge = edge;
-            mCenterY = centerY;
-        }
+
     }
 
     private class Callback extends ViewDragHelper.Callback {
@@ -335,6 +396,10 @@ public class DragLayout extends ViewGroup {
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
             LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
+            boolean draggable = layoutParams.draggable;
+            if (draggable) {
+                layoutParams.setDragged(true);
+            }
             return layoutParams.draggable;
         }
 
@@ -352,6 +417,7 @@ public class DragLayout extends ViewGroup {
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             super.onViewReleased(releasedChild, xvel, yvel);
             LayoutParams layoutParams = (LayoutParams) releasedChild.getLayoutParams();
+            final float centerLineX = layoutParams.mCenterLineX;
 
             final int paddingStart = ViewCompat.getPaddingStart(DragLayout.this);
             final int paddingTop = getPaddingTop();
@@ -361,7 +427,6 @@ public class DragLayout extends ViewGroup {
             final int dragTop = paddingTop + layoutParams.mDragPaddingTop;
             final int dragEnd = getMeasuredWidth() - paddingEnd - layoutParams.mDragPaddingEnd;
             final int dragBottom = getMeasuredHeight() - paddingBottom - layoutParams.mDragPaddingBottom;
-
 
             final float centerX = releasedChild.getLeft() + releasedChild.getMeasuredWidth() * 0.5f;
             final float centerY = releasedChild.getTop() + releasedChild.getMeasuredHeight() * 0.5f;
@@ -373,7 +438,7 @@ public class DragLayout extends ViewGroup {
             if (xvel == 0 && yvel == 0) {
                 // 无飞行操作
                 velTop = releasedChild.getTop();
-                if (centerX < mCenterLine) {
+                if (centerX < centerLineX) {
                     // 左边
                     mEdge = dragStart;
                     finalLeft = mEdge;
@@ -397,7 +462,7 @@ public class DragLayout extends ViewGroup {
                 // 垂直飞行
                 if (yvel > 0) {
                     // 向下垂直飞行
-                    if (centerX < mCenterLine) {
+                    if (centerX < centerLineX) {
                         // 左边
                         mEdge = dragStart;
                         finalLeft = mEdge;
@@ -411,7 +476,7 @@ public class DragLayout extends ViewGroup {
                     }
                 } else {
                     // 向上垂直飞行
-                    if (centerX < mCenterLine) {
+                    if (centerX < centerLineX) {
                         // 左边
                         mEdge = dragStart;
                         finalLeft = mEdge;
@@ -462,11 +527,11 @@ public class DragLayout extends ViewGroup {
                         dragTop - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
                 finalTop = (float) finalTop > (dragBottom - releasedChild.getMeasuredHeight() * 0.5f) ?
                         dragBottom - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
-                if (centerX < mCenterLine) {
+                if (centerX < centerLineX) {
                     // 在二、三象限
                     if (yvel < 0) {
                         // 飞往第一象限
-                        boolean stay2 = -yvel / xvel > (centerY - dragTop) / (mCenterLine - centerX);
+                        boolean stay2 = -yvel / xvel > (centerY - dragTop) / (centerLineX - centerX);
                         if (centerY < dragTop || stay2) {
                             // 控制范围外飞行
                             // 不能飞入第一象限
@@ -477,7 +542,7 @@ public class DragLayout extends ViewGroup {
                         }
                     } else {
                         // 飞往第四象限
-                        boolean stay3 = yvel / xvel > (dragBottom - centerY) / (mCenterLine - centerX);
+                        boolean stay3 = yvel / xvel > (dragBottom - centerY) / (centerLineX - centerX);
                         if (centerY > dragBottom || stay3) {
                             // 控制范围外飞行
                             // 不能飞入第四象限
@@ -504,11 +569,11 @@ public class DragLayout extends ViewGroup {
                         dragTop - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
                 finalTop = (float) finalTop > (dragBottom - releasedChild.getMeasuredHeight() * 0.5f) ?
                         dragBottom - (int) (releasedChild.getMeasuredHeight() * 0.5f) : finalTop;
-                if (centerX > mCenterLine) {
+                if (centerX > centerLineX) {
                     // 在一、四象限
                     if (yvel < 0) {
                         // 飞往第二象限
-                        boolean stay1 = yvel / xvel > (centerY - dragTop) / (centerX - mCenterLine);
+                        boolean stay1 = yvel / xvel > (centerY - dragTop) / (centerX - centerLineX);
                         if (centerY < dragTop || stay1) {
                             // 控制范围外飞行
                             // 不能飞入第二象限
@@ -519,7 +584,7 @@ public class DragLayout extends ViewGroup {
                         }
                     } else {
                         // 飞往第三象限
-                        boolean stay4 = yvel / -xvel > (dragBottom - centerY) / (centerX - mCenterLine);
+                        boolean stay4 = yvel / -xvel > (dragBottom - centerY) / (centerX - centerLineX);
                         if (centerY > dragBottom || stay4) {
                             // 控制范围外飞行
                             // 不能飞入第三象限

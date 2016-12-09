@@ -38,24 +38,24 @@
             android:layout_height="match_parent"
             android:padding="20dp">
 
-            <am.widget.expandlayout.ExpandLayout
+            <am.widget.treelayout.TreeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:background="@color/colorRipple"
-                app:dlDragPaddingStart="20dp"
+                android:gravity="center"
+                app:dlDragPaddingBottom="60dp"
                 app:dlDragPaddingEnd="20dp"
-                app:dlDragPaddingTop="80dp"
-                app:dlDragPaddingBottom="80dp"
-                app:layout_gravity="start_top">
+                app:dlDragPaddingStart="20dp"
+                app:dlDragPaddingTop="60dp"
+                app:layout_gravity="bottom|end">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="show"
-                    android:src="@drawable/ic_develop_image"/>
+                    android:src="@drawable/ic_develop_image" />
 
-            </am.widget.expandlayout.ExpandLayout>
+            </am.widget.treelayout.TreeLayout>
 
         </am.widget.draglayout.DragLayout>
 

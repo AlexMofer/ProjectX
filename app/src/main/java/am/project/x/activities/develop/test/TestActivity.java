@@ -4,11 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
-import am.widget.expandlayout.ExpandLayout;
+import am.widget.treelayout.TreeLayout;
 
 public class TestActivity extends BaseActivity {
 
@@ -24,8 +23,8 @@ public class TestActivity extends BaseActivity {
     }
 
     public void show(View view) {
-        ExpandLayout expandLayout = (ExpandLayout) view.getParent();
-        expandLayout.setExpand(!expandLayout.isExpand());
+        TreeLayout treeLayout = (TreeLayout) view.getParent();
+        treeLayout.setExpand(!treeLayout.isExpand());
     }
 
     public static void startActivity(Context context) {

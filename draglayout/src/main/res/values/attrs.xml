@@ -6,13 +6,16 @@
         <attr name="dlDragPaddingTop" format="dimension"/>
         <attr name="dlDragPaddingEnd" format="dimension"/>
         <attr name="dlDragPaddingBottom" format="dimension"/>
-        <attr name="layout_gravity" format="enum">
-            <enum name="start_top" value="0"/>
-            <enum name="end_top" value="1"/>
-            <enum name="start_center" value="2"/>
-            <enum name="end_center" value="3"/>
-            <enum name="start_bottom" value="4"/>
-            <enum name="end_bottom" value="5"/>
+        <attr name="layout_gravity">
+            <flag name="top" value="0x30" />
+            <flag name="bottom" value="0x50" />
+            <flag name="left" value="0x03" />
+            <flag name="right" value="0x05" />
+            <flag name="center_vertical" value="0x10" />
+            <flag name="center_horizontal" value="0x01" />
+            <flag name="center" value="0x11" />
+            <flag name="start" value="0x00800003" />
+            <flag name="end" value="0x00800005" />
         </attr>
     </declare-styleable>
 </resources>
