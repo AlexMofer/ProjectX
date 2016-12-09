@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 
 public class TreeLayout extends ViewGroup {
 
-    private View mMarkView;
     private boolean mExpand = false;
     private final Rect mMarkRect = new Rect();
 
@@ -40,9 +39,6 @@ public class TreeLayout extends ViewGroup {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mMarkView = getChildAt(0);
-        LayoutParams layoutParams = (LayoutParams) mMarkView.getLayoutParams();
-        layoutParams.isMarkView = true;
     }
 
     /**
@@ -120,33 +116,14 @@ public class TreeLayout extends ViewGroup {
             final View child = getChildAt(i);
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
             LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
-            // TODO
-            layoutParams.mCenterX = 0;
-            layoutParams.mCenterY = 0;
-        }
-        if (mMarkView == null) {
-            setMeasuredDimension(resolveSize(
-                    Math.max(paddingStart + paddingEnd, getSuggestedMinimumWidth()),
-                    widthMeasureSpec),
-                    resolveSize(Math.max(paddingTop + paddingBottom, getSuggestedMinimumWidth()),
-                            heightMeasureSpec));
-            return;
+
         }
         int width = 0;
         int height = 0;
         if (!mExpand) {
-            width += mMarkView.getMeasuredWidth();
-            height += mMarkView.getMeasuredHeight();
-            mMarkRect.set(paddingStart, paddingTop, paddingStart + mMarkView.getMeasuredWidth(),
-                    paddingTop + mMarkView.getMeasuredHeight());
+            // TODO
         } else {
             // TODO
-            width += mMarkView.getMeasuredWidth();
-            height += mMarkView.getMeasuredHeight();
-            mMarkRect.set(paddingStart, paddingTop, paddingStart + mMarkView.getMeasuredWidth(),
-                    paddingTop + mMarkView.getMeasuredHeight());
-            width += 200;
-            height += 200;
         }
         width += paddingStart + paddingEnd;
         height += paddingTop + paddingBottom;
@@ -156,8 +133,6 @@ public class TreeLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        if (mMarkView == null)
-            return;
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
@@ -168,17 +143,6 @@ public class TreeLayout extends ViewGroup {
                 layoutParams.layout(child);
             }
         }
-    }
-
-    /**
-     * 添加标志视图
-     *
-     * @param mark 标志视图
-     */
-    @SuppressWarnings("unused")
-    public void addMarkView(View mark) {
-        addView(mark, 0);
-        // TODO
     }
 
     /**
