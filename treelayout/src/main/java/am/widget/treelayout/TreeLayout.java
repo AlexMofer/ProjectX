@@ -40,8 +40,6 @@ public class TreeLayout extends ViewGroup {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        if (getChildCount() > 1)
-            throw new IllegalStateException("Only support one mark view.");
         mMarkView = getChildAt(0);
         LayoutParams layoutParams = (LayoutParams) mMarkView.getLayoutParams();
         layoutParams.isMarkView = true;

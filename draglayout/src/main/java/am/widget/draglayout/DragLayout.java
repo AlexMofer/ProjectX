@@ -137,13 +137,16 @@ public class DragLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return mDragHelper.shouldInterceptTouchEvent(ev);
+        return mDragHelper.shouldInterceptTouchEvent(ev) | super.onInterceptTouchEvent(ev);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        mDragHelper.processTouchEvent(event);
-        return true;
+        if (mDragHelper.getViewDragState() != ViewDragHelper.STATE_IDLE) {
+            mDragHelper.processTouchEvent(event);
+            return true;
+        }
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -387,8 +390,6 @@ public class DragLayout extends ViewGroup {
                 }
             }
         }
-
-
     }
 
     private class Callback extends ViewDragHelper.Callback {

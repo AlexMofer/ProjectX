@@ -33,7 +33,14 @@
         android:background="@color/transparent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="message"
+            android:src="@drawable/ic_develop_image" />
+
         <am.widget.draglayout.DragLayout
+            android:id="@+id/drag"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="20dp">
@@ -52,7 +59,48 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="20dp"
                     android:onClick="show"
+                    android:src="@drawable/ic_develop_image" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_develop_image" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_develop_image" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_develop_image" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_develop_image" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_develop_image" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_develop_image" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_develop_image" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/ic_develop_image" />
 
             </am.widget.treelayout.TreeLayout>
