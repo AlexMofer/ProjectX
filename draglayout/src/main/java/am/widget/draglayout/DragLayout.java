@@ -74,8 +74,6 @@ public class DragLayout extends ViewGroup {
     protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
         if (lp instanceof LayoutParams) {
             return new LayoutParams((LayoutParams) lp);
-        } else if (lp instanceof MarginLayoutParams) {
-            return new LayoutParams((MarginLayoutParams) lp);
         } else {
             return new LayoutParams(lp);
         }
@@ -208,10 +206,6 @@ public class DragLayout extends ViewGroup {
 
         public LayoutParams(int width, int height) {
             super(width, height);
-        }
-
-        public LayoutParams(MarginLayoutParams source) {
-            super(source);
         }
 
         public LayoutParams(ViewGroup.LayoutParams source) {

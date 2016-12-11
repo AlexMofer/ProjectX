@@ -9,4 +9,11 @@
             <enum name="bottom" value="2" />
         </attr>
     </declare-styleable>
+    <declare-styleable name="WrapLayout_Layout">
+        <attr name="layout_gravity" format="enum">
+            <enum name="top" value="0" />
+            <enum name="center" value="1" />
+            <enum name="bottom" value="2" />
+        </attr>
+    </declare-styleable>
 </resources>

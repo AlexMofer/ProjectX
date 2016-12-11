@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 public class WrapLayout extends ViewGroup {
 
+    public static final int GRAVITY_PARENT = -1;// 使用全局对齐方案
     public static final int GRAVITY_TOP = 0;// 子项顶部对齐
     public static final int GRAVITY_CENTER = 1;// 子项居中对齐
     public static final int GRAVITY_BOTTOM = 2; // 子项底部对齐
@@ -63,6 +64,35 @@ public class WrapLayout extends ViewGroup {
         setGravity(gravity);
     }
 
+    @Override
+    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+        return new LayoutParams(getContext(), attrs);
+    }
+
+    /**
+     * Returns a set of layout parameters with a width of
+     * {@link android.view.ViewGroup.LayoutParams#WRAP_CONTENT},
+     * a height of {@link android.view.ViewGroup.LayoutParams#WRAP_CONTENT} and no spanning.
+     */
+    @Override
+    protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
+        return new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+    }
+
+    // Override to allow type-checking of LayoutParams.
+    @Override
+    protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
+        return p instanceof LayoutParams;
+    }
+
+    @Override
+    protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
+        if (lp instanceof LayoutParams) {
+            return new LayoutParams((LayoutParams) lp);
+        } else {
+            return new LayoutParams(lp);
+        }
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -172,6 +202,7 @@ public class WrapLayout extends ViewGroup {
                 final int childHeight = childView.getMeasuredHeight();
 
                 startX += mHorizontalSpacing;
+                // TODO
                 int topOffset;
                 switch (mGravity) {
                     case GRAVITY_CENTER:
@@ -279,5 +310,48 @@ public class WrapLayout extends ViewGroup {
             return;
         this.mGravity = gravity;
         requestLayout();
+    }
+
+    public static class LayoutParams extends ViewGroup.LayoutParams {
+
+        private int mGravity = WrapLayout.GRAVITY_PARENT;
+
+        public LayoutParams(Context c, AttributeSet attrs) {
+            super(c, attrs);
+            int gravity = WrapLayout.GRAVITY_PARENT;
+            TypedArray custom = c.obtainStyledAttributes(attrs, R.styleable.WrapLayout_Layout);
+            gravity = custom.getInt(R.styleable.WrapLayout_Layout_layout_gravity, gravity);
+            custom.recycle();
+            mGravity = gravity;
+        }
+
+        public LayoutParams(int width, int height) {
+            super(width, height);
+        }
+
+        public LayoutParams(ViewGroup.LayoutParams source) {
+            super(source);
+        }
+
+        public LayoutParams(LayoutParams source) {
+            super(source);
+            mGravity = source.mGravity;
+        }
+
+        /**
+         * 设置布局
+         * @param gravity 布局
+         */
+        public void setGravity(int gravity) {
+            mGravity = gravity;
+        }
+
+        /**
+         * 获取布局
+         * @return 布局
+         */
+        public int getGravity() {
+            return mGravity;
+        }
     }
 }
