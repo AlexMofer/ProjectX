@@ -1,5 +1,6 @@
 package am.widget.wraplayout;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -19,23 +20,36 @@ public class WrapLayout extends ViewGroup {
     public static final int GRAVITY_BOTTOM = 2; // 子项底部对齐
     private static final int[] ATTRS = new int[]{android.R.attr.horizontalSpacing,
             android.R.attr.verticalSpacing};
-    private int mVerticalSpacing;
-    private int mHorizontalSpacing;
+    private int mVerticalSpacing = 0;
+    private int mHorizontalSpacing = 0;
     private int mNumRows = 0;
     private ArrayList<Integer> mNumColumns = new ArrayList<>();
     private ArrayList<Integer> mChildMaxWidth = new ArrayList<>();
-    private int mGravity;
+    private int mGravity = GRAVITY_TOP;
 
     public WrapLayout(Context context) {
-        this(context, null);
+        super(context);
+        initView(context, null, 0);
     }
 
     public WrapLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        initView(context, attrs, 0);
     }
 
+    @TargetApi(11)
     public WrapLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initView(context, attrs, defStyleAttr);
+    }
+
+    @TargetApi(21)
+    public WrapLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initView(context, attrs, defStyleAttr);
+    }
+
+    private void initView(Context context, AttributeSet attrs, int defStyleAttr) {
         final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS, defStyleAttr, 0);
         int n = a.getIndexCount();
         int horizontalSpacing = 0;
@@ -59,9 +73,9 @@ public class WrapLayout extends ViewGroup {
                 R.styleable.WrapLayout_wlyVerticalSpacing, verticalSpacing);
         int gravity = custom.getInt(R.styleable.WrapLayout_wlyGravity, GRAVITY_TOP);
         custom.recycle();
-        setHorizontalSpacing(horizontalSpacing);
-        setVerticalSpacing(verticalSpacing);
-        setGravity(gravity);
+        mHorizontalSpacing = horizontalSpacing;
+        mVerticalSpacing = verticalSpacing;
+        mGravity = gravity;
     }
 
     @Override
@@ -186,6 +200,7 @@ public class WrapLayout extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         final int paddingStart = Compat.getPaddingStart(this);
         final int paddingTop = getPaddingTop();
+        final int gravity = mGravity;
         int numChild = 0;
         int columnTop = paddingTop - mVerticalSpacing;
         for (int row = 0; row < mNumRows; row++) {
@@ -200,22 +215,40 @@ public class WrapLayout extends ViewGroup {
                 }
                 final int childWidth = childView.getMeasuredWidth();
                 final int childHeight = childView.getMeasuredHeight();
+                final LayoutParams layoutParams = (LayoutParams) childView.getLayoutParams();
+                final int childGravity = layoutParams.getGravity();
 
                 startX += mHorizontalSpacing;
-                // TODO
                 int topOffset;
-                switch (mGravity) {
+                switch (childGravity) {
+                    default:
+                    case GRAVITY_PARENT: {
+                        switch (gravity) {
+                            case GRAVITY_CENTER:
+                                topOffset = Math.round((childMaxHeight - childHeight) * 0.5f);
+                                break;
+                            case GRAVITY_BOTTOM:
+                                topOffset = childMaxHeight - childHeight;
+                                break;
+                            default:
+                            case GRAVITY_TOP:
+                                topOffset = 0;
+                                break;
+                        }
+                    }
+                    break;
                     case GRAVITY_CENTER:
                         topOffset = Math.round((childMaxHeight - childHeight) * 0.5f);
                         break;
                     case GRAVITY_BOTTOM:
                         topOffset = childMaxHeight - childHeight;
                         break;
-                    default:
                     case GRAVITY_TOP:
                         topOffset = 0;
                         break;
                 }
+
+
                 int startY = columnTop + mVerticalSpacing + topOffset;
                 childView.layout(startX, startY, startX + childWidth, startY + childHeight);
                 startX += childWidth;
@@ -240,6 +273,7 @@ public class WrapLayout extends ViewGroup {
      *
      * @param pixelSize 水平间距
      */
+    @SuppressWarnings("unused")
     public void setHorizontalSpacing(int pixelSize) {
         mHorizontalSpacing = pixelSize;
         requestLayout();
@@ -260,6 +294,7 @@ public class WrapLayout extends ViewGroup {
      *
      * @param pixelSize 垂直间距
      */
+    @SuppressWarnings("unused")
     public void setVerticalSpacing(int pixelSize) {
         mVerticalSpacing = pixelSize;
         requestLayout();
@@ -305,13 +340,18 @@ public class WrapLayout extends ViewGroup {
      *
      * @param gravity 对齐模式
      */
+    @SuppressWarnings("unused")
     public void setGravity(int gravity) {
         if (gravity != GRAVITY_TOP && gravity != GRAVITY_CENTER && gravity != GRAVITY_BOTTOM)
             return;
-        this.mGravity = gravity;
+        mGravity = gravity;
         requestLayout();
     }
 
+    /**
+     * 布局参数
+     */
+    @SuppressWarnings("all")
     public static class LayoutParams extends ViewGroup.LayoutParams {
 
         private int mGravity = WrapLayout.GRAVITY_PARENT;
@@ -340,6 +380,7 @@ public class WrapLayout extends ViewGroup {
 
         /**
          * 设置布局
+         *
          * @param gravity 布局
          */
         public void setGravity(int gravity) {
@@ -348,6 +389,7 @@ public class WrapLayout extends ViewGroup {
 
         /**
          * 获取布局
+         *
          * @return 布局
          */
         public int getGravity() {
