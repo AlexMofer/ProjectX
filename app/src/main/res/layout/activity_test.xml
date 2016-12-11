@@ -42,65 +42,59 @@
         <am.widget.draglayout.DragLayout
             android:id="@+id/drag"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="20dp">
+            android:layout_height="match_parent">
 
             <am.widget.treelayout.TreeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/colorRipple"
                 android:gravity="center"
-                app:dlDragPaddingBottom="60dp"
+                app:dlDragPaddingBottom="150dp"
                 app:dlDragPaddingEnd="20dp"
                 app:dlDragPaddingStart="20dp"
-                app:dlDragPaddingTop="60dp"
+                app:dlDragPaddingTop="150dp"
                 app:layout_gravity="bottom|end">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="20dp"
+                    android:clickable="true"
+                    android:src="@drawable/ic_develop_image" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:clickable="true"
+                    android:src="@drawable/ic_develop_image" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:clickable="true"
+                    android:src="@drawable/ic_develop_image" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:clickable="true"
+                    android:src="@drawable/ic_develop_image" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:clickable="true"
+                    android:src="@drawable/ic_develop_image" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
                     android:onClick="show"
-                    android:src="@drawable/ic_develop_image" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_develop_image" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_develop_image" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_develop_image" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_develop_image" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_develop_image" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_develop_image" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_develop_image" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:src="@drawable/ic_develop_image" />
 
             </am.widget.treelayout.TreeLayout>

@@ -2,7 +2,6 @@ package am.widget.treelayout;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Rect;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -16,7 +15,10 @@ import android.view.ViewGroup;
 public class TreeLayout extends ViewGroup {
 
     private boolean mExpand = false;
-    private final Rect mMarkRect = new Rect();
+    private boolean right = false;
+    private int offset;
+    private long itemDuration = 2000;
+    private long durationDelay = 200;
 
     public TreeLayout(Context context) {
         super(context);
@@ -34,11 +36,6 @@ public class TreeLayout extends ViewGroup {
     @TargetApi(21)
     public TreeLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
     }
 
     /**
@@ -69,9 +66,10 @@ public class TreeLayout extends ViewGroup {
     }
 
     public static class LayoutParams extends ViewGroup.LayoutParams {
-        private boolean isMarkView = false;
-        private float mCenterX;
-        private float mCenterY;
+        //        private float mCenterX;
+//        private float mCenterY;
+        private int mLeft, mTop, mRight, mBottom;
+        private int mRootLeft, mRootTop;
 
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
@@ -93,20 +91,22 @@ public class TreeLayout extends ViewGroup {
             super(source);
         }
 
-        public boolean isMarkView() {
-            return isMarkView;
+        void setLayoutRect(int left, int top, int right, int bottom) {
+            mLeft = left;
+            mTop = top;
+            mRight = right;
+            mBottom = bottom;
         }
 
         private void layout(View child) {
-            final int left = (int) (mCenterX - child.getMeasuredWidth() * 0.5f);
-            final int top = (int) (mCenterY - child.getMeasuredHeight() * 0.5f);
-            child.layout(left, top, left + child.getMeasuredWidth(),
-                    top + child.getMeasuredHeight());
+            child.layout(mLeft, mTop, mRight, mBottom);
         }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        offset = (int) (100 * getResources().getDisplayMetrics().density);
+
         final int paddingStart = ViewCompat.getPaddingStart(this);
         final int paddingTop = getPaddingTop();
         final int paddingEnd = ViewCompat.getPaddingEnd(this);
@@ -114,21 +114,175 @@ public class TreeLayout extends ViewGroup {
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
-            measureChild(child, widthMeasureSpec, heightMeasureSpec);
-            LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
-
+            if (child.getVisibility() != GONE) {
+                measureChild(child, widthMeasureSpec, heightMeasureSpec);
+                LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
+                layoutParams.setLayoutRect(0, 0, 0, 0);
+            }
         }
         int width = 0;
         int height = 0;
         if (!mExpand) {
             // TODO
+            View child = getChildAt(5);
+            if (child != null) {
+                final int childWidth = child.getMeasuredWidth();
+                final int childHeight = child.getMeasuredHeight();
+                width += childWidth;
+                height += childHeight;
+                LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
+                layoutParams.setLayoutRect(paddingStart, paddingTop,
+                        paddingStart + childWidth, paddingTop + childHeight);
+            }
         } else {
             // TODO
+            View childRoot = getChildAt(5);
+            final int childRootWidth = childRoot == null ? 0 : childRoot.getMeasuredWidth();
+
+            View childTop = getChildAt(0);
+            final int childTopHeight = childTop == null ? 0 : childTop.getMeasuredHeight();
+
+            View childCenter = getChildAt(2);
+            final int childCenterWidth = childCenter == null ? 0 : childCenter.getMeasuredWidth();
+
+            View childBottom = getChildAt(4);
+            final int childBottomHeight = childBottom == null ? 0 : childBottom.getMeasuredHeight();
+
+            width += (int) (childRootWidth * 0.5f + childCenterWidth * 0.5f + offset);
+            height += (int) (childTopHeight * 0.5f + childBottomHeight * 0.5f + offset + offset);
+
         }
         width += paddingStart + paddingEnd;
         height += paddingTop + paddingBottom;
         setMeasuredDimension(resolveSize(Math.max(width, getSuggestedMinimumWidth()), widthMeasureSpec),
                 resolveSize(Math.max(height, getSuggestedMinimumWidth()), heightMeasureSpec));
+
+        if (mExpand) {
+            final int measuredWidth = getMeasuredWidth();
+            final int measuredHeight = getMeasuredHeight();
+            final float centerY = (measuredHeight - paddingTop - paddingBottom) * 0.5f;
+            View childRoot = getChildAt(5);
+            final int childRootWidth = childRoot == null ? 0 : childRoot.getMeasuredWidth();
+            final int childRootHeight = childRoot == null ? 0 : childRoot.getMeasuredHeight();
+
+            View childTop = getChildAt(0);
+            final int childTopWidth = childTop == null ? 0 : childTop.getMeasuredWidth();
+            final int childTopHeight = childTop == null ? 0 : childTop.getMeasuredHeight();
+
+            View childCenter = getChildAt(2);
+            final int childCenterWidth = childCenter == null ? 0 : childCenter.getMeasuredWidth();
+            final int childCenterHeight = childCenter == null ? 0 : childCenter.getMeasuredHeight();
+
+            View childBottom = getChildAt(4);
+            final int childBottomWidth = childCenter == null ? 0 : childCenter.getMeasuredWidth();
+            final int childBottomHeight = childBottom == null ? 0 : childBottom.getMeasuredHeight();
+
+            final double offset45 = offset * Math.sin(Math.toRadians(45));
+
+            if (right) {
+                final float rootCenterX = measuredWidth - paddingEnd - childRootWidth * 0.5f;
+                if (childRoot != null) {
+                    LayoutParams layoutParams = (LayoutParams) childRoot.getLayoutParams();
+                    final int left = measuredWidth - paddingEnd - childRootWidth;
+                    final int top = (int) (centerY - childRootHeight * 0.5f);
+                    layoutParams.setLayoutRect(left, top,
+                            left + childRootWidth, top + childRootHeight);
+                }
+                if (childTop != null) {
+                    LayoutParams layoutParams = (LayoutParams) childTop.getLayoutParams();
+                    final int left = measuredWidth - paddingEnd - childTopWidth;
+                    final int top = paddingTop;
+                    layoutParams.setLayoutRect(left, top,
+                            left + childTopWidth, top + childTopHeight);
+                }
+                View leftTop = getChildAt(1);
+                if (leftTop != null) {
+
+                    final int leftTopWidth = leftTop.getMeasuredWidth();
+                    final int leftTopHeight = leftTop.getMeasuredHeight();
+                    LayoutParams layoutParams = (LayoutParams) leftTop.getLayoutParams();
+                    final int left = (int) (rootCenterX - offset45 - leftTopWidth * 0.5f);
+                    final int top = (int) (centerY - offset45 - leftTopHeight * 0.5f);
+                    layoutParams.setLayoutRect(left, top,
+                            left + leftTopWidth, top + leftTopHeight);
+                }
+                if (childCenter != null) {
+                    LayoutParams layoutParams = (LayoutParams) childCenter.getLayoutParams();
+                    final int left = paddingStart;
+                    final int top = (int) (centerY - childCenterHeight * 0.5f);
+                    layoutParams.setLayoutRect(left, top,
+                            left + childCenterWidth, top + childCenterHeight);
+                }
+                View rightBottom = getChildAt(3);
+                if (rightBottom != null) {
+                    final int rightBottomWidth = rightBottom.getMeasuredWidth();
+                    final int rightBottomHeight = rightBottom.getMeasuredHeight();
+                    LayoutParams layoutParams = (LayoutParams) rightBottom.getLayoutParams();
+                    final int left = (int) (rootCenterX - offset45 - rightBottomWidth * 0.5f);
+                    final int top = (int) (centerY + offset45 - rightBottomHeight * 0.5f);
+                    layoutParams.setLayoutRect(left, top,
+                            left + rightBottomWidth, top + rightBottomHeight);
+                }
+                if (childBottom != null) {
+                    LayoutParams layoutParams = (LayoutParams) childBottom.getLayoutParams();
+                    final int left = measuredWidth - paddingEnd - childBottomWidth;
+                    final int top = measuredHeight - paddingBottom - childBottomHeight;
+                    layoutParams.setLayoutRect(left, top,
+                            left + childBottomWidth, top + childBottomHeight);
+                }
+            } else {
+                final float rootCenterX = paddingStart + childRootWidth * 0.5f;
+                if (childRoot != null) {
+                    LayoutParams layoutParams = (LayoutParams) childRoot.getLayoutParams();
+                    final int left = paddingStart;
+                    final int top = (int) (centerY - childRootHeight * 0.5f);
+                    layoutParams.setLayoutRect(left, top,
+                            left + childRootWidth, top + childRootHeight);
+                }
+                if (childTop != null) {
+                    LayoutParams layoutParams = (LayoutParams) childTop.getLayoutParams();
+                    final int left = paddingStart;
+                    final int top = paddingTop;
+                    layoutParams.setLayoutRect(left, top,
+                            left + childTopWidth, top + childTopHeight);
+                }
+                View leftTop = getChildAt(1);
+                if (leftTop != null) {
+                    final int leftTopWidth = leftTop.getMeasuredWidth();
+                    final int leftTopHeight = leftTop.getMeasuredHeight();
+                    LayoutParams layoutParams = (LayoutParams) leftTop.getLayoutParams();
+                    final int left = (int) (rootCenterX + offset45 - leftTopWidth * 0.5f);
+                    final int top = (int) (centerY - offset45 - leftTopHeight * 0.5f);
+                    layoutParams.setLayoutRect(left, top,
+                            left + leftTopWidth, top + leftTopHeight);
+                }
+                if (childCenter != null) {
+                    LayoutParams layoutParams = (LayoutParams) childCenter.getLayoutParams();
+                    final int left = measuredWidth - paddingEnd - childRootWidth;
+                    final int top = (int) (centerY - childCenterHeight * 0.5f);
+                    layoutParams.setLayoutRect(left, top,
+                            left + childCenterWidth, top + childCenterHeight);
+                }
+                View rightBottom = getChildAt(3);
+                if (rightBottom != null) {
+                    final int rightBottomWidth = rightBottom.getMeasuredWidth();
+                    final int rightBottomHeight = rightBottom.getMeasuredHeight();
+                    LayoutParams layoutParams = (LayoutParams) rightBottom.getLayoutParams();
+                    final int left = (int) (rootCenterX + offset45 - rightBottomWidth * 0.5f);
+                    final int top = (int) (centerY + offset45 - rightBottomHeight * 0.5f);
+                    layoutParams.setLayoutRect(left, top,
+                            left + rightBottomWidth, top + rightBottomHeight);
+                }
+                if (childBottom != null) {
+                    LayoutParams layoutParams = (LayoutParams) childBottom.getLayoutParams();
+                    final int left = paddingStart;
+                    final int top = measuredHeight - paddingBottom - childBottomHeight;
+                    layoutParams.setLayoutRect(left, top,
+                            left + childBottomWidth, top + childBottomHeight);
+                }
+            }
+
+        }
     }
 
     @Override
@@ -136,10 +290,8 @@ public class TreeLayout extends ViewGroup {
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
-            LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
-            if (layoutParams.isMarkView()) {
-                child.layout(mMarkRect.left, mMarkRect.top, mMarkRect.right, mMarkRect.bottom);
-            } else {
+            if (child.getVisibility() != GONE) {
+                LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
                 layoutParams.layout(child);
             }
         }
@@ -151,8 +303,25 @@ public class TreeLayout extends ViewGroup {
      * @param expand 展开
      */
     public void setExpand(boolean expand) {
+        setExpand(expand, true);
+    }
+
+    /**
+     * 设置是否展开
+     *
+     * @param expand 展开
+     */
+    public void setExpand(boolean expand, boolean animator) {
+        if (mExpand == expand)
+            return;
         mExpand = expand;
+        if (animator & !mExpand) {
+            // 关闭动画
+        }
         requestLayout();
+        if (animator & mExpand) {
+            // 打开动画
+        }
     }
 
     /**
@@ -162,5 +331,9 @@ public class TreeLayout extends ViewGroup {
      */
     public boolean isExpand() {
         return mExpand;
+    }
+
+    public void setRight(boolean right) {
+        this.right = right;
     }
 }

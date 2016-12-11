@@ -263,6 +263,10 @@ public class DragLayout extends ViewGroup {
             }
         }
 
+        public boolean isCloseToStart() {
+            return mEdge < mCenterLineX;
+        }
+
         public void setGravity(int gravity) {
             mGravity = gravity;
         }
@@ -600,7 +604,6 @@ public class DragLayout extends ViewGroup {
             }
             mCenterY = finalTop + (int) (releasedChild.getMeasuredHeight() * 0.5f);
             layoutParams.updateLocation(mEdge, mCenterY);
-//            mDragHelper.flingCapturedView();
             mDragHelper.settleCapturedViewAt(finalLeft, finalTop);
             invalidate();
         }

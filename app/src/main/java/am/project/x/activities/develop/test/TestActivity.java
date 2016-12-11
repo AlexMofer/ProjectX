@@ -42,8 +42,9 @@ public class TestActivity extends BaseActivity {
     public void show(View view) {
         Toast.makeText(this, "show", Toast.LENGTH_SHORT).show();
         TreeLayout treeLayout = (TreeLayout) view.getParent();
-        treeLayout.setExpand(!treeLayout.isExpand());
         DragLayout.LayoutParams lp = (DragLayout.LayoutParams) treeLayout.getLayoutParams();
+        treeLayout.setExpand(!treeLayout.isExpand());
+        treeLayout.setRight(!lp.isCloseToStart());
         lp.setDraggable(!lp.isDraggable());
     }
 
