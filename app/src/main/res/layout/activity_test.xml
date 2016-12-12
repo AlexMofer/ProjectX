@@ -47,7 +47,6 @@
             <am.widget.treelayout.TreeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorRipple"
                 android:gravity="center"
                 app:dlDragPaddingBottom="150dp"
                 app:dlDragPaddingEnd="20dp"

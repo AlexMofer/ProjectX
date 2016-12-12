@@ -55,19 +55,6 @@ public class ZxingScanViewActivity extends BaseActivity implements ZxingScanView
         foregroundView = (ZxingForegroundView) findViewById(R.id.zxingscanview_zfv_foreground);
         scanView.addOnScanListener(this);
         foregroundView.setOpenDrawable(new MaterialLoadingProgressDrawable(foregroundView));
-
-
-        scanView.addOnScanListener(new ZxingScanView.OnScanListener() {
-            @Override
-            public void onError(ZxingScanView scanView) {
-
-            }
-
-            @Override
-            public void onResult(ZxingScanView scanView, Result result, Bitmap barcode, float scaleFactor) {
-
-            }
-        });
     }
 
     @Override
