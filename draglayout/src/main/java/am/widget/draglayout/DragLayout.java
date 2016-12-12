@@ -195,7 +195,7 @@ public class DragLayout extends ViewGroup {
                     end);
             bottom = custom.getDimensionPixelOffset(R.styleable.DragLayout_Layout_dlDragPaddingBottom,
                     bottom);
-            gravity = custom.getInt(R.styleable.DragLayout_Layout_layout_gravity, gravity);
+            gravity = custom.getInt(R.styleable.DragLayout_Layout_dlLayout_gravity, gravity);
             custom.recycle();
             mDragPaddingStart = start;
             mDragPaddingTop = top;

@@ -53,7 +53,7 @@
                 app:dlDragPaddingEnd="20dp"
                 app:dlDragPaddingStart="20dp"
                 app:dlDragPaddingTop="150dp"
-                app:layout_gravity="bottom|end">
+                app:dlLayout_gravity="bottom|end">
 
                 <ImageView
                     android:layout_width="wrap_content"

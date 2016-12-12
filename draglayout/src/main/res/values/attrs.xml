@@ -6,7 +6,7 @@
         <attr name="dlDragPaddingTop" format="dimension"/>
         <attr name="dlDragPaddingEnd" format="dimension"/>
         <attr name="dlDragPaddingBottom" format="dimension"/>
-        <attr name="layout_gravity">
+        <attr name="dlLayout_gravity">
             <flag name="top" value="0x30" />
             <flag name="bottom" value="0x50" />
             <flag name="left" value="0x03" />

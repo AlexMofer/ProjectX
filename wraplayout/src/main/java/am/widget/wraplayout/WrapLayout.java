@@ -360,7 +360,7 @@ public class WrapLayout extends ViewGroup {
             super(c, attrs);
             int gravity = WrapLayout.GRAVITY_PARENT;
             TypedArray custom = c.obtainStyledAttributes(attrs, R.styleable.WrapLayout_Layout);
-            gravity = custom.getInt(R.styleable.WrapLayout_Layout_layout_gravity, gravity);
+            gravity = custom.getInt(R.styleable.WrapLayout_Layout_wlyLayout_gravity, gravity);
             custom.recycle();
             mGravity = gravity;
         }
