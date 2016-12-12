@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="DragLayout_Layout">
+        <attr name="alDraggable" format="boolean"/>
         <attr name="dlDragPadding" format="dimension"/>
         <attr name="dlDragPaddingStart" format="dimension"/>
         <attr name="dlDragPaddingTop" format="dimension"/>
