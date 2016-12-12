@@ -46,7 +46,8 @@
                 android:background="@drawable/bg_wraplayout_content"
                 android:horizontalSpacing="10dp"
                 android:padding="10dp"
-                android:verticalSpacing="10dp">
+                android:verticalSpacing="10dp"
+                app:wlyGravity="top">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -91,6 +92,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorRipple"
                     android:gravity="center"
+                    app:wlyLayout_gravity="center"
                     android:padding="10dp"
                     android:text="@string/wraplayout_text"
                     android:textColor="@color/white" />

@@ -85,8 +85,8 @@ public class WrapLayout extends ViewGroup {
 
     /**
      * Returns a set of layout parameters with a width of
-     * {@link android.view.ViewGroup.LayoutParams#WRAP_CONTENT},
-     * a height of {@link android.view.ViewGroup.LayoutParams#WRAP_CONTENT} and no spanning.
+     * {@link ViewGroup.LayoutParams#WRAP_CONTENT},
+     * a height of {@link ViewGroup.LayoutParams#WRAP_CONTENT} and no spanning.
      */
     @Override
     protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
@@ -247,8 +247,6 @@ public class WrapLayout extends ViewGroup {
                         topOffset = 0;
                         break;
                 }
-
-
                 int startY = columnTop + mVerticalSpacing + topOffset;
                 childView.layout(startX, startY, startX + childWidth, startY + childHeight);
                 startX += childWidth;
@@ -349,7 +347,7 @@ public class WrapLayout extends ViewGroup {
     }
 
     /**
-     * 布局参数
+     * Per-child layout information associated with WrapLayout.
      */
     @SuppressWarnings("all")
     public static class LayoutParams extends ViewGroup.LayoutParams {
