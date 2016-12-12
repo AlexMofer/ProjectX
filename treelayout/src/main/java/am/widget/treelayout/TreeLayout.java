@@ -6,6 +6,8 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
 
 /**
  * 树布局
@@ -17,8 +19,10 @@ public class TreeLayout extends ViewGroup {
     private boolean mExpand = false;
     private boolean right = false;
     private int offset;
-    private long itemDuration = 2000;
-    private long durationDelay = 200;
+    private long itemDuration = 400;
+    private final OvershootInterpolator interpolator = new OvershootInterpolator();
+    private final AnimationListener listener = new AnimationListener();
+    private long durationDelay = 20;
 
     public TreeLayout(Context context) {
         super(context);
@@ -36,6 +40,11 @@ public class TreeLayout extends ViewGroup {
     @TargetApi(21)
     public TreeLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    @Override
+    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+        return new LayoutParams(getContext(), attrs);
     }
 
     /**
@@ -58,8 +67,6 @@ public class TreeLayout extends ViewGroup {
     protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
         if (lp instanceof LayoutParams) {
             return new LayoutParams((LayoutParams) lp);
-        } else if (lp instanceof MarginLayoutParams) {
-            return new LayoutParams((MarginLayoutParams) lp);
         } else {
             return new LayoutParams(lp);
         }
@@ -77,10 +84,6 @@ public class TreeLayout extends ViewGroup {
 
         public LayoutParams(int width, int height) {
             super(width, height);
-        }
-
-        public LayoutParams(MarginLayoutParams source) {
-            super(source);
         }
 
         public LayoutParams(ViewGroup.LayoutParams source) {
@@ -317,10 +320,170 @@ public class TreeLayout extends ViewGroup {
         mExpand = expand;
         if (animator & !mExpand) {
             // 关闭动画
+            float toX;
+            float toY;
+            int index;
+            index = 0;
+            View childTop = getChildAt(index);
+            if (childTop != null) {
+                toX = 0;
+                toY = offset;
+                TranslateAnimation animation = getTranslateAnimation(0, toX, 0, toY,
+                        durationDelay * index, index);
+                animation.setAnimationListener(listener);
+                childTop.startAnimation(animation);
+            }
+            index = 1;
+            View childLeftTop = getChildAt(index);
+            if (childLeftTop != null) {
+                final float offset45 = (float) (offset * Math.sin(Math.toRadians(45)));
+                toX = right ? offset45 : -offset45;
+                toY = offset45;
+                TranslateAnimation animation = getTranslateAnimation(0, toX, 0, toY,
+                        durationDelay * index, index);
+                animation.setAnimationListener(listener);
+                childLeftTop.startAnimation(animation);
+            }
+            index = 2;
+            View childCenter = getChildAt(index);
+            if (childCenter != null) {
+                toX = right ? offset : -offset;
+                toY = 0;
+                TranslateAnimation animation = getTranslateAnimation(0, toX, 0, toY,
+                        durationDelay * index, index);
+                animation.setAnimationListener(listener);
+                childCenter.startAnimation(animation);
+            }
+            index = 3;
+            View childRightBottom = getChildAt(index);
+            if (childRightBottom != null) {
+                final float offset45 = (float) (offset * Math.sin(Math.toRadians(45)));
+                toX = right ? offset45 : -offset45;
+                toY = -offset45;
+                TranslateAnimation animation = getTranslateAnimation(0, toX, 0, toY,
+                        durationDelay * index, index);
+                animation.setAnimationListener(listener);
+                childRightBottom.startAnimation(animation);
+            }
+            index = 4;
+            View childBottom = getChildAt(index);
+            if (childBottom != null) {
+                toX = 0;
+                toY = -offset;
+                TranslateAnimation animation = getTranslateAnimation(0, toX, 0, toY,
+                        durationDelay * index, index);
+                animation.setAnimationListener(listener);
+                childBottom.startAnimation(animation);
+            }
+            return;
         }
         requestLayout();
         if (animator & mExpand) {
             // 打开动画
+            float formX;
+            float formY;
+            int index;
+            index = 0;
+            View childTop = getChildAt(index);
+            if (childTop != null) {
+                formX = 0;
+                formY = offset;
+                TranslateAnimation animation = getTranslateAnimation(formX, 0, formY, 0,
+                        durationDelay * index, index);
+                childTop.startAnimation(animation);
+            }
+            index = 1;
+            View childLeftTop = getChildAt(index);
+            if (childLeftTop != null) {
+                final float offset45 = (float) (offset * Math.sin(Math.toRadians(45)));
+                formX = right ? offset45 : -offset45;
+                formY = offset45;
+                TranslateAnimation animation = getTranslateAnimation(formX, 0, formY, 0,
+                        durationDelay * index, index);
+                childLeftTop.startAnimation(animation);
+            }
+            index = 2;
+            View childCenter = getChildAt(index);
+            if (childCenter != null) {
+                formX = right ? offset : -offset;
+                formY = 0;
+                TranslateAnimation animation = getTranslateAnimation(formX, 0, formY, 0,
+                        durationDelay * index, index);
+                childCenter.startAnimation(animation);
+            }
+            index = 3;
+            View childRightBottom = getChildAt(index);
+            if (childRightBottom != null) {
+                final float offset45 = (float) (offset * Math.sin(Math.toRadians(45)));
+                formX = right ? offset45 : -offset45;
+                formY = -offset45;
+                TranslateAnimation animation = getTranslateAnimation(formX, 0, formY, 0,
+                        durationDelay * index, index);
+                childRightBottom.startAnimation(animation);
+            }
+            index = 4;
+            View childBottom = getChildAt(index);
+            if (childBottom != null) {
+                formX = 0;
+                formY = -offset;
+                TranslateAnimation animation = getTranslateAnimation(formX, 0, formY, 0,
+                        durationDelay * index, index);
+                childBottom.startAnimation(animation);
+            }
+        }
+    }
+
+    private TranslateAnimation getTranslateAnimation(float formX, float toX, float formY, float toY,
+                                                     long startOffset, int childIndex) {
+        TranslateAnimation animation = new TranslateAnimation(formX, toX, formY, toY, childIndex);
+        animation.setDuration(itemDuration);
+        animation.setInterpolator(interpolator);
+        animation.setStartOffset(startOffset);
+        return animation;
+
+    }
+
+    private class TranslateAnimation extends android.view.animation.TranslateAnimation {
+
+        int childIndex;
+        TranslateAnimation(float fromXDelta, float toXDelta, float fromYDelta,
+                                  float toYDelta, int childIndex) {
+            super(fromXDelta, toXDelta, fromYDelta, toYDelta);
+            this.childIndex = childIndex;
+        }
+    }
+
+    private class AnimationListener implements Animation.AnimationListener {
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            if (animation instanceof TranslateAnimation) {
+                TranslateAnimation translateAnimation = (TranslateAnimation) animation;
+                int index = translateAnimation.childIndex;
+                if (index != 4) {
+                    View child =getChildAt(index);
+                    if (child != null) {
+                        child.setVisibility(INVISIBLE);
+                    }
+                } else {
+                    requestLayout();
+                    final int childCount = getChildCount();
+                    for (int i = 0; i < childCount; i++) {
+                        View child = getChildAt(i);
+                        child.setVisibility(VISIBLE);
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
         }
     }
 
