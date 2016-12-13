@@ -165,10 +165,14 @@ public class DragLayout extends ViewGroup {
         private int mDragPaddingBottom = 0;
         private int mGravity = GravityCompat.START;
 
+        private int mLeft = -1;
+        private int mTop = -1;
+        private boolean dragged = false;
+
+
         private int mEdge = -1;
         private int mCenterY = -1;
         private float mCenterLineX;
-        private boolean dragged = false;
 
 
         public LayoutParams(Context c, AttributeSet attrs) {

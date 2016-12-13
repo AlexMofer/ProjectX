@@ -40,7 +40,6 @@ public class TestActivity extends BaseActivity {
     }
 
     public void show(View view) {
-        Toast.makeText(this, "show", Toast.LENGTH_SHORT).show();
         TreeLayout treeLayout = (TreeLayout) view.getParent();
         DragLayout.LayoutParams lp = (DragLayout.LayoutParams) treeLayout.getLayoutParams();
         treeLayout.setRight(!lp.isCloseToStart());
