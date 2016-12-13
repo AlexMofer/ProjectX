@@ -90,6 +90,8 @@ public class DragLayout extends ViewGroup {
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
+            if (child.getVisibility() == GONE)
+                continue;
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
             LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
             final int childWidth = child.getMeasuredWidth() + layoutParams.mDragPaddingStart +
@@ -118,18 +120,16 @@ public class DragLayout extends ViewGroup {
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
+            if (child.getVisibility() == GONE)
+                continue;
+            final int childWidth = child.getMeasuredWidth();
             LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
-            layoutParams.updateLocation(width, height,
-                    paddingStart, paddingTop, paddingEnd, paddingBottom);
-            final int dragStart = ViewCompat.getPaddingStart(this) + layoutParams.mDragPaddingStart;
-            final int childLeft;
-            if (layoutParams.mEdge == dragStart)
-                childLeft = layoutParams.mEdge;
-            else
-                childLeft = layoutParams.mEdge - child.getMeasuredWidth();
+            layoutParams.updateLocation(childWidth, child.getMeasuredHeight(),
+                    width, height, paddingStart, paddingTop, paddingEnd, paddingBottom);
+            final int childLeft = layoutParams.mLeft;
             final int childTop = layoutParams.mCenterY - child.getMeasuredHeight() / 2;
             child.layout(childLeft, childTop,
-                    childLeft + child.getMeasuredWidth(), childTop + child.getMeasuredHeight());
+                    childLeft + childWidth, childTop + child.getMeasuredHeight());
         }
     }
 
@@ -169,8 +169,6 @@ public class DragLayout extends ViewGroup {
         private int mTop = -1;
         private boolean dragged = false;
 
-
-        private int mEdge = -1;
         private int mCenterY = -1;
         private float mCenterLineX;
 
@@ -265,10 +263,6 @@ public class DragLayout extends ViewGroup {
             }
         }
 
-        public boolean isCloseToStart() {
-            return mEdge < mCenterLineX;
-        }
-
         public void setGravity(int gravity) {
             mGravity = gravity;
         }
@@ -281,25 +275,26 @@ public class DragLayout extends ViewGroup {
             return dragged;
         }
 
-        public void updateLocation(int edge, int centerY) {
-            mEdge = edge;
-            mCenterY = centerY;
+        public boolean isCloseToStart() {
+            return mLeft < mCenterLineX;
         }
 
-        public void updateLocation(int parentWidth, int parentHeight,
+        public void updateLocation(int childWidth, int childHeight,
+                                   int parentWidth, int parentHeight,
                                    int paddingStart, int paddingTop,
                                    int paddingEnd, int paddingBottom) {
             mCenterLineX = paddingStart + mDragPaddingStart + (parentWidth - paddingStart -
                     paddingEnd - mDragPaddingStart - mDragPaddingEnd) * 0.5f;
             if (dragged)
-                checkLocation(parentWidth, parentHeight, paddingStart,
-                        paddingTop, paddingEnd, paddingBottom);
+                checkLocation(childWidth, childHeight, parentWidth, parentHeight,
+                        paddingStart, paddingTop, paddingEnd, paddingBottom);
             else
-                setLocationByGravity(parentWidth, parentHeight, paddingStart,
-                        paddingTop, paddingEnd, paddingBottom);
+                setLocationByGravity(childWidth, childHeight, parentWidth, parentHeight,
+                        paddingStart, paddingTop, paddingEnd, paddingBottom);
         }
 
-        public void setLocationByGravity(int parentWidth, int parentHeight,
+        public void setLocationByGravity(int childWidth, int childHeight,
+                                         int parentWidth, int parentHeight,
                                          int paddingStart, int paddingTop,
                                          int paddingEnd, int paddingBottom) {
             switch (mGravity) {
@@ -310,14 +305,14 @@ public class DragLayout extends ViewGroup {
                 case GravityCompat.START | Gravity.TOP:
                 case Gravity.LEFT | Gravity.TOP:
                     // 左上角
-                    mEdge = paddingStart + mDragPaddingStart;
+                    mLeft = paddingStart + mDragPaddingStart;
                     mCenterY = paddingTop + mDragPaddingTop;
                     break;
                 case Gravity.CENTER_HORIZONTAL:
                 case Gravity.CENTER_HORIZONTAL | Gravity.TOP:
                     // 水平居中靠上
                     // TODO 贴边与不贴边区别 强制左上角
-                    mEdge = paddingStart + mDragPaddingStart;
+                    mLeft = paddingStart + mDragPaddingStart;
                     mCenterY = paddingTop + mDragPaddingTop;
                     break;
                 case GravityCompat.END:
@@ -325,14 +320,14 @@ public class DragLayout extends ViewGroup {
                 case GravityCompat.END | Gravity.TOP:
                 case Gravity.RIGHT | Gravity.TOP:
                     // 右上角
-                    mEdge = parentWidth - paddingEnd - mDragPaddingEnd;
+                    mLeft = parentWidth - paddingEnd - mDragPaddingEnd - childWidth;
                     mCenterY = paddingTop + mDragPaddingTop;
                     break;
                 case Gravity.CENTER_VERTICAL:
                 case Gravity.CENTER_VERTICAL | GravityCompat.START:
                 case Gravity.CENTER_VERTICAL | Gravity.LEFT:
                     // 垂直居中靠左
-                    mEdge = paddingStart + mDragPaddingStart;
+                    mLeft = paddingStart + mDragPaddingStart;
                     mCenterY = paddingTop + mDragPaddingTop +
                             (parentHeight - paddingTop - paddingBottom
                                     - mDragPaddingTop - mDragPaddingBottom) / 2;
@@ -340,13 +335,13 @@ public class DragLayout extends ViewGroup {
                 case Gravity.CENTER:
                     // 居中
                     // TODO 贴边与不贴边区别 强制左上角
-                    mEdge = paddingStart + mDragPaddingStart;
+                    mLeft = paddingStart + mDragPaddingStart;
                     mCenterY = paddingTop + mDragPaddingTop;
                     break;
                 case Gravity.CENTER_VERTICAL | GravityCompat.END:
                 case Gravity.CENTER_VERTICAL | Gravity.RIGHT:
                     // 垂直居中靠右
-                    mEdge = parentWidth - paddingEnd - mDragPaddingEnd;
+                    mLeft = parentWidth - paddingEnd - mDragPaddingEnd - childWidth;
                     mCenterY = paddingTop + mDragPaddingTop +
                             (parentHeight - paddingTop - paddingBottom
                                     - mDragPaddingTop - mDragPaddingBottom) / 2;
@@ -355,42 +350,43 @@ public class DragLayout extends ViewGroup {
                 case Gravity.BOTTOM | GravityCompat.START:
                 case Gravity.BOTTOM | Gravity.LEFT:
                     // 左下角
-                    mEdge = paddingStart + mDragPaddingStart;
+                    mLeft = paddingStart + mDragPaddingStart;
                     mCenterY = parentHeight - paddingBottom - mDragPaddingBottom;
                     break;
                 case Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL:
                     // 水平居中靠下
                     // TODO 贴边与不贴边区别 强制左下角
-                    mEdge = paddingStart + mDragPaddingStart;
+                    mLeft = paddingStart + mDragPaddingStart;
                     mCenterY = parentHeight - paddingBottom - mDragPaddingBottom;
                     break;
                 case Gravity.BOTTOM | GravityCompat.END:
                 case Gravity.BOTTOM | Gravity.RIGHT:
                     // 右下角
-                    mEdge = parentWidth - paddingEnd - mDragPaddingEnd;
+                    mLeft = parentWidth - paddingEnd - mDragPaddingEnd - childWidth;
                     mCenterY = parentHeight - paddingBottom - mDragPaddingBottom;
                     break;
             }
         }
 
-        public void checkLocation(int parentWidth, int parentHeight,
+        public void checkLocation(int childWidth, int childHeight,
+                                  int parentWidth, int parentHeight,
                                   int paddingStart, int paddingTop,
                                   int paddingEnd, int paddingBottom) {
             final int start = paddingStart + mDragPaddingStart;
             final int top = paddingTop + mDragPaddingTop;
             final int end = parentWidth - paddingEnd - mDragPaddingEnd;
             final int bottom = parentHeight - paddingBottom - mDragPaddingBottom;
-            mEdge = mEdge < start ? start : mEdge;
-            mEdge = mEdge > end ? end : mEdge;
+            mLeft = mLeft < start ? start : mLeft;
+            mLeft = (mLeft + childWidth) > end ? (end - childWidth) : mLeft;
             mCenterY = mCenterY < top ? top : mCenterY;
             mCenterY = mCenterY > bottom ? bottom : mCenterY;
 
             // TODO 处理贴边
-            if (mEdge > start && mEdge < end) {
-                if (mEdge - start < end - mEdge) {
-                    mEdge = start;
+            if (mLeft > start && (mLeft + childWidth) < end) {
+                if (mLeft - start < end - (mLeft + childWidth)) {
+                    mLeft = start;
                 } else {
-                    mEdge = end;
+                    mLeft = end - childWidth;
                 }
             }
         }
@@ -579,7 +575,8 @@ public class DragLayout extends ViewGroup {
 
             }
             mCenterY = finalTop + (int) (childHeight * 0.5f);
-            updateLocation(mEdge, mCenterY);
+            mLeft = finalLeft;
+            this.mCenterY = mCenterY;
             location[0] = finalLeft;
             location[1] = finalTop;
         }
