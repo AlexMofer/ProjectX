@@ -16,6 +16,7 @@
 
 package am.widget.basetabstrip;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Color;
@@ -67,15 +68,28 @@ public abstract class BaseTabStrip extends View {
     private final Rect mRefreshTempRect = new Rect();
 
     public BaseTabStrip(Context context) {
-        this(context, null);
+        super(context);
+        initView();
     }
 
     public BaseTabStrip(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        initView();
     }
 
+    @TargetApi(11)
     public BaseTabStrip(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initView();
+    }
+
+    @TargetApi(21)
+    public BaseTabStrip(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initView();
+    }
+
+    private void initView() {
         setItemClickable(false);
         setClickSmoothScroll(false);
         tabStripGestureDetector = new TabStripGestureDetector();
@@ -226,7 +240,12 @@ public abstract class BaseTabStrip extends View {
                 if (i < mTabItemBackgrounds.size()) {
                     mTabItemBackgrounds.get(i).setState(onCreateDrawableState(0));
                 } else {
-                    Drawable tag = mTabItemBackground.getConstantState().newDrawable();
+                    Drawable tag;
+                    if (mTabItemBackground.getConstantState() != null) {
+                        tag = mTabItemBackground.getConstantState().newDrawable().mutate();
+                    } else {
+                        tag = mTabItemBackground.mutate();
+                    }
                     tag.setCallback(this);
                     mTabItemBackgrounds.add(tag);
                 }
@@ -247,7 +266,12 @@ public abstract class BaseTabStrip extends View {
             return;
         int count = getItemCount();
         for (int i = 0; i < count; i++) {
-            Drawable tag = mTabItemBackground.getConstantState().newDrawable();
+            Drawable tag;
+            if (mTabItemBackground.getConstantState() != null) {
+                tag = mTabItemBackground.getConstantState().newDrawable().mutate();
+            } else {
+                tag = mTabItemBackground.mutate();
+            }
             tag.setCallback(this);
             mTabItemBackgrounds.add(tag);
         }
@@ -341,7 +365,7 @@ public abstract class BaseTabStrip extends View {
     }
 
     @Override
-    protected boolean verifyDrawable(Drawable who) {
+    protected boolean verifyDrawable(@NonNull Drawable who) {
         boolean isTag = false;
         for (Drawable tag : mTabItemBackgrounds) {
             if (who == tag) {
@@ -583,7 +607,7 @@ public abstract class BaseTabStrip extends View {
         private int mLastPosition;
         private long mLastUpTime;
 
-        public boolean onTouchEvent(MotionEvent ev) {
+        boolean onTouchEvent(MotionEvent ev) {
             boolean isClick = false;
             final int action = ev.getAction();
             final float x = ev.getX();
@@ -639,11 +663,11 @@ public abstract class BaseTabStrip extends View {
             }
         }
 
-        public float getDownMotionX() {
+        float getDownMotionX() {
             return mDownMotionX;
         }
 
-        public float getDownMotionY() {
+        float getDownMotionY() {
             return mDownMotionY;
         }
     }
@@ -965,7 +989,7 @@ public abstract class BaseTabStrip extends View {
     /**
      * Tag位置
      */
-    @SuppressWarnings("unused")
+    @SuppressWarnings("all")
     protected static class TagLocation {
         public static final int LOCATION_CONTENT = 0;//贴近内容
         public static final int LOCATION_EDGE = 1;// 贴近边缘

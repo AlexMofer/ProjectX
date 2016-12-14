@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         minSdkVersion 9
@@ -13,7 +13,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-core-ui:25.0.1'
+    compile 'com.android.support:support-core-ui:25.1.0'
 }
 
 //apply from: "bintray.gradle"

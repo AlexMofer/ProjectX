@@ -16,6 +16,7 @@
 
 package am.widget.basetabstrip;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Color;
@@ -33,7 +34,6 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
-import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -46,6 +46,7 @@ import java.util.ArrayList;
  *
  * @author Alex
  */
+@SuppressWarnings("unused")
 @ViewPager.DecorView
 public abstract class BaseTabStripGroup extends ViewGroup {
 
@@ -68,15 +69,28 @@ public abstract class BaseTabStripGroup extends ViewGroup {
     private final Rect mRefreshTempRect = new Rect();
 
     public BaseTabStripGroup(Context context) {
-        this(context, null);
+        super(context);
+        initView();
     }
 
     public BaseTabStripGroup(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        initView();
     }
 
+    @TargetApi(11)
     public BaseTabStripGroup(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initView();
+    }
+
+    @TargetApi(21)
+    public BaseTabStripGroup(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initView();
+    }
+
+    private void initView() {
         setItemClickable(false);
         setClickSmoothScroll(false);
         tabStripGestureDetector = new TabStripGestureDetector();
@@ -227,7 +241,12 @@ public abstract class BaseTabStripGroup extends ViewGroup {
                 if (i < mTabItemBackgrounds.size()) {
                     mTabItemBackgrounds.get(i).setState(onCreateDrawableState(0));
                 } else {
-                    Drawable tag = mTabItemBackground.getConstantState().newDrawable();
+                    Drawable tag;
+                    if (mTabItemBackground.getConstantState() != null) {
+                        tag = mTabItemBackground.getConstantState().newDrawable().mutate();
+                    } else {
+                        tag = mTabItemBackground.mutate();
+                    }
                     tag.setCallback(this);
                     mTabItemBackgrounds.add(tag);
                 }
@@ -248,7 +267,12 @@ public abstract class BaseTabStripGroup extends ViewGroup {
             return;
         int count = getItemCount();
         for (int i = 0; i < count; i++) {
-            Drawable tag = mTabItemBackground.getConstantState().newDrawable();
+            Drawable tag;
+            if (mTabItemBackground.getConstantState() != null) {
+                tag = mTabItemBackground.getConstantState().newDrawable().mutate();
+            } else {
+                tag = mTabItemBackground.mutate();
+            }
             tag.setCallback(this);
             mTabItemBackgrounds.add(tag);
         }
@@ -342,7 +366,7 @@ public abstract class BaseTabStripGroup extends ViewGroup {
     }
 
     @Override
-    protected boolean verifyDrawable(Drawable who) {
+    protected boolean verifyDrawable(@NonNull Drawable who) {
         boolean isTag = false;
         for (Drawable tag : mTabItemBackgrounds) {
             if (who == tag) {
@@ -584,7 +608,7 @@ public abstract class BaseTabStripGroup extends ViewGroup {
         private int mLastPosition;
         private long mLastUpTime;
 
-        public boolean onTouchEvent(MotionEvent ev) {
+        boolean onTouchEvent(MotionEvent ev) {
             boolean isClick = false;
             final int action = ev.getAction();
             final float x = ev.getX();
@@ -640,11 +664,11 @@ public abstract class BaseTabStripGroup extends ViewGroup {
             }
         }
 
-        public float getDownMotionX() {
+        float getDownMotionX() {
             return mDownMotionX;
         }
 
-        public float getDownMotionY() {
+        float getDownMotionY() {
             return mDownMotionY;
         }
     }
@@ -966,7 +990,7 @@ public abstract class BaseTabStripGroup extends ViewGroup {
     /**
      * Tag位置
      */
-    @SuppressWarnings("unused")
+    @SuppressWarnings("all")
     protected static class TagLocation {
         public static final int LOCATION_CONTENT = 0;//贴近内容
         public static final int LOCATION_EDGE = 1;// 贴近边缘
