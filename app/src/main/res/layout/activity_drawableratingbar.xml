@@ -45,7 +45,7 @@
             app:drbManually="true"
             app:drbMax="6"
             app:drbMin="1"
-            app:drbOnlyItemTouchable="true"
+            app:drbOnlyItemTouchable="false"
             app:drbRating="4" />
 
     </FrameLayout>

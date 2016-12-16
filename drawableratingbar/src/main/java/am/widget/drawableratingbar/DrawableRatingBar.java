@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -246,6 +248,87 @@ public class DrawableRatingBar extends View {
             }
         }
         return rating < mMin ? mMin : rating;
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState ss = new SavedState(superState);
+        ss.mDrawablePadding = mDrawablePadding;
+        ss.mGravity = mGravity;
+        ss.mMax = mMax;
+        ss.mMin = mMin;
+        ss.mRating = mRating;
+        ss.mManually = mManually;
+        ss.mOnlyItemTouchable = mOnlyItemTouchable;
+        return ss;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        if (!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+        SavedState ss = (SavedState) state;
+        mDrawablePadding = ss.mDrawablePadding;
+        mGravity = ss.mGravity;
+        mMax = ss.mMax;
+        mMin = ss.mMin;
+        mRating = ss.mRating;
+        mManually = ss.mManually;
+        mOnlyItemTouchable = ss.mOnlyItemTouchable;
+        super.onRestoreInstanceState(ss.getSuperState());
+        requestLayout();
+        invalidate();
+    }
+
+    static class SavedState extends BaseSavedState {
+        private int mDrawablePadding;
+        private int mGravity;
+        private int mMax;
+        private int mMin;
+        private int mRating;
+        private boolean mManually;
+        private boolean mOnlyItemTouchable;
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            mDrawablePadding = in.readInt();
+            mGravity = in.readInt();
+            mMax = in.readInt();
+            mMin = in.readInt();
+            mRating = in.readInt();
+            mManually = in.readInt() == 1;
+            mOnlyItemTouchable = in.readInt() == 1;
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt(mDrawablePadding);
+            out.writeInt(mGravity);
+            out.writeInt(mMax);
+            out.writeInt(mMin);
+            out.writeInt(mRating);
+            out.writeInt(mManually ? 1 : 0);
+            out.writeInt(mOnlyItemTouchable ? 1 : 0);
+        }
+
+        public static final Creator<SavedState> CREATOR =
+                new Creator<SavedState>() {
+                    public SavedState createFromParcel(Parcel in) {
+                        return new SavedState(in);
+                    }
+
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                };
     }
 
     /**
