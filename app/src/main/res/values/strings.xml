@@ -48,6 +48,20 @@
     <string name="replacelayout_titles">第%1$d页</string>
 
     <string name="drawableratingbar_title">图片评级</string>
+    <string name="drawableratingbar_gravity">布局：</string>
+    <string name="drawableratingbar_gravity_left">左上</string>
+    <string name="drawableratingbar_gravity_center_horizontal">上</string>
+    <string name="drawableratingbar_gravity_right">右上</string>
+    <string name="drawableratingbar_gravity_center_vertical">左中</string>
+    <string name="drawableratingbar_gravity_center">中</string>
+    <string name="drawableratingbar_gravity_center_vertical_right">右中</string>
+    <string name="drawableratingbar_gravity_bottom_left">左下</string>
+    <string name="drawableratingbar_gravity_bottom_center_horizontal">下</string>
+    <string name="drawableratingbar_gravity_bottom_right">右下</string>
+    <string name="drawableratingbar_manually">可手动控制：</string>
+    <string name="drawableratingbar_only_item_touchable">仅子项内部响应触摸事件：</string>
+    <string name="drawableratingbar_max">最大值(6~10)：</string>
+    <string name="drawableratingbar_min">子项不得少于个数(0~6)：</string>
 
     <string name="printer_title">打印</string>
     <string name="printer_type">打印机类型</string>

@@ -31,6 +31,7 @@ public class DrawableRatingBar extends View {
     private int drawableHeight;
     private float xOffset;
     private float yOffset;
+    private boolean tReGetOffset = true;
     private boolean mManually;
     private boolean mOnlyItemTouchable;
     private OnRatingChangeListener listener;
@@ -48,7 +49,6 @@ public class DrawableRatingBar extends View {
         initView(context, attrs, defStyleAttr);
     }
 
-    @SuppressWarnings("all")
     private void initView(Context context, AttributeSet attrs, int defStyleAttr) {
         final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS, defStyleAttr, 0);
         int n = a.getIndexCount();
@@ -79,7 +79,7 @@ public class DrawableRatingBar extends View {
         int rating = 0;
         boolean manually;
         boolean onlyItemTouchable;
-        int gravity = Gravity.LEFT;
+        int gravity = Compat.START;
         TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.DrawableRatingBar);
         if (custom.hasValue(R.styleable.DrawableRatingBar_drbProgressDrawable))
             selected = custom.getDrawable(R.styleable.DrawableRatingBar_drbProgressDrawable);
@@ -106,7 +106,6 @@ public class DrawableRatingBar extends View {
     }
 
     @Override
-    @SuppressWarnings("all")
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         final int suggestedMinimumWidth = getSuggestedMinimumWidth();
         final int suggestedMinimumHeight = getSuggestedMinimumHeight();
@@ -130,54 +129,14 @@ public class DrawableRatingBar extends View {
                 suggestedMinimumHeight);
         setMeasuredDimension(resolveSize(width, widthMeasureSpec),
                 resolveSize(height, heightMeasureSpec));
-        final int measuredWidth = getMeasuredWidth();
-        final int measuredHeight = getMeasuredHeight();
-        switch (mGravity) {
-            default:
-            case Gravity.LEFT:
-            case Gravity.TOP:
-                xOffset = paddingStart;
-                yOffset = paddingTop;
-                break;
-            case Gravity.CENTER_HORIZONTAL:
-                xOffset = measuredWidth * 0.5f - itemWidth * 0.5f;
-                yOffset = paddingTop;
-                break;
-            case Gravity.RIGHT:
-                xOffset = measuredWidth - itemWidth;
-                yOffset = paddingTop;
-                break;
-            case Gravity.CENTER_VERTICAL:
-                xOffset = paddingStart;
-                yOffset = measuredHeight * 0.5f - drawableHeight * 0.5f;
-                break;
-            case Gravity.CENTER:
-                xOffset = measuredWidth * 0.5f - itemWidth * 0.5f;
-                yOffset = measuredHeight * 0.5f - drawableHeight * 0.5f;
-                break;
-            case Gravity.CENTER_VERTICAL | Gravity.RIGHT:
-                xOffset = measuredWidth - itemWidth;
-                yOffset = measuredHeight * 0.5f - drawableHeight * 0.5f;
-                break;
-            case Gravity.BOTTOM:
-                xOffset = paddingStart;
-                yOffset = measuredHeight - paddingBottom - drawableHeight;
-                break;
-            case Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM:
-                xOffset = measuredWidth * 0.5f - itemWidth * 0.5f;
-                yOffset = measuredHeight - paddingBottom - drawableHeight;
-                break;
-            case Gravity.BOTTOM | Gravity.RIGHT:
-                xOffset = measuredWidth - itemWidth;
-                yOffset = measuredHeight - paddingBottom - drawableHeight;
-                break;
-        }
+        tReGetOffset = true;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (mProgressDrawable != null && mSecondaryProgress != null) {
+            getOffset();
             final int progressDrawableWidth = mProgressDrawable.getIntrinsicWidth();
             final int progressDrawableHeight = mProgressDrawable.getIntrinsicHeight();
             final int secondaryProgressWidth = mSecondaryProgress.getIntrinsicWidth();
@@ -203,6 +162,73 @@ public class DrawableRatingBar extends View {
                 canvas.translate(drawableWidth + mDrawablePadding, 0);
             }
             canvas.restore();
+        }
+    }
+
+    @SuppressWarnings("all")
+    private void getOffset() {
+        if (!tReGetOffset)
+            return;
+        tReGetOffset = false;
+        final int measuredWidth = getMeasuredWidth();
+        final int measuredHeight = getMeasuredHeight();
+        final int paddingStart = Compat.getPaddingStart(this);
+        final int paddingTop = getPaddingTop();
+        final int paddingEnd = Compat.getPaddingEnd(this);
+        final int paddingBottom = getPaddingBottom();
+        final int itemWidth = drawableWidth * mMax + mDrawablePadding * (mMax - 1);
+        switch (mGravity) {
+            default:
+            case Compat.START:
+            case Gravity.LEFT:
+            case Gravity.TOP:
+            case Compat.START | Gravity.TOP:
+            case Gravity.LEFT | Gravity.TOP:
+                xOffset = paddingStart;
+                yOffset = paddingTop;
+                break;
+            case Gravity.CENTER_HORIZONTAL:
+            case Gravity.CENTER_HORIZONTAL | Gravity.TOP:
+                xOffset = measuredWidth * 0.5f - itemWidth * 0.5f;
+                yOffset = paddingTop;
+                break;
+            case Compat.END:
+            case Gravity.RIGHT:
+            case Compat.END | Gravity.TOP:
+            case Gravity.RIGHT | Gravity.TOP:
+                xOffset = measuredWidth - paddingEnd - itemWidth;
+                yOffset = paddingTop;
+                break;
+            case Gravity.CENTER_VERTICAL:
+            case Gravity.CENTER_VERTICAL | Compat.START:
+            case Gravity.CENTER_VERTICAL | Gravity.LEFT:
+                xOffset = paddingStart;
+                yOffset = measuredHeight * 0.5f - drawableHeight * 0.5f;
+                break;
+            case Gravity.CENTER:
+                xOffset = measuredWidth * 0.5f - itemWidth * 0.5f;
+                yOffset = measuredHeight * 0.5f - drawableHeight * 0.5f;
+                break;
+            case Gravity.CENTER_VERTICAL | Compat.END:
+            case Gravity.CENTER_VERTICAL | Gravity.RIGHT:
+                xOffset = measuredWidth  - paddingEnd - itemWidth;
+                yOffset = measuredHeight * 0.5f - drawableHeight * 0.5f;
+                break;
+            case Gravity.BOTTOM:
+            case Gravity.BOTTOM | Compat.START:
+            case Gravity.BOTTOM | Gravity.LEFT:
+                xOffset = paddingStart;
+                yOffset = measuredHeight - paddingBottom - drawableHeight;
+                break;
+            case Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL:
+                xOffset = measuredWidth * 0.5f - itemWidth * 0.5f;
+                yOffset = measuredHeight - paddingBottom - drawableHeight;
+                break;
+            case Gravity.BOTTOM | Compat.END:
+            case Gravity.BOTTOM | Gravity.RIGHT:
+                xOffset = measuredWidth  - paddingEnd - itemWidth;
+                yOffset = measuredHeight - paddingBottom - drawableHeight;
+                break;
         }
     }
 
@@ -394,6 +420,8 @@ public class DrawableRatingBar extends View {
     public void setGravity(int gravity) {
         if (mGravity != gravity) {
             mGravity = gravity;
+            tReGetOffset = true;
+            invalidate();
         }
     }
 
