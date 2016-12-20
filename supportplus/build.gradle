@@ -6,13 +6,14 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 25
-        versionCode 7
+        versionCode 8
         versionName "25.1.0"
     }
 }
 
 dependencies {
     compile 'com.android.support:support-core-ui:25.1.0'
+    compile 'com.android.support:support-fragment:25.1.0'
 }
 
 //apply from: "bintray.gradle"
