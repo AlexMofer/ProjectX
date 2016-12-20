@@ -27,27 +27,199 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <am.widget.drawableratingbar.DrawableRatingBar
-            android:id="@+id/drb_rb_stars"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <am.widget.drawableratingbar.DrawableRatingBar
+                android:id="@+id/drb_rb_stars"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_drawable_center"
+                android:drawablePadding="3dp"
+                android:minHeight="120dp"
+                android:progressDrawable="@drawable/ic_drawableratingbar"
+                app:drbGravity="center"
+                app:drbManually="true"
+                app:drbMax="6"
+                app:drbMin="1"
+                app:drbOnlyItemTouchable="false"
+                app:drbRating="4" />
+        </FrameLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawablePadding="3dp"
-            android:minHeight="120dp"
-            android:padding="10dp"
-            android:progressDrawable="@drawable/ic_drawableratingbar"
-            app:drbGravity="center"
-            app:drbManually="true"
-            app:drbMax="6"
-            app:drbMin="1"
-            app:drbOnlyItemTouchable="true"
-            app:drbRating="4" />
+            android:layout_marginBottom="40dp"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
-    </FrameLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/drawableratingbar_gravity" />
+
+            <RadioGroup
+                android:id="@+id/drb_rg_gravity_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/drb_rb_left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/drawableratingbar_gravity_left" />
+
+                <RadioButton
+                    android:id="@+id/drb_rb_center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/drawableratingbar_gravity_center_horizontal" />
+
+                <RadioButton
+                    android:id="@+id/drb_rb_right"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/drawableratingbar_gravity_right" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/drb_rg_gravity_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/drb_rb_center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/drawableratingbar_gravity_center_vertical" />
+
+                <RadioButton
+                    android:id="@+id/drb_rb_center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/drawableratingbar_gravity_center" />
+
+                <RadioButton
+                    android:id="@+id/drb_rb_center_vertical_right"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/drawableratingbar_gravity_center_vertical_right" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/drb_rg_gravity_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/drb_rb_bottom_left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/drawableratingbar_gravity_bottom_left" />
+
+                <RadioButton
+                    android:id="@+id/drb_rb_bottom_center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/drawableratingbar_gravity_bottom_center_horizontal" />
+
+                <RadioButton
+                    android:id="@+id/drb_rb_bottom_right"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/drawableratingbar_gravity_bottom_right" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/drawableratingbar_manually" />
+
+                <Switch
+                    android:id="@+id/drb_sh_manually"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/drawableratingbar_only_item_touchable" />
+
+                <Switch
+                    android:id="@+id/drb_sh_touchable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/drawableratingbar_max" />
+
+            <SeekBar
+                android:id="@+id/drb_sb_max"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="4" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/drawableratingbar_min" />
+
+            <SeekBar
+                android:id="@+id/drb_sb_min"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progress="1"
+                android:max="6" />
+
+        </LinearLayout>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -397,6 +397,10 @@ public abstract class BaseTabStrip extends View {
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
+        if (!(state instanceof BaseTabStripSavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
         BaseTabStripSavedState ss = (BaseTabStripSavedState) state;
         performClick(ss.currentPager, false, false);
         super.onRestoreInstanceState(ss.getSuperState());

@@ -10,7 +10,7 @@ minSdkVersion 4
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:drawableratingbar:1.1.1'
+    compile 'am.widget:drawableratingbar:1.1.2'
     ⋯
 }
 ```
@@ -58,5 +58,6 @@ mRating.setOnRatingChangeListener(OnRatingChangeListener);
 - app:drbRating定义评级
 
 ## 历史
+- [**1.1.1**](https://bintray.com/alexmofer/maven/DrawableRatingBar/1.1.1)
 - [**1.1.0**](https://bintray.com/alexmofer/maven/DrawableRatingBar/1.1.0)
 - [**1.0.1**](https://bintray.com/alexmofer/maven/DrawableRatingBar/1.0.1)
