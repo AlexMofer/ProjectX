@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.widget.MaterialLoadingProgressDrawable;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
@@ -22,6 +21,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Map;
 
+import am.drawable.MaterialProgressDrawable;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
 import am.widget.zxingscanview.ZxingForegroundView;
@@ -54,7 +54,9 @@ public class ZxingScanViewActivity extends BaseActivity implements ZxingScanView
         scanView = (ZxingScanView) findViewById(R.id.zxingscanview_zsv_scan);
         foregroundView = (ZxingForegroundView) findViewById(R.id.zxingscanview_zfv_foreground);
         scanView.addOnScanListener(this);
-        foregroundView.setOpenDrawable(new MaterialLoadingProgressDrawable(foregroundView));
+        foregroundView.setOpenDrawable(new MaterialProgressDrawable(
+                getResources().getDisplayMetrics().density, MaterialProgressDrawable.LARGE,
+                0x00000000, 255, 0xff33b5e5, 0xff99cc00, 0xffff4444, 0xffffbb33));
     }
 
     @Override

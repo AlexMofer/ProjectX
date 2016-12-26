@@ -5,7 +5,9 @@ import android.view.View;
 
 /**
  * MaterialProgressDrawable
+ * 请使用am.drawable.MaterialProgressDrawable 来替代，该Drawable将在后续几个版本中删除
  */
+@Deprecated
 public class MaterialLoadingProgressDrawable extends MaterialProgressDrawable {
 
     public MaterialLoadingProgressDrawable(View parent) {
@@ -20,6 +22,8 @@ public class MaterialLoadingProgressDrawable extends MaterialProgressDrawable {
     public MaterialLoadingProgressDrawable(View parent, @ColorInt int backgroundColor,
                                            boolean autoStart, int... schemeColors) {
         super(parent.getContext(), parent);
+        System.out.println("MaterialLoadingProgressDrawable使用警告:");
+        System.out.println("请使用am.drawable.MaterialProgressDrawable 来替代，该Drawable将在后续版本升级中删除！");
         setAlpha(255);
         setBackgroundColor(backgroundColor);
         setColorSchemeColors(schemeColors);

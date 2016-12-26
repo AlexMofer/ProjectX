@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import am.drawable.CirclingDrawable;
 import am.drawable.DoubleCircleDrawable;
+import am.drawable.MaterialProgressDrawable;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
 
@@ -23,6 +24,7 @@ public class LoadingActivity extends BaseActivity {
         setSupportActionBar(R.id.loading_toolbar);
         setDoubleCircleDrawable();
         setCirclingDrawable();
+        setMaterialProgressDrawable();
     }
 
     private void setDoubleCircleDrawable() {
@@ -38,6 +40,15 @@ public class LoadingActivity extends BaseActivity {
         CirclingDrawable drawable = new CirclingDrawable(stroke,
                 ContextCompat.getColor(this, R.color.colorAccent),
                 ContextCompat.getDrawable(this, R.drawable.ic_drawable_default));
+        loading.setImageDrawable(drawable);
+        drawable.start();
+    }
+
+    private void setMaterialProgressDrawable() {
+        ImageView loading = (ImageView) findViewById(R.id.loading_iv_03);
+        MaterialProgressDrawable drawable = new MaterialProgressDrawable(
+                getResources().getDisplayMetrics().density, MaterialProgressDrawable.DEFAULT,
+                0x00000000, 255, 0xff33b5e5, 0xff99cc00, 0xffff4444, 0xffffbb33);
         loading.setImageDrawable(drawable);
         drawable.start();
     }

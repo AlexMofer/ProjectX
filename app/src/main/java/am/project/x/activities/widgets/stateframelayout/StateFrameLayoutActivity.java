@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.MaterialLoadingProgressDrawable;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import am.drawable.MaterialProgressDrawable;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
 import am.widget.MaterialProgressCircleImageView;
@@ -21,7 +21,7 @@ public class StateFrameLayoutActivity extends BaseActivity
         implements RadioGroup.OnCheckedChangeListener, StateFrameLayout.OnAllStateClickListener {
 
     private StateFrameLayout lytState;
-    private MaterialLoadingProgressDrawable mLoadingDrawable;
+    private MaterialProgressDrawable mLoadingDrawable;
     private MaterialProgressCircleImageView mLoadingView;
     private Drawable mErrorDrawable;
     private View mErrorView;
@@ -40,7 +40,9 @@ public class StateFrameLayoutActivity extends BaseActivity
         lytState = (StateFrameLayout) findViewById(R.id.sfl_lyt_state);
         RadioGroup rgpState = (RadioGroup) findViewById(R.id.sfl_rgp_state);
         RadioGroup rgpMode = (RadioGroup) findViewById(R.id.sfl_rgp_mode);
-        mLoadingDrawable = new MaterialLoadingProgressDrawable(lytState);
+        mLoadingDrawable = new MaterialProgressDrawable(
+                getResources().getDisplayMetrics().density, MaterialProgressDrawable.LARGE,
+                0x00000000, 255, 0xff33b5e5, 0xff99cc00, 0xffff4444, 0xffffbb33);
         mLoadingView = new MaterialProgressCircleImageView(getApplicationContext());
         mErrorDrawable = ContextCompat.getDrawable(this, R.drawable.ic_stateframelayout_error);
         TextView tvError = new TextView(getApplicationContext());

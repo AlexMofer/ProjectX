@@ -22,6 +22,7 @@ import android.widget.ImageView;
  *
  * android.support.v4.widget.CircleImageView
  */
+@Deprecated
 public class MaterialProgressCircleImageView extends ImageView implements Animatable {
 
     private static final int DEFAULT_COLOR = 0xFFFAFAFA;
