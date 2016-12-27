@@ -70,7 +70,6 @@ dependencies {
     compile project(':draglayout')
     compile project(':treelayout')
     compile project(':drawable')
-    compile project(':supportplus')
     compile project(':support')
     compile project(':printer')
     compile project(':viewpager')
