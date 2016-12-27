@@ -927,6 +927,15 @@ public abstract class BaseTabStrip extends View {
     }
 
     /**
+     * 刷新位置
+     * ViewPager做了跳转，可执行该方法重新定位
+     */
+    @SuppressWarnings("unused")
+    public void invalidatePosition() {
+        jumpTo(getCurrentItem());
+    }
+
+    /**
      * 获取子项边界
      *
      * @param position 子项
