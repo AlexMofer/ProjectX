@@ -19,6 +19,7 @@ public abstract class LoadingRecyclerAdapter<T, VH extends LoadingViewHolder<T>>
     private boolean mHasNext = false;
     private WeakReference<VH> loadingHolder;
     private boolean isError = false;
+    private boolean reBindLoading = true;
 
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,6 +44,8 @@ public abstract class LoadingRecyclerAdapter<T, VH extends LoadingViewHolder<T>>
             return;
         }
         holder.bindNormal(mData.get(position));
+        if (reBindLoading && position == mData.size() - 1)
+            bindLoading(isError);
     }
 
     @Override
@@ -102,6 +105,10 @@ public abstract class LoadingRecyclerAdapter<T, VH extends LoadingViewHolder<T>>
         isError = error;
         if (mHasNext)
             notifyItemChanged(mData.size());
+    }
+
+    public void setReBindLoading(boolean reBindLoading) {
+        this.reBindLoading = reBindLoading;
     }
 
     public void bindLoading(boolean error) {
