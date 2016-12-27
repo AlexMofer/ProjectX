@@ -76,6 +76,9 @@
 - [***CircleExpandDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
     
     圆圈扩大图片。
+- [***MaterialProgressDrawable***](https://github.com/AlexMofer/ProjectX/tree/master/drawable)
+
+    SwipeRefreshLayout载入动图。
 
 ## Other
 - [***Printer***](https://github.com/AlexMofer/ProjectX/tree/master/printer)

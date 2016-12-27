@@ -14,7 +14,7 @@ import android.widget.Toast;
 import am.drawable.MaterialProgressDrawable;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
-import am.widget.MaterialProgressCircleImageView;
+import am.widget.MaterialProgressImageView;
 import am.widget.stateframelayout.StateFrameLayout;
 
 public class StateFrameLayoutActivity extends BaseActivity
@@ -22,7 +22,7 @@ public class StateFrameLayoutActivity extends BaseActivity
 
     private StateFrameLayout lytState;
     private MaterialProgressDrawable mLoadingDrawable;
-    private MaterialProgressCircleImageView mLoadingView;
+    private MaterialProgressImageView mLoadingView;
     private Drawable mErrorDrawable;
     private View mErrorView;
     private Drawable mEmptyDrawable;
@@ -43,7 +43,8 @@ public class StateFrameLayoutActivity extends BaseActivity
         mLoadingDrawable = new MaterialProgressDrawable(
                 getResources().getDisplayMetrics().density, MaterialProgressDrawable.LARGE,
                 0x00000000, 255, 0xff33b5e5, 0xff99cc00, 0xffff4444, 0xffffbb33);
-        mLoadingView = new MaterialProgressCircleImageView(getApplicationContext());
+        mLoadingView = new MaterialProgressImageView(getApplicationContext());
+        mLoadingView.setColorSchemeColors(0xff33b5e5, 0xff99cc00, 0xffff4444, 0xffffbb33);
         mErrorDrawable = ContextCompat.getDrawable(this, R.drawable.ic_stateframelayout_error);
         TextView tvError = new TextView(getApplicationContext());
         tvError.setText(R.string.stateframelayout_change_state_error);
