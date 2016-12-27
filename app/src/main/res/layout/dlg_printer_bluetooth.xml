@@ -8,16 +8,16 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:text="@string/printer_bluetooth"
         android:textColor="#ff000000"
-        android:layout_marginBottom="10dp"
-        android:textSize="18sp" />
+        android:textSize="18sp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/printer_rv_bonded"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="200dp"/>
 
     <TextView
         android:id="@+id/printer_tv_state"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:lines="2"
-        android:text="打印机状态" />
+        android:text="@string/printer_state"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,15 +37,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:visibility="gone"
-            android:text="连接" />
+            android:text="@string/printer_connect"
+            android:visibility="gone"/>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/printer_btn_test_print"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="打印" />
+            android:text="@string/printer_print"/>
     </LinearLayout>
 
 </LinearLayout>

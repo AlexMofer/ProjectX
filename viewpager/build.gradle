@@ -3,19 +3,17 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
+
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 25
-        versionCode 8
+        versionCode 1
         versionName "25.1.0"
     }
 }
 
 dependencies {
-    compile 'com.android.support:support-core-ui:25.1.0'
     compile 'com.android.support:support-fragment:25.1.0'
-//    compile 'am.drawable:drawable:1.4.0'
-    compile project(':drawable')
 }
 
 //apply from: "bintray.gradle"

@@ -108,6 +108,9 @@
     <string name="printer_result_message_6">必要的参数不能为空！</string>
     <string name="printer_result_message_7">关闭Socket出错！</string>
     <string name="printer_result_message_8">打印失败！</string>
+    <string name="printer_state">打印机状态</string>
+    <string name="printer_connect">连接</string>
+    <string name="printer_print">打印</string>
 
     <string name="cipher_title">加密解密</string>
     <string name="cipher_input">输入待处理文本</string>

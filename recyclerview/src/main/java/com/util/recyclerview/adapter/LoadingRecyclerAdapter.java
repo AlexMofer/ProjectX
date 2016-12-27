@@ -1,4 +1,4 @@
-package am.project.x.utils;
+package com.util.recyclerview.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -11,7 +11,7 @@ import java.util.List;
  * 带载入的RecyclerView.Adapter
  * Created by Alex on 2016/12/27.
  */
-
+@SuppressWarnings("all")
 public abstract class LoadingRecyclerAdapter<T, VH extends LoadingViewHolder<T>>
         extends RecyclerView.Adapter<LoadingViewHolder<T>> {
 

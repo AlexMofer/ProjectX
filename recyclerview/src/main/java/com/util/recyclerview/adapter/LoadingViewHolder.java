@@ -1,6 +1,5 @@
-package am.project.x.utils;
+package com.util.recyclerview.adapter;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -8,7 +7,7 @@ import android.view.View;
  * 尾部载入的ViewHolder
  * Created by Alex on 2016/12/27.
  */
-
+@SuppressWarnings("all")
 public abstract class LoadingViewHolder<T> extends RecyclerView.ViewHolder {
 
     public static final int NORMAL = 0;

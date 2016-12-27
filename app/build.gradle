@@ -73,5 +73,7 @@ dependencies {
     compile project(':supportplus')
     compile project(':support')
     compile project(':printer')
+    compile project(':viewpager')
+    compile project(':recyclerview')
     compile project(':security')
 }

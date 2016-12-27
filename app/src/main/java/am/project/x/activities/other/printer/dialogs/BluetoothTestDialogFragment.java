@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDialog;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,7 +19,6 @@ import am.project.x.R;
 import am.project.x.activities.other.printer.adapters.DeviceAdapter;
 import am.project.x.activities.other.printer.data.TestPrintDataMaker;
 import am.project.x.activities.other.printer.viewholders.DeviceViewHolder;
-import am.project.x.widgets.divider.DividerItemDecoration;
 import am.util.printer.PrintExecutor;
 import am.util.printer.PrintSocketHolder;
 import am.util.printer.PrinterWriter;
@@ -81,9 +81,11 @@ public class BluetoothTestDialogFragment extends DialogFragment {
             setContentView(R.layout.dlg_printer_bluetooth);
             RecyclerView rvBonded = (RecyclerView) findViewById(R.id.printer_rv_bonded);
             rvBonded.setLayoutManager(new LinearLayoutManager(getContext()));
-            rvBonded.addItemDecoration(new DividerItemDecoration(
-                    ContextCompat.getDrawable(getContext(), R.drawable.divider_printer),
-                    DividerItemDecoration.VERTICAL_LIST));
+            DividerItemDecoration decoration = new DividerItemDecoration(rvBonded.getContext(),
+                    DividerItemDecoration.VERTICAL);
+            decoration.setDrawable(ContextCompat.getDrawable(getContext(),
+                    R.drawable.divider_printer));
+            rvBonded.addItemDecoration(decoration);
             rvBonded.setAdapter(bondedAdapter);
             updateAdapter();
             tvState = (TextView) findViewById(R.id.printer_tv_state);
