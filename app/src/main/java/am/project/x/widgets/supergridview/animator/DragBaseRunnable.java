@@ -3,7 +3,6 @@ package am.project.x.widgets.supergridview.animator;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
 
-import am.project.x.widgets.animators.BaseAnimator;
 import am.project.x.widgets.supergridview.DragView;
 
 

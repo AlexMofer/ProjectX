@@ -15,8 +15,7 @@ import java.util.Locale;
 
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
-import am.project.x.utils.AnimatorViewCompat;
-import am.view.ViewsPagerAdapter;
+import am.util.viewpager.adapter.ViewsPagerAdapter;
 import am.widget.replacelayout.ReplaceLayout;
 
 public class ReplaceLayoutActivity extends BaseActivity implements
@@ -128,10 +127,10 @@ public class ReplaceLayoutActivity extends BaseActivity implements
         View correctV = getReplaceView(replaceLayout, correct);
         View nextV = getReplaceView(replaceLayout, next);
         if (correctV != null) {
-            AnimatorViewCompat.setAlpha(correctV, offset);
+            correctV.setAlpha(offset);
         }
         if (nextV != null) {
-            AnimatorViewCompat.setAlpha(nextV, 1F - offset);
+            nextV.setAlpha(1F - offset);
         }
     }
 
@@ -139,7 +138,7 @@ public class ReplaceLayoutActivity extends BaseActivity implements
     public void onSelected(ViewGroup replace, int position) {
         View child = getReplaceView(replaceLayout, position);
         if (child != null) {
-            AnimatorViewCompat.setAlpha(child, 1);
+            child.setAlpha(1);
         }
     }
 

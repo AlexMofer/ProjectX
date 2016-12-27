@@ -3,6 +3,8 @@ package am.project.x.activities.widgets.indicatortabstrip;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
+import am.util.viewpager.adapter.ViewsPagerAdapter;
 import am.widget.basetabstrip.BaseTabStrip;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
@@ -14,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import am.view.ViewsPagerAdapter;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
 import am.widget.indicatortabstrip.IndicatorTabStrip;

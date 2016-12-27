@@ -13,7 +13,7 @@ import java.util.Locale;
 
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
-import am.view.RecyclePagerAdapter;
+import am.util.viewpager.adapter.RecyclePagerAdapter;
 
 public class RecyclePagerActivity extends BaseActivity implements View.OnClickListener {
 

@@ -1,15 +1,9 @@
-package am.project.x.widgets.animators;
+package am.project.x.widgets.supergridview.animator;
 
 import android.view.View;
 import android.view.animation.Interpolator;
 
-/**
- * 基础动画
- * 
- * @author Mofer
- * 
- */
-public abstract class BaseNextAnimator implements Runnable {
+public abstract class BaseAnimator implements Runnable {
 
 	protected static final long DEFAULT_FRAME_DELAY = 10;
 	private View mView;
@@ -18,9 +12,8 @@ public abstract class BaseNextAnimator implements Runnable {
 	protected long mTime = 0;
 	protected boolean mRunning = false;
 	protected AnimatorCallback animatorCallback;
-	private boolean toNext = false;
-
-	public BaseNextAnimator(View view, long duration, Interpolator interpolator) {
+	
+	public BaseAnimator(View view,long duration, Interpolator interpolator) {
 		mDuration = duration;
 		mView = view;
 		mInterpolator = interpolator;
@@ -65,10 +58,7 @@ public abstract class BaseNextAnimator implements Runnable {
 			final float p = mInterpolator.getInterpolation((float) mTime
 					/ (float) mDuration);
 			animator(p);
-			if (toNext) {
-				toNext = false;
-				mTime += DEFAULT_FRAME_DELAY;
-			}
+			mTime += DEFAULT_FRAME_DELAY;
 			mView.postDelayed(this, DEFAULT_FRAME_DELAY);
 		} else {
 			end();
@@ -102,21 +92,20 @@ public abstract class BaseNextAnimator implements Runnable {
 
 	/**
 	 * 添加动画状态回调
-	 * 
 	 * @param callback
 	 */
 	public void addAnimatorCallback(AnimatorCallback callback) {
 		animatorCallback = callback;
 	}
-
+	
 	/**
 	 * 移除动画状态回调
-	 *
+	 * @param callback
 	 */
 	public void removeAnimatorCallback() {
 		animatorCallback = null;
 	}
-
+	
 	/**
 	 * 修改补帧器
 	 * 
@@ -124,10 +113,6 @@ public abstract class BaseNextAnimator implements Runnable {
 	 */
 	public void setInterpolator(Interpolator interpolator) {
 		mInterpolator = interpolator;
-	}
-
-	public void next() {
-		toNext = true;
 	}
 
 }

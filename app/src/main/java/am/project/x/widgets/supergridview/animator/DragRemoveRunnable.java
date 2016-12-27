@@ -4,7 +4,7 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 
 import am.project.x.widgets.supergridview.DragView;
-import am.project.x.utils.AnimatorViewCompat;
+import am.project.x.widgets.supergridview.support.AnimatorViewCompat;
 
 
 public class DragRemoveRunnable extends DragBaseRunnable {

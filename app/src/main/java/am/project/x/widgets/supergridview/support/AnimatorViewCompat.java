@@ -1,4 +1,4 @@
-package am.project.x.utils;
+package am.project.x.widgets.supergridview.support;
 
 import android.annotation.TargetApi;
 import android.graphics.Camera;
@@ -15,6 +15,7 @@ import java.util.WeakHashMap;
  * AnimatorViewCompat
  * Created by Alex on 2016/6/3.
  */
+@SuppressWarnings("all")
 public class AnimatorViewCompat {
 
     interface ViewCompatImpl {
@@ -658,132 +659,106 @@ public class AnimatorViewCompat {
         }
     }
 
-    @SuppressWarnings("unused")
     public static float getAlpha(View view) {
         return IMPL.getAlpha(view);
     }
 
-    @SuppressWarnings("unused")
     public static void setAlpha(View view, float alpha) {
         IMPL.setAlpha(view, alpha);
     }
 
-    @SuppressWarnings("unused")
     public static float getPivotX(View view) {
         return IMPL.getPivotX(view);
     }
 
-    @SuppressWarnings("unused")
     public static void setPivotX(View view, float pivotX) {
         IMPL.setPivotX(view, pivotX);
     }
 
-    @SuppressWarnings("unused")
     public static float getPivotY(View view) {
         return IMPL.getPivotY(view);
     }
 
-    @SuppressWarnings("unused")
     public static void setPivotY(View view, float pivotY) {
         IMPL.setPivotY(view, pivotY);
     }
 
-    @SuppressWarnings("unused")
     public static float getRotation(View view) {
         return IMPL.getRotation(view);
     }
 
-    @SuppressWarnings("unused")
     public static void setRotation(View view, float rotation) {
         IMPL.setRotation(view, rotation);
     }
 
-    @SuppressWarnings("unused")
     public static float getRotationX(View view) {
         return IMPL.getRotationX(view);
     }
 
-    @SuppressWarnings("unused")
     public static void setRotationX(View view, float rotationX) {
         IMPL.setRotationX(view, rotationX);
     }
 
-    @SuppressWarnings("unused")
     public static float getRotationY(View view) {
         return IMPL.getRotationY(view);
     }
 
-    @SuppressWarnings("unused")
     public static void setRotationY(View view, float rotationY) {
         IMPL.setRotationY(view, rotationY);
     }
 
-    @SuppressWarnings("unused")
     public static float getScaleX(View view) {
         return IMPL.getScaleX(view);
     }
 
-    @SuppressWarnings("unused")
     public static void setScaleX(View view, float scaleX) {
         IMPL.setScaleX(view, scaleX);
     }
 
-    @SuppressWarnings("unused")
     public static float getScaleY(View view) {
         return IMPL.getScaleY(view);
     }
 
-    @SuppressWarnings("unused")
     public static void setScaleY(View view, float scaleY) {
         IMPL.setScaleY(view, scaleY);
     }
 
-    @SuppressWarnings("unused")
     public static void setScrollX(View view, int scrollX) {
         IMPL.setScrollX(view, scrollX);
     }
 
-    @SuppressWarnings("unused")
     public static void setScrollY(View view, int scrollY) {
         IMPL.setScrollY(view, scrollY);
     }
 
-    @SuppressWarnings("unused")
     public static float getTranslationX(View view) {
         return IMPL.getTranslationX(view);
     }
 
-    @SuppressWarnings("unused")
     public static void setTranslationX(View view, float translationX) {
         IMPL.setTranslationX(view, translationX);
     }
 
-    @SuppressWarnings("unused")
     public static float getTranslationY(View view) {
         return IMPL.getTranslationY(view);
     }
 
-    @SuppressWarnings("unused")
     public static void setTranslationY(View view, float translationY) {
         IMPL.setTranslationY(view, translationY);
     }
 
-    @SuppressWarnings("unused")
     public static float getX(View view) {
         return IMPL.getX(view);
     }
 
-    @SuppressWarnings("unused")
     public static void setX(View view, float x) {
         IMPL.setX(view, x);
     }
 
-    @SuppressWarnings("unused")
     public static float getY(View view) {
         return IMPL.getY(view);
     }
 
-    @SuppressWarnings("unused")
     public static void setY(View view, float y) {
         IMPL.setY(view, y);
     }

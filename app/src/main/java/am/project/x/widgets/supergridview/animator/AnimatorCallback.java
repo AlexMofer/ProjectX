@@ -1,4 +1,4 @@
-package am.project.x.widgets.animators;
+package am.project.x.widgets.supergridview.animator;
 
 public interface AnimatorCallback {
 	void isStart();
