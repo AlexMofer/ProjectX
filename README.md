@@ -87,9 +87,6 @@
 - [***Security***](https://github.com/AlexMofer/ProjectX/tree/master/security)
 
     加密解密，主要为3DES、AES、RSA加密算法的整理
-- [***SupportPlus***](https://github.com/AlexMofer/ProjectX/tree/master/supportplus)
-
-    v4支持包拓展
 - [***Support***](https://github.com/AlexMofer/ProjectX/tree/master/support)
 
     支持包
