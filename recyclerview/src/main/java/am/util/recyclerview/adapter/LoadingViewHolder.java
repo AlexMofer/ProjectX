@@ -1,4 +1,4 @@
-package com.util.recyclerview.adapter;
+package am.util.recyclerview.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
