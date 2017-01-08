@@ -17,7 +17,7 @@
     继承自BaseTabStrip，移动式下标渐变缩放Tab，Item不建议超过5个
 - [***ShapeImageView***](https://github.com/AlexMofer/ProjectX/tree/master/shapeimageview)
 
-    图形裁剪ImageView，API 21 及以上 使用 setOutlineProvider 方式实现，低版本使用 BitmapShader 方式实现，支持固定高宽比缩放，支持前景Drawable
+    图形裁剪ImageView，API 21 及以上 使用 View.setOutlineProvider(ViewOutlineProvider) 方式实现，API 18 及以上 使用 Canvas.clipPath(Path) 方式实现，API 18 以下   使用 Paint.setXfermode(Xfermode) 方式实现（使用的是PorterDuffXfermode），均支持动态图；支持固定高宽缩放比缩放，支持前景Drawable，支持ImageView的所有ScaleType
 - [***StateFrameLayout***](https://github.com/AlexMofer/ProjectX/tree/master/stateframelayout)
 
     状态帧布局，通常用于网络请求的四种状态，普通、载入、错误、空白。支持Drawable或者View来展示，也可以混搭
