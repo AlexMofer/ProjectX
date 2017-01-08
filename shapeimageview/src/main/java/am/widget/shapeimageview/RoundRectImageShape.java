@@ -4,6 +4,10 @@ import android.annotation.TargetApi;
 import android.graphics.Canvas;
 import android.graphics.Outline;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.RectF;
 
 
@@ -13,69 +17,43 @@ import android.graphics.RectF;
  */
 public class RoundRectImageShape extends ImageShape {
 
-    private float mRadius = 0;
-    private final RectF mRectF = new RectF();
+    private static final RectF tRectF = new RectF();
 
-    public RoundRectImageShape(float radius) {
-        mRadius = radius;
+    @Override
+    public void drawBorder(ShapeImageView view, Canvas canvas, Paint paint) {
+        tRectF.set(0, 0, view.getWidth(), view.getHeight());
+        canvas.drawRoundRect(tRectF, view.getRoundRectRadius(),
+                view.getRoundRectRadius(), paint);
     }
 
     @Override
-    public void makeShapeBase(ShapeImageView view, Canvas canvas, Paint paint) {
-        if (view.getDrawable() != null) {
-            float half = view.getBorderWidth() * 0.5f;
-            mRectF.set(half, half, view.getWidth() - half, view.getHeight() - half);
-            canvas.drawRoundRect(mRectF, mRadius, mRadius, paint);
-        }
+    public void makeShapeByPorterDuff(ShapeImageView view, Canvas canvas, Paint paint) {
+        tRectF.set(0, 0, view.getWidth(), view.getHeight());
+        canvas.drawRoundRect(tRectF, view.getRoundRectRadius(), view.getRoundRectRadius(), paint);
     }
 
     @Override
-    public void drawBorderBase(ShapeImageView view, Canvas canvas, float width,
-                               Paint paint) {
-        if (width > 0) {
-            paint.setStrokeWidth(width);
-            final float halfWidth = width * 0.5f;
-            mRectF.set(halfWidth - 0.5f, halfWidth - 0.5f, view.getWidth()
-                    - halfWidth + 0.5f, view.getHeight() - halfWidth + 0.5f);
-            canvas.drawRoundRect(mRectF, mRadius, mRadius, paint);
-        }
+    public void makeShapeByClipPath(ShapeImageView view, Path path) {
+        tRectF.set(0, 0, view.getWidth(), view.getHeight());
+        path.addRoundRect(tRectF, view.getRoundRectRadius(), view.getRoundRectRadius(),
+                Path.Direction.CW);
     }
 
     @Override
     @TargetApi(21)
-    public void makeShapeLollipop(ShapeImageView view, Outline outline) {
+    public void makeShapeByOutline(ShapeImageView view, Outline outline) {
         outline.setRoundRect(0, 0, view.getMeasuredWidth(),
-                view.getMeasuredHeight(), mRadius);
+                view.getMeasuredHeight(), view.getRoundRectRadius());
     }
 
     @Override
-    public void drawBorderLollipop(ShapeImageView view, Canvas canvas, float width,
-                                   Paint paint) {
-        if (width > 0) {
-            paint.setStrokeWidth(width * 2f);
-            mRectF.set(0, 0, view.getWidth(), view.getHeight());
-            canvas.drawRoundRect(mRectF, mRadius, mRadius, paint);
-        }
+    protected boolean isOutlineEnable() {
+        // TODO
+        return false;
     }
 
-    /**
-     * 获取圆角
-     * @return 圆角
-     */
-    @SuppressWarnings("unused")
-    public float getRadius() {
-        return mRadius;
-    }
-
-    /**
-     * 设置圆角
-     * @param radius 圆角
-     */
-    @SuppressWarnings("unused")
-    public void setRadius(float radius) {
-        if (mRadius != radius) {
-            mRadius = radius;
-            notifyViewSetChanged();
-        }
+    @Override
+    protected boolean isClipPathEnable() {
+        return false;
     }
 }

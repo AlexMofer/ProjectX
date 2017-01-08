@@ -44,8 +44,12 @@ sivCircle.setBorderWidth(border);
 sivCircle.setImageShape(new RoundRectImageShape(radius));
 ```
 ## 注意
-- 基本可以通过布局实现基础代码
+- 基本完全可以通过布局实现基础代码
 - 布局sivRoundRectRadius属性只在sivShape="RoundRect"时有效
+- 在使用BitmapShader来实现的模式下不会对Foreground图片进行形状处理
+- 在使用BitmapShader来实现的模式下，如果可以抓取Bitmap而不是非要创建Bitmap，则不会对Background图片进行形状处理
+- 其他模式下会对前景图跟背景图都进行形状处理
+-
 
 ## 历史
 - [**1.0.0**](https://bintray.com/alexmofer/maven/ShapeImageView/1.0.0)
