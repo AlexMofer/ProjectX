@@ -13,8 +13,6 @@ import android.graphics.Xfermode;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 
-import java.util.LinkedList;
-
 /**
  * 辅助器
  * API 21 及以上 使用 {@link android.view.View#setOutlineProvider(ViewOutlineProvider)} 方式实现
@@ -26,11 +24,10 @@ import java.util.LinkedList;
 class ShapeHelper {
 
     private static Path mPath;
-    private static Bitmap mBitmap;
+    private Bitmap mBitmap;
     private static Canvas mBitmapCanvas;
     private static PorterDuffXfermode mXfermode;
     private static Paint mBitmapPaint;
-    private static final LinkedList<ShapeImageView> VIEWS = new LinkedList<>();// View的操作只会在主线程，因此线程安全
 
     void draw(ShapeImageView view, Canvas canvas) {
         ImageShape shape = view.getImageShape();
@@ -61,15 +58,10 @@ class ShapeHelper {
         }
         int saveCount = canvas.saveLayer(0f, 0f, width, height, null, Canvas.ALL_SAVE_FLAG);
         view.doSuperDraw(canvas);
-        mBitmap.eraseColor(Color.TRANSPARENT);
-        Bitmap bitmap = mBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        mBitmapCanvas.setBitmap(bitmap);
-        shape.makeShapeByPorterDuff(view, mBitmapCanvas, mBitmapPaint);
         mBitmapPaint.setXfermode(mXfermode);
-        canvas.drawBitmap(bitmap, 0, 0, mBitmapPaint);
+        canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
         mBitmapPaint.setXfermode(null);
         canvas.restoreToCount(saveCount);
-        bitmap.recycle();
     }
 
     void updateSize(ShapeImageView view, int w, int h) {
@@ -80,7 +72,7 @@ class ShapeHelper {
             return;
         if (shape.isClipPathEnable())
             return;
-        update(shape, w, h);
+        update(view, shape, w, h);
     }
 
     void updateImageShape(ShapeImageView view, ImageShape shape) {
@@ -96,7 +88,7 @@ class ShapeHelper {
             setOutlineProvider(view, shape);
             return;
         }
-        update(shape, view.getMeasuredWidth(), view.getMeasuredHeight());
+        update(view, shape, view.getMeasuredWidth(), view.getMeasuredHeight());
     }
 
     @TargetApi(21)
@@ -106,13 +98,13 @@ class ShapeHelper {
         view.setClipToOutline(true);
     }
 
-    private void update(ImageShape shape, int width, int height) {
+    private void update(ShapeImageView view, ImageShape shape, int width, int height) {
         if (shape == null)
             return;
         if (width == 0 || height == 0)
             return;
         // 修改或创建Bitmap
-        mBitmap = Utils.createBitmap(mBitmap, width, height);
+        mBitmap = createBitmap(mBitmap, width, height);
         if (mBitmap == null)
             return;
         if (mBitmapCanvas == null)
@@ -124,6 +116,8 @@ class ShapeHelper {
         if (mXfermode == null) {
             mXfermode = new PorterDuffXfermode(PorterDuff.Mode.DST_IN);
         }
+        mBitmapCanvas.setBitmap(mBitmap);
+        shape.makeShapeByPorterDuff(view, mBitmapCanvas, mBitmapPaint);
     }
 
     void invalidateImageShape(ShapeImageView view) {
@@ -141,22 +135,70 @@ class ShapeHelper {
         }
         if (mBitmap == null)
             return;
-        view.invalidate();
+        mBitmap.eraseColor(Color.TRANSPARENT);
+        mBitmapCanvas.setBitmap(mBitmap);
+        shape.makeShapeByPorterDuff(view, mBitmapCanvas, mBitmapPaint);
     }
 
-    void onAttachedToView(ShapeImageView view) {
-        VIEWS.add(view);
+    void onDetachedFromView() {
+        if (mBitmap != null) {
+            mBitmap.recycle();
+            mBitmap = null;
+            System.gc();
+        }
     }
 
-    void onDetachedFromView(ShapeImageView view) {
-        VIEWS.remove(view);
-        if (VIEWS.isEmpty()) {
-            if (mBitmap != null) {
-                mBitmap.recycle();
-                mBitmap = null;
-                System.gc();
+    private static Bitmap createBitmap(Bitmap bitmap, int width, int height) {
+        if (android.os.Build.VERSION.SDK_INT >= 19) {
+            return createBitmapKitkat(bitmap, width, height);
+        }
+        if (bitmap == null) {
+            try {
+                bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            } catch (OutOfMemoryError e) {
+                return null;
+            }
+        } else {
+            if (bitmap.getWidth() != width || bitmap.getHeight() != height) {
+                bitmap.recycle();
+                try {
+                    bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                } catch (OutOfMemoryError e) {
+                    return null;
+                } finally {
+                    System.gc();
+                }
+            } else {
+                bitmap.eraseColor(Color.TRANSPARENT);
             }
         }
+        return bitmap;
+    }
+
+    @TargetApi(19)
+    private static Bitmap createBitmapKitkat(Bitmap bitmap, int width, int height) {
+        if (bitmap == null) {
+            try {
+                bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            } catch (OutOfMemoryError e) {
+                return null;
+            }
+        } else {
+            if (bitmap.getWidth() != width || bitmap.getHeight() != height) {
+                bitmap.eraseColor(Color.TRANSPARENT);
+                try {
+                    bitmap.reconfigure(width, height, Bitmap.Config.ARGB_8888);
+                } catch (OutOfMemoryError e) {
+                    bitmap.recycle();
+                    return null;
+                } finally {
+                    System.gc();
+                }
+            } else {
+                bitmap.eraseColor(Color.TRANSPARENT);
+            }
+        }
+        return bitmap;
     }
 
     @TargetApi(21)

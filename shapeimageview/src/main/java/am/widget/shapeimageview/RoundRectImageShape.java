@@ -15,6 +15,7 @@ import android.graphics.RectF;
  * 圆角矩形
  *
  */
+@SuppressWarnings("all")
 public class RoundRectImageShape extends ImageShape {
 
     private static final RectF tRectF = new RectF();
@@ -44,16 +45,5 @@ public class RoundRectImageShape extends ImageShape {
     public void makeShapeByOutline(ShapeImageView view, Outline outline) {
         outline.setRoundRect(0, 0, view.getMeasuredWidth(),
                 view.getMeasuredHeight(), view.getRoundRectRadius());
-    }
-
-    @Override
-    protected boolean isOutlineEnable() {
-        // TODO
-        return false;
-    }
-
-    @Override
-    protected boolean isClipPathEnable() {
-        return false;
     }
 }

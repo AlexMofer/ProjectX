@@ -11,6 +11,7 @@ import android.graphics.Rect;
 /**
  * 圆形
  */
+@SuppressWarnings("all")
 public class CircleImageShape extends ImageShape {
 
     @Override
@@ -50,16 +51,5 @@ public class CircleImageShape extends ImageShape {
         final int right = left + radius;
         final int bottom = top + radius;
         outline.setOval(left, top, right, bottom);
-    }
-
-    @Override
-    protected boolean isOutlineEnable() {
-        // TODO
-        return false;
-    }
-
-    @Override
-    protected boolean isClipPathEnable() {
-        return false;
     }
 }

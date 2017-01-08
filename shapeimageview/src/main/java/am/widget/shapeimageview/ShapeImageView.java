@@ -25,7 +25,7 @@ public class ShapeImageView extends ImageView {
     private static final int SHAPE_ROUND_RECT = 2;// 圆角矩形裁剪
     private static final ImageShape CIRCLE = new CircleImageShape();// 圆形
     private static final ImageShape ROUND_RECT = new RoundRectImageShape();// 圆角矩形
-    private static final ShapeHelper HELPER = new ShapeHelper();// 辅助器
+    private final ShapeHelper mShapeHelper = new ShapeHelper();// 辅助器
     private final Paint mBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private ImageShape mShape;// 形状
     private float mRoundRectRadius;// 圆角矩形半径
@@ -118,7 +118,7 @@ public class ShapeImageView extends ImageView {
                 setMeasuredDimension(measureHeight * mWidthScale / mHeightScale, measureHeight);
                 break;
             case SCALE_TARGET_EXPAND:
-                if (measureWidth < measureHeight * mWidthScale / mHeightScale) {
+                if (measureWidth * mHeightScale < measureHeight * mWidthScale) {
                     // 宽不足
                     setMeasuredDimension(measureHeight * mWidthScale / mHeightScale, measureHeight);
                 } else {
@@ -128,7 +128,7 @@ public class ShapeImageView extends ImageView {
                 break;
             default:
             case SCALE_TARGET_INSIDE:
-                if (measureWidth > measureHeight / mHeightScale * mWidthScale) {
+                if (measureWidth * mHeightScale > measureHeight * mWidthScale) {
                     setMeasuredDimension(measureHeight * mWidthScale / mHeightScale, measureHeight);
                 } else {
                     setMeasuredDimension(measureWidth, measureWidth * mHeightScale / mWidthScale);
@@ -140,12 +140,12 @@ public class ShapeImageView extends ImageView {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        HELPER.updateSize(this, w, h);
+        mShapeHelper.updateSize(this, w, h);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        HELPER.draw(this, canvas);
+        mShapeHelper.draw(this, canvas);
     }
 
     void doSuperDraw(Canvas canvas) {
@@ -195,7 +195,6 @@ public class ShapeImageView extends ImageView {
 
     @Override
     protected void onAttachedToWindow() {
-        HELPER.onAttachedToView(this);
         super.onAttachedToWindow();
         if (hasForeground()) {
             mForeground.setCallback(this);
@@ -208,7 +207,7 @@ public class ShapeImageView extends ImageView {
             mForeground.setCallback(null);
         }
         super.onDetachedFromWindow();
-        HELPER.onDetachedFromView(this);
+        mShapeHelper.onDetachedFromView();
     }
 
     @Override
@@ -234,7 +233,7 @@ public class ShapeImageView extends ImageView {
     public void setImageShape(ImageShape shape) {
         if (mShape != shape) {
             mShape = shape;
-            HELPER.updateImageShape(this, shape);
+            mShapeHelper.updateImageShape(this, shape);
             Compat.invalidateOutline(this);
             invalidate();
         }
@@ -245,8 +244,7 @@ public class ShapeImageView extends ImageView {
      */
     @SuppressWarnings("unused")
     public void invalidateImageShape() {
-        HELPER.invalidateImageShape(this);
-
+        mShapeHelper.invalidateImageShape(this);
     }
 
     /**
@@ -267,7 +265,7 @@ public class ShapeImageView extends ImageView {
     public void setRoundRectRadius(float radius) {
         if (mRoundRectRadius != radius) {
             mRoundRectRadius = radius;
-            Compat.invalidateOutline(this);
+            invalidateImageShape();
             invalidate();
         }
     }
@@ -351,7 +349,7 @@ public class ShapeImageView extends ImageView {
     }
 
     /**
-     * 绘制前景图
+     * 获取前景图
      *
      * @return 前景图
      */

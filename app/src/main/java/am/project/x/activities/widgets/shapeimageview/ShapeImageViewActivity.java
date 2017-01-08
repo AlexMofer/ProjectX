@@ -11,7 +11,6 @@ import android.widget.SeekBar;
 
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
-import am.widget.shapeimageview.RoundRectImageShape;
 import am.widget.shapeimageview.ShapeImageView;
 
 public class ShapeImageViewActivity extends BaseActivity

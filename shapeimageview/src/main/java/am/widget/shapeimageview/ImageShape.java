@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * 形状
  * Created by Alex on 2015/12/9.
  */
+@SuppressWarnings("all")
 public abstract class ImageShape {
 
     /**
