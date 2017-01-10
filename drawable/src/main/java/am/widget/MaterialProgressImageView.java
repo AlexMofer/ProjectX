@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RadialGradient;
+import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -15,29 +17,26 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+
 import am.drawable.MaterialProgressDrawable;
 
 /**
  * 载入动画ImageView
- *
+ * <p>
  * android.support.v4.widget.CircleImageView
- *
+ * <p>
  * Created by Alex on 2016/12/27.
  */
 
 public class MaterialProgressImageView extends ImageView implements Animatable {
 
     private static final int DEFAULT_COLOR = 0xFFFAFAFA;
-    private static final int DEFAULT_RADIUS = 10;
-    private static final int KEY_SHADOW_COLOR = 0x1E000000;
-    private static final int FILL_SHADOW_COLOR = 0x3D000000;
-    private static final float X_OFFSET = 0f;
-    private static final float Y_OFFSET = 1.75f;
-    private static final float SHADOW_RADIUS = 3.5f;
-    private static final int SHADOW_ELEVATION = 4;
-    private int mShadowRadius;
+    private static final int SHADOW_ELEVATION = 2;
     private boolean showShadowsCircle = false;
+    private float mElevation;
     private MaterialProgressDrawable drawable;
+    private ShapeDrawable background;
 
     public MaterialProgressImageView(Context context) {
         super(context);
@@ -58,59 +57,83 @@ public class MaterialProgressImageView extends ImageView implements Animatable {
     @TargetApi(21)
     public MaterialProgressImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        initView(context, attrs, defStyleAttr, defStyleRes);
     }
 
     private void initView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.MaterialProgressImageView);
+        final float density = getResources().getDisplayMetrics().density;
+        ArrayList<Integer> colors = new ArrayList<>();
+        TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.MaterialProgressImageView,
+                defStyleAttr, defStyleRes);
         boolean autoStart = custom.getBoolean(R.styleable.MaterialProgressImageView_mpiAutoStart, true);
+        int color = custom.getColor(R.styleable.MaterialProgressImageView_mpiShadowsCircleColor, DEFAULT_COLOR);
+        float elevation = custom.getDimension(R.styleable.MaterialProgressImageView_mpiElevation, density * SHADOW_ELEVATION);
+        if (custom.hasValue(R.styleable.MaterialProgressImageView_mpiSchemeColor1)) {
+            colors.add(custom.getColor(R.styleable.MaterialProgressImageView_mpiSchemeColor1, Color.BLACK));
+        }
+        if (custom.hasValue(R.styleable.MaterialProgressImageView_mpiSchemeColor2)) {
+            colors.add(custom.getColor(R.styleable.MaterialProgressImageView_mpiSchemeColor2, Color.BLACK));
+        }
+        if (custom.hasValue(R.styleable.MaterialProgressImageView_mpiSchemeColor3)) {
+            colors.add(custom.getColor(R.styleable.MaterialProgressImageView_mpiSchemeColor3, Color.BLACK));
+        }
+        if (custom.hasValue(R.styleable.MaterialProgressImageView_mpiSchemeColor4)) {
+            colors.add(custom.getColor(R.styleable.MaterialProgressImageView_mpiSchemeColor4, Color.BLACK));
+        }
+        if (custom.hasValue(R.styleable.MaterialProgressImageView_mpiSchemeColor5)) {
+            colors.add(custom.getColor(R.styleable.MaterialProgressImageView_mpiSchemeColor5, Color.BLACK));
+        }
         custom.recycle();
-
+        setElevationCompat(elevation);
         Drawable background = getBackground();
         if (background == null)
-            setShadowsCircleColorAndRadius(DEFAULT_COLOR,
-                    getResources().getDisplayMetrics().density * DEFAULT_RADIUS,
-                    SHADOW_ELEVATION);
-        drawable = new MaterialProgressDrawable(getResources().getDisplayMetrics().density);
+            setShadowsCircleBackground(color);
+        drawable = new MaterialProgressDrawable(density);
         drawable.setBackgroundColor(0x00000000);
         drawable.setAlpha(255);
         drawable.setCallback(this);
+        final int size=colors.size();
+        if (size > 0) {
+            int[] colorArray=new int[size];
+            for(int i=0;i<size;i++){
+                colorArray[i]=colors.get(i);
+            }
+            drawable.setColorSchemeColors(colorArray);
+        }
         setImageDrawable(drawable);
-        if (autoStart && !isRunning())
+        if (autoStart)
             start();
     }
 
     /**
-     * 设置圆形阴影背景颜色及阴影半径
+     * 设置圆形阴影背景颜色
      *
-     * @param color  背景颜色
-     * @param radius 阴影半径
+     * @param color 背景颜色
      */
     @SuppressWarnings("all")
-    public void setShadowsCircleColorAndRadius(int color, final float radius, final float elevation) {
-        final float density = getContext().getResources().getDisplayMetrics().density;
-        final int diameter = (int) (radius * density * 2);
-        final int shadowYOffset = (int) (density * Y_OFFSET);
-        final int shadowXOffset = (int) (density * X_OFFSET);
-
-        mShadowRadius = (int) (density * SHADOW_RADIUS);
-
-        ShapeDrawable circle;
-        if (elevationSupported()) {
-            circle = new ShapeDrawable(new OvalShape());
-            Compat.setElevation(this, elevation * density);
-        } else {
-            OvalShape oval = new OvalShadow(mShadowRadius, diameter);
-            circle = new ShapeDrawable(oval);
-            Compat.setLayerType(this, Compat.LAYER_TYPE_SOFTWARE, circle.getPaint());
-            circle.getPaint().setShadowLayer(mShadowRadius, shadowXOffset, shadowYOffset,
-                    KEY_SHADOW_COLOR);
-            final int padding = mShadowRadius;
-            // set padding so the inner image sits correctly within the shadow.
-            setPadding(padding, padding, padding, padding);
+    public void setShadowsCircleBackground(int color) {
+        if (background == null) {
+            if (elevationSupported()) {
+                background = new ShapeDrawable(new OvalShape());
+            } else {
+                background = new ShapeDrawable(new OvalShadow());
+            }
         }
-        circle.getPaint().setColor(color);
+        background.getPaint().setColor(color);
         showShadowsCircle = true;
-        super.setBackgroundDrawable(circle);
+        super.setBackgroundDrawable(background);
+    }
+
+    /**
+     * Sets the base elevation of this view, in pixels.
+     * 仅对使用默认圆形背景有效{@link #setShadowsCircleBackground(int)}
+     */
+    public void setElevationCompat(float elevation) {
+        if (elevationSupported()) {
+            setElevation(elevation);
+        } else {
+            mElevation = elevation;
+        }
     }
 
     private boolean elevationSupported() {
@@ -119,14 +142,23 @@ public class MaterialProgressImageView extends ImageView implements Animatable {
 
     /**
      * 设置背景颜色
+     *
      * @param backgroundColor 背景颜色
      */
+    @SuppressWarnings("unused")
     public void setDrawableBackgroundColor(int backgroundColor) {
         drawable.setBackgroundColor(backgroundColor);
     }
 
+    @Override
+    public void setAlpha(float alpha) {
+        super.setAlpha(alpha);
+        drawable.setAlpha((int) (255 * alpha));
+    }
+
     /**
-     *  设置变换颜色
+     * 设置变换颜色
+     *
      * @param schemeColors 变换颜色
      */
     public void setColorSchemeColors(int... schemeColors) {
@@ -164,35 +196,42 @@ public class MaterialProgressImageView extends ImageView implements Animatable {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (showShadowsCircle && !elevationSupported()) {
-            setMeasuredDimension(getMeasuredWidth() + mShadowRadius * 2, getMeasuredHeight()
-                    + mShadowRadius * 2);
+            final int moreSize = Math.round(mElevation * 2);
+            setMeasuredDimension(resolveSize(getMeasuredWidth() + moreSize, widthMeasureSpec),
+                    resolveSize(getMeasuredHeight() + moreSize, heightMeasureSpec));
+
         }
     }
 
     private class OvalShadow extends OvalShape {
-        private RadialGradient mRadialGradient;
-        private Paint mShadowPaint;
-        private int mCircleDiameter;
 
-        public OvalShadow(int shadowRadius, int circleDiameter) {
-            super();
-            mShadowPaint = new Paint();
-            mShadowRadius = shadowRadius;
-            mCircleDiameter = circleDiameter;
-            mRadialGradient = new RadialGradient(mCircleDiameter / 2, mCircleDiameter / 2,
-                    mShadowRadius, new int[]{
-                    FILL_SHADOW_COLOR, Color.TRANSPARENT
-            }, null, Shader.TileMode.CLAMP);
+        private static final int FILL_SHADOW_COLOR = 0x3D000000;
+
+        private RadialGradient mRadialGradient;
+        private final Paint mShadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final RectF mOvalRectF = new RectF();
+        private final Matrix mMatrix = new Matrix();
+
+        OvalShadow() {
+            mRadialGradient = new RadialGradient(10, 10, 10,
+                    new int[]{FILL_SHADOW_COLOR, FILL_SHADOW_COLOR, Color.TRANSPARENT},
+                    new float[]{0, 0.6f, 1f}, Shader.TileMode.CLAMP);
             mShadowPaint.setShader(mRadialGradient);
         }
 
         @Override
         public void draw(Canvas canvas, Paint paint) {
-            final int viewWidth = MaterialProgressImageView.this.getWidth();
-            final int viewHeight = MaterialProgressImageView.this.getHeight();
-            canvas.drawCircle(viewWidth / 2, viewHeight / 2, (mCircleDiameter / 2 + mShadowRadius),
-                    mShadowPaint);
-            canvas.drawCircle(viewWidth / 2, viewHeight / 2, (mCircleDiameter / 2), paint);
+            final float elevation = mElevation;
+            final RectF rect = rect();
+            mMatrix.reset();
+            mMatrix.setScale(rect.width() * 0.05f, rect.height() * 0.05f);
+            mOvalRectF.left = rect.left + elevation;
+            mOvalRectF.top = rect.top + elevation;
+            mOvalRectF.right = rect.right - elevation;
+            mOvalRectF.bottom = rect.bottom - elevation;
+            mRadialGradient.setLocalMatrix(mMatrix);
+            canvas.drawOval(rect, mShadowPaint);
+            canvas.drawOval(mOvalRectF, paint);
         }
     }
 
