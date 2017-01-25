@@ -16,10 +16,9 @@ import javax.crypto.spec.PBEKeySpec;
  * 密钥工具类
  * Created by Alex on 2016/4/29.
  */
-public class KeyUtil {
+class KeyUtil {
 
     private final static String RAW_ALGORITHM = "SHA1PRNG";
-    private final static String PROVIDER = "Crypto";
     private final static String SKF_ALGORITHM = "PBKDF2WithHmacSHA1";
     private final static int ITERATION = 2048;
 
@@ -29,7 +28,7 @@ public class KeyUtil {
      * @return 密钥字节
      * @throws NoSuchAlgorithmException 异常
      */
-    public static byte[] generateKey(String algorithm, int size) throws NoSuchAlgorithmException {
+    static byte[] generateKey(String algorithm, int size) throws NoSuchAlgorithmException {
         KeyGenerator kg = KeyGenerator.getInstance(algorithm);
         kg.init(size);
         SecretKey secretKey = kg.generateKey();
@@ -41,21 +40,20 @@ public class KeyUtil {
      *
      * @param keyAlgorithm KeyGenerator算法
      * @param rawAlgorithm SecureRandom算法
-     * @param provider     SecureRandom生成器
      * @param seed         随机数种子
      * @param size         密钥长度
      * @return 密钥字节
      * @throws NoSuchAlgorithmException 异常
      * @throws NoSuchProviderException  异常
      */
-    public static byte[] getRandomKey(String keyAlgorithm, String rawAlgorithm, String provider,
+    private static byte[] getRandomKey(String keyAlgorithm, String rawAlgorithm,
                                       byte[] seed, int size) throws
             NoSuchAlgorithmException,
             NoSuchProviderException {
         //修复OpenSSL的PRNG问题(在4.3及以下版本需要)
         PRNGFixes.apply();
         KeyGenerator keyGen = KeyGenerator.getInstance(keyAlgorithm);
-        SecureRandom sr = SecureRandom.getInstance(rawAlgorithm, provider);
+        SecureRandom sr = SecureRandom.getInstance(rawAlgorithm);
         sr.setSeed(seed);
         keyGen.init(size, sr);
         SecretKey sKey = keyGen.generateKey();
@@ -74,7 +72,7 @@ public class KeyUtil {
      * @throws NoSuchAlgorithmException 异常
      * @throws InvalidKeySpecException  异常
      */
-    public static byte[] getPBEKey(String algorithm, char[] password, byte[] salt,
+    private static byte[] getPBEKey(String algorithm, char[] password, byte[] salt,
                                    int iterationCount, int size) throws
             NoSuchAlgorithmException,
             InvalidKeySpecException {
@@ -94,10 +92,10 @@ public class KeyUtil {
      * @throws NoSuchAlgorithmException 异常
      * @throws NoSuchProviderException  异常
      */
-    public static byte[] getRandomKey(String algorithm, byte[] seed, int size) throws
+    static byte[] getRandomKey(String algorithm, byte[] seed, int size) throws
             NoSuchAlgorithmException,
             NoSuchProviderException {
-        return getRandomKey(algorithm, RAW_ALGORITHM, PROVIDER, seed, size);
+        return getRandomKey(algorithm, RAW_ALGORITHM, seed, size);
     }
 
     /**
@@ -110,7 +108,7 @@ public class KeyUtil {
      * @throws NoSuchAlgorithmException 异常
      * @throws InvalidKeySpecException  异常
      */
-    public static byte[] getPBEKey(char[] password, byte[] salt, int size) throws
+    static byte[] getPBEKey(char[] password, byte[] salt, int size) throws
             NoSuchAlgorithmException,
             InvalidKeySpecException {
         return getPBEKey(SKF_ALGORITHM, password, salt, ITERATION, size);
