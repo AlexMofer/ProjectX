@@ -9,9 +9,9 @@ import android.view.View;
  * 版本兼容控制器
  *
  */
-class ShapeCompat {
+class Compat {
 
-    interface CompatPlusImpl {
+    private interface CompatPlusImpl {
         int getPaddingStart(View view);
 
         int getPaddingEnd(View view);
@@ -23,7 +23,7 @@ class ShapeCompat {
         void invalidateOutline(View view);
     }
 
-    static class BaseCompatPlusImpl implements CompatPlusImpl {
+    private static class BaseCompatPlusImpl implements CompatPlusImpl {
 
         @Override
         public int getPaddingStart(View view) {
@@ -53,7 +53,7 @@ class ShapeCompat {
     }
 
     @TargetApi(17)
-    static class JbMr1CompatPlusImpl extends BaseCompatPlusImpl {
+    private static class JbMr1CompatPlusImpl extends BaseCompatPlusImpl {
         @Override
         public int getPaddingStart(View view) {
             return view.getPaddingStart();
@@ -66,7 +66,7 @@ class ShapeCompat {
     }
 
     @TargetApi(21)
-    static class LollipopCompatPlusImpl extends JbMr1CompatPlusImpl {
+    private static class LollipopCompatPlusImpl extends JbMr1CompatPlusImpl {
 
         @Override
         public Drawable getDrawable(Context context, int id) {
@@ -84,7 +84,7 @@ class ShapeCompat {
         }
     }
 
-    static final CompatPlusImpl IMPL;
+    private static final CompatPlusImpl IMPL;
 
     static {
         final int version = android.os.Build.VERSION.SDK_INT;
@@ -97,23 +97,23 @@ class ShapeCompat {
         }
     }
 
-    public static int getPaddingStart(View view) {
+    static int getPaddingStart(View view) {
         return IMPL.getPaddingStart(view);
     }
 
-    public static int getPaddingEnd(View view) {
+    static int getPaddingEnd(View view) {
         return IMPL.getPaddingEnd(view);
     }
 
-    public static Drawable getDrawable(Context context, int id) {
+    static Drawable getDrawable(Context context, int id) {
         return IMPL.getDrawable(context, id);
     }
 
-    public static void setHotspot(Drawable drawable, float x, float y) {
+    static void setHotspot(Drawable drawable, float x, float y) {
         IMPL.setHotspot(drawable, x, y);
     }
 
-    public static void invalidateOutline(View view) {
+    static void invalidateOutline(View view) {
         IMPL.invalidateOutline(view);
     }
 }

@@ -4,55 +4,67 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
 /**
  * 图形裁剪ImageView
- * API 21 及以上 使用 setOutlineProvider 方式实现
- * 以下使用 BitmapShader 方式实现
- * API 21 及以上 支持动态图
  */
 public class ShapeImageView extends ImageView {
 
-    public static final int SCALE_TARGET_AUTO = -1;// 自适应缩放
     public static final int SCALE_TARGET_HEIGHT = 0;// 对高进行缩放
     public static final int SCALE_TARGET_WIDTH = 1;// 对宽进行缩放
+    public static final int SCALE_TARGET_EXPAND = 2;// 扩大方式（宽不足拉伸宽，高不足拉伸高）
+    public static final int SCALE_TARGET_INSIDE = 3;// 缩小方式（缩小到一条边刚好与原尺寸一样，另一条小于原尺寸）
     private static final int SHAPE_CIRCLE = 1;// 圆形裁剪
     private static final int SHAPE_ROUND_RECT = 2;// 圆角矩形裁剪
-    private ShapeHelper mHelper;// 辅助器
+    private static final ImageShape CIRCLE = new CircleImageShape();// 圆形
+    private static final ImageShape ROUND_RECT = new RoundRectImageShape();// 圆角矩形
+    private final ShapeHelper mShapeHelper = new ShapeHelper();// 辅助器
+    private final Paint mBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private ImageShape mShape;// 形状
-    private boolean mCatchBitmapOnly;// Bitmap释放，一般在复用的过程中最好为true
-    private int mBorderColor;// 边线颜色
+    private float mRoundRectRadius;// 圆角矩形半径
     private float mBorderWidth;// 边线宽度
     private Drawable mForeground;// 前景
     private int mForegroundId;// 前景ID
     private int mWidthScale = 0;// 宽度缩放比
     private int mHeightScale = 0;// 高度缩放比
-    private int mScaleTarget = SCALE_TARGET_AUTO;// 缩放目标
+    private int mScaleTarget = SCALE_TARGET_INSIDE;// 缩放目标
 
     public ShapeImageView(Context context) {
-        this(context, null);
+        super(context);
+        initView(context, null);
     }
 
     public ShapeImageView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        initView(context, attrs);
     }
 
-    public ShapeImageView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+    @TargetApi(11)
+    public ShapeImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        initView(context, attrs);
+    }
+
+    @TargetApi(21)
+    public ShapeImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initView(context, attrs);
+    }
+
+    private void initView(Context context, AttributeSet attrs) {
+        mBorderPaint.setStyle(Paint.Style.STROKE);
+        mBorderPaint.setStrokeJoin(Paint.Join.ROUND);
         TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.ShapeImageView);
         int shapeType = custom.getInt(R.styleable.ShapeImageView_sivShape, 0);
         int roundRectRadius = custom.getDimensionPixelSize(
                 R.styleable.ShapeImageView_sivRoundRectRadius, 0);
-        boolean catchBitmapOnly = custom.getBoolean(R.styleable.ShapeImageView_sivCatchBitmapOnly,
-                false);
         int borderWidth = custom.getDimensionPixelSize(
                 R.styleable.ShapeImageView_sivBorderWidth, 0);
         int borderColor = custom.getColor(R.styleable.ShapeImageView_sivBorderColor, 0x00000000);
@@ -62,32 +74,27 @@ public class ShapeImageView extends ImageView {
         int widthScale = custom.getInteger(R.styleable.ShapeImageView_sivWidthScale, 0);
         int heightScale = custom.getInteger(R.styleable.ShapeImageView_sivHeightScale, 0);
         int scaleTarget = custom.getInt(
-                R.styleable.ShapeImageView_sivScaleTarget, SCALE_TARGET_AUTO);
+                R.styleable.ShapeImageView_sivScaleTarget, SCALE_TARGET_INSIDE);
         custom.recycle();
         ImageShape shape;
         switch (shapeType) {
             case SHAPE_CIRCLE:
-                shape = new CircleImageShape();
+                shape = CIRCLE;
                 break;
             case SHAPE_ROUND_RECT:
-                shape = new RoundRectImageShape(roundRectRadius);
+                shape = ROUND_RECT;
                 break;
             default:
                 shape = null;
                 break;
         }
         setImageShape(shape);
-        setCatchBitmapOnly(catchBitmapOnly);
+        setRoundRectRadius(roundRectRadius);
         setBorderColor(borderColor);
         setBorderWidth(borderWidth);
         setForeground(foreground);
         setFixedSize(widthScale, heightScale);
         setScaleTarget(scaleTarget);
-    }
-
-    private void checkHelper() {
-        if (mHelper == null)
-            mHelper = new ShapeHelper();
     }
 
     private boolean hasForeground() {
@@ -104,45 +111,57 @@ public class ShapeImageView extends ImageView {
         final int measureWidth = getMeasuredWidth();
         final int measureHeight = getMeasuredHeight();
         switch (mScaleTarget) {
-            default:
-            case SCALE_TARGET_AUTO:
-                if (measureWidth < measureWidth * mHeightScale / mWidthScale) {
-                    setMeasuredDimension(measureWidth, measureWidth * mHeightScale / mWidthScale);
-                } else {
-                    setMeasuredDimension(measureHeight * mWidthScale / mHeightScale, measureHeight);
-                }
-                break;
             case SCALE_TARGET_HEIGHT:
                 setMeasuredDimension(measureWidth, measureWidth * mHeightScale / mWidthScale);
                 break;
             case SCALE_TARGET_WIDTH:
                 setMeasuredDimension(measureHeight * mWidthScale / mHeightScale, measureHeight);
                 break;
+            case SCALE_TARGET_EXPAND:
+                if (measureWidth * mHeightScale < measureHeight * mWidthScale) {
+                    // 宽不足
+                    setMeasuredDimension(measureHeight * mWidthScale / mHeightScale, measureHeight);
+                } else {
+                    // 高不足
+                    setMeasuredDimension(measureWidth, measureWidth * mHeightScale / mWidthScale);
+                }
+                break;
+            default:
+            case SCALE_TARGET_INSIDE:
+                if (measureWidth * mHeightScale > measureHeight * mWidthScale) {
+                    setMeasuredDimension(measureHeight * mWidthScale / mHeightScale, measureHeight);
+                } else {
+                    setMeasuredDimension(measureWidth, measureWidth * mHeightScale / mWidthScale);
+                }
+                break;
         }
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        checkHelper();
-        mHelper.sizeChanged(getWidth(), getHeight(), mShape, this);
         super.onSizeChanged(w, h, oldw, oldh);
+        mShapeHelper.updateSize(this, w, h);
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        mShapeHelper.draw(this, canvas);
+    }
+
+    void doSuperDraw(Canvas canvas) {
+        super.draw(canvas);
+        if (hasForeground()) {
+            mForeground.setBounds(Compat.getPaddingStart(this), getPaddingTop(),
+                    getWidth() - Compat.getPaddingEnd(this), getHeight() - getPaddingBottom());
+            mForeground.draw(canvas);
+        }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        checkHelper();
-        if (mShape != null) {
-            if (mHelper.needOnDraw(this, canvas, mShape)) {
-                super.onDraw(canvas);
-            }
-            mHelper.drawBorder(this, canvas, mShape);
-        } else {
-            super.onDraw(canvas);
-        }
-        if (hasForeground()) {
-            mForeground.setBounds(ShapeCompat.getPaddingStart(this), getPaddingTop(),
-                    getWidth() - ShapeCompat.getPaddingEnd(this), getHeight() - getPaddingBottom());
-            mForeground.draw(canvas);
+        super.onDraw(canvas);
+        if (mBorderWidth > 0 && mShape != null) {
+            mShape.drawBorder(this, canvas, mBorderPaint);
         }
     }
 
@@ -150,7 +169,7 @@ public class ShapeImageView extends ImageView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (hasForeground() && event.getAction() == MotionEvent.ACTION_DOWN) {
-            ShapeCompat.setHotspot(mForeground, event.getX(), event.getY());
+            Compat.setHotspot(mForeground, event.getX(), event.getY());
         }
         return super.onTouchEvent(event);
     }
@@ -165,6 +184,7 @@ public class ShapeImageView extends ImageView {
     }
 
     @Override
+    @SuppressWarnings("all")
     protected boolean verifyDrawable(Drawable who) {
         boolean isPress = false;
         if (hasForeground() && who == mForeground) {
@@ -175,9 +195,6 @@ public class ShapeImageView extends ImageView {
 
     @Override
     protected void onAttachedToWindow() {
-        if (mShape != null) {
-            mShape.onAttached(this);
-        }
         super.onAttachedToWindow();
         if (hasForeground()) {
             mForeground.setCallback(this);
@@ -186,72 +203,17 @@ public class ShapeImageView extends ImageView {
 
     @Override
     protected void onDetachedFromWindow() {
-        if (mHelper != null)
-            mHelper.detachedFromWindow(mShape, this);
-        if (mShape != null) {
-            mShape.onDetached(this);
-        }
         if (hasForeground()) {
             mForeground.setCallback(null);
         }
         super.onDetachedFromWindow();
-
+        mShapeHelper.onDetachedFromView();
     }
 
     @Override
     public void setColorFilter(ColorFilter cf) {
-        checkHelper();
-        mHelper.setColorFilter(cf);
+        mBorderPaint.setColorFilter(cf);
         super.setColorFilter(cf);
-    }
-
-    @Override
-    public void setImageResource(int resId) {
-        super.setImageResource(resId);
-        checkHelper();
-        mHelper.updateBitmap(mShape, this);
-    }
-
-    @Override
-    public void setImageURI(Uri uri) {
-        super.setImageURI(uri);
-        checkHelper();
-        mHelper.updateBitmap(mShape, this);
-    }
-
-    @Override
-    public void setImageDrawable(Drawable drawable) {
-        super.setImageDrawable(drawable);
-        checkHelper();
-        mHelper.updateBitmap(mShape, this);
-    }
-
-    @Override
-    public void setImageBitmap(Bitmap bm) {
-        super.setImageBitmap(bm);
-        checkHelper();
-        mHelper.updateBitmap(mShape, this);
-    }
-
-    @Override
-    public void setScaleType(ScaleType scaleType) {
-        checkHelper();
-        mHelper.setScaleType(scaleType, mShape, this);
-        super.setScaleType(scaleType);
-    }
-
-    @Override
-    public void setPadding(int left, int top, int right, int bottom) {
-        checkHelper();
-        mHelper.setPadding(left, top, right, bottom, mShape, this);
-        super.setPadding(left, top, right, bottom);
-    }
-
-    @Override
-    public void setPaddingRelative(int start, int top, int end, int bottom) {
-        checkHelper();
-        mHelper.setPadding(start, top, end, bottom, mShape, this);
-        super.setPaddingRelative(start, top, end, bottom);
     }
 
     /**
@@ -259,7 +221,6 @@ public class ShapeImageView extends ImageView {
      *
      * @return 图像形状
      */
-    @SuppressWarnings("unused")
     public ImageShape getImageShape() {
         return mShape;
     }
@@ -271,42 +232,41 @@ public class ShapeImageView extends ImageView {
      */
     public void setImageShape(ImageShape shape) {
         if (mShape != shape) {
-            if (mShape != null) {
-                mShape.onDetached(this);
-            }
             mShape = shape;
-            checkHelper();
-            mHelper.initShape(this, mShape);
-            mHelper.updateBitmap(mShape, this);
-            mHelper.setScaleType(getScaleType(), mShape, this);
-            mHelper.setPadding(ShapeCompat.getPaddingStart(this), getPaddingTop(),
-                    ShapeCompat.getPaddingEnd(this), getPaddingBottom(), mShape, this);
-            if (mShape != null) {
-                mShape.onAttached(this);
-            }
+            mShapeHelper.updateImageShape(this, shape);
+            Compat.invalidateOutline(this);
             invalidate();
         }
     }
 
     /**
-     * 是否需要进行Bitmap释放，一般在复用的过程中最好返回true
-     *
-     * @return 是否需要进行Bitmap释放
+     * 刷新Shape
      */
-    public boolean isCatchBitmapOnly() {
-        return mCatchBitmapOnly;
+    @SuppressWarnings("unused")
+    public void invalidateImageShape() {
+        mShapeHelper.invalidateImageShape(this);
     }
 
     /**
-     * 设置是否需要进行Bitmap释放，一般在复用的过程中最好为true
+     * 获取圆角矩形圆角半径
      *
-     * @param catchOnly 是否需要进行Bitmap释放
+     * @return 圆角矩形圆角半径
      */
-    public void setCatchBitmapOnly(boolean catchOnly) {
-        if (mCatchBitmapOnly != catchOnly) {
-            mCatchBitmapOnly = catchOnly;
-            checkHelper();
-            mHelper.forceUpdateBitmap(mShape, this);
+    public float getRoundRectRadius() {
+        return mRoundRectRadius;
+    }
+
+    /**
+     * 设置圆角矩形圆角半径
+     * 仅圆角矩形Shape下有效
+     *
+     * @param radius 圆角矩形圆角半径
+     */
+    public void setRoundRectRadius(float radius) {
+        if (mRoundRectRadius != radius) {
+            mRoundRectRadius = radius;
+            invalidateImageShape();
+            invalidate();
         }
     }
 
@@ -317,7 +277,7 @@ public class ShapeImageView extends ImageView {
      */
     @SuppressWarnings("unused")
     public int getBorderColor() {
-        return mBorderColor;
+        return mBorderPaint.getColor();
     }
 
     /**
@@ -326,8 +286,8 @@ public class ShapeImageView extends ImageView {
      * @param color 边框颜色
      */
     public void setBorderColor(int color) {
-        if (mBorderColor != color) {
-            mBorderColor = color;
+        if (mBorderPaint.getColor() != color) {
+            mBorderPaint.setColor(color);
             invalidate();
         }
     }
@@ -350,6 +310,7 @@ public class ShapeImageView extends ImageView {
     public void setBorderWidth(int width) {
         if (mBorderWidth != width) {
             mBorderWidth = width;
+            mBorderPaint.setStrokeWidth(mBorderWidth * 2);
             invalidate();
         }
     }
@@ -363,7 +324,7 @@ public class ShapeImageView extends ImageView {
     public void setForeground(int id) {
         if (mForegroundId != id) {
             mForegroundId = id;
-            setForeground(ShapeCompat.getDrawable(getContext(), mForegroundId));
+            setForeground(Compat.getDrawable(getContext(), mForegroundId));
         }
     }
 
@@ -388,6 +349,18 @@ public class ShapeImageView extends ImageView {
     }
 
     /**
+     * 获取前景图
+     *
+     * @return 前景图
+     */
+    public Drawable getForeground() {
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+            return getForegroundAPI23();
+        }
+        return mForeground;
+    }
+
+    /**
      * 获取缩放目标
      *
      * @return 缩放目标
@@ -403,8 +376,8 @@ public class ShapeImageView extends ImageView {
      * @param target 缩放目标
      */
     public void setScaleTarget(int target) {
-        if (target != SCALE_TARGET_AUTO && target != SCALE_TARGET_HEIGHT
-                && target != SCALE_TARGET_WIDTH)
+        if (target != SCALE_TARGET_INSIDE && target != SCALE_TARGET_HEIGHT
+                && target != SCALE_TARGET_WIDTH && target != SCALE_TARGET_EXPAND)
             return;
         if (mScaleTarget != target) {
             mScaleTarget = target;
@@ -432,5 +405,11 @@ public class ShapeImageView extends ImageView {
     private void setForegroundAPI23(Drawable foreground) {
         super.setForeground(foreground);
     }
+
+    @TargetApi(23)
+    private Drawable getForegroundAPI23() {
+        return super.getForeground();
+    }
+
 
 }

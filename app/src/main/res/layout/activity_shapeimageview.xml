@@ -47,12 +47,14 @@
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:clickable="true"
-                android:scaleType="centerCrop"
+                android:scaleType="matrix"
                 android:src="@drawable/bg_welcome"
+                android:background="@color/colorRipple"
                 app:sivBorderColor="@color/colorAccent"
                 app:sivBorderWidth="2dp"
                 app:sivForeground="@drawable/bg_common_press_dark"
                 app:sivHeightScale="1"
+                app:sivRoundRectRadius="10dp"
                 app:sivScaleTarget="height"
                 app:sivShape="Circle"
                 app:sivWidthScale="1" />
@@ -64,8 +66,9 @@
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:clickable="true"
-                android:scaleType="centerCrop"
+                android:scaleType="matrix"
                 android:src="@drawable/bg_welcome"
+                android:background="@color/colorRipple"
                 app:sivBorderColor="@color/colorAccent"
                 app:sivBorderWidth="2dp"
                 app:sivForeground="@drawable/bg_common_press_dark"
@@ -200,6 +203,7 @@
                             android:id="@+id/siv_rb_matrix"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="@string/shapeimageview_scaletype_matrix" />
                     </RadioGroup>
 

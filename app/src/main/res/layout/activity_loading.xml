@@ -53,7 +53,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_margin="10dp" />
+                        android:layout_margin="10dp"
+                        app:mpiElevation="2dp"
+                        app:mpiSchemeColor1="#ff33b5e5"
+                        app:mpiSchemeColor2="#ff99cc00"
+                        app:mpiSchemeColor3="#ffff4444"
+                        app:mpiSchemeColor4="#ffffbb33"/>
 
                 </FrameLayout>
 
