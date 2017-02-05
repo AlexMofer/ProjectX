@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="StateFrameLayout">
+    <declare-styleable name="StateLayout">
         <attr name="sflAlwaysDrawChild" format="boolean"/>
         <attr name="sflState" format="enum">
             <enum name="normal" value="0"/>
@@ -11,5 +11,16 @@
         <attr name="sflLoadingDrawable" format="reference"/>
         <attr name="sflErrorDrawable" format="reference"/>
         <attr name="sflEmptyDrawable" format="reference"/>
+        <attr name="sflLoadingLayout" format="reference"/>
+        <attr name="sflErrorLayout" format="reference"/>
+        <attr name="sflEmptyLayout" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="StateLayout_Layout">
+        <attr name="sflLayout_state" format="enum">
+            <enum name="normal" value="0"/>
+            <enum name="loading" value="1"/>
+            <enum name="error" value="2"/>
+            <enum name="empty" value="3"/>
+        </attr>
     </declare-styleable>
 </resources>
