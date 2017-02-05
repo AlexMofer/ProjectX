@@ -45,7 +45,7 @@ lytState.setStateViews(mLoadingView, mErrorView, mEmptyView);
 - 布局内部子项可通过添加sflLayout_state属性来定义其为那种状态下的状态View。（如：custom:sflLayout_state="loading"）
 
 ## 历史
-- [**1.0.3**](https://bintray.com/alexmofer/maven/StateFrameLayout/1.0.3)
+- [**1.0.3**](https://bintray.com/alexmofer/maven/StateFrameLayout/1.0.3)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/stateframelayout/history/1.0.3)）
 - [**1.0.2**](https://bintray.com/alexmofer/maven/StateFrameLayout/1.0.2)
 - [**1.0.1**](https://bintray.com/alexmofer/maven/StateFrameLayout/1.0.1)
 - [**1.0.0**](https://bintray.com/alexmofer/maven/StateFrameLayout/1.0.0)
