@@ -78,7 +78,6 @@ public abstract class BaseTabStripGroup extends ViewGroup {
         initView();
     }
 
-    @TargetApi(11)
     public BaseTabStripGroup(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();

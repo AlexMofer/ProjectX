@@ -231,10 +231,18 @@
                 android:paddingTop="18dp"
                 android:text="@string/smoothinputlayout_title" />
 
-            <View
+            <Button
+                android:id="@+id/widget_btn_cameraview"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_common_press"
+                android:drawablePadding="4dp"
+                android:drawableTop="@drawable/ic_widget_cameraview"
+                android:paddingBottom="18dp"
+                android:paddingTop="18dp"
+                android:text="@string/cameraview_title" />
         </LinearLayout>
 
         <LinearLayout
@@ -242,6 +250,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp">
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

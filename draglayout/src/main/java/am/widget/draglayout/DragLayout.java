@@ -32,7 +32,6 @@ public class DragLayout extends ViewGroup {
         initView();
     }
 
-    @TargetApi(11)
     public DragLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();

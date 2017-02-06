@@ -48,7 +48,6 @@ public class MaterialProgressImageView extends ImageView implements Animatable {
         initView(context, attrs, 0, 0);
     }
 
-    @TargetApi(11)
     public MaterialProgressImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context, attrs, defStyleAttr, 0);

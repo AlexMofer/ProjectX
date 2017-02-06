@@ -298,6 +298,21 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.widgets.cameraview.CameraViewActivity"
+            android:label="@string/cameraview_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="github.com"
+                    android:pathPrefix="/AlexMofer/CameraView"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activities.develop.test.TestActivity"
             android:label="@string/dev_test" />
         <activity
@@ -324,7 +339,6 @@
         <activity
             android:name=".activities.drawable.text.TextActivity"
             android:label="@string/text_title" />
-
     </application>
 
 </manifest>

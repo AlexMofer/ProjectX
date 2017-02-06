@@ -67,6 +67,7 @@ dependencies {
     compile project(':circleprogressbar')
     compile project(':zxingscanview')
     compile project(':smoothinputlayout')
+    compile project(':cameraview')
     compile project(':draglayout')
     compile project(':treelayout')
     compile project(':drawable')

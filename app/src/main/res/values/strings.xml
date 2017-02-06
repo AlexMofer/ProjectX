@@ -272,6 +272,8 @@
     <string name="smoothinputlayout_picture">图片</string>
     <string name="smoothinputlayout_take_photo">拍照</string>
 
+    <string name="cameraview_title">摄像头视图</string>
+
     <string name="cd_welcome">welcome icon</string>
     <string name="cd_drawable">drawable</string>
     <string name="cd_smoothinputlayout_voice">语音</string>

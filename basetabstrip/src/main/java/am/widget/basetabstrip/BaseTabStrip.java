@@ -77,7 +77,6 @@ public abstract class BaseTabStrip extends View {
         initView();
     }
 
-    @TargetApi(11)
     public BaseTabStrip(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();

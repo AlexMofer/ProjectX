@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import am.project.x.R;
+import am.project.x.activities.widgets.cameraview.CameraViewActivity;
 import am.project.x.activities.widgets.circleprogressbar.CircleProgressBarActivity;
 import am.project.x.activities.widgets.headerfootergridview.HeaderFooterGridViewActivity;
 import am.project.x.activities.widgets.multiactiontextview.MultiActionTextViewActivity;
@@ -58,6 +59,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
         view.findViewById(R.id.widget_btn_circleprogressbar).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_zxingscanview).setOnClickListener(this);
         view.findViewById(R.id.widget_btn_smoothinputlayout).setOnClickListener(this);
+        view.findViewById(R.id.widget_btn_cameraview).setOnClickListener(this);
     }
 
     @Override
@@ -107,6 +109,9 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.widget_btn_smoothinputlayout:
                 SmoothInputLayoutActivity.startActivity(getContext());
+                break;
+            case R.id.widget_btn_cameraview:
+                CameraViewActivity.start(getContext());
                 break;
         }
     }
