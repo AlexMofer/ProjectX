@@ -9,13 +9,13 @@ import android.graphics.drawable.Drawable;
  */
 class Compat {
 
-    interface CompatPlusImpl {
+    private interface CompatPlusImpl {
         Drawable getDrawable(Context context, int id);
 
         void setHotspot(Drawable drawable, float x, float y);
     }
 
-    static class BaseCompatPlusImpl implements CompatPlusImpl {
+    private static class BaseCompatPlusImpl implements CompatPlusImpl {
         @Override
         @SuppressWarnings("all")
         public Drawable getDrawable(Context context, int id) {
@@ -29,7 +29,7 @@ class Compat {
     }
 
     @TargetApi(21)
-    static class LollipopCompatPlusImpl extends BaseCompatPlusImpl {
+    private static class LollipopCompatPlusImpl extends BaseCompatPlusImpl {
 
         @Override
         public Drawable getDrawable(Context context, int id) {
@@ -42,7 +42,7 @@ class Compat {
         }
     }
 
-    static final CompatPlusImpl IMPL;
+    private static final CompatPlusImpl IMPL;
 
     static {
         final int version = android.os.Build.VERSION.SDK_INT;
@@ -53,11 +53,11 @@ class Compat {
         }
     }
 
-    public static Drawable getDrawable(Context context, int id) {
+    static Drawable getDrawable(Context context, int id) {
         return IMPL.getDrawable(context, id);
     }
 
-    public static void setHotspot(Drawable drawable, float x, float y) {
+    static void setHotspot(Drawable drawable, float x, float y) {
         IMPL.setHotspot(drawable, x, y);
     }
 }

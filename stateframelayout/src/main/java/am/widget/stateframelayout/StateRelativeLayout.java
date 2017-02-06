@@ -10,21 +10,20 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 /**
- * 状态帧布局
+ * 状态相对布局
  *
  * @author Alex
  */
 @SuppressWarnings("all")
-public class StateFrameLayout extends FrameLayout {
+public class StateRelativeLayout extends RelativeLayout {
 
     public static final int STATE_NORMAL = 0;// 普通
     public static final int STATE_LOADING = 1;// 载入
@@ -43,26 +42,26 @@ public class StateFrameLayout extends FrameLayout {
     private View mErrorView;
     private View mEmptyView;
 
-    public StateFrameLayout(Context context) {
+    public StateRelativeLayout(Context context) {
         super(context);
         initView(context, null);
     }
 
-    public StateFrameLayout(Context context, AttributeSet attrs) {
+    public StateRelativeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView(context, attrs);
     }
 
     @TargetApi(11)
-    public StateFrameLayout(Context context, AttributeSet attrs,
-                            int defStyleAttr) {
+    public StateRelativeLayout(Context context, AttributeSet attrs,
+                               int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context, attrs);
     }
 
     @TargetApi(21)
-    public StateFrameLayout(Context context, AttributeSet attrs, int defStyleAttr,
-                            int defStyleRes) {
+    public StateRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr,
+                               int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initView(context, attrs);
     }
@@ -90,8 +89,8 @@ public class StateFrameLayout extends FrameLayout {
 
     /**
      * Returns a set of layout parameters with a width of
-     * {@link android.view.ViewGroup.LayoutParams#MATCH_PARENT},
-     * and a height of {@link android.view.ViewGroup.LayoutParams#MATCH_PARENT}.
+     * {@link ViewGroup.LayoutParams#MATCH_PARENT},
+     * and a height of {@link ViewGroup.LayoutParams#MATCH_PARENT}.
      */
     @Override
     protected LayoutParams generateDefaultLayoutParams() {
@@ -113,8 +112,8 @@ public class StateFrameLayout extends FrameLayout {
     protected LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
         if (lp instanceof LayoutParams) {
             return new LayoutParams((LayoutParams) lp);
-        } else if (lp instanceof FrameLayout.LayoutParams) {
-            return new LayoutParams((FrameLayout.LayoutParams) lp);
+        } else if (lp instanceof RelativeLayout.LayoutParams) {
+            return new LayoutParams((RelativeLayout.LayoutParams) lp);
         } else if (lp instanceof MarginLayoutParams) {
             return new LayoutParams((MarginLayoutParams) lp);
         } else {
@@ -426,9 +425,9 @@ public class StateFrameLayout extends FrameLayout {
         }
         ViewGroup.LayoutParams lpHas = loadingView.getLayoutParams();
         LayoutParams lp = lpHas == null ? new LayoutParams(LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT, Gravity.CENTER) :
-                generateLayoutParams(lpHas);
+                LayoutParams.WRAP_CONTENT) : generateLayoutParams(lpHas);
         lp.setState(STATE_LOADING);
+        lp.addRule(CENTER_IN_PARENT);
         setLoadingView(loadingView, lp);
     }
 
@@ -466,9 +465,9 @@ public class StateFrameLayout extends FrameLayout {
         }
         ViewGroup.LayoutParams lpHas = errorView.getLayoutParams();
         LayoutParams lp = lpHas == null ? new LayoutParams(LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT, Gravity.CENTER) :
-                generateLayoutParams(lpHas);
+                LayoutParams.WRAP_CONTENT) : generateLayoutParams(lpHas);
         lp.setState(STATE_ERROR);
+        lp.addRule(CENTER_IN_PARENT);
         setErrorView(errorView, lp);
     }
 
@@ -506,9 +505,9 @@ public class StateFrameLayout extends FrameLayout {
         }
         ViewGroup.LayoutParams lpHas = emptyView.getLayoutParams();
         LayoutParams lp = lpHas == null ? new LayoutParams(LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT, Gravity.CENTER) :
-                generateLayoutParams(lpHas);
+                LayoutParams.WRAP_CONTENT) : generateLayoutParams(lpHas);
         lp.setState(STATE_EMPTY);
+        lp.addRule(CENTER_IN_PARENT);
         setEmptyView(emptyView, lp);
     }
 
@@ -898,11 +897,11 @@ public class StateFrameLayout extends FrameLayout {
      * @author Alex
      */
     public interface OnAllStateClickListener extends OnStateClickListener {
-        void onNormalClick(StateFrameLayout layout);
+        void onNormalClick(StateRelativeLayout layout);
 
-        void onLoadingClick(StateFrameLayout layout);
+        void onLoadingClick(StateRelativeLayout layout);
 
-        void onEmptyClick(StateFrameLayout layout);
+        void onEmptyClick(StateRelativeLayout layout);
     }
 
     /**
@@ -911,14 +910,14 @@ public class StateFrameLayout extends FrameLayout {
      * @author Alex
      */
     public interface OnStateClickListener {
-        void onErrorClick(StateFrameLayout layout);
+        void onErrorClick(StateRelativeLayout layout);
     }
 
     /**
      * Per-child layout information associated with WrapLayout.
      */
     @SuppressWarnings("all")
-    public static class LayoutParams extends FrameLayout.LayoutParams {
+    public static class LayoutParams extends RelativeLayout.LayoutParams {
 
         private int mState = STATE_NORMAL;
 
@@ -935,12 +934,8 @@ public class StateFrameLayout extends FrameLayout {
             super(width, height);
         }
 
-        public LayoutParams(int width, int height, int gravity) {
-            super(width, height, gravity);
-        }
-
-        public LayoutParams(int width, int height, int gravity, int state) {
-            super(width, height, gravity);
+        public LayoutParams(int width, int height, int state) {
+            super(width, height);
             mState = state;
         }
 
@@ -952,7 +947,7 @@ public class StateFrameLayout extends FrameLayout {
             super(source);
         }
 
-        public LayoutParams(FrameLayout.LayoutParams source) {
+        public LayoutParams(RelativeLayout.LayoutParams source) {
             super(source);
         }
 
