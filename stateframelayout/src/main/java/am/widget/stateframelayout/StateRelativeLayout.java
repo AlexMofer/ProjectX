@@ -70,17 +70,17 @@ public class StateRelativeLayout extends RelativeLayout {
         setWillNotDraw(false);
         setClickable(true);
         Drawable loading, error, empty;
-        TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.StateLayout);
+        TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.StateRelativeLayout);
         boolean alwaysDrawChild = custom.getBoolean(
-                R.styleable.StateLayout_sflAlwaysDrawChild, false);
-        loading = custom.getDrawable(R.styleable.StateLayout_sflLoadingDrawable);
-        error = custom.getDrawable(R.styleable.StateLayout_sflErrorDrawable);
-        empty = custom.getDrawable(R.styleable.StateLayout_sflEmptyDrawable);
-        int state = custom.getInt(R.styleable.StateLayout_sflState, STATE_NORMAL);
-        mLoadingLayoutId = custom.getResourceId(R.styleable.StateLayout_sflLoadingLayout,
+                R.styleable.StateRelativeLayout_srlAlwaysDrawChild, false);
+        loading = custom.getDrawable(R.styleable.StateRelativeLayout_srlLoadingDrawable);
+        error = custom.getDrawable(R.styleable.StateRelativeLayout_srlErrorDrawable);
+        empty = custom.getDrawable(R.styleable.StateRelativeLayout_srlEmptyDrawable);
+        int state = custom.getInt(R.styleable.StateRelativeLayout_srlState, STATE_NORMAL);
+        mLoadingLayoutId = custom.getResourceId(R.styleable.StateRelativeLayout_srlLoadingLayout,
                 NO_ID);
-        mErrorLayoutId = custom.getResourceId(R.styleable.StateLayout_sflErrorLayout, NO_ID);
-        mEmptyLayoutId = custom.getResourceId(R.styleable.StateLayout_sflEmptyLayout, NO_ID);
+        mErrorLayoutId = custom.getResourceId(R.styleable.StateRelativeLayout_srlErrorLayout, NO_ID);
+        mEmptyLayoutId = custom.getResourceId(R.styleable.StateRelativeLayout_srlEmptyLayout, NO_ID);
         custom.recycle();
         setAlwaysDrawChild(alwaysDrawChild);
         setStateDrawables(loading, error, empty);
@@ -924,8 +924,8 @@ public class StateRelativeLayout extends RelativeLayout {
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
             int state = STATE_NORMAL;
-            TypedArray custom = c.obtainStyledAttributes(attrs, R.styleable.StateLayout_Layout);
-            state = custom.getInt(R.styleable.StateLayout_Layout_sflLayout_state, state);
+            TypedArray custom = c.obtainStyledAttributes(attrs, R.styleable.StateRelativeLayout_Layout);
+            state = custom.getInt(R.styleable.StateRelativeLayout_Layout_srlLayout_state, state);
             custom.recycle();
             mState = state;
         }

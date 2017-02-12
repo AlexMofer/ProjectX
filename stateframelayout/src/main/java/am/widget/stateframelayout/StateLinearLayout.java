@@ -71,17 +71,17 @@ public class StateLinearLayout extends LinearLayout {
         setWillNotDraw(false);
         setClickable(true);
         Drawable loading, error, empty;
-        TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.StateLayout);
+        TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.StateLinearLayout);
         boolean alwaysDrawChild = custom.getBoolean(
-                R.styleable.StateLayout_sflAlwaysDrawChild, false);
-        loading = custom.getDrawable(R.styleable.StateLayout_sflLoadingDrawable);
-        error = custom.getDrawable(R.styleable.StateLayout_sflErrorDrawable);
-        empty = custom.getDrawable(R.styleable.StateLayout_sflEmptyDrawable);
-        int state = custom.getInt(R.styleable.StateLayout_sflState, STATE_NORMAL);
-        mLoadingLayoutId = custom.getResourceId(R.styleable.StateLayout_sflLoadingLayout,
+                R.styleable.StateLinearLayout_sllAlwaysDrawChild, false);
+        loading = custom.getDrawable(R.styleable.StateLinearLayout_sllLoadingDrawable);
+        error = custom.getDrawable(R.styleable.StateLinearLayout_sllErrorDrawable);
+        empty = custom.getDrawable(R.styleable.StateLinearLayout_sllEmptyDrawable);
+        int state = custom.getInt(R.styleable.StateLinearLayout_sllState, STATE_NORMAL);
+        mLoadingLayoutId = custom.getResourceId(R.styleable.StateLinearLayout_sllLoadingLayout,
                 NO_ID);
-        mErrorLayoutId = custom.getResourceId(R.styleable.StateLayout_sflErrorLayout, NO_ID);
-        mEmptyLayoutId = custom.getResourceId(R.styleable.StateLayout_sflEmptyLayout, NO_ID);
+        mErrorLayoutId = custom.getResourceId(R.styleable.StateLinearLayout_sllErrorLayout, NO_ID);
+        mEmptyLayoutId = custom.getResourceId(R.styleable.StateLinearLayout_sllEmptyLayout, NO_ID);
         custom.recycle();
         setAlwaysDrawChild(alwaysDrawChild);
         setStateDrawables(loading, error, empty);
@@ -925,8 +925,8 @@ public class StateLinearLayout extends LinearLayout {
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
             int state = STATE_NORMAL;
-            TypedArray custom = c.obtainStyledAttributes(attrs, R.styleable.StateLayout_Layout);
-            state = custom.getInt(R.styleable.StateLayout_Layout_sflLayout_state, state);
+            TypedArray custom = c.obtainStyledAttributes(attrs, R.styleable.StateLinearLayout_Layout);
+            state = custom.getInt(R.styleable.StateLinearLayout_Layout_sllLayout_state, state);
             custom.recycle();
             mState = state;
         }
