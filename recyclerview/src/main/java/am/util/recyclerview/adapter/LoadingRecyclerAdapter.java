@@ -119,4 +119,10 @@ public abstract class LoadingRecyclerAdapter<T, VH extends LoadingViewHolder<T>>
             return;
         holder.bindLoading(error);
     }
+
+    public final void notifyItemChanged(T item) {
+        int position = mData.indexOf(item);
+        if (position != -1)
+            notifyItemChanged(position);
+    }
 }
