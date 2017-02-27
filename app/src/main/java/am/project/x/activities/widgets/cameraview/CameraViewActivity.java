@@ -11,10 +11,11 @@ import android.widget.Toast;
 
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
+import am.widget.cameraview.CameraStateCallback;
 import am.widget.cameraview.CameraView;
 import am.widget.zxingscanview.ZxingForegroundView;
 
-public class CameraViewActivity extends BaseActivity implements CameraView.OnCameraListener {
+public class CameraViewActivity extends BaseActivity implements CameraStateCallback {
 
     private static final int PERMISSIONS_REQUEST_CAMERA = 106;
     private CameraView cvCamera;
@@ -28,11 +29,13 @@ public class CameraViewActivity extends BaseActivity implements CameraView.OnCam
     protected void initResource(Bundle savedInstanceState) {
         setSupportActionBar(R.id.camera_toolbar);
         cvCamera = (CameraView) findViewById(R.id.camera_cv_camera);
-        cvCamera.setOnCameraListener(this);
+        cvCamera.addCallback(this);
     }
 
+
+
     @Override
-    public void onCameraPermissionDenied(CameraView cameraView) {
+    public void onPermissionDenied(CameraView cameraView) {
         // 缺少打开相机的权限
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.CAMERA},
@@ -40,7 +43,17 @@ public class CameraViewActivity extends BaseActivity implements CameraView.OnCam
     }
 
     @Override
-    public void onOpenCameraError(int code) {
+    public void onOpened(CameraView cameraView) {
+
+    }
+
+    @Override
+    public void onDisconnected(CameraView cameraView) {
+
+    }
+
+    @Override
+    public void onError(CameraView cameraView, int error, int reason) {
         // 相机无法打开
         Toast.makeText(this, "打开相机失败", Toast.LENGTH_SHORT).show();
     }

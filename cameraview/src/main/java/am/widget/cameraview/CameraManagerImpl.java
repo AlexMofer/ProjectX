@@ -7,8 +7,13 @@ package am.widget.cameraview;
 
 interface CameraManagerImpl {
 
-    int openCamera(int id, boolean isForce);
+    void setTimeout(long timeout);
 
-    void closeCamera();
+    void openCamera(int id, boolean isForceFacing, CameraManager.OnOpenListener listener)
+            throws CameraException;
 
+    void closeCamera() throws CameraException;
+
+
+    CameraSize getSize(int maxWidth, int maxHeight, int mode) throws CameraException;
 }
