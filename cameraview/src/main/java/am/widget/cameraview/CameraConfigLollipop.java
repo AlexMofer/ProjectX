@@ -20,9 +20,17 @@ import java.util.List;
 @TargetApi(21)
 class CameraConfigLollipop implements Comparator<Size> {
 
-    private static final int MIN_PIXELS = 6;
-    private static final double MAX_ASPECT_DISTORTION = 0.15;
+    private int mMinPixelsPercentage = CameraView.MIN_PIXELS_PERCENTAGE;
+    private double mMaxAspectDistortion = CameraView.MAX_ASPECT_DISTORTION;
     private CameraSize mBestPreviewSize;
+
+    void setMinPixelsPercentage(int min) {
+        mMinPixelsPercentage = min;
+    }
+
+    void setMaxAspectDistortion(double max) {
+        mMaxAspectDistortion = max;
+    }
 
     CameraSize getSize(CameraCharacteristics characteristics, int maxWidth, int maxHeight, int mode)
             throws CameraException {
@@ -50,7 +58,7 @@ class CameraConfigLollipop implements Comparator<Size> {
         }
         double screenAspectRatio = width / (double) height;
         Iterator<Size> it = supportedPreviewSizes.iterator();
-        final int minPixels = width * height / MIN_PIXELS;
+        final int minPixels = width * height / mMinPixelsPercentage;
         while (it.hasNext()) {
             // 去除像素过低的
             Size supportedPreviewSize = it.next();
@@ -66,7 +74,7 @@ class CameraConfigLollipop implements Comparator<Size> {
             int maybeFlippedHeight = isCandidatePortrait ? realWidth : realHeight;
             double aspectRatio = maybeFlippedWidth / (double) maybeFlippedHeight;
             double distortion = Math.abs(aspectRatio - screenAspectRatio);
-            if (distortion > MAX_ASPECT_DISTORTION) {
+            if (distortion > mMaxAspectDistortion) {
                 it.remove();
                 continue;
             }

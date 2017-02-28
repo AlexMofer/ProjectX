@@ -19,15 +19,15 @@ class CameraSurface extends SurfaceView {
     private boolean isSizeFixed = false;
     private int mCameraFacing;// 前置/后置/外置
     private boolean isForceFacing = false;// 是否强制摄像头类型
-    private final CameraManager.OnOpenListener openListener = new OnOpenListener();// 开启监听
     private int mMaxWidth;// View可拥有的最大宽度
     private int mMaxHeight;// View可拥有的最大高度
     private CameraSize mSize;// 摄像头需要的尺寸
     private int mPreviewSizeMode;// 预览模式
+    private final CameraSetting mSetting = new CameraSetting();
 
     CameraSurface(Context context) {
         super(context);
-        cameraManager = new CameraManager(getContext());
+        cameraManager = new CameraManager(getContext(), new OnOpenListener());
         getHolder().addCallback(new CameraCallBack());
     }
 
@@ -52,7 +52,7 @@ class CameraSurface extends SurfaceView {
     private void openCamera(SurfaceHolder surfaceHolder) {
         if (surfaceHolder == null)
             return;// 已经销毁
-        if (isOpen())
+        if (isOpen)
             return;// 摄像头已经打开
         if (Compat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_DENIED) {
@@ -61,27 +61,12 @@ class CameraSurface extends SurfaceView {
             return;
         }
         try {
-            cameraManager.openCamera(mCameraFacing, isForceFacing, openListener);
+            cameraManager.openCamera(mCameraFacing, isForceFacing);
+            isOpen = true;
         } catch (CameraException e) {
+            isOpen = false;
             if (cameraListener != null)
                 cameraListener.onError(this, e.getCode(), e.getReason());
-            return;
-        }
-        CameraSize newSize;
-        try {
-            newSize = cameraManager.getSize(mMaxWidth, mMaxHeight, mPreviewSizeMode);
-        } catch (CameraException e) {
-            if (cameraListener != null)
-                cameraListener.onError(CameraSurface.this, e.getCode(), e.getReason());
-            closeCamera();
-            return;
-        }
-        if (!newSize.equals(mSize)) {
-            // 修改View尺寸，调整高宽比
-            mSize = newSize;
-            final int width = mMaxWidth > mMaxHeight ? mSize.getWidth() : mSize.getHeight();
-            final int height = mMaxWidth > mMaxHeight ? mSize.getHeight() : mSize.getWidth();
-            getHolder().setFixedSize(width, height);
         }
     }
 
@@ -94,8 +79,6 @@ class CameraSurface extends SurfaceView {
     }
 
     private void closeCamera() {
-        if (!isOpen)
-            return;
         isOpen = false;
         try {
             cameraManager.closeCamera();
@@ -125,8 +108,37 @@ class CameraSurface extends SurfaceView {
     private class OnOpenListener implements CameraManager.OnOpenListener {
 
         @Override
+        public void onSelected() {
+            CameraSize newSize;
+            try {
+                newSize = cameraManager.getSize(mMaxWidth, mMaxHeight, mPreviewSizeMode);
+            } catch (CameraException e) {
+                if (cameraListener != null)
+                    cameraListener.onError(CameraSurface.this, e.getCode(), e.getReason());
+                closeCamera();
+                return;
+            }
+            if (!newSize.equals(mSize)) {
+                // 修改View尺寸，调整高宽比
+                mSize = newSize;
+                final int width = mMaxWidth > mMaxHeight ? mSize.getWidth() : mSize.getHeight();
+                final int height = mMaxWidth > mMaxHeight ? mSize.getHeight() : mSize.getWidth();
+                getHolder().setFixedSize(width, height);
+            }
+
+            // TODO
+            try {
+                cameraManager.configCamera(getContext(), getHolder(), mSetting);
+            } catch (CameraException e) {
+                if (cameraListener != null)
+                    cameraListener.onError(CameraSurface.this, e.getCode(), e.getReason());
+                closeCamera();
+                return;
+            }
+        }
+
+        @Override
         public void onOpened() {
-            isOpen = true;
             previewCamera();
         }
     }
@@ -145,10 +157,6 @@ class CameraSurface extends SurfaceView {
 
     boolean isOpen() {
         return isOpen;
-    }
-
-    void setOpenTimeout(long timeout) {
-        cameraManager.setTimeout(timeout);
     }
 
     void setCameraFacing(int facing) {
@@ -179,6 +187,26 @@ class CameraSurface extends SurfaceView {
             close();
             open();
         }
+    }
+
+    void setMinPixelsPercentage(int min) {
+        cameraManager.setMinPixelsPercentage(min);
+        if (isOpen) {
+            close();
+            open();
+        }
+    }
+
+    void setMaxAspectDistortion(double max) {
+        cameraManager.setMaxAspectDistortion(max);
+        if (isOpen) {
+            close();
+            open();
+        }
+    }
+
+    void setOpenTimeout(long timeout) {
+        cameraManager.setTimeout(timeout);
     }
 
     interface OnCameraListener {

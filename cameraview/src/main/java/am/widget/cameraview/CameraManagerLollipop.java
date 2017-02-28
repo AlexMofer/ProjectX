@@ -1,6 +1,7 @@
 package am.widget.cameraview;
 
 import android.content.Context;
+import android.view.SurfaceHolder;
 
 /**
  * L版CameraManager
@@ -11,8 +12,8 @@ class CameraManagerLollipop implements CameraManagerImpl {
     private final CameraOpenLollipop mOpen;
     private final CameraConfigLollipop mConfig = new CameraConfigLollipop();
 
-    CameraManagerLollipop(Context context) {
-        mOpen = new CameraOpenLollipop(context);
+    CameraManagerLollipop(Context context, CameraManager.OnOpenListener listener) {
+        mOpen = new CameraOpenLollipop(context, listener);
     }
 
     @Override
@@ -21,9 +22,19 @@ class CameraManagerLollipop implements CameraManagerImpl {
     }
 
     @Override
-    public void openCamera(int id, boolean isForceFacing, CameraManager.OnOpenListener listener)
+    public void setMinPixelsPercentage(int min) {
+        mConfig.setMinPixelsPercentage(min);
+    }
+
+    @Override
+    public void setMaxAspectDistortion(double max) {
+        mConfig.setMaxAspectDistortion(max);
+    }
+
+    @Override
+    public void openCamera(int id, boolean isForceFacing)
             throws CameraException {
-        mOpen.openCamera(id, isForceFacing, listener);
+        mOpen.openCamera(id, isForceFacing);
     }
 
     @Override
@@ -35,5 +46,11 @@ class CameraManagerLollipop implements CameraManagerImpl {
     @Override
     public CameraSize getSize(int maxWidth, int maxHeight, int mode) throws CameraException {
         return mConfig.getSize(mOpen.characteristicsSelected, maxWidth, maxHeight, mode);
+    }
+
+    @Override
+    public void configCamera(Context context, SurfaceHolder holder, CameraSetting setting)
+            throws CameraException {
+        // TODO
     }
 }

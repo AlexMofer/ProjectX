@@ -2,6 +2,7 @@ package am.widget.cameraview;
 
 
 import android.content.Context;
+import android.view.SurfaceHolder;
 
 /**
  * 摄像头管理器
@@ -12,17 +13,25 @@ class CameraManager {
 
     private CameraManagerImpl cameraManager;
 
-    CameraManager(Context context) {
-        cameraManager = new CameraManagerBase();
-//        cameraManager = new CameraManagerLollipop(context);
+    CameraManager(Context context, OnOpenListener listener) {
+        cameraManager = new CameraManagerBase(listener);
+//        cameraManager = new CameraManagerLollipop(context, listener);
     }
 
     void setTimeout(long timeout) {
         cameraManager.setTimeout(timeout);
     }
 
-    synchronized void openCamera(int id, boolean isForceFacing, OnOpenListener listener) throws CameraException {
-        cameraManager.openCamera(id, isForceFacing, listener);
+    void setMinPixelsPercentage(int min) {
+        cameraManager.setMinPixelsPercentage(min);
+    }
+
+    void setMaxAspectDistortion(double max) {
+        cameraManager.setMaxAspectDistortion(max);
+    }
+
+    synchronized void openCamera(int id, boolean isForceFacing) throws CameraException {
+        cameraManager.openCamera(id, isForceFacing);
     }
 
     synchronized void closeCamera() throws CameraException {
@@ -33,10 +42,14 @@ class CameraManager {
         return cameraManager.getSize(maxWidth, maxHeight, mode);
     }
 
+    synchronized void configCamera(Context context, SurfaceHolder holder, CameraSetting setting)
+            throws CameraException {
+        cameraManager.configCamera(context, holder, setting);
+    }
+
     interface OnOpenListener {
-        /**
-         * 打开
-         */
+        void onSelected();
+
         void onOpened();
     }
 }

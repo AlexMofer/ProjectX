@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CameraView">
-        <attr name="alDraggable" format="boolean"/>
+        <attr name="cvCameraFacing" format="enum">
+            <enum name="back" value="0"/>
+            <enum name="front" value="1"/>
+            <enum name="external" value="2"/>
+        </attr>
+        <attr name="cvForceFacing" format="boolean"/>
+        <attr name="cvPreviewSizeMode" format="enum">
+            <enum name="max" value="0"/>
+            <enum name="min" value="1"/>
+            <enum name="matched_max" value="2"/>
+            <enum name="matched_min" value="3"/>
+            <enum name="matched_crop" value="4"/>
+            <enum name="matched_inside" value="5"/>
+        </attr>
+        <attr name="cvMinPixelsPercentage" format="integer"/>
+        <attr name="cvMaxAspectDistortion" format="float"/>
+        <attr name="cvOpenTimeout" format="integer"/>
     </declare-styleable>
 </resources>

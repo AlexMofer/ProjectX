@@ -11,6 +11,9 @@ public interface CameraStateCallback {
     int ERROR_CODE_OPEN_3 = 3;// 开启摄像头失败
     int ERROR_CODE_CLOSE_1 = 11;// 关闭摄像头失败
     int ERROR_CODE_CONFIG_1 = 21;// 无可用的配置信息
+    int ERROR_CODE_CONFIG_2 = 22;// 配置摄像头出错
+    int ERROR_CODE_CONFIG_3 = 23;// 设置surface出错
+    int ERROR_CODE_CONFIG_4 = 24;// 无效的旋转角度
     /**
      * 权限拒绝
      */

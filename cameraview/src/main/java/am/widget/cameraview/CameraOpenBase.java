@@ -10,7 +10,7 @@ import android.hardware.Camera;
 class CameraOpenBase {
 
     private int cameraId;
-    private Camera.CameraInfo selectedCameraInfo;
+    Camera.CameraInfo selectedCameraInfo;
     Camera camera;
 
     void openCamera(int id, boolean isForceFacing) throws CameraException{

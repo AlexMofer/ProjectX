@@ -16,16 +16,17 @@ import java.util.concurrent.TimeUnit;
 @TargetApi(21)
 class CameraOpenLollipop {
 
-    private long mTimeout = 2500;
+    private final CameraManager.OnOpenListener listener;
+    private long mTimeout = CameraView.DEFAULT_OPEN_TIMEOUT;
     private android.hardware.camera2.CameraManager manager;
     private String mCameraId;
     CameraCharacteristics characteristicsSelected;
     private Semaphore mCameraOpenCloseLock = new Semaphore(1);
     private CameraDevice mCameraDevice;
     private final CameraDevice.StateCallback mStateCallback = new StateCallback();
-    private CameraManager.OnOpenListener openListener;
 
-    CameraOpenLollipop(Context context) {
+    CameraOpenLollipop(Context context, CameraManager.OnOpenListener listener) {
+        this.listener = listener;
         manager = (android.hardware.camera2.CameraManager) context
                 .getSystemService(Context.CAMERA_SERVICE);
     }
@@ -35,8 +36,7 @@ class CameraOpenLollipop {
     }
 
     @SuppressWarnings("all")
-    void openCamera(int id, boolean isForceFacing, CameraManager.OnOpenListener listener) throws CameraException {
-        openListener = listener;
+    void openCamera(int id, boolean isForceFacing) throws CameraException {
         closeCamera();
         final String[] cameraIds;
         try {
@@ -118,6 +118,8 @@ class CameraOpenLollipop {
                     throw CameraException.newInstance(CameraStateCallback.ERROR_CODE_OPEN_1);
             }
         }
+        if (null != listener)
+            listener.onSelected();
         try {
             if (!mCameraOpenCloseLock.tryAcquire(mTimeout, TimeUnit.MILLISECONDS)) {
                 throw CameraException.newInstance(CameraStateCallback.ERROR_CODE_OPEN_3);
@@ -158,8 +160,8 @@ class CameraOpenLollipop {
             // This method is called when the camera is opened.  We start camera preview here.
             mCameraOpenCloseLock.release();
             mCameraDevice = cameraDevice;
-            if (null != openListener)
-                openListener.onOpened();
+            if (null != listener)
+                listener.onOpened();
 //            createCameraPreviewSession();
         }
 

@@ -2,6 +2,7 @@ package am.widget.cameraview;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -23,6 +24,12 @@ public class CameraView extends ViewGroup {
     public static final int PREVIEW_SIZE_AT_MATCHED_MIN = 3;// 所有匹配的预览尺寸取最小
     public static final int PREVIEW_SIZE_AT_MATCHED_CROP = 4;// 所有匹配的预览尺寸中，比视图尺寸大，但最接近
     public static final int PREVIEW_SIZE_AT_MATCHED_INSIDE = 5;// 所有匹配的预览尺寸中，比视图尺寸小，但最接近
+    public static final int MIN_PIXELS_PERCENTAGE = 6;// 最小像素不得低于View尺寸的几分之一
+    public static final float MAX_ASPECT_DISTORTION = 0.15f;// 最大允许的高宽比差值
+    public static final int DEFAULT_OPEN_TIMEOUT = 2500;// 默认打开超时时长（仅高版本有效）
+    public static final int AMBIENT_LIGHT_MODE_AUTO = 0;// 背光自动
+    public static final int AMBIENT_LIGHT_MODE_OPEN = 1;// 背光开启
+    public static final int AMBIENT_LIGHT_MODE_CLOSE = 2;// 背光关闭
 
     protected final CameraSurface mCamera;
     private final ArrayList<CameraStateCallback> callbacks = new ArrayList<>();
@@ -55,11 +62,25 @@ public class CameraView extends ViewGroup {
 
     private void initView(AttributeSet attrs) {
         mCamera.setOnCameraListener(new OnCameraListener());
+        TypedArray custom = getContext().obtainStyledAttributes(attrs, R.styleable.CameraView);
+        int facing = custom.getInt(R.styleable.CameraView_cvCameraFacing, CAMERA_FACING_BACK);
+        boolean isForceFacing = custom.getBoolean(R.styleable.CameraView_cvForceFacing, false);
+        int previewSizeMode = custom.getInt(R.styleable.CameraView_cvPreviewSizeMode,
+                PREVIEW_SIZE_AT_MATCHED_INSIDE);
+        int minPixelsPercentage = custom.getInt(R.styleable.CameraView_cvMinPixelsPercentage,
+                MIN_PIXELS_PERCENTAGE);
+        float maxAspectDistortion = custom.getFloat(R.styleable.CameraView_cvMaxAspectDistortion,
+                MAX_ASPECT_DISTORTION);
+        int openTimeout = custom.getInteger(R.styleable.CameraView_cvOpenTimeout,
+                DEFAULT_OPEN_TIMEOUT);
 
-        // TODO
-        mCamera.setCameraFacing(CAMERA_FACING_BACK);
-        mCamera.setForceFacing(false);
-        mCamera.setPreviewSizeMode(PREVIEW_SIZE_AT_MATCHED_INSIDE);
+        custom.recycle();
+        setCameraFacing(facing);
+        setForceFacing(isForceFacing);
+        setPreviewSizeMode(previewSizeMode);
+        setMinPixelsPercentage(minPixelsPercentage);
+        setMaxAspectDistortion(maxAspectDistortion);
+        setOpenTimeout(openTimeout);
         addView(mCamera);
     }
 
@@ -140,6 +161,7 @@ public class CameraView extends ViewGroup {
     /**
      * 关闭摄像头
      */
+    @SuppressWarnings("unused")
     public void close() {
         mCamera.close();
     }
@@ -154,12 +176,58 @@ public class CameraView extends ViewGroup {
     }
 
     /**
+     * 设置摄像头类型
+     *
+     * @param facing 前置/后置/外置 {@link #CAMERA_FACING_BACK },
+     *               {@link #CAMERA_FACING_FRONT}, {@link #CAMERA_FACING_EXTERNAL}
+     */
+    public void setCameraFacing(int facing) {
+        mCamera.setCameraFacing(facing);
+    }
+
+    /**
+     * 是否强制使用选定的摄像头类型
+     *
+     * @param isForce 是否强制
+     */
+    public void setForceFacing(boolean isForce) {
+        mCamera.setForceFacing(isForce);
+    }
+
+    /**
+     * 设置摄像头预览尺寸的选取模式
+     *
+     * @param mode 选取模式
+     */
+    public void setPreviewSizeMode(int mode) {
+        mCamera.setPreviewSizeMode(mode);
+    }
+
+    /**
      * 设置打开超时时长
      *
      * @param timeout 时长
      */
     public void setOpenTimeout(long timeout) {
         mCamera.setOpenTimeout(timeout);
+    }
+
+    /**
+     * 最小像素不得低于View尺寸的几分之一
+     *
+     * @param min 几分之一
+     */
+    public void setMinPixelsPercentage(int min) {
+        mCamera.setMinPixelsPercentage(min);
+    }
+
+    /**
+     * 最大允许的高宽比差值
+     *
+     * @param max 差值
+     */
+    public void setMaxAspectDistortion(double max) {
+        mCamera.setMaxAspectDistortion(max);
     }
 
     /**
@@ -176,6 +244,7 @@ public class CameraView extends ViewGroup {
      *
      * @param callback 回调
      */
+    @SuppressWarnings("unused")
     public void removeCallback(CameraStateCallback callback) {
         callbacks.remove(callback);
     }

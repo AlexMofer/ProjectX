@@ -1,6 +1,12 @@
 package am.widget.cameraview;
 
+import android.content.Context;
 import android.hardware.Camera;
+import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
+import android.view.SurfaceHolder;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,9 +21,19 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 class CameraConfigBase implements Comparator<Camera.Size> {
 
-    private static final int MIN_PIXELS = 6;
-    private static final double MAX_ASPECT_DISTORTION = 0.15;
+    private int mMinPixelsPercentage = CameraView.MIN_PIXELS_PERCENTAGE;
+    private double mMaxAspectDistortion = CameraView.MAX_ASPECT_DISTORTION;
     private CameraSize mBestPreviewSize;
+    private int cwNeededRotation;
+    private int cwRotationFromDisplayToCamera;
+
+    void setMinPixelsPercentage(int min) {
+        mMinPixelsPercentage = min;
+    }
+
+    void setMaxAspectDistortion(double max) {
+        mMaxAspectDistortion = max;
+    }
 
     CameraSize getSize(Camera.Parameters parameters, int maxWidth, int maxHeight, int mode)
             throws CameraException {
@@ -50,7 +66,7 @@ class CameraConfigBase implements Comparator<Camera.Size> {
         }
         double screenAspectRatio = width / (double) height;
         Iterator<Camera.Size> it = supportedPreviewSizes.iterator();
-        final int minPixels = width * height / MIN_PIXELS;
+        final int minPixels = width * height / mMinPixelsPercentage;
         while (it.hasNext()) {
             // 去除像素过低的
             Camera.Size supportedPreviewSize = it.next();
@@ -66,7 +82,7 @@ class CameraConfigBase implements Comparator<Camera.Size> {
             int maybeFlippedHeight = isCandidatePortrait ? realWidth : realHeight;
             double aspectRatio = maybeFlippedWidth / (double) maybeFlippedHeight;
             double distortion = Math.abs(aspectRatio - screenAspectRatio);
-            if (distortion > MAX_ASPECT_DISTORTION) {
+            if (distortion > mMaxAspectDistortion) {
                 it.remove();
                 continue;
             }
@@ -128,5 +144,56 @@ class CameraConfigBase implements Comparator<Camera.Size> {
     @Override
     public int compare(Camera.Size a, Camera.Size b) {
         return Long.signum((long) a.width * a.height - (long) b.width * b.height);
+    }
+
+    void configCamera(Context context, Camera camera, CameraSetting setting,
+                      Camera.CameraInfo selectedCameraInfo, boolean safeMode)
+            throws CameraException {
+        getRotation(context, selectedCameraInfo);
+
+    }
+
+    private void getRotation(Context context, Camera.CameraInfo selectedCameraInfo)
+            throws CameraException {
+        WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = manager.getDefaultDisplay();
+
+        int displayRotation = display.getRotation();
+        int cwRotationFromNaturalToDisplay;
+        switch (displayRotation) {
+            case Surface.ROTATION_0:
+                cwRotationFromNaturalToDisplay = 0;
+                break;
+            case Surface.ROTATION_90:
+                cwRotationFromNaturalToDisplay = 90;
+                break;
+            case Surface.ROTATION_180:
+                cwRotationFromNaturalToDisplay = 180;
+                break;
+            case Surface.ROTATION_270:
+                cwRotationFromNaturalToDisplay = 270;
+                break;
+            default:
+                // Have seen this return incorrect values like -90
+                if (displayRotation % 90 == 0) {
+                    cwRotationFromNaturalToDisplay = (360 + displayRotation) % 360;
+                } else {
+                    throw CameraException.newInstance(CameraStateCallback.ERROR_CODE_CONFIG_4);
+                }
+        }
+
+        int cwRotationFromNaturalToCamera = selectedCameraInfo.orientation;
+
+        // Still not 100% sure about this. But acts like we need to flip this:
+        if (selectedCameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            cwRotationFromNaturalToCamera = (360 - cwRotationFromNaturalToCamera) % 360;
+        }
+        cwRotationFromDisplayToCamera =
+                (360 + cwRotationFromNaturalToCamera - cwRotationFromNaturalToDisplay) % 360;
+        if (selectedCameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            cwNeededRotation = (360 - cwRotationFromDisplayToCamera) % 360;
+        } else {
+            cwNeededRotation = cwRotationFromDisplayToCamera;
+        }
     }
 }
