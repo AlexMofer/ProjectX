@@ -12,7 +12,7 @@
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:gradienttabstrip:25.1.1'
+    compile 'am.widget:gradienttabstrip:25.3.0'
     ⋯
 }
 ```
@@ -62,6 +62,8 @@ tabStrip.bindViewPager(viewPager);
 - 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7），否则可能出现错误
 
 ## 历史
+- [**25.2.0**](https://bintray.com/alexmofer/maven/GradientTabStrip/25.2.0)
+- [**25.1.1**](https://bintray.com/alexmofer/maven/GradientTabStrip/25.1.1)
 - [**25.1.0**](https://bintray.com/alexmofer/maven/GradientTabStrip/25.1.0)
 - [**25.0.1**](https://bintray.com/alexmofer/maven/GradientTabStrip/25.0.1)
 - [**25.0.0**](https://bintray.com/alexmofer/maven/GradientTabStrip/25.0.0)

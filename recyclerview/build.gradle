@@ -8,12 +8,12 @@ android {
         minSdkVersion 9
         targetSdkVersion 25
         versionCode 1
-        versionName "25.1.1"
+        versionName "25.3.0"
     }
 }
 
 dependencies {
-    compile 'com.android.support:recyclerview-v7:25.1.1'
+    compile 'com.android.support:recyclerview-v7:25.3.0'
 }
 
 //apply from: "bintray.gradle"
