@@ -359,7 +359,7 @@ switch (input) {
 @Nullable
 public String getNameIfPresent() { ... }
 ```
-**例外：**单个的注解可以和签名的第一行出现在同一行。如：
+**例外：** 单个的注解可以和签名的第一行出现在同一行。如：
 ```java
 @Override public int hashCode() { ... }
 ```
