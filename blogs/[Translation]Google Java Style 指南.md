@@ -1,7 +1,4 @@
-﻿# Google Java Style 指南
-
-------
-## 1 前言
+﻿## 1 前言
 本文档参考并翻译自[Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)。Google风格官方使用的是2个空格的缩进，国内常用的缩进为4个空格，因此此文档改为4个空格。同理，自动换行Google是+4个，此处为+8个，switch块缩进Google是2个，此处为4个。
 
 本文档作为Java™编程语言中源代码的Google编码标准的**完整定义**。 当且仅当它遵守本文中的规则时，Java源文件才被称为遵循*Google Style*。
