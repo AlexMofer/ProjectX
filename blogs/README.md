@@ -1,7 +1,7 @@
 
 # 博客索引
 ------
-共同学习，大家分享。
+共同学习，分享成长。
 
 ## Widget
 - [***RecyclePagerAdapter-实现ViewPager复用回收的PagerAdapter***](https://github.com/AlexMofer/ProjectX/blob/master/blogs/%5BWidget%5DRecyclePagerAdapter-%E5%AE%9E%E7%8E%B0ViewPager%E5%A4%8D%E7%94%A8%E5%9B%9E%E6%94%B6%E7%9A%84PagerAdapter.md)
