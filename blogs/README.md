@@ -16,3 +16,4 @@
 
 ## Translation
 - [***Google Java Style 指南***](https://github.com/AlexMofer/ProjectX/blob/master/blogs/%5BTranslation%5DGoogle%20Java%20Style%20%E6%8C%87%E5%8D%97.md)
+- [***贡献者的代码风格***](https://github.com/AlexMofer/ProjectX/blob/master/blogs/%5BTranslation%5D%E8%B4%A1%E7%8C%AE%E8%80%85%E7%9A%84%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC.md)
