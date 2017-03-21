@@ -1,14 +1,14 @@
 # Printer
-![ICON](https://github.com/AlexMofer/ProjectX/blob/master/printer/icon.png)
+![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/printer/icon.png)
 
 标准ES-POS命令打印，固定IP或蓝牙打印，支持黑白图片打印
 ## 预览
-![Screenshots](https://github.com/AlexMofer/ProjectX/blob/master/printer/screenshot.png)
-![打印样例](https://github.com/AlexMofer/ProjectX/blob/master/printer/printer_example.jpg)
+![Screenshots](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/printer/screenshot.png)
+![打印样例](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/printer/printer_example.jpg)
 ## 要求
 - minSdkVersion 5
-- ```<uses-permission android:name="android.permission.INTERNET" />```
-- ```<uses-permission android:name="android.permission.BLUETOOTH" />```
+- `<uses-permission android:name="android.permission.INTERNET" />`
+- `<uses-permission android:name="android.permission.BLUETOOTH" />`
 
 ## 引用
 ```java
@@ -19,14 +19,15 @@ dependencies {
 }
 ```
 ## 详情
+
 - 继承PrintTask来实现打印任务
 - 继承PrinterWriter来实现更多纸张类型的打印
 - PrinterUtils包含了众多打印指令
 
-##使用
-1.添加蓝牙权限```<uses-permission android:name="android.permission.BLUETOOTH" />```或者网络请求权限```<uses-permission android:name="android.permission.INTERNET" />```
+## 使用
 
-2.继承PrintTask类，实现具体打印任务：
+ 1. 添加蓝牙权限`<uses-permission android:name="android.permission.BLUETOOTH" />`或者网络请求权限`<uses-permission android:name="android.permission.INTERNET" />`
+ 2. 继承PrintTask类，实现具体打印任务：
 ```java
 private class TestPrintTask extends PrintTask {
 
@@ -113,13 +114,11 @@ private class TestPrintTask extends PrintTask {
     }
 }
 ```
-
-3.执行打印：
+ 3. 执行打印：
 ```java
 new TestPrintTask(device, type).execute();
 new TestPrintTask(ip, port, type).execute();
 ```
-
 如果你要实现自己的打印机PrinterWriter，那么你需要继承
 ```java
 public class PrinterWriter80mm extends PrinterWriter{
@@ -156,5 +155,6 @@ public class PrinterWriter80mm extends PrinterWriter{
 ```
 
 ## 注意
+
 - 仅提供建立蓝牙连接打印，不包括蓝牙搜索及配对功能
 - 不包含二维码生成功能

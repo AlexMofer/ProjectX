@@ -1,13 +1,15 @@
 # RecyclePagerAdapter-实现ViewPager复用回收的PagerAdapter
-![ICON](https://github.com/AlexMofer/ProjectX/blob/master/images/icons/recyclepager.png)
+![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/images/icons/recyclepager.png)
 
 实现ViewPager页卡View复用回收的PagerAdapter，只要是页面构造一样，则可以使用复用回收机制，同时也支持设置不同的viewType来实现多种样式的页卡回收复用，套用RecycleView的Adapter实现机制。
 ## 要求
+
 - com.android.support:support-v4
 - minSdkVersion 9
 - 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7）
 
 ## 链接
+
 - [***Github***](https://github.com/AlexMofer/ProjectX/tree/master/supportplus)
 - [***Bintray***](https://bintray.com/alexmofer/maven/SupportPlus)
 
@@ -21,6 +23,7 @@ dependencies {
 ```
 ## 使用
 整体实现其实不难，使用过RecycleView的话，就可以轻车熟路，跟其实现方案一模一样。
+
 实现自己的PagerViewHolder，个人习惯在实例化时进行布局inflate，这样打开PagerViewHolder便可以直接找到使用的布局文件：
 ```java
 public class MyPagerViewHolder extends RecyclePagerAdapter.PagerViewHolder {
@@ -82,8 +85,10 @@ public class MyRecyclePagerAdapter extends RecyclePagerAdapter<MyPagerViewHolder
 ```
 ## 原理
 ViewPager最多构造四个相同类型的页面，但是现实时最多需要当前页面及左右两个页面，第四个页面就可以存起来复用。
+
 Adapter使用一个ArrayList\<VH\>来存放所有的Holder；再用一个SparseArray\<ArrayList\<VH\>\>来根据viewType存放在destroyItem时候被回收的不同类型的Holder集合，在instantiateItem时候优先从其内部获取，在没有时再重新创建。
 
 ## 注意
+
 - notifyDataSetChanged()方法会将所有的未被回收的Holder重新onBindViewHolder一遍，并不是每一个ViewPager的页面都会刷新，但当前显示的绝对会刷新；
 - notifyItemChanged(int position)用于刷新指定的页面坐标的Holder，只有在这个页面处于激活状态时，其才会被刷新。

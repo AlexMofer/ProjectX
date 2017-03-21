@@ -1,7 +1,7 @@
 # 慎用onBackPressed()
 Android中在按下back键时会调用到onBackPressed()方法，onBackPressed相对于finish方法，还做了一些其他操作，而这些操作涉及到Activity的状态，所以调用还是需要谨慎对待。
 
-##问题描述
+## 问题描述
 最近公司的项目在Bug统计当中，发现了一大堆IllegalStateException的报错：
 ```java
 java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
@@ -20,7 +20,7 @@ java.lang.IllegalStateException: Can not perform this action after onSaveInstanc
 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:755)
 ```
 
-##问题解决
+## 问题解决
 在Activity已经保存了状态以后（onSaveInstanceState）进行了Fragment退栈操作（popBackStackImmediate），触发方法为调用了onBackPressed方法首先我们翻API 24的源码来看看onBackPressed里面到底都干啥了：
 ```java
 /**
@@ -67,7 +67,7 @@ protected void onNavigationClick() {
 ```
 这里不存在问题，因为Toolbar的返回按钮必须得在Activity活动状态下才能点击到，而从代码层则需要通过遍历或者id找到到这个ImageButton再对其进行performClick操作（没有id，只能遍历），而真正问题出在于我将其写在网络请求结果处理的回调里面，毫无疑问，这就会出现Activity处于非活动状态了。
 
-##结论
+## 结论
 - 调用onBackPressed()方法需要注意Activity状态。
 - 调用onBackPressed()方法不一定就能结束Activity。
 - 调用onBackPressed()方法结束Activity，其调用的终究还是finish()方法。
