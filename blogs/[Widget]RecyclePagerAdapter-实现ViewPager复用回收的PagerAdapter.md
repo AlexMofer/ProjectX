@@ -10,17 +10,20 @@
 
 ## 链接
 
-- [***Github***](https://github.com/AlexMofer/ProjectX/tree/master/supportplus)
-- [***Bintray***](https://bintray.com/alexmofer/maven/SupportPlus)
+## 链接
+- [***Github***](https://github.com/AlexMofer/RecyclePagerAdapter)
+- [***Bintray***](https://bintray.com/alexmofer/maven/ViewPager)
 
 ## 引用
 ```java
 dependencies {
     ⋯
-    compile 'am.project:supportplus:24.2.1.1'
+    compile 'am.util:viewpager:25.3.0'
     ⋯
 }
 ```
+ > **提示：** 引用最好上Github确认，有时项目已更新，但文章未必更新。
+
 ## 使用
 整体实现其实不难，使用过RecycleView的话，就可以轻车熟路，跟其实现方案一模一样。
 
