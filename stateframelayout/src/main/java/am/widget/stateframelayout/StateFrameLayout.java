@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -53,7 +54,6 @@ public class StateFrameLayout extends FrameLayout {
         initView(context, attrs);
     }
 
-    @TargetApi(11)
     public StateFrameLayout(Context context, AttributeSet attrs,
                             int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -111,11 +111,14 @@ public class StateFrameLayout extends FrameLayout {
 
     @Override
     protected LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
-        if (lp instanceof LayoutParams) {
-            return new LayoutParams((LayoutParams) lp);
-        } else if (lp instanceof FrameLayout.LayoutParams) {
-            return new LayoutParams((FrameLayout.LayoutParams) lp);
-        } else if (lp instanceof MarginLayoutParams) {
+        if (Build.VERSION.SDK_INT >= 19) {
+            if (lp instanceof LayoutParams) {
+                return new LayoutParams((LayoutParams) lp);
+            } else if (lp instanceof FrameLayout.LayoutParams) {
+                return new LayoutParams((FrameLayout.LayoutParams) lp);
+            }
+        }
+        if (lp instanceof MarginLayoutParams) {
             return new LayoutParams((MarginLayoutParams) lp);
         } else {
             return new LayoutParams(lp);
@@ -860,7 +863,7 @@ public class StateFrameLayout extends FrameLayout {
         super.onRestoreInstanceState(ss.getSuperState());
     }
 
-    static class SavedState extends BaseSavedState {
+    private static class SavedState extends BaseSavedState {
         private int mState = STATE_NORMAL;
         private boolean mAlwaysDrawChild = false;
 
@@ -917,7 +920,6 @@ public class StateFrameLayout extends FrameLayout {
     /**
      * Per-child layout information associated with WrapLayout.
      */
-    @SuppressWarnings("all")
     public static class LayoutParams extends FrameLayout.LayoutParams {
 
         private int mState = STATE_NORMAL;
@@ -952,10 +954,12 @@ public class StateFrameLayout extends FrameLayout {
             super(source);
         }
 
+        @TargetApi(19)
         public LayoutParams(FrameLayout.LayoutParams source) {
             super(source);
         }
 
+        @TargetApi(19)
         public LayoutParams(LayoutParams source) {
             super(source);
             mState = source.mState;

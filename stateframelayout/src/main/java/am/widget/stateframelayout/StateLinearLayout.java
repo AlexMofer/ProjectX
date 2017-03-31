@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -111,11 +112,14 @@ public class StateLinearLayout extends LinearLayout {
 
     @Override
     protected LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
-        if (lp instanceof LayoutParams) {
-            return new LayoutParams((LayoutParams) lp);
-        } else if (lp instanceof LinearLayout.LayoutParams) {
-            return new LayoutParams((LinearLayout.LayoutParams) lp);
-        } else if (lp instanceof MarginLayoutParams) {
+        if (Build.VERSION.SDK_INT >= 19) {
+            if (lp instanceof LayoutParams) {
+                return new LayoutParams((LayoutParams) lp);
+            } else if (lp instanceof LinearLayout.LayoutParams) {
+                return new LayoutParams((LinearLayout.LayoutParams) lp);
+            }
+        }
+        if (lp instanceof MarginLayoutParams) {
             return new LayoutParams((MarginLayoutParams) lp);
         } else {
             return new LayoutParams(lp);
@@ -860,7 +864,7 @@ public class StateLinearLayout extends LinearLayout {
         super.onRestoreInstanceState(ss.getSuperState());
     }
 
-    static class SavedState extends BaseSavedState {
+    private static class SavedState extends BaseSavedState {
         private int mState = STATE_NORMAL;
         private boolean mAlwaysDrawChild = false;
 
@@ -917,7 +921,6 @@ public class StateLinearLayout extends LinearLayout {
     /**
      * Per-child layout information associated with WrapLayout.
      */
-    @SuppressWarnings("all")
     public static class LayoutParams extends LinearLayout.LayoutParams {
 
         private int mState = STATE_NORMAL;
@@ -952,10 +955,12 @@ public class StateLinearLayout extends LinearLayout {
             super(source);
         }
 
+        @TargetApi(19)
         public LayoutParams(LinearLayout.LayoutParams source) {
             super(source);
         }
 
+        @TargetApi(19)
         public LayoutParams(LayoutParams source) {
             super(source);
             mState = source.mState;

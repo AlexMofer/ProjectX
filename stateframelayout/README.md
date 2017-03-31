@@ -10,7 +10,7 @@ minSdkVersion 4
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:stateframelayout:2.0.0'
+    compile 'am.widget:stateframelayout:2.0.2'
     ⋯
 }
 ```
@@ -80,6 +80,8 @@ custom:sflLayout_state|normal、loading、error、empty|LayoutParams.setState(in
 - OnStateClickListener为仅仅监听错误时候的点击，OnAllStateClickListener则为全状态监听。
 
 ## 历史
+- [**2.0.1**](https://bintray.com/alexmofer/maven/StateFrameLayout/2.0.1)
+- [**2.0.0**](https://bintray.com/alexmofer/maven/StateFrameLayout/2.0.0)
 - [**1.0.3**](https://bintray.com/alexmofer/maven/StateFrameLayout/1.0.3)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/stateframelayout/history/1.0.3)）
 - [**1.0.2**](https://bintray.com/alexmofer/maven/StateFrameLayout/1.0.2)
 - [**1.0.1**](https://bintray.com/alexmofer/maven/StateFrameLayout/1.0.1)

@@ -37,7 +37,6 @@ public class WrapLayout extends ViewGroup {
         initView(context, attrs, 0);
     }
 
-    @TargetApi(11)
     public WrapLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context, attrs, defStyleAttr);
