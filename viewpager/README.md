@@ -10,7 +10,7 @@
 ```java
 dependencies {
     ⋯
-    compile 'am.util:viewpager:25.3.0'
+    compile 'am.util:viewpager:25.3.1'
     ⋯
 }
 ```
@@ -29,6 +29,7 @@ dependencies {
 - 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7），否则可能出现错误。
 
 ## 历史
+- [**25.3.0**](https://bintray.com/alexmofer/maven/ViewPager/25.3.0)
 - [**25.2.0**](https://bintray.com/alexmofer/maven/ViewPager/25.2.0)
 - [**25.1.1**](https://bintray.com/alexmofer/maven/ViewPager/25.1.1)
 - [**25.1.0**](https://bintray.com/alexmofer/maven/ViewPager/25.1.0)
