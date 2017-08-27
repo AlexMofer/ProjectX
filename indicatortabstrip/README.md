@@ -5,14 +5,14 @@
 ## 预览
 ![Screenshots](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/indicatortabstrip/screenshots.gif)
 ## 要求
-- minSdkVersion 9
+- minSdkVersion 14
 - 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7）
 
 ## 引用
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:indicatortabstrip:25.3.1'
+    compile 'am.widget:indicatortabstrip:26.0.1'
     ⋯
 }
 ```
@@ -73,6 +73,12 @@ tabs.bindViewPager(viewPager);
 - 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7），否则可能出现错误
 
 ## 历史
+- [**26.0.0**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/26.0.0)
+- [**26.0.0-beta2**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/26.0.0-beta2)
+- [**26.0.0-beta1**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/26.0.0-beta1)
+- [**25.4.0**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/25.4.0)
+- [**26.0.0-alpha1**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/26.0.0-alpha1)
+- [**25.3.1**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/25.3.1)
 - [**25.3.0**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/25.3.0)
 - [**25.2.0**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/25.2.0)
 - [**25.1.1**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/25.1.1)

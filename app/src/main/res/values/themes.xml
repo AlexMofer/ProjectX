@@ -3,6 +3,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowAnimationStyle">@style/DrawerActivity</item>
         <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
         <item name="actionBarStyle">@style/ActionBarStyle</item>
         <item name="toolbarStyle">?actionBarStyle</item>
         <item name="colorPrimary">@color/colorPrimary</item>

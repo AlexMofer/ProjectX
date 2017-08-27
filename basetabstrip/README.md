@@ -3,14 +3,14 @@
 
 继承自View，可自动捆绑ViewPager，BaseTabStrip为基础类，仅实现了一些通用基础逻辑。具体的实现效果需要实现与重写部分方法。
 ## 要求
-- minSdkVersion 9
+- minSdkVersion 14
 - 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7）
 
 ## 引用
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:basetabstrip:25.3.1'
+    compile 'am.widget:basetabstrip:26.0.1'
     ⋯
 }
 ```
@@ -102,6 +102,12 @@ dependencies {
 - 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7），否则可能出现错误
 
 ## 历史
+- [**26.0.0**](https://bintray.com/alexmofer/maven/BaseTabStrip/26.0.0)
+- [**26.0.0-beta2**](https://bintray.com/alexmofer/maven/BaseTabStrip/26.0.0-beta2)
+- [**26.0.0-beta1**](https://bintray.com/alexmofer/maven/BaseTabStrip/26.0.0-beta1)
+- [**25.4.0**](https://bintray.com/alexmofer/maven/BaseTabStrip/25.4.0)
+- [**26.0.0-alpha1**](https://bintray.com/alexmofer/maven/BaseTabStrip/26.0.0-alpha1)
+- [**25.3.1**](https://bintray.com/alexmofer/maven/BaseTabStrip/25.3.1)
 - [**25.3.0**](https://bintray.com/alexmofer/maven/BaseTabStrip/25.3.0)
 - [**25.2.0**](https://bintray.com/alexmofer/maven/BaseTabStrip/25.2.0)
 - [**25.1.1**](https://bintray.com/alexmofer/maven/BaseTabStrip/25.1.1)

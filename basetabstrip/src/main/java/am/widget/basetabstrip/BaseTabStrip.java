@@ -32,6 +32,7 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.StateSet;
 import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
@@ -325,11 +326,21 @@ public abstract class BaseTabStrip extends View {
         final float downMotionY = tabStripGestureDetector.getDownMotionY();
         int position = pointToPosition(downMotionX, downMotionY);
         if (position >= 0 && position < mTabItemBackgrounds.size()) {
-            Drawable tag = mTabItemBackgrounds.get(position);
-            DrawableCompat.setHotspot(tag, getHotspotX(tag, position, downMotionX, downMotionY),
-                    getHotspotY(tag, position, downMotionX, downMotionY));
-            if (tag.isStateful()) {
-                tag.setState(getDrawableState());
+            for (int i = 0; i < mTabItemBackgrounds.size(); i++) {
+                Drawable tag = mTabItemBackgrounds.get(i);
+                if (i == position) {
+                    DrawableCompat.setHotspot(tag, getHotspotX(tag, position, downMotionX, downMotionY),
+                            getHotspotY(tag, position, downMotionX, downMotionY));
+                    if (tag.isStateful()) {
+                        tag.setState(getDrawableState());
+                    }
+                } else {
+                    if (tag.isStateful()) {
+                        tag.setState(new int[] { 0 });
+                        DrawableCompat.jumpToCurrentState(tag);
+                    }
+                }
+
             }
         }
         super.drawableStateChanged();
@@ -405,7 +416,7 @@ public abstract class BaseTabStrip extends View {
         super.onRestoreInstanceState(ss.getSuperState());
     }
 
-    static class BaseTabStripSavedState extends BaseSavedState {
+    private static class BaseTabStripSavedState extends BaseSavedState {
         int currentPager;
 
         BaseTabStripSavedState(Parcelable superState) {
@@ -948,6 +959,7 @@ public abstract class BaseTabStrip extends View {
     /**
      * 变化监听
      */
+    @SuppressWarnings("all")
     public interface OnChangeListener {
         /**
          * 跳转到当前位置

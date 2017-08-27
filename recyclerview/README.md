@@ -3,14 +3,14 @@
 
 与RecyclerView相关的一些工具类。
 ## 要求
-- minSdkVersion 9
+- minSdkVersion 14
 - 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7）
 
 ## 引用
 ```java
 dependencies {
     ⋯
-    compile 'am.util:recyclerview:25.3.1'
+    compile 'am.util:recyclerview:26.0.1'
     ⋯
 }
 ```
@@ -26,6 +26,12 @@ dependencies {
 - 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7），否则可能出现错误。
 
 ## 历史
+- [**26.0.0**](https://bintray.com/alexmofer/maven/RecyclerView/26.0.0)
+- [**26.0.0-beta2**](https://bintray.com/alexmofer/maven/RecyclerView/26.0.0-beta2)
+- [**26.0.0-beta1**](https://bintray.com/alexmofer/maven/RecyclerView/26.0.0-beta1)
+- [**25.4.0**](https://bintray.com/alexmofer/maven/RecyclerView/25.4.0)
+- [**26.0.0-alpha1**](https://bintray.com/alexmofer/maven/RecyclerView/26.0.0-alpha1)
+- [**25.3.1**](https://bintray.com/alexmofer/maven/RecyclerView/25.3.1)
 - [**25.3.0**](https://bintray.com/alexmofer/maven/RecyclerView/25.3.0)
 - [**25.2.0**](https://bintray.com/alexmofer/maven/RecyclerView/25.2.0)
 - [**25.1.1**](https://bintray.com/alexmofer/maven/RecyclerView/25.1.1)
