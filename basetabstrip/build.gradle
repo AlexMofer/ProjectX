@@ -7,12 +7,12 @@ android {
         minSdkVersion 14
         targetSdkVersion 26
         versionCode 32
-        versionName "26.0.1"
+        versionName "26.0.2"
     }
 }
 
 dependencies {
-    compile 'com.android.support:support-core-ui:26.0.1'
+    compile 'com.android.support:support-core-ui:26.0.2'
 }
 
 //apply from: "bintray.gradle"
