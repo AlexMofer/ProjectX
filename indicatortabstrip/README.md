@@ -12,7 +12,7 @@
 ```java
 dependencies {
     ⋯
-    compile 'am.widget:indicatortabstrip:26.0.1'
+    compile 'am.widget:indicatortabstrip:26.0.2'
     ⋯
 }
 ```
@@ -73,6 +73,7 @@ tabs.bindViewPager(viewPager);
 - 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7），否则可能出现错误
 
 ## 历史
+- [**26.0.1**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/26.0.1)
 - [**26.0.0**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/26.0.0)
 - [**26.0.0-beta2**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/26.0.0-beta2)
 - [**26.0.0-beta1**](https://bintray.com/alexmofer/maven/IndicatorTabStrip/26.0.0-beta1)

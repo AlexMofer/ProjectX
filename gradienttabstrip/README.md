@@ -75,7 +75,6 @@ tabStrip.bindViewPager(viewPager);
 - [**25.1.0**](https://bintray.com/alexmofer/maven/GradientTabStrip/25.1.0)
 - [**25.0.1**](https://bintray.com/alexmofer/maven/GradientTabStrip/25.0.1)
 - [**25.0.0**](https://bintray.com/alexmofer/maven/GradientTabStrip/25.0.0)
-- [**24.2.1.1**](https://bintray.com/alexmofer/maven/GradientTabStrip/24.2.1.1)
 - [**24.2.1**](https://bintray.com/alexmofer/maven/GradientTabStrip/24.2.1)
 - [**24.2.0**](https://bintray.com/alexmofer/maven/GradientTabStrip/24.2.0)
 - [**3.1.1**](https://bintray.com/alexmofer/maven/GradientTabStrip/3.1.1)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/gradienttabstrip/history/3.1.1)）
