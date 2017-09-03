@@ -1,10 +1,12 @@
 package am.project.x.utils;
 
+import android.support.annotation.NonNull;
 import android.util.Base64;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -403,5 +405,20 @@ public class StringUtils {
             charset = "GBK";
         }
         return charset;
+    }
+
+    /**
+     * 字符串匹配
+     *
+     * @param src 源
+     * @param des 匹配样式
+     * @return 是否匹配
+     */
+    public static boolean isMatching(@NonNull String src, @NonNull String des) {
+        String des1 = des.replace("*", "\\w*");
+        des1 = des1.replace("?", "\\w{1}");
+        Pattern p = Pattern.compile(des1);
+        Matcher m = p.matcher(src);
+        return m.matches();
     }
 }
