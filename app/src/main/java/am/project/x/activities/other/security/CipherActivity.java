@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Base64;
@@ -35,8 +36,8 @@ public class CipherActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initResource(Bundle savedInstanceState) {
         setSupportActionBar(R.id.cipher_toolbar);
-        edtInput = (EditText) findViewById(R.id.cipher_edt_input);
-        tvOutput = (TextView) findViewById(R.id.cipher_tv_output);
+        edtInput = findViewById(R.id.cipher_edt_input);
+        tvOutput = findViewById(R.id.cipher_tv_output);
         findViewById(R.id.cipher_btn_message).setOnClickListener(this);
         findViewById(R.id.cipher_btn_des).setOnClickListener(this);
         findViewById(R.id.cipher_btn_aes).setOnClickListener(this);
@@ -70,13 +71,13 @@ public class CipherActivity extends BaseActivity implements View.OnClickListener
     private class CipherTask extends AsyncTask<String, Void, StringBuffer>
             implements DialogInterface.OnCancelListener {
 
-        public static final int MODE_MESSAGE = 0;
-        public static final int MODE_DES = 1;
-        public static final int MODE_AES = 2;
-        public static final int MODE_RSA = 3;
+        static final int MODE_MESSAGE = 0;
+        static final int MODE_DES = 1;
+        static final int MODE_AES = 2;
+        static final int MODE_RSA = 3;
         private int mode;
 
-        public CipherTask(int mode) {
+        CipherTask(int mode) {
             this.mode = mode;
         }
 
@@ -136,9 +137,63 @@ public class CipherActivity extends BaseActivity implements View.OnClickListener
 
         getMD5(buffer, text);
 
+        getSHA1(buffer, text);
+
+        getSHA224(buffer, text);
+
         getSHA256(buffer, text);
 
+        getSHA384(buffer, text);
+
+        getSHA512(buffer, text);
+
         return buffer;
+    }
+
+    private void getMD5(StringBuffer buffer, String text) {
+        buffer.append("MD5：");
+        buffer.append(MessageDigestUtils.getMD5String(text));
+        buffer.append("\n");
+        buffer.append("\n");
+    }
+
+    private void getSHA1(StringBuffer buffer, String text) {
+        buffer.append("SHA-1：");
+        buffer.append(MessageDigestUtils.getSHA1String(text.getBytes()));
+        buffer.append("\n");
+        buffer.append("\n");
+    }
+
+    @SuppressWarnings("all")
+    private void getSHA224(StringBuffer buffer, String text) {
+        buffer.append("SHA-224：");
+        if (Build.VERSION.SDK_INT > 8 && Build.VERSION.SDK_INT < 22) {
+            buffer.append("SHA-224 Supported API Levels 1-8,22+");
+        } else {
+            buffer.append(MessageDigestUtils.getSHA224String(text.getBytes()));
+        }
+        buffer.append("\n");
+        buffer.append("\n");
+    }
+
+    private void getSHA256(StringBuffer buffer, String text) {
+        buffer.append("SHA-256：");
+        buffer.append(MessageDigestUtils.getSHA256String(text.getBytes()));
+        buffer.append("\n");
+        buffer.append("\n");
+    }
+
+    private void getSHA384(StringBuffer buffer, String text) {
+        buffer.append("SHA-384：");
+        buffer.append(MessageDigestUtils.getSHA384String(text.getBytes()));
+        buffer.append("\n");
+        buffer.append("\n");
+    }
+
+    private void getSHA512(StringBuffer buffer, String text) {
+        buffer.append("SHA-512：");
+        buffer.append(MessageDigestUtils.getSHA512String(text.getBytes()));
+        buffer.append("\n");
     }
 
     private StringBuffer getDES(String text) {
@@ -171,20 +226,6 @@ public class CipherActivity extends BaseActivity implements View.OnClickListener
         doRSA(buffer, text);
 
         return buffer;
-    }
-
-    private void getMD5(StringBuffer buffer, String text) {
-        buffer.append("MD5：");
-        byte[] md5 = MessageDigestUtils.getMD5(text.getBytes());
-        buffer.append(Base64.encodeToString(md5, Base64.DEFAULT));
-        buffer.append("\n");
-    }
-
-    private void getSHA256(StringBuffer buffer, String text) {
-        buffer.append("SHA-256：");
-        byte[] sha256 = MessageDigestUtils.getSHA256(text.getBytes());
-        buffer.append(Base64.encodeToString(sha256, Base64.DEFAULT));
-        buffer.append("\n");
     }
 
     /**
