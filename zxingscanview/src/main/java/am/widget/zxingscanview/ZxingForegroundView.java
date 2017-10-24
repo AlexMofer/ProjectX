@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.widget.zxingscanview;
 
 import android.animation.ValueAnimator;
@@ -35,24 +51,24 @@ public class ZxingForegroundView extends View {
     public static final int MODE_OPEN = 0;
     public static final int MODE_ERROR = 1;
     private static final long DEFAULT_FRAME_DELAY = 10;//丢失超过30帧就会报警
+    private final OnScanListener scanListener = new OnScanListener();
+    private final OnStateListener stateListener = new OnStateListener();
+    private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Rect mCoverRect = new Rect();
+    private final ValueAnimator mLoadingAnimator = ValueAnimator.ofFloat(0f, 1f);// 载入动画
+    private final CopyOnWriteArrayList<ResultPointItem> mResultPoints = new CopyOnWriteArrayList<>();
+    private final Interpolator mInterpolator = new CycleInterpolator(1);
     private Drawable mOpenDrawable;
     private Drawable mErrorDrawable;
     private ZxingScanView mScanView;
-    private final OnScanListener scanListener = new OnScanListener();
-    private final OnStateListener stateListener = new OnStateListener();
     private int mScanViewId;
     private int mode;
     private int mCoverColor;
-    private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final Rect mCoverRect = new Rect();
     private Drawable mScanRectDrawable;
     private Drawable mScanFlagDrawable;
-    private final ValueAnimator mLoadingAnimator = ValueAnimator.ofFloat(0f, 1f);// 载入动画
     private float mOffset = 0;
-    private final CopyOnWriteArrayList<ResultPointItem> mResultPoints = new CopyOnWriteArrayList<>();
     private boolean mShowResultPoints;
     private long mResultPointsAnimatorDuration;
-    private final Interpolator mInterpolator = new CycleInterpolator(1);
     private int mMaxResultPointsNumber;
     private int mResultPointsColor;
     private float mResultPointsSize;

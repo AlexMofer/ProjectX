@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.drawable;
 
 import android.graphics.Canvas;
@@ -36,6 +52,39 @@ public class LineDrawable extends Drawable {
         setLineColor(lineColor);
         setLineSize(lineSize);
         setGravity(gravity);
+    }
+
+    /**
+     * 获取StateListDrawable
+     *
+     * @param backgroundColor 背景色
+     * @param normalColor     普通情况线条颜色
+     * @param focusColor      选中情况线条颜色
+     * @param lineSize        线条粗细
+     * @return StateListDrawable
+     */
+    public static StateListDrawable getLineStateListDrawable(int backgroundColor, int normalColor, int focusColor, int lineSize) {
+        return getLineStateListDrawable(backgroundColor, normalColor, focusColor, lineSize, Gravity.BOTTOM);
+    }
+
+    /**
+     * 获取StateListDrawable
+     *
+     * @param backgroundColor 背景色
+     * @param normalColor     普通情况线条颜色
+     * @param focusColor      选中情况线条颜色
+     * @param lineSize        线条粗细
+     * @param gravity         布局
+     * @return StateListDrawable
+     */
+    public static StateListDrawable getLineStateListDrawable(int backgroundColor, int normalColor, int focusColor, int lineSize, int gravity) {
+        StateListDrawable drawable = new StateListDrawable();
+        LineDrawable focus = new LineDrawable(backgroundColor, focusColor, lineSize, gravity);
+        LineDrawable normal = new LineDrawable(backgroundColor, normalColor, lineSize, gravity);
+        drawable.addState(new int[]{android.R.attr.state_enabled, android.R.attr.state_focused}, focus);
+        drawable.addState(new int[]{android.R.attr.state_focused}, focus);
+        drawable.addState(new int[]{}, normal);
+        return drawable;
     }
 
     @Override
@@ -180,38 +229,5 @@ public class LineDrawable extends Drawable {
     public void setGravity(int gravity) {
         mGravity = gravity;
         invalidateSelf();
-    }
-
-    /**
-     * 获取StateListDrawable
-     *
-     * @param backgroundColor 背景色
-     * @param normalColor     普通情况线条颜色
-     * @param focusColor      选中情况线条颜色
-     * @param lineSize        线条粗细
-     * @return StateListDrawable
-     */
-    public static StateListDrawable getLineStateListDrawable(int backgroundColor, int normalColor, int focusColor, int lineSize) {
-        return getLineStateListDrawable(backgroundColor, normalColor, focusColor, lineSize, Gravity.BOTTOM);
-    }
-
-    /**
-     * 获取StateListDrawable
-     *
-     * @param backgroundColor 背景色
-     * @param normalColor     普通情况线条颜色
-     * @param focusColor      选中情况线条颜色
-     * @param lineSize        线条粗细
-     * @param gravity         布局
-     * @return StateListDrawable
-     */
-    public static StateListDrawable getLineStateListDrawable(int backgroundColor, int normalColor, int focusColor, int lineSize, int gravity) {
-        StateListDrawable drawable = new StateListDrawable();
-        LineDrawable focus = new LineDrawable(backgroundColor, focusColor, lineSize, gravity);
-        LineDrawable normal = new LineDrawable(backgroundColor, normalColor, lineSize, gravity);
-        drawable.addState(new int[]{android.R.attr.state_enabled, android.R.attr.state_focused}, focus);
-        drawable.addState(new int[]{android.R.attr.state_focused}, focus);
-        drawable.addState(new int[]{}, normal);
-        return drawable;
     }
 }

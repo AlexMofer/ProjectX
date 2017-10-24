@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.util.printer;
 
 import android.bluetooth.BluetoothDevice;
@@ -94,59 +110,6 @@ public class PrintExecutor {
         new PrintTask().execute(maker);
     }
 
-    private class PrintTask extends AsyncTask<PrintDataMaker, Integer, Integer> implements
-            PrintSocketHolder.OnStateChangedListener {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            holder.setOnStateChangedListener(this);
-        }
-
-        @Override
-        protected Integer doInBackground(PrintDataMaker... makers) {
-            if (makers == null || makers.length < 1)
-                return PrintSocketHolder.ERROR_0;
-            return doRequest(makers[0]);
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-            if (values == null || values.length < 1)
-                return;
-            if (listener != null)
-                listener.onStateChanged(values[0]);
-        }
-
-        @Override
-        protected void onPostExecute(Integer integer) {
-            super.onPostExecute(integer);
-            if (integer != null) {
-                onResult(integer);
-            }
-        }
-
-        /**
-         * 打印结果
-         *
-         * @param errorCode 错误代码
-         */
-        private void onResult(int errorCode) {
-            try {
-                if (mListener != null)
-                    mListener.get().onResult(errorCode);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onStateChanged(int state) {
-            publishProgress(state);
-        }
-    }
-
     /**
      * 销毁
      */
@@ -209,6 +172,59 @@ public class PrintExecutor {
 
     public interface OnPrintResultListener {
         void onResult(int errorCode);
+    }
+
+    private class PrintTask extends AsyncTask<PrintDataMaker, Integer, Integer> implements
+            PrintSocketHolder.OnStateChangedListener {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            holder.setOnStateChangedListener(this);
+        }
+
+        @Override
+        protected Integer doInBackground(PrintDataMaker... makers) {
+            if (makers == null || makers.length < 1)
+                return PrintSocketHolder.ERROR_0;
+            return doRequest(makers[0]);
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            if (values == null || values.length < 1)
+                return;
+            if (listener != null)
+                listener.onStateChanged(values[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            if (integer != null) {
+                onResult(integer);
+            }
+        }
+
+        /**
+         * 打印结果
+         *
+         * @param errorCode 错误代码
+         */
+        private void onResult(int errorCode) {
+            try {
+                if (mListener != null)
+                    mListener.get().onResult(errorCode);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onStateChanged(int state) {
+            publishProgress(state);
+        }
     }
 
 }

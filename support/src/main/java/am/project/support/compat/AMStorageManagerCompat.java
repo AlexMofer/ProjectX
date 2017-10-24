@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.project.support.compat;
 
 import android.annotation.TargetApi;
@@ -17,8 +33,48 @@ import java.util.List;
  */
 @SuppressWarnings("all")
 public class AMStorageManagerCompat {
+    private static final StorageManagerCompatImpl IMPL;
+
+    static {
+        if (Build.VERSION.SDK_INT >= 24) {
+            IMPL = new Api24StorageManagerCompatImpl();
+        } else {
+            IMPL = new BaseStorageManagerCompatImpl();
+        }
+    }
+
     private AMStorageManagerCompat() {
         //no instance
+    }
+
+    /**
+     * 获取所有存储设备
+     *
+     * @param manager 存储设备管理器
+     * @return 所有存储设备
+     */
+    public static List<StorageVolumeImpl> getStorageVolumes(StorageManager manager) {
+        return IMPL.getStorageVolumes(manager);
+    }
+
+    /**
+     * 获取所有已挂载的存储设备
+     *
+     * @param manager 存储设备管理器
+     * @return 所有已挂载的存储设备
+     */
+    public static List<StorageVolumeImpl> getEmulatedStorageVolumes(StorageManager manager) {
+        List<StorageVolumeImpl> storageVolumes = getStorageVolumes(manager);
+        if (storageVolumes != null) {
+            for (int i = 0; i < storageVolumes.size(); ) {
+                if (storageVolumes.get(i).isEmulated()) {
+                    i++;
+                    continue;
+                }
+                storageVolumes.remove(i);
+            }
+        }
+        return storageVolumes;
     }
 
     public interface StorageVolumeImpl extends Parcelable {
@@ -28,13 +84,34 @@ public class AMStorageManagerCompat {
         boolean isEmulated();
     }
 
+    private interface StorageManagerCompatImpl {
+        List<StorageVolumeImpl> getStorageVolumes(StorageManager manager);
+    }
+
     private static class BaseStorageVolumeImpl implements StorageVolumeImpl {
+        public static final Creator<BaseStorageVolumeImpl> CREATOR =
+                new Creator<BaseStorageVolumeImpl>() {
+                    @Override
+                    public BaseStorageVolumeImpl createFromParcel(Parcel source) {
+                        return new BaseStorageVolumeImpl(source);
+                    }
+
+                    @Override
+                    public BaseStorageVolumeImpl[] newArray(int size) {
+                        return new BaseStorageVolumeImpl[size];
+                    }
+                };
         private final String mPath;
         private final boolean mEmulated;
 
         private BaseStorageVolumeImpl(String path, boolean emulated) {
             mPath = path;
             mEmulated = emulated;
+        }
+
+        private BaseStorageVolumeImpl(Parcel in) {
+            this.mPath = in.readString();
+            this.mEmulated = in.readByte() != 0;
         }
 
         @Override
@@ -57,63 +134,10 @@ public class AMStorageManagerCompat {
             dest.writeString(this.mPath);
             dest.writeByte(this.mEmulated ? (byte) 1 : (byte) 0);
         }
-
-        private BaseStorageVolumeImpl(Parcel in) {
-            this.mPath = in.readString();
-            this.mEmulated = in.readByte() != 0;
-        }
-
-        public static final Creator<BaseStorageVolumeImpl> CREATOR =
-                new Creator<BaseStorageVolumeImpl>() {
-                    @Override
-                    public BaseStorageVolumeImpl createFromParcel(Parcel source) {
-                        return new BaseStorageVolumeImpl(source);
-                    }
-
-                    @Override
-                    public BaseStorageVolumeImpl[] newArray(int size) {
-                        return new BaseStorageVolumeImpl[size];
-                    }
-                };
     }
 
     @TargetApi(24)
     private static class Api24StorageVolumeImpl implements StorageVolumeImpl {
-        private final StorageVolume mStorageVolume;
-        private final String mPath;
-
-        private Api24StorageVolumeImpl(String path, StorageVolume volume) {
-            mPath = path;
-            mStorageVolume = volume;
-        }
-
-        @Override
-        public String getPath() {
-            return mPath;
-        }
-
-        @Override
-        public boolean isEmulated() {
-            return mStorageVolume.isEmulated();
-        }
-
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeParcelable(this.mStorageVolume, flags);
-            dest.writeString(this.mPath);
-        }
-
-        private Api24StorageVolumeImpl(Parcel in) {
-            this.mStorageVolume = in.readParcelable(StorageVolume.class.getClassLoader());
-            this.mPath = in.readString();
-        }
-
         public static final Creator<Api24StorageVolumeImpl> CREATOR =
                 new Parcelable.Creator<Api24StorageVolumeImpl>() {
                     @Override
@@ -126,10 +150,39 @@ public class AMStorageManagerCompat {
                         return new Api24StorageVolumeImpl[size];
                     }
                 };
-    }
+        private final StorageVolume mStorageVolume;
+        private final String mPath;
 
-    private interface StorageManagerCompatImpl {
-        List<StorageVolumeImpl> getStorageVolumes(StorageManager manager);
+        private Api24StorageVolumeImpl(String path, StorageVolume volume) {
+            mPath = path;
+            mStorageVolume = volume;
+        }
+
+        private Api24StorageVolumeImpl(Parcel in) {
+            this.mStorageVolume = in.readParcelable(StorageVolume.class.getClassLoader());
+            this.mPath = in.readString();
+        }
+
+        @Override
+        public String getPath() {
+            return mPath;
+        }
+
+        @Override
+        public boolean isEmulated() {
+            return mStorageVolume.isEmulated();
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeParcelable(this.mStorageVolume, flags);
+            dest.writeString(this.mPath);
+        }
     }
 
     private static class BaseStorageManagerCompatImpl implements StorageManagerCompatImpl {
@@ -200,19 +253,5 @@ public class AMStorageManagerCompat {
             }
             return storageVolumes;
         }
-    }
-
-    private static final StorageManagerCompatImpl IMPL;
-
-    static {
-        if (Build.VERSION.SDK_INT >= 24) {
-            IMPL = new Api24StorageManagerCompatImpl();
-        } else {
-            IMPL = new BaseStorageManagerCompatImpl();
-        }
-    }
-
-    public static List<StorageVolumeImpl> getStorageVolumes(StorageManager manager) {
-        return IMPL.getStorageVolumes(manager);
     }
 }

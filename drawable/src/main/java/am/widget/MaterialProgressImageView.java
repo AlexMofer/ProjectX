@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.widget;
 
 import android.annotation.TargetApi;
@@ -202,14 +218,32 @@ public class MaterialProgressImageView extends ImageView implements Animatable {
         }
     }
 
+    @Override
+    public void start() {
+        if (!drawable.isRunning()) {
+            drawable.start();
+        }
+    }
+
+    @Override
+    public void stop() {
+        if (drawable.isRunning()) {
+            drawable.stop();
+        }
+    }
+
+    @Override
+    public boolean isRunning() {
+        return drawable.isRunning();
+    }
+
     private class OvalShadow extends OvalShape {
 
         private static final int FILL_SHADOW_COLOR = 0x3D000000;
-
-        private RadialGradient mRadialGradient;
         private final Paint mShadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final RectF mOvalRectF = new RectF();
         private final Matrix mMatrix = new Matrix();
+        private RadialGradient mRadialGradient;
 
         OvalShadow() {
             mRadialGradient = new RadialGradient(10, 10, 10,
@@ -232,24 +266,5 @@ public class MaterialProgressImageView extends ImageView implements Animatable {
             canvas.drawOval(rect, mShadowPaint);
             canvas.drawOval(mOvalRectF, paint);
         }
-    }
-
-    @Override
-    public void start() {
-        if (!drawable.isRunning()) {
-            drawable.start();
-        }
-    }
-
-    @Override
-    public void stop() {
-        if (drawable.isRunning()) {
-            drawable.stop();
-        }
-    }
-
-    @Override
-    public boolean isRunning() {
-        return drawable.isRunning();
     }
 }

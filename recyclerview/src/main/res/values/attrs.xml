@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ItemAnimatorControllableRecyclerView">
+        <attr name="iacAddAnimationsEnable" format="boolean" />
+        <attr name="iacChangeAnimationsEnable" format="boolean" />
+        <attr name="iacMoveAnimationsEnable" format="boolean" />
+        <attr name="iacRemoveAnimationsEnable" format="boolean" />
+    </declare-styleable>
+</resources>

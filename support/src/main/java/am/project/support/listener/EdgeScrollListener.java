@@ -1,43 +1,32 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.project.support.listener;
 
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 
 /**
+ * TODO 可以优化
  * 滚动边缘监听
  */
 @SuppressWarnings("all")
 public abstract class EdgeScrollListener implements OnScrollListener {
 
     private ScrollLocation mScrollLocation = ScrollLocation.NULL;
-
-    /**
-     * 滚动位置
-     *
-     * @author AlexMofer
-     */
-    public enum ScrollLocation {
-        /**
-         * 起始状态，TB或者TOP状态
-         */
-        NULL,
-        /**
-         * 无法滚动状态，首尾同时到达
-         */
-        TB,
-        /**
-         * 滚动到顶部
-         */
-        TOP,
-        /**
-         * 滚动到中部
-         */
-        CENTER,
-        /**
-         * 滚动到尾部
-         */
-        BOTTOM
-    }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -164,6 +153,34 @@ public abstract class EdgeScrollListener implements OnScrollListener {
      */
     public ScrollLocation getScrollLocation() {
         return mScrollLocation;
+    }
+
+    /**
+     * 滚动位置
+     *
+     * @author AlexMofer
+     */
+    public enum ScrollLocation {
+        /**
+         * 起始状态，TB或者TOP状态
+         */
+        NULL,
+        /**
+         * 无法滚动状态，首尾同时到达
+         */
+        TB,
+        /**
+         * 滚动到顶部
+         */
+        TOP,
+        /**
+         * 滚动到中部
+         */
+        CENTER,
+        /**
+         * 滚动到尾部
+         */
+        BOTTOM
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 The Android Open Source Project
+ * Copyright (C) 2015 AlexMofer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,11 +31,12 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
-import am.widget.basetabstrip.BaseTabStrip;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+
+import am.widget.basetabstrip.BaseTabStrip;
 
 
 /**
@@ -46,6 +47,12 @@ import android.util.AttributeSet;
 @ViewPager.DecorView
 public class IndicatorTabStrip extends BaseTabStrip {
 
+    public static final int INDICATOR_WIDTH_MODE_SET = 0;// 按照设置宽度计算
+    public static final int INDICATOR_WIDTH_MODE_TAB = 1;// 按照子项宽度计算
+    public static final int INDICATOR_WIDTH_BY_DRAWABLE = -1;// 按照图片宽度计算
+    public static final int INDICATOR_HEIGHT_BY_DRAWABLE = -1;// 按照图片高度计算
+    public static final int TAG_MIN_SIZE_MODE_HAS_TEXT = 0;// 当图片最小宽高更小时，按图片计算
+    public static final int TAG_MIN_SIZE_MODE_ALWAYS = 1;// 按照设置的最小宽高
     private static final int[] ATTRS = new int[]{android.R.attr.textSize,
             android.R.attr.textColor, android.R.attr.divider};
     private static final int DEFAULT_TEXT_SIZE = 14;// 默认字体大小dp
@@ -55,12 +62,6 @@ public class IndicatorTabStrip extends BaseTabStrip {
     private static final int DEFAULT_TAG_TEXT_SIZE = 11;// 默认Tag字体大小dp
     private static final int DEFAULT_TAG_TEXT_COLOR = 0xffffffff;// 默认Tag文字颜色
     private static final int DEFAULT_TAG_MIN_SIZE = 15;// 默认Tag最小大小dp
-    public static final int INDICATOR_WIDTH_MODE_SET = 0;// 按照设置宽度计算
-    public static final int INDICATOR_WIDTH_MODE_TAB = 1;// 按照子项宽度计算
-    public static final int INDICATOR_WIDTH_BY_DRAWABLE = -1;// 按照图片宽度计算
-    public static final int INDICATOR_HEIGHT_BY_DRAWABLE = -1;// 按照图片高度计算
-    public static final int TAG_MIN_SIZE_MODE_HAS_TEXT = 0;// 当图片最小宽高更小时，按图片计算
-    public static final int TAG_MIN_SIZE_MODE_ALWAYS = 1;// 按照设置的最小宽高
     private final TextPaint mTextPaint;// 文字画笔
     private float mTextSize;// 文字大小
     private float mTextDesc;// 文字偏移
@@ -737,11 +738,8 @@ public class IndicatorTabStrip extends BaseTabStrip {
      *
      * @param color 文字颜色
      */
-    public void setTextColor(ColorStateList color) {
-        if (color != null && color != mTextColor) {
-            mTextColor = color;
-            invalidate();
-        }
+    public void setTextColor(@ColorInt int color) {
+        setTextColor(ColorStateList.valueOf(color));
     }
 
     /**
@@ -749,8 +747,11 @@ public class IndicatorTabStrip extends BaseTabStrip {
      *
      * @param color 文字颜色
      */
-    public void setTextColor(@ColorInt int color) {
-        setTextColor(ColorStateList.valueOf(color));
+    public void setTextColor(ColorStateList color) {
+        if (color != null && color != mTextColor) {
+            mTextColor = color;
+            invalidate();
+        }
     }
 
     /**
@@ -791,6 +792,16 @@ public class IndicatorTabStrip extends BaseTabStrip {
      *
      * @param gradient 渐变
      */
+    @SuppressWarnings("unused")
+    public void setGradient(@ColorRes int gradient) {
+        setGradient(ContextCompat.getColorStateList(getContext(), gradient));
+    }
+
+    /**
+     * 设置渐变
+     *
+     * @param gradient 渐变
+     */
     public void setGradient(ColorStateList gradient) {
         if (gradient == null) {
             mGradient = null;
@@ -801,16 +812,6 @@ public class IndicatorTabStrip extends BaseTabStrip {
         } else {
             setItemBackground(new ColorDrawable(gradient.getDefaultColor()));
         }
-    }
-
-    /**
-     * 设置渐变
-     *
-     * @param gradient 渐变
-     */
-    @SuppressWarnings("unused")
-    public void setGradient(@ColorRes int gradient) {
-        setGradient(ContextCompat.getColorStateList(getContext(), gradient));
     }
 
     /**
@@ -828,11 +829,9 @@ public class IndicatorTabStrip extends BaseTabStrip {
      *
      * @param divider Divider
      */
-    public void setDivider(Drawable divider) {
-        if (mDivider != divider) {
-            mDivider = divider;
-            invalidate();
-        }
+    @SuppressWarnings("unused")
+    public void setDivider(@DrawableRes int divider) {
+        setDivider(ContextCompat.getDrawable(getContext(), divider));
     }
 
     /**
@@ -840,9 +839,11 @@ public class IndicatorTabStrip extends BaseTabStrip {
      *
      * @param divider Divider
      */
-    @SuppressWarnings("unused")
-    public void setDivider(@DrawableRes int divider) {
-        setDivider(ContextCompat.getDrawable(getContext(), divider));
+    public void setDivider(Drawable divider) {
+        if (mDivider != divider) {
+            mDivider = divider;
+            invalidate();
+        }
     }
 
     /**
@@ -860,11 +861,9 @@ public class IndicatorTabStrip extends BaseTabStrip {
      *
      * @param indicator 游标
      */
-    public void setIndicator(Drawable indicator) {
-        if (mIndicator != indicator) {
-            mIndicator = indicator;
-            invalidate();
-        }
+    @SuppressWarnings("unused")
+    public void setIndicator(@DrawableRes int indicator) {
+        setIndicator(ContextCompat.getDrawable(getContext(), indicator));
     }
 
     /**
@@ -872,9 +871,11 @@ public class IndicatorTabStrip extends BaseTabStrip {
      *
      * @param indicator 游标
      */
-    @SuppressWarnings("unused")
-    public void setIndicator(@DrawableRes int indicator) {
-        setIndicator(ContextCompat.getDrawable(getContext(), indicator));
+    public void setIndicator(Drawable indicator) {
+        if (mIndicator != indicator) {
+            mIndicator = indicator;
+            invalidate();
+        }
     }
 
     /**
@@ -996,11 +997,9 @@ public class IndicatorTabStrip extends BaseTabStrip {
      *
      * @param interval 子项间隔
      */
-    public void setInterval(Drawable interval) {
-        if (mInterval != interval) {
-            mInterval = interval;
-            invalidate();
-        }
+    @SuppressWarnings("unused")
+    public void setInterval(@DrawableRes int interval) {
+        setInterval(ContextCompat.getDrawable(getContext(), interval));
     }
 
     /**
@@ -1008,9 +1007,11 @@ public class IndicatorTabStrip extends BaseTabStrip {
      *
      * @param interval 子项间隔
      */
-    @SuppressWarnings("unused")
-    public void setInterval(@DrawableRes int interval) {
-        setInterval(ContextCompat.getDrawable(getContext(), interval));
+    public void setInterval(Drawable interval) {
+        if (mInterval != interval) {
+            mInterval = interval;
+            invalidate();
+        }
     }
 
     /**
@@ -1141,11 +1142,9 @@ public class IndicatorTabStrip extends BaseTabStrip {
      *
      * @param background Tag背景
      */
-    public void setTagBackground(Drawable background) {
-        if (mTagBackground != background) {
-            mTagBackground = background;
-            invalidate();
-        }
+    @SuppressWarnings("unused")
+    public void setTagBackground(@DrawableRes int background) {
+        setTagBackground(ContextCompat.getDrawable(getContext(), background));
     }
 
     /**
@@ -1153,9 +1152,11 @@ public class IndicatorTabStrip extends BaseTabStrip {
      *
      * @param background Tag背景
      */
-    @SuppressWarnings("unused")
-    public void setTagBackground(@DrawableRes int background) {
-        setTagBackground(ContextCompat.getDrawable(getContext(), background));
+    public void setTagBackground(Drawable background) {
+        if (mTagBackground != background) {
+            mTagBackground = background;
+            invalidate();
+        }
     }
 
     /**

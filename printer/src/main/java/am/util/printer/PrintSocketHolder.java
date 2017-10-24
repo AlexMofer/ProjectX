@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.util.printer;
 
 import android.bluetooth.BluetoothDevice;
@@ -29,10 +45,10 @@ public class PrintSocketHolder {
     public static final int ERROR_5 = -5;// 必要参数不能为空
     public static final int ERROR_6 = -6;// 关闭Socket出错
     public static final int ERROR_100 = -100;// 失败
+    private static final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");//蓝牙打印UUID
     private String ip;
     private int port = 9100;
     private BluetoothDevice mDevice;
-    private static final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");//蓝牙打印UUID
     private Socket socket;
     private BluetoothSocket bluetoothSocket;
     private OutputStream out;

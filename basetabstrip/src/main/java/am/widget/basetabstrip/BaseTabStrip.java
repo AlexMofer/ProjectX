@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 The Android Open Source Project
+ * Copyright (C) 2015 AlexMofer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,8 +49,10 @@ import java.util.ArrayList;
 @ViewPager.DecorView
 public abstract class BaseTabStrip extends View {
 
-    private ViewPager mPager;
     private final PageListener mPageListener = new PageListener();
+    private final Rect mRefreshRect = new Rect();
+    private final Rect mRefreshTempRect = new Rect();
+    private ViewPager mPager;
     private WeakReference<PagerAdapter> mWatchingAdapter;
     private int mLastKnownPosition = 0;
     private float mLastKnownPositionOffset = -1;
@@ -64,8 +66,6 @@ public abstract class BaseTabStrip extends View {
     private TabStripGestureDetector tabStripGestureDetector;
     private OnItemClickListener clickListener;
     private ArrayList<OnChangeListener> changeListeners;
-    private final Rect mRefreshRect = new Rect();
-    private final Rect mRefreshTempRect = new Rect();
 
     public BaseTabStrip(Context context) {
         super(context);
@@ -415,76 +415,6 @@ public abstract class BaseTabStrip extends View {
         super.onRestoreInstanceState(ss.getSuperState());
     }
 
-    private static class BaseTabStripSavedState extends BaseSavedState {
-        int currentPager;
-
-        BaseTabStripSavedState(Parcelable superState) {
-            super(superState);
-        }
-
-        private BaseTabStripSavedState(Parcel in) {
-            super(in);
-            currentPager = in.readInt();
-        }
-
-        @Override
-        public void writeToParcel(Parcel out, int flags) {
-            super.writeToParcel(out, flags);
-            out.writeInt(currentPager);
-        }
-
-        public static final Creator<BaseTabStripSavedState> CREATOR =
-                new Creator<BaseTabStripSavedState>() {
-                    public BaseTabStripSavedState createFromParcel(Parcel in) {
-                        return new BaseTabStripSavedState(in);
-                    }
-
-                    public BaseTabStripSavedState[] newArray(int size) {
-                        return new BaseTabStripSavedState[size];
-                    }
-                };
-    }
-
-    private class PageListener extends DataSetObserver implements
-            ViewPager.OnPageChangeListener, ViewPager.OnAdapterChangeListener {
-        private int mScrollState;
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset,
-                                   int positionOffsetPixels) {
-            updateView(position, positionOffset, false);
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-            if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
-                float offset = mLastKnownPositionOffset >= 0 ? mLastKnownPositionOffset : 0;
-                updateView(position, offset, false);
-            }
-            mPosition = position;
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-            mScrollState = state;
-        }
-
-        @Override
-        public void onAdapterChanged(@NonNull ViewPager viewPager,
-                                     @Nullable PagerAdapter oldAdapter,
-                                     @Nullable PagerAdapter newAdapter) {
-            bindPagerAdapter(oldAdapter, newAdapter);
-        }
-
-        @Override
-        public void onChanged() {
-            final float offset = mLastKnownPositionOffset >= 0 ? mLastKnownPositionOffset : 0;
-            final int position = getCurrentItem();
-            mPosition = position;
-            updateView(position, offset, true);
-        }
-    }
-
     /**
      * 更新View
      *
@@ -611,80 +541,6 @@ public abstract class BaseTabStrip extends View {
      */
     protected abstract void gotoRight(int current, int next, float offset);
 
-    private class TabStripGestureDetector {
-
-        private final int DOUBLE_TAP_TIMEOUT = ViewConfiguration.getDoubleTapTimeout();
-        private float mDownMotionX;
-        private float mDownMotionY;
-        private int mDownPosition;
-        private int mLastPosition;
-        private long mLastUpTime;
-
-        boolean onTouchEvent(MotionEvent ev) {
-            boolean isClick = false;
-            final int action = ev.getAction();
-            final float x = ev.getX();
-            final float y = ev.getY();
-
-            switch (action) {
-                case MotionEvent.ACTION_DOWN:
-                    mDownMotionX = x;
-                    mDownMotionY = y;
-                    mDownPosition = pointToPosition(x, y);
-                    mLastPosition = getCurrentItem();
-                    break;
-                case MotionEvent.ACTION_UP:
-                    final int clickPosition = pointToPosition(x, y);
-                    if (mDownPosition == clickPosition) {
-                        isClick = onItemClick(clickPosition);
-                        if (mLastPosition == clickPosition) {
-                            final long downTime = ev.getDownTime();
-                            if (mLastUpTime != 0 && downTime - mLastUpTime < DOUBLE_TAP_TIMEOUT) {
-                                onDoubleClick(clickPosition);
-                            } else {
-                                onSelectedClick(clickPosition);
-                            }
-                        }
-                        mLastUpTime = ev.getEventTime();
-                    } else {
-                        mLastUpTime = 0;
-                    }
-                    break;
-            }
-            return isClick;
-        }
-
-        private boolean onItemClick(int position) {
-            performClick(position, clickSmoothScroll, true);
-            return true;
-        }
-
-        private void onSelectedClick(int position) {
-            if (clickSelectedItem && clickListener != null) {
-                clickListener.onSelectedClick(position);
-            }
-        }
-
-        /**
-         * 双击子项
-         *
-         * @param position 位置
-         */
-        private void onDoubleClick(int position) {
-            if (clickListener != null) {
-                clickListener.onDoubleClick(position);
-            }
-        }
-
-        float getDownMotionX() {
-            return mDownMotionX;
-        }
-
-        float getDownMotionY() {
-            return mDownMotionY;
-        }
-    }
-
     /**
      * 获取ViewPager
      *
@@ -795,32 +651,6 @@ public abstract class BaseTabStrip extends View {
     @SuppressWarnings("unused")
     public void setOnItemClickListener(OnItemClickListener listener) {
         clickListener = listener;
-    }
-
-    /**
-     * 点击监听
-     */
-    public interface OnItemClickListener {
-        /**
-         * 点击子项
-         *
-         * @param position 位置
-         */
-        void onItemClick(int position);
-
-        /**
-         * 点击已选中子项
-         *
-         * @param position 位置
-         */
-        void onSelectedClick(int position);
-
-        /**
-         * 双击子项
-         *
-         * @param position 位置
-         */
-        void onDoubleClick(int position);
     }
 
     /**
@@ -956,6 +786,32 @@ public abstract class BaseTabStrip extends View {
     }
 
     /**
+     * 点击监听
+     */
+    public interface OnItemClickListener {
+        /**
+         * 点击子项
+         *
+         * @param position 位置
+         */
+        void onItemClick(int position);
+
+        /**
+         * 点击已选中子项
+         *
+         * @param position 位置
+         */
+        void onSelectedClick(int position);
+
+        /**
+         * 双击子项
+         *
+         * @param position 位置
+         */
+        void onDoubleClick(int position);
+    }
+
+    /**
      * 变化监听
      */
     @SuppressWarnings("all")
@@ -1007,6 +863,35 @@ public abstract class BaseTabStrip extends View {
          * @return 角标值
          */
         String getTag(int position);
+    }
+
+    private static class BaseTabStripSavedState extends BaseSavedState {
+        public static final Creator<BaseTabStripSavedState> CREATOR =
+                new Creator<BaseTabStripSavedState>() {
+                    public BaseTabStripSavedState createFromParcel(Parcel in) {
+                        return new BaseTabStripSavedState(in);
+                    }
+
+                    public BaseTabStripSavedState[] newArray(int size) {
+                        return new BaseTabStripSavedState[size];
+                    }
+                };
+        int currentPager;
+
+        BaseTabStripSavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private BaseTabStripSavedState(Parcel in) {
+            super(in);
+            currentPager = in.readInt();
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt(currentPager);
+        }
     }
 
     /**
@@ -1106,6 +991,120 @@ public abstract class BaseTabStrip extends View {
 
         public int getMarginBottom() {
             return marginBottom;
+        }
+    }
+
+    private class PageListener extends DataSetObserver implements
+            ViewPager.OnPageChangeListener, ViewPager.OnAdapterChangeListener {
+        private int mScrollState;
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset,
+                                   int positionOffsetPixels) {
+            updateView(position, positionOffset, false);
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
+                float offset = mLastKnownPositionOffset >= 0 ? mLastKnownPositionOffset : 0;
+                updateView(position, offset, false);
+            }
+            mPosition = position;
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            mScrollState = state;
+        }
+
+        @Override
+        public void onAdapterChanged(@NonNull ViewPager viewPager,
+                                     @Nullable PagerAdapter oldAdapter,
+                                     @Nullable PagerAdapter newAdapter) {
+            bindPagerAdapter(oldAdapter, newAdapter);
+        }
+
+        @Override
+        public void onChanged() {
+            final float offset = mLastKnownPositionOffset >= 0 ? mLastKnownPositionOffset : 0;
+            final int position = getCurrentItem();
+            mPosition = position;
+            updateView(position, offset, true);
+        }
+    }
+
+    private class TabStripGestureDetector {
+
+        private final int DOUBLE_TAP_TIMEOUT = ViewConfiguration.getDoubleTapTimeout();
+        private float mDownMotionX;
+        private float mDownMotionY;
+        private int mDownPosition;
+        private int mLastPosition;
+        private long mLastUpTime;
+
+        boolean onTouchEvent(MotionEvent ev) {
+            boolean isClick = false;
+            final int action = ev.getAction();
+            final float x = ev.getX();
+            final float y = ev.getY();
+
+            switch (action) {
+                case MotionEvent.ACTION_DOWN:
+                    mDownMotionX = x;
+                    mDownMotionY = y;
+                    mDownPosition = pointToPosition(x, y);
+                    mLastPosition = getCurrentItem();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    final int clickPosition = pointToPosition(x, y);
+                    if (mDownPosition == clickPosition) {
+                        isClick = onItemClick(clickPosition);
+                        if (mLastPosition == clickPosition) {
+                            final long downTime = ev.getDownTime();
+                            if (mLastUpTime != 0 && downTime - mLastUpTime < DOUBLE_TAP_TIMEOUT) {
+                                onDoubleClick(clickPosition);
+                            } else {
+                                onSelectedClick(clickPosition);
+                            }
+                        }
+                        mLastUpTime = ev.getEventTime();
+                    } else {
+                        mLastUpTime = 0;
+                    }
+                    break;
+            }
+            return isClick;
+        }
+
+        private boolean onItemClick(int position) {
+            performClick(position, clickSmoothScroll, true);
+            return true;
+        }
+
+        private void onSelectedClick(int position) {
+            if (clickSelectedItem && clickListener != null) {
+                clickListener.onSelectedClick(position);
+            }
+        }
+
+        /**
+         * 双击子项
+         *
+         * @param position 位置
+         */
+        private void onDoubleClick(int position) {
+            if (clickListener != null) {
+                clickListener.onDoubleClick(position);
+            }
+        }
+
+        float getDownMotionX() {
+            return mDownMotionX;
+        }
+
+        float getDownMotionY() {
+            return mDownMotionY;
         }
     }
 }

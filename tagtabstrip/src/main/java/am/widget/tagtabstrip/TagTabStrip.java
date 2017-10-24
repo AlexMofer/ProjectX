@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.widget.tagtabstrip;
 
 import android.content.Context;
@@ -6,13 +22,14 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
-import am.widget.basetabstrip.BaseTabStrip;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+
+import am.widget.basetabstrip.BaseTabStrip;
 
 /**
  * ViewPager 小点
@@ -25,6 +42,7 @@ public class TagTabStrip extends BaseTabStrip {
     private final static int DEFAULT_SIZE = 8;// 默认图片dp
     private final static int DEFAULT_DRAWABLE_SELECTED = 0xff808080;
     private final static int DEFAULT_DRAWABLE_NORMAL = 0x80808080;
+    private static final int[] ATTRS = new int[]{android.R.attr.gravity, android.R.attr.drawablePadding};
     private int defaultDrawableSize;
     private int mGravity = Gravity.CENTER;
     private int drawablePadding;
@@ -39,7 +57,6 @@ public class TagTabStrip extends BaseTabStrip {
     private float mOffsetX;
     private float mOffsetY;
     private float mScale = 1;
-    private static final int[] ATTRS = new int[]{android.R.attr.gravity, android.R.attr.drawablePadding};
 
     public TagTabStrip(Context context) {
         this(context, null);
@@ -358,17 +375,6 @@ public class TagTabStrip extends BaseTabStrip {
     }
 
     /**
-     * 设置排版方式
-     *
-     * @param gravity 排版方式
-     */
-    public void setGravity(int gravity) {
-        mGravity = gravity;
-        requestLayout();
-        invalidate();
-    }
-
-    /**
      * 获取排版方式
      *
      * @return 排版方式
@@ -379,12 +385,12 @@ public class TagTabStrip extends BaseTabStrip {
     }
 
     /**
-     * 设置子项间距
+     * 设置排版方式
      *
-     * @param padding 子项间距
+     * @param gravity 排版方式
      */
-    public void setDrawablePadding(int padding) {
-        drawablePadding = padding;
+    public void setGravity(int gravity) {
+        mGravity = gravity;
         requestLayout();
         invalidate();
     }
@@ -400,16 +406,14 @@ public class TagTabStrip extends BaseTabStrip {
     }
 
     /**
-     * 设置选中子项缩放比
+     * 设置子项间距
      *
-     * @param scale 选中子项缩放比
+     * @param padding 子项间距
      */
-    public void setScale(float scale) {
-        if (scale > 0 && scale != mScale) {
-            mScale = scale;
-            requestLayout();
-            invalidate();
-        }
+    public void setDrawablePadding(int padding) {
+        drawablePadding = padding;
+        requestLayout();
+        invalidate();
     }
 
     /**
@@ -420,6 +424,19 @@ public class TagTabStrip extends BaseTabStrip {
     @SuppressWarnings("unused")
     public float getScale() {
         return mScale;
+    }
+
+    /**
+     * 设置选中子项缩放比
+     *
+     * @param scale 选中子项缩放比
+     */
+    public void setScale(float scale) {
+        if (scale > 0 && scale != mScale) {
+            mScale = scale;
+            requestLayout();
+            invalidate();
+        }
     }
 
     /**

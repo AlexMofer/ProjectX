@@ -3,9 +3,6 @@ package am.project.x.utils;
 import android.support.annotation.NonNull;
 import android.util.Base64;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -90,124 +87,6 @@ public class StringUtils {
         } catch (Exception e) {
             return null;
         }
-    }
-
-    /**
-     * 转为HexString
-     *
-     * @param data 待转码字节数组
-     * @return 转码字符串
-     */
-    public static String toHexString(byte[] data) {
-        StringBuilder sb = new StringBuilder();
-        for (int v : data) {
-            int hs = v & 0xff;
-            if (hs < 16) {
-                sb.append('0');
-            }
-            sb.append(Integer.toHexString(hs));
-        }
-        return sb.toString().toLowerCase(Locale.getDefault());
-    }
-
-    /**
-     * 获取信息摘要
-     *
-     * @param src       数据源
-     * @param algorithm 算法
-     * @return 信息摘要
-     */
-    public static byte[] getMessageDigest(byte[] src, String algorithm) {
-        if (src == null)
-            return null;
-        try {
-            return MessageDigest.getInstance(algorithm).digest(src);
-        } catch (NoSuchAlgorithmException e) {
-            return null;
-        }
-    }
-
-    /**
-     * 获取MD5
-     *
-     * @param src 数据源
-     * @return MD5
-     */
-    public static byte[] getMD5(byte[] src) {
-        return getMessageDigest(src, "MD5");
-    }
-
-    /**
-     * 获取MD5
-     *
-     * @param src       待计数据
-     * @param lowerCase 是否小写
-     * @return MD5值
-     */
-    public static String getMD5(byte[] src, boolean lowerCase) {
-        StringBuilder builder = new StringBuilder();
-        byte[] md5 = getMD5(src);
-        builder.append(Base64.encodeToString(md5, Base64.DEFAULT));
-        if (lowerCase)
-            return builder.toString();
-        else
-            return builder.toString().toUpperCase(Locale.getDefault());
-    }
-
-    /**
-     * MD5加码
-     *
-     * @param str         待计算字符串
-     * @param charsetName 编码格式
-     * @return MD5值
-     */
-    public static String getMD5(String str, String charsetName, boolean lowerCase) {
-        try {
-            return getMD5(str.getBytes(charsetName), lowerCase);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    /**
-     * 二进制转十六进制
-     *
-     * @param data 二进制数组
-     * @return 十六进制字符
-     */
-    public static String parseByte2HexStr(byte[] data, boolean lowerCase) {
-        if (data == null || data.length <= 0)
-            return null;
-        StringBuilder builder = new StringBuilder();
-        for (byte b : data) {
-            String hex = Integer.toHexString(b & 0xFF);
-            if (hex.length() == 1) {
-                hex = '0' + hex;
-            }
-            builder.append(hex);
-        }
-        if (lowerCase)
-            return builder.toString();
-        else
-            return builder.toString().toUpperCase(Locale.getDefault());
-    }
-
-    /**
-     * 十六进制转二进制
-     *
-     * @param hexStr 十六进制字符
-     * @return 二进制数组
-     */
-    public static byte[] parseHexStr2Byte(String hexStr) {
-        if (hexStr == null || hexStr.length() <= 0)
-            return null;
-        byte[] result = new byte[hexStr.length() / 2];
-        for (int i = 0; i < hexStr.length() / 2; i++) {
-            int high = Integer.parseInt(hexStr.substring(i * 2, i * 2 + 1), 16);
-            int low = Integer.parseInt(hexStr.substring(i * 2 + 1, i * 2 + 2), 16);
-            result[i] = (byte) (high * 16 + low);
-        }
-        return result;
     }
 
     /**

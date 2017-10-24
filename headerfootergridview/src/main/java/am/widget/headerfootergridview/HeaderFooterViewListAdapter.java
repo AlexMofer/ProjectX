@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.widget.headerfootergridview;
 
 import android.database.DataSetObservable;
@@ -25,22 +41,18 @@ import java.util.ArrayList;
 public class HeaderFooterViewListAdapter implements WrapperListAdapter,
         Filterable {
 
-    private ListAdapter mAdapter;
-    private final ArrayList<HeaderFooterGridView.FixedViewInfo> mHeaderItemInfo;
-    private final ArrayList<HeaderFooterGridView.FixedViewInfo> mFooterItemInfo;
     static final ArrayList<HeaderFooterGridView.FixedViewInfo> EMPTY_INFO_LIST = new ArrayList<>();
     static final ArrayList<View> EMPTY_VIEW_LIST = new ArrayList<>();
+    private final ArrayList<HeaderFooterGridView.FixedViewInfo> mHeaderItemInfo;
+    private final ArrayList<HeaderFooterGridView.FixedViewInfo> mFooterItemInfo;
     private final DataSetObservable mDataSetObservable = new DataSetObservable();
-    boolean mAreAllFixedViewsSelectable;
     private final boolean mIsFilterable;
     private final ArrayList<View> mHeaderViews;
     private final ArrayList<View> mFooterViews;
+    boolean mAreAllFixedViewsSelectable;
+    private ListAdapter mAdapter;
     private int mNumColumns;
     private int unusedPositionCount = 0;
-
-    public enum PositionType {
-        HEADER_EMPTY, HEADER_VIEW, HEADER_ITEM, NORMAL, FOOTER_ITEM, FOOTER_VIEW, FOOTER_EMPTY
-    }
 
     public HeaderFooterViewListAdapter(
             ArrayList<HeaderFooterGridView.FixedViewInfo> headerItemInfo,
@@ -640,5 +652,9 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
     @SuppressWarnings("unused")
     public void notifyDataSetInvalidated() {
         mDataSetObservable.notifyInvalidated();
+    }
+
+    public enum PositionType {
+        HEADER_EMPTY, HEADER_VIEW, HEADER_ITEM, NORMAL, FOOTER_ITEM, FOOTER_VIEW, FOOTER_EMPTY
     }
 }

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.drawable;
 
 import android.graphics.Canvas;
@@ -20,10 +36,11 @@ import android.view.Gravity;
 public class CornerDrawable extends Drawable {
 
     private final Paint mFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Paint mStrokePaint;// optional, set by the caller
     private final Rect mPaddingRect = new Rect();
     private final Path mPath = new Path();
     private final RectF mRoundRect = new RectF();
+    private final Rect mContentPaddingRect = new Rect();// 内容间隔
+    private Paint mStrokePaint;// optional, set by the caller
     private int mAlpha = 0xFF;  // modified by the caller
     private int mColor;// 颜色
     private int mCornerWidth;// 尖角宽
@@ -32,7 +49,6 @@ public class CornerDrawable extends Drawable {
     private int mDirection = Gravity.TOP;//朝向
     private int mLocation = Gravity.CENTER;// 位置
     private int mCornerMargin;//尖角边距
-    private final Rect mContentPaddingRect = new Rect();// 内容间隔
     private float mContentRadius;// 内容圆角半径
 
     private int mIntrinsicWidth;
@@ -852,16 +868,16 @@ public class CornerDrawable extends Drawable {
     }
 
     @Override
+    public int getAlpha() {
+        return mAlpha;
+    }
+
+    @Override
     public void setAlpha(int alpha) {
         if (alpha != mAlpha) {
             mAlpha = alpha;
             invalidateSelf();
         }
-    }
-
-    @Override
-    public int getAlpha() {
-        return mAlpha;
     }
 
     @Override

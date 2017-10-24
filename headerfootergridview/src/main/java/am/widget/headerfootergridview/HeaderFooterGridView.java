@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.widget.headerfootergridview;
 
 import android.annotation.TargetApi;
@@ -28,6 +44,9 @@ public class HeaderFooterGridView extends GridView {
     private final ArrayList<FixedViewInfo> mFooterItemInfo = new ArrayList<>();
     private final ArrayList<View> mHeaderViews = new ArrayList<>();
     private final ArrayList<View> mFooterViews = new ArrayList<>();
+    private final LayoutParams abLayoutParams = new LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT, 0);
     private HeaderFooterViewListAdapter mAdapter;
     private int mNumColumns;
     private int mHorizontalSpacing;
@@ -36,9 +55,6 @@ public class HeaderFooterGridView extends GridView {
     private int mColumnWidth;
     private int mRequestedColumnWidth;
     private int mRequestedNumColumns;
-    private final LayoutParams abLayoutParams = new LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT, 0);
     private OnItemClickListener clickListener;
     private OnItemLongClickListener longClickListener;
     private OnItemSelectedListener selectedListener;
@@ -264,6 +280,19 @@ public class HeaderFooterGridView extends GridView {
     }
 
     /**
+     * Returns the adapter currently in use in this GridView. The returned adapter
+     * might not be the same adapter passed to {@link #setAdapter(ListAdapter)} but
+     * might be a {@link WrapperListAdapter}.
+     *
+     * @return The adapter currently used to display data in this GridView.
+     * @see #setAdapter(ListAdapter)
+     */
+    @Override
+    public ListAdapter getAdapter() {
+        return mAdapter;
+    }
+
+    /**
      * Sets the data behind this GridView.
      * The adapter passed to this method may be wrapped by a {@link WrapperListAdapter},
      * depending on the GridView features currently in use. For instance, adding
@@ -280,19 +309,6 @@ public class HeaderFooterGridView extends GridView {
                 mFooterItemInfo, adapter, mHeaderViews, mFooterViews,
                 mNumColumns);
         super.setAdapter(mAdapter);
-    }
-
-    /**
-     * Returns the adapter currently in use in this GridView. The returned adapter
-     * might not be the same adapter passed to {@link #setAdapter(ListAdapter)} but
-     * might be a {@link WrapperListAdapter}.
-     *
-     * @return The adapter currently used to display data in this GridView.
-     * @see #setAdapter(ListAdapter)
-     */
-    @Override
-    public ListAdapter getAdapter() {
-        return mAdapter;
     }
 
     @Override

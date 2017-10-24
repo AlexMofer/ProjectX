@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.widget.shapeimageview;
 
 import android.annotation.TargetApi;
@@ -10,6 +26,39 @@ import android.view.View;
  *
  */
 class Compat {
+
+    private static final CompatPlusImpl IMPL;
+
+    static {
+        final int version = android.os.Build.VERSION.SDK_INT;
+        if (version >= 21) {
+            IMPL = new LollipopCompatPlusImpl();
+        } else if (version >= 17) {
+            IMPL = new JbMr1CompatPlusImpl();
+        } else {
+            IMPL = new BaseCompatPlusImpl();
+        }
+    }
+
+    static int getPaddingStart(View view) {
+        return IMPL.getPaddingStart(view);
+    }
+
+    static int getPaddingEnd(View view) {
+        return IMPL.getPaddingEnd(view);
+    }
+
+    static Drawable getDrawable(Context context, int id) {
+        return IMPL.getDrawable(context, id);
+    }
+
+    static void setHotspot(Drawable drawable, float x, float y) {
+        IMPL.setHotspot(drawable, x, y);
+    }
+
+    static void invalidateOutline(View view) {
+        IMPL.invalidateOutline(view);
+    }
 
     private interface CompatPlusImpl {
         int getPaddingStart(View view);
@@ -82,38 +131,5 @@ class Compat {
         public void invalidateOutline(View view) {
             view.invalidateOutline();
         }
-    }
-
-    private static final CompatPlusImpl IMPL;
-
-    static {
-        final int version = android.os.Build.VERSION.SDK_INT;
-        if (version >= 21) {
-            IMPL = new LollipopCompatPlusImpl();
-        } else if (version >= 17) {
-            IMPL = new JbMr1CompatPlusImpl();
-        } else {
-            IMPL = new BaseCompatPlusImpl();
-        }
-    }
-
-    static int getPaddingStart(View view) {
-        return IMPL.getPaddingStart(view);
-    }
-
-    static int getPaddingEnd(View view) {
-        return IMPL.getPaddingEnd(view);
-    }
-
-    static Drawable getDrawable(Context context, int id) {
-        return IMPL.getDrawable(context, id);
-    }
-
-    static void setHotspot(Drawable drawable, float x, float y) {
-        IMPL.setHotspot(drawable, x, y);
-    }
-
-    static void invalidateOutline(View view) {
-        IMPL.invalidateOutline(view);
     }
 }

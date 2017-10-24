@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.project.support.compat;
 
 import android.animation.AnimatorInflater;
@@ -16,93 +32,6 @@ import java.lang.ref.WeakReference;
  */
 @SuppressWarnings("unused")
 public class AMViewCompat {
-
-    interface AMViewCompatImpl {
-        void setBackground(View view, Drawable background);
-
-        void setOutlineProvider(View view, ViewOutlineProvider provider);
-
-        void setClipToOutline(View view, boolean clipToOutline);
-
-        void setStateListAnimator(View view, StateListAnimator stateListAnimator);
-
-        void setStateListAnimator(View view, int id);
-    }
-
-    private static class AMViewCompatBase implements AMViewCompatImpl {
-        @SuppressWarnings("deprecation")
-        @Override
-        public void setBackground(View view, Drawable background) {
-            view.setBackgroundDrawable(background);
-        }
-
-        @Override
-        public void setOutlineProvider(View view, ViewOutlineProvider provider) {
-            // do nothing
-        }
-
-        @Override
-        public void setClipToOutline(View view, boolean clipToOutline) {
-            // do nothing
-        }
-
-        @Override
-        public void setStateListAnimator(View view, StateListAnimator stateListAnimator) {
-            // do nothing
-        }
-
-        @Override
-        public void setStateListAnimator(View view, int id) {
-
-        }
-    }
-
-    @TargetApi(16)
-    private static class AMViewCompatJB extends AMViewCompatBase {
-        @Override
-        public void setBackground(View view, Drawable background) {
-            view.setBackground(background);
-        }
-    }
-
-    @TargetApi(21)
-    private static class AMViewCompatLollipop extends AMViewCompatJB {
-        @Override
-        public void setOutlineProvider(View view, ViewOutlineProvider provider) {
-            view.setOutlineProvider(new ViewOutlineProviderLollipop(provider));
-        }
-
-        @Override
-        public void setClipToOutline(View view, boolean clipToOutline) {
-            view.setClipToOutline(clipToOutline);
-        }
-
-        @Override
-        public void setStateListAnimator(View view, StateListAnimator stateListAnimator) {
-            view.setStateListAnimator(stateListAnimator);
-        }
-
-        @Override
-        public void setStateListAnimator(View view, int id) {
-            view.setStateListAnimator(AnimatorInflater.loadStateListAnimator(view.getContext(), id));
-        }
-    }
-
-    @TargetApi(21)
-    private static class ViewOutlineProviderLollipop extends android.view.ViewOutlineProvider {
-        private final WeakReference<ViewOutlineProvider> providerWeakReference;
-
-        ViewOutlineProviderLollipop(ViewOutlineProvider provider) {
-            providerWeakReference = new WeakReference<>(provider);
-        }
-
-        @Override
-        public void getOutline(View view, Outline outline) {
-            ViewOutlineProvider provider = providerWeakReference.get();
-            if (provider != null)
-                provider.getOutline(view, outline);
-        }
-    }
 
     private static final AMViewCompatImpl IMPL;
 
@@ -194,5 +123,92 @@ public class AMViewCompat {
      */
     public static void setStateListAnimator(View view, int id) {
         IMPL.setStateListAnimator(view, id);
+    }
+
+    interface AMViewCompatImpl {
+        void setBackground(View view, Drawable background);
+
+        void setOutlineProvider(View view, ViewOutlineProvider provider);
+
+        void setClipToOutline(View view, boolean clipToOutline);
+
+        void setStateListAnimator(View view, StateListAnimator stateListAnimator);
+
+        void setStateListAnimator(View view, int id);
+    }
+
+    private static class AMViewCompatBase implements AMViewCompatImpl {
+        @SuppressWarnings("deprecation")
+        @Override
+        public void setBackground(View view, Drawable background) {
+            view.setBackgroundDrawable(background);
+        }
+
+        @Override
+        public void setOutlineProvider(View view, ViewOutlineProvider provider) {
+            // do nothing
+        }
+
+        @Override
+        public void setClipToOutline(View view, boolean clipToOutline) {
+            // do nothing
+        }
+
+        @Override
+        public void setStateListAnimator(View view, StateListAnimator stateListAnimator) {
+            // do nothing
+        }
+
+        @Override
+        public void setStateListAnimator(View view, int id) {
+
+        }
+    }
+
+    @TargetApi(16)
+    private static class AMViewCompatJB extends AMViewCompatBase {
+        @Override
+        public void setBackground(View view, Drawable background) {
+            view.setBackground(background);
+        }
+    }
+
+    @TargetApi(21)
+    private static class AMViewCompatLollipop extends AMViewCompatJB {
+        @Override
+        public void setOutlineProvider(View view, ViewOutlineProvider provider) {
+            view.setOutlineProvider(new ViewOutlineProviderLollipop(provider));
+        }
+
+        @Override
+        public void setClipToOutline(View view, boolean clipToOutline) {
+            view.setClipToOutline(clipToOutline);
+        }
+
+        @Override
+        public void setStateListAnimator(View view, StateListAnimator stateListAnimator) {
+            view.setStateListAnimator(stateListAnimator);
+        }
+
+        @Override
+        public void setStateListAnimator(View view, int id) {
+            view.setStateListAnimator(AnimatorInflater.loadStateListAnimator(view.getContext(), id));
+        }
+    }
+
+    @TargetApi(21)
+    private static class ViewOutlineProviderLollipop extends android.view.ViewOutlineProvider {
+        private final WeakReference<ViewOutlineProvider> providerWeakReference;
+
+        ViewOutlineProviderLollipop(ViewOutlineProvider provider) {
+            providerWeakReference = new WeakReference<>(provider);
+        }
+
+        @Override
+        public void getOutline(View view, Outline outline) {
+            ViewOutlineProvider provider = providerWeakReference.get();
+            if (provider != null)
+                provider.getOutline(view, outline);
+        }
     }
 }

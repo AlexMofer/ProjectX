@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.widget.drawableratingbar;
 
 import android.content.Context;
@@ -309,54 +325,6 @@ public class DrawableRatingBar extends View {
         invalidate();
     }
 
-    static class SavedState extends BaseSavedState {
-        private int mDrawablePadding;
-        private int mGravity;
-        private int mMax;
-        private int mMin;
-        private int mRating;
-        private boolean mManually;
-        private boolean mOnlyItemTouchable;
-
-        SavedState(Parcelable superState) {
-            super(superState);
-        }
-
-        private SavedState(Parcel in) {
-            super(in);
-            mDrawablePadding = in.readInt();
-            mGravity = in.readInt();
-            mMax = in.readInt();
-            mMin = in.readInt();
-            mRating = in.readInt();
-            mManually = in.readInt() == 1;
-            mOnlyItemTouchable = in.readInt() == 1;
-        }
-
-        @Override
-        public void writeToParcel(Parcel out, int flags) {
-            super.writeToParcel(out, flags);
-            out.writeInt(mDrawablePadding);
-            out.writeInt(mGravity);
-            out.writeInt(mMax);
-            out.writeInt(mMin);
-            out.writeInt(mRating);
-            out.writeInt(mManually ? 1 : 0);
-            out.writeInt(mOnlyItemTouchable ? 1 : 0);
-        }
-
-        public static final Creator<SavedState> CREATOR =
-                new Creator<SavedState>() {
-                    public SavedState createFromParcel(Parcel in) {
-                        return new SavedState(in);
-                    }
-
-                    public SavedState[] newArray(int size) {
-                        return new SavedState[size];
-                    }
-                };
-    }
-
     /**
      * 设置评级图片
      *
@@ -563,5 +531,52 @@ public class DrawableRatingBar extends View {
          * @param rating 评级
          */
         void onRatingSelected(int rating);
+    }
+
+    static class SavedState extends BaseSavedState {
+        public static final Creator<SavedState> CREATOR =
+                new Creator<SavedState>() {
+                    public SavedState createFromParcel(Parcel in) {
+                        return new SavedState(in);
+                    }
+
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                };
+        private int mDrawablePadding;
+        private int mGravity;
+        private int mMax;
+        private int mMin;
+        private int mRating;
+        private boolean mManually;
+        private boolean mOnlyItemTouchable;
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            mDrawablePadding = in.readInt();
+            mGravity = in.readInt();
+            mMax = in.readInt();
+            mMin = in.readInt();
+            mRating = in.readInt();
+            mManually = in.readInt() == 1;
+            mOnlyItemTouchable = in.readInt() == 1;
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt(mDrawablePadding);
+            out.writeInt(mGravity);
+            out.writeInt(mMax);
+            out.writeInt(mMin);
+            out.writeInt(mRating);
+            out.writeInt(mManually ? 1 : 0);
+            out.writeInt(mOnlyItemTouchable ? 1 : 0);
+        }
     }
 }

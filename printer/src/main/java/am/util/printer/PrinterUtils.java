@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.util.printer;
 
 import android.graphics.Bitmap;
@@ -13,11 +29,6 @@ import java.util.List;
  */
 @SuppressWarnings("all")
 public class PrinterUtils {
-
-    private static String hexStr = "0123456789ABCDEF";
-    private static String[] binaryArray = {"0000", "0001", "0010", "0011",
-            "0100", "0101", "0110", "0111", "1000", "1001", "1010", "1011",
-            "1100", "1101", "1110", "1111"};
 
     public static final byte ESC = 27;//换码
     public static final byte FS = 28;//文本分隔符
@@ -38,40 +49,10 @@ public class PrinterUtils {
     public static final byte FF = 12;//走纸控制（打印并回到标准模式（在页模式下） ）
     @SuppressWarnings("unused")
     public static final byte CAN = 24;//作废（页模式下取消打印数据 ）
-
-    /**
-     * CodePage table
-     */
-    @SuppressWarnings("unused")
-    public static class CodePage {
-        public static final byte PC437 = 0;
-        public static final byte KATAKANA = 1;
-        public static final byte PC850 = 2;
-        public static final byte PC860 = 3;
-        public static final byte PC863 = 4;
-        public static final byte PC865 = 5;
-        public static final byte WPC1252 = 16;
-        public static final byte PC866 = 17;
-        public static final byte PC852 = 18;
-        public static final byte PC858 = 19;
-    }
-
-
-    /**
-     * BarCode table
-     */
-    @SuppressWarnings("unused")
-    public static class BarCode {
-        public static final byte UPC_A = 0;
-        public static final byte UPC_E = 1;
-        public static final byte EAN13 = 2;
-        public static final byte EAN8 = 3;
-        public static final byte CODE39 = 4;
-        public static final byte ITF = 5;
-        public static final byte NW7 = 6;
-        public static final byte CODE93 = 72;
-        public static final byte CODE128 = 73;
-    }
+    private static String hexStr = "0123456789ABCDEF";
+    private static String[] binaryArray = {"0000", "0001", "0010", "0011",
+            "0100", "0101", "0110", "0111", "1000", "1001", "1010", "1011",
+            "1100", "1101", "1110", "1111"};
 
     /**
      * 初始化打印机
@@ -159,7 +140,6 @@ public class PrinterUtils {
         result[2] = 0;
         return result;
     }
-
 
     @SuppressWarnings("unused")
     public static byte[] overlappingOn() {
@@ -329,7 +309,6 @@ public class PrinterUtils {
         return result;
     }
 
-
     /**
      * 左对齐
      * ESC a n
@@ -374,7 +353,6 @@ public class PrinterUtils {
         result[2] = 2;
         return result;
     }
-
 
     /**
      * 打印并走纸n行
@@ -479,7 +457,6 @@ public class PrinterUtils {
         return result;
     }
 
-
     /**
      * 选择打印颜色1（不一定有效）
      * ESC r n
@@ -509,7 +486,6 @@ public class PrinterUtils {
         result[2] = 1;
         return result;
     }
-
 
     /**
      * white printing mode on (不一定有效)
@@ -542,7 +518,6 @@ public class PrinterUtils {
         result[2] = 0;
         return result;
     }
-
 
     /**
      * select bar code height
@@ -907,7 +882,6 @@ public class PrinterUtils {
         return result;
     }
 
-
     /**
      * 2进制转成16进制
      *
@@ -985,5 +959,38 @@ public class PrinterUtils {
      */
     private static byte charToByte(char c) {
         return (byte) hexStr.indexOf(c);
+    }
+
+    /**
+     * CodePage table
+     */
+    @SuppressWarnings("unused")
+    public static class CodePage {
+        public static final byte PC437 = 0;
+        public static final byte KATAKANA = 1;
+        public static final byte PC850 = 2;
+        public static final byte PC860 = 3;
+        public static final byte PC863 = 4;
+        public static final byte PC865 = 5;
+        public static final byte WPC1252 = 16;
+        public static final byte PC866 = 17;
+        public static final byte PC852 = 18;
+        public static final byte PC858 = 19;
+    }
+
+    /**
+     * BarCode table
+     */
+    @SuppressWarnings("unused")
+    public static class BarCode {
+        public static final byte UPC_A = 0;
+        public static final byte UPC_E = 1;
+        public static final byte EAN13 = 2;
+        public static final byte EAN8 = 3;
+        public static final byte CODE39 = 4;
+        public static final byte ITF = 5;
+        public static final byte NW7 = 6;
+        public static final byte CODE93 = 72;
+        public static final byte CODE128 = 73;
     }
 }

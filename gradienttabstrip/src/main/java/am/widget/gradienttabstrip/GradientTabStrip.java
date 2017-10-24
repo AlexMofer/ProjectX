@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.widget.gradienttabstrip;
 
 import android.annotation.TargetApi;
@@ -14,13 +30,12 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
-
-import am.widget.basetabstrip.BaseTabStrip;
-
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+
+import am.widget.basetabstrip.BaseTabStrip;
 
 /**
  * 滑动渐变TabStrip，子项建议不超过5个
@@ -30,13 +45,13 @@ import android.util.AttributeSet;
 @ViewPager.DecorView
 public class GradientTabStrip extends BaseTabStrip {
 
+    public static final int TAG_MIN_SIZE_MODE_HAS_TEXT = 0;// 当图片最小宽高更小时，按图片计算
+    public static final int TAG_MIN_SIZE_MODE_ALWAYS = 1;// 按照设置的最小宽高
     private static final int DEFAULT_TEXT_SIZE = 14;// 默认字体大小dp
     private static final int DEFAULT_TEXT_COLOR = 0xff000000;// 默认字体颜色
     private static final int DEFAULT_TAG_TEXT_SIZE = 11;// 默认Tag字体大小sp
     private static final int DEFAULT_TAG_TEXT_COLOR = 0xffffffff;// 默认Tag文字颜色
     private static final int DEFAULT_TAG_MIN_SIZE = 15;// 默认Tag最小大小dp
-    public static final int TAG_MIN_SIZE_MODE_HAS_TEXT = 0;// 当图片最小宽高更小时，按图片计算
-    public static final int TAG_MIN_SIZE_MODE_ALWAYS = 1;// 按照设置的最小宽高
     private static final int[] ATTRS = new int[]{android.R.attr.textSize,
             android.R.attr.textColor, android.R.attr.drawablePadding};
     private final TextPaint mTextPaint;// 文字画笔
@@ -643,11 +658,8 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @param color 文字颜色
      */
-    public void setTextColor(ColorStateList color) {
-        if (color != null && color != mTextColor) {
-            mTextColor = color;
-            invalidate();
-        }
+    public void setTextColor(@ColorInt int color) {
+        setTextColor(ColorStateList.valueOf(color));
     }
 
     /**
@@ -655,8 +667,11 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @param color 文字颜色
      */
-    public void setTextColor(@ColorInt int color) {
-        setTextColor(ColorStateList.valueOf(color));
+    public void setTextColor(ColorStateList color) {
+        if (color != null && color != mTextColor) {
+            mTextColor = color;
+            invalidate();
+        }
     }
 
     /**
@@ -697,11 +712,9 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @param interval 子项间隔
      */
-    public void setInterval(Drawable interval) {
-        if (mInterval != interval) {
-            mInterval = interval;
-            invalidate();
-        }
+    @SuppressWarnings("unused")
+    public void setInterval(@DrawableRes int interval) {
+        setInterval(ContextCompat.getDrawable(getContext(), interval));
     }
 
     /**
@@ -709,9 +722,11 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @param interval 子项间隔
      */
-    @SuppressWarnings("unused")
-    public void setInterval(@DrawableRes int interval) {
-        setInterval(ContextCompat.getDrawable(getContext(), interval));
+    public void setInterval(Drawable interval) {
+        if (mInterval != interval) {
+            mInterval = interval;
+            invalidate();
+        }
     }
 
     /**
@@ -818,11 +833,9 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @param background Tag背景
      */
-    public void setTagBackground(Drawable background) {
-        if (mTagBackground != background) {
-            mTagBackground = background;
-            invalidate();
-        }
+    @SuppressWarnings("unused")
+    public void setTagBackground(@DrawableRes int background) {
+        setTagBackground(ContextCompat.getDrawable(getContext(), background));
     }
 
     /**
@@ -830,9 +843,11 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @param background Tag背景
      */
-    @SuppressWarnings("unused")
-    public void setTagBackground(@DrawableRes int background) {
-        setTagBackground(ContextCompat.getDrawable(getContext(), background));
+    public void setTagBackground(Drawable background) {
+        if (mTagBackground != background) {
+            mTagBackground = background;
+            invalidate();
+        }
     }
 
     /**

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.drawable;
 
 import android.graphics.Bitmap;
@@ -19,7 +35,6 @@ import android.graphics.drawable.Drawable;
 @SuppressWarnings("all")
 public class ProgressDrawable extends Drawable {
 
-    private static final int TYPE_NULL = 0;
     public static final int TYPE_LEFT_TO_RIGHT = 1;
     public static final int TYPE_RIGHT_TO_LEFT = 2;
     public static final int TYPE_CENTER_HORIZONTAL = 3;
@@ -29,11 +44,12 @@ public class ProgressDrawable extends Drawable {
     public static final int TYPE_CENTER = TYPE_CENTER_HORIZONTAL | TYPE_CENTER_VERTICAL;
     public static final int SHAPE_RECT = 0;
     public static final int SHAPE_OVAL = 1;
+    private static final int TYPE_NULL = 0;
+    private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Drawable mBackgroundDrawable;
     private Drawable mProgressDrawable;
     private int mMax = 100;
     private int mProgress = 0;
-    private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private int mType = TYPE_LEFT_TO_RIGHT;
     private int mShape = SHAPE_RECT;
     private RectF mProgressBounds = new RectF();

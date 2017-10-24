@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.widget.zxingscanview;
 
 import android.Manifest;
@@ -20,11 +36,11 @@ import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.camera.CameraManager;
 import com.google.zxing.client.android.camera.open.OpenCameraInterface;
+import com.google.zxing.client.android.compat.Compat;
 import com.google.zxing.client.android.decode.BarcodeType;
 import com.google.zxing.client.android.decode.ScanHandler;
 import com.google.zxing.client.android.manager.AmbientLightManager;
 import com.google.zxing.client.android.manager.ScanFeedbackManager;
-import com.google.zxing.client.android.compat.Compat;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -76,6 +92,51 @@ public class ZxingScanView extends SurfaceView {
     public ZxingScanView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initView(attrs);
+    }
+
+    /**
+     * 为结果图添加识别效果
+     *
+     * @param result      扫描结果
+     * @param barcode     结果图片
+     * @param scaleFactor 缩放比
+     * @param color       颜色
+     */
+    @SuppressWarnings("unused")
+    public static void addResultPoints(Result result, Bitmap barcode, float scaleFactor, int color) {
+        ResultPoint[] points = result.getResultPoints();
+        if (points != null && points.length > 0) {
+            Canvas canvas = new Canvas(barcode);
+            Paint paint = new Paint();
+            paint.setColor(color);
+            if (points.length == 2) {
+                paint.setStrokeWidth(4.0f);
+                drawLine(canvas, paint, points[0], points[1], scaleFactor);
+            } else if (points.length == 4 &&
+                    (result.getBarcodeFormat() == BarcodeFormat.UPC_A ||
+                            result.getBarcodeFormat() == BarcodeFormat.EAN_13)) {
+                // Hacky special case -- draw two lines, for the barcode and metadata
+                drawLine(canvas, paint, points[0], points[1], scaleFactor);
+                drawLine(canvas, paint, points[2], points[3], scaleFactor);
+            } else {
+                paint.setStrokeWidth(10.0f);
+                for (ResultPoint point : points) {
+                    if (point != null) {
+                        canvas.drawPoint(scaleFactor * point.getX(), scaleFactor * point.getY(), paint);
+                    }
+                }
+            }
+        }
+    }
+
+    private static void drawLine(Canvas canvas, Paint paint, ResultPoint a, ResultPoint b, float scaleFactor) {
+        if (a != null && b != null) {
+            canvas.drawLine(scaleFactor * a.getX(),
+                    scaleFactor * a.getY(),
+                    scaleFactor * b.getX(),
+                    scaleFactor * b.getY(),
+                    paint);
+        }
     }
 
     private void initView(AttributeSet attrs) {
@@ -145,29 +206,6 @@ public class ZxingScanView extends SurfaceView {
         return super.onKeyDown(keyCode, event);
     }
 
-    private class CameraCallBack implements SurfaceHolder.Callback {
-        @Override
-        public void surfaceCreated(SurfaceHolder surfaceHolder) {
-            openDriver(surfaceHolder);
-        }
-
-        @Override
-        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            if (mCameraManager != null) {
-                final int scanWidth = mScanWidth == ViewGroup.LayoutParams.MATCH_PARENT ? width :
-                        (mScanWidth > width ? width : mScanWidth);
-                final int scanHeight = mScanHeight == ViewGroup.LayoutParams.MATCH_PARENT ? height :
-                        (mScanHeight > height ? height : mScanHeight);
-                mCameraManager.setManualFramingRect(scanWidth, scanHeight);
-            }
-        }
-
-        @Override
-        public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-            closeDriver();
-        }
-    }
-
     private void openDriver(SurfaceHolder surfaceHolder) {
         notifyListenerPrepareOpen();
         if (surfaceHolder == null)
@@ -219,14 +257,6 @@ public class ZxingScanView extends SurfaceView {
         notifyListenerClosed();
     }
 
-    private class AmbientLightCallBack implements AmbientLightManager.AmbientLightCallBack {
-        @Override
-        public void onChange(boolean on) {
-            if (mCameraManager != null)
-                mCameraManager.setTorch(on);
-        }
-    }
-
     private void notifyListenerError() {
         for (OnScanListener listener : mListeners) {
             listener.onError(this);
@@ -257,26 +287,9 @@ public class ZxingScanView extends SurfaceView {
         }
     }
 
-    private class OnResultListener implements ScanHandler.OnResultListener {
-
-        @Override
-        public void onResult(Result result, Bitmap barcode, float scaleFactor) {
-            mScanFeedbackManager.performScanFeedback();
-            notifyListenerResult(result, barcode, scaleFactor);
-        }
-    }
-
     private void notifyListenerResult(Result result, Bitmap barcode, float scaleFactor) {
         for (OnScanListener listener : mListeners) {
             listener.onResult(this, result, barcode, scaleFactor);
-        }
-    }
-
-    private class ResultPointCallback implements com.google.zxing.ResultPointCallback {
-
-        @Override
-        public void foundPossibleResultPoint(ResultPoint point) {
-            notifyListenerFoundPossibleResultPoint(point);
         }
     }
 
@@ -389,26 +402,6 @@ public class ZxingScanView extends SurfaceView {
     }
 
     /**
-     * 设置扫描宽度
-     * 下次创建CameraManager时生效
-     *
-     * @param width 扫描宽度
-     */
-    public void setScanWidth(int width) {
-        mScanWidth = width;
-    }
-
-    /**
-     * 设置扫描高度
-     * 下次创建CameraManager时生效
-     *
-     * @param height 扫描高度
-     */
-    public void setScanHeight(int height) {
-        mScanHeight = height;
-    }
-
-    /**
      * 设置摄像头ID
      * 下次创建CameraManager时生效
      *
@@ -437,12 +430,32 @@ public class ZxingScanView extends SurfaceView {
     }
 
     /**
+     * 设置扫描宽度
+     * 下次创建CameraManager时生效
+     *
+     * @param width 扫描宽度
+     */
+    public void setScanWidth(int width) {
+        mScanWidth = width;
+    }
+
+    /**
      * 获取扫描高度
      *
      * @return 扫描高度
      */
     public int getScanHeight() {
         return mScanHeight;
+    }
+
+    /**
+     * 设置扫描高度
+     * 下次创建CameraManager时生效
+     *
+     * @param height 扫描高度
+     */
+    public void setScanHeight(int height) {
+        mScanHeight = height;
     }
 
     /**
@@ -453,7 +466,6 @@ public class ZxingScanView extends SurfaceView {
     public void setScanBarcodeType(int type) {
         mBarcodeType = type;
     }
-
 
     public void setScanCharacterSet(String characterSet) {
         mCharacterSet = characterSet;
@@ -523,48 +535,51 @@ public class ZxingScanView extends SurfaceView {
         void onClosed(ZxingScanView scanView);
     }
 
-    /**
-     * 为结果图添加识别效果
-     *
-     * @param result      扫描结果
-     * @param barcode     结果图片
-     * @param scaleFactor 缩放比
-     * @param color       颜色
-     */
-    @SuppressWarnings("unused")
-    public static void addResultPoints(Result result, Bitmap barcode, float scaleFactor, int color) {
-        ResultPoint[] points = result.getResultPoints();
-        if (points != null && points.length > 0) {
-            Canvas canvas = new Canvas(barcode);
-            Paint paint = new Paint();
-            paint.setColor(color);
-            if (points.length == 2) {
-                paint.setStrokeWidth(4.0f);
-                drawLine(canvas, paint, points[0], points[1], scaleFactor);
-            } else if (points.length == 4 &&
-                    (result.getBarcodeFormat() == BarcodeFormat.UPC_A ||
-                            result.getBarcodeFormat() == BarcodeFormat.EAN_13)) {
-                // Hacky special case -- draw two lines, for the barcode and metadata
-                drawLine(canvas, paint, points[0], points[1], scaleFactor);
-                drawLine(canvas, paint, points[2], points[3], scaleFactor);
-            } else {
-                paint.setStrokeWidth(10.0f);
-                for (ResultPoint point : points) {
-                    if (point != null) {
-                        canvas.drawPoint(scaleFactor * point.getX(), scaleFactor * point.getY(), paint);
-                    }
-                }
+    private class CameraCallBack implements SurfaceHolder.Callback {
+        @Override
+        public void surfaceCreated(SurfaceHolder surfaceHolder) {
+            openDriver(surfaceHolder);
+        }
+
+        @Override
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            if (mCameraManager != null) {
+                final int scanWidth = mScanWidth == ViewGroup.LayoutParams.MATCH_PARENT ? width :
+                        (mScanWidth > width ? width : mScanWidth);
+                final int scanHeight = mScanHeight == ViewGroup.LayoutParams.MATCH_PARENT ? height :
+                        (mScanHeight > height ? height : mScanHeight);
+                mCameraManager.setManualFramingRect(scanWidth, scanHeight);
             }
+        }
+
+        @Override
+        public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+            closeDriver();
         }
     }
 
-    private static void drawLine(Canvas canvas, Paint paint, ResultPoint a, ResultPoint b, float scaleFactor) {
-        if (a != null && b != null) {
-            canvas.drawLine(scaleFactor * a.getX(),
-                    scaleFactor * a.getY(),
-                    scaleFactor * b.getX(),
-                    scaleFactor * b.getY(),
-                    paint);
+    private class AmbientLightCallBack implements AmbientLightManager.AmbientLightCallBack {
+        @Override
+        public void onChange(boolean on) {
+            if (mCameraManager != null)
+                mCameraManager.setTorch(on);
+        }
+    }
+
+    private class OnResultListener implements ScanHandler.OnResultListener {
+
+        @Override
+        public void onResult(Result result, Bitmap barcode, float scaleFactor) {
+            mScanFeedbackManager.performScanFeedback();
+            notifyListenerResult(result, barcode, scaleFactor);
+        }
+    }
+
+    private class ResultPointCallback implements com.google.zxing.ResultPointCallback {
+
+        @Override
+        public void foundPossibleResultPoint(ResultPoint point) {
+            notifyListenerFoundPossibleResultPoint(point);
         }
     }
 }

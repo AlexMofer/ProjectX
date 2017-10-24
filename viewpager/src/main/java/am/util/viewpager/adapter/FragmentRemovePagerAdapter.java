@@ -1,6 +1,5 @@
-package am.util.viewpager.adapter;
 /*
- * Copyright (C) 2011 The Android Open Source Project
+ * Copyright (C) 2015 AlexMofer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +13,8 @@ package am.util.viewpager.adapter;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package am.util.viewpager.adapter;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -78,6 +79,10 @@ public abstract class FragmentRemovePagerAdapter extends PagerAdapter {
 
     public FragmentRemovePagerAdapter(FragmentManager fm) {
         mFragmentManager = fm;
+    }
+
+    private static String makeFragmentName(int viewId, long id) {
+        return "android:switcher:" + viewId + ":" + id;
     }
 
     /**
@@ -229,10 +234,6 @@ public abstract class FragmentRemovePagerAdapter extends PagerAdapter {
      */
     public long getItemId(int position) {
         return position;
-    }
-
-    private static String makeFragmentName(int viewId, long id) {
-        return "android:switcher:" + viewId + ":" + id;
     }
 
     /**

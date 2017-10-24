@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.drawable;
 
 import android.graphics.Canvas;
@@ -182,6 +198,15 @@ public class CenterDrawable extends Drawable {
     }
 
     /**
+     * 获取背景色
+     *
+     * @return 背景色
+     */
+    public int getBackgroundColor() {
+        return mPaint.getColor();
+    }
+
+    /**
      * 设置背景色
      *
      * @param color 颜色
@@ -192,12 +217,12 @@ public class CenterDrawable extends Drawable {
     }
 
     /**
-     * 获取背景色
+     * 获取中心Drawable
      *
-     * @return 背景色
+     * @return 中心Drawable
      */
-    public int getBackgroundColor() {
-        return mPaint.getColor();
+    public Drawable getCenterDrawable() {
+        return mDrawableCenter;
     }
 
     /**
@@ -208,15 +233,6 @@ public class CenterDrawable extends Drawable {
     public void setCenterDrawable(Drawable drawable) {
         mDrawableCenter = drawable;
         invalidateSelf();
-    }
-
-    /**
-     * 获取中心Drawable
-     *
-     * @return 中心Drawable
-     */
-    public Drawable getCenterDrawable() {
-        return mDrawableCenter;
     }
 
     /**
