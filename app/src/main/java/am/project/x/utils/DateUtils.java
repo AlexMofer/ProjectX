@@ -10,9 +10,9 @@ import java.util.Locale;
 /**
  * 日期工具
  *
- * @author Alex
+ * @author Xiang Zhicheng
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("all")
 public class DateUtils {
     public static final String PATTERN_FULL_0 = "yyyyMMddHHmmss";
     public static final String PATTERN_FULL_1 = "yyyy-MM-dd HH:mm:ss";
@@ -22,6 +22,8 @@ public class DateUtils {
     public static final String PATTERN_DATE_0 = "yyyyMMdd";
     public static final String PATTERN_DATE_1 = "yyyy-MM-dd";
     public static final String PATTERN_DATE_2 = "yyyy/MM/dd";
+    public static final String PATTERN_DATE_3 = "yyyy.MM.dd";
+    public static final String PATTERN_DATE_4 = "yyyy.MM.dd HH:mm";
     public static final String PATTERN_TIME_1 = "HH:mm:ss";
     public static final String PATTERN_TIME_NS_1 = "HH:mm";
     public static final String PATTERN_YEAR = "yyyy";
@@ -65,14 +67,16 @@ public class DateUtils {
     /**
      * 获取指定格式日期的毫秒数
      *
+     * @param time    时间
+     * @param pattern 格式模板
      * @return 毫秒
      */
-    public static long getMillis(String TargetTime, String pattern) {
+    public static long getMillis(String time, String pattern) {
         Calendar calendar = Calendar.getInstance();
         FORMAT.applyLocalizedPattern(pattern);
         try {
             // 特定格式的时间
-            calendar.setTime(FORMAT.parse(TargetTime));
+            calendar.setTime(FORMAT.parse(time));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -205,4 +209,31 @@ public class DateUtils {
         }
         return calendar.get(Calendar.DAY_OF_WEEK) - 1;
     }
+
+    /**
+     * 判断闰年
+     *
+     * @param year 年份
+     * @return 是否是闰年
+     */
+    public static boolean isLeapYear(int year) {
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    }
+
+    /**
+     * 判断一年中的大月
+     *
+     * @param month 月份
+     * @return 是否是大月
+     */
+    public static boolean is31DaysMonth(int month) {
+        return month == 1
+                || month == 3
+                || month == 5
+                || month == 7
+                || month == 8
+                || month == 10
+                || month == 12;
+    }
+
 }

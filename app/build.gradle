@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
     signingConfigs {
         Release {
             keyAlias 'projectx'
@@ -24,13 +23,11 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
-            enforceUniquePackageName false
         }
         debug {
             signingConfig signingConfigs.Release
             minifyEnabled false
             debuggable true
-            enforceUniquePackageName false
         }
     }
     lintOptions {
@@ -39,7 +36,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:26.0.2'
     compile 'com.android.support:design:26.0.2'
     compile project(':gradienttabstrip')

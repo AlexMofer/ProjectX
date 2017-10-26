@@ -1,8 +1,11 @@
 package am.project.x.utils;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.view.View;
 
 import java.util.List;
 
@@ -87,6 +90,26 @@ public class Tools {
                     .RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    /**
+     * 设置布局可绘制在状态栏下
+     *
+     * @param navigation 是否也包括虚拟按键
+     * @return 是否成功
+     */
+    public static boolean setLayoutFullscreen(Activity activity, boolean navigation) {
+        if (Build.VERSION.SDK_INT >= 16) {
+            int visibility = activity.getWindow().getDecorView().getSystemUiVisibility();
+            visibility = visibility | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            if (navigation) {
+                visibility = visibility | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+            }
+            activity.getWindow().getDecorView().setSystemUiVisibility(visibility);
+            return true;
         }
         return false;
     }

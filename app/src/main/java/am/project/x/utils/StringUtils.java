@@ -3,7 +3,6 @@ package am.project.x.utils;
 import android.support.annotation.NonNull;
 import android.util.Base64;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -15,6 +14,71 @@ import java.util.regex.Pattern;
 @SuppressWarnings("unused")
 public class StringUtils {
 
+    /**
+     * 字符串检查
+     *
+     * @param str 待检查字符串
+     * @return 判断结果
+     */
+    public static boolean isNullOrEmpty(String str) {
+        return str == null || str.length() == 0;
+    }
+
+    /**
+     * 字符串匹配
+     *
+     * @param src 源
+     * @param des 匹配样式
+     * @return 是否匹配
+     */
+    public static boolean isMatching(@NonNull String src, @NonNull String des) {
+        String regex = des.replace("*", "\\w*").replace("?", "\\w{1}");
+        return Pattern.compile(regex).matcher(src).matches();
+    }
+
+    /**
+     * 克隆
+     *
+     * @param target 源
+     * @return 克隆字符串
+     */
+    public static String clone(String target) {
+        if (target == null)
+            return null;
+        return target + "";
+    }
+
+    /**
+     * 获取哈希值
+     *
+     * @param target 源
+     * @return 哈希值
+     */
+    public static int hashCode(String target) {
+        if (target == null)
+            return 0;
+        return target.hashCode();
+    }
+
+    /**
+     * 字符串排序
+     *
+     * @param str1 字符串1
+     * @param str2 字符串2
+     * @return 排序值
+     */
+    public static int compareTo(String str1, String str2) {
+        if (str1 == null || str2 == null)
+            return 0;
+        final int lexicographically = str1.compareTo(str2);
+        if (lexicographically < 0) {
+            return -1;
+        } else if (lexicographically > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 
     /**
      * 判断字符串是否为数字
@@ -24,16 +88,6 @@ public class StringUtils {
      */
     public static boolean isNumeric(String str) {
         return Pattern.compile("[0-9]*").matcher(str).matches();
-    }
-
-    /**
-     * 字符串检查
-     *
-     * @param str 待检查字符串
-     * @return 判断结果
-     */
-    public static boolean isNullOrEmpty(String str) {
-        return str == null || str.length() == 0;
     }
 
     /**
@@ -284,20 +338,5 @@ public class StringUtils {
             charset = "GBK";
         }
         return charset;
-    }
-
-    /**
-     * 字符串匹配
-     *
-     * @param src 源
-     * @param des 匹配样式
-     * @return 是否匹配
-     */
-    public static boolean isMatching(@NonNull String src, @NonNull String des) {
-        String des1 = des.replace("*", "\\w*");
-        des1 = des1.replace("?", "\\w{1}");
-        Pattern p = Pattern.compile(des1);
-        Matcher m = p.matcher(src);
-        return m.matches();
     }
 }

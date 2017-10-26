@@ -2,6 +2,7 @@ package am.project.x.activities.other.printer.data;
 
 import android.content.Context;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,7 +10,6 @@ import java.util.List;
 import java.util.Locale;
 
 import am.project.x.R;
-import am.project.x.utils.FileUtils;
 import am.project.x.utils.QRCodeUtil;
 import am.util.printer.PrintDataMaker;
 import am.util.printer.PrinterWriter;
@@ -113,7 +113,11 @@ public class TestPrintDataMaker implements PrintDataMaker {
 
             data.add(printer.getDataAndReset());
 
-            String bitmapPath = FileUtils.getExternalFilesDir(context, "Temp") + "tmp_qr.jpg";
+            File dir = context.getExternalFilesDir("Temp");
+            if (dir == null) {
+                dir = context.getFilesDir();
+            }
+            String bitmapPath = dir.getPath() + "/tmp_qr.jpg";
             if (QRCodeUtil.createQRImage(qr, 380, 380, null, bitmapPath)) {
                 ArrayList<byte[]> image2 = printer.getImageByte(bitmapPath);
                 data.addAll(image2);
