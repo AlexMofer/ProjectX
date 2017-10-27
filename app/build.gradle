@@ -59,4 +59,5 @@ dependencies {
     compile project(':viewpager')
     compile project(':recyclerview')
     compile project(':security')
+    compile project(':mvp')
 }

@@ -1,18 +1,31 @@
-package am.project.x.base;
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package am.util.mvp;
 
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,10 +35,10 @@ import java.util.ArrayList;
 
 /**
  * Activity
- * Created by Alex on 2017/3/13.
+ * Created by Alex on 2017/10/28.
  */
-@SuppressWarnings("unused")
-public abstract class BaseAppCompatActivity extends AppCompatActivity {
+@SuppressWarnings("all")
+public abstract class AMAppCompatActivity extends AppCompatActivity {
 
     private final ArrayList<Dialog> mShowDialogs = new ArrayList<>();
     private ToolbarNavigationOnClickListener mToolbarListener;
@@ -47,10 +60,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final BasePresenter presenter = getPresenter();
-        if (null != presenter) {
-            presenter.onCreate(savedInstanceState);
-        }
         int layout = getContentViewLayout();
         if (layout != 0) {
             setContentView(layout);
@@ -62,6 +71,70 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         mLocalBroadcastManager.registerReceiver(mLocalBroadcastReceiver, filter);
         onRegisteredLocalBroadcastReceiver();
         mLoading = getLoadingDialog();
+        final AMPresenter presenter = getPresenter();
+        if (null != presenter) {
+            presenter.onCreated(savedInstanceState);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        final AMPresenter presenter = getPresenter();
+        if (null != presenter) {
+            presenter.onStarted();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final AMPresenter presenter = getPresenter();
+        if (null != presenter) {
+            presenter.onResumed();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        final AMPresenter presenter = getPresenter();
+        if (null != presenter) {
+            presenter.onPaused();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        final AMPresenter presenter = getPresenter();
+        if (null != presenter) {
+            presenter.onStopped();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        final AMPresenter presenter = getPresenter();
+        if (null != presenter) {
+            presenter.onSaveInstanceState(outState);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (!isLocalBroadcastUnregistered()) {
+            mLocalBroadcastManager.unregisterReceiver(mLocalBroadcastReceiver);
+            mLocalBroadcastManager = null;
+            onUnregisteredLocalBroadcastReceiver();
+        }
+        super.onDestroy();
+        final AMPresenter presenter = getPresenter();
+        if (null != presenter) {
+            presenter.onDestroyed();
+            presenter.detach();
+        }
     }
 
     /**
@@ -84,7 +157,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @return 基础Presenter
      */
-    protected BasePresenter getPresenter() {
+    protected AMPresenter getPresenter() {
         return null;
     }
 
@@ -94,7 +167,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      * @return 载入对话框
      */
     protected Dialog getLoadingDialog() {
-        return null;// TODO 增加默认载入对话框，存储载入对话框是否已显示
+        return null;
     }
 
     /**
@@ -155,18 +228,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         }
         mLocalBroadcastManager.sendBroadcast(intent);
     }
-
-    /**
-     * 判断权限是否被授予
-     *
-     * @param permission 权限
-     * @return 是否被授予
-     */
-    public final boolean isPermissionGranted(@NonNull String permission) {
-        return ActivityCompat.checkSelfPermission(this, permission)
-                == PackageManager.PERMISSION_GRANTED;
-    }
-
 
     /**
      * 设置 Support Toolbar
@@ -243,7 +304,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      */
     protected void showLoading() {
         if (mAttachedToWindow) {
-            if (!mLoading.isShowing())
+            if (mLoading != null && !mLoading.isShowing())
                 mLoading.show();
         } else {
             mShowLoading = true;
@@ -255,7 +316,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      */
     protected void dismissLoading() {
         if (mAttachedToWindow) {
-            if (mLoading.isShowing())
+            if (mLoading != null && mLoading.isShowing())
                 mLoading.dismiss();
         } else {
             mShowLoading = false;
@@ -267,7 +328,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      *
      * @param v 返回按钮
      */
-    @SuppressWarnings("unused")
     protected void onToolbarNavigationClick(View v) {
         onBackPressed();
     }
@@ -302,7 +362,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         mAttachedToWindow = true;
-        if (mShowLoading)
+        if (mLoading != null && mShowLoading)
             mLoading.show();
         for (Dialog dialog : mShowDialogs) {
             dialog.show();
@@ -313,7 +373,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     public void onDetachedFromWindow() {
         mAttachedToWindow = false;
-        if (mLoading.isShowing())
+        if (mLoading != null && mLoading.isShowing())
             mLoading.dismiss();
         super.onDetachedFromWindow();
     }
@@ -325,93 +385,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      */
     protected boolean isAttachedToWindow() {
         return mAttachedToWindow;
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        final BasePresenter presenter = getPresenter();
-        if (null != presenter) {
-            presenter.onSaveInstanceState(outState);
-        }
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        final BasePresenter presenter = getPresenter();
-        if (null != presenter) {
-            presenter.onRestoreInstanceState(savedInstanceState);
-        }
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        final BasePresenter presenter = getPresenter();
-        if (null != presenter) {
-            presenter.onRestart();
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        final BasePresenter presenter = getPresenter();
-        if (null != presenter) {
-            presenter.onStart();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        final BasePresenter presenter = getPresenter();
-        if (null != presenter) {
-            presenter.onResume();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        final BasePresenter presenter = getPresenter();
-        if (null != presenter) {
-            presenter.onPause();
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        final BasePresenter presenter = getPresenter();
-        if (null != presenter) {
-            presenter.onStop();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (!isLocalBroadcastUnregistered()) {
-            mLocalBroadcastManager.unregisterReceiver(mLocalBroadcastReceiver);
-            mLocalBroadcastManager = null;
-            onUnregisteredLocalBroadcastReceiver();
-        }
-        super.onDestroy();
-        final BasePresenter presenter = getPresenter();
-        if (null != presenter) {
-            presenter.onDestroy();
-        }
-    }
-
-    @Override
-    public void finish() {
-        if (!isLocalBroadcastUnregistered()) {
-            mLocalBroadcastManager.unregisterReceiver(mLocalBroadcastReceiver);
-            mLocalBroadcastManager = null;
-            onUnregisteredLocalBroadcastReceiver();
-        }
-        super.finish();
     }
 
     private class ToolbarNavigationOnClickListener implements View.OnClickListener {

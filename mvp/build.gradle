@@ -2,16 +2,17 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
+
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 32
-        versionName "26.0.2"
+        versionCode 1
+        versionName "1.0.0"
     }
 }
 
 dependencies {
-    compile 'com.android.support:support-core-ui:26.0.2'
+    compile 'com.android.support:appcompat-v7:26.0.2'
 }
 
 //apply from: "bintray.gradle"
