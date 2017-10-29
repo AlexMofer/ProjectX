@@ -1,60 +1,53 @@
-RecyclerView
+BaseTabStrip
 ============
 
 <img src="icon.png" alt="Icon"/>
 
-RecyclerView辅助库
+sample introduction
 
-介绍
----
+Introduction
+------------
 
-RecyclerView的几个通用的Adapter及子类：
+project introduction
 
-- **LoadingRecyclerAdapter**
+Pre-requisites
+--------------
 
-    带尾部载入的RecyclerAdapter。
-- **LoadingViewHolder**
+- requisite 1
+- requisite 2
 
-    与LoadingRecyclerAdapter配套的LoadingViewHolder。
-- **ItemAnimatorControllableRecyclerView**
+Screenshots
+-----------
 
-    可控制子项动画的子类。
+<img src="screenshot.png" alt="Screenshot"/>
 
-先决条件
+Getting Started
+---------------
+
+ 1. **Step1:**
+
+     11111
+ 2. **Step2:**
+
+     22222
+
+Note
 ----
 
-- minSdkVersion 14
-- 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7）
+- note 1
+- note 2
 
-入门
----
-
-**引用:**
-
-```java
-dependencies {
-    ...
-    compile 'am.util:recyclerview:26.1.0'
-    ...
-}
-```
-
-注意
----
-
-- 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7），否则可能出现错误。
-
-支持
----
+Support
+-------
 
 - Google+: https://plus.google.com/114728839435421501183
 - Gmail: moferalex@gmail.com
 
-如果发现错误，请在此处提出:
+If you've found an error in this sample, please file an issue:
 https://github.com/AlexMofer/ProjectX/issues
 
-许可
----
+License
+-------
 
 Copyright (C) 2015 AlexMofer
 

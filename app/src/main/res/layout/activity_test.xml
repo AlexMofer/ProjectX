@@ -16,16 +16,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/test_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/ToolbarTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/dev_test" />
-
-        </android.support.v7.widget.Toolbar>
+            android:layout_height="wrap_content" />
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout

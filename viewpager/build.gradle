@@ -7,12 +7,12 @@ android {
         minSdkVersion 14
         targetSdkVersion 26
         versionCode 1
-        versionName "26.0.2"
+        versionName "26.1.0"
     }
 }
 
 dependencies {
-    compile 'com.android.support:support-fragment:26.0.2'
+    implementation 'com.android.support:support-fragment:26.1.0'
 }
 
 //apply from: "bintray.gradle"

@@ -1,24 +1,16 @@
-RecyclerView
-============
+MVP
+===
 
 <img src="icon.png" alt="Icon"/>
 
-RecyclerView辅助库
+MVP模式基础包
 
 介绍
 ---
 
-RecyclerView的几个通用的Adapter及子类：
+MVP模式，包括简单的Activity与Fragment基础类，主要是绑定P层，使整个MVP模式具备
+生命周期，另外实现了一些基础方法。
 
-- **LoadingRecyclerAdapter**
-
-    带尾部载入的RecyclerAdapter。
-- **LoadingViewHolder**
-
-    与LoadingRecyclerAdapter配套的LoadingViewHolder。
-- **ItemAnimatorControllableRecyclerView**
-
-    可控制子项动画的子类。
 
 先决条件
 ----
@@ -34,7 +26,7 @@ RecyclerView的几个通用的Adapter及子类：
 ```java
 dependencies {
     ...
-    compile 'am.util:recyclerview:26.1.0'
+    compile 'am.util:mvp:26.1.0'
     ...
 }
 ```
@@ -42,7 +34,7 @@ dependencies {
 注意
 ---
 
-- 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7），否则可能出现错误。
+- 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7），否则可能出现错误
 
 支持
 ---
