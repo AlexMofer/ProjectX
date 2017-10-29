@@ -12,6 +12,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support:support-core-ui:26.1.0'
     implementation project(':basetabstrip')
 //    implementation 'am.widget:basetabstrip:26.1.0'
 }

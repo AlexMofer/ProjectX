@@ -16,7 +16,6 @@
 
 package am.widget.gradienttabstrip;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -26,7 +25,6 @@ import android.graphics.Paint.Align;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
@@ -93,9 +91,7 @@ public class GradientTabStrip extends BaseTabStrip {
         final float density = getResources().getDisplayMetrics().density;
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setTextAlign(Align.CENTER);
-        if (Build.VERSION.SDK_INT > 4) {
-            updateTextPaintDensity();
-        }
+        mTextPaint.density = getResources().getDisplayMetrics().density;
         mTagLocation = new TagLocation(TagLocation.LOCATION_CONTENT);
         final TypedArray a = context.obtainStyledAttributes(attrs, ATTRS, defStyleAttr, 0);
         int n = a.getIndexCount();
@@ -216,11 +212,6 @@ public class GradientTabStrip extends BaseTabStrip {
         setTagPadding(tagPaddingLeft, tagPaddingTop, tagPaddingRight, tagPaddingBottom);
         setTagMargin(tagMarginLeft, tagMarginTop, tagMarginRight, tagMarginBottom);
         setCenterGap(centerGap);
-    }
-
-    @TargetApi(5)
-    private void updateTextPaintDensity() {
-        mTextPaint.density = getResources().getDisplayMetrics().density;
     }
 
     @Override
@@ -658,8 +649,11 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @param color 文字颜色
      */
-    public void setTextColor(@ColorInt int color) {
-        setTextColor(ColorStateList.valueOf(color));
+    public void setTextColor(ColorStateList color) {
+        if (color != null && color != mTextColor) {
+            mTextColor = color;
+            invalidate();
+        }
     }
 
     /**
@@ -667,11 +661,8 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @param color 文字颜色
      */
-    public void setTextColor(ColorStateList color) {
-        if (color != null && color != mTextColor) {
-            mTextColor = color;
-            invalidate();
-        }
+    public void setTextColor(@ColorInt int color) {
+        setTextColor(ColorStateList.valueOf(color));
     }
 
     /**
@@ -712,9 +703,11 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @param interval 子项间隔
      */
-    @SuppressWarnings("unused")
-    public void setInterval(@DrawableRes int interval) {
-        setInterval(ContextCompat.getDrawable(getContext(), interval));
+    public void setInterval(Drawable interval) {
+        if (mInterval != interval) {
+            mInterval = interval;
+            invalidate();
+        }
     }
 
     /**
@@ -722,11 +715,9 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @param interval 子项间隔
      */
-    public void setInterval(Drawable interval) {
-        if (mInterval != interval) {
-            mInterval = interval;
-            invalidate();
-        }
+    @SuppressWarnings("unused")
+    public void setInterval(@DrawableRes int interval) {
+        setInterval(ContextCompat.getDrawable(getContext(), interval));
     }
 
     /**
@@ -833,9 +824,11 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @param background Tag背景
      */
-    @SuppressWarnings("unused")
-    public void setTagBackground(@DrawableRes int background) {
-        setTagBackground(ContextCompat.getDrawable(getContext(), background));
+    public void setTagBackground(Drawable background) {
+        if (mTagBackground != background) {
+            mTagBackground = background;
+            invalidate();
+        }
     }
 
     /**
@@ -843,11 +836,9 @@ public class GradientTabStrip extends BaseTabStrip {
      *
      * @param background Tag背景
      */
-    public void setTagBackground(Drawable background) {
-        if (mTagBackground != background) {
-            mTagBackground = background;
-            invalidate();
-        }
+    @SuppressWarnings("unused")
+    public void setTagBackground(@DrawableRes int background) {
+        setTagBackground(ContextCompat.getDrawable(getContext(), background));
     }
 
     /**

@@ -38,6 +38,7 @@ android {
 dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
+    implementation project(':basetabstrip')
     implementation project(':gradienttabstrip')
     implementation project(':tagtabstrip')
     implementation project(':indicatortabstrip')
@@ -60,4 +61,5 @@ dependencies {
     implementation project(':recyclerview')
     implementation project(':security')
     implementation project(':mvp')
+    implementation 'com.google.zxing:core:3.3.0'
 }
