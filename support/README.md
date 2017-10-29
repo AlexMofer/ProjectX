@@ -1,18 +1,14 @@
-# Support
-![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/support/icon.png)
+Support
+=======
+
+<img src="icon.png" alt="Icon"/>
+
+支持库
+
+介绍
+---
 
 支持库，一些工具类及版本控制兼容类，一些特殊监听器。
-## 要求
-minSdkVersion 4
-## 引用
-```java
-dependencies {
-    ⋯
-    compile 'am.project:support:1.0.5'
-    ⋯
-}
-```
-## 详情
 - **AMActivityManagerCompat**
 
     ActivityManager 版本兼容器，兼容getLargeMemoryClass
@@ -50,7 +46,49 @@ dependencies {
 
     ScrollView的OnScrollChangeListener兼容版本
 
-## 历史
-- [**1.0.4**](https://bintray.com/alexmofer/maven/Support/1.0.4)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/support/history/1.0.4)）
-- [**1.0.3**](https://bintray.com/alexmofer/maven/Support/1.0.3)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/support/history/1.0.3)）
-- [**1.0.0**](https://bintray.com/alexmofer/maven/Support/1.0.0)
+先决条件
+----
+
+minSdkVersion 4
+
+入门
+---
+
+**引用:**
+
+```java
+dependencies {
+    ...
+    compile 'am.project:support:1.1.0'
+    ...
+}
+```
+
+支持
+---
+
+- Google+: https://plus.google.com/114728839435421501183
+- Gmail: moferalex@gmail.com
+
+如果发现错误，请在此处提出:
+https://github.com/AlexMofer/ProjectX/issues
+
+许可
+---
+
+Copyright (C) 2015 AlexMofer
+
+Licensed to the Apache Software Foundation (ASF) under one or more contributor
+license agreements.  See the NOTICE file distributed with this work for
+additional information regarding copyright ownership.  The ASF licenses this
+file to you under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License.  You may obtain a copy of
+the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+License for the specific language governing permissions and limitations under
+the License.
