@@ -11,14 +11,18 @@ import android.widget.Toast;
 
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
-import am.widget.cameraview.CameraStateCallback;
-import am.widget.cameraview.CameraView;
-import am.widget.zxingscanview.ZxingForegroundView;
+import am.widget.cameraview.old.CameraStateCallback;
+import am.widget.cameraview.old.CameraView;
 
 public class CameraViewActivity extends BaseActivity implements CameraStateCallback {
 
     private static final int PERMISSIONS_REQUEST_CAMERA = 106;
     private CameraView cvCamera;
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, CameraViewActivity.class);
+        context.startActivity(starter);
+    }
 
     @Override
     protected int getContentViewLayoutResources() {
@@ -28,11 +32,9 @@ public class CameraViewActivity extends BaseActivity implements CameraStateCallb
     @Override
     protected void initResource(Bundle savedInstanceState) {
         setSupportActionBar(R.id.camera_toolbar);
-        cvCamera = (CameraView) findViewById(R.id.camera_cv_camera);
+        cvCamera = findViewById(R.id.camera_cv_camera);
         cvCamera.addCallback(this);
     }
-
-
 
     @Override
     public void onPermissionDenied(CameraView cameraView) {
@@ -70,10 +72,5 @@ public class CameraViewActivity extends BaseActivity implements CameraStateCallb
                 }
             }
         }
-    }
-
-    public static void start(Context context) {
-        Intent starter = new Intent(context, CameraViewActivity.class);
-        context.startActivity(starter);
     }
 }

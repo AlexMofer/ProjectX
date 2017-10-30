@@ -1,11 +1,13 @@
-package am.widget.cameraview;
+package am.widget.cameraview.old.tool;
+
+import am.widget.cameraview.old.CameraView;
 
 /**
  * 相机设置
  * Created by Alex on 2017/2/28.
  */
 
-class CameraSetting {
+public class CameraSetting {
     private boolean mAutoFocus = true;// 自动对焦
     private boolean mContinuousFocus = false;// 持续对焦
     private boolean mInvertScan = false;// 翻转扫描

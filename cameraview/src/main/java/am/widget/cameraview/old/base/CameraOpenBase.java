@@ -1,6 +1,10 @@
-package am.widget.cameraview;
+package am.widget.cameraview.old.base;
 
 import android.hardware.Camera;
+
+import am.widget.cameraview.old.CameraStateCallback;
+import am.widget.cameraview.old.CameraView;
+import am.widget.cameraview.old.tool.CameraException;
 
 /**
  * 摄像头开启
@@ -9,11 +13,11 @@ import android.hardware.Camera;
 @SuppressWarnings("deprecation")
 class CameraOpenBase {
 
-    private int cameraId;
     Camera.CameraInfo selectedCameraInfo;
     Camera camera;
+    private int cameraId;
 
-    void openCamera(int id, boolean isForceFacing) throws CameraException{
+    void openCamera(int id, boolean isForceFacing) throws CameraException {
         closeCamera();
         final int numCameras = Camera.getNumberOfCameras();
         if (numCameras == 0) {

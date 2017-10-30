@@ -1,21 +1,28 @@
-package am.widget.cameraview;
+package am.widget.cameraview.old.base;
 
 import android.content.Context;
 import android.hardware.Camera;
 import android.view.SurfaceHolder;
+
+import am.widget.cameraview.old.CameraManager;
+import am.widget.cameraview.old.CameraManagerImpl;
+import am.widget.cameraview.old.CameraStateCallback;
+import am.widget.cameraview.old.tool.CameraException;
+import am.widget.cameraview.old.tool.CameraSetting;
+import am.widget.cameraview.old.tool.CameraSize;
 
 /**
  * 低版本摄像头管理器
  * Created by Alex on 2017/2/11.
  */
 @SuppressWarnings("deprecation")
-class CameraManagerBase implements CameraManagerImpl {
+public class CameraManagerBase implements CameraManagerImpl {
 
     private final CameraManager.OnOpenListener listener;
     private final CameraOpenBase mOpen = new CameraOpenBase();
     private final CameraConfigBase mConfig = new CameraConfigBase();
 
-    CameraManagerBase(CameraManager.OnOpenListener listener) {
+    public CameraManagerBase(CameraManager.OnOpenListener listener) {
         this.listener = listener;
     }
 

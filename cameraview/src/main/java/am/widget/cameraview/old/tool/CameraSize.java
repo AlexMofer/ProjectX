@@ -1,4 +1,4 @@
-package am.widget.cameraview;
+package am.widget.cameraview.old.tool;
 
 
 /**
@@ -6,14 +6,17 @@ package am.widget.cameraview;
  * Created by Alex on 2017/2/27.
  */
 
-class CameraSize {
+public class CameraSize {
+    private final int mWidth;
+    private final int mHeight;
+
     /**
      * Create a new immutable Size instance.
      *
      * @param width  The width of the size, in pixels
      * @param height The height of the size, in pixels
      */
-    CameraSize(int width, int height) {
+    public CameraSize(int width, int height) {
         mWidth = width;
         mHeight = height;
     }
@@ -81,7 +84,4 @@ class CameraSize {
         // assuming most sizes are <2^16, doing a rotate will give us perfect hashing
         return mHeight ^ ((mWidth << (Integer.SIZE / 2)) | (mWidth >>> (Integer.SIZE / 2)));
     }
-
-    private final int mWidth;
-    private final int mHeight;
 }

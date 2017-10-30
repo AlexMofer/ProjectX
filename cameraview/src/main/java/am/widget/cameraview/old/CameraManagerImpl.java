@@ -1,14 +1,18 @@
-package am.widget.cameraview;
+package am.widget.cameraview.old;
 
 import android.content.Context;
 import android.view.SurfaceHolder;
+
+import am.widget.cameraview.old.tool.CameraException;
+import am.widget.cameraview.old.tool.CameraSetting;
+import am.widget.cameraview.old.tool.CameraSize;
 
 /**
  * 摄像头管理器接口
  * Created by Alex on 2017/2/11.
  */
 
-interface CameraManagerImpl {
+public interface CameraManagerImpl {
 
     void setTimeout(long timeout);
 

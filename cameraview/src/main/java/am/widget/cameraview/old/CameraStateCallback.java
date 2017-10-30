@@ -1,4 +1,4 @@
-package am.widget.cameraview;
+package am.widget.cameraview.old;
 
 /**
  * 状态回调

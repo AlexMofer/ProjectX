@@ -1,10 +1,14 @@
-package am.widget.cameraview;
+package am.widget.cameraview.old;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import am.widget.cameraview.old.tool.CameraException;
+import am.widget.cameraview.old.tool.CameraSetting;
+import am.widget.cameraview.old.tool.CameraSize;
 
 /**
  * 摄像头视图
@@ -13,6 +17,7 @@ import android.view.SurfaceView;
 
 class CameraSurface extends SurfaceView {
 
+    private final CameraSetting mSetting = new CameraSetting();
     private CameraManager cameraManager;
     private OnCameraListener cameraListener;
     private boolean isOpen = false;
@@ -23,7 +28,6 @@ class CameraSurface extends SurfaceView {
     private int mMaxHeight;// View可拥有的最大高度
     private CameraSize mSize;// 摄像头需要的尺寸
     private int mPreviewSizeMode;// 预览模式
-    private final CameraSetting mSetting = new CameraSetting();
 
     CameraSurface(Context context) {
         super(context);
@@ -85,61 +89,6 @@ class CameraSurface extends SurfaceView {
         } catch (CameraException e) {
             if (cameraListener != null)
                 cameraListener.onError(this, e.getCode(), e.getReason());
-        }
-    }
-
-    private class CameraCallBack implements SurfaceHolder.Callback {
-        @Override
-        public void surfaceCreated(SurfaceHolder surfaceHolder) {
-            openCamera(surfaceHolder);
-        }
-
-        @Override
-        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            previewCamera();
-        }
-
-        @Override
-        public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-            closeCamera();
-        }
-    }
-
-    private class OnOpenListener implements CameraManager.OnOpenListener {
-
-        @Override
-        public void onSelected() {
-            CameraSize newSize;
-            try {
-                newSize = cameraManager.getSize(mMaxWidth, mMaxHeight, mPreviewSizeMode);
-            } catch (CameraException e) {
-                if (cameraListener != null)
-                    cameraListener.onError(CameraSurface.this, e.getCode(), e.getReason());
-                closeCamera();
-                return;
-            }
-            if (!newSize.equals(mSize)) {
-                // 修改View尺寸，调整高宽比
-                mSize = newSize;
-                final int width = mMaxWidth > mMaxHeight ? mSize.getWidth() : mSize.getHeight();
-                final int height = mMaxWidth > mMaxHeight ? mSize.getHeight() : mSize.getWidth();
-                getHolder().setFixedSize(width, height);
-            }
-
-            // TODO
-            try {
-                cameraManager.configCamera(getContext(), getHolder(), mSetting);
-            } catch (CameraException e) {
-                if (cameraListener != null)
-                    cameraListener.onError(CameraSurface.this, e.getCode(), e.getReason());
-                closeCamera();
-                return;
-            }
-        }
-
-        @Override
-        public void onOpened() {
-            previewCamera();
         }
     }
 
@@ -218,5 +167,60 @@ class CameraSurface extends SurfaceView {
         void onDisconnected(CameraSurface cameraView);
 
         void onError(CameraSurface cameraView, int error, int reason);
+    }
+
+    private class CameraCallBack implements SurfaceHolder.Callback {
+        @Override
+        public void surfaceCreated(SurfaceHolder surfaceHolder) {
+            openCamera(surfaceHolder);
+        }
+
+        @Override
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            previewCamera();
+        }
+
+        @Override
+        public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+            closeCamera();
+        }
+    }
+
+    private class OnOpenListener implements CameraManager.OnOpenListener {
+
+        @Override
+        public void onSelected() {
+            CameraSize newSize;
+            try {
+                newSize = cameraManager.getSize(mMaxWidth, mMaxHeight, mPreviewSizeMode);
+            } catch (CameraException e) {
+                if (cameraListener != null)
+                    cameraListener.onError(CameraSurface.this, e.getCode(), e.getReason());
+                closeCamera();
+                return;
+            }
+            if (!newSize.equals(mSize)) {
+                // 修改View尺寸，调整高宽比
+                mSize = newSize;
+                final int width = mMaxWidth > mMaxHeight ? mSize.getWidth() : mSize.getHeight();
+                final int height = mMaxWidth > mMaxHeight ? mSize.getHeight() : mSize.getWidth();
+                getHolder().setFixedSize(width, height);
+            }
+
+            // TODO
+            try {
+                cameraManager.configCamera(getContext(), getHolder(), mSetting);
+            } catch (CameraException e) {
+                if (cameraListener != null)
+                    cameraListener.onError(CameraSurface.this, e.getCode(), e.getReason());
+                closeCamera();
+                return;
+            }
+        }
+
+        @Override
+        public void onOpened() {
+            previewCamera();
+        }
     }
 }

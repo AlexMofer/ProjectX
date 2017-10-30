@@ -1,18 +1,24 @@
-package am.widget.cameraview;
+package am.widget.cameraview.old.lollipop;
 
 import android.content.Context;
 import android.view.SurfaceHolder;
+
+import am.widget.cameraview.old.CameraManager;
+import am.widget.cameraview.old.CameraManagerImpl;
+import am.widget.cameraview.old.tool.CameraException;
+import am.widget.cameraview.old.tool.CameraSetting;
+import am.widget.cameraview.old.tool.CameraSize;
 
 /**
  * L版CameraManager
  * Created by Alex on 2017/2/11.
  */
-class CameraManagerLollipop implements CameraManagerImpl {
+public class CameraManagerLollipop implements CameraManagerImpl {
 
     private final CameraOpenLollipop mOpen;
     private final CameraConfigLollipop mConfig = new CameraConfigLollipop();
 
-    CameraManagerLollipop(Context context, CameraManager.OnOpenListener listener) {
+    public CameraManagerLollipop(Context context, CameraManager.OnOpenListener listener) {
         mOpen = new CameraOpenLollipop(context, listener);
     }
 

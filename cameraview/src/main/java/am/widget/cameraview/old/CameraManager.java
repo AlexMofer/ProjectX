@@ -1,15 +1,20 @@
-package am.widget.cameraview;
+package am.widget.cameraview.old;
 
 
 import android.content.Context;
 import android.view.SurfaceHolder;
+
+import am.widget.cameraview.old.base.CameraManagerBase;
+import am.widget.cameraview.old.tool.CameraException;
+import am.widget.cameraview.old.tool.CameraSetting;
+import am.widget.cameraview.old.tool.CameraSize;
 
 /**
  * 摄像头管理器
  * Created by Alex on 2017/2/11.
  */
 
-class CameraManager {
+public class CameraManager {
 
     private CameraManagerImpl cameraManager;
 
@@ -47,7 +52,7 @@ class CameraManager {
         cameraManager.configCamera(context, holder, setting);
     }
 
-    interface OnOpenListener {
+    public interface OnOpenListener {
         void onSelected();
 
         void onOpened();

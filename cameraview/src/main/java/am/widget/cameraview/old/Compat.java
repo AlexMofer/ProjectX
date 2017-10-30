@@ -1,4 +1,4 @@
-package am.widget.cameraview;
+package am.widget.cameraview.old;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -13,7 +13,38 @@ import android.view.View;
 
 class Compat {
 
+    private static final CompatImpl IMPL;
+
+    static {
+        final int version = android.os.Build.VERSION.SDK_INT;
+        if (version >= 23) {
+            IMPL = new CompatAPI23();
+        } else if (version >= 21) {
+            IMPL = new CompatLollipop();
+        } else if (version >= 17) {
+            IMPL = new JbMr1CompatPlusImpl();
+        } else {
+            IMPL = new CompatBase();
+        }
+    }
+
     private Compat() {
+    }
+
+    static int checkSelfPermission(Context context, String permission) {
+        return IMPL.checkSelfPermission(context, permission);
+    }
+
+    static int getPaddingStart(View view) {
+        return IMPL.getPaddingStart(view);
+    }
+
+    static int getPaddingEnd(View view) {
+        return IMPL.getPaddingEnd(view);
+    }
+
+    static void setHotspot(Drawable drawable, float x, float y) {
+        IMPL.setHotspot(drawable, x, y);
     }
 
     private interface CompatImpl {
@@ -77,36 +108,5 @@ class Compat {
         public int checkSelfPermission(Context context, String permission) {
             return context.checkSelfPermission(permission);
         }
-    }
-
-    private static final CompatImpl IMPL;
-
-    static {
-        final int version = android.os.Build.VERSION.SDK_INT;
-        if (version >= 23) {
-            IMPL = new CompatAPI23();
-        } else if (version >= 21) {
-            IMPL = new CompatLollipop();
-        } else if (version >= 17) {
-            IMPL = new JbMr1CompatPlusImpl();
-        } else {
-            IMPL = new CompatBase();
-        }
-    }
-
-    static int checkSelfPermission(Context context, String permission) {
-        return IMPL.checkSelfPermission(context, permission);
-    }
-
-    static int getPaddingStart(View view) {
-        return IMPL.getPaddingStart(view);
-    }
-
-    static int getPaddingEnd(View view) {
-        return IMPL.getPaddingEnd(view);
-    }
-
-    static void setHotspot(Drawable drawable, float x, float y) {
-        IMPL.setHotspot(drawable, x, y);
     }
 }

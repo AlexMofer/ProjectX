@@ -1,4 +1,4 @@
-package am.widget.cameraview;
+package am.widget.cameraview.old.lollipop;
 
 import android.annotation.TargetApi;
 import android.graphics.SurfaceTexture;
@@ -12,6 +12,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
+import am.widget.cameraview.old.CameraStateCallback;
+import am.widget.cameraview.old.CameraView;
+import am.widget.cameraview.old.tool.CameraException;
+import am.widget.cameraview.old.tool.CameraSize;
 
 /**
  * 配置

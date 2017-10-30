@@ -1,4 +1,4 @@
-package am.widget.cameraview;
+package am.widget.cameraview.old.lollipop;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -9,6 +9,11 @@ import android.hardware.camera2.CameraDevice;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import am.widget.cameraview.old.CameraManager;
+import am.widget.cameraview.old.CameraStateCallback;
+import am.widget.cameraview.old.CameraView;
+import am.widget.cameraview.old.tool.CameraException;
+
 /**
  * 摄像头开启
  * Created by Alex on 2017/2/27.
@@ -17,13 +22,13 @@ import java.util.concurrent.TimeUnit;
 class CameraOpenLollipop {
 
     private final CameraManager.OnOpenListener listener;
+    private final CameraDevice.StateCallback mStateCallback = new StateCallback();
+    CameraCharacteristics characteristicsSelected;
     private long mTimeout = CameraView.DEFAULT_OPEN_TIMEOUT;
     private android.hardware.camera2.CameraManager manager;
     private String mCameraId;
-    CameraCharacteristics characteristicsSelected;
     private Semaphore mCameraOpenCloseLock = new Semaphore(1);
     private CameraDevice mCameraDevice;
-    private final CameraDevice.StateCallback mStateCallback = new StateCallback();
 
     CameraOpenLollipop(Context context, CameraManager.OnOpenListener listener) {
         this.listener = listener;
