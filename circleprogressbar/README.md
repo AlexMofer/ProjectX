@@ -1,86 +1,17 @@
-# CircleProgressBar
-![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/circleprogressbar/icon.png)
+CircleProgressBar
+=================
+
+<img src="icon.png" alt="Icon"/>
+
+环形进度条
+
+介绍
+---
 
 带载入动画的环形进度条，可高度配置，支持配置成表盘。
-## 预览
-![Screenshots](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/circleprogressbar/screenshots.gif)
-![Screenshots](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/circleprogressbar/screenshot_2.gif)
-## 要求
-minSdkVersion 11
-## 引用
-```java
-dependencies {
-    ⋯
-    compile 'am.widget:circleprogressbar:1.0.2'
-    ⋯
-}
-```
-## 使用
-- 布局样例
-```xml
-<am.widget.circleprogressbar.CircleProgressBar
-    android:layout_width="match_parent"
-    android:layout_height="480dp"
-    app:cpbGravity="center"
-    app:cpbRadius="160dp"
-    app:cpbStartAngle="135"
-    app:cpbSweepAngle="270"
-    app:cpbBackgroundSize="2dp"
-    app:cpbBackgroundColor="@color/colorPrimary"
-    app:cpbProgressSize="20dp"
-    app:cpbMax="810"
-    app:cpbProgress="315"
-    app:cpbFirstGradientColors="#ff33b5e5"
-    app:cpbSecondGradientColors="#ff99cc00"
-    app:cpbThirdGradientColors="#ffffbb33"
-    app:cpbFourthGradientColors="#ffff4444"
-    app:cpbDialGap="4dp"
-    app:cpbDialAngle="5"
-    app:cpbDialHeight="10dp"
-    app:cpbDialWidth="2dp"
-    app:cpbDialColor="@color/colorPrimary"
-    app:cpbDialSpecialUnit="3"
-    app:cpbDialSpecialHeight="15dp"
-    app:cpbDialSpecialColor="@color/colorAccent"
-    app:cpbShowSpecialDialValue="true"
-    app:cpbSpecialDialValueGap="2dp"
-    app:cpbSpecialDialValueTextSize="12sp"
-    app:cpbSpecialDialValueTextColor="#ff99cc00"
-    app:cpbShowProgressValue="true"
-    app:cpbProgressValueTextSize="72sp"
-    app:cpbProgressValueTextColor="#ff33b5e5"
-    app:cpbTopText="速度"
-    app:cpbTopTextSize="20sp"
-    app:cpbTopTextGap="10dp"
-    app:cpbTopTextColor="@color/colorPrimary"
-    app:cpbBottomText="km/s"
-    app:cpbBottomTextSize="16sp"
-    app:cpbBottomTextGap="15dp"
-    app:cpbBottomTextColor="#ffffbb33"
-    app:cpbScaleType="None"
-    app:cpbProgressDuration="2000"
-    app:cpbProgressMode="Loading"
-    app:cpbLoadingDuration="3000"
-    app:cpbLoadingRepeatMode="Reverse"
-    app:cpbLoadingDrawOther="true"
-    app:cpbLoadingText="载入"/>
-```
-- 代码样例
-```java
-CircleProgressBar cpbDemo = (CircleProgressBar) findViewById(R.id.circleprogressbar_cpb_demo);
-cpbDemo.setStartAngle(-90);
-cpbDemo.setSweepAngle(360);
-cpbDemo.setGradientColors(0xffff4444);
-cpbDemo.setBackgroundSize(0);
-cpbDemo.setProgress(520);
-cpbDemo.setProgressSize(64);
-cpbDemo.setDialVisibility(View.GONE);
-cpbDemo.setProgressMode(CircleProgressBar.ProgressMode.PROGRESS);
-cpbDemo.setShowProgressValue(true);
-cpbDemo.setTopText("步数");
-cpbDemo.setBottomText(null);
-```
-## 属性说明
+
+**属性说明**
+
 xml布局属性|属性值|对应方法|说明
 ---|---|---|---
 cpbGravity|给定值及组合|setGravity(int gravity)|设置排版方式，当高宽超过绘制所需尺寸时，此属性定义其绘制位置
@@ -135,3 +66,123 @@ cpbLoadingDuration|integer|setLoadingDuration(long duration)|设置载入动画�
 cpbLoadingRepeatMode|Restart、Reverse|setLoadingRepeatMode(int mode)|设置载入动画循环模式
 cpbLoadingDrawOther|boolean|setLoadingDrawOther(boolean draw)|载入模式下是否绘制其他元素
 cpbLoadingText|string|setLoadingText(String text)|设置载入时进度文字
+
+截图
+---
+
+<img src="screenshots.gif" alt="Screenshots 1"/><img src="screenshot_2.gif" alt="Screenshots 2"/>
+
+先决条件
+----
+
+minSdkVersion 11
+
+入门
+---
+
+**引用:**
+
+```java
+dependencies {
+    ...
+    implementation 'am.widget:circleprogressbar:1.0.3'
+    ...
+}
+```
+
+**布局:**
+
+```xml
+<am.widget.circleprogressbar.CircleProgressBar
+    android:layout_width="match_parent"
+    android:layout_height="480dp"
+    app:cpbGravity="center"
+    app:cpbRadius="160dp"
+    app:cpbStartAngle="135"
+    app:cpbSweepAngle="270"
+    app:cpbBackgroundSize="2dp"
+    app:cpbBackgroundColor="@color/colorPrimary"
+    app:cpbProgressSize="20dp"
+    app:cpbMax="810"
+    app:cpbProgress="315"
+    app:cpbFirstGradientColors="#ff33b5e5"
+    app:cpbSecondGradientColors="#ff99cc00"
+    app:cpbThirdGradientColors="#ffffbb33"
+    app:cpbFourthGradientColors="#ffff4444"
+    app:cpbDialGap="4dp"
+    app:cpbDialAngle="5"
+    app:cpbDialHeight="10dp"
+    app:cpbDialWidth="2dp"
+    app:cpbDialColor="@color/colorPrimary"
+    app:cpbDialSpecialUnit="3"
+    app:cpbDialSpecialHeight="15dp"
+    app:cpbDialSpecialColor="@color/colorAccent"
+    app:cpbShowSpecialDialValue="true"
+    app:cpbSpecialDialValueGap="2dp"
+    app:cpbSpecialDialValueTextSize="12sp"
+    app:cpbSpecialDialValueTextColor="#ff99cc00"
+    app:cpbShowProgressValue="true"
+    app:cpbProgressValueTextSize="72sp"
+    app:cpbProgressValueTextColor="#ff33b5e5"
+    app:cpbTopText="速度"
+    app:cpbTopTextSize="20sp"
+    app:cpbTopTextGap="10dp"
+    app:cpbTopTextColor="@color/colorPrimary"
+    app:cpbBottomText="km/s"
+    app:cpbBottomTextSize="16sp"
+    app:cpbBottomTextGap="15dp"
+    app:cpbBottomTextColor="#ffffbb33"
+    app:cpbScaleType="None"
+    app:cpbProgressDuration="2000"
+    app:cpbProgressMode="Loading"
+    app:cpbLoadingDuration="3000"
+    app:cpbLoadingRepeatMode="Reverse"
+    app:cpbLoadingDrawOther="true"
+    app:cpbLoadingText="载入"/>
+```
+
+**代码：**
+
+```java
+CircleProgressBar cpbDemo = (CircleProgressBar) findViewById(R.id.circleprogressbar_cpb_demo);
+cpbDemo.setStartAngle(-90);
+cpbDemo.setSweepAngle(360);
+cpbDemo.setGradientColors(0xffff4444);
+cpbDemo.setBackgroundSize(0);
+cpbDemo.setProgress(520);
+cpbDemo.setProgressSize(64);
+cpbDemo.setDialVisibility(View.GONE);
+cpbDemo.setProgressMode(CircleProgressBar.ProgressMode.PROGRESS);
+cpbDemo.setShowProgressValue(true);
+cpbDemo.setTopText("步数");
+cpbDemo.setBottomText(null);
+```
+
+支持
+---
+
+- Google+: https://plus.google.com/114728839435421501183
+- Gmail: moferalex@gmail.com
+
+如果发现错误，请在此处提出:
+https://github.com/AlexMofer/ProjectX/issues
+
+许可
+---
+
+Copyright (C) 2015 AlexMofer
+
+Licensed to the Apache Software Foundation (ASF) under one or more contributor
+license agreements.  See the NOTICE file distributed with this work for
+additional information regarding copyright ownership.  The ASF licenses this
+file to you under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License.  You may obtain a copy of
+the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+License for the specific language governing permissions and limitations under
+the License.

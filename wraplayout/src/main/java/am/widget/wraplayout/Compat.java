@@ -24,7 +24,7 @@ import android.view.View;
  */
 class Compat {
 
-    static final CompatPlusImpl IMPL;
+    private static final CompatPlusImpl IMPL;
 
     static {
         final int version = android.os.Build.VERSION.SDK_INT;
@@ -35,20 +35,21 @@ class Compat {
         }
     }
 
-    public static int getPaddingStart(View view) {
+    static int getPaddingStart(View view) {
         return IMPL.getPaddingStart(view);
     }
 
-    public static int getPaddingEnd(View view) {
+    static int getPaddingEnd(View view) {
         return IMPL.getPaddingEnd(view);
     }
 
-    interface CompatPlusImpl {
+    private interface CompatPlusImpl {
         int getPaddingStart(View view);
+
         int getPaddingEnd(View view);
     }
 
-    static class BaseCompatPlusImpl implements CompatPlusImpl {
+    private static class BaseCompatPlusImpl implements CompatPlusImpl {
         @Override
         public int getPaddingStart(View view) {
             return view.getPaddingLeft();
@@ -61,7 +62,7 @@ class Compat {
     }
 
     @TargetApi(17)
-    static class JbMr1CompatPlusImpl extends BaseCompatPlusImpl {
+    private static class JbMr1CompatPlusImpl extends BaseCompatPlusImpl {
         @Override
         public int getPaddingStart(View view) {
             return view.getPaddingStart();

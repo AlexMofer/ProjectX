@@ -38,18 +38,20 @@ import java.util.ArrayList;
  * This is intended as a base class; you will probably not need to use this
  * class directly in your own code.
  */
+@SuppressWarnings("all")
 public class HeaderFooterViewListAdapter implements WrapperListAdapter,
         Filterable {
 
-    static final ArrayList<HeaderFooterGridView.FixedViewInfo> EMPTY_INFO_LIST = new ArrayList<>();
-    static final ArrayList<View> EMPTY_VIEW_LIST = new ArrayList<>();
+    private static final ArrayList<HeaderFooterGridView.FixedViewInfo> EMPTY_INFO_LIST =
+            new ArrayList<>();
+    private static final ArrayList<View> EMPTY_VIEW_LIST = new ArrayList<>();
     private final ArrayList<HeaderFooterGridView.FixedViewInfo> mHeaderItemInfo;
     private final ArrayList<HeaderFooterGridView.FixedViewInfo> mFooterItemInfo;
     private final DataSetObservable mDataSetObservable = new DataSetObservable();
     private final boolean mIsFilterable;
     private final ArrayList<View> mHeaderViews;
     private final ArrayList<View> mFooterViews;
-    boolean mAreAllFixedViewsSelectable;
+    private boolean mAreAllFixedViewsSelectable;
     private ListAdapter mAdapter;
     private int mNumColumns;
     private int unusedPositionCount = 0;

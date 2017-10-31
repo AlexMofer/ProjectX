@@ -16,7 +16,6 @@
 
 package am.widget.headerfootergridview;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Build;
@@ -36,6 +35,7 @@ import java.util.ArrayList;
  *
  * @author Alex
  */
+@SuppressWarnings("all")
 public class HeaderFooterGridView extends GridView {
 
     private final ArrayList<View> mHeaderItems = new ArrayList<>();
@@ -72,14 +72,6 @@ public class HeaderFooterGridView extends GridView {
     public HeaderFooterGridView(Context context, AttributeSet attrs,
                                 int defStyle) {
         super(context, attrs, defStyle);
-        initView();
-    }
-
-    @TargetApi(21)
-    @SuppressWarnings("unused")
-    public HeaderFooterGridView(Context context, AttributeSet attrs, int defStyleAttr,
-                                int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
         initView();
     }
 

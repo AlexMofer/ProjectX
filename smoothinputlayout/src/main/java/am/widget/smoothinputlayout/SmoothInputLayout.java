@@ -30,7 +30,7 @@ import android.widget.LinearLayout;
  * 顺滑的输入面板
  * Created by Alex on 2016/12/4.
  */
-
+@SuppressWarnings("all")
 public class SmoothInputLayout extends LinearLayout {
     public static final int DEFAULT_KEYBOARD_HEIGHT = 387;
     public static final int MIN_KEYBOARD_HEIGHT = 20;

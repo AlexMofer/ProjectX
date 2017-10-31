@@ -1,21 +1,40 @@
-# SmoothInputLayout
-![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/smoothinputlayout/icon.png)
+SmoothInputLayout
+=================
+
+<img src="icon.png" alt="Icon"/>
+
+平滑输入面板
+
+介绍
+---
 
 仿微信式，平滑输入面板，防止键盘的出现与消失导致特殊输入面板的顶起与塌陷。
-## 预览
-![Screenshots](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/smoothinputlayout/screenshots.gif)
-## 要求
+
+截图
+---
+
+<img src="screenshots.gif" alt="Screenshots"/>
+
+先决条件
+----
+
 minSdkVersion 4
-## 引用
+
+入门
+---
+
+**引用:**
+
 ```java
 dependencies {
-    ⋯
-    compile 'am.widget:smoothinputlayout:1.1.1'
-    ⋯
+    ...
+    implementation 'am.widget:smoothinputlayout:1.1.2'
+    ...
 }
 ```
-## 使用
-- 基本布局
+
+**布局:**
+
 ```xml
 <am.widget.smoothinputlayout.SmoothInputLayout
     android:id="@+id/sil_lyt_content"
@@ -127,7 +146,9 @@ dependencies {
 
 </am.widget.smoothinputlayout.SmoothInputLayout>
 ```
-- 基本代码
+
+**代码：**
+
 ```java
 SmoothInputLayout lytContent = (SmoothInputLayout) findViewById(R.id.sil_lyt_content);
 lytContent.closeInputPane();// 关闭面板
@@ -135,13 +156,41 @@ lytContent.closeKeyboard(true);// 关闭键盘
 lytContent.showKeyboard();// 显示键盘
 lytContent.showInputPane(true);//显示面板
 ```
-## 注意
+
+注意
+---
+
 - 在Activity声明时必须设置android:windowSoftInputMode="adjustResize"，否则无效
 - Activity的主题背景颜色会影响键盘收起时的效果（android:windowBackground），如果是透明背景，在键盘收起时会一黑一黑或者透视到下一层。
 - app:silInputView 用于指定输入框，一般是EditText，此处用+id，否则会报错，在该EditText上用@id即可，也可以通过setInputView(View edit)从代码上实现
 - app:silInputPane 用于指定输入面板，此处也是用+id，否则会报错，在该面板View上用@id即可，也可以通过setInputPane(View edit)从代码上实现
 - 控件按钮间的逻辑关系参照样例Activity
 
-## 历史
-- [**1.1.0**](https://bintray.com/alexmofer/maven/SmoothInputLayout/1.1.0)
-- [**1.0.0**](https://bintray.com/alexmofer/maven/SmoothInputLayout/1.0.0)
+支持
+---
+
+- Google+: https://plus.google.com/114728839435421501183
+- Gmail: moferalex@gmail.com
+
+如果发现错误，请在此处提出:
+https://github.com/AlexMofer/ProjectX/issues
+
+许可
+---
+
+Copyright (C) 2015 AlexMofer
+
+Licensed to the Apache Software Foundation (ASF) under one or more contributor
+license agreements.  See the NOTICE file distributed with this work for
+additional information regarding copyright ownership.  The ASF licenses this
+file to you under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License.  You may obtain a copy of
+the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+License for the specific language governing permissions and limitations under
+the License.

@@ -1,21 +1,40 @@
-# WrapLayout
-![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/wraplayout/icon.png)
+WrapLayout
+==========
+
+<img src="icon.png" alt="Icon"/>
+
+自动换行布局
+
+介绍
+---
 
 自动换行布局，水平排列子项，并自动换行，支持不等长不等宽子项，且可以设置垂直间距与水平间距及子项对齐模式。
-## 预览
-![Screenshots](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/wraplayout/screenshots.gif)
-## 要求
+
+截图
+---
+
+<img src="screenshots.gif" alt="Screenshots"/>
+
+先决条件
+----
+
 minSdkVersion 4
-## 引用
+
+入门
+---
+
+**引用:**
+
 ```java
 dependencies {
-    ⋯
-    compile 'am.widget:wraplayout:1.2.0'
-    ⋯
+    ...
+    implementation 'am.widget:wraplayout:1.2.1'
+    ...
 }
 ```
-## 使用
-- 基本布局
+
+**布局:**
+
 ```xml
 <am.widget.wraplayout.WrapLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -37,14 +56,19 @@ dependencies {
     ⋯
 </am.widget.wraplayout.WrapLayout>
 ```
-- 基本代码
+
+**代码：**
+
 ```java
 WrapLayout lytWrap = (WrapLayout) findViewById(R.id.wly_lyt_warp);
 lytWrap.setHorizontalSpacing(20);
 lytWrap.setVerticalSpacing(20);
 lytWrap.setGravity(WrapLayout.GRAVITY_CENTER);
 ```
-## 注意
+
+注意
+---
+
 - android:horizontalSpacing 与 app:wlyHorizontalSpacing只定义一份即可
 - android:verticalSpacing 与 app:wlyVerticalSpacing只定义一份即可
 - 通过getNumRows()方法获取行数目
@@ -52,7 +76,31 @@ lytWrap.setGravity(WrapLayout.GRAVITY_CENTER);
 - 通过app:wlyGravity或setGravity(int)方法设置子项对齐模式，仅支持上中下，左右对齐是无意义的。若子项设置布局Gravity，则不受其影响。
 - 子项通过设置app:wlyLayout_gravity或获取其WrapLayout.LayoutParams的setGravity(int)方法设置子项自己的布局Gravity。
 
-## 历史
-- [**1.1.0**](https://bintray.com/alexmofer/maven/WrapLayout/1.1.0)
-- [**1.0.1**](https://bintray.com/alexmofer/maven/WrapLayout/1.0.1)
-- [**1.0.0**](https://bintray.com/alexmofer/maven/WrapLayout/1.0.0)
+支持
+---
+
+- Google+: https://plus.google.com/114728839435421501183
+- Gmail: moferalex@gmail.com
+
+如果发现错误，请在此处提出:
+https://github.com/AlexMofer/ProjectX/issues
+
+许可
+---
+
+Copyright (C) 2015 AlexMofer
+
+Licensed to the Apache Software Foundation (ASF) under one or more contributor
+license agreements.  See the NOTICE file distributed with this work for
+additional information regarding copyright ownership.  The ASF licenses this
+file to you under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License.  You may obtain a copy of
+the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+License for the specific language governing permissions and limitations under
+the License.

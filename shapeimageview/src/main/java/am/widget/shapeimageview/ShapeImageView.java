@@ -160,6 +160,7 @@ public class ShapeImageView extends ImageView {
     }
 
     @Override
+    @SuppressWarnings("all")
     public void draw(Canvas canvas) {
         mShapeHelper.draw(this, canvas);
     }
