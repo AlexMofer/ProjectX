@@ -43,24 +43,20 @@ class JobExecutor extends ThreadPoolExecutor
     private static final BlockingQueue<Runnable> sPoolWorkQueue =
             new PriorityBlockingQueue<>(128);
 
-    /**
-     * An {@link Executor} that can be used to execute tasks in parallel.
-     */
-    private static final Executor JOB_EXECUTOR;
+    private static final BlockingQueue<Runnable> sSinglePoolWorkQueue =
+            new PriorityBlockingQueue<>(128);
     private static final CopyOnWriteArrayList<MessageTag> MESSAGE_TAGS =
             new CopyOnWriteArrayList<>();
     private static final int MSG_RESULT = 100;
     private static final int MSG_PROGRESS = 101;
-
-    static {
-        JobExecutor jobExecutor = new JobExecutor(
-                CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS,
-                sPoolWorkQueue, sThreadFactory);
-        if (Build.VERSION.SDK_INT >= 9)
-            jobExecutor.allowCoreThreadTimeOut(true);
-        JOB_EXECUTOR = jobExecutor;
-    }
-
+    /**
+     * An {@link Executor} that can be used to execute jobs in parallel.
+     */
+    private static Executor JOB_EXECUTOR;
+    /**
+     * An {@link Executor} that can be used to execute jobs in parallel.
+     */
+    private static Executor SINGLE_EXECUTOR;
     private final Handler mHandler = new Handler(Looper.getMainLooper(), this);
 
     private JobExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
@@ -79,7 +75,28 @@ class JobExecutor extends ThreadPoolExecutor
     }
 
     static Executor getDefault() {
+        if (JOB_EXECUTOR == null) {
+            JobExecutor jobExecutor = new JobExecutor(
+                    CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS,
+                    sPoolWorkQueue, sThreadFactory);
+            if (Build.VERSION.SDK_INT >= 9) {
+                jobExecutor.allowCoreThreadTimeOut(true);
+            }
+            JOB_EXECUTOR = jobExecutor;
+        }
         return JOB_EXECUTOR;
+    }
+
+    static Executor getSingle() {
+        if (SINGLE_EXECUTOR == null) {
+            JobExecutor singleExecutor = new JobExecutor(1, 1,
+                    KEEP_ALIVE_SECONDS, TimeUnit.SECONDS, sSinglePoolWorkQueue, sThreadFactory);
+            if (Build.VERSION.SDK_INT >= 9) {
+                singleExecutor.allowCoreThreadTimeOut(true);
+            }
+            SINGLE_EXECUTOR = singleExecutor;
+        }
+        return SINGLE_EXECUTOR;
     }
 
     @Override
@@ -146,23 +163,23 @@ class JobExecutor extends ThreadPoolExecutor
         private Job mJob;
         private Object[] mValues;
 
-        Job getJob() {
+        private Job getJob() {
             return mJob;
         }
 
-        void setJob(Job job) {
+        private void setJob(Job job) {
             mJob = job;
         }
 
-        Object[] getValues() {
+        private Object[] getValues() {
             return mValues;
         }
 
-        void setValues(Object[] values) {
+        private void setValues(Object[] values) {
             mValues = values;
         }
 
-        void clear() {
+        private void clear() {
             mJob = null;
             mValues = null;
         }

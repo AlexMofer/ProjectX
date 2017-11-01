@@ -59,7 +59,7 @@ minSdkVersion 4
 ```java
 dependencies {
     ...
-    compile 'am.project:support:1.1.0'
+    implementation 'am.project:support:1.1.1'
     ...
 }
 ```

@@ -63,6 +63,10 @@ public abstract class Job<T> {
         return JobExecutor.getDefault();
     }
 
+    public static Executor getSingleExecutor() {
+        return JobExecutor.getSingle();
+    }
+
     void setHolder(JobHolder holder) {
         mHolder = holder;
     }
@@ -98,5 +102,9 @@ public abstract class Job<T> {
 
     public void execute() {
         JobExecutor.getDefault().execute(JobHolder.get(this));
+    }
+
+    public void executeInSingle() {
+        JobExecutor.getSingle().execute(JobHolder.get(this));
     }
 }

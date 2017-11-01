@@ -107,7 +107,7 @@ public class AMViewCompat {
      * Any previously attached StateListAnimator will be detached.
      *
      * @param stateListAnimator The StateListAnimator to update the view
-     * @see {@link android.animation.StateListAnimator}
+     * @see android.animation.StateListAnimator
      */
     public static void setStateListAnimator(View view, StateListAnimator stateListAnimator) {
         IMPL.setStateListAnimator(view, stateListAnimator);
@@ -119,7 +119,7 @@ public class AMViewCompat {
      * Any previously attached StateListAnimator will be detached.
      *
      * @param id The id of StateListAnimator to update the view
-     * @see {@link android.animation.StateListAnimator}
+     * @see android.animation.StateListAnimator
      */
     public static void setStateListAnimator(View view, int id) {
         IMPL.setStateListAnimator(view, id);
