@@ -16,13 +16,6 @@
 
 package am.util.printer;
 
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Matrix;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * ESC-POS Commands
  * Created by Alex on 2017/11/1.
@@ -33,10 +26,6 @@ public class PrintCommands {
     private static final byte ESC = 27;
     private static final byte FS = 28;
     private static final byte GS = 29;
-    private static String hexStr = "0123456789ABCDEF";
-    private static String[] binaryArray = {"0000", "0001", "0010", "0011",
-            "0100", "0101", "0110", "0111", "1000", "1001", "1010", "1011",
-            "1100", "1101", "1110", "1111"};
 
     /**
      * Moves the print position to the next tab position.
@@ -158,922 +147,385 @@ public class PrintCommands {
     }
 
     /**
-     * 初始化打印机
-     * Clears the data in the print buffer and resets the printer modes to the modes that were
-     * in effect when the power was turned on.
+     * Selects print mode(s) using n as follows:
+     * n=0 : Character font A (12x24)
+     * Emphasized mode not selected.
+     * Double-height mode not selected.
+     * Double-width mode not selected.
+     * Underline mode not selected.
+     * n=1 : Character font B (9x24)
+     * n=8 : Emphasized mode selected.
+     * n=16 : Double-height mode selected.
+     * n=32 : Double-width mode selected.
+     * n=128 : Underline mode selected.
+     * ESC ! n
+     *
+     * @param n 0≤n≤255 default 0
+     * @return command
+     */
+    public static byte[] selectPrintMode(int n) {
+        return new byte[]{ESC, 33, (byte) n};
+    }
+
+    /**
+     * Sets the distance from the beginning of the line to the position at which subsequent
+     * characters are to be printed.
+     * The distance from the beginning of the line to the print position is
+     * [(nL + nH x 256) x (vertical or horizontal motion unit)] inches.
+     * ESC $ nL nH
+     *
+     * @param nL 0≤nL≤255
+     * @param nH 0≤nH≤255
+     * @return command
+     */
+    public static byte[] setAbsolutePrintPosition(int nL, int nH) {
+        return new byte[]{ESC, 36, (byte) nL, (byte) nH};
+    }
+
+    /**
+     * Cancels the user-defined character set.
+     * ESC % n
+     *
+     * @return command
+     */
+    public static byte[] cancelUserDefinedCharacterSet() {
+        return new byte[]{ESC, 37, 0};
+    }
+
+    /**
+     * Selects the user-defined character set.
+     * ESC % n
+     *
+     * @return command
+     */
+    public static byte[] selectUserDefinedCharacterSet() {
+        return new byte[]{ESC, 37, 1};
+    }
+
+    /**
+     * Defines user-defined characters
+     * y specifies the number of bytes in the vertical direction, it always 3.
+     * c1 specifies the beginning character code for the definition, and c2 specifies the final code.
+     * X specifies the number of dots in the horizontal direction.
+     * ESC & y c1 c2 [x1 d1…d(y x x1)]..[ xk d1..d(y x xk)]
+     *
+     * @param c1   32≤c1≤c2≤126
+     * @param c2   32≤c1≤c2≤126
+     * @param dots 0 ≤ x ≤ 12 Font A (when font A (12 x 24) is selected)
+     *             0 ≤ x ≤ 9 Font B (when font B (9 x 17) is selected)
+     *             0 ≤ d1 ... d(y x xk) ≤ 255
+     * @return command
+     */
+    public static byte[] defineUserDefinedCharacters(int c1, int c2, byte[] dots) {
+        byte[] part = new byte[]{ESC, 38, 3, (byte) c1, (byte) c2};
+        byte[] destination = new byte[part.length + dots.length];
+        System.arraycopy(part, 0, destination, 0, part.length);
+        System.arraycopy(dots, 0, destination, part.length, dots.length);
+        return destination;
+    }
+
+    /**
+     * Selects a bit-image mode using m for the number of dots specified by nL and nH, as follows:
+     * m=0
+     * Mode:8-dot single-density
+     * Vertical NO. of Dots:8
+     * Vertical Dot Density: 60 DPI
+     * Horizontal Dot Density: 90 DPI
+     * Number of (Data(K)):nL + nH x 256
+     * m=1
+     * Mode:8-dot double-density
+     * Vertical NO. of Dots:8
+     * Vertical Dot Density: 60 DPI
+     * Horizontal Dot Density: 180 DPI
+     * Number of (Data(K)):nL + nH x 256
+     * m=32
+     * Mode:24-dot single-density
+     * Vertical NO. of Dots:24
+     * Vertical Dot Density: 180 DPI
+     * Horizontal Dot Density: 90 DPI
+     * Number of (Data(K)):(nL + nH x 256) x 3
+     * m=33
+     * Mode:24-dot single-density
+     * Vertical NO. of Dots:24
+     * Vertical Dot Density: 180 DPI
+     * Horizontal Dot Density: 180 DPI
+     * Number of (Data(K)):(nL + nH x 256) x 3
+     * ESC * m nL nH [d1...dk]
+     *
+     * @param m     m = 0, 1, 32, 33
+     * @param nL    0≤nL ≤255
+     * @param nH    0≤nH ≤3
+     * @param image 0≤d≤255
+     * @return command
+     */
+    public static byte[] selectBitImageMode(int m, int nL, int nH, byte[] image) {
+        byte[] part = new byte[]{ESC, 42, (byte) m, (byte) nL, (byte) nH};
+        byte[] destination = new byte[part.length + image.length];
+        System.arraycopy(part, 0, destination, 0, part.length);
+        System.arraycopy(image, 0, destination, part.length, image.length);
+        return destination;
+    }
+
+    /**
+     * Turns underline mode off
+     * ESC - n
+     *
+     * @return command
+     */
+    public static byte[] turnUnderlineModeOff() {
+        return new byte[]{ESC, 45, 0};
+    }
+
+    /**
+     * Turns underline mode on or off, based on the following values of n.
+     * n=0, 48 : Turns off underline mode
+     * n=1, 49 : Turns on underline mode (1-dot thick)
+     * n=2, 50 : Turns on underline mode (2-dots thick)
+     * ESC - n
+     *
+     * @param n 0≤n ≤2, 48≤n ≤50
+     * @return command
+     */
+    public static byte[] turnUnderlineMode(int n) {
+        return new byte[]{ESC, 45, 1};
+    }
+
+    /**
+     * Selects approximately 4.23 mm {1/6"} spacing.
+     * ESC 2
+     *
+     * @return command
+     */
+    public static byte[] selectDefaultLineSpacing() {
+        return new byte[]{ESC, 50};
+    }
+
+    /**
+     * Sets the line spacing to [n x (vertical or horizontal motion unit)] inches.
+     * ESC 3 n
+     *
+     * @param n 0≤n≤255
+     * @return command
+     */
+    public static byte[] setLineSpacing(int n) {
+        return new byte[]{ESC, 51, (byte) n};
+    }
+
+    /**
+     * Selects device to which host computer sends data, using n as follows:
+     * n=0 : Printer disabled
+     * n=1 : Printer enabled
+     * ESC = n
+     *
+     * @param n 1≤n≤255 default 1
+     * @return command
+     */
+    public static byte[] setPeripheralDevice(int n) {
+        return new byte[]{ESC, 61, (byte) n};
+    }
+
+    /**
+     * Cancels user-defined characters.
+     * ESC ? n
+     *
+     * @param n 32 ≤n ≤126
+     * @return command
+     */
+    public static byte[] cancelUserDefinedCharacters(int n) {
+        return new byte[]{ESC, 63, (byte) n};
+    }
+
+    /**
+     * Clears the data in the print buffer and resets the printer mode to the mode
+     * that was in effect when the power was turned on.
      * ESC @
      *
-     * @return bytes for this command
+     * @return command
      */
-    @SuppressWarnings("unused")
-    public static byte[] initPrinter() {
-        byte[] result = new byte[2];
-        result[0] = ESC;
-        result[1] = 64;
-        return result;
+    public static byte[] initializePrinter() {
+        return new byte[]{ESC, 64};
     }
 
     /**
-     * 下划线
-     * ESC - n/FS - n
+     * Set is horizontal tab positions.
+     * n specifies the column number for setting a horizontal tab position from the beginning of the line.
+     * k indicates the total number of horizontal tab positions to be set.
+     * ESC D [n1...nk] NUL
      *
-     * @param cn  是否为中文
-     * @param dot 线宽 （0表示关闭）
-     * @return bytes for this command
+     * @param nk 1≤n ≤255
+     *           0≤k ≤32
+     * @return command
      */
-    @SuppressWarnings("unused")
-    public static byte[] underLine(boolean cn, int dot) {
-        byte[] result = new byte[3];
-        result[0] = cn ? FS : ESC;
-        result[1] = 45;
-        switch (dot) {
-            default:
-            case 0:
-                result[2] = 0;
-                break;
-            case 1:
-                result[2] = 1;
-                break;
-            case 2:
-                result[2] = 2;
-                break;
-        }
-        return result;
+    public static byte[] setHorizontalTabPositions(byte[] nk) {
+        byte[] part = new byte[]{ESC, 68};
+        byte[] destination = new byte[part.length + nk.length + 1];
+        System.arraycopy(part, 0, destination, 0, part.length);
+        System.arraycopy(nk, 0, destination, part.length, nk.length);
+        destination[part.length + nk.length] = 0;
+        return destination;
     }
 
     /**
-     * 开启着重强调(加粗)
+     * Turns emphasized mode on or off.
+     * When the LSB of n is 0, emphasized mode is turned off.
+     * When the LSB of n is 1, emphasized mode is turned on.
      * ESC E n
      *
-     * @return bytes for this command
+     * @param n 0≤n≤255 default 0
+     * @return command
      */
-    @SuppressWarnings("unused")
-    public static byte[] emphasizedOn() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 69;
-        result[2] = 0xF;
-        return result;
+    public static byte[] turnEmphasizedMode(int n) {
+        return new byte[]{ESC, 69, (byte) n};
     }
 
     /**
-     * 关闭着重强调(加粗)
-     * ESC E n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] emphasizedOff() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 69;
-        result[2] = 0;
-        return result;
-    }
-
-    @SuppressWarnings("unused")
-    public static byte[] overlappingOn() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 47;
-        result[2] = 0xF;
-        return result;
-    }
-
-    @SuppressWarnings("unused")
-    public static byte[] overlappingOff() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 47;
-        result[2] = 0;
-        return result;
-    }
-
-    /**
-     * 开启 double-strike 模式
+     * Turns double-strike mode on or off.
+     * When the LSB of n is 0, double-strike mode is turned off.
+     * When the LSB of n is1, double-strike mode is turned on.
      * ESC G n
      *
-     * @return bytes for this command
+     * @param n 0≤n≤255 default 0
+     * @return command
      */
-    @SuppressWarnings("unused")
-    public static byte[] doubleStrikeOn() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 71;
-        result[2] = 0xF;
-        return result;
+    public static byte[] turnDoubleStrikeMode(int n) {
+        return new byte[]{ESC, 71, (byte) n};
     }
 
     /**
-     * 关闭 double-strike 模式
-     * ESC G n
+     * Prints the data in the print buffer and feeds the paper [n x vertical or horizontal motion unit].
+     * ESC J n
      *
-     * @return bytes for this command
+     * @param n 0≤n ≤255
+     * @return command
      */
-    @SuppressWarnings("unused")
-    public static byte[] doubleStrikeOff() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 71;
-        result[2] = 0;
-        return result;
+    public static byte[] printFeedPaper(int n) {
+        return new byte[]{ESC, 74, (byte) n};
     }
 
     /**
-     * Select Font A
+     * Switches from standard mode to page mode.
+     * ESC L
+     *
+     * @return command
+     */
+    public static byte[] selectPageMode() {
+        return new byte[]{ESC, 76};
+    }
+
+    /**
+     * Selects character fonts
+     * n=0, 48 : Character font A (12 X 24 ) Selected
+     * n=1, 49 : Character font B (9 X 24 ) Selected
      * ESC M n
      *
-     * @return bytes for this command
+     * @param n n= 0, 1 , 48, 49
+     * @return command
      */
-    @SuppressWarnings("unused")
-    public static byte[] selectFontA() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 77;
-        result[2] = 0;
-        return result;
+    public static byte[] selectCharacterFont(int n) {
+        return new byte[]{ESC, 77, (byte) n};
     }
 
     /**
-     * Select Font B
-     * ESC M n
+     * Selects an international character set n from the following:
+     * n=0 : U. S. A
+     * n=1 : France
+     * n=2 : Germany
+     * n=3 : U. K.
+     * n=4 : Denmark I
+     * n=5 : Sweden
+     * n=6 : Italy
+     * n=7 : Spain I
+     * n=8 : Japan
+     * n=9 : Norway
+     * n=10 : Denmark II
+     * n=11 : Spain II
+     * n=12 : Latin America
      *
-     * @return bytes for this command
+     * @param n 0≤n≤13 default 0
+     * @return command
      */
-    @SuppressWarnings("unused")
-    public static byte[] selectFontB() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 77;
-        result[2] = 1;
-        return result;
+    public static byte[] selectAnInternationalCharacterSet(int n) {
+        return new byte[]{ESC, 82, (byte) n};
     }
 
     /**
-     * Select Font C ( some printers don't have font C )
-     * ESC M n
+     * Switches from page mode to standard mode.
+     * ESC S
      *
-     * @return bytes for this command
+     * @return command
      */
-    @SuppressWarnings("unused")
-    public static byte[] selectFontC() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 77;
-        result[2] = 2;
-        return result;
+    public static byte[] selectStandardMode() {
+        return new byte[]{ESC, 83};
     }
 
     /**
-     * Select Font A
-     * FS ! n
+     * Select the print direction and starting position in page mode.
+     * n specifies the print direction and starting position as follows:
+     * n=0, 48 : Left to right(Print Direction) Upper left(Starting Position)
+     * n=1, 49 : Bottom to top(Print Direction) Lower left(Starting Position)
+     * n=2, 50 : Right to left(Print Direction) Lower right(Starting Position)
+     * n=3, 51 : Top to bottom(Print Direction) Upper right(Starting Position)
+     * ESC T n
      *
-     * @return bytes for this command
+     * @param n 0≤n ≤3,
+     *          48≤n ≤51
+     * @return command
      */
-    @SuppressWarnings("unused")
-    public static byte[] selectCNFontA() {
-        byte[] result = new byte[3];
-        result[0] = FS;
-        result[1] = 33;
-        result[2] = 0;
-        return result;
+    public static byte[] selectPrintDirectionInPageMode(int n) {
+        return new byte[]{ESC, 84, (byte) n};
     }
 
     /**
-     * Select Font B
-     * FS ! n
+     * Turns 90˚ clockwise rotation mode on or off.
+     * n is used as follows:
+     * n=0, 48 : Turns off 90˚ clockwise rotation mode
+     * n=1, 49 : Turns on 90˚ clockwise rotation mode
+     * ESC V n
      *
-     * @return bytes for this command
+     * @param n 0≤n≤1,48≤n≤49 default 0
+     * @return command
      */
-    @SuppressWarnings("unused")
-    public static byte[] selectCNFontB() {
-        byte[] result = new byte[3];
-        result[0] = FS;
-        result[1] = 33;
-        result[2] = 1;
-        return result;
+    public static byte[] turn90ClockwiseRotationMode(int n) {
+        return new byte[]{ESC, 86, (byte) n};
     }
 
     /**
-     * 关闭双倍字高
-     * ESC ! n
+     * The horizontal starting position, vertical starting position, printing area
+     * width, and printing area height are defined as x0, y0, dx, dy,
+     * respectively.
+     * Each setting for the printable area is calculated as follow:
+     * x0 = [(xL + xH x 256) x (horizontal motion unit)]
+     * y0 = [(yL + yH x 256) x (vertical motion unit)]
+     * dx = [(dxL + dxH x 256) x (horizontal motion unit)]
+     * dy = [(dyL + dyH x 256) x (vertical motion unit)]
+     * ESC W xL xH yL yH dxL dxH dyL dyH
      *
-     * @return bytes for this command
+     * @param xL  0≤ xL xH yL yH dxL dxH dyL dyH ≤255 (except dxL=dxH=0 or dyL=dyH=0)
+     * @param xH  0≤ xL xH yL yH dxL dxH dyL dyH ≤255 (except dxL=dxH=0 or dyL=dyH=0)
+     * @param yL  0≤ xL xH yL yH dxL dxH dyL dyH ≤255 (except dxL=dxH=0 or dyL=dyH=0)
+     * @param yH  0≤ xL xH yL yH dxL dxH dyL dyH ≤255 (except dxL=dxH=0 or dyL=dyH=0)
+     * @param dxL 0≤ xL xH yL yH dxL dxH dyL dyH ≤255 (except dxL=dxH=0 or dyL=dyH=0)
+     * @param dxH 0≤ xL xH yL yH dxL dxH dyL dyH ≤255 (except dxL=dxH=0 or dyL=dyH=0)
+     * @param dyL 0≤ xL xH yL yH dxL dxH dyL dyH ≤255 (except dxL=dxH=0 or dyL=dyH=0)
+     * @param dyH 0≤ xL xH yL yH dxL dxH dyL dyH ≤255 (except dxL=dxH=0 or dyL=dyH=0)
+     * @return command
      */
-    @SuppressWarnings("unused")
-    public static byte[] doubleHeightWidthOff() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 33;
-        result[2] = 0;
-        return result;
+    public static byte[] setPrintingAreaInPageMode(int xL, int xH, int yL, int yH,
+                                                   int dxL, int dxH, int dyL, int dyH) {
+        return new byte[]{ESC, 87, (byte) xL, (byte) xH, (byte) yL, (byte) yH,
+                (byte) dxL, (byte) dxH, (byte) dyL, (byte) dyH};
     }
 
     /**
-     * 双倍字高（仅英文字体有效）
-     * ESC ! n
+     * Sets the print starting position based on the current position by using the horizontal or vertical motion unit.
+     * This command sets the distance from the current position to [(nL+ nH x 256) x (horizontal or vertical unit)].
+     * ESC \ nL nH
      *
-     * @return bytes for this command
+     * @param nL 0≤nL≤255
+     * @param nH 0≤nH≤255
+     * @return command
      */
-    @SuppressWarnings("unused")
-    public static byte[] doubleHeightOn() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 33;
-        result[2] = 16;
-        return result;
-    }
-
-    /**
-     * 双倍字体高宽（仅英文字体有效）
-     * ESC ! n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] doubleHeightWidthOn() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 33;
-        result[2] = 56;
-        return result;
-    }
-
-    /**
-     * 左对齐
-     * ESC a n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] alignLeft() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 97;
-        result[2] = 0;
-        return result;
-    }
-
-    /**
-     * 居中对齐
-     * ESC a n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] alignCenter() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 97;
-        result[2] = 1;
-        return result;
-    }
-
-    /**
-     * 右对齐
-     * ESC a n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] alignRight() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 97;
-        result[2] = 2;
-        return result;
-    }
-
-    /**
-     * 打印并走纸n行
-     * Prints the data in the print buffer and feeds n lines
-     * ESC d n
-     *
-     * @param n lines
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] printAndFeedLines(byte n) {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 100;
-        result[2] = n;
-        return result;
-    }
-
-    /**
-     * 打印并反向走纸n行（不一定有效）
-     * Prints the data in the print buffer and feeds n lines in the reserve direction
-     * ESC e n
-     *
-     * @param n lines
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] printAndReverseFeedLines(byte n) {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 101;
-        result[2] = n;
-        return result;
-    }
-
-    @SuppressWarnings("unused")
-    public static byte[] printHorizontalTab() {
-        byte[] result = new byte[5];
-        result[0] = ESC;
-        result[1] = 44;
-        result[2] = 20;
-        result[3] = 28;
-        result[4] = 0;
-        return result;
-    }
-
-    @SuppressWarnings("unused")
-    public static byte[] printLineNormalHeight() {
-        byte[] result = new byte[2];
-        result[0] = ESC;
-        result[1] = 50;
-        return result;
-    }
-
-    @SuppressWarnings("unused")
-    public static byte[] printLineHeight(byte height) {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 51;
-        result[2] = height;
-        return result;
-    }
-
-    /**
-     * Select character code table
-     * ESC t n
-     *
-     * @param cp example:CodePage.WPC1252
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] selectCodeTab(byte cp) {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 116;
-        result[2] = cp;
-        return result;
-    }
-
-    /**
-     * 弹开纸箱
-     * Drawer kick-out connector pin 2
-     * ESC p m t1 t2
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] drawerKick() {
-        byte[] result = new byte[5];
-        result[0] = ESC;
-        result[1] = 112;
-        result[2] = 0;
-        result[3] = 60;
-        result[4] = 120;
-        return result;
-    }
-
-    /**
-     * 选择打印颜色1（不一定有效）
-     * ESC r n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] selectColor1() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 114;
-        result[2] = 0;
-        return result;
-    }
-
-    /**
-     * 选择打印颜色2（不一定有效）
-     * ESC r n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] selectColor2() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 114;
-        result[2] = 1;
-        return result;
-    }
-
-    /**
-     * white printing mode on (不一定有效)
-     * Turn white/black reverse printing mode on
-     * GS B n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] whitePrintingOn() {
-        byte[] result = new byte[3];
-        result[0] = GS;
-        result[1] = 66;
-        result[2] = (byte) 128;
-        return result;
-    }
-
-    /**
-     * white printing mode off (不一定有效)
-     * Turn white/black reverse printing mode off
-     * GS B n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] whitePrintingOff() {
-        byte[] result = new byte[3];
-        result[0] = GS;
-        result[1] = 66;
-        result[2] = 0;
-        return result;
-    }
-
-    /**
-     * select bar code height
-     * Select the height of the bar code as n dots
-     * default dots = 162
-     *
-     * @param dots ( height of the bar code )
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] barcode_height(byte dots) {
-        byte[] result = new byte[3];
-        result[0] = GS;
-        result[1] = 104;
-        result[2] = dots;
-        return result;
-    }
-
-    /**
-     * select font hri
-     * Selects a font for the Human Readable Interpretation (HRI) characters when printing a barcode, using n as follows:
-     *
-     * @param n Font
-     *          0, 48 Font A
-     *          1, 49 Font B
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] select_font_hri(byte n) {
-        byte[] result = new byte[3];
-        result[0] = GS;
-        result[1] = 102;
-        result[2] = n;
-        return result;
-    }
-
-    /**
-     * select position_hri
-     * Selects the print position of Human Readable Interpretation (HRI) characters when printing a barcode, using n as follows:
-     *
-     * @param n Print position
-     *          0, 48 Not printed
-     *          1, 49 Above the barcode
-     *          2, 50 Below the barcode
-     *          3, 51 Both above and below the barcode
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] select_position_hri(byte n) {
-        byte[] result = new byte[3];
-        result[0] = GS;
-        result[1] = 72;
-        result[2] = n;
-        return result;
-    }
-
-    /**
-     * print bar code
-     *
-     * @param barcode_typ   ( Barcode.CODE39, Barcode.EAN8 ,...)
-     * @param barcode2print value
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] print_bar_code(byte barcode_typ, String barcode2print) {
-        byte[] barcodeBytes = barcode2print.getBytes();
-        byte[] result = new byte[3 + barcodeBytes.length + 1];
-        result[0] = GS;
-        result[1] = 107;
-        result[2] = barcode_typ;
-        int idx = 3;
-        for (byte b : barcodeBytes) {
-            result[idx] = b;
-            idx++;
-        }
-        result[idx] = 0;
-        return result;
-    }
-
-    /**
-     * Set horizontal tab positions
-     *
-     * @param col ( coulumn )
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] set_HT_position(byte col) {
-        byte[] result = new byte[4];
-        result[0] = ESC;
-        result[1] = 68;
-        result[2] = col;
-        result[3] = 0;
-        return result;
-    }
-
-    /**
-     * 字体变大为标准的n倍
-     *
-     * @param num 倍数
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] fontSizeSetBig(int num) {
-        byte realSize = 0;
-        switch (num) {
-            case 0:
-                realSize = 0;
-                break;
-            case 1:
-                realSize = 17;
-                break;
-            case 2:
-                realSize = 34;
-                break;
-            case 3:
-                realSize = 51;
-                break;
-            case 4:
-                realSize = 68;
-                break;
-            case 5:
-                realSize = 85;
-                break;
-            case 6:
-                realSize = 102;
-                break;
-            case 7:
-                realSize = 119;
-                break;
-        }
-        byte[] result = new byte[3];
-        result[0] = GS;
-        result[1] = 33;
-        result[2] = realSize;
-        return result;
-    }
-
-    /**
-     * 进纸切割
-     * Feeds paper to ( cutting position + n x vertical motion unit )
-     * and executes a full cut ( cuts the paper completely )
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] feedPaperCut() {
-        byte[] result = new byte[4];
-        result[0] = GS;
-        result[1] = 86;
-        result[2] = 65;
-        result[3] = 0;
-        return result;
-    }
-
-    /**
-     * 进纸切割（留部分）
-     * Feeds paper to ( cutting position + n x vertical motion unit )
-     * and executes a partial cut ( one point left uncut )
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] feedPaperCutPartial() {
-        byte[] result = new byte[4];
-        result[0] = GS;
-        result[1] = 86;
-        result[2] = 66;
-        result[3] = 0;
-        return result;
-    }
-
-    /**
-     * 解码图片
-     *
-     * @param image   图片
-     * @param parting 高度分割值
-     * @return 数据流
-     */
-    @SuppressWarnings("unused")
-    public static ArrayList<byte[]> decodeBitmapToDataList(Bitmap image, int parting) {
-        if (parting <= 0 || parting > 255)
-            parting = 255;
-        if (image == null)
-            return null;
-        final int width = image.getWidth();
-        final int height = image.getHeight();
-        if (width <= 0 || height <= 0)
-            return null;
-        if (width > 2040) {
-            // 8位9针，宽度限制2040像素（但一般纸张都没法打印那么宽，但并不影响打印）
-            final float scale = 2040 / (float) width;
-            Matrix matrix = new Matrix();
-            matrix.postScale(scale, scale);
-            Bitmap resizeImage;
-            try {
-                resizeImage = Bitmap.createBitmap(image, 0, 0, width, height, matrix, true);
-            } catch (OutOfMemoryError e) {
-                return null;
-            }
-            ArrayList<byte[]> data = decodeBitmapToDataList(resizeImage, parting);
-            resizeImage.recycle();
-            return data;
-        }
-
-        // 宽命令
-        String widthHexString = Integer.toHexString(width % 8 == 0 ? width / 8 : (width / 8 + 1));
-        if (widthHexString.length() > 2) {
-            // 超过2040像素才会到达这里
-            return null;
-        } else if (widthHexString.length() == 1) {
-            widthHexString = "0" + widthHexString;
-        }
-        widthHexString += "00";
-
-        // 每行字节数(除以8，不足补0)
-        String zeroStr = "";
-        int zeroCount = width % 8;
-        if (zeroCount > 0) {
-            for (int i = 0; i < (8 - zeroCount); i++) {
-                zeroStr += "0";
-            }
-        }
-        ArrayList<String> commandList = new ArrayList<>();
-        // 高度每parting像素进行一次分割
-        int time = height % parting == 0 ? height / parting : (height / parting + 1);// 循环打印次数
-        for (int t = 0; t < time; t++) {
-            int partHeight = t == time - 1 ? height % parting : parting;// 分段高度
-
-            // 高命令
-            String heightHexString = Integer.toHexString(partHeight);
-            if (heightHexString.length() > 2) {
-                // 超过255像素才会到达这里
-                return null;
-            } else if (heightHexString.length() == 1) {
-                heightHexString = "0" + heightHexString;
-            }
-            heightHexString += "00";
-
-            // 宽高指令
-            String commandHexString = "1D763000";
-            commandList.add(commandHexString + widthHexString + heightHexString);
-
-            ArrayList<String> list = new ArrayList<>(); //binaryString list
-            StringBuilder sb = new StringBuilder();
-            // 像素二值化，非黑即白
-            for (int i = 0; i < partHeight; i++) {
-                sb.delete(0, sb.length());
-                for (int j = 0; j < width; j++) {
-                    // 实际在图片中的高度
-                    int startHeight = t * parting + i;
-                    //得到当前像素的值
-                    int color = image.getPixel(j, startHeight);
-                    int red, green, blue;
-                    if (image.hasAlpha()) {
-                        //得到alpha通道的值
-                        int alpha = Color.alpha(color);
-                        //得到图像的像素RGB的值
-                        red = Color.red(color);
-                        green = Color.green(color);
-                        blue = Color.blue(color);
-                        final float offset = alpha / 255.0f;
-                        // 根据透明度将白色与原色叠加
-                        red = 0xFF + (int) Math.ceil((red - 0xFF) * offset);
-                        green = 0xFF + (int) Math.ceil((green - 0xFF) * offset);
-                        blue = 0xFF + (int) Math.ceil((blue - 0xFF) * offset);
-                    } else {
-                        //得到图像的像素RGB的值
-                        red = Color.red(color);
-                        green = Color.green(color);
-                        blue = Color.blue(color);
-                    }
-                    // 接近白色改为白色。其余黑色
-                    if (red > 160 && green > 160 && blue > 160)
-                        sb.append("0");
-                    else
-                        sb.append("1");
-                }
-                // 每一行结束时，补充剩余的0
-                if (zeroCount > 0) {
-                    sb.append(zeroStr);
-                }
-                list.add(sb.toString());
-            }
-            // binaryStr每8位调用一次转换方法，再拼合
-            ArrayList<String> bmpHexList = new ArrayList<>();
-            for (String binaryStr : list) {
-                sb.delete(0, sb.length());
-                for (int i = 0; i < binaryStr.length(); i += 8) {
-                    String str = binaryStr.substring(i, i + 8);
-                    // 2进制转成16进制
-                    String hexString = binaryStrToHexString(str);
-                    sb.append(hexString);
-                }
-                bmpHexList.add(sb.toString());
-            }
-
-            // 数据指令
-            commandList.addAll(bmpHexList);
-        }
-        ArrayList<byte[]> data = new ArrayList<>();
-        for (String hexStr : commandList) {
-            data.add(hexStringToBytes(hexStr));
-        }
-        return data;
-    }
-
-    /**
-     * 解码图片
-     *
-     * @param image   图片
-     * @param parting 高度分割值
-     * @return 数据流
-     */
-    @SuppressWarnings("unused")
-    public static byte[] decodeBitmap(Bitmap image, int parting) {
-        ArrayList<byte[]> data = decodeBitmapToDataList(image, parting);
-        int len = 0;
-        for (byte[] srcArray : data) {
-            len += srcArray.length;
-        }
-        byte[] destArray = new byte[len];
-        int destLen = 0;
-        for (byte[] srcArray : data) {
-            System.arraycopy(srcArray, 0, destArray, destLen, srcArray.length);
-            destLen += srcArray.length;
-        }
-        return destArray;
-    }
-
-    /**
-     * 解码图片
-     *
-     * @param image 图片
-     * @return 数据流
-     */
-    @SuppressWarnings("unused")
-    public static byte[] decodeBitmap(Bitmap image) {
-        return decodeBitmap(image, PrinterWriter.HEIGHT_PARTING_DEFAULT);
-    }
-
-    /**
-     * 合并byte数组
-     *
-     * @param byteArray byte数组
-     * @return 一个byte数组
-     */
-    @SuppressWarnings("unused")
-    public static byte[] mergerByteArray(byte[]... byteArray) {
-
-        int length = 0;
-        for (byte[] item : byteArray) {
-            length += item.length;
-        }
-        byte[] result = new byte[length];
-        int index = 0;
-        for (byte[] item : byteArray) {
-            for (byte b : item) {
-                result[index] = b;
-                index++;
-            }
-        }
-        return result;
-    }
-
-    /**
-     * 2进制转成16进制
-     *
-     * @param binaryStr 2进制串
-     * @return 16进制串
-     */
-    @SuppressWarnings("unused")
-    public static String binaryStrToHexString(String binaryStr) {
-        String hex = "";
-        String f4 = binaryStr.substring(0, 4);
-        String b4 = binaryStr.substring(4, 8);
-        for (int i = 0; i < binaryArray.length; i++) {
-            if (f4.equals(binaryArray[i]))
-                hex += hexStr.substring(i, i + 1);
-        }
-        for (int i = 0; i < binaryArray.length; i++) {
-            if (b4.equals(binaryArray[i]))
-                hex += hexStr.substring(i, i + 1);
-        }
-        return hex;
-    }
-
-    /**
-     * 16进制指令list转换为byte[]指令
-     *
-     * @param list 指令集
-     * @return byte[]指令
-     */
-    @SuppressWarnings("unused")
-    public static byte[] hexListToByte(List<String> list) {
-        ArrayList<byte[]> commandList = new ArrayList<>();
-        for (String hexStr : list) {
-            commandList.add(hexStringToBytes(hexStr));
-        }
-        int len = 0;
-        for (byte[] srcArray : commandList) {
-            len += srcArray.length;
-        }
-        byte[] destArray = new byte[len];
-        int destLen = 0;
-        for (byte[] srcArray : commandList) {
-            System.arraycopy(srcArray, 0, destArray, destLen, srcArray.length);
-            destLen += srcArray.length;
-        }
-        return destArray;
-    }
-
-    /**
-     * 16进制串转byte数组
-     *
-     * @param hexString 16进制串
-     * @return byte数组
-     */
-    @SuppressWarnings("unused")
-    public static byte[] hexStringToBytes(String hexString) {
-        if (hexString == null || hexString.equals("")) {
-            return null;
-        }
-        hexString = hexString.toUpperCase();
-        int length = hexString.length() / 2;
-        char[] hexChars = hexString.toCharArray();
-        byte[] d = new byte[length];
-        for (int i = 0; i < length; i++) {
-            int pos = i * 2;
-            d[i] = (byte) (charToByte(hexChars[pos]) << 4 | charToByte(hexChars[pos + 1]));
-        }
-        return d;
-    }
-
-    /**
-     * 16进制char 转 byte
-     *
-     * @param c char
-     * @return byte
-     */
-    private static byte charToByte(char c) {
-        return (byte) hexStr.indexOf(c);
-    }
-
-    /**
-     * CodePage table
-     */
-    @SuppressWarnings("unused")
-    public static class CodePage {
-        public static final byte PC437 = 0;
-        public static final byte KATAKANA = 1;
-        public static final byte PC850 = 2;
-        public static final byte PC860 = 3;
-        public static final byte PC863 = 4;
-        public static final byte PC865 = 5;
-        public static final byte WPC1252 = 16;
-        public static final byte PC866 = 17;
-        public static final byte PC852 = 18;
-        public static final byte PC858 = 19;
-    }
-
-    /**
-     * BarCode table
-     */
-    @SuppressWarnings("unused")
-    public static class BarCode {
-        public static final byte UPC_A = 0;
-        public static final byte UPC_E = 1;
-        public static final byte EAN13 = 2;
-        public static final byte EAN8 = 3;
-        public static final byte CODE39 = 4;
-        public static final byte ITF = 5;
-        public static final byte NW7 = 6;
-        public static final byte CODE93 = 72;
-        public static final byte CODE128 = 73;
+    public static byte[] setRelativePrintPosition(int nL, int nH) {
+        return new byte[]{ESC, 92, (byte) nL, (byte) nH};
     }
 }

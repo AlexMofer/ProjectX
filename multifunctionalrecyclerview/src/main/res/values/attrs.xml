@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ItemAnimatorControllableRecyclerView">
+        <attr name="iacAddAnimationsEnable" format="boolean" />
+        <attr name="iacChangeAnimationsEnable" format="boolean" />
+        <attr name="iacMoveAnimationsEnable" format="boolean" />
+        <attr name="iacRemoveAnimationsEnable" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="ScrollbarRecyclerView">
+        <attr name="dsShowScrollbar" format="enum">
+            <enum name="none" value="0" />
+            <enum name="horizontal" value="1" />
+            <enum name="vertical" value="2" />
+            <enum name="all" value="3" />
+        </attr>
+        <attr name="dsHorizontalBackground" format="reference" />
+        <attr name="dsVerticalBackground" format="reference" />
+        <attr name="dsHorizontalPaddingEdge" format="dimension" />
+        <attr name="dsHorizontalPaddingStart" format="dimension" />
+        <attr name="dsHorizontalPaddingEnd" format="dimension" />
+        <attr name="dsVerticalPaddingEdge" format="dimension" />
+        <attr name="dsVerticalPaddingStart" format="dimension" />
+        <attr name="dsVerticalPaddingEnd" format="dimension" />
+        <attr name="dsHorizontalSlider" format="reference" />
+        <attr name="dsVerticalSlider" format="reference" />
+        <attr name="dsHorizontalIndicatorPadding" format="dimension" />
+        <attr name="dsVerticalIndicatorPadding" format="dimension" />
+        <attr name="dsHorizontalIndicator" format="reference" />
+        <attr name="dsVerticalIndicator" format="reference" />
+        <attr name="dsHorizontalIndicatorGravity" format="enum">
+            <enum name="center" value="0" />
+            <enum name="start" value="1" />
+            <enum name="end" value="2" />
+        </attr>
+        <attr name="dsHorizontalIndicatorInside" format="boolean" />
+        <attr name="dsVerticalIndicatorGravity" format="enum">
+            <enum name="center" value="0" />
+            <enum name="start" value="1" />
+            <enum name="end" value="2" />
+        </attr>
+        <attr name="dsVerticalIndicatorInside" format="boolean" />
+        <attr name="dsHorizontalTextColor" format="color" />
+        <attr name="dsHorizontalTextSize" format="dimension" />
+        <attr name="dsVerticalTextColor" format="color" />
+        <attr name="dsVerticalTextSize" format="dimension" />
+        <attr name="dsHorizontalTouchStartOnBar" format="boolean" />
+        <attr name="dsVerticalTouchStartOnBar" format="boolean" />
+        <attr name="dsHorizontalAnimator" format="enum">
+            <enum name="none" value="0" />
+            <enum name="hide" value="1" />
+            <enum name="move" value="2" />
+            <enum name="all" value="3" />
+        </attr>
+        <attr name="dsVerticalAnimator" format="enum">
+            <enum name="none" value="0" />
+            <enum name="hide" value="1" />
+            <enum name="move" value="2" />
+            <enum name="all" value="3" />
+        </attr>
+        <attr name="dsHorizontalAnimatorDelay" format="integer" />
+        <attr name="dsVerticalAnimatorDelay" format="integer" />
+        <attr name="dsHorizontalAlwaysTouchable" format="boolean" />
+        <attr name="dsVerticalAlwaysTouchable" format="boolean" />
+    </declare-styleable>
+</resources>

@@ -3,19 +3,12 @@ RecyclerView
 
 <img src="icon.png" alt="Icon"/>
 
-RecyclerView辅助库
+多功能RecyclerView
 
 介绍
 ---
 
-RecyclerView的几个通用的Adapter及子类：
-
-- **LoadingRecyclerAdapter**
-
-    带尾部载入的RecyclerAdapter。
-- **LoadingViewHolder**
-
-    与LoadingRecyclerAdapter配套的LoadingViewHolder。
+多功能RecyclerView，拓展RecyclerView基础功能。
 
 先决条件
 ----
@@ -53,7 +46,7 @@ https://github.com/AlexMofer/ProjectX/issues
 许可
 ---
 
-Copyright (C) 2015 AlexMofer
+Copyright (C) 2017 AlexMofer
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
 license agreements.  See the NOTICE file distributed with this work for
