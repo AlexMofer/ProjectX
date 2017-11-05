@@ -26,7 +26,6 @@ import java.util.List;
  * 打印执行者
  * Created by Alex on 2016/11/10.
  */
-@SuppressWarnings("unused")
 public class PrintExecutor {
     private int type;
     private PrintSocketHolder holder;

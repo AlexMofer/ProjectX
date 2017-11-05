@@ -20,6 +20,7 @@ package am.util.printer;
  * ESC-POS Commands
  * Created by Alex on 2017/11/1.
  */
+@SuppressWarnings("all")
 public class PrintCommands {
 
     private static final byte DLE = 16;
@@ -366,16 +367,23 @@ public class PrintCommands {
     }
 
     /**
-     * Turns emphasized mode on or off.
-     * When the LSB of n is 0, emphasized mode is turned off.
-     * When the LSB of n is 1, emphasized mode is turned on.
+     * Turns emphasized mode off.
      * ESC E n
      *
-     * @param n 0≤n≤255 default 0
      * @return command
      */
-    public static byte[] turnEmphasizedMode(int n) {
-        return new byte[]{ESC, 69, (byte) n};
+    public static byte[] turnOffEmphasizedMode() {
+        return new byte[]{ESC, 69, 0};
+    }
+
+    /**
+     * Turns emphasized mode on.
+     * ESC E n
+     *
+     * @return command
+     */
+    public static byte[] turnOnEmphasizedMode() {
+        return new byte[]{ESC, 69, 1};
     }
 
     /**
@@ -508,6 +516,7 @@ public class PrintCommands {
      * @param dxH 0≤ xL xH yL yH dxL dxH dyL dyH ≤255 (except dxL=dxH=0 or dyL=dyH=0)
      * @param dyL 0≤ xL xH yL yH dxL dxH dyL dyH ≤255 (except dxL=dxH=0 or dyL=dyH=0)
      * @param dyH 0≤ xL xH yL yH dxL dxH dyL dyH ≤255 (except dxL=dxH=0 or dyL=dyH=0)
+     *            default xL = xH = yL = yH = 0, dxL = 0, dxH = 2, dyL =126, dyH = 6
      * @return command
      */
     public static byte[] setPrintingAreaInPageMode(int xL, int xH, int yL, int yH,
@@ -527,5 +536,794 @@ public class PrintCommands {
      */
     public static byte[] setRelativePrintPosition(int nL, int nH) {
         return new byte[]{ESC, 92, (byte) nL, (byte) nH};
+    }
+
+    /**
+     * Aligns all the data in one line to the specified position
+     * n selects the justification as follows:
+     * n=0,48 : Left justification
+     * n=1,49 : Centering
+     * n=2,50 : Right justification
+     * ESC a n
+     *
+     * @param n 0≤n≤2,48≤n≤50 default 0
+     * @return command
+     */
+    public static byte[] selectJustification(int n) {
+        return new byte[]{ESC, 97, (byte) n};
+    }
+
+    /**
+     * Selects the paper sensor(s) to output paper end signals.
+     * Each bit of n is used as follows:
+     * n=0 : Paper roll near-end sensor disabled / Paper roll end sensor disabled
+     * n=1,2 : Paper roll near-end sensor enabled
+     * n=4,8 : Paper roll end sensor enabled
+     * ESC c 3 n
+     *
+     * @param n 0≤n≤255 default 15
+     * @return command
+     */
+    public static byte[] selectPaperSensorToOutputPaperEndSignals(int n) {
+        return new byte[]{ESC, 99, 51, (byte) n};
+    }
+
+    /**
+     * Selects the paper sensor(s) used to stop printing when a paper-end is detected.
+     * using n as follows:
+     * n=0 : Paper roll near end sensor disabled
+     * n=1,2 : Paper roll near end sensor enabled
+     * ESC c 4 n
+     *
+     * @param n 0≤n≤255 default 0
+     * @return command
+     */
+    public static byte[] selectPaperSensorToStopPrinting(int n) {
+        return new byte[]{ESC, 99, 52, (byte) n};
+    }
+
+    /**
+     * Disables the panel buttons.
+     * ESC c 5 n
+     *
+     * @return command
+     */
+    public static byte[] disablePanelButtons() {
+        return new byte[]{ESC, 99, 53, 0};
+    }
+
+    /**
+     * Enables the panel buttons.
+     * ESC c 5 n
+     *
+     * @return command
+     */
+    public static byte[] enablePanelButtons() {
+        return new byte[]{ESC, 99, 53, 1};
+    }
+
+    /**
+     * Prints the data in the print buffer and feeds n lines.
+     * ESC d n
+     *
+     * @param n 0≤n ≤255
+     * @return command
+     */
+    public static byte[] printFeedNLines(int n) {
+        return new byte[]{ESC, 100, (byte) n};
+    }
+
+    /**
+     * When this command is received, paper is cut (only when the auto cutter is loaded).
+     * ESC i
+     *
+     * @return command
+     */
+    public static byte[] executePaperFullCut() {
+        return new byte[]{ESC, 105};
+    }
+
+    /**
+     * When this command is received, paper is cut (only when the auto cutter is loaded).
+     * ESC m
+     *
+     * @return command
+     */
+    public static byte[] executePaperPartialCut() {
+        return new byte[]{ESC, 109};
+    }
+
+    /**
+     * Outputs the pulse specified by t1 and t2 to connector pin m as follows:
+     * m=0,48 : Drawer kick-out connector pin2.
+     * m=1,49 : Drawer kick-out connector pin5.
+     * ESC p m t1 t2
+     *
+     * @param m  m = 0, 1, 48, 49
+     * @param t1 0≤t1≤255
+     * @param t2 0≤t2≤255
+     * @return command
+     */
+    public static byte[] generatePulse(int m, int t1, int t2) {
+        return new byte[]{ESC, 112, (byte) m, (byte) t1, (byte) t2};
+    }
+
+    /**
+     * Selects a page n from the character code table.
+     * n=0 : PC437 [U.S.A., Standard Europe]
+     * n=1 : Katakana
+     * n=2 : PC850 [Multilingual]
+     * n=3 : PC860 [Portuguese]
+     * n=4 : PC863 [Canadian-French]
+     * n=5 : PC865 [Nordic]
+     * n=17 : PC866 [Cyrillic #2]
+     * n=255 : Space page
+     * ESC t n
+     *
+     * @param n 0≤n≤5, 16≤n≤26, n=255 default 0
+     * @return command
+     */
+    public static byte[] selectCharacterCodeTable(int n) {
+        return new byte[]{ESC, 116, (byte) n};
+    }
+
+    /**
+     * Turns upside-down printing mode off.
+     * ESC { n
+     *
+     * @return command
+     */
+    public static byte[] turnsOffUpsideDownPrintingMode() {
+        return new byte[]{ESC, 123, 0};
+    }
+
+    /**
+     * Turns upside-down printing mode on.
+     * ESC { n
+     *
+     * @return command
+     */
+    public static byte[] turnsOnUpsideDownPrintingMode() {
+        return new byte[]{ESC, 123, 1};
+    }
+
+    /**
+     * Prints a NV bit image n using the mode specified by m.
+     * m=0,48 : Normal Mode Vertical=180dpi Horizontal=180dpi
+     * m=1,49 : Double-width Mode Vertical=180dpi Horizontal=90dpi
+     * m=2,50 : Double-height Mode Vertical=90dpi Horizontal=180dpi
+     * m=3,51 : Quadruple Mode Vertical=90dpi Horizontal=90dpi
+     * FS p n m
+     *
+     * @param n 1≤n≤255
+     * @param m 0≤m≤3, 48≤m≤51
+     * @return command
+     */
+    public static byte[] printNVBitImage(int n, int m) {
+        return new byte[]{FS, 112, (byte) n, (byte) m};
+    }
+
+    /**
+     * Define the NV bit image specified by n.
+     * FS q n [xL xH yL yH d1...dk] 1...[xL xH yL yH d1...dk]n
+     *
+     * @param n     1≤n≤255
+     * @param image 0≤xL≤255
+     *              0≤xH≤3 (when 1≤(xL + xH x 256)≤1023)
+     *              0≤yL≤255
+     *              0≤yL≤1 (when 1≤(yL + yH x 256)≤288)
+     *              0≤d≤255
+     *              k = (xL + xH x 256) x (yL + yH x 256) x 8
+     *              Total defined data area = 2M bits (256K bytes)
+     * @return command
+     */
+    public static byte[] defineNVBitImage(int n, byte[] image) {
+        byte[] part = new byte[]{FS, 113, (byte) n};
+        byte[] destination = new byte[part.length + image.length];
+        System.arraycopy(part, 0, destination, 0, part.length);
+        System.arraycopy(image, 0, destination, part.length, image.length);
+        return destination;
+    }
+
+    /**
+     * Selects the character height using bits 0 to 3 and selects the character width using bits
+     * 4 to 7, as follows:
+     * 0-3bit:
+     * n=0 : height = 1(normal)
+     * n=1 : height = 2(double-height)
+     * n=2 : height = 3
+     * n=3 : height = 4
+     * n=4 : height = 5
+     * n=5 : height = 6
+     * n=6 : height = 7
+     * n=7 : height = 8
+     * 4-7bit:
+     * n=0 : height = 1(normal)
+     * n=1 : height = 2(double-width)
+     * n=2 : height = 3
+     * n=3 : height = 4
+     * n=4 : height = 5
+     * n=5 : height = 6
+     * n=6 : height = 7
+     * n=7 : height = 8
+     * GS ! n
+     *
+     * @param n 0≤n≤255(1≤vertical number of times≤8, 1≤horizontal number of times≤8) default 0
+     * @return command
+     */
+    public static byte[] selectCharacterSize(int n) {
+        return new byte[]{GS, 33, (byte) n};
+    }
+
+    /**
+     * Sets the absolute vertical print starting position for buffer character data in page mode.
+     * This command sets the absolute print position to [ (nL + nH x 256) x (vertical or horizontal
+     * motion unit)] inches.
+     * If the [ (nL + nH x 256) x (vertical or horizontal motion unit)] exceeds the specified
+     * printing area, this command is ignored.
+     * The horizontal starting buffer position does not move.
+     * The reference starting position is that specified by ESC T.
+     * This command operates as follows, depending on the starting position of the printing area
+     * specified by ESC T:
+     * 1. When the starting position is set to the upper left or lower right, this command sets the
+     * absolute position in the vertical direction.
+     * 2. When the starting position is set to the upper right or lower left, this command sets the
+     * absolute position in the horizontal direction.
+     * The horizontal and vertical motion units are specified by GS P.
+     * The GS P command can change the horizontal and vertical motion unit.
+     * However, the value cannot be less than the minimum horizontal movement amount, and it must be
+     * in even units of the minimum horizontal movement amount.
+     * GS $ nL nH
+     *
+     * @param nL 0≤nL≤255
+     * @param nH 0≤nH≤255
+     * @return command
+     */
+    public static byte[] setAbsoluteVerticalPrintPositionInPageMade(int nL, int nH) {
+        return new byte[]{GS, 36, (byte) nL, (byte) nH};
+    }
+
+    /**
+     * Defines a downloaded bit image with the number of dots specified by x and y.
+     * x indicates the number of dots in the horizontal direction.
+     * y indicates he number of dots in the vertical direction.
+     * GS * x y d1...d (x x y x 8)
+     *
+     * @param x     1≤n≤255
+     * @param y     1≤n≤255
+     * @param image x x y≤1536
+     *              0≤d≤255
+     * @return command
+     */
+    public static byte[] defineDownloadedBitImage(int x, int y, byte[] image) {
+        byte[] part = new byte[]{GS, 42, (byte) x, (byte) y};
+        byte[] destination = new byte[part.length + image.length];
+        System.arraycopy(part, 0, destination, 0, part.length);
+        System.arraycopy(image, 0, destination, part.length, image.length);
+        return destination;
+    }
+
+    /**
+     * Prints a downloaded bit image using the mode specified by m.
+     * m selects a mode from the table below:
+     * m=0,48 : Normal Mode Vertical=180dpi Horizontal=180dpi
+     * m=1,49 : Double-width Mode Vertical=180dpi Horizontal=90dpi
+     * m=2,50 : Double-height Mode Vertical=90dpi Horizontal=180dpi
+     * m=3,51 : Quadruple Mode Vertical=90dpi Horizontal=90dpi
+     * GS / m
+     *
+     * @param m 0≤m≤3, 48≤m≤51
+     * @return command
+     */
+    public static byte[] printDownloadedBitImage(int m) {
+        return new byte[]{GS, 47, (byte) m};
+    }
+
+    /**
+     * Starts or ends macro definition.
+     * GS :
+     *
+     * @return command
+     */
+    public static byte[] startOrEndMacroDefinition() {
+        return new byte[]{GS, 58};
+    }
+
+    /**
+     * Turns off white/black reverse printing mode.
+     * GS B n
+     *
+     * @return command
+     */
+    public static byte[] turnOffWhiteBlackReversePrintingMode() {
+        return new byte[]{GS, 66, 0};
+    }
+
+    /**
+     * Turns on white/black reverse printing mode.
+     * GS B n
+     *
+     * @return command
+     */
+    public static byte[] turnOnWhiteBlackReversePrintingMode() {
+        return new byte[]{GS, 66, 1};
+    }
+
+    /**
+     * Selects the printing position of HRI characters when printing a bar code.
+     * n selects the printing position as follows:
+     * m=0,48 : Not printed
+     * m=1,49 : Above the bar code
+     * m=2,50 : Below the bar code
+     * m=3,51 : Both above and below the bar code
+     * GS H n
+     *
+     * @param n 0≤m≤3, 48≤m≤51 default 0
+     * @return command
+     */
+    public static byte[] selectPrintingPositionOfHRICharacters(int n) {
+        return new byte[]{GS, 72, (byte) n};
+    }
+
+    /**
+     * Sets the left margin using nL and nH.
+     * The left margin is set to [(nL + nH x 256) x (horizontal motion unit)] inches.
+     * GS L nL nH
+     *
+     * @param nL 0≤nL≤255 default 0
+     * @param nH 0≤nH≤255 default 0
+     * @return command
+     */
+    public static byte[] setLeftMargin(int nL, int nH) {
+        return new byte[]{GS, 76, (byte) nL, (byte) nH};
+    }
+
+    /**
+     * Sets the horizontal and vertical motion units to 1/x inch and 1/y inch, respectively.
+     * When x and u are set to 0, the default setting of each value is used. (x = 180, y = 360)
+     * GS P x y
+     *
+     * @param x 0≤x≤255 default 180
+     * @param y 0≤y≤255 default 360
+     * @return command
+     */
+    public static byte[] setHorizontalAndVerticalMotionUnits(int x, int y) {
+        return new byte[]{GS, 80, (byte) x, (byte) y};
+    }
+
+    /**
+     * Selects a mode for cutting paper and executes paper cutting. The value of m selects the mode
+     * as follows:
+     * m=1,49 : Partial cut(one point center uncut)
+     * m=66 : Feeds paper(cutting position + [n x(vertical motion unit)]) ,
+     * and cuts the paper partially(one point center uncut)
+     * GS V m
+     * GS V m n
+     *
+     * @param m m=1,49,66
+     * @param n 0≤n≤255
+     * @return command
+     */
+    public static byte[] selectCutModeAndCutPaper(int m, int n) {
+        if (m == 66) {
+            return new byte[]{GS, 86, 66, (byte) n};
+        } else {
+            return new byte[]{GS, 86, (byte) m};
+        }
+    }
+
+    /**
+     * Sets the printing area width to the area specified by nL and nH.
+     * The printing area width is set to [( nL + nH x 256) x horizontal motion
+     * unit]].
+     * GS W nL nH
+     *
+     * @param nL 0≤nL≤255 default 0
+     * @param nH 0≤nH≤255 default 2
+     * @return command
+     */
+    public static byte[] setPrintingAreaWidth(int nL, int nH) {
+        return new byte[]{GS, 87, (byte) nL, (byte) nH};
+    }
+
+    /**
+     * Sets the relative vertical print starting position from the current position in page mode.
+     * This command sets the distance from the current position to [( nL + nH x 256) vertical or
+     * horizontal motion unit] inches.
+     * GS \ nL nH
+     *
+     * @param nL 0≤nL≤255
+     * @param nH 0≤nH≤255
+     * @return command
+     */
+    public static byte[] setRelativeVerticalPrintPositionInPageMode(int nL, int nH) {
+        return new byte[]{GS, 92, (byte) nL, (byte) nH};
+    }
+
+    /**
+     * Executes a macro.
+     * r specifies the number of times to execute the macro.
+     * t specifies the waiting time for executing the macro.
+     * m specifies macro executing mode.
+     * When the LSB of m = 0:
+     * The macro executes r times continuously at the interval specified by t.
+     * When the LSB of m = 1:
+     * After waiting for the period specified by t, the PAPER OUT LED indicators blink and the
+     * printer waits for the FEED button to be pressed. After the button is pressed, the printer
+     * executes the macro once. The printer repeats the operation r times.
+     * GS ^ r t m
+     *
+     * @param r 0≤r≤255
+     * @param t 0≤t≤255
+     * @param m m=0,1
+     * @return command
+     */
+    public static byte[] executeMacro(int r, int t, int m) {
+        return new byte[]{GS, 94, (byte) r, (byte) t, (byte) m};
+    }
+
+    /**
+     * Enables or disables ASB and specifies the status items to include, using n as follows:
+     * bit=0,n=0 : Drawer kick-out connector pin 3 status disabled.
+     * bit=0,n=1 : Drawer kick-out connector pin 3 status enabled.
+     * bit=1,n=0 : On-line/off-line status disabled.
+     * bit=1,n=2 : On-line/off-line status enabled,
+     * bit=2,n=0 : Error status disabled.
+     * bit=2,n=4 : Error status enabled.
+     * bit=3,n=0 : Paper roll sensor status disabled.
+     * bit=3,n=8 : Paper roll sensor status enabled.
+     * GS a n
+     *
+     * @param n 0≤n≤255 default 0
+     * @return command
+     */
+    public static byte[] setAutomaticStatusBack(int n) {
+        return new byte[]{GS, 97, (byte) n};
+    }
+
+    /**
+     * selects a font for the HRI characters used when printing a bar code.
+     * n selects the font from the following table:
+     * n=0,48 : Font A (12 x 24)
+     * n=1,49 : Font B (9 x 24)
+     * GS f n
+     *
+     * @param n n = 0, 1, 48, 49
+     * @return command
+     */
+    public static byte[] selectFontForHumanReadableInterpretationCharacters(int n) {
+        return new byte[]{GS, 102, (byte) n};
+    }
+
+    /**
+     * Select the height of the bar code.
+     * n specifies the number of dots in the vertical direction.
+     * GS h n
+     *
+     * @param n 1≤n≤255 default 162
+     * @return command
+     */
+    public static byte[] selectBarCodeHeight(int n) {
+        return new byte[]{GS, 104, (byte) n};
+    }
+
+    /**
+     * Selects a bar code system and prints the bar code.
+     * m selects a bar code system as follows:
+     * m=0 : UPC–A 11≤k≤12 48≤d≤57
+     * m=1 : UPC–E 11≤k≤12 48≤d≤57
+     * m=2 : EAN13 12≤k≤13 48≤d≤57
+     * m=3 : EAN8 7≤k≤8 48≤d≤57
+     * m=4 : CODE39 1≤k 48≤d≤57,65≤d≤90,32,36,37,43,45,46,47
+     * m=5 : ITF 1≤k(even number) 48≤d≤57
+     * m=6 : CODABAR 1≤k 48≤d≤57,65≤d≤68,36,43,45,46,47,58
+     * m=65 : UPC–A 11≤k≤12 48≤d≤57
+     * m=66 : UPC–E 11≤k≤12 48≤d≤57
+     * m=67 : EAN13 12≤k≤13 48≤d≤57
+     * m=68 : EAN8 7≤k≤8 48≤d≤57
+     * m=69 : CODE39 1≤k≤255 48≤d≤57,65≤d≤90,32,36,37,43,45,46,47
+     * m=70 : ITF 1≤k≤255(even number) 48≤d≤57
+     * m=71 : CODABAR 1≤k≤255 48≤d≤57,65≤d≤68,36,43,45,46,47,58
+     * m=72 : CODE93 1≤k≤255 0≤d≤127
+     * m=73 : CODE128 2≤k≤255 0≤d≤127
+     * GS k m d1…dk NUL
+     * GS k m n d1…dn
+     *
+     * @param m    0≤m≤6
+     *             65≤m≤73
+     * @param n    n and d depends on the code system used
+     * @param data k and d depends on the code system used
+     * @return command
+     */
+    public static byte[] printBarCode(int m, int n, byte[] data) {
+        if (m <= 6) {
+            byte[] part = new byte[]{GS, 107, (byte) m};
+            byte[] destination = new byte[part.length + data.length + 1];
+            System.arraycopy(part, 0, destination, 0, part.length);
+            System.arraycopy(data, 0, destination, part.length, data.length);
+            destination[part.length + data.length] = 0;
+            return destination;
+        } else {
+            byte[] part = new byte[]{GS, 107, (byte) m, (byte) n};
+            byte[] destination = new byte[part.length + data.length];
+            System.arraycopy(part, 0, destination, 0, part.length);
+            System.arraycopy(data, 0, destination, part.length, data.length);
+            return destination;
+        }
+    }
+
+    /**
+     * Transmits the status specified by n as follows:
+     * n=1,49 : Transmits paper sensor status
+     * n=2,50 : Transmits drawer kick-out connector status
+     * GS r n
+     *
+     * @param n n=1, 2, 49, 50
+     * @return command
+     */
+    public static byte[] transmitStatus(int n) {
+        return new byte[]{GS, 114, (byte) n};
+    }
+
+    /**
+     * Selects Raster bit-image mode.
+     * The value of m selects the mode, as follows:
+     * m=0,48 : Normal Mode Vertical=180dpi Horizontal=180dpi
+     * m=1,49 : Double-width Mode Vertical=180dpi Horizontal=90dpi
+     * m=2,50 : Double-height Mode Vertical=90dpi Horizontal=180dpi
+     * m=3,51 : Quadruple Mode Vertical=90dpi Horizontal=90dpi
+     * xL, xH, select the number of data bytes (xL+xHx256) in the horizontal direction for the bit
+     * image.
+     * yL, yH, select the number of data bytes (xL+xHx256) in the vertical direction for the bit
+     * image.
+     * GS v 0 m xL xH yL yH d1....dk
+     *
+     * @param m     0≤m≤3, 48≤m≤51
+     * @param xL    0≤xL≤255
+     * @param xH    0≤xH≤255
+     * @param yL    0≤yL≤255
+     * @param yH    0≤yH≤8
+     * @param image 0≤d≤255
+     *              k=(xL + xH x 256) x (yL + yH x 256) (k≠0)
+     * @return command
+     */
+    public static byte[] printRasterBitImage(int m, int xL, int xH, int yL, int yH, byte[] image) {
+        byte[] part = new byte[]{GS, 118, 48, (byte) m, (byte) xL, (byte) xH, (byte) yL, (byte) yH};
+        byte[] destination = new byte[part.length + image.length];
+        System.arraycopy(part, 0, destination, 0, part.length);
+        System.arraycopy(image, 0, destination, part.length, image.length);
+        return destination;
+    }
+
+    /**
+     * Set the horizontal size of the bar code.
+     * n specifies the bar code width as follows:
+     * n=2 :
+     * 0.282mm (Module width for Mult-level Bar code),
+     * 0.282mm (Thin element width),
+     * 0.706mm (Thick element width)
+     * n=3 :
+     * 0.423mm (Module width for Mult-level Bar code),
+     * 0.423mm (Thin element width),
+     * 1.129mm (Thick element width)
+     * n=4 :
+     * 0.564mm (Module width for Mult-level Bar code),
+     * 0.564mm (Thin element width),
+     * 1.411mm (Thick element width)
+     * n=5 :
+     * 0.706mm (Module width for Mult-level Bar code),
+     * 0.706mm (Thin element width),
+     * 1.834mm (Thick element width)
+     * n=6 :
+     * 0.847mm (Module width for Mult-level Bar code),
+     * 0.847mm (Thin element width),
+     * 2.258mm (Thick element width)
+     * Multi-level bar codes are as follows:
+     * UPC-A, UPC-E, JAN13 (EAN13), JAN8 (EAN8), CODE93, CODE128
+     * Binary-level bar codes are as follows: CODE39, ITF, CODABAR
+     * GS w n
+     *
+     * @param n 2≤n≤6
+     * @return command
+     */
+    public static byte[] setBarCodeWidth(int n) {
+        return new byte[]{GS, 119, (byte) n};
+    }
+
+    /**
+     * Selects the model for QR Code.
+     * (pL + pH x 256) = 4 (pL=4, pH=0)
+     * cn = 49
+     * fn = 65
+     * n1 Function
+     * 49 Selects model 1.
+     * 50 Selects model 2.
+     * GS ( k pL pH cn fn n1 n2
+     *
+     * @param n1 n1 = 49,50
+     * @param n2 n2 = 0
+     * @return command
+     */
+    public static byte[] selectQRCodeModel(int n1, int n2) {
+        return new byte[]{GS, 40, 107, 4, 0, 49, 65, (byte) n1, (byte) n2};
+    }
+
+    /**
+     * Sets the size of the module for QR Code to n dots.
+     * GS ( k pL pH cn fn n
+     *
+     * @param n (pL + pH x 256) = 3 (pL=3, pH=0)
+     *          cn = 49
+     *          fn = 67
+     * @return command
+     */
+    public static byte[] setQRCodeSizeOfModule(int n) {
+        return new byte[]{GS, 40, 107, 3, 0, 49, 67, (byte) n};
+    }
+
+    /**
+     * Selects the error correction level for QR code.
+     * n     fuction                             Recovery Capacity %(approx.)
+     * 48    Selects Error correction level L    7
+     * 49    Selects Error correction level M    15
+     * 50    Selects Error correction level Q    25
+     * 51    Selects Error correction level H    30
+     * (pL + pH x 256) = 3 (pL=3, pH=0)
+     * cn = 49
+     * fn = 69
+     * GS ( k pL pH cn fn n
+     *
+     * @param n 47<n<52
+     * @return command
+     */
+    public static byte[] selectQRCodeErrorCorrectionLevel(int n) {
+        return new byte[]{GS, 40, 107, 3, 0, 49, 69, (byte) n};
+    }
+
+    /**
+     * Store the QR Code symbol data (d1…dk) in the symbol storage area.
+     * cn = 49
+     * fn = 80
+     * m = 48
+     * GS ( k pL pH cn fn m d1…dk
+     *
+     * @param pL   0≤pL<256,
+     * @param pH   0≤pH<28
+     * @param data 0≤d < 255
+     *             k = (pL + pH* 256) - 3
+     * @return command
+     */
+    public static byte[] storeQRCodeDataInTheSymbolStorageArea(int pL, int pH, byte[] data) {
+        byte[] part = new byte[]{GS, 40, 107, (byte) pL, (byte) pH, 49, 80, 48};
+        byte[] destination = new byte[part.length + data.length];
+        System.arraycopy(part, 0, destination, 0, part.length);
+        System.arraycopy(data, 0, destination, part.length, data.length);
+        return destination;
+    }
+
+    /**
+     * Encodes and prints the QR Code symbol data in the symbol storage area using the process of
+     * <Store the data >.
+     * (pL + pH x 256) = 3 (pL=3, pH=0)
+     * cn = 49
+     * fn = 81
+     * m = 48
+     * GS ( k pL pH cn fn m
+     *
+     * @return command
+     */
+    public static byte[] printQRCodeSymbolDataInTheSymbolStorageArea() {
+        return new byte[]{GS, 40, 107, 3, 0, 49, 81, 48};
+    }
+
+    /**
+     * Sets the number of columns of the data area for PDF417.
+     * n = 0 specifies automatic processing.
+     * (pL + pH x 256) = 3 (pL=3, pH=0)
+     * cn = 48
+     * fn = 65
+     * GS ( k pL pH cn fn n
+     *
+     * @param n 0≤n≤30
+     * @return command
+     */
+    public static byte[] setNumberOfColumnsOfTheDataAreaForPDF417(int n) {
+        return new byte[]{GS, 40, 107, 3, 0, 48, 65, (byte) n};
+    }
+
+    /**
+     * Sets the number of rows of data area for PDF417.
+     * n = 0 specifies automatic processing.
+     * (pL + pH x 256) = 3 (pL=3, pH=0)
+     * cn = 48
+     * fn = 66
+     * GS ( k pL pH cn fn n
+     *
+     * @param n n=0, 3≤n≤90
+     * @return command
+     */
+    public static byte[] setNumberOfRowsOfDataAreaForPDF417(int n) {
+        return new byte[]{GS, 40, 107, 3, 0, 48, 66, (byte) n};
+    }
+
+    /**
+     * Sets the module width of one PDF417 symbol to n dots.
+     * (pL + pH x 256) = 3 (pL=3, pH=0)
+     * cn = 48
+     * fn = 67
+     * GS ( k pL pH cn fn n
+     *
+     * @param n 2≤n≤8
+     * @return command
+     */
+    public static byte[] setModuleWidthOfOnePDF417SymbolDots(int n) {
+        return new byte[]{GS, 40, 107, 3, 0, 48, 67, (byte) n};
+    }
+
+    /**
+     * Sets the module height to [(module width) × n].
+     * (pL + pH x 256) = 3 (pL=3, pH=0)
+     * cn = 48
+     * fn = 68
+     * GS ( k pL pH cn fn n
+     *
+     * @param n 2≤n≤8
+     * @return command
+     */
+    public static byte[] setPDF417ModuleHeight(int n) {
+        return new byte[]{GS, 40, 107, 3, 0, 48, 68, (byte) n};
+    }
+
+    /**
+     * Sets the error correction level for PDF417 symbols.
+     * (pL + pH x 256) = 4 (pL=4, pH=0)
+     * cn = 48
+     * fn = 69
+     * GS ( k pL pH cn fn m n
+     *
+     * @param m m = 48,49
+     * @param n 48≤n≤56 (when m=48 is specified)
+     *          1≤n≤40 (when m=49 is specified)
+     * @return command
+     */
+    public static byte[] setErrorCorrectionLevelForPDF417Symbols(int m, int n) {
+        return new byte[]{GS, 40, 107, 4, 0, 48, 69, (byte) m, (byte) n};
+    }
+
+    /**
+     * Stores symbol data (d1...dk) in the PDF417 symbol storage area.
+     * Bytes of ((pL + pH × 256) - 3) after m (d1…dk) are processed as symbol data.
+     * 4≤(pL + pH x 256) ≤65535 (0≤pL≤255, 0≤pH≤255)
+     * cn = 48
+     * fn = 80
+     * m = 48
+     * GS ( k pL pH cn fn m d1…dk
+     *
+     * @param pL   0≤pL≤255
+     * @param pH   0≤pH≤255
+     * @param data 0≤d≤255
+     *             k = (pL + pH*256) - 3
+     * @return command
+     */
+    public static byte[] storeSymbolDataInThePDF417SymbolStorageArea(int pL, int pH, byte[] data) {
+        byte[] part = new byte[]{GS, 40, 107, (byte) pL, (byte) pH, 48, 80, 48};
+        byte[] destination = new byte[part.length + data.length];
+        System.arraycopy(part, 0, destination, 0, part.length);
+        System.arraycopy(data, 0, destination, part.length, data.length);
+        return destination;
+    }
+
+    /**
+     * Prints the PDF417 symbol data in the symbol storage area.
+     * (pL + pH* 256) = 4 (pL=4, pH=0)
+     * cn = 48
+     * fn = 81
+     * m = 48
+     * GS ( k pL pH cn fn m
+     *
+     * @return command
+     */
+    public static byte[] printPDF417SymbolDataInTheSymbolStorageArea() {
+        return new byte[]{GS, 40, 107, 4, 0, 48, 81, 48};
     }
 }

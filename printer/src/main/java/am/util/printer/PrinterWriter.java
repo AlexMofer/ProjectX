@@ -33,6 +33,7 @@ import java.util.ArrayList;
  * 打印机写入器
  * Created by Alex on 2016/4/18.
  */
+@SuppressWarnings("all")
 public abstract class PrinterWriter {
 
     public static final int HEIGHT_PARTING_DEFAULT = 255;
@@ -73,17 +74,6 @@ public abstract class PrinterWriter {
     }
 
     /**
-     * 重置
-     * 使用 init 替代
-     *
-     * @throws IOException 异常
-     */
-    @Deprecated
-    public void reset() throws IOException {
-        init();
-    }
-
-    /**
      * 初始化
      *
      * @throws IOException 异常
@@ -94,24 +84,11 @@ public abstract class PrinterWriter {
     }
 
     /**
-     * 获取预打印数据并关闭流
-     *
-     * @return 预打印数据
-     * @throws IOException 异常
-     */
-    @SuppressWarnings("unused")
-    @Deprecated
-    public byte[] getData() throws IOException {
-        return getDataAndClose();
-    }
-
-    /**
      * 获取预打印数据并重置流
      *
      * @return 预打印数据
      * @throws IOException 异常
      */
-    @SuppressWarnings("unused")
     public byte[] getDataAndReset() throws IOException {
         byte[] data;
         bos.flush();
@@ -126,7 +103,6 @@ public abstract class PrinterWriter {
      * @return 预打印数据
      * @throws IOException 异常
      */
-    @SuppressWarnings("unused")
     public byte[] getDataAndClose() throws IOException {
         byte[] data;
         bos.flush();
@@ -144,7 +120,7 @@ public abstract class PrinterWriter {
      */
     public void write(byte[] data) throws IOException {
         if (bos == null)
-            reset();
+            init();
         bos.write(data);
     }
 
@@ -153,7 +129,6 @@ public abstract class PrinterWriter {
      *
      * @throws IOException 异常
      */
-    @SuppressWarnings("unused")
     public void setAlignCenter() throws IOException {
         write(PrinterUtils.alignCenter());
     }
@@ -163,7 +138,6 @@ public abstract class PrinterWriter {
      *
      * @throws IOException 异常
      */
-    @SuppressWarnings("unused")
     public void setAlignLeft() throws IOException {
         write(PrinterUtils.alignLeft());
     }
@@ -173,7 +147,6 @@ public abstract class PrinterWriter {
      *
      * @throws IOException 异常
      */
-    @SuppressWarnings("unused")
     public void setAlignRight() throws IOException {
         write(PrinterUtils.alignRight());
     }
@@ -183,7 +156,6 @@ public abstract class PrinterWriter {
      *
      * @throws IOException 异常
      */
-    @SuppressWarnings("unused")
     public void setEmphasizedOn() throws IOException {
         write(PrinterUtils.emphasizedOn());
     }
@@ -193,7 +165,6 @@ public abstract class PrinterWriter {
      *
      * @throws IOException 异常
      */
-    @SuppressWarnings("unused")
     public void setEmphasizedOff() throws IOException {
         write(PrinterUtils.emphasizedOff());
     }
@@ -204,7 +175,6 @@ public abstract class PrinterWriter {
      * @param size 文字大小 （0～7）（默认0）
      * @throws IOException 异常
      */
-    @SuppressWarnings("unused")
     public void setFontSize(int size) throws IOException {
         write(PrinterUtils.fontSizeSetBig(size));
     }
@@ -215,10 +185,8 @@ public abstract class PrinterWriter {
      * @param height 行高度
      * @throws IOException 异常
      */
-    @SuppressWarnings("unused")
     public void setLineHeight(int height) throws IOException {
-        if (height >= 0 && height <= 255)
-            write(PrinterUtils.printLineHeight((byte) height));
+        write(PrinterUtils.printLineHeight(height));
     }
 
     /**
@@ -249,7 +217,6 @@ public abstract class PrinterWriter {
      *
      * @throws IOException 异常
      */
-    @SuppressWarnings("unused")
     public void printLine() throws IOException {
         int length = getLineWidth();
         String line = "";
@@ -275,7 +242,6 @@ public abstract class PrinterWriter {
      * @param textSize 文字大小
      * @throws IOException 异常
      */
-    @SuppressWarnings("unused")
     public void printInOneLine(String str1, String str2, int textSize) throws IOException {
         printInOneLine(str1, str2, textSize, CHARSET);
     }
@@ -289,7 +255,6 @@ public abstract class PrinterWriter {
      * @param charsetName 编码方式
      * @throws IOException 异常
      */
-    @SuppressWarnings("unused")
     public void printInOneLine(String str1, String str2, int textSize, String charsetName) throws IOException {
         int lineLength = getLineStringWidth(textSize);
         int needEmpty = lineLength - (getStringWidth(str1) + getStringWidth(str2)) % lineLength;
@@ -315,31 +280,6 @@ public abstract class PrinterWriter {
             width += isChinese(c) ? 2 : 1;
         }
         return width;
-    }
-
-    /**
-     * 打印 Drawable 图片
-     *
-     * @param res Resources
-     * @param id  资源ID
-     * @throws IOException 异常
-     */
-    @SuppressWarnings("unused")
-    @Deprecated
-    public void printDrawable(Resources res, int id) throws IOException {
-        int maxWidth = getDrawableMaxWidth();
-        Bitmap image = scalingBitmap(res, id, maxWidth);
-        if (image == null)
-            return;
-        byte[] command = PrinterUtils.decodeBitmap(image, heightParting);
-        image.recycle();
-        try {
-            if (command != null) {
-                write(command);
-            }
-        } catch (IOException e) {
-            throw new IOException(e.getMessage());
-        }
     }
 
     /**
@@ -410,30 +350,6 @@ public abstract class PrinterWriter {
     }
 
     /**
-     * 打印 Drawable 图片
-     *
-     * @param drawable 图片
-     * @throws IOException 异常
-     */
-    @SuppressWarnings("unused")
-    @Deprecated
-    public void printDrawable(Drawable drawable) throws IOException {
-        int maxWidth = getDrawableMaxWidth();
-        Bitmap image = scalingDrawable(drawable, maxWidth);
-        if (image == null)
-            return;
-        byte[] command = PrinterUtils.decodeBitmap(image, heightParting);
-        image.recycle();
-        try {
-            if (command != null) {
-                write(command);
-            }
-        } catch (IOException e) {
-            throw new IOException(e.getMessage());
-        }
-    }
-
-    /**
      * 获取图片数据流
      *
      * @param drawable 图片
@@ -485,30 +401,6 @@ public abstract class PrinterWriter {
     }
 
     /**
-     * 打印 Bitmap 图片
-     *
-     * @param image 图片
-     * @throws IOException 异常
-     */
-    @SuppressWarnings("unused")
-    @Deprecated
-    public void printBitmap(Bitmap image) throws IOException {
-        int maxWidth = getDrawableMaxWidth();
-        Bitmap scalingImage = scalingBitmap(image, maxWidth);
-        if (scalingImage == null)
-            return;
-        byte[] command = PrinterUtils.decodeBitmap(scalingImage, heightParting);
-        scalingImage.recycle();
-        try {
-            if (command != null) {
-                write(command);
-            }
-        } catch (IOException e) {
-            throw new IOException(e.getMessage());
-        }
-    }
-
-    /**
      * 获取图片数据流
      *
      * @param image 图片
@@ -551,35 +443,6 @@ public abstract class PrinterWriter {
     }
 
     /**
-     * 打印图片文件
-     *
-     * @param filePath 图片
-     * @throws IOException 异常
-     */
-    @SuppressWarnings("unused")
-    @Deprecated
-    public void printImageFile(String filePath) throws IOException {
-        Bitmap image;
-        try {
-            int width;
-            int height;
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(filePath, options);
-            width = options.outWidth;
-            height = options.outHeight;
-            if (width <= 0 || height <= 0)
-                return;
-            options.inJustDecodeBounds = false;
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            image = BitmapFactory.decodeFile(filePath, options);
-        } catch (OutOfMemoryError | Exception e) {
-            return;
-        }
-        printBitmap(image);
-    }
-
-    /**
      * 获取图片数据流
      *
      * @param filePath 图片路径
@@ -611,7 +474,6 @@ public abstract class PrinterWriter {
      *
      * @throws IOException 异常
      */
-    @SuppressWarnings("unused")
     public void printLineFeed() throws IOException {
         write(PrinterUtils.printLineFeed());
     }
@@ -621,7 +483,6 @@ public abstract class PrinterWriter {
      *
      * @throws IOException 异常
      */
-    @SuppressWarnings("unused")
     public void feedPaperCut() throws IOException {
         write(PrinterUtils.feedPaperCut());
     }
@@ -631,7 +492,6 @@ public abstract class PrinterWriter {
      *
      * @throws IOException 异常
      */
-    @SuppressWarnings("unused")
     public void feedPaperCutPartial() throws IOException {
         write(PrinterUtils.feedPaperCutPartial());
     }
@@ -641,7 +501,6 @@ public abstract class PrinterWriter {
      *
      * @return 高度分割值
      */
-    @SuppressWarnings("unused")
     public int getHeightParting() {
         return heightParting;
     }
@@ -652,7 +511,6 @@ public abstract class PrinterWriter {
      *
      * @param parting 高度分割值
      */
-    @SuppressWarnings("unused")
     public void setHeightParting(int parting) {
         if (parting <= 0 || parting > HEIGHT_PARTING_DEFAULT)
             return;

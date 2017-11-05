@@ -1,32 +1,50 @@
-# Printer
-![ICON](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/printer/icon.png)
+Printer
+=======
 
-标准ES-POS命令打印，固定IP或蓝牙打印，支持黑白图片打印
-## 预览
-![Screenshots](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/printer/screenshot.png)
-![打印样例](https://raw.githubusercontent.com/AlexMofer/ProjectX/master/printer/printer_example.jpg)
-## 要求
+<img src="icon.png" alt="Icon"/>
+
+ES-POS命令打印辅助库
+
+介绍
+---
+
+标准ESC-POS命令打印，固定IP或蓝牙打印，支持黑白图片打印。
+其中PrintCommands类列出了基本所有的ESC-POS打印命令。
+打印指令参考自Commande ESCPOS.pdf文档。
+
+截图
+---
+
+<img src="screenshot.png" alt="Screenshots"/><img src="printer_example.jpg" alt="xample"/>
+
+先决条件
+----
+
 - minSdkVersion 5
 - ```<uses-permission android:name="android.permission.INTERNET" />```
 - ```<uses-permission android:name="android.permission.BLUETOOTH" />```
 
-## 引用
+入门
+---
+
+**引用:**
+
 ```java
 dependencies {
-    ⋯
-    compile 'am.util:printer:2.0.0'
-    ⋯
+    ...
+    implementation 'am.util:printer:2.1.0'
+    ...
 }
 ```
-## 详情
-- 实现PrintDataMaker接口来实现打印任务
-- 继承PrinterWriter来实现更多纸张类型的打印
-- PrinterUtils包含了众多打印指令
 
-##使用
-1.添加蓝牙权限```<uses-permission android:name="android.permission.BLUETOOTH" />```或者网络请求权限```<uses-permission android:name="android.permission.INTERNET" />```
+**添加权限:**
 
-2.实现PrintDataMaker接口，完成具体打印任务：
+添加蓝牙权限```<uses-permission android:name="android.permission.BLUETOOTH" />```或者网络请求权限```<uses-permission android:name="android.permission.INTERNET" />```
+
+**实现接口:**
+
+实现PrintDataMaker接口，完成具体打印任务：
+
 ```java
 public class TestPrintDataMaker implements PrintDataMaker {
 
@@ -148,12 +166,18 @@ public class TestPrintDataMaker implements PrintDataMaker {
     }
 }
 ```
-3.创建打印执行者：
+
+**准备打印:**
+
+创建打印执行者：
+
 ```java
 PrintExecutor executor = new PrintExecutor(String ip, int port, int type);
 PrintExecutor executor = new PrintExecutor(BluetoothDevice device, int type);
 ```
-4.设置执行者状态监听：
+
+设置执行者状态监听（非必须）：
+
 ```java
 executor.setOnStateChangedListener(new PrintSocketHolder.OnStateChangedListener() {
     @Override
@@ -178,7 +202,9 @@ executor.setOnStateChangedListener(new PrintSocketHolder.OnStateChangedListener(
     }
 });
 ```
-4.设置执行者回调监听：
+
+设置执行者回调监听（非必须）：
+
 ```java
 executor.setOnPrintResultListener(new PrintExecutor.OnPrintResultListener() {
     @Override
@@ -212,13 +238,19 @@ executor.setOnPrintResultListener(new PrintExecutor.OnPrintResultListener() {
     }
 });
 ```
-5.执行打印：
+
+**执行打印:**
+
 ```java
 int result = executor.doPrinterRequest(PrintDataMaker maker);//同步
 executor.doPrinterRequestAsync(PrintDataMaker maker);//异步
 ```
 
-如果你要实现自己的打印机PrinterWriter，那么你需要继承
+**自定义**
+
+如果你要实现自己的打印机PrinterWriter，那么你需要继承PrinterWriter，并实现其
+必须的方法。示例:
+
 ```java
 public class PrinterWriter80mm extends PrinterWriter {
 
@@ -263,15 +295,39 @@ public class PrinterWriter80mm extends PrinterWriter {
 }
 ```
 
-## 注意
+注意
+---
+
 - 打印图片出现乱码或者打印不出，大部分原因是打印机缓存较小导致，可调小PrinterWriter80mm的parting参数，设置其图片高度分割值（0～255），调小了还不行的话，缩小图片尺寸或者调整输出流的写入方式。
 - 仅提供建立蓝牙连接打印，不包括蓝牙搜索及配对功能
 - 不包含二维码生成功能
+- PrintCommands包含了大量打印指令，但是并非全部经过测试，而且并非所有打印机都支持。
 
-## 历史
-- [**1.1.4**](https://bintray.com/alexmofer/maven/Printer/1.1.4)（[**说明**](https://github.com/AlexMofer/ProjectX/tree/master/printer/history/1.1.4)）
-- [**1.1.3**](https://bintray.com/alexmofer/maven/Printer/1.1.3)
-- [**1.1.2**](https://bintray.com/alexmofer/maven/Printer/1.1.2)
-- [**1.1.1**](https://bintray.com/alexmofer/maven/Printer/1.1.1)
-- [**1.1.0**](https://bintray.com/alexmofer/maven/Printer/1.1.0)
-- [**1.0.0**](https://bintray.com/alexmofer/maven/Printer/1.0.0)
+支持
+---
+
+- Google+: https://plus.google.com/114728839435421501183
+- Gmail: moferalex@gmail.com
+
+如果发现错误，请在此处提出:
+https://github.com/AlexMofer/ProjectX/issues
+
+许可
+---
+
+Copyright (C) 2015 AlexMofer
+
+Licensed to the Apache Software Foundation (ASF) under one or more contributor
+license agreements.  See the NOTICE file distributed with this work for
+additional information regarding copyright ownership.  The ASF licenses this
+file to you under the Apache License, Version 2.0 (the "License"); you may not
+use this file except in compliance with the License.  You may obtain a copy of
+the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+License for the specific language governing permissions and limitations under
+the License.

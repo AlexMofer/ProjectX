@@ -62,7 +62,6 @@ public class PrintSocketHolder {
         setIp(ip, port);
     }
 
-    @SuppressWarnings("all")
     public int createSocket() {
         onPrinterStateChanged(STATE_1);
         if (mDevice == null && ip == null)

@@ -25,30 +25,12 @@ import java.util.List;
 
 /**
  * ESC-POS指令集
+ * 未经过测试的指令集已全部放在了 {@link PrintCommands}
  * Created by Alex on 2015/9/22.
  */
 @SuppressWarnings("all")
 public class PrinterUtils {
 
-    public static final byte ESC = 27;//换码
-    public static final byte FS = 28;//文本分隔符
-    public static final byte GS = 29;//组分隔符
-    @SuppressWarnings("unused")
-    public static final byte DLE = 16;//数据连接换码
-    @SuppressWarnings("unused")
-    public static final byte EOT = 4;//传输结束
-    @SuppressWarnings("unused")
-    public static final byte ENQ = 5;//询问字符
-    @SuppressWarnings("unused")
-    public static final byte SP = 32;//空格
-    public static final byte HT = 9;//横向列表
-    public static final byte LF = 10;//打印并换行（水平定位）
-    @SuppressWarnings("unused")
-    public static final byte CR = 13;//归位键
-    @SuppressWarnings("unused")
-    public static final byte FF = 12;//走纸控制（打印并回到标准模式（在页模式下） ）
-    @SuppressWarnings("unused")
-    public static final byte CAN = 24;//作废（页模式下取消打印数据 ）
     private static String hexStr = "0123456789ABCDEF";
     private static String[] binaryArray = {"0000", "0001", "0010", "0011",
             "0100", "0101", "0110", "0111", "1000", "1001", "1010", "1011",
@@ -56,59 +38,20 @@ public class PrinterUtils {
 
     /**
      * 初始化打印机
-     * Clears the data in the print buffer and resets the printer modes to the modes that were
-     * in effect when the power was turned on.
-     * ESC @
      *
-     * @return bytes for this command
+     * @return command
      */
-    @SuppressWarnings("unused")
     public static byte[] initPrinter() {
-        byte[] result = new byte[2];
-        result[0] = ESC;
-        result[1] = 64;
-        return result;
+        return PrintCommands.initializePrinter();
     }
 
     /**
      * 打印并换行
-     * LF
      *
-     * @return bytes for this command
+     * @return command
      */
-    @SuppressWarnings("unused")
     public static byte[] printLineFeed() {
-        byte[] result = new byte[1];
-        result[0] = LF;
-        return result;
-    }
-
-    /**
-     * 下划线
-     * ESC - n/FS - n
-     *
-     * @param cn  是否为中文
-     * @param dot 线宽 （0表示关闭）
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] underLine(boolean cn, int dot) {
-        byte[] result = new byte[3];
-        result[0] = cn ? FS : ESC;
-        result[1] = 45;
-        switch (dot) {
-            default:
-            case 0:
-                result[2] = 0;
-                break;
-            case 1:
-                result[2] = 1;
-                break;
-            case 2:
-                result[2] = 2;
-                break;
-        }
-        return result;
+        return PrintCommands.printLineFeed();
     }
 
     /**
@@ -117,13 +60,8 @@ public class PrinterUtils {
      *
      * @return bytes for this command
      */
-    @SuppressWarnings("unused")
     public static byte[] emphasizedOn() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 69;
-        result[2] = 0xF;
-        return result;
+        return PrintCommands.turnOnEmphasizedMode();
     }
 
     /**
@@ -132,181 +70,8 @@ public class PrinterUtils {
      *
      * @return bytes for this command
      */
-    @SuppressWarnings("unused")
     public static byte[] emphasizedOff() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 69;
-        result[2] = 0;
-        return result;
-    }
-
-    @SuppressWarnings("unused")
-    public static byte[] overlappingOn() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 47;
-        result[2] = 0xF;
-        return result;
-    }
-
-    @SuppressWarnings("unused")
-    public static byte[] overlappingOff() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 47;
-        result[2] = 0;
-        return result;
-    }
-
-    /**
-     * 开启 double-strike 模式
-     * ESC G n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] doubleStrikeOn() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 71;
-        result[2] = 0xF;
-        return result;
-    }
-
-    /**
-     * 关闭 double-strike 模式
-     * ESC G n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] doubleStrikeOff() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 71;
-        result[2] = 0;
-        return result;
-    }
-
-    /**
-     * Select Font A
-     * ESC M n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] selectFontA() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 77;
-        result[2] = 0;
-        return result;
-    }
-
-    /**
-     * Select Font B
-     * ESC M n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] selectFontB() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 77;
-        result[2] = 1;
-        return result;
-    }
-
-    /**
-     * Select Font C ( some printers don't have font C )
-     * ESC M n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] selectFontC() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 77;
-        result[2] = 2;
-        return result;
-    }
-
-    /**
-     * Select Font A
-     * FS ! n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] selectCNFontA() {
-        byte[] result = new byte[3];
-        result[0] = FS;
-        result[1] = 33;
-        result[2] = 0;
-        return result;
-    }
-
-    /**
-     * Select Font B
-     * FS ! n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] selectCNFontB() {
-        byte[] result = new byte[3];
-        result[0] = FS;
-        result[1] = 33;
-        result[2] = 1;
-        return result;
-    }
-
-    /**
-     * 关闭双倍字高
-     * ESC ! n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] doubleHeightWidthOff() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 33;
-        result[2] = 0;
-        return result;
-    }
-
-    /**
-     * 双倍字高（仅英文字体有效）
-     * ESC ! n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] doubleHeightOn() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 33;
-        result[2] = 16;
-        return result;
-    }
-
-    /**
-     * 双倍字体高宽（仅英文字体有效）
-     * ESC ! n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] doubleHeightWidthOn() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 33;
-        result[2] = 56;
-        return result;
+        return PrintCommands.turnOffEmphasizedMode();
     }
 
     /**
@@ -315,13 +80,8 @@ public class PrinterUtils {
      *
      * @return bytes for this command
      */
-    @SuppressWarnings("unused")
     public static byte[] alignLeft() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 97;
-        result[2] = 0;
-        return result;
+        return PrintCommands.selectJustification(0);
     }
 
     /**
@@ -330,13 +90,8 @@ public class PrinterUtils {
      *
      * @return bytes for this command
      */
-    @SuppressWarnings("unused")
     public static byte[] alignCenter() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 97;
-        result[2] = 1;
-        return result;
+        return PrintCommands.selectJustification(1);
     }
 
     /**
@@ -345,272 +100,18 @@ public class PrinterUtils {
      *
      * @return bytes for this command
      */
-    @SuppressWarnings("unused")
     public static byte[] alignRight() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 97;
-        result[2] = 2;
-        return result;
+        return PrintCommands.selectJustification(2);
     }
 
     /**
-     * 打印并走纸n行
-     * Prints the data in the print buffer and feeds n lines
-     * ESC d n
+     * 设置行间距
      *
-     * @param n lines
-     * @return bytes for this command
+     * @param height 0≤height≤255
+     * @return command
      */
-    @SuppressWarnings("unused")
-    public static byte[] printAndFeedLines(byte n) {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 100;
-        result[2] = n;
-        return result;
-    }
-
-    /**
-     * 打印并反向走纸n行（不一定有效）
-     * Prints the data in the print buffer and feeds n lines in the reserve direction
-     * ESC e n
-     *
-     * @param n lines
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] printAndReverseFeedLines(byte n) {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 101;
-        result[2] = n;
-        return result;
-    }
-
-    @SuppressWarnings("unused")
-    public static byte[] printHorizontalTab() {
-        byte[] result = new byte[5];
-        result[0] = ESC;
-        result[1] = 44;
-        result[2] = 20;
-        result[3] = 28;
-        result[4] = 0;
-        return result;
-    }
-
-    @SuppressWarnings("unused")
-    public static byte[] printHTNext() {
-        byte[] result = new byte[1];
-        result[0] = HT;
-        return result;
-    }
-
-    @SuppressWarnings("unused")
-    public static byte[] printLineNormalHeight() {
-        byte[] result = new byte[2];
-        result[0] = ESC;
-        result[1] = 50;
-        return result;
-    }
-
-    @SuppressWarnings("unused")
-    public static byte[] printLineHeight(byte height) {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 51;
-        result[2] = height;
-        return result;
-    }
-
-    /**
-     * Select character code table
-     * ESC t n
-     *
-     * @param cp example:CodePage.WPC1252
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] selectCodeTab(byte cp) {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 116;
-        result[2] = cp;
-        return result;
-    }
-
-    /**
-     * 弹开纸箱
-     * Drawer kick-out connector pin 2
-     * ESC p m t1 t2
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] drawerKick() {
-        byte[] result = new byte[5];
-        result[0] = ESC;
-        result[1] = 112;
-        result[2] = 0;
-        result[3] = 60;
-        result[4] = 120;
-        return result;
-    }
-
-    /**
-     * 选择打印颜色1（不一定有效）
-     * ESC r n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] selectColor1() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 114;
-        result[2] = 0;
-        return result;
-    }
-
-    /**
-     * 选择打印颜色2（不一定有效）
-     * ESC r n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] selectColor2() {
-        byte[] result = new byte[3];
-        result[0] = ESC;
-        result[1] = 114;
-        result[2] = 1;
-        return result;
-    }
-
-    /**
-     * white printing mode on (不一定有效)
-     * Turn white/black reverse printing mode on
-     * GS B n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] whitePrintingOn() {
-        byte[] result = new byte[3];
-        result[0] = GS;
-        result[1] = 66;
-        result[2] = (byte) 128;
-        return result;
-    }
-
-    /**
-     * white printing mode off (不一定有效)
-     * Turn white/black reverse printing mode off
-     * GS B n
-     *
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] whitePrintingOff() {
-        byte[] result = new byte[3];
-        result[0] = GS;
-        result[1] = 66;
-        result[2] = 0;
-        return result;
-    }
-
-    /**
-     * select bar code height
-     * Select the height of the bar code as n dots
-     * default dots = 162
-     *
-     * @param dots ( height of the bar code )
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] barcode_height(byte dots) {
-        byte[] result = new byte[3];
-        result[0] = GS;
-        result[1] = 104;
-        result[2] = dots;
-        return result;
-    }
-
-    /**
-     * select font hri
-     * Selects a font for the Human Readable Interpretation (HRI) characters when printing a barcode, using n as follows:
-     *
-     * @param n Font
-     *          0, 48 Font A
-     *          1, 49 Font B
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] select_font_hri(byte n) {
-        byte[] result = new byte[3];
-        result[0] = GS;
-        result[1] = 102;
-        result[2] = n;
-        return result;
-    }
-
-    /**
-     * select position_hri
-     * Selects the print position of Human Readable Interpretation (HRI) characters when printing a barcode, using n as follows:
-     *
-     * @param n Print position
-     *          0, 48 Not printed
-     *          1, 49 Above the barcode
-     *          2, 50 Below the barcode
-     *          3, 51 Both above and below the barcode
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] select_position_hri(byte n) {
-        byte[] result = new byte[3];
-        result[0] = GS;
-        result[1] = 72;
-        result[2] = n;
-        return result;
-    }
-
-    /**
-     * print bar code
-     *
-     * @param barcode_typ   ( Barcode.CODE39, Barcode.EAN8 ,...)
-     * @param barcode2print value
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] print_bar_code(byte barcode_typ, String barcode2print) {
-        byte[] barcodeBytes = barcode2print.getBytes();
-        byte[] result = new byte[3 + barcodeBytes.length + 1];
-        result[0] = GS;
-        result[1] = 107;
-        result[2] = barcode_typ;
-        int idx = 3;
-        for (byte b : barcodeBytes) {
-            result[idx] = b;
-            idx++;
-        }
-        result[idx] = 0;
-        return result;
-    }
-
-    /**
-     * Set horizontal tab positions
-     *
-     * @param col ( coulumn )
-     * @return bytes for this command
-     */
-    @SuppressWarnings("unused")
-    public static byte[] set_HT_position(byte col) {
-        byte[] result = new byte[4];
-        result[0] = ESC;
-        result[1] = 68;
-        result[2] = col;
-        result[3] = 0;
-        return result;
+    public static byte[] printLineHeight(int height) {
+        return PrintCommands.setLineSpacing(height);
     }
 
     /**
@@ -619,7 +120,6 @@ public class PrinterUtils {
      * @param num 倍数
      * @return bytes for this command
      */
-    @SuppressWarnings("unused")
     public static byte[] fontSizeSetBig(int num) {
         byte realSize = 0;
         switch (num) {
@@ -648,11 +148,7 @@ public class PrinterUtils {
                 realSize = 119;
                 break;
         }
-        byte[] result = new byte[3];
-        result[0] = GS;
-        result[1] = 33;
-        result[2] = realSize;
-        return result;
+        return PrintCommands.selectCharacterSize(realSize);
     }
 
     /**
@@ -662,14 +158,8 @@ public class PrinterUtils {
      *
      * @return bytes for this command
      */
-    @SuppressWarnings("unused")
     public static byte[] feedPaperCut() {
-        byte[] result = new byte[4];
-        result[0] = GS;
-        result[1] = 86;
-        result[2] = 65;
-        result[3] = 0;
-        return result;
+        return PrintCommands.selectCutModeAndCutPaper(1, 0);
     }
 
     /**
@@ -679,14 +169,8 @@ public class PrinterUtils {
      *
      * @return bytes for this command
      */
-    @SuppressWarnings("unused")
     public static byte[] feedPaperCutPartial() {
-        byte[] result = new byte[4];
-        result[0] = GS;
-        result[1] = 86;
-        result[2] = 66;
-        result[3] = 0;
-        return result;
+        return PrintCommands.selectCutModeAndCutPaper(66, 0);
     }
 
     /**
@@ -696,7 +180,6 @@ public class PrinterUtils {
      * @param parting 高度分割值
      * @return 数据流
      */
-    @SuppressWarnings("unused")
     public static ArrayList<byte[]> decodeBitmapToDataList(Bitmap image, int parting) {
         if (parting <= 0 || parting > 255)
             parting = 255;
@@ -831,7 +314,6 @@ public class PrinterUtils {
      * @param parting 高度分割值
      * @return 数据流
      */
-    @SuppressWarnings("unused")
     public static byte[] decodeBitmap(Bitmap image, int parting) {
         ArrayList<byte[]> data = decodeBitmapToDataList(image, parting);
         int len = 0;
@@ -853,7 +335,6 @@ public class PrinterUtils {
      * @param image 图片
      * @return 数据流
      */
-    @SuppressWarnings("unused")
     public static byte[] decodeBitmap(Bitmap image) {
         return decodeBitmap(image, PrinterWriter.HEIGHT_PARTING_DEFAULT);
     }
@@ -864,9 +345,7 @@ public class PrinterUtils {
      * @param byteArray byte数组
      * @return 一个byte数组
      */
-    @SuppressWarnings("unused")
     public static byte[] mergerByteArray(byte[]... byteArray) {
-
         int length = 0;
         for (byte[] item : byteArray) {
             length += item.length;
@@ -888,7 +367,6 @@ public class PrinterUtils {
      * @param binaryStr 2进制串
      * @return 16进制串
      */
-    @SuppressWarnings("unused")
     public static String binaryStrToHexString(String binaryStr) {
         String hex = "";
         String f4 = binaryStr.substring(0, 4);
@@ -910,7 +388,6 @@ public class PrinterUtils {
      * @param list 指令集
      * @return byte[]指令
      */
-    @SuppressWarnings("unused")
     public static byte[] hexListToByte(List<String> list) {
         ArrayList<byte[]> commandList = new ArrayList<>();
         for (String hexStr : list) {
@@ -935,7 +412,6 @@ public class PrinterUtils {
      * @param hexString 16进制串
      * @return byte数组
      */
-    @SuppressWarnings("unused")
     public static byte[] hexStringToBytes(String hexString) {
         if (hexString == null || hexString.equals("")) {
             return null;
@@ -959,38 +435,5 @@ public class PrinterUtils {
      */
     private static byte charToByte(char c) {
         return (byte) hexStr.indexOf(c);
-    }
-
-    /**
-     * CodePage table
-     */
-    @SuppressWarnings("unused")
-    public static class CodePage {
-        public static final byte PC437 = 0;
-        public static final byte KATAKANA = 1;
-        public static final byte PC850 = 2;
-        public static final byte PC860 = 3;
-        public static final byte PC863 = 4;
-        public static final byte PC865 = 5;
-        public static final byte WPC1252 = 16;
-        public static final byte PC866 = 17;
-        public static final byte PC852 = 18;
-        public static final byte PC858 = 19;
-    }
-
-    /**
-     * BarCode table
-     */
-    @SuppressWarnings("unused")
-    public static class BarCode {
-        public static final byte UPC_A = 0;
-        public static final byte UPC_E = 1;
-        public static final byte EAN13 = 2;
-        public static final byte EAN8 = 3;
-        public static final byte CODE39 = 4;
-        public static final byte ITF = 5;
-        public static final byte NW7 = 6;
-        public static final byte CODE93 = 72;
-        public static final byte CODE128 = 73;
     }
 }
