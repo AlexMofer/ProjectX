@@ -26,9 +26,10 @@ import android.view.View;
  * 双向滚动布局管理器
  * Created by Alex on 2017/11/3.
  */
+@SuppressWarnings("all")
 public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager {
 
-    private static final String KEY_OFFSET = "com.wondershare.pdfelement.widget.display.KEY_OFFSET";
+    private static final String KEY_OFFSET = "am.widget.multifunctionalrecyclerview.data.KEY_OFFSET";
     private int mChildMaxWidth;
     private int mChildMaxHeight;
     private int mLeftDecorationMaxWidthOfChildMaxWidth;
@@ -39,22 +40,39 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     private float mOffsetPercentage;
     private int mWidthSize;
     private int mHeightSize;
+    private RecyclerView mView;
 
     public BothDirectionsScrollLayoutManager(Context context) {
         super(context);
-        mOffsetPercentage = getDefaultScrollOffsetPercentage();
+        onCreate();
     }
 
     public BothDirectionsScrollLayoutManager(Context context, int orientation,
                                              boolean reverseLayout) {
         super(context, orientation, reverseLayout);
-        mOffsetPercentage = getDefaultScrollOffsetPercentage();
+        onCreate();
     }
 
     public BothDirectionsScrollLayoutManager(Context context, AttributeSet attrs,
                                              int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        onCreate();
+    }
+
+    protected void onCreate() {
         mOffsetPercentage = getDefaultScrollOffsetPercentage();
+    }
+
+    @Override
+    public void onAttachedToWindow(RecyclerView view) {
+        mView = view;
+        super.onAttachedToWindow(view);
+    }
+
+    @Override
+    public void onDetachedFromWindow(RecyclerView view, RecyclerView.Recycler recycler) {
+        super.onDetachedFromWindow(view, recycler);
+        mView = null;
     }
 
     @Override
@@ -64,6 +82,14 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         mHeightSize = View.MeasureSpec.getSize(heightSpec);
         mOffset = Math.round(mOffsetPercentage * computeAnotherDirectionMaxScrollOffset());
         super.onMeasure(recycler, state, widthSpec, heightSpec);
+    }
+
+    public int getMeasuredWidth() {
+        return mWidthSize;
+    }
+
+    public int getMeasuredHeight() {
+        return mHeightSize;
     }
 
     @Override
@@ -156,6 +182,13 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         if (getOrientation() == HORIZONTAL) {
             return super.computeHorizontalScrollOffset(state);
         }
+        return computeHorizontalScrollOffset();
+    }
+
+    public int computeHorizontalScrollOffset() {
+        if (getOrientation() == HORIZONTAL) {
+            return mView == null ? 0 : mView.computeHorizontalScrollOffset();
+        }
         return computeAnotherDirectionScrollOffset();
     }
 
@@ -163,6 +196,13 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     public int computeVerticalScrollOffset(RecyclerView.State state) {
         if (getOrientation() == VERTICAL) {
             return super.computeVerticalScrollOffset(state);
+        }
+        return computeVerticalScrollOffset();
+    }
+
+    public int computeVerticalScrollOffset() {
+        if (getOrientation() == VERTICAL) {
+            return mView == null ? 0 : mView.computeVerticalScrollOffset();
         }
         return computeAnotherDirectionScrollOffset();
     }
@@ -176,6 +216,9 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     protected int computeHorizontalScrollExtent() {
+        if (getOrientation() == HORIZONTAL) {
+            return mView == null ? 0 : mView.computeHorizontalScrollExtent();
+        }
         return mWidthSize - getPaddingLeft() - getPaddingRight();
     }
 
@@ -188,6 +231,9 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     protected int computeVerticalScrollExtent() {
+        if (getOrientation() == VERTICAL) {
+            return mView == null ? 0 : mView.computeVerticalScrollExtent();
+        }
         return mHeightSize - getPaddingTop() - getPaddingBottom();
     }
 
@@ -200,6 +246,9 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     protected int computeHorizontalScrollRange() {
+        if (getOrientation() == HORIZONTAL) {
+            return mView == null ? 0 : mView.computeHorizontalScrollRange();
+        }
         return mChildMaxWidth + mLeftDecorationMaxWidthOfChildMaxWidth +
                 mRightDecorationMaxWidthOfChildMaxWidth;
     }
@@ -213,6 +262,9 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     protected int computeVerticalScrollRange() {
+        if (getOrientation() == VERTICAL) {
+            return mView == null ? 0 : mView.computeVerticalScrollRange();
+        }
         return mChildMaxHeight + mTopDecorationMaxWidthOfChildMaxHeight +
                 mBottomDecorationMaxWidthOfChildMaxHeight;
     }
@@ -267,7 +319,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         }
         mOffset = offset;
         mOffsetPercentage = ((float) mOffset) / max;
-        return move;
+        return -move;
     }
 
     public void scrollAnotherDirectionBy(int distance) {

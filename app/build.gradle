@@ -61,6 +61,6 @@ dependencies {
     implementation project(':recyclerview')
     implementation project(':security')
     implementation project(':mvp')
-    implementation project(':multifunctionalrecyclerview')
+    compile project(':multifunctionalrecyclerview')
     implementation 'com.google.zxing:core:3.3.0'
 }
