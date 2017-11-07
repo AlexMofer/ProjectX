@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package am.widget.multifunctionalrecyclerview.layoutmanager;
+package android.support.v7.widget;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
 /**
@@ -28,20 +28,55 @@ import android.util.AttributeSet;
  * Created by Alex on 2017/11/3.
  */
 @SuppressWarnings("all")
-public class SaveInstanceStateLinearLayoutManager extends LinearLayoutManager {
+public class MultifunctionalLinearLayoutManager extends LinearLayoutManager {
 
-    public SaveInstanceStateLinearLayoutManager(Context context) {
+    private RecyclerView mView;
+
+    public MultifunctionalLinearLayoutManager(Context context) {
         super(context);
     }
 
-    public SaveInstanceStateLinearLayoutManager(Context context, int orientation,
-                                                boolean reverseLayout) {
+    public MultifunctionalLinearLayoutManager(Context context, int orientation,
+                                              boolean reverseLayout) {
         super(context, orientation, reverseLayout);
     }
 
-    public SaveInstanceStateLinearLayoutManager(Context context, AttributeSet attrs,
-                                                int defStyleAttr, int defStyleRes) {
+    public MultifunctionalLinearLayoutManager(Context context, AttributeSet attrs,
+                                              int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    @Override
+    public void onAttachedToWindow(RecyclerView view) {
+        mView = view;
+        super.onAttachedToWindow(view);
+    }
+
+    @Override
+    public void onDetachedFromWindow(RecyclerView view, RecyclerView.Recycler recycler) {
+        super.onDetachedFromWindow(view, recycler);
+        mView = null;
+    }
+
+    /**
+     * 获取目标RecyclerView
+     *
+     * @return RecyclerView
+     */
+    @Nullable
+    protected RecyclerView getRecyclerView() {
+        return mView;
+    }
+
+    /**
+     * 设置滚动状态
+     *
+     * @param state 滚动状态
+     */
+    protected void setScrollState(int state) {
+        if (mView == null)
+            return;
+        mView.setScrollState(state);
     }
 
     @Override

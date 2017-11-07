@@ -17,6 +17,7 @@
 package am.widget.multifunctionalrecyclerview.layoutmanager;
 
 import android.content.Context;
+import android.support.v7.widget.MultifunctionalLinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -27,7 +28,7 @@ import android.view.ViewGroup;
  * Created by Alex on 2017/11/3.
  */
 @SuppressWarnings("all")
-public class CenterLinearLayoutManager extends SaveInstanceStateLinearLayoutManager {
+public class CenterLinearLayoutManager extends MultifunctionalLinearLayoutManager {
 
     private boolean mCenter = false;
 

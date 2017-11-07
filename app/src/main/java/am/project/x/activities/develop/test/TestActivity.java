@@ -47,6 +47,7 @@ public class TestActivity extends AMAppCompatActivity {
             @Override
             public void onClick(View v) {
                 layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                rvContent.invalidateItemDecorations();
                 ((DefaultScrollbar) ((ScrollbarRecyclerView) rvContent).getScrollbar()).setShowType(ScrollbarRecyclerView.Scrollbar.SHOW_VERTICAL);
 //                rvContent.smoothScrollBy(0, 200);
 //                mAdapter.notifyItemRangeChanged(0, 5);
@@ -57,6 +58,7 @@ public class TestActivity extends AMAppCompatActivity {
             @Override
             public void onClick(View v) {
                 layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                rvContent.invalidateItemDecorations();
                 ((DefaultScrollbar) ((ScrollbarRecyclerView) rvContent).getScrollbar()).setShowType(ScrollbarRecyclerView.Scrollbar.SHOW_HORIZONTAL);
 //                rvContent.smoothScrollBy(0, 200);
 //                mAdapter.notifyItemRangeChanged(0, 5);

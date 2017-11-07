@@ -109,12 +109,17 @@ public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView 
                 mInterceptTouch = false;
                 if (mScrollbar != null && mScrollbar.onInterceptTouchEvent(this, event)) {
                     mInterceptTouch = true;
-                    return mScrollbar.onTouchEvent(this, event);
+                    final boolean touch = mScrollbar.onTouchEvent(this, event);
+                    setScrollState(SCROLL_STATE_DRAGGING);
+                    return touch;
                 }
                 break;
             default:
                 if (mInterceptTouch) {
-                    return mScrollbar.onTouchEvent(this, event);
+                    final boolean touch = mScrollbar.onTouchEvent(this, event);
+                    if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL)
+                        setScrollState(SCROLL_STATE_IDLE);
+                    return touch;
                 }
                 break;
         }

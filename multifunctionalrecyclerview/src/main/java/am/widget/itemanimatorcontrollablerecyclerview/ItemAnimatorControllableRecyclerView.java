@@ -19,7 +19,7 @@ package am.widget.itemanimatorcontrollablerecyclerview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.PublicRecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.util.AttributeSet;
 
@@ -30,7 +30,7 @@ import am.widget.multifunctionalrecyclerview.R;
  * Created by Alex on 2017/10/23.
  */
 
-public class ItemAnimatorControllableRecyclerView extends RecyclerView {
+public class ItemAnimatorControllableRecyclerView extends PublicRecyclerView {
 
     private long mAddDuration = 0;
     private long mChangeDuration = 0;

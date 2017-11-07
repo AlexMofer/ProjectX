@@ -4,12 +4,14 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
+import am.widget.scrollbarrecyclerview.ScrollbarRecyclerView;
+
 /**
  * 显示RecyclerView
  * Created by Xiang Zhicheng on 2017/11/3.
  */
 
-public class DisplayRecyclerView extends PagingRecyclerView {
+public class DisplayRecyclerView extends ScrollbarRecyclerView {
 
     public DisplayRecyclerView(Context context) {
         super(context);

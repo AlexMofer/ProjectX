@@ -29,7 +29,7 @@ import android.view.View;
 @SuppressWarnings("all")
 public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager {
 
-    private static final String KEY_OFFSET = "am.widget.multifunctionalrecyclerview.data.KEY_OFFSET";
+    private static final String KEY_OFFSET = "am.widget.multifunctionalrecyclerview.BothDirectionsScrollLayoutManager.KEY_OFFSET";
     private int mChildMaxWidth;
     private int mChildMaxHeight;
     private int mLeftDecorationMaxWidthOfChildMaxWidth;
@@ -40,39 +40,29 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     private float mOffsetPercentage;
     private int mWidthSize;
     private int mHeightSize;
-    private RecyclerView mView;
 
     public BothDirectionsScrollLayoutManager(Context context) {
         super(context);
-        onCreate();
+        resetOffsetPercentage();
     }
 
     public BothDirectionsScrollLayoutManager(Context context, int orientation,
                                              boolean reverseLayout) {
         super(context, orientation, reverseLayout);
-        onCreate();
+        resetOffsetPercentage();
     }
 
     public BothDirectionsScrollLayoutManager(Context context, AttributeSet attrs,
                                              int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        onCreate();
+        resetOffsetPercentage();
     }
 
-    protected void onCreate() {
+    /**
+     * 重置滚动偏移百分比
+     */
+    protected void resetOffsetPercentage() {
         mOffsetPercentage = getDefaultScrollOffsetPercentage();
-    }
-
-    @Override
-    public void onAttachedToWindow(RecyclerView view) {
-        mView = view;
-        super.onAttachedToWindow(view);
-    }
-
-    @Override
-    public void onDetachedFromWindow(RecyclerView view, RecyclerView.Recycler recycler) {
-        super.onDetachedFromWindow(view, recycler);
-        mView = null;
     }
 
     @Override
@@ -84,10 +74,20 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         super.onMeasure(recycler, state, widthSpec, heightSpec);
     }
 
+    /**
+     * Return the measured width of the parent RecyclerView
+     *
+     * @return Measured width in pixels
+     */
     public int getMeasuredWidth() {
         return mWidthSize;
     }
 
+    /**
+     * Return the measured height of the parent RecyclerView
+     *
+     * @return Measured height in pixels
+     */
     public int getMeasuredHeight() {
         return mHeightSize;
     }
@@ -187,7 +187,8 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
 
     public int computeHorizontalScrollOffset() {
         if (getOrientation() == HORIZONTAL) {
-            return mView == null ? 0 : mView.computeHorizontalScrollOffset();
+            final RecyclerView view = getRecyclerView();
+            return view == null ? 0 : view.computeHorizontalScrollOffset();
         }
         return computeAnotherDirectionScrollOffset();
     }
@@ -202,7 +203,8 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
 
     public int computeVerticalScrollOffset() {
         if (getOrientation() == VERTICAL) {
-            return mView == null ? 0 : mView.computeVerticalScrollOffset();
+            final RecyclerView view = getRecyclerView();
+            return view == null ? 0 : view.computeVerticalScrollOffset();
         }
         return computeAnotherDirectionScrollOffset();
     }
@@ -217,9 +219,10 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
 
     protected int computeHorizontalScrollExtent() {
         if (getOrientation() == HORIZONTAL) {
-            return mView == null ? 0 : mView.computeHorizontalScrollExtent();
+            final RecyclerView view = getRecyclerView();
+            return view == null ? 0 : view.computeHorizontalScrollExtent();
         }
-        return mWidthSize - getPaddingLeft() - getPaddingRight();
+        return getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
     }
 
     @Override
@@ -232,9 +235,10 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
 
     protected int computeVerticalScrollExtent() {
         if (getOrientation() == VERTICAL) {
-            return mView == null ? 0 : mView.computeVerticalScrollExtent();
+            final RecyclerView view = getRecyclerView();
+            return view == null ? 0 : view.computeVerticalScrollExtent();
         }
-        return mHeightSize - getPaddingTop() - getPaddingBottom();
+        return getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
     }
 
     @Override
@@ -247,7 +251,8 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
 
     protected int computeHorizontalScrollRange() {
         if (getOrientation() == HORIZONTAL) {
-            return mView == null ? 0 : mView.computeHorizontalScrollRange();
+            final RecyclerView view = getRecyclerView();
+            return view == null ? 0 : view.computeHorizontalScrollRange();
         }
         return mChildMaxWidth + mLeftDecorationMaxWidthOfChildMaxWidth +
                 mRightDecorationMaxWidthOfChildMaxWidth;
@@ -263,7 +268,8 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
 
     protected int computeVerticalScrollRange() {
         if (getOrientation() == VERTICAL) {
-            return mView == null ? 0 : mView.computeVerticalScrollRange();
+            final RecyclerView view = getRecyclerView();
+            return view == null ? 0 : view.computeVerticalScrollRange();
         }
         return mChildMaxHeight + mTopDecorationMaxWidthOfChildMaxHeight +
                 mBottomDecorationMaxWidthOfChildMaxHeight;

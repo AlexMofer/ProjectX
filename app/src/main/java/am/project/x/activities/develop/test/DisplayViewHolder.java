@@ -27,7 +27,7 @@ class DisplayViewHolder extends RecyclerView.ViewHolder {
         final int width = 600;
         final int height = 900;
 
-//        mRender.setSize(width, height);
         mRender.setSize(width + (position + 1) * 40, height + (position + 1) * 40);
+        mRender.setText(Integer.toString(position));
     }
 }

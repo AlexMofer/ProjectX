@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <size
-        android:width="4dp"
-        android:height="18dp" />
-    <padding
-        android:bottom="10dp"
-        android:left="0dp"
-        android:right="0dp"
-        android:top="10dp" />
-    <solid android:color="@color/colorPrimaryDark" />
-    <corners android:radius="2dp" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:left="10dp"
+        android:right="10dp">
+        <shape>
+            <size
+                android:width="4dp"
+                android:height="24dp" />
+            <solid android:color="@color/colorPrimaryDark" />
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
+</layer-list>

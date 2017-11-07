@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -26,16 +27,33 @@ public class DisplayItemDecoration extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
                                RecyclerView.State state) {
         final int position = parent.getChildAdapterPosition(view);
-        if (position == 0) {
-            outRect.top = mMargin;
-            outRect.left = mMargin;
-            outRect.bottom = mMargin;
-            outRect.right = mMargin;
+        RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
+        if (layoutManager instanceof LinearLayoutManager &&
+                ((LinearLayoutManager) layoutManager).getOrientation()
+                        == LinearLayoutManager.HORIZONTAL) {
+            if (position == 0) {
+                outRect.top = mMargin;
+                outRect.left = mMargin;
+                outRect.bottom = mMargin;
+                outRect.right = mMargin;
+            } else {
+                outRect.top = mMargin;
+                outRect.left = 0;
+                outRect.bottom = mMargin;
+                outRect.right = mMargin;
+            }
         } else {
-            outRect.top = 0;
-            outRect.left = mMargin;
-            outRect.bottom = mMargin;
-            outRect.right = mMargin;
+            if (position == 0) {
+                outRect.top = mMargin;
+                outRect.left = mMargin;
+                outRect.bottom = mMargin;
+                outRect.right = mMargin;
+            } else {
+                outRect.top = 0;
+                outRect.left = mMargin;
+                outRect.bottom = mMargin;
+                outRect.right = mMargin;
+            }
         }
     }
 
