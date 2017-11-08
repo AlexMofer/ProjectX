@@ -24,25 +24,25 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
 /**
- * 保存状态的线性布局管理器
+ * 公开部分包内私有的方法及保存状态的线性布局管理器
  * Created by Alex on 2017/11/3.
  */
 @SuppressWarnings("all")
-public class MultifunctionalLinearLayoutManager extends LinearLayoutManager {
+public class PublicLinearLayoutManager extends LinearLayoutManager {
 
     private RecyclerView mView;
 
-    public MultifunctionalLinearLayoutManager(Context context) {
+    public PublicLinearLayoutManager(Context context) {
         super(context);
     }
 
-    public MultifunctionalLinearLayoutManager(Context context, int orientation,
-                                              boolean reverseLayout) {
+    public PublicLinearLayoutManager(Context context, int orientation,
+                                     boolean reverseLayout) {
         super(context, orientation, reverseLayout);
     }
 
-    public MultifunctionalLinearLayoutManager(Context context, AttributeSet attrs,
-                                              int defStyleAttr, int defStyleRes) {
+    public PublicLinearLayoutManager(Context context, AttributeSet attrs,
+                                     int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
@@ -69,6 +69,15 @@ public class MultifunctionalLinearLayoutManager extends LinearLayoutManager {
     }
 
     /**
+     * 获取滚动状态
+     *
+     * @return 滚动状态
+     */
+    protected int getScrollState() {
+        return mView == null ? RecyclerView.SCROLL_STATE_IDLE : mView.getScrollState();
+    }
+
+    /**
      * 设置滚动状态
      *
      * @param state 滚动状态
@@ -77,6 +86,16 @@ public class MultifunctionalLinearLayoutManager extends LinearLayoutManager {
         if (mView == null)
             return;
         mView.setScrollState(state);
+    }
+
+    /**
+     * 拦截分发滚动状态变化
+     *
+     * @param state 状态变化
+     * @return 是否拦截
+     */
+    protected boolean onInterceptDispatchOnScrollStateChanged(int state) {
+        return false;
     }
 
     @Override

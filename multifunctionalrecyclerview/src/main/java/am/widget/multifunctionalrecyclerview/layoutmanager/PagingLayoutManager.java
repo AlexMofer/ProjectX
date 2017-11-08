@@ -35,6 +35,8 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
     private int mPagingGravity = Gravity.CENTER;
     private float mPagingSplitPoint = 0.5f;
     private boolean mMultiPageScrollEnable = false;
+    private int mScrollState = RecyclerView.SCROLL_STATE_IDLE;
+    private boolean mForceInterceptDispatchOnScrollStateChanged = false;
 
 
     public PagingLayoutManager(Context context) {
@@ -131,17 +133,29 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
     }
 
     @Override
-    public void onScrollStateChanged(int state) {
-        super.onScrollStateChanged(state);
-        if (state == RecyclerView.SCROLL_STATE_IDLE) {
-            adjustPaging(true);
+    protected boolean onInterceptDispatchOnScrollStateChanged(int state) {
+        if (mForceInterceptDispatchOnScrollStateChanged)
+            return true;
+        if (state == RecyclerView.SCROLL_STATE_IDLE && adjustPaging(true)) {
+            return true;
         }
+        if (mScrollState == state)
+            return true;
+        mScrollState = state;
+        return super.onInterceptDispatchOnScrollStateChanged(state);
+    }
+
+    @Override
+    protected int getScrollState() {
+        return mScrollState;
     }
 
     @Override
     public void onLayoutCompleted(RecyclerView.State state) {
         super.onLayoutCompleted(state);
-        adjustPaging(false);
+        if (mScrollState == RecyclerView.SCROLL_STATE_IDLE) {
+            adjustPaging(false);
+        }
     }
 
     public boolean adjustPaging(boolean smooth) {
@@ -463,6 +477,10 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
 
     public void setMultiPageScrollEnable(boolean enable) {
         mMultiPageScrollEnable = enable;
+    }
+
+    public void setForceInterceptDispatchOnScrollStateChanged(boolean force) {
+        this.mForceInterceptDispatchOnScrollStateChanged = force;
     }
 
     private class PagingOnFlingListener extends RecyclerView.OnFlingListener {

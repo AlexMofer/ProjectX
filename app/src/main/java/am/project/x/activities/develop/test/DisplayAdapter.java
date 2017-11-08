@@ -1,22 +1,24 @@
 package am.project.x.activities.develop.test;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
+
+import am.widget.multifunctionalrecyclerview.MultifunctionalRecyclerView;
 
 /**
  * Adapter
  * Created by Xiang Zhicheng on 2017/10/18.
  */
 
-class DisplayAdapter extends RecyclerView.Adapter<DisplayViewHolder> {
+class DisplayAdapter extends MultifunctionalRecyclerView.Adapter<DisplayViewHolder> {
+
     @Override
     public DisplayViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new DisplayViewHolder(parent);
     }
 
     @Override
-    public void onBindViewHolder(DisplayViewHolder holder, int position) {
-        holder.bind(position);
+    public void onBindViewHolder(DisplayViewHolder holder, int position, float scale) {
+        holder.bind(position, scale);
     }
 
     @Override

@@ -68,7 +68,7 @@ public class TestActivity extends AMAppCompatActivity {
         findViewById(R.id.display_btn_temp3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                layoutManager.setLayoutInCenter(true);
+                layoutManager.setLayoutInCenter(!layoutManager.isLayoutInCenter());
 //                rvContent.smoothScrollBy(0, 200);
 //                mAdapter.notifyItemRangeChanged(0, 5);
             }
@@ -77,7 +77,7 @@ public class TestActivity extends AMAppCompatActivity {
         findViewById(R.id.display_btn_temp4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                layoutManager.setLayoutInCenter(false);
+                layoutManager.setPagingEnable(!layoutManager.isPagingEnable());
 //                rvContent.smoothScrollBy(0, 200);
 //                mAdapter.notifyItemRangeChanged(0, 5);
             }

@@ -18,11 +18,15 @@ package am.widget.scrollbarrecyclerview;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -37,9 +41,9 @@ import am.widget.itemanimatorcontrollablerecyclerview.ItemAnimatorControllableRe
 @SuppressWarnings("all")
 public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView {
 
+    private final Rect mChildBound = new Rect();
     private Scrollbar mScrollbar;// 滚动条
     private IndicatorAdapter mAdapter;
-
     private boolean mInterceptTouch;
 
     public ScrollbarRecyclerView(Context context) {
@@ -136,8 +140,86 @@ public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView 
 
     protected String getScrollbarIndicator() {
         if (isInEditMode())
-            return "O";
-        return mAdapter == null ? null : mAdapter.getIndicator(this);
+            return "★";
+        if (mAdapter != null) {
+            return mAdapter.getIndicator(this);
+        }
+        final View target = findChildViewNear(
+                getPaddingLeft() + (getWidth() - getPaddingLeft() - getPaddingRight()) * 0.5f,
+                getPaddingTop() + (getHeight() - getPaddingTop() - getPaddingBottom()) * 0.5f);
+        if (target == null)
+            return null;
+        final int position = getChildAdapterPosition(target);
+        return Integer.toString(position + getDefaultScrollbarIndicatorOffset());
+    }
+
+    protected int getDefaultScrollbarIndicatorOffset() {
+        return 1;
+    }
+
+    @Nullable
+    public View findChildViewNear(float x, float y) {
+        if (getChildCount() <= 0)
+            return null;
+        if (getChildCount() == 1)
+            return getChildAt(0);
+        final LayoutManager layoutManager = getLayoutManager();
+        if (layoutManager instanceof LinearLayoutManager) {
+            final LinearLayoutManager linear = (LinearLayoutManager) layoutManager;
+            float distance = Float.MAX_VALUE;
+            View target = null;
+            final int count = getChildCount();
+            for (int i = count - 1; i >= 0; i--) {
+                final View child = getChildAt(i);
+                getDecoratedBoundsWithMargins(child, mChildBound);
+                final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)
+                        child.getLayoutParams();
+                if (linear.getOrientation() == HORIZONTAL) {
+                    if ((mChildBound.left < x && mChildBound.right > x)
+                            || mChildBound.left == x || mChildBound.right == y) {
+                        // 点在View内部
+                        return child;
+                    } else if (mChildBound.left > x) {
+                        final float dis = mChildBound.left - x;
+                        if (dis < distance) {
+                            distance = dis;
+                            target = child;
+                        }
+                    } else {
+                        final float dis = x - mChildBound.right;
+                        if (dis < distance) {
+                            distance = dis;
+                            target = child;
+                        }
+                    }
+                } else {
+                    if ((mChildBound.top < y && mChildBound.bottom > y)
+                            || mChildBound.top == y || mChildBound.bottom == y) {
+                        // 点在View内部
+                        return child;
+                    } else if (mChildBound.top > y) {
+                        final float dis = mChildBound.top - y;
+                        if (dis < distance) {
+                            distance = dis;
+                            target = child;
+                        }
+                    } else {
+                        final float dis = y - mChildBound.bottom;
+                        if (dis < distance) {
+                            distance = dis;
+                            target = child;
+                        }
+                    }
+                }
+            }
+            if (target != null)
+                return target;
+        }
+        final View child = findChildViewUnder(x, y);
+        if (child != null)
+            return child;
+        // TODO 优化
+        return null;
     }
 
     /**

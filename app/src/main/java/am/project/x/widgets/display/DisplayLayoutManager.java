@@ -3,7 +3,7 @@ package am.project.x.widgets.display;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import am.widget.multifunctionalrecyclerview.layoutmanager.PagingLayoutManager;
+import am.widget.multifunctionalrecyclerview.MultifunctionalLinearLayoutManager;
 
 
 /**
@@ -11,7 +11,7 @@ import am.widget.multifunctionalrecyclerview.layoutmanager.PagingLayoutManager;
  * Created by Xiang Zhicheng on 2017/11/6.
  */
 
-public class DisplayLayoutManager extends PagingLayoutManager {
+public class DisplayLayoutManager extends MultifunctionalLinearLayoutManager {
 
     public DisplayLayoutManager(Context context) {
         super(context);
