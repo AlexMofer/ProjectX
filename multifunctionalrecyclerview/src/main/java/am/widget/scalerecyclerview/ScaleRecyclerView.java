@@ -30,6 +30,7 @@ import android.view.View;
 
 import java.util.List;
 
+import am.widget.multifunctionalrecyclerview.layoutmanager.BothDirectionsScrollLayoutManager;
 import am.widget.multifunctionalrecyclerview.layoutmanager.PagingLayoutManager;
 import am.widget.scrollbarrecyclerview.ScrollbarRecyclerView;
 
@@ -176,6 +177,21 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
     protected void onRestoreInstanceState(Bundle bundle) {
         super.onRestoreInstanceState(bundle);
         mScale = bundle.getFloat(KEY_SCALE, 1f);
+        invalidateLayoutManagerScale();
+        invalidate();
+    }
+
+    protected void invalidateLayoutManagerScale() {
+        setLayoutManagerScale(mScale);
+    }
+
+    protected void setLayoutManagerScale(float scale) {
+        final LayoutManager layoutManager = getLayoutManager();
+        if (layoutManager instanceof BothDirectionsScrollLayoutManager) {
+            BothDirectionsScrollLayoutManager lm =
+                    (BothDirectionsScrollLayoutManager) layoutManager;
+            lm.setChildScale(scale);
+        }
     }
 
     /**
@@ -209,8 +225,9 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
     }
 
     private float getDoubleTapScale(float scale) {
-        if (scale + 1 < mMaxScale) {
-            return scale + 1;
+        final float targetScale = scale * 2;
+        if (targetScale < mMaxScale) {
+            return targetScale;
         }
         return mMaxScale;
     }
@@ -262,7 +279,7 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
 
     /**
      * 缩放
-     *
+     * TODO 位置校调可优化
      * @param scale  目标缩放比
      * @param focusX 焦点X
      * @param focusY 焦点Y
@@ -278,6 +295,7 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
         final float afterViewX = beforeViewX / mScale * scale;
         final float afterViewY = beforeViewY / mScale * scale;
         mScale = scale;
+        invalidateLayoutManagerScale();
         getAdapter().notifyDataSetChanged();
         // 应用偏移
         final int dx = Math.round(afterViewX - beforeViewX);

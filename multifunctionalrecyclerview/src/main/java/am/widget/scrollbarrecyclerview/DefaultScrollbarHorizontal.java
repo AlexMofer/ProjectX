@@ -16,8 +16,6 @@
 
 package am.widget.scrollbarrecyclerview;
 
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -26,10 +24,12 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Keep;
 import android.view.MotionEvent;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
 
 import am.widget.multifunctionalrecyclerview.R;
+import am.widget.multifunctionalrecyclerview.animation.ViewAnimation;
 
 
 /**
@@ -42,6 +42,7 @@ class DefaultScrollbarHorizontal implements DefaultScrollbar.Scrollbar {
     private final DefaultScrollbar mScrollbar;
     private final RectF mSliderBound = new RectF();
     private final RectF mScrollbarBound = new RectF();
+    private final ScrollbarAnimation mAnimation = new ScrollbarAnimation();
     private Drawable mBackground;
     private int mBackgroundHeight = 0;
     private int mPaddingEdge = 0;
@@ -62,13 +63,11 @@ class DefaultScrollbarHorizontal implements DefaultScrollbar.Scrollbar {
     private int mTextColor;
     private int mTextSize;
     private boolean mTouchStartOnBar;
-    private Animator mIndicatorAnimator;
-    private Object mIndicatorAnimatorCallback = new IndicatorAnimatorCallback();
     private float mIndicatorAlpha;
     private int mAnimatorType;
     private float mAnimatorValue = 1;
-    private Animator mAnimator;
-    private Object mAnimatorCallback = new AnimatorCallback();
+    private long mAnimatorDelay = 3000;
+    private IndicatorAnimation mIndicatorAnimation = new IndicatorAnimation();
     private float mScrollbarMove;
     private boolean mAlwaysTouchable;
 
@@ -127,15 +126,31 @@ class DefaultScrollbarHorizontal implements DefaultScrollbar.Scrollbar {
         mSliderHeight = mSlider == null ? 0 : mSlider.getIntrinsicHeight();
         mIndicatorWidth = mIndicator == null ? 0 : mIndicator.getIntrinsicWidth();
         mIndicatorHeight = mIndicator == null ? 0 : mIndicator.getIntrinsicHeight();
-        mIndicatorAnimator = AnimatorInflater.loadAnimator(context, android.R.animator.fade_out);
-        mIndicatorAnimator.setTarget(mIndicatorAnimatorCallback);
-        mAnimator = AnimatorInflater.loadAnimator(context, android.R.animator.fade_out);
-        mAnimator.setTarget(mAnimatorCallback);
-        mAnimator.setStartDelay(custom.getInt(
-                R.styleable.ScrollbarRecyclerView_dsHorizontalAnimatorDelay, 3000));
+        Interpolator interpolator = AnimationUtils.loadInterpolator(context,
+                android.R.interpolator.accelerate_quad);
+        mAnimatorDelay = custom.getInt(
+                R.styleable.ScrollbarRecyclerView_dsHorizontalAnimatorDelay, 3000);
+        mAnimation.attach(view);
+        mAnimation.setDuration(custom.getInt(
+                R.styleable.ScrollbarRecyclerView_dsHorizontalAnimatorDuration, 1500));
+        mAnimation.setInterpolator(interpolator);
         if (mAnimatorType != DefaultScrollbar.ANIMATOR_TYPE_NONE)
-            mAnimator.start();
+            mAnimation.startDelayed(mAnimatorDelay);
+        mIndicatorAnimation.setDuration(250);
+        mIndicatorAnimation.setInterpolator(interpolator);
         mShowIndicator = view.isInEditMode();
+    }
+
+    @Override
+    public void onAttachedToView(ScrollbarRecyclerView view) {
+        mAnimation.attach(view);
+        mIndicatorAnimation.attach(view);
+    }
+
+    @Override
+    public void onDetachedFromView(ScrollbarRecyclerView view) {
+        mAnimation.detach();
+        mIndicatorAnimation.detach();
     }
 
     @Override
@@ -218,7 +233,7 @@ class DefaultScrollbarHorizontal implements DefaultScrollbar.Scrollbar {
     private void drawIndicator(ScrollbarRecyclerView view, Canvas canvas) {
         if (mIndicator == null)
             return;
-        if (!mShowIndicator && !mIndicatorAnimator.isRunning())
+        if (!mShowIndicator && !mIndicatorAnimation.isRunning())
             return;
         if (mShowIndicator) {
             mIndicatorAlpha = 1;
@@ -253,7 +268,7 @@ class DefaultScrollbarHorizontal implements DefaultScrollbar.Scrollbar {
     }
 
     private void drawIndicatorText(ScrollbarRecyclerView view, Canvas canvas, Paint paint, Rect bound) {
-        if (!mShowIndicator && !mIndicatorAnimator.isRunning())
+        if (!mShowIndicator && !mIndicatorAnimation.isRunning())
             return;
         final String text = view.getScrollbarIndicator();
         if (text == null || text.length() <= 0)
@@ -291,25 +306,21 @@ class DefaultScrollbarHorizontal implements DefaultScrollbar.Scrollbar {
     @Override
     public boolean onTouch(ScrollbarRecyclerView view, MotionEvent event) {
         if (mAnimatorType != DefaultScrollbar.ANIMATOR_TYPE_NONE) {
-            if (mAnimator.isRunning())
-                mAnimator.end();
+            if (mAnimation.isRunning())
+                mAnimation.stop();
             mAnimatorValue = 1;
         }
         final int action = event.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 mShowIndicator = true;
-                mIndicatorAnimator.end();
+                mIndicatorAnimation.stop();
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 view.setPressed(false);
                 mShowIndicator = false;
-                mIndicatorAnimator.start();
-                if (view.getScrollState() == ScrollbarRecyclerView.SCROLL_STATE_IDLE &&
-                        mAnimatorType != DefaultScrollbar.ANIMATOR_TYPE_NONE) {
-                    mAnimator.start();
-                }
+                mIndicatorAnimation.start();
                 break;
         }
         final float x = event.getX();
@@ -336,22 +347,29 @@ class DefaultScrollbarHorizontal implements DefaultScrollbar.Scrollbar {
             return;
         switch (state) {
             default:
-                if (mAnimator.isRunning())
-                    mAnimator.end();
+                if (mAnimation.isRunning())
+                    mAnimation.stop();
                 mAnimatorValue = 1;
                 break;
             case ScrollbarRecyclerView.SCROLL_STATE_IDLE:
-                mAnimator.start();
+                mAnimation.startDelayed(mAnimatorDelay);
                 break;
         }
     }
 
-    private class IndicatorAnimatorCallback {
+    @Override
+    public void setPadding(int edge, int start, int end) {
+        mPaddingEdge = edge;
+        mPaddingStart = start;
+        mPaddingEnd = end;
+        mScrollbar.invalidate();
+    }
 
-        @Keep
-        @SuppressWarnings("unused")
-        public void setAlpha(float alpha) {
-            mIndicatorAlpha = alpha;
+    private class IndicatorAnimation extends ViewAnimation {
+
+        @Override
+        protected void onAnimate(float interpolation) {
+            mIndicatorAlpha = 1 - interpolation;
             final float centerX = mTextCenterX;
             final float centerY = mTextCenterY;
             final int left = (int) Math.floor(centerX - mIndicatorWidth * 0.5f);
@@ -360,19 +378,30 @@ class DefaultScrollbarHorizontal implements DefaultScrollbar.Scrollbar {
             final int bottom = (int) Math.ceil(centerY + mIndicatorHeight * 0.5f);
             mScrollbar.invalidate(left, top, right, bottom);
         }
+
+        @Override
+        protected void onStop(float interpolation) {
+            super.onStop(interpolation);
+            onAnimate(interpolation);
+        }
     }
 
-    private class AnimatorCallback {
+    private class ScrollbarAnimation extends ViewAnimation {
 
-        @Keep
-        @SuppressWarnings("unused")
-        public void setAlpha(float alpha) {
-            mAnimatorValue = alpha;
+        @Override
+        protected void onAnimate(float interpolation) {
+            mAnimatorValue = 1 - interpolation;
             final int left = (int) Math.floor(mScrollbarBound.left);
             final int top = (int) Math.floor(mScrollbarBound.top);
             final int right = (int) Math.ceil(mScrollbarBound.right);
             final int bottom = (int) Math.ceil(mScrollbarBound.top + mScrollbarMove);
             mScrollbar.invalidate(left, top, right, bottom);
+        }
+
+        @Override
+        protected void onStop(float interpolation) {
+            super.onStop(interpolation);
+            onAnimate(interpolation);
         }
     }
 }

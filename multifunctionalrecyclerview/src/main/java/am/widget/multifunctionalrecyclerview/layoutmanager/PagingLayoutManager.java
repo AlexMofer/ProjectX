@@ -17,6 +17,8 @@
 package am.widget.multifunctionalrecyclerview.layoutmanager;
 
 import android.content.Context;
+import android.graphics.Rect;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -31,6 +33,7 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
 
     private final PagingOverScroller mScroller;
     private final PagingOnFlingListener mFlingListener = new PagingOnFlingListener();
+    private final Rect mChildBound = new Rect();
     private boolean mPagingEnable = true;
     private int mPagingGravity = Gravity.CENTER;
     private float mPagingSplitPoint = 0.5f;
@@ -316,6 +319,59 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
         return true;
     }
 
+    @Nullable
+    public View findChildViewNear(float x, float y) {
+        if (getChildCount() <= 0)
+            return null;
+        if (getChildCount() == 1)
+            return getChildAt(0);
+        float distance = Float.MAX_VALUE;
+        View target = null;
+        final int count = getChildCount();
+        for (int i = count - 1; i >= 0; i--) {
+            final View child = getChildAt(i);
+            getDecoratedBoundsWithMargins(child, mChildBound);
+            if (getOrientation() == HORIZONTAL) {
+                if ((mChildBound.left < x && mChildBound.right > x)
+                        || mChildBound.left == x || mChildBound.right == y) {
+                    // 点在View内部
+                    return child;
+                } else if (mChildBound.left > x) {
+                    final float dis = mChildBound.left - x;
+                    if (dis < distance) {
+                        distance = dis;
+                        target = child;
+                    }
+                } else {
+                    final float dis = x - mChildBound.right;
+                    if (dis < distance) {
+                        distance = dis;
+                        target = child;
+                    }
+                }
+            } else {
+                if ((mChildBound.top < y && mChildBound.bottom > y)
+                        || mChildBound.top == y || mChildBound.bottom == y) {
+                    // 点在View内部
+                    return child;
+                } else if (mChildBound.top > y) {
+                    final float dis = mChildBound.top - y;
+                    if (dis < distance) {
+                        distance = dis;
+                        target = child;
+                    }
+                } else {
+                    final float dis = y - mChildBound.bottom;
+                    if (dis < distance) {
+                        distance = dis;
+                        target = child;
+                    }
+                }
+            }
+        }
+        return target;
+    }
+
     private boolean fling(int velocityX, int velocityY) {
         if (!mPagingEnable)
             return false;
@@ -323,7 +379,15 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
             return false;
         if (getChildCount() <= 0)
             return false;
+        final float splitX = (getWidth() - getPaddingRight() - getPaddingLeft())
+                * getPagingSplitPoint();
+        final float splitY = (getHeight() - getPaddingBottom() - getPaddingTop())
+                * getPagingSplitPoint();
+        final View target = findChildViewNear(splitX, splitY);
+        if (target == null)
+            return false;
         setScrollState(RecyclerView.SCROLL_STATE_SETTLING);
+        getDecoratedBoundsWithMargins(target, mChildBound);
         int minX = Integer.MIN_VALUE;
         int maxX = Integer.MAX_VALUE;
         int minY = Integer.MIN_VALUE;
@@ -334,51 +398,26 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
             final int contentStart = getPaddingLeft();
             final int contentEnd = getWidth() - getPaddingRight();
             final int contentSize = contentEnd - contentStart;
-            final View child = getChildAt(0);// TODO 获取的子项不对
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)
-                    child.getLayoutParams();
-            final int childStart = getDecoratedLeft(child) - params.leftMargin;
-            final int childEnd = getDecoratedRight(child) + params.rightMargin;
-            final int childSize = childEnd - childStart;
+            final int childStart = mChildBound.left;
+            final int childEnd = mChildBound.right;
+            final int childSize = mChildBound.width();
             if (velocityX > 0) {
-                // 向下
-                if (getChildCount() == 1) {
-                    // 单个子项
-                    if (childSize >= contentSize && childEnd >= contentEnd) {
-                        // 页内飞行
-                        maxX = childEnd - contentEnd;
-                    } else {
-                        // 跨页飞行
-                        maxX = contentSize;
-                    }
+                // 向右
+                if (childSize >= contentSize && childEnd > contentEnd) {
+                    // 页内飞行
+                    maxX = childEnd - contentEnd;
                 } else {
-                    // 多个子项
-                    // TODO 获取的子项不对
-                    final View next = getChildAt(1);
-                    final RecyclerView.LayoutParams nextParams = (RecyclerView.LayoutParams)
-                            next.getLayoutParams();
-                    final int nextStart = getDecoratedLeft(next) - nextParams.leftMargin;
-                    maxX = nextStart - contentStart;
+                    // 跨页飞行
+                    maxX = childEnd - contentStart;
                 }
             } else if (velocityX < 0) {
-                // 向上
-                if (getChildCount() == 1) {
-                    // 单个子项
-                    if (childSize > contentSize && childStart < contentStart) {
-                        // 页内飞行
-                        minX = -(contentStart - childStart);
-                    } else {
-                        // 跨页飞行
-                        minX = -contentSize;
-                    }
+                // 向左
+                if (childSize > contentSize && childStart < contentStart) {
+                    // 页内飞行
+                    minX = -(contentStart - childStart);
                 } else {
-                    // 多个子项
-                    // TODO 获取的子项不对
-                    final View next = getChildAt(1);
-                    final RecyclerView.LayoutParams nextParams = (RecyclerView.LayoutParams)
-                            next.getLayoutParams();
-                    final int nextStart = getDecoratedLeft(next) - nextParams.leftMargin;
-                    minX = -(contentEnd - nextStart);
+                    // 跨页飞行
+                    minX = -(contentEnd - childStart);
                 }
             }
             minY = -offset;
@@ -387,51 +426,26 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
             final int contentStart = getPaddingTop();
             final int contentEnd = getHeight() - getPaddingBottom();
             final int contentSize = contentEnd - contentStart;
-            final View child = getChildAt(0);// TODO 获取的子项不对
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)
-                    child.getLayoutParams();
-            final int childStart = getDecoratedTop(child) - params.topMargin;
-            final int childEnd = getDecoratedBottom(child) + params.bottomMargin;
-            final int childSize = childEnd - childStart;
+            final int childStart = mChildBound.top;
+            final int childEnd = mChildBound.bottom;
+            final int childSize = mChildBound.height();
             if (velocityY > 0) {
                 // 向下
-                if (getChildCount() == 1) {
-                    // 单个子项
-                    if (childSize > contentSize && childEnd > contentEnd) {
-                        // 页内飞行
-                        maxY = childEnd - contentEnd;
-                    } else {
-                        // 跨页飞行
-                        maxY = contentSize;
-                    }
+                if (childSize >= contentSize && childEnd > contentEnd) {
+                    // 页内飞行
+                    maxY = childEnd - contentEnd;
                 } else {
-                    // 多个子项
-                    // TODO 获取的子项不对
-                    final View next = getChildAt(1);
-                    final RecyclerView.LayoutParams nextParams = (RecyclerView.LayoutParams)
-                            next.getLayoutParams();
-                    final int nextStart = getDecoratedTop(next) - nextParams.topMargin;
-                    maxY = nextStart - contentStart;
+                    // 跨页飞行
+                    maxY = childEnd - contentStart;
                 }
             } else if (velocityY < 0) {
                 // 向上
-                if (getChildCount() == 1) {
-                    // 单个子项
-                    if (childSize > contentSize && childStart < contentStart) {
-                        // 页内飞行
-                        minY = -(contentStart - childStart);
-                    } else {
-                        // 跨页飞行
-                        minY = -contentSize;
-                    }
+                if (childSize > contentSize && childStart < contentStart) {
+                    // 页内飞行
+                    minY = -(contentStart - childStart);
                 } else {
-                    // 多个子项
-                    // TODO 获取的子项不对
-                    final View next = getChildAt(1);
-                    final RecyclerView.LayoutParams nextParams = (RecyclerView.LayoutParams)
-                            next.getLayoutParams();
-                    final int nextStart = getDecoratedTop(next) - nextParams.topMargin;
-                    minY = -(contentEnd - nextStart);
+                    // 跨页飞行
+                    minY = -(contentEnd - childStart);
                 }
             }
             minX = -offset;

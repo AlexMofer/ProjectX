@@ -40,6 +40,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     private float mOffsetPercentage;
     private int mWidthSize;
     private int mHeightSize;
+    private float mChildScale = 1f;
 
     public BothDirectionsScrollLayoutManager(Context context) {
         super(context);
@@ -254,8 +255,12 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
             final RecyclerView view = getRecyclerView();
             return view == null ? 0 : view.computeHorizontalScrollRange();
         }
-        return mChildMaxWidth + mLeftDecorationMaxWidthOfChildMaxWidth +
+        return getChildMaxWidth(mChildMaxWidth) + mLeftDecorationMaxWidthOfChildMaxWidth +
                 mRightDecorationMaxWidthOfChildMaxWidth;
+    }
+
+    protected int getChildMaxWidth(int width) {
+        return Math.round(width * mChildScale);
     }
 
     @Override
@@ -271,8 +276,12 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
             final RecyclerView view = getRecyclerView();
             return view == null ? 0 : view.computeVerticalScrollRange();
         }
-        return mChildMaxHeight + mTopDecorationMaxWidthOfChildMaxHeight +
+        return getChildMaxHeight(mChildMaxHeight) + mTopDecorationMaxWidthOfChildMaxHeight +
                 mBottomDecorationMaxWidthOfChildMaxHeight;
+    }
+
+    protected int getChildMaxHeight(int height) {
+        return Math.round(height * mChildScale);
     }
 
     @Override
@@ -344,6 +353,10 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     public void setChildMaxSize(int width, int height) {
         mChildMaxWidth = width;
         mChildMaxHeight = height;
+    }
+
+    public void setChildScale(float scale) {
+        mChildScale = scale;
     }
 
     public void setDecorationMaxWidthOfChildWithMaxSize(int left, int right, int top, int bottom) {

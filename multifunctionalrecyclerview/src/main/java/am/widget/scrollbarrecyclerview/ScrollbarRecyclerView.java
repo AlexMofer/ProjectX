@@ -171,7 +171,8 @@ public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView 
             final int count = getChildCount();
             for (int i = count - 1; i >= 0; i--) {
                 final View child = getChildAt(i);
-                getDecoratedBoundsWithMargins(child, mChildBound);
+                mChildBound.set(child.getLeft(), child.getTop(),
+                        child.getRight(), child.getBottom());
                 final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)
                         child.getLayoutParams();
                 if (linear.getOrientation() == HORIZONTAL) {
@@ -218,7 +219,6 @@ public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView 
         final View child = findChildViewUnder(x, y);
         if (child != null)
             return child;
-        // TODO 优化
         return null;
     }
 

@@ -57,6 +57,8 @@
             <enum name="move" value="2" />
             <enum name="all" value="3" />
         </attr>
+        <attr name="dsHorizontalAnimatorDuration" format="integer" />
+        <attr name="dsVerticalAnimatorDuration" format="integer" />
         <attr name="dsHorizontalAnimatorDelay" format="integer" />
         <attr name="dsVerticalAnimatorDelay" format="integer" />
         <attr name="dsHorizontalAlwaysTouchable" format="boolean" />

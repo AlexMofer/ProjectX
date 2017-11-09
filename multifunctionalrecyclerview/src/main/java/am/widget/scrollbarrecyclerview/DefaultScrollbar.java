@@ -36,6 +36,7 @@ import am.widget.multifunctionalrecyclerview.R;
 
 /**
  * 默认的滚动条
+ * TODO 图片触摸状态可优化
  * Created by Alex on 2017/11/1.
  */
 @SuppressWarnings("all")
@@ -74,6 +75,20 @@ public class DefaultScrollbar extends ScrollbarRecyclerView.Scrollbar {
         mHorizontalScrollbar.onConstruct(view, context, custom);
         mVerticalScrollbar.onConstruct(view, context, custom);
         custom.recycle();
+    }
+
+    @Override
+    protected void onAttachedToView(ScrollbarRecyclerView view) {
+        super.onAttachedToView(view);
+        mHorizontalScrollbar.onAttachedToView(view);
+        mVerticalScrollbar.onAttachedToView(view);
+    }
+
+    @Override
+    protected void onDetachedFromView(ScrollbarRecyclerView view) {
+        super.onDetachedFromView(view);
+        mHorizontalScrollbar.onDetachedFromView(view);
+        mVerticalScrollbar.onDetachedFromView(view);
     }
 
     @Override
@@ -125,6 +140,13 @@ public class DefaultScrollbar extends ScrollbarRecyclerView.Scrollbar {
         return mShowType == SHOW_NONE;
     }
 
+    void invalidate() {
+        ScrollbarRecyclerView view = getAttachedView();
+        if (view != null) {
+            view.invalidate();
+        }
+    }
+
     void invalidate(int left, int top, int right, int bottom) {
         ScrollbarRecyclerView view = getAttachedView();
         if (view != null) {
@@ -146,6 +168,14 @@ public class DefaultScrollbar extends ScrollbarRecyclerView.Scrollbar {
         }
     }
 
+    public void setHorizontalScrollbarPadding(int edge, int start, int end) {
+        mHorizontalScrollbar.setPadding(edge, start, end);
+    }
+
+    public void setVerticalScrollbarPadding(int edge, int start, int end) {
+        mHorizontalScrollbar.setPadding(edge, start, end);
+    }
+
     @IntDef({GRAVITY_CENTER, GRAVITY_START, GRAVITY_END})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Gravity {
@@ -159,6 +189,10 @@ public class DefaultScrollbar extends ScrollbarRecyclerView.Scrollbar {
     interface Scrollbar {
         void onConstruct(ScrollbarRecyclerView view, Context context, TypedArray custom);
 
+        void onAttachedToView(ScrollbarRecyclerView view);
+
+        void onDetachedFromView(ScrollbarRecyclerView view);
+
         void onDraw(ScrollbarRecyclerView view, Canvas canvas, Paint paint, Rect bound);
 
         void getTouchBound(ScrollbarRecyclerView view, RectF bound, int slop);
@@ -166,5 +200,7 @@ public class DefaultScrollbar extends ScrollbarRecyclerView.Scrollbar {
         boolean onTouch(ScrollbarRecyclerView view, MotionEvent event);
 
         void onScrollStateChanged(int state);
+
+        void setPadding(int edge, int start, int end);
     }
 }
