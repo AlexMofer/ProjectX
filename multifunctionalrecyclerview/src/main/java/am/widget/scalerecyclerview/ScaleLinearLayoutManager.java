@@ -14,31 +14,37 @@
  * limitations under the License.
  */
 
-package am.widget.multifunctionalrecyclerview;
+package am.widget.scalerecyclerview;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 
-import am.widget.scalerecyclerview.ScaleLinearLayoutManager;
+import am.widget.multifunctionalrecyclerview.layoutmanager.PagingLayoutManager;
 
 /**
- * 多功能线性布局
- * Created by Alex on 2017/11/9.
+ * 可缩放的线性布局
+ * Created by Alex on 2017/11/11.
  */
-@SuppressWarnings("unused")
-public class MultifunctionalLinearLayoutManager extends ScaleLinearLayoutManager {
+public class ScaleLinearLayoutManager extends PagingLayoutManager {
 
-    public MultifunctionalLinearLayoutManager(Context context) {
+    public ScaleLinearLayoutManager(Context context) {
         super(context);
     }
 
-    public MultifunctionalLinearLayoutManager(Context context, int orientation,
-                                              boolean reverseLayout) {
+    public ScaleLinearLayoutManager(Context context, int orientation,
+                                    boolean reverseLayout) {
         super(context, orientation, reverseLayout);
     }
 
-    public MultifunctionalLinearLayoutManager(Context context, AttributeSet attrs, int defStyleAttr,
-                                              int defStyleRes) {
+    public ScaleLinearLayoutManager(Context context, AttributeSet attrs, int defStyleAttr,
+                                    int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    @Override
+    public void measureChildWithMargins(View child, int widthUsed, int heightUsed) {
+        ScaleRecyclerView.setScale(child);
+        super.measureChildWithMargins(child, widthUsed, heightUsed);
     }
 }

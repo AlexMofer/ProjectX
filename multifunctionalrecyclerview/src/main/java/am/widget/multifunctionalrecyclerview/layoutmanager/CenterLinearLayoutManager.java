@@ -34,14 +34,17 @@ public class CenterLinearLayoutManager extends PublicLinearLayoutManager {
 
     public CenterLinearLayoutManager(Context context) {
         super(context);
+        setSizeUnlimited(true);
     }
 
     public CenterLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
         super(context, orientation, reverseLayout);
+        setSizeUnlimited(true);
     }
 
     public CenterLinearLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        setSizeUnlimited(true);
     }
 
     @Override

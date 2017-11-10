@@ -34,12 +34,13 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
     private final PagingOverScroller mScroller;
     private final PagingOnFlingListener mFlingListener = new PagingOnFlingListener();
     private final Rect mChildBound = new Rect();
-    private boolean mPagingEnable = true;
+    private boolean mPagingEnable = false;
     private int mPagingGravity = Gravity.CENTER;
     private float mPagingSplitPoint = 0.5f;
     private boolean mMultiPageScrollEnable = false;
     private int mScrollState = RecyclerView.SCROLL_STATE_IDLE;
     private boolean mForceInterceptDispatchOnScrollStateChanged = false;
+    private boolean mAdjustPagingAfterLayoutComplete = false;
 
 
     public PagingLayoutManager(Context context) {
@@ -149,16 +150,21 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
     }
 
     @Override
-    protected int getScrollState() {
-        return mScrollState;
+    public void onLayoutCompleted(RecyclerView.State state) {
+        super.onLayoutCompleted(state);
+        if (mAdjustPagingAfterLayoutComplete) {
+            mAdjustPagingAfterLayoutComplete = false;
+            if (mPagingEnable) {
+                adjustPaging(false);
+            } else {
+                // TODO 将View移动到关闭前的位置
+            }
+        }
     }
 
     @Override
-    public void onLayoutCompleted(RecyclerView.State state) {
-        super.onLayoutCompleted(state);
-        if (mScrollState == RecyclerView.SCROLL_STATE_IDLE) {
-            adjustPaging(false);
-        }
+    protected int getScrollState() {
+        return mScrollState;
     }
 
     public boolean adjustPaging(boolean smooth) {
@@ -467,9 +473,9 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
         if (mPagingEnable == enable)
             return;
         mPagingEnable = enable;
-        final RecyclerView view = getRecyclerView();
-        if (view != null) {
-            view.setOnFlingListener(mPagingEnable ? mFlingListener : null);
+        if (isAttachedToWindow()) {
+            getRecyclerView().setOnFlingListener(mPagingEnable ? mFlingListener : null);
+            mAdjustPagingAfterLayoutComplete = true;
         }
         requestLayout();
     }

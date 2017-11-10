@@ -17,8 +17,8 @@ class DisplayAdapter extends MultifunctionalRecyclerView.Adapter<DisplayViewHold
     }
 
     @Override
-    public void onBindViewHolder(DisplayViewHolder holder, int position, float scale) {
-        holder.bind(position, scale);
+    public void onBindViewHolder(DisplayViewHolder holder, int position) {
+        holder.bind(position);
     }
 
     @Override

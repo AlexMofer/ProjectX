@@ -23,11 +23,16 @@ class DisplayViewHolder extends MultifunctionalRecyclerView.ViewHolder {
         mRender = itemView.findViewById(R.id.idp_drv_render);
     }
 
-    void bind(int position, float scale) {
+    void bind(int position) {
         final int width = 600;
         final int height = 900;
         mRender.setSize(width + (position + 1) * 40, height + (position + 1) * 40);
-        mRender.setScale(scale);
         mRender.setText(Integer.toString(position));
+    }
+
+    @Override
+    public void setScale(float scale) {
+        super.setScale(scale);
+        mRender.setScale(scale);
     }
 }

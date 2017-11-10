@@ -22,6 +22,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.View;
 
 /**
  * 公开部分包内私有的方法及保存状态的线性布局管理器
@@ -31,6 +32,7 @@ import android.util.AttributeSet;
 public class PublicLinearLayoutManager extends LinearLayoutManager {
 
     private RecyclerView mView;
+    private boolean mSizeUnlimited = false;
 
     public PublicLinearLayoutManager(Context context) {
         super(context);
@@ -96,6 +98,28 @@ public class PublicLinearLayoutManager extends LinearLayoutManager {
      */
     protected boolean onInterceptDispatchOnScrollStateChanged(int state) {
         return false;
+    }
+
+    @Override
+    public int getHeightMode() {
+        return mSizeUnlimited ? View.MeasureSpec.UNSPECIFIED : super.getHeightMode();
+    }
+
+    @Override
+    public int getWidthMode() {
+        return mSizeUnlimited ? View.MeasureSpec.UNSPECIFIED : super.getWidthMode();
+    }
+
+    /**
+     * 设置尺寸不受限制
+     *
+     * @param unlimited 是否不受限制
+     */
+    public void setSizeUnlimited(boolean unlimited) {
+        if (mSizeUnlimited == unlimited)
+            return;
+        mSizeUnlimited = unlimited;
+        requestLayout();
     }
 
     @Override

@@ -71,6 +71,9 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
                           int widthSpec, int heightSpec) {
         mWidthSize = View.MeasureSpec.getSize(widthSpec);
         mHeightSize = View.MeasureSpec.getSize(heightSpec);
+        if (!canScrollAnotherDirection()) {
+            resetOffsetPercentage();
+        }
         mOffset = Math.round(mOffsetPercentage * computeAnotherDirectionMaxScrollOffset());
         super.onMeasure(recycler, state, widthSpec, heightSpec);
     }
@@ -284,6 +287,14 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         return Math.round(height * mChildScale);
     }
 
+    public boolean canScrollAnotherDirection() {
+        if (getOrientation() == HORIZONTAL) {
+            return canScrollVertically();
+        } else {
+            return canScrollHorizontally();
+        }
+    }
+
     @Override
     public boolean canScrollHorizontally() {
         return super.canScrollHorizontally() ||
@@ -355,8 +366,44 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         mChildMaxHeight = height;
     }
 
+    public int getChildMaxWidth() {
+        return mChildMaxWidth;
+    }
+
+    public int getChildMaxHeight() {
+        return mChildMaxHeight;
+    }
+
+    public int getLeftDecorationMaxWidthOfChildMaxWidth() {
+        return mLeftDecorationMaxWidthOfChildMaxWidth;
+    }
+
+    public int getRightDecorationMaxWidthOfChildMaxWidth() {
+        return mRightDecorationMaxWidthOfChildMaxWidth;
+    }
+
+    public int getTopDecorationMaxWidthOfChildMaxHeight() {
+        return mTopDecorationMaxWidthOfChildMaxHeight;
+    }
+
+    public int getBottomDecorationMaxWidthOfChildMaxHeight() {
+        return mBottomDecorationMaxWidthOfChildMaxHeight;
+    }
+
+    public float getOffsetPercentage() {
+        return mOffsetPercentage;
+    }
+
+    public float getChildScale() {
+        return mChildScale;
+    }
+
     public void setChildScale(float scale) {
         mChildScale = scale;
+        if (!canScrollAnotherDirection()) {
+            resetOffsetPercentage();
+            mOffset = Math.round(mOffsetPercentage * computeAnotherDirectionMaxScrollOffset());
+        }
     }
 
     public void setDecorationMaxWidthOfChildWithMaxSize(int left, int right, int top, int bottom) {

@@ -27,8 +27,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-
-import java.util.List;
+import android.view.ViewParent;
 
 import am.widget.multifunctionalrecyclerview.layoutmanager.BothDirectionsScrollLayoutManager;
 import am.widget.multifunctionalrecyclerview.layoutmanager.PagingLayoutManager;
@@ -48,7 +47,7 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
     public static final int SCROLL_STATE_SCALING = 3;
     private static final String KEY_SCALE = "am.widget.scalerecyclerview.ScaleRecyclerView.KEY_SCALE";
     private final ScaleHelper mScaleHelper = new ScaleHelper(this);
-    private boolean mScaleEnable = true;
+    private boolean mScaleEnable = false;
     private GestureDetectorCompat mGestureDetector;
     private boolean mInterceptTouch = false;
     private boolean mShouldReactDoubleTab = true;
@@ -280,12 +279,15 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
     /**
      * 缩放
      * TODO 位置校调可优化
+     *
      * @param scale  目标缩放比
      * @param focusX 焦点X
      * @param focusY 焦点Y
      */
     public void scaleTo(float scale, float focusX, float focusY) {
-        if (scale > mMaxScale || scale < mMinScale || scale == mScale)
+        scale = scale > mMaxScale ? mMaxScale : scale;
+        scale = scale < mMinScale ? mMinScale : scale;
+        if (scale == mScale)
             return;
         View child = getChildAt(0);
         // 计算focus对应View的(x1, y1)
@@ -296,7 +298,7 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
         final float afterViewY = beforeViewY / mScale * scale;
         mScale = scale;
         invalidateLayoutManagerScale();
-        getAdapter().notifyDataSetChanged();
+        requestLayout();
         // 应用偏移
         final int dx = Math.round(afterViewX - beforeViewX);
         final int dy = Math.round(afterViewY - beforeViewY);
@@ -411,6 +413,22 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
     }
 
     /**
+     * 设置子项缩放
+     *
+     * @param child 属于ScaleRecyclerView的子项
+     */
+    public static void setScale(View child) {
+        final ViewParent parent = child.getParent();
+        if (parent instanceof ScaleRecyclerView) {
+            final ScaleRecyclerView view = (ScaleRecyclerView) parent;
+            RecyclerView.ViewHolder holder = view.findContainingViewHolder(child);
+            if (holder instanceof ScaleRecyclerView.ViewHolder) {
+                ((ScaleRecyclerView.ViewHolder) holder).setScale(view.getScale());
+            }
+        }
+    }
+
+    /**
      * 设置缩放后的位置校调方式
      *
      * @param type 校调方式
@@ -437,7 +455,11 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
         boolean onDoubleTap(ScaleRecyclerView view);
     }
 
-    @SuppressWarnings("all")
+    /**
+     * 内容提供者
+     *
+     * @param <VH> 视图持有者
+     */
     public static abstract class Adapter<VH extends ViewHolder> extends RecyclerView.Adapter<VH> {
 
         private ScaleRecyclerView mView;
@@ -456,23 +478,25 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
             super.onDetachedFromRecyclerView(recyclerView);
         }
 
-        @Override
-        public final void onBindViewHolder(VH holder, int position) {
-            final float scale = mView == null ? 1 : mView.getScale();
-            onBindViewHolder(holder, position, scale);
+        public boolean isAttachedToRecyclerView() {
+            return mView != null;
         }
 
-        public abstract void onBindViewHolder(VH holder, int position, float scale);
+        public float getScale() {
+            return mView == null ? 1 : mView.getScale();
+        }
+    }
 
-        @Override
-        public final void onBindViewHolder(VH holder, int position, List<Object> payloads) {
-            final float scale = mView == null ? 1 : mView.getScale();
-            onBindViewHolder(holder, position, payloads, scale);
+    /**
+     * 视图持有者
+     */
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public ViewHolder(View itemView) {
+            super(itemView);
         }
 
-        public void onBindViewHolder(VH holder, int position, List<Object> payloads,
-                                     float scale) {
-            super.onBindViewHolder(holder, position, payloads);
+        public void setScale(float scale) {
+
         }
     }
 
