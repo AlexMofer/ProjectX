@@ -28,6 +28,8 @@ import am.widget.multifunctionalrecyclerview.layoutmanager.PagingLayoutManager;
  */
 public class ScaleLinearLayoutManager extends PagingLayoutManager {
 
+    private float mChildScale = 1f;
+
     public ScaleLinearLayoutManager(Context context) {
         super(context);
     }
@@ -43,8 +45,30 @@ public class ScaleLinearLayoutManager extends PagingLayoutManager {
     }
 
     @Override
+    public void measureChild(View child, int widthUsed, int heightUsed) {
+        ScaleRecyclerView.setScale(child);
+        super.measureChild(child, widthUsed, heightUsed);
+    }
+
+    @Override
     public void measureChildWithMargins(View child, int widthUsed, int heightUsed) {
         ScaleRecyclerView.setScale(child);
         super.measureChildWithMargins(child, widthUsed, heightUsed);
+    }
+
+    @Override
+    protected int getChildMaxWidth(int width) {
+        return Math.round(width * mChildScale);
+    }
+
+    @Override
+    protected int getChildMaxHeight(int height) {
+        return Math.round(height * mChildScale);
+    }
+
+    void setChildScale(float scale) {
+        if (mChildScale == scale)
+            return;
+        mChildScale = scale;
     }
 }

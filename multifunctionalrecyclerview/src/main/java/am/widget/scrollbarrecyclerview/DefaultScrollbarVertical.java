@@ -402,8 +402,8 @@ class DefaultScrollbarVertical implements DefaultScrollbar.Scrollbar {
             mAnimatorValue = 1 - interpolation;
             final int left = (int) Math.floor(mScrollbarBound.left);
             final int top = (int) Math.floor(mScrollbarBound.top);
-            final int right = (int) Math.ceil(mScrollbarBound.right);
-            final int bottom = (int) Math.ceil(mScrollbarBound.top + mScrollbarMove);
+            final int right = (int) Math.ceil(mScrollbarBound.right + mScrollbarMove);
+            final int bottom = (int) Math.ceil(mScrollbarBound.bottom);
             mScrollbar.invalidate(left, top, right, bottom);
         }
 

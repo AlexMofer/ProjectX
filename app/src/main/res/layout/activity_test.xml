@@ -23,7 +23,6 @@
             android:id="@+id/display_rv_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="20dp"
             app:dsHorizontalAnimator="hide"
             app:dsHorizontalBackground="@drawable/ic_scrollbar_background"
             app:dsHorizontalIndicator="@drawable/ic_scrollbar_indicator_horizontal"
@@ -44,7 +43,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/display_btn_temp"

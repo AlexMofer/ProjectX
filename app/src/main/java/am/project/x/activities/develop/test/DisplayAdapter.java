@@ -2,14 +2,18 @@ package am.project.x.activities.develop.test;
 
 import android.view.ViewGroup;
 
-import am.widget.multifunctionalrecyclerview.MultifunctionalRecyclerView;
+import am.project.x.widgets.display.DisplayRecyclerView;
 
 /**
  * Adapter
  * Created by Xiang Zhicheng on 2017/10/18.
  */
 
-class DisplayAdapter extends MultifunctionalRecyclerView.Adapter<DisplayViewHolder> {
+class DisplayAdapter extends DisplayRecyclerView.Adapter<DisplayViewHolder> {
+
+
+    DisplayAdapter() {
+    }
 
     @Override
     public DisplayViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -18,11 +22,22 @@ class DisplayAdapter extends MultifunctionalRecyclerView.Adapter<DisplayViewHold
 
     @Override
     public void onBindViewHolder(DisplayViewHolder holder, int position) {
-        holder.bind(position);
+        holder.bind(getDisplayWidth(), getDisplayHeight(), getChildMaxWidth(), getChildMaxHeight(),
+                isHorizontal(), position);
     }
 
     @Override
     public int getItemCount() {
         return 20;
+    }
+
+    @Override
+    protected float getChildMaxWidth() {
+        return 600 + 20 * 40;
+    }
+
+    @Override
+    protected float getChildMaxHeight() {
+        return 900 + 20 * 40;
     }
 }

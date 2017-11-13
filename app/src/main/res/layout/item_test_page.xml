@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<am.project.x.widgets.display.DisplayLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_test_page">
-
-    <am.project.x.widgets.display.DisplayRenderView
-        android:id="@+id/idp_drv_render"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-</FrameLayout>
+    android:background="@drawable/bg_test_page" />

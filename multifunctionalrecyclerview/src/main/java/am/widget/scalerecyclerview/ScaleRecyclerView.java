@@ -29,7 +29,6 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewParent;
 
-import am.widget.multifunctionalrecyclerview.layoutmanager.BothDirectionsScrollLayoutManager;
 import am.widget.multifunctionalrecyclerview.layoutmanager.PagingLayoutManager;
 import am.widget.scrollbarrecyclerview.ScrollbarRecyclerView;
 
@@ -186,9 +185,8 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
 
     protected void setLayoutManagerScale(float scale) {
         final LayoutManager layoutManager = getLayoutManager();
-        if (layoutManager instanceof BothDirectionsScrollLayoutManager) {
-            BothDirectionsScrollLayoutManager lm =
-                    (BothDirectionsScrollLayoutManager) layoutManager;
+        if (layoutManager instanceof ScaleLinearLayoutManager) {
+            ScaleLinearLayoutManager lm = (ScaleLinearLayoutManager) layoutManager;
             lm.setChildScale(scale);
         }
     }
@@ -426,6 +424,19 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
                 ((ScaleRecyclerView.ViewHolder) holder).setScale(view.getScale());
             }
         }
+    }
+
+    /**
+     * 设置缩放比
+     *
+     * @param scale 缩放比
+     */
+    public void setScale(float scale) {
+        if (scale < mMinScale || scale > mMaxScale || scale == mScale)
+            return;
+        mScale = scale;
+        invalidateLayoutManagerScale();
+        requestLayout();
     }
 
     /**

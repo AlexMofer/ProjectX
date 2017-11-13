@@ -1,90 +1,131 @@
 package am.project.x.widgets.display;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import am.project.x.utils.ThemeUtil;
 
 
 /**
  * ItemDecoration
  * Created by Xiang Zhicheng on 2017/10/18.
  */
-public class DisplayItemDecoration extends RecyclerView.ItemDecoration {
+class DisplayItemDecoration extends RecyclerView.ItemDecoration {
 
-    private final int mMargin;
-    private final Rect mBounds = new Rect();
-    private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    static final int TYPE_FIRST = 0;
+    static final int TYPE_NORMAL = 1;
+    static final int TYPE_LAST = 2;
+    private final int mGap;
+    private int mPaddingTop;
+    private int mPaddingBottom;
+    private int mToolbarHeight;
+    private int mOrientation = LinearLayoutManager.VERTICAL;
 
-    public DisplayItemDecoration(Context context) {
-        mMargin = 54;
+    DisplayItemDecoration(Context context) {
+        mGap = 20;
+        mToolbarHeight = ThemeUtil.getDimensionPixelSize(context.getTheme(),
+                android.support.v7.appcompat.R.attr.actionBarSize, 0);
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
                                RecyclerView.State state) {
         final int position = parent.getChildAdapterPosition(view);
-        RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
-        if (layoutManager instanceof LinearLayoutManager &&
-                ((LinearLayoutManager) layoutManager).getOrientation()
-                        == LinearLayoutManager.HORIZONTAL) {
-            if (position == 0) {
-                outRect.top = mMargin;
-                outRect.left = mMargin;
-                outRect.bottom = mMargin;
-                outRect.right = mMargin;
-            } else {
-                outRect.top = mMargin;
-                outRect.left = 0;
-                outRect.bottom = mMargin;
-                outRect.right = mMargin;
-            }
+        final int itemCount = parent.getAdapter().getItemCount();
+        final int type = position == 0 ? TYPE_FIRST :
+                (position == itemCount - 1 ? TYPE_LAST : TYPE_NORMAL);
+        if (mOrientation == LinearLayoutManager.HORIZONTAL) {
+            getHorizontalDecoration(outRect, type);
         } else {
-            if (position == 0) {
-                outRect.top = mMargin;
-                outRect.left = mMargin;
-                outRect.bottom = mMargin;
-                outRect.right = mMargin;
-            } else {
-                outRect.top = 0;
-                outRect.left = mMargin;
-                outRect.bottom = mMargin;
-                outRect.right = mMargin;
-            }
+            getVerticalDecoration(outRect, type);
         }
     }
 
-    @Override
-    public void onDraw(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
-        super.onDraw(canvas, parent, state);
-        mPaint.setColor(0x40000000);
-        canvas.save();
+    void getHorizontalDecoration(Rect decoration, int type) {
+        decoration.top = mPaddingTop + mToolbarHeight;
+        decoration.bottom = mPaddingBottom;
+        switch (type) {
+            default:
+            case TYPE_NORMAL:
+                decoration.left = mGap;
+                decoration.right = mGap;
+                break;
+            case TYPE_FIRST:
+                decoration.left = mGap * 2;
+                decoration.right = mGap;
+                break;
+            case TYPE_LAST:
+                decoration.left = mGap;
+                decoration.right = mGap * 2;
+                break;
+        }
+    }
+
+    void getVerticalDecoration(Rect decoration, int type) {
+        decoration.left = 0;
+        decoration.right = 0;
+        switch (type) {
+            default:
+            case TYPE_NORMAL:
+                decoration.top = mGap;
+                decoration.bottom = mGap;
+                break;
+            case TYPE_FIRST:
+                decoration.top = mPaddingTop + mToolbarHeight + mGap * 2;
+                decoration.bottom = mGap;
+                break;
+            case TYPE_LAST:
+                decoration.top = mGap;
+                decoration.bottom = mPaddingBottom + mGap * 2;
+                break;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    void fitSystemWindows(int left, int top, int right, int bottom) {
+        mPaddingTop = top;
+        mPaddingBottom = bottom;
+    }
+
+    void setOrientation(int orientation) {
+        mOrientation = orientation;
+    }
+
+    void updateDecorationMaxWidthOfChildWithMaxSize(DisplayLayoutManager layoutManager) {
+        if (layoutManager == null)
+            return;
         final int left;
+        final int top;
         final int right;
-        //noinspection AndroidLintNewApi - NewApi lint fails to handle overrides.
-        if (parent.getClipToPadding()) {
-            left = parent.getPaddingLeft();
-            right = parent.getWidth() - parent.getPaddingRight();
-            canvas.clipRect(left, parent.getPaddingTop(), right,
-                    parent.getHeight() - parent.getPaddingBottom());
+        final int bottom;
+        if (mOrientation == LinearLayoutManager.HORIZONTAL) {
+            left = mGap * 2;
+            top = mPaddingTop + mToolbarHeight;
+            right = mGap * 2;
+            bottom = mPaddingBottom;
         } else {
             left = 0;
-            right = parent.getWidth();
+            top = mPaddingTop + mToolbarHeight + mGap * 2;
+            right = 0;
+            bottom = mPaddingBottom + mGap * 2;
         }
-
-        final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
-            parent.getDecoratedBoundsWithMargins(child, mBounds);
-            canvas.drawRect(mBounds, mPaint);
-        }
-        canvas.restore();
+        layoutManager.setDecorationMaxWidthOfChildWithMaxSize(left, right, top, bottom);
     }
 
-    public int getMargin() {
-        return mMargin;
+    int getDisplayWidth(RecyclerView view) {
+        if (view == null)
+            return 0;
+        final int width = view.getMeasuredWidth() - view.getPaddingLeft() - view.getPaddingRight();
+        return width <= 0 ? 0 : width;
+    }
+
+    int getDisplayHeight(RecyclerView view) {
+        if (view == null)
+            return 0;
+        final int height = view.getMeasuredHeight() - mPaddingTop - mPaddingBottom - mToolbarHeight;
+        return height <= 0 ? 0 : height;
     }
 }

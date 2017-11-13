@@ -29,6 +29,7 @@ import android.view.View;
 @SuppressWarnings("all")
 public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager {
 
+    public static final float INVALID_PERCENTAGE = -1;
     private static final String KEY_OFFSET = "am.widget.multifunctionalrecyclerview.BothDirectionsScrollLayoutManager.KEY_OFFSET";
     private int mChildMaxWidth;
     private int mChildMaxHeight;
@@ -37,33 +38,23 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     private int mTopDecorationMaxWidthOfChildMaxHeight;
     private int mBottomDecorationMaxWidthOfChildMaxHeight;
     private int mOffset = 0;
-    private float mOffsetPercentage;
+    private float mPercentage = INVALID_PERCENTAGE;
+    private float mPendingPercentage = INVALID_PERCENTAGE;
     private int mWidthSize;
     private int mHeightSize;
-    private float mChildScale = 1f;
 
     public BothDirectionsScrollLayoutManager(Context context) {
         super(context);
-        resetOffsetPercentage();
     }
 
     public BothDirectionsScrollLayoutManager(Context context, int orientation,
                                              boolean reverseLayout) {
         super(context, orientation, reverseLayout);
-        resetOffsetPercentage();
     }
 
     public BothDirectionsScrollLayoutManager(Context context, AttributeSet attrs,
                                              int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        resetOffsetPercentage();
-    }
-
-    /**
-     * 重置滚动偏移百分比
-     */
-    protected void resetOffsetPercentage() {
-        mOffsetPercentage = getDefaultScrollOffsetPercentage();
     }
 
     @Override
@@ -71,10 +62,20 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
                           int widthSpec, int heightSpec) {
         mWidthSize = View.MeasureSpec.getSize(widthSpec);
         mHeightSize = View.MeasureSpec.getSize(heightSpec);
-        if (!canScrollAnotherDirection()) {
-            resetOffsetPercentage();
+        final int maxOffset = computeAnotherDirectionMaxScrollOffset();
+        if (maxOffset > 0) {
+            if (mPercentage == INVALID_PERCENTAGE) {
+                mPercentage = getDefaultScrollOffsetPercentage();
+            }
+            if (mPendingPercentage != INVALID_PERCENTAGE) {
+                mPercentage = mPendingPercentage;
+                mPendingPercentage = INVALID_PERCENTAGE;
+            }
+            mOffset = Math.round(mPercentage * maxOffset);
+        } else {
+            mPercentage = INVALID_PERCENTAGE;
+            mOffset = 0;
         }
-        mOffset = Math.round(mOffsetPercentage * computeAnotherDirectionMaxScrollOffset());
         super.onMeasure(recycler, state, widthSpec, heightSpec);
     }
 
@@ -99,7 +100,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     @Override
     public void setOrientation(int orientation) {
         if (orientation != getOrientation()) {
-            mOffsetPercentage = getDefaultScrollOffsetPercentage();
+            mPercentage = INVALID_PERCENTAGE;
         }
         super.setOrientation(orientation);
     }
@@ -107,13 +108,13 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     @Override
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
-        bundle.putFloat(KEY_OFFSET, mOffsetPercentage);
+        bundle.putFloat(KEY_OFFSET, mPercentage);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle bundle) {
         super.onRestoreInstanceState(bundle);
-        mOffsetPercentage = bundle.getFloat(KEY_OFFSET);
+        mPercentage = bundle.getFloat(KEY_OFFSET);
     }
 
     /**
@@ -133,15 +134,17 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     protected int computeAnotherDirectionMaxScrollOffset() {
+        final int offset;
         if (getOrientation() == HORIZONTAL) {
             final int range = computeVerticalScrollRange();
             final int extent = computeVerticalScrollExtent();
-            return range - extent;
+            offset = range - extent;
         } else {
             final int range = computeHorizontalScrollRange();
             final int extent = computeHorizontalScrollExtent();
-            return range - extent;
+            offset = range - extent;
         }
+        return offset < 0 ? 0 : offset;
     }
 
     @Override
@@ -263,7 +266,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     protected int getChildMaxWidth(int width) {
-        return Math.round(width * mChildScale);
+        return width;
     }
 
     @Override
@@ -284,7 +287,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     protected int getChildMaxHeight(int height) {
-        return Math.round(height * mChildScale);
+        return height;
     }
 
     public boolean canScrollAnotherDirection() {
@@ -344,7 +347,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
             offsetChildrenHorizontal(move);
         }
         mOffset = offset;
-        mOffsetPercentage = ((float) mOffset) / max;
+        mPercentage = ((float) mOffset) / max;
         return -move;
     }
 
@@ -353,11 +356,13 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     public float getAnotherDirectionScrollOffsetPercentage() {
-        return mOffsetPercentage;
+        return mPercentage == INVALID_PERCENTAGE ? 0 : mPercentage;
     }
 
     public void setAnotherDirectionScrollOffsetPercentage(float percentage) {
-        mOffsetPercentage = percentage;
+        if (mPendingPercentage == percentage || percentage < 0 || percentage > 1)
+            return;
+        mPendingPercentage = percentage;
         requestLayout();
     }
 
@@ -388,22 +393,6 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
 
     public int getBottomDecorationMaxWidthOfChildMaxHeight() {
         return mBottomDecorationMaxWidthOfChildMaxHeight;
-    }
-
-    public float getOffsetPercentage() {
-        return mOffsetPercentage;
-    }
-
-    public float getChildScale() {
-        return mChildScale;
-    }
-
-    public void setChildScale(float scale) {
-        mChildScale = scale;
-        if (!canScrollAnotherDirection()) {
-            resetOffsetPercentage();
-            mOffset = Math.round(mOffsetPercentage * computeAnotherDirectionMaxScrollOffset());
-        }
     }
 
     public void setDecorationMaxWidthOfChildWithMaxSize(int left, int right, int top, int bottom) {
