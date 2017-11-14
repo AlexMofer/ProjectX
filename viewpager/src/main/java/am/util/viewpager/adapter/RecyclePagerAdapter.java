@@ -16,9 +16,11 @@
 
 package am.util.viewpager.adapter;
 
+import android.content.res.Configuration;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
+import android.view.ConfigurationHelper;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -40,7 +42,6 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
         return getItemCount();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public final boolean isViewFromObject(View view, Object object) {
         return view == ((VH) object).itemView;
@@ -61,7 +62,6 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
         return holder;
     }
 
-    @SuppressWarnings("unchecked")
     public final void destroyItem(ViewGroup container, int position, Object object) {
         VH holder = (VH) object;
         container.removeView(holder.itemView);
@@ -75,21 +75,18 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
     }
 
     @Override
-    @SuppressWarnings("all")
     @Deprecated
     public final Object instantiateItem(View container, int position) {
         return instantiateItem((ViewPager) container, position);
     }
 
     @Override
-    @SuppressWarnings("all")
     @Deprecated
     public final void destroyItem(View container, int position, Object object) {
         destroyItem((ViewPager) container, position, object);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public final int getItemPosition(Object object) {
         int position = POSITION_UNCHANGED;
         if (object != null) {
@@ -120,12 +117,10 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
         onBindViewHolder(holder, position);
     }
 
-    @SuppressWarnings("unused")
     public int getItemViewType(int position) {
         return 0;
     }
 
-    @SuppressWarnings("unused")
     public void onViewRecycled(VH holder) {
     }
 
@@ -139,12 +134,25 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
         }
     }
 
-    @SuppressWarnings("unused")
     public final void notifyItemChanged(int position) {
         for (VH holder : holderList) {
             if (!holder.isRecycled && holder.mPosition == position) {
                 onBindViewHolder(holder, holder.mPosition);
                 break;
+            }
+        }
+    }
+
+    public void onConfigurationChanged(Configuration newConfig) {
+        final int count = holderSparse.size();
+        for (int i = 0; i < count; i++) {
+            final ArrayList<VH> holders = holderSparse.valueAt(i);
+            if (holders == null || holders.isEmpty())
+                continue;
+            for (VH holder : holders) {
+                if (holder == null || holder.itemView == null)
+                    continue;
+                ConfigurationHelper.onConfigurationChanged(holder.itemView, newConfig);
             }
         }
     }

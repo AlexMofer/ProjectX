@@ -16,8 +16,10 @@
 
 package am.util.viewpager.adapter;
 
+import android.content.res.Configuration;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.ConfigurationHelper;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,18 +34,15 @@ import java.util.List;
 public class ViewsPagerAdapter extends PagerAdapter {
     private List<View> mListViews;
 
-    @SuppressWarnings("unused")
     public ViewsPagerAdapter() {
     }
 
-    @SuppressWarnings("unused")
     public ViewsPagerAdapter(View... views) {
         if (views == null || views.length <= 0)
             return;
         setViews(Arrays.asList(views));
     }
 
-    @SuppressWarnings("unused")
     public ViewsPagerAdapter(List<View> views) {
         setViews(views);
     }
@@ -70,7 +69,6 @@ public class ViewsPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    @SuppressWarnings("all")
     public final int getItemPosition(Object object) {
         if (mListViews == null || mListViews.size() <= 0)
             return POSITION_NONE;
@@ -78,14 +76,12 @@ public class ViewsPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    @SuppressWarnings("all")
     @Deprecated
     public void destroyItem(View container, int position, Object object) {
         destroyItem((ViewPager) container, position, object);
     }
 
     @Override
-    @SuppressWarnings("all")
     @Deprecated
     public Object instantiateItem(View container, int position) {
         return instantiateItem((ViewPager) container, position);
@@ -96,7 +92,6 @@ public class ViewsPagerAdapter extends PagerAdapter {
         notifyDataSetChanged();
     }
 
-    @SuppressWarnings("unused")
     public void addView(View view) {
         if (mListViews == null)
             mListViews = new ArrayList<>();
@@ -104,7 +99,6 @@ public class ViewsPagerAdapter extends PagerAdapter {
         notifyDataSetChanged();
     }
 
-    @SuppressWarnings("unused")
     public void addView(int position, View view) {
         if (mListViews == null)
             mListViews = new ArrayList<>();
@@ -112,7 +106,6 @@ public class ViewsPagerAdapter extends PagerAdapter {
         notifyDataSetChanged();
     }
 
-    @SuppressWarnings("unused")
     public void removeView(View view) {
         if (mListViews == null || mListViews.size() <= 0)
             return;
@@ -121,13 +114,22 @@ public class ViewsPagerAdapter extends PagerAdapter {
         }
     }
 
-    @SuppressWarnings("unused")
     public void removeView(int position) {
         if (mListViews == null || mListViews.size() <= 0)
             return;
         if (position >= 0 && position < mListViews.size()) {
             mListViews.remove(position);
             notifyDataSetChanged();
+        }
+    }
+
+    public void onConfigurationChanged(Configuration newConfig) {
+        if (mListViews == null || mListViews.isEmpty())
+            return;
+        for (View view : mListViews) {
+            if (view == null)
+                continue;
+            ConfigurationHelper.onConfigurationChanged(view, newConfig);
         }
     }
 }
