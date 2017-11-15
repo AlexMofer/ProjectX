@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package am.project.support.job;
 
 import android.os.Build;
@@ -79,9 +95,8 @@ class JobExecutor extends ThreadPoolExecutor
             JobExecutor jobExecutor = new JobExecutor(
                     CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS,
                     sPoolWorkQueue, sThreadFactory);
-            if (Build.VERSION.SDK_INT >= 9) {
+            if (Build.VERSION.SDK_INT >= 9)
                 jobExecutor.allowCoreThreadTimeOut(true);
-            }
             JOB_EXECUTOR = jobExecutor;
         }
         return JOB_EXECUTOR;
@@ -91,12 +106,21 @@ class JobExecutor extends ThreadPoolExecutor
         if (SINGLE_EXECUTOR == null) {
             JobExecutor singleExecutor = new JobExecutor(1, 1,
                     KEEP_ALIVE_SECONDS, TimeUnit.SECONDS, sSinglePoolWorkQueue, sThreadFactory);
-            if (Build.VERSION.SDK_INT >= 9) {
+            if (Build.VERSION.SDK_INT >= 9)
                 singleExecutor.allowCoreThreadTimeOut(true);
-            }
             SINGLE_EXECUTOR = singleExecutor;
         }
         return SINGLE_EXECUTOR;
+    }
+
+    static Executor getExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime,
+                                TimeUnit unit, BlockingQueue<Runnable> workQueue,
+                                ThreadFactory threadFactory, boolean allowCoreThreadTimeOut) {
+        JobExecutor singleExecutor = new JobExecutor(corePoolSize, maximumPoolSize,
+                keepAliveTime, unit, workQueue, threadFactory);
+        if (Build.VERSION.SDK_INT >= 9)
+            singleExecutor.allowCoreThreadTimeOut(allowCoreThreadTimeOut);
+        return singleExecutor;
     }
 
     @Override

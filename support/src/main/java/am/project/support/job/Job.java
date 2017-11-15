@@ -17,7 +17,10 @@
 package am.project.support.job;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 任务
@@ -30,11 +33,11 @@ public abstract class Job<T> {
     public static final int LEVEL_DEFAULT = 0;
     public static final int LEVEL_MIDDLE = 1;
     public static final int LEVEL_HIGH = 2;
-    private final WeakReference<T> mWeakReference;
     protected int mAction;
     protected Object[] mParams;
     private JobHolder mHolder;
     private T mCallback;
+    private WeakReference<T> mWeakReference;
 
     protected Job(T callback) {
         this(callback, 0);
@@ -49,14 +52,10 @@ public abstract class Job<T> {
     }
 
     protected Job(T callback, boolean weakReference, int action, Object... params) {
-        if (weakReference) {
-            mWeakReference = new WeakReference<>(callback);
-        } else {
-            mCallback = callback;
-            mWeakReference = new WeakReference<>(callback);
-        }
+        setCallback(callback, weakReference);
         mAction = action;
         mParams = params;
+
     }
 
     public static Executor getDefaultExecutor() {
@@ -65,6 +64,22 @@ public abstract class Job<T> {
 
     public static Executor getSingleExecutor() {
         return JobExecutor.getSingle();
+    }
+
+    public static Executor getExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime,
+                                       TimeUnit unit, BlockingQueue<Runnable> workQueue,
+                                       ThreadFactory threadFactory, boolean allowCoreThreadTimeOut) {
+        return JobExecutor.getExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit,
+                workQueue, threadFactory, allowCoreThreadTimeOut);
+    }
+
+    protected void setCallback(T callback, boolean weakReference) {
+        if (weakReference) {
+            mWeakReference = new WeakReference<>(callback);
+        } else {
+            mCallback = callback;
+            mWeakReference = new WeakReference<>(callback);
+        }
     }
 
     void setHolder(JobHolder holder) {
@@ -89,11 +104,16 @@ public abstract class Job<T> {
     protected void onPostExecute() {
         final T callback = mCallback == null ? mWeakReference.get() : mCallback;
         dispatchResult(callback);
+        mCallback = null;
+        mWeakReference = null;
         mParams = null;
     }
 
     protected void dispatchResult(T callback) {
-        mCallback = null;
+    }
+
+    protected Runnable getJobHolder(Job job) {
+        return JobHolder.get(job);
     }
 
     public int getLevel() {
@@ -101,10 +121,10 @@ public abstract class Job<T> {
     }
 
     public void execute() {
-        JobExecutor.getDefault().execute(JobHolder.get(this));
+        getDefaultExecutor().execute(getJobHolder(this));
     }
 
     public void executeInSingle() {
-        JobExecutor.getSingle().execute(JobHolder.get(this));
+        getSingleExecutor().execute(getJobHolder(this));
     }
 }
