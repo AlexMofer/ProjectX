@@ -27,7 +27,7 @@ import android.view.Gravity;
  * 一般用于ImageView的src，保证缩放后，中心的Drawable不变形。
  * 用于一般background属性的话，无需使用本控件，直接使用layer-list来定义即可。
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("all")
 public class CombinationDrawable extends Drawable {
 
     private Drawable mBackground;
@@ -56,27 +56,27 @@ public class CombinationDrawable extends Drawable {
     }
 
     @Override
-    public int getMinimumHeight() {
-        int minimumHeight = super.getMinimumHeight();
+    public int getIntrinsicWidth() {
+        int width = super.getIntrinsicWidth();
         if (mBackground != null) {
-            minimumHeight = Math.max(mBackground.getIntrinsicHeight(), minimumHeight);
+            width = Math.max(mBackground.getIntrinsicWidth(), width);
         }
         if (mForeground != null) {
-            minimumHeight = Math.max(mForeground.getIntrinsicHeight(), minimumHeight);
+            width = Math.max(mForeground.getIntrinsicWidth(), width);
         }
-        return minimumHeight;
+        return width;
     }
 
     @Override
-    public int getMinimumWidth() {
-        int minimumWidth = super.getMinimumWidth();
+    public int getIntrinsicHeight() {
+        int height = super.getIntrinsicHeight();
         if (mBackground != null) {
-            minimumWidth = Math.max(mBackground.getIntrinsicWidth(), minimumWidth);
+            height = Math.max(mBackground.getIntrinsicHeight(), height);
         }
         if (mForeground != null) {
-            minimumWidth = Math.max(mForeground.getIntrinsicWidth(), minimumWidth);
+            height = Math.max(mForeground.getIntrinsicHeight(), height);
         }
-        return minimumWidth;
+        return height;
     }
 
     @Override
@@ -106,7 +106,6 @@ public class CombinationDrawable extends Drawable {
      *
      * @param canvas 画布
      */
-    @SuppressWarnings("all")
     protected void drawForeground(Canvas canvas) {
         if (mForeground != null) {
             final int width = mForeground.getIntrinsicWidth();
@@ -118,20 +117,27 @@ public class CombinationDrawable extends Drawable {
                 case Gravity.LEFT:
                 case Gravity.LEFT | Gravity.TOP:
                 case Gravity.TOP:
+                case Compat.START:
+                case Compat.START | Gravity.TOP:
                     break;
                 case Gravity.RIGHT:
                 case Gravity.TOP | Gravity.RIGHT:
+                case Compat.END:
+                case Gravity.TOP | Compat.END:
                     canvas.translate(getBounds().right - width, 0);
                     break;
                 case Gravity.RIGHT | Gravity.CENTER_VERTICAL:
+                case Compat.END | Gravity.CENTER_VERTICAL:
                     canvas.translate(getBounds().right - width,
                             getBounds().centerY() - height * 0.5f);
                     break;
                 case Gravity.RIGHT | Gravity.BOTTOM:
+                case Compat.END | Gravity.BOTTOM:
                     canvas.translate(getBounds().right - width, getBounds().bottom - height);
                     break;
                 case Gravity.BOTTOM:
                 case Gravity.LEFT | Gravity.BOTTOM:
+                case Compat.START | Gravity.BOTTOM:
                     canvas.translate(0, getBounds().bottom - height);
                     break;
                 case Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL:
@@ -148,6 +154,7 @@ public class CombinationDrawable extends Drawable {
                     break;
                 case Gravity.CENTER_VERTICAL:
                 case Gravity.LEFT | Gravity.CENTER_VERTICAL:
+                case Compat.START | Gravity.CENTER_VERTICAL:
                     canvas.translate(0, getBounds().centerY() - height * 0.5f);
                     break;
             }
