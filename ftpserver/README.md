@@ -19,45 +19,45 @@ FtpServer
 ---
 
 **引用:**
+```java
+dependencies {
+    ...
+    compile 'am.util:ftpserver:1.1.1'
+    ...
+}
+```
 
-     ```java
-     dependencies {
-         ...
-         compile 'am.util:ftpserver:1.1.1'
-         ...
-     }
-     ```
 
 **实现:**
 
 开启FTP服务器：
 
-     ```java
-        final int port = 8585;
-        final String home = Environment.getExternalStorageDirectory().getAbsolutePath();
-        FtpServer server = FTPHelper.createServer(port, 10, 5000, true, home);
-        server.start();
-     ```
+```java
+    final int port = 8585;
+    final String home = Environment.getExternalStorageDirectory().getAbsolutePath();
+    FtpServer server = FTPHelper.createServer(port, 10, 5000, true, home);
+    server.start();
+```
 
 关闭FTP服务器：
 
-     ```java
-        server.stop();
-     ```
+```java
+    server.stop();
+```
 
 **在build.gradle文件中增加**：
 
-     ```java
-        packagingOptions {
-            exclude 'META-INF/DEPENDENCIES'
-        }
-     ```
+```java
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
+```
 
 增加屏蔽混淆提示：
 
-     ```java
-         #
-     ```
+```java
+    #
+```
 
 注意
 ---

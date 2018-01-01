@@ -21,8 +21,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadFactory;
@@ -61,8 +61,7 @@ class JobExecutor extends ThreadPoolExecutor
 
     private static final BlockingQueue<Runnable> sSinglePoolWorkQueue =
             new PriorityBlockingQueue<>(128);
-    private static final CopyOnWriteArrayList<MessageTag> MESSAGE_TAGS =
-            new CopyOnWriteArrayList<>();
+    private static final ArrayList<MessageTag> MESSAGE_TAGS = new ArrayList<>();
     private static final int MSG_RESULT = 100;
     private static final int MSG_PROGRESS = 101;
     /**
@@ -82,10 +81,12 @@ class JobExecutor extends ThreadPoolExecutor
 
     private static MessageTag getMessageTag() {
         MessageTag tag;
-        if (MESSAGE_TAGS.isEmpty()) {
-            tag = new MessageTag();
-        } else {
-            tag = MESSAGE_TAGS.remove(0);
+        synchronized (MESSAGE_TAGS) {
+            if (MESSAGE_TAGS.isEmpty()) {
+                tag = new MessageTag();
+            } else {
+                tag = MESSAGE_TAGS.remove(MESSAGE_TAGS.size() - 1);
+            }
         }
         return tag;
     }
@@ -157,7 +158,9 @@ class JobExecutor extends ThreadPoolExecutor
             MessageTag tag = (MessageTag) msg.obj;
             tag.getJob().onPostExecute();
             tag.clear();
-            MESSAGE_TAGS.add(tag);
+            synchronized (MESSAGE_TAGS) {
+                MESSAGE_TAGS.add(tag);
+            }
         }
     }
 
@@ -166,7 +169,9 @@ class JobExecutor extends ThreadPoolExecutor
             MessageTag tag = (MessageTag) msg.obj;
             tag.getJob().onProgressUpdate(tag.getValues());
             tag.clear();
-            MESSAGE_TAGS.add(tag);
+            synchronized (MESSAGE_TAGS) {
+                MESSAGE_TAGS.add(tag);
+            }
         }
     }
 
