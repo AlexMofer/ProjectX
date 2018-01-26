@@ -45,19 +45,7 @@ dependencies {
     server.stop();
 ```
 
-**在build.gradle文件中增加**：
-
-```java
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-    }
-```
-
-增加屏蔽混淆提示：
-
-```java
-    #
-```
+org.apache.ftpserver:ftpserver-core:1.1.1
 
 注意
 ---

@@ -19,15 +19,12 @@ android {
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.Release
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
             debuggable false
-        }
-        debug {
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true
             signingConfig signingConfigs.Release
-            minifyEnabled false
-            debuggable true
         }
     }
     lintOptions {
