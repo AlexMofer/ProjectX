@@ -173,7 +173,7 @@ public abstract class AMSupportFragment extends Fragment {
      *
      * @return 是否开启
      */
-    protected boolean isLocalBroadcastEnable() {
+    public boolean isLocalBroadcastEnable() {
         return false;
     }
 

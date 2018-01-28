@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -230,25 +229,23 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
     }
 
     /**
-     * 设置 Support Toolbar
+     * 设置 Toolbar
      *
      * @param toolbarId Toolbar资源ID
      */
-    @SuppressWarnings("unused")
     public final void setSupportActionBar(@IdRes int toolbarId) {
-        setSupportActionBar(toolbarId, true);
+        setSupportActionBar(toolbarId, false);
     }
 
     /**
-     * 设置 Support Toolbar
+     * 设置 Toolbar
      *
      * @param toolbarId Toolbar资源ID
-     * @param showTitle 是否显示标题
      */
     public final void setSupportActionBar(@IdRes int toolbarId, boolean showTitle) {
         setSupportActionBar((Toolbar) findViewById(toolbarId));
-        if (null != getSupportActionBar()) {
-            getSupportActionBar().setDisplayShowTitleEnabled(showTitle);
+        if (null != getActionBar()) {
+            getActionBar().setDisplayShowTitleEnabled(showTitle);
         }
     }
 
@@ -264,45 +261,9 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
     }
 
     /**
-     * 设置 Toolbar
-     *
-     * @param toolbarId Toolbar资源ID
-     */
-    @RequiresApi(21)
-    @SuppressWarnings("unused")
-    public final void setActionBar(@IdRes int toolbarId) {
-        setActionBar(toolbarId, false);
-    }
-
-    /**
-     * 设置 Toolbar
-     *
-     * @param toolbarId Toolbar资源ID
-     */
-    @RequiresApi(21)
-    public final void setActionBar(@IdRes int toolbarId, boolean showTitle) {
-        setActionBar((android.widget.Toolbar) findViewById(toolbarId));
-        if (null != getActionBar()) {
-            getActionBar().setDisplayShowTitleEnabled(showTitle);
-        }
-    }
-
-    @Override
-    @RequiresApi(21)
-    public void setActionBar(@Nullable android.widget.Toolbar toolbar) {
-        super.setActionBar(toolbar);
-        if (null == toolbar)
-            return;
-        if (null == mToolbarListener) {
-            mToolbarListener = new ToolbarNavigationOnClickListener();
-        }
-        toolbar.setNavigationOnClickListener(mToolbarListener);
-    }
-
-    /**
      * 显示默认载入
      */
-    protected void showLoading() {
+    public void showLoading() {
         if (mAttachedToWindow) {
             if (mLoading != null && !mLoading.isShowing())
                 mLoading.show();
@@ -314,7 +275,7 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
     /**
      * 隐藏默认载入
      */
-    protected void dismissLoading() {
+    public void dismissLoading() {
         if (mAttachedToWindow) {
             if (mLoading != null && mLoading.isShowing())
                 mLoading.dismiss();
@@ -337,7 +298,7 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
      *
      * @param dialog Dialog
      */
-    protected void showDialog(Dialog dialog) {
+    public void showDialog(Dialog dialog) {
         if (mAttachedToWindow) {
             dialog.show();
         } else {
@@ -351,7 +312,7 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
      *
      * @param dialog Dialog
      */
-    protected void dismissDialog(Dialog dialog) {
+    public void dismissDialog(Dialog dialog) {
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
@@ -383,7 +344,7 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
      *
      * @return 是否
      */
-    protected boolean isAttachedToWindow() {
+    public boolean isAttachedToWindow() {
         return mAttachedToWindow;
     }
 

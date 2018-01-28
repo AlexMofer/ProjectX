@@ -28,12 +28,6 @@ public class TestActivity extends AMAppCompatActivity {
         setSupportActionBar(R.id.test_toolbar);
 
         mVContent = findViewById(R.id.display_rv_content);
-
-
-        mVContent.setScale(1.5f);
-//        mVContent.setDisplayLocation(1, -20, 0);
-        mVContent.setDisplayLocation(1, 0, 0.0001f, false, 600 + 20 * 40, 900 + 20 * 40, 600 + 2 * 40, 900 + 2 * 40);
-
         mVContent.setAdapter(mAdapter);
     }
 }

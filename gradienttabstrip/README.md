@@ -31,7 +31,7 @@ PagerTitleStrip一样的Tab，但支持更多自定义功能，并支持为Tab�
 ```java
 dependencies {
     ...
-    compile 'am.widget:gradienttabstrip:26.1.0
+    compile 'am.widget:gradienttabstrip:27.0.2
     ...
 }
 ```

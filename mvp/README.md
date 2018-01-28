@@ -26,7 +26,7 @@ MVP模式，包括简单的Activity与Fragment基础类，主要是绑定P层，
 ```java
 dependencies {
     ...
-    compile 'am.util:mvp:26.1.0'
+    compile 'am.util:mvp:27.0.2'
     ...
 }
 ```

@@ -25,7 +25,7 @@ BaseTabStrip
      ```java
      dependencies {
          ...
-         compile 'am.widget:basetabstrip:26.1.0'
+         compile 'am.widget:basetabstrip:27.0.2'
          ...
      }
      ```

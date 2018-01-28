@@ -267,7 +267,7 @@ public abstract class AMActivity extends Activity {
     /**
      * 显示默认载入
      */
-    protected void showLoading() {
+    public void showLoading() {
         if (mAttachedToWindow) {
             if (mLoading != null && !mLoading.isShowing())
                 mLoading.show();
@@ -279,7 +279,7 @@ public abstract class AMActivity extends Activity {
     /**
      * 隐藏默认载入
      */
-    protected void dismissLoading() {
+    public void dismissLoading() {
         if (mAttachedToWindow) {
             if (mLoading != null && mLoading.isShowing())
                 mLoading.dismiss();
@@ -302,7 +302,7 @@ public abstract class AMActivity extends Activity {
      *
      * @param dialog Dialog
      */
-    protected void showDialog(Dialog dialog) {
+    public void showDialog(Dialog dialog) {
         if (mAttachedToWindow) {
             dialog.show();
         } else {
@@ -316,7 +316,7 @@ public abstract class AMActivity extends Activity {
      *
      * @param dialog Dialog
      */
-    protected void dismissDialog(Dialog dialog) {
+    public void dismissDialog(Dialog dialog) {
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
@@ -348,7 +348,7 @@ public abstract class AMActivity extends Activity {
      *
      * @return 是否
      */
-    protected boolean isAttachedToWindow() {
+    public boolean isAttachedToWindow() {
         return mAttachedToWindow;
     }
 

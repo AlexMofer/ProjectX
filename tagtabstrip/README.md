@@ -31,7 +31,7 @@ TagTabStrip
 ```java
 dependencies {
     ...
-    compile 'am.widget:tagtabstrip:26.1.0'
+    compile 'am.widget:tagtabstrip:27.0.2'
     ...
 }
 ```

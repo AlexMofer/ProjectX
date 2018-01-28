@@ -24,7 +24,7 @@ RecyclerView
 ```java
 dependencies {
     ...
-    compile 'am.util:recyclerview:26.1.0'
+    compile 'am.util:recyclerview:27.0.2'
     ...
 }
 ```

@@ -31,7 +31,7 @@ IndicatorTabStrip
 ```java
 dependencies {
     ...
-    compile 'am.widget:indicatortabstrip:26.1.0'
+    compile 'am.widget:indicatortabstrip:27.0.2'
     ...
 }
 ```

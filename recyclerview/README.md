@@ -31,7 +31,7 @@ RecyclerView的几个通用的Adapter及子类：
 ```java
 dependencies {
     ...
-    compile 'am.util:recyclerview:26.1.0'
+    compile 'am.util:recyclerview:27.0.2'
     ...
 }
 ```

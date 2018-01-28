@@ -26,12 +26,12 @@ public class DisplayRenderView extends View {
         super.onDraw(canvas);
         if (mText == null || mText.length() <= 0)
             return;
-        mPaint.setTextSize(360);
         mPaint.setColor(0x8000ff00);
         canvas.drawRect(10, 10, getMeasuredWidth() - 10, getMeasuredHeight() - 10, mPaint);
         mPaint.setColor(0xffffff00);
         canvas.save();
         mPaint.setTextAlign(Paint.Align.CENTER);
+        mPaint.setTextSize(getWidth() * 0.8f);
         canvas.translate(getWidth() * 0.5f, getHeight() * 0.5f);
         canvas.drawText(mText, 0, 0, mPaint);
         canvas.restore();

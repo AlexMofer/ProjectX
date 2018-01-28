@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     signingConfigs {
         Release {
             keyAlias 'projectx'
@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId "am.project.x"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 72
         versionName "2.7.1"
     }
@@ -30,15 +30,12 @@ android {
     lintOptions {
         abortOnError false
     }
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-    }
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'com.android.support:appcompat-v7:27.0.2'
+    implementation 'com.android.support:design:27.0.2'
+    implementation 'com.android.support:recyclerview-v7:27.0.2'
     implementation 'com.google.zxing:core:3.3.0'
     implementation project(':basetabstrip')
     implementation project(':gradienttabstrip')

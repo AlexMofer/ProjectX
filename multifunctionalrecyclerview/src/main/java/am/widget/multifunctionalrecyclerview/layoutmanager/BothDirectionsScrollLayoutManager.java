@@ -360,10 +360,15 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     public void setAnotherDirectionScrollOffsetPercentage(float percentage) {
+        setAnotherDirectionScrollOffsetPercentage(percentage, true);
+    }
+
+    public void setAnotherDirectionScrollOffsetPercentage(float percentage, boolean updateLayout) {
         if (mPendingPercentage == percentage || percentage < 0 || percentage > 1)
             return;
         mPendingPercentage = percentage;
-        requestLayout();
+        if (updateLayout)
+            requestLayout();
     }
 
     public void setChildMaxSize(int width, int height) {
