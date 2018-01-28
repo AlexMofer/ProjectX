@@ -20,35 +20,10 @@
 package org.apache.logger;
 
 /**
- * LoggerFactory
- * Created by Alex on 2018/1/19.
+ * 日志构造器
+ * Created by Alex on 2018/1/28.
  */
-public class LoggerFactory {
 
-    private static LoggerGenerator GENERATOR = new EmptyLoggerGenerator();
-
-
-    public static Logger getLogger(Class<?> clazz) {
-        return getLogger(clazz.getName());
-    }
-
-    public static Logger getLogger(String name) {
-        return GENERATOR.create(name);
-    }
-
-    @SuppressWarnings("unused")
-    public static void setLoggerGenerator(LoggerGenerator generator) {
-        if (generator == null)
-            return;
-        GENERATOR = generator;
-    }
-
-    private static class EmptyLoggerGenerator implements LoggerGenerator {
-        private static Logger LOGGER = new EmptyLogger();
-
-        @Override
-        public Logger create(String tag) {
-            return LOGGER;
-        }
-    }
+public interface LoggerGenerator {
+    Logger create(String tag);
 }
