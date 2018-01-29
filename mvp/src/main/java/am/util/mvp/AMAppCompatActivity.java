@@ -244,8 +244,8 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
      */
     public final void setSupportActionBar(@IdRes int toolbarId, boolean showTitle) {
         setSupportActionBar((Toolbar) findViewById(toolbarId));
-        if (null != getActionBar()) {
-            getActionBar().setDisplayShowTitleEnabled(showTitle);
+        if (null != getSupportActionBar()) {
+            getSupportActionBar().setDisplayShowTitleEnabled(showTitle);
         }
     }
 

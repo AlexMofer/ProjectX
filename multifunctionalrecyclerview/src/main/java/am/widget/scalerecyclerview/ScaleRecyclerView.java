@@ -313,6 +313,59 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
         scale = scale < mMinScale ? mMinScale : scale;
         if (scale == mScale)
             return;
+        View child = getChildAt(0);
+        // 计算focus对应View的(x1, y1)
+        final float beforeViewX = focusX - child.getLeft();
+        final float beforeViewY = focusY - child.getTop();
+        // 计算View的(x1, y1)对应缩放后的(x2, y2)
+        final float afterViewX = beforeViewX / mScale * scale;
+        final float afterViewY = beforeViewY / mScale * scale;
+        mScale = scale;
+        invalidateLayoutManagerScale();
+        requestLayout();
+        // 应用偏移
+        final int dx = Math.round(afterViewX - beforeViewX);
+        final int dy = Math.round(afterViewY - beforeViewY);
+        switch (mAdjustType) {
+            default:
+            case TYPE_ADJUST_AUTO:
+                final LayoutManager layoutManager = getLayoutManager();
+                if (layoutManager instanceof LinearLayoutManager) {
+                    if (((LinearLayoutManager) layoutManager).getOrientation() ==
+                            LinearLayoutManager.HORIZONTAL) {
+                        scrollBy(dx, 0);
+                    } else {
+                        scrollBy(0, dy);
+                    }
+                } else {
+                    scrollBy(dx, dy);
+                }
+                break;
+            case TYPE_ADJUST_HORIZONTAL:
+                scrollBy(dx, 0);
+                break;
+            case TYPE_ADJUST_VERTICAL:
+                scrollBy(0, dy);
+                break;
+            case TYPE_ADJUST_ALL:
+                scrollBy(dx, dy);
+                break;
+        }
+    }
+
+    /**
+     * 缩放
+     * TODO 改进中
+     *
+     * @param scale  目标缩放比
+     * @param focusX 焦点X
+     * @param focusY 焦点Y
+     */
+    private void scaleToNew(float scale, float focusX, float focusY) {
+        scale = scale > mMaxScale ? mMaxScale : scale;
+        scale = scale < mMinScale ? mMinScale : scale;
+        if (scale == mScale)
+            return;
         final ScaleLinearLayoutManager manager = getLayoutManager();
         if (manager == null) {
             mScale = scale;

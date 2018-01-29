@@ -22,7 +22,7 @@ FtpServer
 ```java
 dependencies {
     ...
-    compile 'am.util:ftpserver:1.1.1'
+    compile 'am.util:ftpserver:1.1.1.3'
     ...
 }
 ```
@@ -45,7 +45,11 @@ dependencies {
     server.stop();
 ```
 
-org.apache.ftpserver:ftpserver-core:1.1.1
+```java
+packagingOptions {
+    exclude 'META-INF/DEPENDENCIES'
+}
+```
 
 注意
 ---
