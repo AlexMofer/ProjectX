@@ -54,7 +54,7 @@ public abstract class AMFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onCreated(savedInstanceState);
         }
     }
@@ -84,7 +84,7 @@ public abstract class AMFragment extends Fragment {
     public void onStart() {
         super.onStart();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onStarted();
         }
     }
@@ -93,7 +93,7 @@ public abstract class AMFragment extends Fragment {
     public void onResume() {
         super.onResume();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onResumed();
         }
     }
@@ -102,7 +102,7 @@ public abstract class AMFragment extends Fragment {
     public void onPause() {
         super.onPause();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onPaused();
         }
     }
@@ -111,7 +111,7 @@ public abstract class AMFragment extends Fragment {
     public void onStop() {
         super.onStop();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onStopped();
         }
     }
@@ -120,7 +120,7 @@ public abstract class AMFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onSaveInstanceState(outState);
         }
     }
@@ -134,7 +134,7 @@ public abstract class AMFragment extends Fragment {
         }
         super.onDestroy();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onDestroyed();
             presenter.detach();
         }
@@ -223,14 +223,14 @@ public abstract class AMFragment extends Fragment {
      * @param <V> View类型
      * @return 对应资源ID的View
      */
-    @SuppressWarnings("unchecked")
     public final <V extends View> V findViewById(int id) {
-        if (null == getView()) {
+        final View view = getView();
+        if (view == null) {
             // 在错误的时机调用
             throw new IllegalStateException("Fragment " + this
                     + " has not created its view yet.");
         }
-        return (V) getView().findViewById(id);
+        return view.findViewById(id);
     }
 
     /**

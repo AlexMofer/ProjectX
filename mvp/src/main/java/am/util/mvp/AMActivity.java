@@ -16,6 +16,7 @@
 
 package am.util.mvp;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -72,7 +73,7 @@ public abstract class AMActivity extends Activity {
         onRegisteredLocalBroadcastReceiver();
         mLoading = getLoadingDialog();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onCreated(savedInstanceState);
         }
     }
@@ -81,7 +82,7 @@ public abstract class AMActivity extends Activity {
     protected void onStart() {
         super.onStart();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onStarted();
         }
     }
@@ -90,7 +91,7 @@ public abstract class AMActivity extends Activity {
     protected void onResume() {
         super.onResume();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onResumed();
         }
     }
@@ -99,7 +100,7 @@ public abstract class AMActivity extends Activity {
     protected void onPause() {
         super.onPause();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onPaused();
         }
     }
@@ -108,7 +109,7 @@ public abstract class AMActivity extends Activity {
     protected void onStop() {
         super.onStop();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onStopped();
         }
     }
@@ -117,7 +118,7 @@ public abstract class AMActivity extends Activity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onSaveInstanceState(outState);
         }
     }
@@ -131,7 +132,7 @@ public abstract class AMActivity extends Activity {
         }
         super.onDestroy();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onDestroyed();
             presenter.detach();
         }
@@ -236,7 +237,15 @@ public abstract class AMActivity extends Activity {
      */
     @RequiresApi(21)
     public final void setActionBar(@IdRes int toolbarId) {
-        setActionBar(toolbarId, false);
+        final View view = findViewById(toolbarId);
+        if (view instanceof Toolbar) {
+            if (mToolbarListener == null) {
+                mToolbarListener = new ToolbarNavigationOnClickListener();
+            }
+            final Toolbar toolbar = (Toolbar) view;
+            setActionBar(toolbar);
+            toolbar.setNavigationOnClickListener(mToolbarListener);
+        }
     }
 
     /**
@@ -246,22 +255,11 @@ public abstract class AMActivity extends Activity {
      */
     @RequiresApi(21)
     public final void setActionBar(@IdRes int toolbarId, boolean showTitle) {
-        setActionBar((Toolbar) findViewById(toolbarId));
-        if (null != getActionBar()) {
-            getActionBar().setDisplayShowTitleEnabled(showTitle);
+        setActionBar(toolbarId);
+        final ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(showTitle);
         }
-    }
-
-    @Override
-    @RequiresApi(21)
-    public void setActionBar(@Nullable Toolbar toolbar) {
-        super.setActionBar(toolbar);
-        if (null == toolbar)
-            return;
-        if (null == mToolbarListener) {
-            mToolbarListener = new ToolbarNavigationOnClickListener();
-        }
-        toolbar.setNavigationOnClickListener(mToolbarListener);
     }
 
     /**

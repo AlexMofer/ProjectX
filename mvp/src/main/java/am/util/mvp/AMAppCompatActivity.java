@@ -26,6 +26,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -71,7 +72,7 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
         onRegisteredLocalBroadcastReceiver();
         mLoading = getLoadingDialog();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onCreated(savedInstanceState);
         }
     }
@@ -80,7 +81,7 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onStarted();
         }
     }
@@ -89,7 +90,7 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onResumed();
         }
     }
@@ -98,7 +99,7 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onPaused();
         }
     }
@@ -107,7 +108,7 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onStopped();
         }
     }
@@ -116,7 +117,7 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onSaveInstanceState(outState);
         }
     }
@@ -130,7 +131,7 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
         }
         super.onDestroy();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onDestroyed();
             presenter.detach();
         }
@@ -234,7 +235,15 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
      * @param toolbarId Toolbar资源ID
      */
     public final void setSupportActionBar(@IdRes int toolbarId) {
-        setSupportActionBar(toolbarId, false);
+        final View view = findViewById(toolbarId);
+        if (view instanceof Toolbar) {
+            if (mToolbarListener == null) {
+                mToolbarListener = new ToolbarNavigationOnClickListener();
+            }
+            final Toolbar toolbar = (Toolbar) view;
+            setSupportActionBar(toolbar);
+            toolbar.setNavigationOnClickListener(mToolbarListener);
+        }
     }
 
     /**
@@ -243,21 +252,11 @@ public abstract class AMAppCompatActivity extends AppCompatActivity {
      * @param toolbarId Toolbar资源ID
      */
     public final void setSupportActionBar(@IdRes int toolbarId, boolean showTitle) {
-        setSupportActionBar((Toolbar) findViewById(toolbarId));
-        if (null != getSupportActionBar()) {
-            getSupportActionBar().setDisplayShowTitleEnabled(showTitle);
+        setSupportActionBar(toolbarId);
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(showTitle);
         }
-    }
-
-    @Override
-    public void setSupportActionBar(@Nullable Toolbar toolbar) {
-        super.setSupportActionBar(toolbar);
-        if (null == toolbar)
-            return;
-        if (null == mToolbarListener) {
-            mToolbarListener = new ToolbarNavigationOnClickListener();
-        }
-        toolbar.setNavigationOnClickListener(mToolbarListener);
     }
 
     /**

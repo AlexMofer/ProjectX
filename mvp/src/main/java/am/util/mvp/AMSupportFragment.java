@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -52,13 +53,13 @@ public abstract class AMSupportFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onCreated(savedInstanceState);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(
                 getContentViewLayout(inflater, container, savedInstanceState),
@@ -69,7 +70,7 @@ public abstract class AMSupportFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initializeFragment(savedInstanceState);
-        if (isLocalBroadcastEnable()) {
+        if (isLocalBroadcastEnable() && getActivity() != null) {
             mLocalBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
             IntentFilter filter = new IntentFilter();
             onAddLocalAction(filter);
@@ -82,7 +83,7 @@ public abstract class AMSupportFragment extends Fragment {
     public void onStart() {
         super.onStart();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onStarted();
         }
     }
@@ -91,7 +92,7 @@ public abstract class AMSupportFragment extends Fragment {
     public void onResume() {
         super.onResume();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onResumed();
         }
     }
@@ -100,7 +101,7 @@ public abstract class AMSupportFragment extends Fragment {
     public void onPause() {
         super.onPause();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onPaused();
         }
     }
@@ -109,16 +110,16 @@ public abstract class AMSupportFragment extends Fragment {
     public void onStop() {
         super.onStop();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onStopped();
         }
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onSaveInstanceState(outState);
         }
     }
@@ -132,7 +133,7 @@ public abstract class AMSupportFragment extends Fragment {
         }
         super.onDestroy();
         final AMPresenter presenter = getPresenter();
-        if (null != presenter) {
+        if (presenter != null) {
             presenter.onDestroyed();
             presenter.detach();
         }
@@ -222,14 +223,14 @@ public abstract class AMSupportFragment extends Fragment {
      * @param <V> View类型
      * @return 对应资源ID的View
      */
-    @SuppressWarnings("unchecked")
     public final <V extends View> V findViewById(int id) {
-        if (null == getView()) {
+        final View view = getView();
+        if (view == null) {
             // 在错误的时机调用
             throw new IllegalStateException("Fragment " + this
                     + " has not created its view yet.");
         }
-        return (V) getView().findViewById(id);
+        return view.findViewById(id);
     }
 
     /**
