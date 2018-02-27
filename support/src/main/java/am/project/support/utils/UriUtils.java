@@ -36,7 +36,7 @@ import am.project.support.compat.AMStorageManagerCompat;
  * Uri工具类
  * Created by Alex on 2017/10/23.
  */
-
+@SuppressWarnings("unused")
 public class UriUtils {
     private static final String EXTERNAL_STORAGE_PROVIDER_AUTHORITY =
             "com.android.externalstorage.documents";
@@ -49,6 +49,7 @@ public class UriUtils {
     private static final String MEDIA_PROVIDER_PREFIX_IMAGE = "image";
     private static final String MEDIA_PROVIDER_PREFIX_VIDEO = "video";
     private static final String MEDIA_PROVIDER_PREFIX_AUDIO = "audio";
+    private static final String REGEX = "^[-\\+]?[\\d]*$";
 
     /**
      * 通过Uri获取文件路径
@@ -103,7 +104,7 @@ public class UriUtils {
                     }
                     if (DOWNLOADS_PROVIDER_AUTHORITY.equals(authority)) {
                         // DownloadsProvider
-                        if (documentId.matches("^[-\\+]?[\\d]*$")) {
+                        if (documentId.matches(REGEX)) {
                             // 已写入数据库的媒体文件
                             return queryContentProvider(context, ContentUris.withAppendedId(
                                     Uri.parse("content://downloads/public_downloads"),
@@ -118,7 +119,7 @@ public class UriUtils {
                     }
                     if (MEDIA_PROVIDER_AUTHORITY.equals(authority)) {
                         // MediaProvider
-                        if (split.length == 2 && split[1].matches("^[-\\+]?[\\d]*$")) {
+                        if (split.length == 2 && split[1].matches(REGEX)) {
                             final String selection = "_id=?";
                             final String[] selectionArgs = new String[]{split[1]};
                             switch (split[0]) {
@@ -144,32 +145,41 @@ public class UriUtils {
             if (result != null)
                 return result;
             // 非常规查询
-            final List<String> segments = uri.getPathSegments();
-            final int count = segments.size();
-            String path = "";
-            int i = Build.VERSION.SDK_INT >= 19 ? 1 : 0;
-            for (; i < count; i++) {
-                path += "/" + segments.get(i);
+            final String dir = Environment.getExternalStorageDirectory().getPath();
+            if (uri.getPath().contains(dir)) {
+                final String[] parts = uri.getPath().split(dir);
+                return dir + parts[parts.length - 1];
             }
-            List<AMStorageManagerCompat.StorageVolumeImpl> storageVolumes =
+            List<AMStorageManagerCompat.StorageVolumeImpl> storages =
                     AMStorageManagerCompat.getEmulatedStorageVolumes(
                             (StorageManager) context.getSystemService(Context.STORAGE_SERVICE));
-            if (storageVolumes.size() > 1) {
-                for (AMStorageManagerCompat.StorageVolumeImpl storage :
-                        storageVolumes) {
-                    if (path.startsWith(storage.getPath()))
-                        return path;
+            if (storages != null && !storages.isEmpty()) {
+                for (AMStorageManagerCompat.StorageVolumeImpl storage : storages) {
+                    final String storagePath = storage.getPath();
+                    if (uri.getPath().contains(storagePath)) {
+                        final String[] parts = uri.getPath().split(storagePath);
+                        return storagePath + parts[parts.length - 1];
+                    }
                 }
-                String filePath;
-                for (AMStorageManagerCompat.StorageVolumeImpl storage :
-                        storageVolumes) {
+            }
+            final String path = uri.getPath();
+            String filePath = path;
+            if (new File(filePath).exists()) {
+                return filePath;
+            }
+            filePath = dir + "/" + path;
+            if (new File(filePath).exists()) {
+                return filePath;
+            }
+            if (storages != null && !storages.isEmpty()) {
+                for (AMStorageManagerCompat.StorageVolumeImpl storage : storages) {
                     filePath = storage.getPath() + "/" + path;
                     if (new File(filePath).exists()) {
                         return filePath;
                     }
                 }
             }
-            return Environment.getExternalStorageDirectory().getPath() + "/" + path;
+            return null;
         }
         return null;
     }
