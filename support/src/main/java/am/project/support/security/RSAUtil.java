@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package am.util.security;
+package am.project.support.security;
 
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
@@ -39,6 +39,7 @@ import javax.crypto.NoSuchPaddingException;
  * 一般用于加密对称加密的密钥
  * Created by Alex on 2016/4/28.
  */
+@SuppressWarnings("all")
 public class RSAUtil {
 
     private final static String ALGORITHM = "RSA";
@@ -59,7 +60,6 @@ public class RSAUtil {
      * @throws IllegalBlockSizeException 异常
      * @throws BadPaddingException       异常
      */
-    @SuppressWarnings("all")
     public static byte[] encryptByPublicKey(byte[] key, byte[] clear) throws
             NoSuchAlgorithmException,
             InvalidKeySpecException,
@@ -67,9 +67,9 @@ public class RSAUtil {
             InvalidKeyException,
             IllegalBlockSizeException,
             BadPaddingException {
-        PublicKey publicKey = KeyFactory.getInstance(ALGORITHM)
+        final PublicKey publicKey = KeyFactory.getInstance(ALGORITHM)
                 .generatePublic(new X509EncodedKeySpec(key));
-        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+        final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
         return cipher.doFinal(clear);
     }
@@ -87,7 +87,6 @@ public class RSAUtil {
      * @throws IllegalBlockSizeException 异常
      * @throws BadPaddingException       异常
      */
-    @SuppressWarnings("all")
     public static byte[] encryptByPrivateKey(byte[] key, byte[] clear) throws
             NoSuchAlgorithmException,
             InvalidKeySpecException,
@@ -95,9 +94,9 @@ public class RSAUtil {
             InvalidKeyException,
             IllegalBlockSizeException,
             BadPaddingException {
-        PrivateKey privateKey = KeyFactory.getInstance(ALGORITHM)
+        final PrivateKey privateKey = KeyFactory.getInstance(ALGORITHM)
                 .generatePrivate(new PKCS8EncodedKeySpec(key));
-        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+        final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.ENCRYPT_MODE, privateKey);
         return cipher.doFinal(clear);
     }
@@ -115,7 +114,6 @@ public class RSAUtil {
      * @throws IllegalBlockSizeException 异常
      * @throws BadPaddingException       异常
      */
-    @SuppressWarnings("all")
     public static byte[] decryptByPublicKey(byte[] key, byte[] encrypted) throws
             NoSuchAlgorithmException,
             InvalidKeySpecException,
@@ -123,9 +121,9 @@ public class RSAUtil {
             InvalidKeyException,
             IllegalBlockSizeException,
             BadPaddingException {
-        PublicKey publicKey = KeyFactory.getInstance(ALGORITHM)
+        final PublicKey publicKey = KeyFactory.getInstance(ALGORITHM)
                 .generatePublic(new X509EncodedKeySpec(key));
-        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+        final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.DECRYPT_MODE, publicKey);
         return cipher.doFinal(encrypted);
     }
@@ -143,7 +141,6 @@ public class RSAUtil {
      * @throws IllegalBlockSizeException 异常
      * @throws BadPaddingException       异常
      */
-    @SuppressWarnings("all")
     public static byte[] decryptByPrivateKey(byte[] key, byte[] encrypted) throws
             NoSuchAlgorithmException,
             InvalidKeySpecException,
@@ -151,9 +148,9 @@ public class RSAUtil {
             InvalidKeyException,
             IllegalBlockSizeException,
             BadPaddingException {
-        PrivateKey privateKey = KeyFactory.getInstance(ALGORITHM)
+        final PrivateKey privateKey = KeyFactory.getInstance(ALGORITHM)
                 .generatePrivate(new PKCS8EncodedKeySpec(key));
-        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+        final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
         return cipher.doFinal(encrypted);
     }
@@ -175,9 +172,9 @@ public class RSAUtil {
             InvalidKeySpecException,
             InvalidKeyException,
             SignatureException {
-        PrivateKey privateKey = KeyFactory.getInstance(ALGORITHM)
+        final PrivateKey privateKey = KeyFactory.getInstance(ALGORITHM)
                 .generatePrivate(new PKCS8EncodedKeySpec(key));
-        Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+        final Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
         signature.initSign(privateKey);
         signature.update(data);
         return signature.sign();
@@ -200,12 +197,25 @@ public class RSAUtil {
             InvalidKeySpecException,
             InvalidKeyException,
             SignatureException {
-        PublicKey publicKey = KeyFactory.getInstance(ALGORITHM)
+        final PublicKey publicKey = KeyFactory.getInstance(ALGORITHM)
                 .generatePublic(new X509EncodedKeySpec(key));
-        Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+        final Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
         signature.initVerify(publicKey);
         signature.update(data);
         return signature.verify(sign);
+    }
+
+    /**
+     * 生成密钥
+     *
+     * @param size 密钥长度
+     * @return 密钥对
+     * @throws NoSuchAlgorithmException 异常
+     */
+    public static KeyPair generateKeyPair(int size) throws NoSuchAlgorithmException {
+        final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(ALGORITHM);
+        keyPairGenerator.initialize(SIZE);
+        return keyPairGenerator.generateKeyPair();
     }
 
     /**
@@ -215,10 +225,6 @@ public class RSAUtil {
      * @throws NoSuchAlgorithmException 异常
      */
     public static KeyPair generateKeyPair() throws NoSuchAlgorithmException {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(ALGORITHM);
-        keyPairGenerator.initialize(SIZE);
-        return keyPairGenerator.generateKeyPair();
+        return generateKeyPair(SIZE);
     }
-
-
 }

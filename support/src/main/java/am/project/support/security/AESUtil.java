@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package am.util.security;
+package am.project.support.security;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -32,6 +32,7 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * @author Alex
  */
+@SuppressWarnings("all")
 public class AESUtil {
 
     private final static String ALGORITHM = "AES";
@@ -59,8 +60,8 @@ public class AESUtil {
             InvalidAlgorithmParameterException,
             IllegalBlockSizeException,
             BadPaddingException {
-        SecretKeySpec secretKeySpec = new SecretKeySpec(key, ALGORITHM);
-        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+        final SecretKeySpec secretKeySpec = new SecretKeySpec(key, ALGORITHM);
+        final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, new IvParameterSpec(
                 new byte[cipher.getBlockSize()]));
         return cipher.doFinal(clear);
@@ -86,11 +87,22 @@ public class AESUtil {
             InvalidAlgorithmParameterException,
             IllegalBlockSizeException,
             BadPaddingException {
-        SecretKeySpec secretKeySpec = new SecretKeySpec(key, ALGORITHM);
-        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+        final SecretKeySpec secretKeySpec = new SecretKeySpec(key, ALGORITHM);
+        final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, new IvParameterSpec(
                 new byte[cipher.getBlockSize()]));
         return cipher.doFinal(encrypted);
+    }
+
+    /**
+     * 生成密钥
+     *
+     * @param size 密钥长度
+     * @return 密钥字节
+     * @throws NoSuchAlgorithmException 异常
+     */
+    public static byte[] generateKey(int size) throws NoSuchAlgorithmException {
+        return KeyUtil.generateKey(ALGORITHM, size);
     }
 
     /**
@@ -100,7 +112,19 @@ public class AESUtil {
      * @throws NoSuchAlgorithmException 异常
      */
     public static byte[] generateKey() throws NoSuchAlgorithmException {
-        return KeyUtil.generateKey(ALGORITHM, SIZE);
+        return generateKey(SIZE);
+    }
+
+    /**
+     * 随机数种子
+     *
+     * @param seed 随机数种子
+     * @param size 密钥长度
+     * @return 密钥字节
+     * @throws Exception 异常
+     */
+    public static byte[] getRandomKey(byte[] seed, int size) throws Exception {
+        return KeyUtil.getRandomKey(ALGORITHM, seed, size);
     }
 
     /**
@@ -111,7 +135,20 @@ public class AESUtil {
      * @throws Exception 异常
      */
     public static byte[] getRandomKey(byte[] seed) throws Exception {
-        return KeyUtil.getRandomKey(ALGORITHM, seed, SIZE);
+        return getRandomKey(seed, SIZE);
+    }
+
+    /**
+     * PBE口令密钥
+     *
+     * @param password 口令
+     * @param salt     盐
+     * @param size     密钥长度
+     * @return 密钥字节
+     * @throws Exception 异常
+     */
+    public static byte[] getPBEKey(char[] password, byte[] salt, int size) throws Exception {
+        return KeyUtil.getPBEKey(password, salt, size);
     }
 
     /**
@@ -123,6 +160,6 @@ public class AESUtil {
      * @throws Exception 异常
      */
     public static byte[] getPBEKey(char[] password, byte[] salt) throws Exception {
-        return KeyUtil.getPBEKey(password, salt, SIZE);
+        return getPBEKey(password, salt, SIZE);
     }
 }

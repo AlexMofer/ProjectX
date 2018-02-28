@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package am.util.security;
+package am.project.support.security;
 
 
 import java.security.NoSuchAlgorithmException;
@@ -32,7 +32,8 @@ import javax.crypto.spec.PBEKeySpec;
  * 密钥工具类
  * Created by Alex on 2016/4/29.
  */
-class KeyUtil {
+@SuppressWarnings("all")
+public class KeyUtil {
 
     private final static String RAW_ALGORITHM = "SHA1PRNG";
     private final static String SKF_ALGORITHM = "PBKDF2WithHmacSHA1";
@@ -41,10 +42,12 @@ class KeyUtil {
     /**
      * 生成密钥
      *
+     * @param algorithm 算法
+     * @param size      密钥长度
      * @return 密钥字节
      * @throws NoSuchAlgorithmException 异常
      */
-    static byte[] generateKey(String algorithm, int size) throws NoSuchAlgorithmException {
+    public static byte[] generateKey(String algorithm, int size) throws NoSuchAlgorithmException {
         KeyGenerator kg = KeyGenerator.getInstance(algorithm);
         kg.init(size);
         SecretKey secretKey = kg.generateKey();
@@ -62,7 +65,7 @@ class KeyUtil {
      * @throws NoSuchAlgorithmException 异常
      * @throws NoSuchProviderException  异常
      */
-    private static byte[] getRandomKey(String keyAlgorithm, String rawAlgorithm,
+    public static byte[] getRandomKey(String keyAlgorithm, String rawAlgorithm,
                                       byte[] seed, int size) throws
             NoSuchAlgorithmException,
             NoSuchProviderException {
@@ -88,7 +91,7 @@ class KeyUtil {
      * @throws NoSuchAlgorithmException 异常
      * @throws InvalidKeySpecException  异常
      */
-    private static byte[] getPBEKey(String algorithm, char[] password, byte[] salt,
+    public static byte[] getPBEKey(String algorithm, char[] password, byte[] salt,
                                    int iterationCount, int size) throws
             NoSuchAlgorithmException,
             InvalidKeySpecException {
@@ -108,7 +111,7 @@ class KeyUtil {
      * @throws NoSuchAlgorithmException 异常
      * @throws NoSuchProviderException  异常
      */
-    static byte[] getRandomKey(String algorithm, byte[] seed, int size) throws
+    public static byte[] getRandomKey(String algorithm, byte[] seed, int size) throws
             NoSuchAlgorithmException,
             NoSuchProviderException {
         return getRandomKey(algorithm, RAW_ALGORITHM, seed, size);
@@ -124,7 +127,7 @@ class KeyUtil {
      * @throws NoSuchAlgorithmException 异常
      * @throws InvalidKeySpecException  异常
      */
-    static byte[] getPBEKey(char[] password, byte[] salt, int size) throws
+    public static byte[] getPBEKey(char[] password, byte[] salt, int size) throws
             NoSuchAlgorithmException,
             InvalidKeySpecException {
         return getPBEKey(SKF_ALGORITHM, password, salt, ITERATION, size);

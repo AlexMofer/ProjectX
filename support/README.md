@@ -45,11 +45,26 @@ Support
 - **AMCompatScrollView**
 
     ScrollView的OnScrollChangeListener兼容版本
+- **MessageDigestUtils**
+
+    信息摘要工具类
+- **DESedeUtil**
+
+    DES加密解密工具类
+- **AESUtil**
+
+    AES加密解密工具类
+- **RSAUtil**
+
+    RSA加密解密工具类
+- **KeyUtil**
+
+    密钥工具类
 
 先决条件
 ----
 
-minSdkVersion 4
+minSdkVersion 9
 
 入门
 ---
@@ -59,10 +74,16 @@ minSdkVersion 4
 ```java
 dependencies {
     ...
-    implementation 'am.project:support:1.1.3'
+    implementation 'am.project:support:1.2.0'
     ...
 }
 ```
+
+注意
+---
+
+- 最好不要使用DES加密，推荐AES
+- RSA一般用于加密对称加密的密钥
 
 支持
 ---

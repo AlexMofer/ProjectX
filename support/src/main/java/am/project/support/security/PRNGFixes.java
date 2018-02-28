@@ -7,7 +7,7 @@
  * including commercial applications, and to alter it and redistribute it
  * freely, as long as the origin is not misrepresented.
  */
-package am.util.security;
+package am.project.support.security;
 
 import android.os.Build;
 import android.os.Process;
@@ -30,27 +30,28 @@ import java.security.Security;
 
 /**
  * Fixes for the output of the default PRNG having low entropy.
- *
+ * <p>
  * The fixes need to be applied via {@link #apply()} before any use of Java
  * Cryptography Architecture primitives. A good place to invoke them is in the
  * application's {@code onCreate}.
  */
 @SuppressWarnings("all")
-public final class PRNGFixes {
+final class PRNGFixes {
 
     private static final int VERSION_CODE_JELLY_BEAN = 16;
     private static final int VERSION_CODE_JELLY_BEAN_MR2 = 18;
     private static final byte[] BUILD_FINGERPRINT_AND_DEVICE_SERIAL = getBuildFingerprintAndDeviceSerial();
 
-    /** Hidden constructor to prevent instantiation. */
+    /**
+     * Hidden constructor to prevent instantiation.
+     */
     private PRNGFixes() {
     }
 
     /**
      * Applies all fixes.
      *
-     * @throws SecurityException
-     *             if a fix is needed but could not be applied.
+     * @throws SecurityException if a fix is needed but could not be applied.
      */
     public static void apply() {
         applyOpenSSLFix();
@@ -61,8 +62,7 @@ public final class PRNGFixes {
      * Applies the fix for OpenSSL PRNG having low entropy. Does nothing if the
      * fix is not needed.
      *
-     * @throws SecurityException
-     *             if the fix is needed but could not be applied.
+     * @throws SecurityException if the fix is needed but could not be applied.
      */
     private static void applyOpenSSLFix() throws SecurityException {
         if ((Build.VERSION.SDK_INT < VERSION_CODE_JELLY_BEAN)
@@ -98,8 +98,7 @@ public final class PRNGFixes {
      * default. Does nothing if the implementation is already the default or if
      * there is not need to install the implementation.
      *
-     * @throws SecurityException
-     *             if the fix is needed but could not be applied.
+     * @throws SecurityException if the fix is needed but could not be applied.
      */
     private static void installLinuxPRNGSecureRandom() throws SecurityException {
         if (Build.VERSION.SDK_INT > VERSION_CODE_JELLY_BEAN_MR2) {
@@ -144,6 +143,58 @@ public final class PRNGFixes {
     }
 
     /**
+     * Generates a device- and invocation-specific seed to be mixed into the
+     * Linux PRNG.
+     */
+    private static byte[] generateSeed() {
+        try {
+            ByteArrayOutputStream seedBuffer = new ByteArrayOutputStream();
+            DataOutputStream seedBufferOut = new DataOutputStream(seedBuffer);
+            seedBufferOut.writeLong(System.currentTimeMillis());
+            seedBufferOut.writeLong(System.nanoTime());
+            seedBufferOut.writeInt(Process.myPid());
+            seedBufferOut.writeInt(Process.myUid());
+            seedBufferOut.write(BUILD_FINGERPRINT_AND_DEVICE_SERIAL);
+            seedBufferOut.close();
+            return seedBuffer.toByteArray();
+        } catch (IOException e) {
+            throw new SecurityException("Failed to generate seed", e);
+        }
+    }
+
+    /**
+     * Gets the hardware serial number of this device.
+     *
+     * @return serial number or {@code null} if not available.
+     */
+    private static String getDeviceSerialNumber() {
+        // We're using the Reflection API because Build.SERIAL is only available
+        // since API Level 9 (Gingerbread, Android 2.3).
+        try {
+            return (String) Build.class.getField("SERIAL").get(null);
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+    private static byte[] getBuildFingerprintAndDeviceSerial() {
+        StringBuilder result = new StringBuilder();
+        String fingerprint = Build.FINGERPRINT;
+        if (fingerprint != null) {
+            result.append(fingerprint);
+        }
+        String serial = getDeviceSerialNumber();
+        if (serial != null) {
+            result.append(serial);
+        }
+        try {
+            return result.toString().getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("UTF-8 encoding not supported");
+        }
+    }
+
+    /**
      * {@code Provider} of {@code SecureRandom} engines which pass through all
      * requests to the Linux PRNG.
      */
@@ -174,12 +225,12 @@ public final class PRNGFixes {
     public static class LinuxPRNGSecureRandom extends SecureRandomSpi {
 
 		/*
-		 * IMPLEMENTATION NOTE: Requests to generate bytes and to mix in a seed
+         * IMPLEMENTATION NOTE: Requests to generate bytes and to mix in a seed
 		 * are passed through to the Linux PRNG (/dev/urandom). Instances of
 		 * this class seed themselves by mixing in the current time, PID, UID,
 		 * build fingerprint, and hardware serial number (where available) into
 		 * Linux PRNG.
-		 * 
+		 *
 		 * Concurrency: Read requests to the underlying Linux PRNG are
 		 * serialized (on sLock) to ensure that multiple threads do not get
 		 * duplicated PRNG output.
@@ -290,58 +341,6 @@ public final class PRNGFixes {
                 }
                 return sUrandomOut;
             }
-        }
-    }
-
-    /**
-     * Generates a device- and invocation-specific seed to be mixed into the
-     * Linux PRNG.
-     */
-    private static byte[] generateSeed() {
-        try {
-            ByteArrayOutputStream seedBuffer = new ByteArrayOutputStream();
-            DataOutputStream seedBufferOut = new DataOutputStream(seedBuffer);
-            seedBufferOut.writeLong(System.currentTimeMillis());
-            seedBufferOut.writeLong(System.nanoTime());
-            seedBufferOut.writeInt(Process.myPid());
-            seedBufferOut.writeInt(Process.myUid());
-            seedBufferOut.write(BUILD_FINGERPRINT_AND_DEVICE_SERIAL);
-            seedBufferOut.close();
-            return seedBuffer.toByteArray();
-        } catch (IOException e) {
-            throw new SecurityException("Failed to generate seed", e);
-        }
-    }
-
-    /**
-     * Gets the hardware serial number of this device.
-     *
-     * @return serial number or {@code null} if not available.
-     */
-    private static String getDeviceSerialNumber() {
-        // We're using the Reflection API because Build.SERIAL is only available
-        // since API Level 9 (Gingerbread, Android 2.3).
-        try {
-            return (String) Build.class.getField("SERIAL").get(null);
-        } catch (Exception ignored) {
-            return null;
-        }
-    }
-
-    private static byte[] getBuildFingerprintAndDeviceSerial() {
-        StringBuilder result = new StringBuilder();
-        String fingerprint = Build.FINGERPRINT;
-        if (fingerprint != null) {
-            result.append(fingerprint);
-        }
-        String serial = getDeviceSerialNumber();
-        if (serial != null) {
-            result.append(serial);
-        }
-        try {
-            return result.toString().getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("UTF-8 encoding not supported");
         }
     }
 }

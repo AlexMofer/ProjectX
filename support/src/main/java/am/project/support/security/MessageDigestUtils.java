@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package am.util.security;
+package am.project.support.security;
 
 import android.os.Build;
 

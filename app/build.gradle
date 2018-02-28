@@ -61,7 +61,6 @@ dependencies {
     implementation project(':printer')
     implementation project(':viewpager')
     implementation project(':recyclerview')
-    implementation project(':security')
     implementation project(':mvp')
     implementation project(':multifunctionalrecyclerview')
     implementation project(':ftpserver')
