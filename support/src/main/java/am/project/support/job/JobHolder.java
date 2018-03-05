@@ -90,8 +90,8 @@ class JobHolder implements Runnable, Comparable<JobHolder> {
         }
     }
 
-    void publishProgress(Object... values) {
+    void publishProgress(Job.Progress progress) {
         if (mExecutor != null)
-            mExecutor.publishProgress(mJob, values);
+            mExecutor.publishProgress(mJob, progress);
     }
 }

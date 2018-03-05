@@ -167,7 +167,7 @@ class JobExecutor extends ThreadPoolExecutor
     private void progressUpdate(Message msg) {
         if (msg.obj instanceof MessageTag) {
             MessageTag tag = (MessageTag) msg.obj;
-            tag.getJob().onProgressUpdate(tag.getValues());
+            tag.getJob().onProgressUpdate(tag.getProgress());
             tag.clear();
             synchronized (MESSAGE_TAGS) {
                 MESSAGE_TAGS.add(tag);
@@ -181,16 +181,16 @@ class JobExecutor extends ThreadPoolExecutor
         mHandler.obtainMessage(MSG_RESULT, tag).sendToTarget();
     }
 
-    void publishProgress(Job job, Object... values) {
+    void publishProgress(Job job, Job.Progress progress) {
         MessageTag tag = getMessageTag();
         tag.setJob(job);
-        tag.setValues(values);
+        tag.setProgress(progress);
         mHandler.obtainMessage(MSG_PROGRESS, tag).sendToTarget();
     }
 
     private static class MessageTag {
         private Job mJob;
-        private Object[] mValues;
+        private Job.Progress mProgress;
 
         private Job getJob() {
             return mJob;
@@ -200,17 +200,17 @@ class JobExecutor extends ThreadPoolExecutor
             mJob = job;
         }
 
-        private Object[] getValues() {
-            return mValues;
+        private Job.Progress getProgress() {
+            return mProgress;
         }
 
-        private void setValues(Object[] values) {
-            mValues = values;
+        private void setProgress(Job.Progress progress) {
+            mProgress = progress;
         }
 
         private void clear() {
             mJob = null;
-            mValues = null;
+            mProgress = null;
         }
     }
 }

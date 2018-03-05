@@ -74,7 +74,7 @@ minSdkVersion 9
 ```java
 dependencies {
     ...
-    implementation 'am.project:support:1.2.0'
+    implementation 'am.project:support:1.2.1'
     ...
 }
 ```
