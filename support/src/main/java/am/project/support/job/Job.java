@@ -45,6 +45,7 @@ public abstract class Job<T> {
     private WeakReference<T> mWeakReference;
     private int mAction;
     private boolean mSuccess = false;
+    private Object mTag;
 
     public Job(T callback) {
         this(callback, 0);
@@ -128,11 +129,13 @@ public abstract class Job<T> {
         final Object param = mParams.get(key);
         if (param == null)
             throw new IllegalArgumentException("There is no param with key" + key + ".");
+        final Params result;
         try {
-            return (Params) param;
+            result = (Params) param;
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
+        return result;
     }
 
     public <Params> Params getParam(int key, Params defaultValue) {
@@ -286,11 +289,13 @@ public abstract class Job<T> {
         final Object param = weak.get();
         if (param == null)
             return null;
+        final Params result;
         try {
-            return (Params) param;
+            result = (Params) param;
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
+        return result;
     }
 
     public <Params> Params getWeakParam(int key, Params defaultValue) {
@@ -335,11 +340,13 @@ public abstract class Job<T> {
         final Object result = mResults.get(key);
         if (result == null)
             throw new IllegalArgumentException("There is no result with key" + key + ".");
+        final Result r;
         try {
-            return (Result) result;
+            r = (Result) result;
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
+        return r;
     }
 
     public <Result> Result getResult(int key, Result defaultValue) {
@@ -477,6 +484,15 @@ public abstract class Job<T> {
         } catch (IllegalArgumentException e) {
             return defaultValue;
         }
+    }
+
+    public Object getTag() {
+        return mTag;
+    }
+
+    public Job<T> setTag(Object tag) {
+        mTag = tag;
+        return this;
     }
 
     protected abstract void doInBackground();
