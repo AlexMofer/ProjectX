@@ -1,6 +1,6 @@
 
 # 博客索引
-------
+
 共同学习，分享成长。
 
 ## Widget
@@ -15,6 +15,7 @@
 - [***多个开源项目Bintray一键发布环境部署***](https://github.com/AlexMofer/ProjectX/blob/master/blogs/%5BSkill%5D%E5%A4%9A%E4%B8%AA%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AEBintray%E4%B8%80%E9%94%AE%E5%8F%91%E5%B8%83%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2.md)
 - [***Android自动化构建***](https://github.com/AlexMofer/ProjectX/blob/master/blogs/%5BSKill%5DAndroid%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA.md)
 - [***Android自动化构建之使用Gradle下载与处理文件***](https://github.com/AlexMofer/ProjectX/blob/master/blogs/%5BSkill%5DAndroid%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9E%84%E5%BB%BA%E4%B9%8B%E4%BD%BF%E7%94%A8Gradle%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%A4%84%E7%90%86%E6%96%87%E4%BB%B6.md)
+- [***Android 8.0 上一个奇怪的IllegalStateException***](https://github.com/AlexMofer/ProjectX/blob/master/blogs/%5BSkill%5DAndroid%208.0%20%E4%B8%8A%E4%B8%80%E4%B8%AA%E5%A5%87%E6%80%AA%E7%9A%84IllegalStateException.md)
 
 ## Translation
 - [***Google Java Style 指南***](https://github.com/AlexMofer/ProjectX/blob/master/blogs/%5BTranslation%5DGoogle%20Java%20Style%20%E6%8C%87%E5%8D%97.md)
