@@ -71,4 +71,9 @@ public class ScaleLinearLayoutManager extends PagingLayoutManager {
             return;
         mChildScale = scale;
     }
+
+    @Override
+    protected int computeAnotherDirectionMaxScrollOffset() {
+        return super.computeAnotherDirectionMaxScrollOffset();
+    }
 }

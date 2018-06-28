@@ -17,10 +17,10 @@
 package am.widget.scalerecyclerview;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GestureDetectorCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -38,10 +38,6 @@ import am.widget.scrollbarrecyclerview.ScrollbarRecyclerView;
 @SuppressWarnings("all")
 public class ScaleRecyclerView extends ScrollbarRecyclerView {
 
-    public static final int TYPE_ADJUST_AUTO = 0;
-    public static final int TYPE_ADJUST_HORIZONTAL = 1;
-    public static final int TYPE_ADJUST_VERTICAL = 2;
-    public static final int TYPE_ADJUST_ALL = 3;
     public static final int SCROLL_STATE_SCALING = 3;
     private static final String KEY_SCALE = "am.widget.scalerecyclerview.ScaleRecyclerView.KEY_SCALE";
     private final ScaleHelper mScaleHelper = new ScaleHelper(this);
@@ -56,9 +52,7 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
     private float mScale = 1;
     private float mMaxScale = 6;
     private float mMinScale = 0.000000001f;
-
-
-    private int mAdjustType = TYPE_ADJUST_AUTO;
+    private final Rect tRect = new Rect();
 
     public ScaleRecyclerView(Context context) {
         super(context);
@@ -85,8 +79,8 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
         if (parent instanceof ScaleRecyclerView) {
             final ScaleRecyclerView view = (ScaleRecyclerView) parent;
             RecyclerView.ViewHolder holder = view.findContainingViewHolder(child);
-            if (holder instanceof ScaleRecyclerView.ViewHolder) {
-                ((ScaleRecyclerView.ViewHolder) holder).setScale(view.getScale());
+            if (holder instanceof ViewHolder) {
+                ((ViewHolder) holder).setScale(view.getScale());
             }
         }
     }
@@ -313,59 +307,6 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
         scale = scale < mMinScale ? mMinScale : scale;
         if (scale == mScale)
             return;
-        View child = getChildAt(0);
-        // 计算focus对应View的(x1, y1)
-        final float beforeViewX = focusX - child.getLeft();
-        final float beforeViewY = focusY - child.getTop();
-        // 计算View的(x1, y1)对应缩放后的(x2, y2)
-        final float afterViewX = beforeViewX / mScale * scale;
-        final float afterViewY = beforeViewY / mScale * scale;
-        mScale = scale;
-        invalidateLayoutManagerScale();
-        requestLayout();
-        // 应用偏移
-        final int dx = Math.round(afterViewX - beforeViewX);
-        final int dy = Math.round(afterViewY - beforeViewY);
-        switch (mAdjustType) {
-            default:
-            case TYPE_ADJUST_AUTO:
-                final LayoutManager layoutManager = getLayoutManager();
-                if (layoutManager instanceof LinearLayoutManager) {
-                    if (((LinearLayoutManager) layoutManager).getOrientation() ==
-                            LinearLayoutManager.HORIZONTAL) {
-                        scrollBy(dx, 0);
-                    } else {
-                        scrollBy(0, dy);
-                    }
-                } else {
-                    scrollBy(dx, dy);
-                }
-                break;
-            case TYPE_ADJUST_HORIZONTAL:
-                scrollBy(dx, 0);
-                break;
-            case TYPE_ADJUST_VERTICAL:
-                scrollBy(0, dy);
-                break;
-            case TYPE_ADJUST_ALL:
-                scrollBy(dx, dy);
-                break;
-        }
-    }
-
-    /**
-     * 缩放
-     * TODO 改进中
-     *
-     * @param scale  目标缩放比
-     * @param focusX 焦点X
-     * @param focusY 焦点Y
-     */
-    private void scaleToNew(float scale, float focusX, float focusY) {
-        scale = scale > mMaxScale ? mMaxScale : scale;
-        scale = scale < mMinScale ? mMinScale : scale;
-        if (scale == mScale)
-            return;
         final ScaleLinearLayoutManager manager = getLayoutManager();
         if (manager == null) {
             mScale = scale;
@@ -380,42 +321,48 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
             requestLayout();
             return;
         }
+        final int position = getChildAdapterPosition(target);
+        float maxWidth = manager.getChildMaxWidth(manager.getChildMaxWidth());
+        float maxHeight = manager.getChildMaxHeight(manager.getChildMaxHeight());
+        final int offsetA = manager.computeAnotherDirectionScrollOffset();
+        final float normalWidth = target.getWidth() / mScale;
+        final float normalHeight = target.getHeight() / mScale;
+        final float inset;
+        final float focusA;
+        final float focusS;
+        getDecoratedBoundsWithMargins(target, tRect);
+        if (manager.getOrientation() == HORIZONTAL) {
+            focusA = (offsetA + (focusY - getPaddingTop())) / maxHeight;
+            inset = target.getLeft() - tRect.left;
+            focusS = (focusX - target.getLeft()) / target.getWidth();
+        } else {
+            focusA = (offsetA + (focusX - getPaddingLeft())) / maxWidth;
+            focusS = (focusY - target.getTop()) / target.getHeight();
+            inset = target.getTop() - tRect.top;
+        }
         mScale = scale;
         invalidateLayoutManagerScale();
-        adjustScroll(manager, target, scale, focusX, focusY);
-    }
-
-    private void adjustScroll(ScaleLinearLayoutManager manager, View target,
-                              float scale, float focusX, float focusY) {
-
-//        LayoutParams layoutParams = (LayoutParams) target.getLayoutParams(); TODO Marrgin
-        final int width = target.getWidth() == 0 ? 1 : target.getWidth();
-        final int height = target.getHeight() == 0 ? 1 : target.getHeight();
-        final int leftDecorationWidth = manager.getLeftDecorationWidth(target); // TODO 增加可缩放的ItemDecorations ？
-        final int topDecorationWidth = manager.getTopDecorationHeight(target); // TODO 增加可缩放的ItemDecorations ？
-        final float dx = focusX - target.getLeft();
-        final float dy = focusY - target.getTop();
-        final float px = dx / width;
-        final float py = dy / height;
-        final float widthScaled = width * scale;
-        final float heightScaled = height * scale;
-        final float dXScaled = widthScaled * px;
-        final float dYScaled = heightScaled * py;
-        final float leftScaled = focusX - dXScaled;
-        final float topScaled = focusY - dYScaled;
-        final int position = manager.getPosition(target);
-        final float offsetX = (leftScaled - leftDecorationWidth - getPaddingLeft());
-        final float offsetY = (topScaled - topDecorationWidth - getPaddingTop());
-//        final float percentage = 0.5f; // TODO 位置校调可优化
-//        manager.setAnotherDirectionScrollOffsetPercentage(percentage, false);
-        System.out.println("position-----------------------------------------------------:" + position);
-        System.out.println("offsetX------------------------------------------------------:" + offsetX);
-        System.out.println("offsetY------------------------------------------------------:" + offsetY);
-        if (manager.getOrientation() == LinearLayoutManager.HORIZONTAL) {
-            manager.scrollToPositionWithOffset(position, Math.round(offsetX));
+        final float maxOffset = manager.computeAnotherDirectionMaxScrollOffset();
+        if (maxOffset <= 0) {
+            manager.setAnotherDirectionScrollOffsetPercentage(0);
         } else {
-            manager.scrollToPositionWithOffset(position, Math.round(offsetY));
+            maxWidth = manager.getChildMaxWidth(manager.getChildMaxWidth());
+            maxHeight = manager.getChildMaxHeight(manager.getChildMaxHeight());
+            final float scaleOffset;
+            if (manager.getOrientation() == HORIZONTAL) {
+                scaleOffset = focusA * maxHeight - (focusY - getPaddingTop());
+            } else {
+                scaleOffset = focusA * maxWidth - (focusX - getPaddingLeft());
+            }
+            manager.setAnotherDirectionScrollOffsetPercentage(scaleOffset / maxOffset);
         }
+        final float offsetS;
+        if (manager.getOrientation() == HORIZONTAL) {
+            offsetS = -(focusS * normalWidth * mScale - (focusX - getPaddingLeft())) - inset;
+        } else {
+            offsetS = -(focusS * normalHeight * mScale - (focusY - getPaddingTop())) - inset;
+        }
+        manager.scrollToPositionWithOffset(position, Math.round(offsetS));
     }
 
     /**
@@ -514,15 +461,6 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
         requestLayout();
     }
 
-    /**
-     * 设置缩放后的位置校调方式
-     *
-     * @param type 校调方式
-     */
-    public void setAdjustType(int type) {
-        mAdjustType = type;
-    }
-
     public interface OnTabListener {
         /**
          * 单击事件
@@ -562,10 +500,6 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
         public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
             mView = null;
             super.onDetachedFromRecyclerView(recyclerView);
-        }
-
-        public boolean isAttachedToRecyclerView() {
-            return mView != null;
         }
 
         public float getScale() {
