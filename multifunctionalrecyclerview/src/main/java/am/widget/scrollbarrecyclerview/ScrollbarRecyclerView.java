@@ -32,6 +32,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import am.widget.itemanimatorcontrollablerecyclerview.ItemAnimatorControllableRecyclerView;
+import am.widget.multifunctionalrecyclerview.layoutmanager.PagingLayoutManager;
 
 
 /**
@@ -164,7 +165,9 @@ public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView 
         if (getChildCount() == 1)
             return getChildAt(0);
         final LayoutManager layoutManager = getLayoutManager();
-        if (layoutManager instanceof LinearLayoutManager) {
+        if (layoutManager instanceof PagingLayoutManager) {
+            return ((PagingLayoutManager) layoutManager).findChildViewNear(x, y);
+        } else if (layoutManager instanceof LinearLayoutManager) {
             final LinearLayoutManager linear = (LinearLayoutManager) layoutManager;
             float distance = Float.MAX_VALUE;
             View target = null;
