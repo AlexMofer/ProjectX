@@ -36,7 +36,6 @@ import am.widget.multifunctionalrecyclerview.R;
 
 /**
  * 默认的滚动条
- * TODO 图片触摸状态可优化
  * Created by Alex on 2017/11/1.
  */
 @SuppressWarnings("all")
@@ -49,6 +48,8 @@ public class DefaultScrollbar extends ScrollbarRecyclerView.Scrollbar {
     public static final int ANIMATOR_TYPE_HIDE = 1;
     public static final int ANIMATOR_TYPE_MOVE = 2;
     public static final int ANIMATOR_TYPE_ALL = 3;
+    static final int[] PRESS =
+            new int[]{android.R.attr.state_focused, android.R.attr.state_pressed};
     private final TextPaint mPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
     private final Rect mTextBound = new Rect();
     private final RectF mTouchBound = new RectF();

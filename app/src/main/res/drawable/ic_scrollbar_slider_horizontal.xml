@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:bottom="10dp"
-        android:top="10dp">
-        <shape>
-            <size
-                android:width="24dp"
-                android:height="4dp" />
-            <solid android:color="@color/colorPrimaryDark" />
-            <corners android:radius="2dp" />
-        </shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <layer-list>
+            <item android:bottom="10dp" android:top="10dp">
+                <shape>
+                    <size android:width="24dp" android:height="4dp" />
+                    <solid android:color="@color/colorPrimaryDark" />
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+        </layer-list>
     </item>
-</layer-list>
+    <item>
+        <layer-list>
+            <item android:bottom="10dp" android:top="10dp">
+                <shape>
+                    <size android:width="24dp" android:height="4dp" />
+                    <solid android:color="@color/colorPrimary" />
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector>

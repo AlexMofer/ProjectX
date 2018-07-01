@@ -24,6 +24,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.util.StateSet;
 import android.view.MotionEvent;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
@@ -323,11 +325,13 @@ class DefaultScrollbarVertical implements DefaultScrollbar.Scrollbar {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 mShowIndicator = true;
+                down();
                 mIndicatorAnimation.stop();
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 mShowIndicator = false;
+                up();
                 mIndicatorAnimation.start();
                 break;
         }
@@ -339,6 +343,22 @@ class DefaultScrollbarVertical implements DefaultScrollbar.Scrollbar {
         final float offset = (y - yStart) / touchHeight;
         scroll(view, offset);
         return true;
+    }
+
+    private void down() {
+        if (mSlider == null)
+            return;
+        if (Build.VERSION.SDK_INT >= 21) {
+            mSlider.setHotspot(mSlider.getIntrinsicWidth() * 0.5f,
+                    mSlider.getIntrinsicHeight() * 0.5f);
+        }
+        mSlider.setState(DefaultScrollbar.PRESS);
+    }
+
+    private void up() {
+        if (mSlider == null)
+            return;
+        mSlider.setState(StateSet.NOTHING);
     }
 
     private void scroll(ScrollbarRecyclerView view, float percentageY) {
