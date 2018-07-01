@@ -216,6 +216,10 @@ public class DisplayRecyclerView extends MultifunctionalRecyclerView implements
         return mLayoutManager.isPagingEnable();
     }
 
+    public void setPagingEnable(boolean enable) {
+        mLayoutManager.setPagingEnable(enable);
+    }
+
     /**
      * 设置阅读位置
      *

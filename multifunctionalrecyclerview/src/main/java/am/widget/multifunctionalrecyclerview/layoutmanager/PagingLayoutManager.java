@@ -41,6 +41,8 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
     private int mScrollState = RecyclerView.SCROLL_STATE_IDLE;
     private boolean mForceInterceptDispatchOnScrollStateChanged = false;
     private boolean mAdjustPagingAfterLayoutComplete = false;
+    private int mRecoveryPosition = -1;
+    private int mRecoveryStart;
 
 
     public PagingLayoutManager(Context context) {
@@ -157,7 +159,26 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
             if (mPagingEnable) {
                 adjustPaging(false);
             } else {
-                // TODO 将View移动到关闭前的位置
+                if (mRecoveryPosition >= 0) {
+                    final int position = mRecoveryPosition;
+                    mRecoveryPosition = -1;
+                    final RecyclerView view = getRecyclerView();
+                    if (view == null)
+                        return;
+                    final View target = findViewByPosition(position);
+                    if (target == null)
+                        return;
+                    final int orientation = getOrientation();
+                    if (orientation == HORIZONTAL) {
+                        if (target.getLeft() == mRecoveryStart)
+                            return;
+                        view.scrollBy(target.getLeft() - mRecoveryStart, 0);
+                    } else {
+                        if (target.getTop() == mRecoveryStart)
+                            return;
+                        view.scrollBy(0, target.getTop() - mRecoveryStart);
+                    }
+                }
             }
         }
     }
@@ -476,6 +497,40 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
         if (isAttachedToWindow()) {
             getRecyclerView().setOnFlingListener(mPagingEnable ? mFlingListener : null);
             mAdjustPagingAfterLayoutComplete = true;
+            mRecoveryPosition = -1;
+            if (!mPagingEnable && getChildCount() >= 1) {
+                final int orientation = getOrientation();
+                View target = null;
+                if (getChildCount() > 1) {
+                    final int count = getChildCount();
+                    final float cx = getPaddingStart() +
+                            (getWidth() - getPaddingStart() - getPaddingEnd()) * 0.5f;
+                    final float cy = getPaddingTop() +
+                            (getHeight() - getPaddingTop() - getPaddingBottom()) * 0.5f;
+                    for (int i = 0; i < count; i++) {
+                        final View child = getChildAt(i);
+                        if (orientation == HORIZONTAL) {
+                            if (child.getLeft() <= cx && child.getRight() >= cx) {
+                                target = child;
+                                break;
+                            }
+                        } else {
+                            if (child.getTop() <= cy && child.getBottom() >= cy) {
+                                target = child;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (target == null)
+                    target = getChildAt(0);
+                mRecoveryPosition = getPosition(target);
+                if (orientation == HORIZONTAL) {
+                    mRecoveryStart = target.getLeft();
+                } else {
+                    mRecoveryStart = target.getTop();
+                }
+            }
         }
         requestLayout();
     }

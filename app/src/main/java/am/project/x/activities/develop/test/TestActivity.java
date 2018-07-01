@@ -4,12 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import am.project.x.R;
 import am.project.x.widgets.display.DisplayRecyclerView;
 import am.util.mvp.AMAppCompatActivity;
 
-public class TestActivity extends AMAppCompatActivity {
+public class TestActivity extends AMAppCompatActivity implements View.OnClickListener {
 
     private final DisplayAdapter mAdapter = new DisplayAdapter();
     private DisplayRecyclerView mVContent;
@@ -29,5 +30,16 @@ public class TestActivity extends AMAppCompatActivity {
 
         mVContent = findViewById(R.id.display_rv_content);
         mVContent.setAdapter(mAdapter);
+
+        findViewById(R.id.display_btn_temp).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.display_btn_temp:
+                mVContent.setPagingEnable(!mVContent.isPagingEnable());
+                break;
+        }
     }
 }

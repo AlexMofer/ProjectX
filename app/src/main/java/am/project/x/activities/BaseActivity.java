@@ -43,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param showTitle 是否显示标题
      */
     public void setSupportActionBar(@IdRes int toolbarId, boolean showTitle) {
-        Toolbar mToolbar = (Toolbar) findViewById(toolbarId);
+        Toolbar mToolbar = findViewById(toolbarId);
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             mToolbar.setNavigationOnClickListener(new NavigationOnClickListener());
