@@ -17,7 +17,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:visibility="gone">
 
         <am.project.x.widgets.display.DisplayRecyclerView
             android:id="@+id/display_rv_content"
@@ -65,6 +66,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/tts_vp_fragments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <am.widget.tabstrip.TagTabStrip
+            android:id="@+id/tts_ts_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="30dp" />
+
     </FrameLayout>
 
 </LinearLayout>
