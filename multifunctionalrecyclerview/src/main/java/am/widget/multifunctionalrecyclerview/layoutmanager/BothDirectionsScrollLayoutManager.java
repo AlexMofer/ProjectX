@@ -114,7 +114,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     @Override
     protected void onRestoreInstanceState(Bundle bundle) {
         super.onRestoreInstanceState(bundle);
-        mPercentage = bundle.getFloat(KEY_OFFSET);
+        mPendingPercentage = bundle.getFloat(KEY_OFFSET);
     }
 
     /**
