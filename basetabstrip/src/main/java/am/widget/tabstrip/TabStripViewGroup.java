@@ -29,6 +29,9 @@ import android.view.ViewGroup;
 
 import am.widget.basetabstrip.R;
 
+/**
+ * 标签条
+ */
 @SuppressWarnings("unused")
 @ViewPager.DecorView
 public abstract class TabStripViewGroup extends ViewGroup {
@@ -101,7 +104,7 @@ public abstract class TabStripViewGroup extends ViewGroup {
      */
     public boolean performClick(int position, boolean smoothScroll) {
         if (mHelper.isBoundViewPager()) {
-            setCurrentItem(position, smoothScroll);
+            mHelper.setCurrentItem(position, smoothScroll);
             return true;
         }
         return false;
@@ -214,6 +217,16 @@ public abstract class TabStripViewGroup extends ViewGroup {
     }
 
     /**
+     * 判断是否为双击
+     * 一般用于{@link #performClick(int, boolean)}方法中用于判断当前点击是否为双击，其他地方调用则无意义
+     *
+     * @return 是否为双击
+     */
+    protected boolean isDoubleClick() {
+        return mHelper.isDoubleClick();
+    }
+
+    /**
      * 获取页标题
      *
      * @param position 页坐标
@@ -231,26 +244,6 @@ public abstract class TabStripViewGroup extends ViewGroup {
      */
     protected int getPageCount() {
         return mHelper.getPageCount();
-    }
-
-    /**
-     * 设置选中页
-     *
-     * @param position     页坐标
-     * @param smoothScroll 是否平滑滚动
-     */
-    protected void setCurrentItem(int position, boolean smoothScroll) {
-        mHelper.setCurrentItem(position, smoothScroll);
-    }
-
-    /**
-     * 判断是否为双击
-     * 一般用于{@link #performClick(int, boolean)}方法中用于判断当前点击是否为双击，其他地方调用则无意义
-     *
-     * @return 是否为双击
-     */
-    protected boolean isDoubleClick() {
-        return mHelper.isDoubleClick();
     }
 
     /**

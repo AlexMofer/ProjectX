@@ -29,6 +29,9 @@ import android.view.View;
 
 import am.widget.basetabstrip.R;
 
+/**
+ * 标签条
+ */
 @SuppressWarnings("unused")
 @ViewPager.DecorView
 public abstract class TabStripView extends View {
@@ -100,7 +103,7 @@ public abstract class TabStripView extends View {
      */
     public boolean performClick(int position, boolean smoothScroll) {
         if (mHelper.isBoundViewPager()) {
-            setCurrentItem(position, smoothScroll);
+            mHelper.setCurrentItem(position, smoothScroll);
             return true;
         }
         return false;
@@ -240,16 +243,6 @@ public abstract class TabStripView extends View {
      */
     protected int getPageCount() {
         return mHelper.getPageCount();
-    }
-
-    /**
-     * 设置选中页
-     *
-     * @param position     页坐标
-     * @param smoothScroll 是否平滑滚动
-     */
-    protected void setCurrentItem(int position, boolean smoothScroll) {
-        mHelper.setCurrentItem(position, smoothScroll);
     }
 
     /**

@@ -15,7 +15,6 @@ import java.util.Locale;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
 import am.util.viewpager.adapter.ViewsPagerAdapter;
-import am.widget.tagtabstrip.TagTabStrip;
 
 public class TagTabStripActivity extends BaseActivity {
 
@@ -25,13 +24,10 @@ public class TagTabStripActivity extends BaseActivity {
     }
 
     @Override
-    @SuppressWarnings("all")
     protected void initResource(Bundle savedInstanceState) {
         setSupportActionBar(R.id.tts_toolbar);
-        ViewPager vpContent = (ViewPager) findViewById(R.id.tts_vp_fragments);
-        TagTabStrip ttsTags = (TagTabStrip) findViewById(R.id.tts_tts_tags);
-        vpContent.setAdapter(new ViewsPagerAdapter(getPagers()));
-        ttsTags.bindViewPager(vpContent);
+        ((ViewPager) findViewById(R.id.tts_vp_fragments))
+                .setAdapter(new ViewsPagerAdapter(getPagers()));
     }
 
     private ArrayList<View> getPagers() {

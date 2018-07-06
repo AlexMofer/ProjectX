@@ -42,9 +42,11 @@ import java.util.ArrayList;
 
 /**
  * BasePagerTabStrip ViewPager滑动对应变化效果
- *
+ * @see am.widget.tabstrip.TabStripView
+ * @see am.widget.tabstrip.TabStripViewGroup
  * @author Alex
  */
+@Deprecated
 @ViewPager.DecorView
 public abstract class BaseTabStrip extends View {
 
