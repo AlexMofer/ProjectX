@@ -352,7 +352,7 @@ class DefaultScrollbarVertical implements DefaultScrollbar.Scrollbar {
             mSlider.setHotspot(mSlider.getIntrinsicWidth() * 0.5f,
                     mSlider.getIntrinsicHeight() * 0.5f);
         }
-        mSlider.setState(DefaultScrollbar.PRESS);
+        mSlider.setState(ScrollbarRecyclerView.PRESSED_STATE_SET);
     }
 
     private void up() {

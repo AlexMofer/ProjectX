@@ -42,11 +42,19 @@ import am.widget.multifunctionalrecyclerview.layoutmanager.PagingLayoutManager;
 @SuppressWarnings("all")
 public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView {
 
+    protected static final int[] PRESSED_STATE_SET;
+
+    static {
+        if (Build.VERSION.SDK_INT >= 19)
+            PRESSED_STATE_SET = View.PRESSED_STATE_SET;
+        else
+            PRESSED_STATE_SET = new int[]{android.R.attr.state_focused,
+                    android.R.attr.state_pressed};
+    }
     private final Rect mChildBound = new Rect();
     private Scrollbar mScrollbar;// 滚动条
     private IndicatorAdapter mAdapter;
     private boolean mInterceptTouch;
-
     public ScrollbarRecyclerView(Context context) {
         super(context);
         initView(context, null);
