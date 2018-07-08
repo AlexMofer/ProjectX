@@ -11,13 +11,13 @@ import android.view.ViewGroup;
 import am.project.x.R;
 import am.project.x.activities.widgets.cameraview.CameraViewActivity;
 import am.project.x.activities.widgets.circleprogressbar.CircleProgressBarActivity;
+import am.project.x.activities.widgets.drawableratingbar.DrawableRatingBarActivity;
+import am.project.x.activities.widgets.gradienttabstrip.GradientTabStripActivity;
 import am.project.x.activities.widgets.headerfootergridview.HeaderFooterGridViewActivity;
+import am.project.x.activities.widgets.indicatortabstrip.IndicatorTabStripActivity;
 import am.project.x.activities.widgets.multiactiontextview.MultiActionTextViewActivity;
 import am.project.x.activities.widgets.recyclepager.RecyclePagerActivity;
 import am.project.x.activities.widgets.replacelayout.ReplaceLayoutActivity;
-import am.project.x.activities.widgets.drawableratingbar.DrawableRatingBarActivity;
-import am.project.x.activities.widgets.gradienttabstrip.GradientTabStripActivity;
-import am.project.x.activities.widgets.indicatortabstrip.IndicatorTabStripActivity;
 import am.project.x.activities.widgets.selectionview.SelectionViewActivity;
 import am.project.x.activities.widgets.shapeimageview.ShapeImageViewActivity;
 import am.project.x.activities.widgets.smoothinputlayout.SmoothInputLayoutActivity;
@@ -66,7 +66,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.widget_btn_gradienttabstrip:
-                GradientTabStripActivity.startActivity(getContext());
+                GradientTabStripActivity.start(getContext());
                 break;
             case R.id.widget_btn_tagtabstrip:
                 TagTabStripActivity.startActivity(getContext());

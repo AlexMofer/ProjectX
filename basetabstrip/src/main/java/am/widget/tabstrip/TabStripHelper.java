@@ -59,6 +59,8 @@ class TabStripHelper extends DataSetObserver implements
     private boolean mDoubleClicked = false;
     private int mFirstPosition = PagerAdapter.POSITION_NONE;
     private int mSecondPosition = PagerAdapter.POSITION_NONE;
+    private TabStripObservable mObservable;
+    private boolean mAttached = false;
 
     TabStripHelper(View view) {
         mView = view;
@@ -117,6 +119,9 @@ class TabStripHelper extends DataSetObserver implements
         final ViewPager pager = TabStripHelper.findViewPager(mView, mPagerId, mAutoFind);
         if (pager != null)
             bindViewPager(pager);
+        mAttached = true;
+        if (mObservable != null)
+            mObservable.registerObserver(mView);
     }
 
     void onDetachedFromWindow() {
@@ -124,6 +129,9 @@ class TabStripHelper extends DataSetObserver implements
             onDetachedFromViewPager(mPager);
             mPager = null;
         }
+        mAttached = false;
+        if (mObservable != null)
+            mObservable.unregisterObserver(mView);
     }
 
     void bindViewPager(ViewPager pager) {
@@ -398,6 +406,18 @@ class TabStripHelper extends DataSetObserver implements
 
     void setClickSmoothScroll(boolean smoothScroll) {
         mClickSmoothScroll = smoothScroll;
+    }
+
+    void setObservable(TabStripObservable observable) {
+        if (mAttached) {
+            if (mObservable != null)
+                mObservable.unregisterObserver(mView);
+            mObservable = observable;
+            if (mObservable != null)
+                mObservable.registerObserver(mView);
+        } else {
+            mObservable = observable;
+        }
     }
 
     int getPageCount() {

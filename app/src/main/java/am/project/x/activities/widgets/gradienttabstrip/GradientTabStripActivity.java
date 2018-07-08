@@ -2,83 +2,160 @@ package am.project.x.activities.widgets.gradienttabstrip;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import am.widget.basetabstrip.BaseTabStrip;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
-import am.project.x.activities.widgets.gradienttabstrip.adapters.GradientTabStripAdapter;
-import am.widget.gradienttabstrip.GradientTabStrip;
+import am.util.viewpager.adapter.ViewsPagerAdapter;
+import am.widget.gradienttabstrip.GradientTabStripNew;
 
-public class GradientTabStripActivity extends BaseActivity implements
-        ViewPager.OnPageChangeListener, BaseTabStrip.OnItemClickListener {
-
-    private ViewPager vpFragments;
-    private TextView tvTitle;
-    private GradientTabStripAdapter adapter;
+public class GradientTabStripActivity extends BaseActivity {
 
     @Override
     protected int getContentViewLayoutResources() {
         return R.layout.activity_gradienttabstrip;
     }
 
+    public static void start(Context context) {
+        context.startActivity(new Intent(context, GradientTabStripActivity.class));
+    }
+
     @Override
     @SuppressWarnings("all")
     protected void initResource(Bundle savedInstanceState) {
         setSupportActionBar(R.id.gts_toolbar);
-
-        tvTitle = (TextView) findViewById(R.id.gts_tv_title);
-        vpFragments = (ViewPager) findViewById(R.id.gts_vp_fragments);
-        GradientTabStrip tabStrip = (GradientTabStrip) findViewById(R.id.gts_gts_tabs);
-        adapter = new GradientTabStripAdapter(getSupportFragmentManager());
-        vpFragments.setAdapter(adapter);
-        tabStrip.setAdapter(adapter);
-        vpFragments.addOnPageChangeListener(this);
-        tabStrip.bindViewPager(vpFragments);
-        tabStrip.setOnItemClickListener(this);
-        setTitle(adapter.getPageTitle(vpFragments.getCurrentItem()));
+        ((ViewPager) findViewById(R.id.gts_vp_pagers))
+                .setAdapter(new PagerAdapter(getPagers()));
+        ((GradientTabStripNew) findViewById(R.id.gts_gts_tabs))
+                .setAdapter(new TabAdapter(this));
     }
 
-    @Override
-    protected void onTitleChanged(CharSequence title, int color) {
-        super.onTitleChanged(title, color);
-        tvTitle.setText(title);
+    private ArrayList<View> getPagers() {
+        ArrayList<View> views = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            TextView text = new TextView(this);
+            text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 180);
+            text.setText(String.format(Locale.getDefault(), "%d", i + 1));
+            text.setGravity(Gravity.CENTER);
+            text.setTextColor(0xff000000);
+            views.add(text);
+        }
+        return views;
     }
 
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    private class PagerAdapter extends ViewsPagerAdapter {
+        PagerAdapter(List<View> views) {
+            super(views);
+        }
 
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                default:
+                    return "标签" + position;
+                case 0:
+                    return "微信";
+                case 1:
+                    return "通讯录";
+                case 2:
+                    return "发现";
+                case 3:
+                    return "我";
+            }
+        }
     }
 
-    @Override
-    public void onPageSelected(int position) {
-        setTitle(adapter.getPageTitle(vpFragments.getCurrentItem()));
-    }
+    private class TabAdapter extends GradientTabStripNew.Adapter {
 
-    @Override
-    public void onPageScrollStateChanged(int state) {
+        private final Drawable mNormal0;
+        private final Drawable mNormal1;
+        private final Drawable mNormal2;
+        private final Drawable mNormal3;
+        private final Drawable mSelected0;
+        private final Drawable mSelected1;
+        private final Drawable mSelected2;
+        private final Drawable mSelected3;
 
-    }
+        TabAdapter(Context context) {
+            mNormal0 = ContextCompat.getDrawable(context,
+                    R.drawable.ic_gradienttabstrip_chat_normal);
+            mNormal1 = ContextCompat.getDrawable(context,
+                    R.drawable.ic_gradienttabstrip_contacts_normal);
+            mNormal2 = ContextCompat.getDrawable(context,
+                    R.drawable.ic_gradienttabstrip_discovery_normal);
+            mNormal3 = ContextCompat.getDrawable(context,
+                    R.drawable.ic_gradienttabstrip_account_normal);
+            mSelected0 = ContextCompat.getDrawable(context,
+                    R.drawable.ic_gradienttabstrip_chat_selected);
+            mSelected1 = ContextCompat.getDrawable(context,
+                    R.drawable.ic_gradienttabstrip_contacts_selected);
+            mSelected2 = ContextCompat.getDrawable(context,
+                    R.drawable.ic_gradienttabstrip_discovery_selected);
+            mSelected3 = ContextCompat.getDrawable(context,
+                    R.drawable.ic_gradienttabstrip_account_selected);
+        }
 
-    @Override
-    public void onItemClick(int position) {
+        @Nullable
+        @Override
+        public Drawable getDrawableNormal(int position) {
+            switch (position) {
+                default:
+                case 0:
+                    return mNormal0;
+                case 1:
+                    return mNormal1;
+                case 2:
+                    return mNormal2;
+                case 3:
+                    return mNormal3;
+            }
+        }
 
-    }
+        @Nullable
+        @Override
+        public Drawable getDrawableSelected(int position) {
+            switch (position) {
+                default:
+                case 0:
+                    return mSelected0;
+                case 1:
+                    return mSelected1;
+                case 2:
+                    return mSelected2;
+                case 3:
+                    return mSelected3;
+            }
+        }
 
-    @Override
-    public void onSelectedClick(int position) {
-        Toast.makeText(getApplicationContext(), "onSelectedClick", Toast.LENGTH_SHORT).show();
-    }
+        @Override
+        public boolean isTagEnable(int position) {
+            return position != 3;
+        }
 
-    @Override
-    public void onDoubleClick(int position) {
-        Toast.makeText(getApplicationContext(), "onDoubleClick", Toast.LENGTH_SHORT).show();
-    }
-
-    public static void startActivity(Context context) {
-        context.startActivity(new Intent(context, GradientTabStripActivity.class));
+        @Override
+        public String getTag(int position) {
+            switch (position) {
+                default:
+                case 0:
+                    return "888";
+                case 1:
+                    return "";
+                case 2:
+                    return "new";
+            }
+        }
     }
 }

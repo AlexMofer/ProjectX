@@ -8,8 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import am.project.x.R;
-import am.project.x.activities.develop.test.TestActivity;
 import am.project.x.activities.main.adapters.MainPagerAdapter;
+import am.project.x.activities.widgets.gradienttabstrip.GradientTabStripActivity;
 import am.widget.gradienttabstrip.GradientTabStrip;
 
 /**
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         gtsTabs.setAdapter(adapter);
         gtsTabs.bindViewPager(vpFragments);
         if (savedInstanceState == null)
-            TestActivity.startActivity(this);
+            GradientTabStripActivity.start(this);
     }
 
     @Override

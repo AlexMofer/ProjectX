@@ -185,6 +185,12 @@ public abstract class TabStripView extends View {
     protected abstract void onViewPagerChanged(int position, float offset);
 
     /**
+     * 发生观察对象的变化通知
+     */
+    protected void onObservableChangeNotified() {
+    }
+
+    /**
      * 获取点击的页位置
      *
      * @param downX ACTION_DOWN X轴坐标
@@ -213,6 +219,15 @@ public abstract class TabStripView extends View {
      */
     protected void setRespondDoubleClick(boolean respond) {
         mHelper.setRespondDoubleClick(respond);
+    }
+
+    /**
+     * 设置可观察的对象
+     *
+     * @param observable 可观察的对象
+     */
+    protected void setObservable(TabStripObservable observable) {
+        mHelper.setObservable(observable);
     }
 
     /**
