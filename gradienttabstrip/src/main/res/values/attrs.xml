@@ -27,5 +27,11 @@
         <attr name="gtsTagMinWidth" format="dimension" />
         <attr name="gtsTagMinHeight" format="dimension" />
         <attr name="gtsCenterGap" format="dimension"/>
+        <attr name="gtsShowDividers">
+            <flag name="none" value="0" />
+            <flag name="beginning" value="1" />
+            <flag name="middle" value="2" />
+            <flag name="end" value="4" />
+        </attr>
     </declare-styleable>
 </resources>
