@@ -169,12 +169,60 @@ public class DefaultScrollbar extends ScrollbarRecyclerView.Scrollbar {
         }
     }
 
-    public void setHorizontalScrollbarPadding(int edge, int start, int end) {
+    public void setHorizontalPadding(int edge, int start, int end) {
         mHorizontalScrollbar.setPadding(edge, start, end);
     }
 
-    public void setVerticalScrollbarPadding(int edge, int start, int end) {
-        mHorizontalScrollbar.setPadding(edge, start, end);
+    public int getHorizontalPaddingEdge() {
+        return mHorizontalScrollbar.getPaddingEdge();
+    }
+
+    public void setHorizontalPaddingEdge(int padding) {
+        mHorizontalScrollbar.setPaddingEdge(padding);
+    }
+
+    public int getHorizontalPaddingStart() {
+        return mHorizontalScrollbar.getPaddingStart();
+    }
+
+    public void setHorizontalPaddingStart(int padding) {
+        mHorizontalScrollbar.setPaddingStart(padding);
+    }
+
+    public int getHorizontalPaddingEnd() {
+        return mHorizontalScrollbar.getPaddingEnd();
+    }
+
+    public void setHorizontalPaddingEnd(int padding) {
+        mHorizontalScrollbar.setPaddingEnd(padding);
+    }
+
+    public void setVerticalPadding(int edge, int start, int end) {
+        mVerticalScrollbar.setPadding(edge, start, end);
+    }
+
+    public int getVerticalPaddingEdge() {
+        return mVerticalScrollbar.getPaddingEdge();
+    }
+
+    public void setVerticalPaddingEdge(int padding) {
+        mVerticalScrollbar.setPaddingEdge(padding);
+    }
+
+    public int getVerticalPaddingStart() {
+        return mVerticalScrollbar.getPaddingStart();
+    }
+
+    public void setVerticalPaddingStart(int padding) {
+        mVerticalScrollbar.setPaddingStart(padding);
+    }
+
+    public int getVerticalPaddingEnd() {
+        return mVerticalScrollbar.getPaddingEnd();
+    }
+
+    public void setVerticalPaddingEnd(int padding) {
+        mVerticalScrollbar.setPaddingEnd(padding);
     }
 
     @IntDef({GRAVITY_CENTER, GRAVITY_START, GRAVITY_END})
@@ -203,5 +251,17 @@ public class DefaultScrollbar extends ScrollbarRecyclerView.Scrollbar {
         void onScrollStateChanged(int state);
 
         void setPadding(int edge, int start, int end);
+
+        int getPaddingEdge();
+
+        void setPaddingEdge(int padding);
+
+        int getPaddingStart();
+
+        void setPaddingStart(int padding);
+
+        int getPaddingEnd();
+
+        void setPaddingEnd(int padding);
     }
 }

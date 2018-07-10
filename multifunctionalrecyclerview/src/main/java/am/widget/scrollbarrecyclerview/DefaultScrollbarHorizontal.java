@@ -378,9 +378,50 @@ class DefaultScrollbarHorizontal implements DefaultScrollbar.Scrollbar {
 
     @Override
     public void setPadding(int edge, int start, int end) {
+        if (mPaddingEdge == edge && mPaddingStart == start && mPaddingEnd == end)
+            return;
         mPaddingEdge = edge;
         mPaddingStart = start;
         mPaddingEnd = end;
+        mScrollbar.invalidate();
+    }
+
+    @Override
+    public int getPaddingEdge() {
+        return mPaddingEdge;
+    }
+
+    @Override
+    public void setPaddingEdge(int padding) {
+        if (mPaddingEdge == padding)
+            return;
+        mPaddingEdge = padding;
+        mScrollbar.invalidate();
+    }
+
+    @Override
+    public int getPaddingStart() {
+        return mPaddingStart;
+    }
+
+    @Override
+    public void setPaddingStart(int padding) {
+        if (mPaddingStart == padding)
+            return;
+        mPaddingStart = padding;
+        mScrollbar.invalidate();
+    }
+
+    @Override
+    public int getPaddingEnd() {
+        return mPaddingEnd;
+    }
+
+    @Override
+    public void setPaddingEnd(int padding) {
+        if (mPaddingEnd == padding)
+            return;
+        mPaddingEnd = padding;
         mScrollbar.invalidate();
     }
 
