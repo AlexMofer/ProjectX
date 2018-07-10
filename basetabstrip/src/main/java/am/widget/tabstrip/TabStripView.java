@@ -186,8 +186,10 @@ public abstract class TabStripView extends View {
 
     /**
      * 发生观察对象的变化通知
+     *
+     * @param tag 标志
      */
-    protected void onObservableChangeNotified() {
+    protected void onObservableChangeNotified(Object tag) {
     }
 
     /**

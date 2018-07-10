@@ -58,13 +58,13 @@ public class TabStripObservable {
     /**
      * 通知变化
      */
-    protected void notifyChanged() {
+    protected void notifyChanged(Object tag) {
         for (int i = mObservers.size() - 1; i >= 0; i--) {
             final View observer = mObservers.get(i);
             if (observer instanceof TabStripView) {
-                ((TabStripView) observer).onObservableChangeNotified();
+                ((TabStripView) observer).onObservableChangeNotified(tag);
             } else if (observer instanceof TabStripViewGroup) {
-                ((TabStripViewGroup) observer).onObservableChangeNotified();
+                ((TabStripViewGroup) observer).onObservableChangeNotified(tag);
             }
         }
     }
