@@ -479,7 +479,7 @@ public class TagTabStrip extends TabStripView {
         final Drawable normal = item;
         final Drawable selected;
         if (state != null) {
-            selected = state.newDrawable(getResources());
+            selected = state.newDrawable(getResources()).mutate();
             selected.setState(SELECTED_STATE_SET);
         } else {
             selected = item;

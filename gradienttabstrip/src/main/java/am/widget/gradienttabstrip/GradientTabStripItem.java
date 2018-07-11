@@ -17,11 +17,16 @@
 package am.widget.gradienttabstrip;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 final class GradientTabStripItem extends View {
 
     GradientTabStripItem(Context context) {
         super(context);
+    }
+
+    void set(CharSequence title, String dot, Drawable normal, Drawable selected, float offset) {
+        // TODO
     }
 }

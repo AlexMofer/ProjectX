@@ -187,9 +187,11 @@ public abstract class TabStripView extends View {
     /**
      * 发生观察对象的变化通知
      *
-     * @param tag 标志
+     * @param id       ID
+     * @param position 坐标，为{@link PagerAdapter#POSITION_NONE}时，表示坐标无关或全部刷新
+     * @param tag      附件，可能为空
      */
-    protected void onObservableChangeNotified(Object tag) {
+    protected void onObservableChangeNotified(int id, int position, @Nullable Object tag) {
     }
 
     /**

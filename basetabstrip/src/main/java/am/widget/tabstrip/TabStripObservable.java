@@ -16,6 +16,8 @@
 
 package am.widget.tabstrip;
 
+import android.support.annotation.Nullable;
+import android.support.v4.view.PagerAdapter;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -57,14 +59,18 @@ public class TabStripObservable {
 
     /**
      * 通知变化
+     *
+     * @param id       ID
+     * @param position 坐标，为{@link PagerAdapter#POSITION_NONE}时，表示坐标无关或全部刷新
+     * @param tag      附件，可以为空
      */
-    protected void notifyChanged(Object tag) {
+    protected void notifyChanged(int id, int position, @Nullable Object tag) {
         for (int i = mObservers.size() - 1; i >= 0; i--) {
             final View observer = mObservers.get(i);
             if (observer instanceof TabStripView) {
-                ((TabStripView) observer).onObservableChangeNotified(tag);
+                ((TabStripView) observer).onObservableChangeNotified(id, position, tag);
             } else if (observer instanceof TabStripViewGroup) {
-                ((TabStripViewGroup) observer).onObservableChangeNotified(tag);
+                ((TabStripViewGroup) observer).onObservableChangeNotified(id, position, tag);
             }
         }
     }

@@ -110,7 +110,7 @@ public class GradientTabStripActivity extends BaseActivity {
 
         @Nullable
         @Override
-        public Drawable getDrawableNormal(int position) {
+        public Drawable getDrawableNormal(int position, int count) {
             switch (position) {
                 default:
                 case 0:
@@ -126,7 +126,7 @@ public class GradientTabStripActivity extends BaseActivity {
 
         @Nullable
         @Override
-        public Drawable getDrawableSelected(int position) {
+        public Drawable getDrawableSelected(int position, int count) {
             switch (position) {
                 default:
                 case 0:
@@ -141,14 +141,10 @@ public class GradientTabStripActivity extends BaseActivity {
         }
 
         @Override
-        public boolean isTagEnable(int position) {
-            return position != 3;
-        }
-
-        @Override
-        public String getTag(int position) {
+        public String getDotText(int position, int count) {
             switch (position) {
                 default:
+                    return null;
                 case 0:
                     return "888";
                 case 1:
