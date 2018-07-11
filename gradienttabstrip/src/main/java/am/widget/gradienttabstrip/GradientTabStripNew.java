@@ -79,7 +79,7 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
             return;
         mPosition = position;
         mOffset = offset;
-        notifyItemRangeChanged(position, 2);
+        notifyItemChanged();
     }
 
     @Override
@@ -90,14 +90,15 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
 
     @Override
     protected GradientTabStripItem onCreateView() {
-        return new GradientTabStripItem(getContext());
+        final GradientTabStripItem item = new GradientTabStripItem(getContext());
+        item.setBackgroundColor(0xffff00ff);
+        return item;
     }
 
     @Override
     protected void onBindView(GradientTabStripItem item, int position) {
         // TODO
         System.out.println("lalalla----------------------------------position:" + position);
-        item.setBackgroundColor(0xffff00ff);
     }
 
     /**
@@ -145,5 +146,23 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
         public void notifyDrawableChanged() {
             super.notifyChanged(FLAG_DRAWABLE);
         }
+
+//        @SuppressWarnings("unchecked")
+//        protected void notifyItemRangeChanged(int positionStart, int itemCount) {
+//            final int count = getChildCount();
+//            final int last = positionStart + itemCount;
+//            for (int i = positionStart; i < count && i < last; i++) {
+//                final V child = (V) getChildAt(i);
+//                onBindView(child, i);
+//            }
+//        }
+//
+//        @SuppressWarnings("unchecked")
+//        protected void notifyItemChanged(int position) {
+//            final V child = (V) getChildAt(position);
+//            if (child == null)
+//                return;
+//            onBindView(child, position);
+//        }
     }
 }

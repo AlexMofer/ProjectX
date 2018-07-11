@@ -344,17 +344,20 @@ abstract class BaseTabStripViewGroup<V extends View> extends TabStripViewGroup {
     }
 
     @SuppressWarnings("unchecked")
-    protected void notifyItemRangeChanged(int positionStart, int itemCount) {
+    protected void notifyItemChanged() {
         final int count = getChildCount();
-        final int last = positionStart + itemCount;
-        for (int i = positionStart; i < count && i < last; i++) {
+        for (int i = 0; i < count; i++) {
             final V child = (V) getChildAt(i);
             onBindView(child, i);
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected void notifyItemChanged(int position) {
-        notifyItemRangeChanged(position, 1);
+        final V child = (V) getChildAt(position);
+        if (child == null)
+            return;
+        onBindView(child, position);
     }
 
     protected abstract V onCreateView();

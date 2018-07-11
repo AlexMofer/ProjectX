@@ -265,11 +265,25 @@ class TabStripHelper extends DataSetObserver implements
         } else {
             if (mLastPosition != mPosition || mLastOffset != mOffset) {
                 if (mScrollState == ViewPager.SCROLL_STATE_SETTLING && mOffset != 0) {
-                    // 胡略不相等的情况，其不合理的一个参数值
-                    if (mPosition == mLastPosition) {
+                    if (mPosition >= mLastPosition) {
                         mLastPosition = mPosition;
-                        mLastOffset = mOffset;
-                        onViewPagerChanged(mPosition, mOffset);
+                        if (mOffset > 0) {
+                            mLastOffset = mOffset;
+                            onViewPagerChanged(mPosition, mOffset);
+                        } else {
+                            // 忽略为负的情况，其为不正常回调
+                            mOffset = mLastOffset;
+                        }
+                    } else {
+                        if (mPosition >= mPager.getCurrentItem()) {
+                            mLastPosition = mPosition;
+                            mLastOffset = mOffset;
+                            onViewPagerChanged(mPosition, mOffset);
+                        } else {
+                            // 忽略超出当前子项位置的情况，其为不正常回调
+                            mPosition = mLastPosition;
+                            mOffset = mLastOffset;
+                        }
                     }
                 } else {
                     mLastPosition = mPosition;
