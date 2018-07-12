@@ -38,7 +38,9 @@ import am.widget.tabstrip.TabStripDotAdapter;
 @SuppressWarnings("unused")
 public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripItem> {
 
-    private static final int DEFAULT_TEXT_SIZE = 14;// 默认字体大小dp
+    private static final int DEFAULT_TEXT_SIZE = 12;// 默认字体大小dp
+    private static final int DEFAULT_TEXT_COLOR_NORMAL = Color.DKGRAY;// 默认字体默认颜色
+    private static final int DEFAULT_TEXT_COLOR_SELECTED = Color.BLACK;// 默认字体选中颜色
     private static final int DEFAULT_DOT_MARGIN = 16;// 默认小圆点距离中心距离
     private static final int DEFAULT_DOT_BACKGROUND_COLOR = Color.RED;
     private static final int DEFAULT_DOT_BACKGROUND_SIZE = 6;
@@ -79,15 +81,15 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
         final float density = getResources().getDisplayMetrics().density;
         mItemBackgroundId = NO_ID;
         mTextSize = DEFAULT_TEXT_SIZE * density;
-        mTextColorNormal = Color.DKGRAY;
-        mTextColorSelected = Color.BLACK;
+        mTextColorNormal = DEFAULT_TEXT_COLOR_NORMAL;
+        mTextColorSelected = DEFAULT_TEXT_COLOR_SELECTED;
         mDotMarginCenterY = mDotMarginCenterX = Math.round(DEFAULT_DOT_MARGIN * density);
         mDotBackground = getDefaultDotBackground();
         mDotTextSize = DEFAULT_DOT_TEXT_SIZE * density;
         mDotTextColor = DEFAULT_DOT_TEXT_COLOR;
 
         // TODO 获取attrs
-        mItemBackgroundDrawable = new ColorDrawable(0xffff00ff);
+        mItemBackgroundDrawable = new ColorDrawable(0xffffffff);
         mDrawablePadding = Math.round(3 * density);
         mDotCanGoOutside = false;
         initView(getDefaultDrawable(0xff00ff00, 10),
@@ -235,12 +237,12 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
         }
         final float offset;
         if (mOffset == 0) {
-            offset = 0;
+            offset = position == mPosition ? 1 : 0;
         } else {
             if (position == mPosition) {
-                offset = mOffset;
-            } else if (position == mPosition + 1) {
                 offset = 1 - mOffset;
+            } else if (position == mPosition + 1) {
+                offset = mOffset;
             } else {
                 offset = 0;
             }

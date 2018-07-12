@@ -17,7 +17,11 @@
 package am.widget.gradienttabstrip;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -38,8 +42,109 @@ final class GradientTabStripItem extends View {
     private Drawable mNormal;
     private Drawable mSelected;
     private float mOffset = 0;
+    private final TextPaint mPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final Rect tRect = new Rect();
+    private int mDrawableWidth;
+    private int mTextHeight;
+    private int mTextDesc;
+    private int mDrawableHeight;
+    private int mDotTextHeight;
+    private int mDotTextDesc;
+
     GradientTabStripItem(Context context) {
         super(context);
+        mPaint.density = getResources().getDisplayMetrics().density;
+        mPaint.setTextAlign(Paint.Align.CENTER);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        mPaint.setTextSize(mTextSize);
+        mDrawableWidth = getDrawableWidth();
+        final int textWidth;
+        if (TextUtils.isEmpty(mTitle)) {
+            textWidth = 0;
+        } else {
+            mPaint.getTextBounds(mTitle, 0, mTitle.length(), tRect);
+            textWidth = tRect.width();
+        }
+        final int width = Math.max(mDrawableWidth, textWidth);
+        mDrawableHeight = getDrawableHeight();
+        Paint.FontMetricsInt metrics = mPaint.getFontMetricsInt();
+        mTextHeight = metrics.bottom - metrics.top;
+        mTextDesc = metrics.bottom;
+        final int height = mDrawableHeight + mDrawablePadding + mTextHeight;
+        setMeasuredDimension(
+                resolveSize(Math.max(width, getSuggestedMinimumWidth()), widthMeasureSpec),
+                resolveSize(Math.max(height, getSuggestedMinimumHeight()), heightMeasureSpec));
+        getDotTextInfo();
+    }
+
+    private int getDrawableWidth() {
+        final int normal = mNormal == null ? 0 : mNormal.getIntrinsicWidth();
+        final int selected = mSelected == null ? 0 : mSelected.getIntrinsicWidth();
+        return Math.max(normal, selected);
+    }
+
+    private int getDrawableHeight() {
+        final int normal = mNormal == null ? 0 : mNormal.getIntrinsicHeight();
+        final int selected = mSelected == null ? 0 : mSelected.getIntrinsicHeight();
+        return Math.max(normal, selected);
+    }
+
+    private void getDotTextInfo() {
+        mPaint.setTextSize(mDotTextSize);
+        Paint.FontMetricsInt metrics = mPaint.getFontMetricsInt();
+        mDotTextHeight = metrics.bottom - metrics.top;
+        mDotTextDesc = metrics.bottom;
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        drawDrawable(canvas);
+        drawText(canvas);
+        drawDot(canvas);
+    }
+
+    private void drawDrawable(Canvas canvas) {
+        final float centerX = getWidth() * 0.5f;
+        final float centerY = getHeight() * 0.5f;
+        canvas.save();
+        canvas.translate(centerX, centerY);
+        canvas.translate(-mDrawableWidth * 0.5f,
+                -(mDrawableHeight + mDrawablePadding + mTextHeight) * 0.5f);
+
+        if (mNormal != null && mOffset < 1) {
+            mNormal.setBounds(0, 0, mDrawableWidth, mDrawableHeight);
+            mNormal.setAlpha(Math.min(255, Math.max(0, Math.round((1 - mOffset) * 255))));
+            mNormal.draw(canvas);
+        }
+        if (mSelected != null && mOffset > 0) {
+            mSelected.setBounds(0, 0, mDrawableWidth, mDrawableHeight);
+            mSelected.setAlpha(Math.min(255, Math.max(0, Math.round(mOffset * 255))));
+            mSelected.draw(canvas);
+        }
+        canvas.restore();
+    }
+
+    private void drawText(Canvas canvas) {
+        if (TextUtils.isEmpty(mTitle))
+            return;
+        final float centerX = getWidth() * 0.5f;
+        final float centerY = getHeight() * 0.5f;
+        mPaint.setTextSize(mTextSize);
+        mPaint.setColor(BaseTabStripViewGroup.getColor(mTextColorNormal,
+                mTextColorSelected, mOffset));
+        canvas.save();
+        canvas.translate(centerX, centerY);
+        canvas.translate(0, (mDrawableHeight + mDrawablePadding) * 0.5f);
+        canvas.drawText(mTitle, 0, mTextDesc, mPaint);
+        canvas.restore();
+    }
+
+    private void drawDot(Canvas canvas) {
+        // TODO
     }
 
     void setTextSize(float size) {
@@ -88,6 +193,7 @@ final class GradientTabStripItem extends View {
         if (mDotTextSize == size)
             return;
         mDotTextSize = size;
+        getDotTextInfo();
         invalidate();
     }
 

@@ -17,6 +17,7 @@ package am.widget.gradienttabstrip;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
@@ -506,5 +507,31 @@ abstract class BaseTabStripViewGroup<V extends View> extends TabStripViewGroup {
         public void onClick(View v) {
             onViewClicked((V) v, v.getId());
         }
+    }
+
+    /**
+     * 双色合成
+     *
+     * @param normalColor   普通颜色
+     * @param selectedColor 选中颜色
+     * @param offset        偏移值
+     * @return 合成色
+     */
+    @SuppressWarnings("unused")
+    protected static int getColor(int normalColor, int selectedColor, float offset) {
+        int normalAlpha = Color.alpha(normalColor);
+        int normalRed = Color.red(normalColor);
+        int normalGreen = Color.green(normalColor);
+        int normalBlue = Color.blue(normalColor);
+        int selectedAlpha = Color.alpha(selectedColor);
+        int selectedRed = Color.red(selectedColor);
+        int selectedGreen = Color.green(selectedColor);
+        int selectedBlue = Color.blue(selectedColor);
+        int a = (int) Math.ceil((selectedAlpha - normalAlpha) * offset);
+        int r = (int) Math.ceil((selectedRed - normalRed) * offset);
+        int g = (int) Math.ceil((selectedGreen - normalGreen) * offset);
+        int b = (int) Math.ceil((selectedBlue - normalBlue) * offset);
+        return Color.argb(normalAlpha + a, normalRed + r, normalGreen + g,
+                normalBlue + b);
     }
 }
