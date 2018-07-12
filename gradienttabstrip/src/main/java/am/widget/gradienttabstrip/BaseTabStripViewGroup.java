@@ -371,7 +371,6 @@ abstract class BaseTabStripViewGroup<V extends View> extends TabStripViewGroup {
     }
 
 
-
     @Override
     public void addView(View child) {
         throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
@@ -512,21 +511,24 @@ abstract class BaseTabStripViewGroup<V extends View> extends TabStripViewGroup {
     /**
      * 双色合成
      *
-     * @param normalColor   普通颜色
-     * @param selectedColor 选中颜色
-     * @param offset        偏移值
+     * @param normal   普通颜色
+     * @param selected 选中颜色
+     * @param offset   偏移值
      * @return 合成色
      */
-    @SuppressWarnings("unused")
-    protected static int getColor(int normalColor, int selectedColor, float offset) {
-        int normalAlpha = Color.alpha(normalColor);
-        int normalRed = Color.red(normalColor);
-        int normalGreen = Color.green(normalColor);
-        int normalBlue = Color.blue(normalColor);
-        int selectedAlpha = Color.alpha(selectedColor);
-        int selectedRed = Color.red(selectedColor);
-        int selectedGreen = Color.green(selectedColor);
-        int selectedBlue = Color.blue(selectedColor);
+    protected static int makeColor(int normal, int selected, float offset) {
+        if (offset <= 0)
+            return normal;
+        if (offset >= 1)
+            return selected;
+        int normalAlpha = Color.alpha(normal);
+        int normalRed = Color.red(normal);
+        int normalGreen = Color.green(normal);
+        int normalBlue = Color.blue(normal);
+        int selectedAlpha = Color.alpha(selected);
+        int selectedRed = Color.red(selected);
+        int selectedGreen = Color.green(selected);
+        int selectedBlue = Color.blue(selected);
         int a = (int) Math.ceil((selectedAlpha - normalAlpha) * offset);
         int r = (int) Math.ceil((selectedRed - normalRed) * offset);
         int g = (int) Math.ceil((selectedGreen - normalGreen) * offset);

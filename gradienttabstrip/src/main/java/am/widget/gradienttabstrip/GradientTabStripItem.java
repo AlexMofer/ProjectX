@@ -134,7 +134,7 @@ final class GradientTabStripItem extends View {
         final float centerX = getWidth() * 0.5f;
         final float centerY = getHeight() * 0.5f;
         mPaint.setTextSize(mTextSize);
-        mPaint.setColor(BaseTabStripViewGroup.getColor(mTextColorNormal,
+        mPaint.setColor(BaseTabStripViewGroup.makeColor(mTextColorNormal,
                 mTextColorSelected, mOffset));
         canvas.save();
         canvas.translate(centerX, centerY);
