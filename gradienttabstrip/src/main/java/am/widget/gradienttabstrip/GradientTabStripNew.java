@@ -88,7 +88,7 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
 
         // TODO 获取attrs
         mItemBackgroundDrawable = new ColorDrawable(0xffff00ff);
-        mDrawablePadding = Math.round(10 * density);
+        mDrawablePadding = Math.round(3 * density);
         mDotCanGoOutside = false;
         initView(getDefaultDrawable(0xff00ff00, 10),
                 SHOW_DIVIDER_MIDDLE | SHOW_DIVIDER_BEGINNING | SHOW_DIVIDER_END,
