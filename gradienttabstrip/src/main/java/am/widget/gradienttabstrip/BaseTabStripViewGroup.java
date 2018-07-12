@@ -300,7 +300,6 @@ abstract class BaseTabStripViewGroup<V extends View> extends TabStripViewGroup {
         updateItemCount();
     }
 
-    @SuppressWarnings("unchecked")
     private void updateItemCount() {
         final int count = getPageCount();
         if (count != mCount) {
@@ -308,7 +307,7 @@ abstract class BaseTabStripViewGroup<V extends View> extends TabStripViewGroup {
             if (mCount >= 0) {
                 final int ic = getChildCount();
                 for (int i = 0; i < ic && i < mCount; i++) {
-                    final V child = (V) getChildAt(i);
+                    final V child = getChildAt(i);
                     onBindView(child, i);
                 }
                 boolean layout = false;
@@ -328,7 +327,7 @@ abstract class BaseTabStripViewGroup<V extends View> extends TabStripViewGroup {
                     layout = true;
                 }
                 while (getChildCount() > mCount) {
-                    final V child = (V) getChildAt(getChildCount() - 1);
+                    final V child = getChildAt(getChildCount() - 1);
                     removeViewInLayout(child);
                     mRecycledChild.add(child);
                     child.setId(NO_ID);
@@ -343,18 +342,17 @@ abstract class BaseTabStripViewGroup<V extends View> extends TabStripViewGroup {
         }
     }
 
-    @SuppressWarnings("unchecked")
     protected void notifyItemChanged() {
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            final V child = (V) getChildAt(i);
+            final V child = getChildAt(i);
             onBindView(child, i);
         }
     }
 
-    @SuppressWarnings("unchecked")
+
     protected void notifyItemChanged(int position) {
-        final V child = (V) getChildAt(position);
+        final V child = getChildAt(position);
         if (child == null)
             return;
         onBindView(child, position);
@@ -371,20 +369,7 @@ abstract class BaseTabStripViewGroup<V extends View> extends TabStripViewGroup {
         performClick(position, mSmoothScroll);
     }
 
-    @DividerMode
-    public int getShowDividers() {
-        return mShowDividers;
-    }
 
-    public void setShowDividers(@DividerMode int showDividers) {
-        if (showDividers == mShowDividers) {
-            return;
-        }
-        mShowDividers = showDividers;
-
-        setWillNotDraw(!isShowingDividers());
-        requestLayout();
-    }
 
     @Override
     public void addView(View child) {
@@ -409,6 +394,28 @@ abstract class BaseTabStripViewGroup<V extends View> extends TabStripViewGroup {
     @Override
     public void addView(View child, int index, LayoutParams params) {
         throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public V getChildAt(int index) {
+        final View child = super.getChildAt(index);
+        return child == null ? null : (V) child;
+    }
+
+    @DividerMode
+    public int getShowDividers() {
+        return mShowDividers;
+    }
+
+    public void setShowDividers(@DividerMode int showDividers) {
+        if (showDividers == mShowDividers) {
+            return;
+        }
+        mShowDividers = showDividers;
+
+        setWillNotDraw(!isShowingDividers());
+        requestLayout();
     }
 
     public Drawable getDividerDrawable() {

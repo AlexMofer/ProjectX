@@ -1,37 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="GradientTabStrip">
-        <attr name="gtsTextSize" format="dimension"/>
-        <attr name="gtsTextColor" format="color"/>
-        <attr name="gtsDrawablePadding" format="dimension"/>
-        <attr name="gtsBackground" format="reference"/>
-        <attr name="gtsInterval" format="reference" />
-        <attr name="gtsMinItemWidth" format="dimension"/>
-        <attr name="gtsTagTextSize" format="dimension" />
-        <attr name="gtsTagTextColor" format="color" />
-        <attr name="gtsTagBackground" format="reference" />
-        <attr name="gtsTagPadding" format="dimension" />
-        <attr name="gtsTagPaddingLeft" format="dimension" />
-        <attr name="gtsTagPaddingTop" format="dimension" />
-        <attr name="gtsTagPaddingRight" format="dimension" />
-        <attr name="gtsTagPaddingBottom" format="dimension" />
-        <attr name="gtsTagMargin" format="dimension" />
-        <attr name="gtsTagMarginLeft" format="dimension" />
-        <attr name="gtsTagMarginTop" format="dimension" />
-        <attr name="gtsTagMarginRight" format="dimension" />
-        <attr name="gtsTagMarginBottom" format="dimension" />
-        <attr name="gtsTagMinSizeMode" format="enum">
-            <enum name="OnlyHasText" value="0" />
-            <enum name="Always" value="1" />
-        </attr>
-        <attr name="gtsTagMinWidth" format="dimension" />
-        <attr name="gtsTagMinHeight" format="dimension" />
-        <attr name="gtsCenterGap" format="dimension"/>
+        <attr name="gtsDivider" format="reference" />
         <attr name="gtsShowDividers">
             <flag name="none" value="0" />
             <flag name="beginning" value="1" />
             <flag name="middle" value="2" />
             <flag name="end" value="4" />
         </attr>
+        <attr name="gtsDividerPadding" format="dimension" />
+        <attr name="gtsCenterInterval" format="reference" />
+        <attr name="gtsCenterIntervalAsItem" format="boolean" />
+        <attr name="gtsCenterIntervalPadding" format="dimension" />
+        <attr name="gtsTextSize" format="dimension" />
+        <attr name="gtsTextColorNormal" format="color" />
+        <attr name="gtsTextColorSelected" format="color" />
+        <attr name="gtsTextColor" format="color" />
+        <attr name="gtsDrawablePadding" format="dimension" />
+        <attr name="gtsItemBackground" format="reference" />
+        <attr name="gtsDotMarginCenterX" format="dimension" />
+        <attr name="gtsDotMarginCenterY" format="dimension" />
+        <attr name="gtsDotCanGoOutside" format="boolean" />
+        <attr name="gtsDotBackground" format="reference" />
+        <attr name="gtsDotTextSize" format="dimension" />
+        <attr name="gtsDotTextColor" format="color" />
     </declare-styleable>
 </resources>

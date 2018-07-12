@@ -20,6 +20,8 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.util.AttributeSet;
@@ -33,11 +35,22 @@ import am.widget.tabstrip.TabStripDotAdapter;
  */
 public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripItem> {
 
+    private static final int DEFAULT_TEXT_SIZE = 14;// 默认字体大小dp
     private int mPosition = 0;
     private float mOffset = 0;
     private Adapter mAdapter;
     private int mItemBackgroundId;
     private Drawable mItemBackgroundDrawable;
+    private float mTextSize;// 文字大小
+    private int mTextColorNormal;// 文字默认颜色
+    private int mTextColorSelected;// 文字选中颜色
+    private int mDrawablePadding;// 图文间距
+    private int mDotMarginCenterX;// 小圆点距离中心X轴距离（以中心点为直角坐标系原点）
+    private int mDotMarginCenterY;// 小圆点距离中心Y轴距离（以中心点为直角坐标系原点）
+    private boolean mDotCanGoOutside;
+    private Drawable mDotBackground;
+    private float mDotTextSize;
+    private float mDotTextColor;
 
     public GradientTabStripNew(Context context) {
         super(context);
@@ -115,6 +128,12 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
     @Override
     protected GradientTabStripItem onCreateView() {
         final GradientTabStripItem item = new GradientTabStripItem(getContext());
+        setItemBackground(item);
+        setTextSize(item);
+        return item;
+    }
+
+    private void setItemBackground(GradientTabStripItem item) {
         if (mItemBackgroundId != NO_ID) {
             item.setBackgroundResource(mItemBackgroundId);
         } else {
@@ -128,8 +147,20 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
                 item.setBackgroundDrawable(background);
             }
         }
-        return item;
     }
+
+    private void setTextSize(GradientTabStripItem item) {
+        item.setTextSize(mTextSize);
+    }
+
+    private void setTextColor(GradientTabStripItem item) {
+        item.setTextColor(mTextColorNormal, mTextColorSelected);
+    }
+
+    private void setDrawablePadding(GradientTabStripItem item) {
+        item.setDrawablePadding(mDrawablePadding);
+    }
+    // TODO
 
     @Override
     protected void onBindView(GradientTabStripItem item, int position) {
@@ -175,9 +206,147 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
     }
 
     /**
+     * 设置子项背景
+     *
+     * @param resid 背景资源
+     */
+    public void setItemBackground(@DrawableRes int resid) {
+        if (resid != NO_ID && resid == mItemBackgroundId)
+            return;
+        mItemBackgroundId = resid;
+        mItemBackgroundDrawable = null;
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            setItemBackground(getChildAt(i));
+        }
+    }
+
+    /**
+     * 设置子项背景
+     *
+     * @param background 背景图
+     */
+    public void setItemBackground(Drawable background) {
+        if (background != null && background == mItemBackgroundDrawable)
+            return;
+        mItemBackgroundId = NO_ID;
+        mItemBackgroundDrawable = background;
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            setItemBackground(getChildAt(i));
+        }
+    }
+
+    /**
+     * 获取文字大小
+     *
+     * @return 文字大小
+     */
+    public float getTextSize() {
+        return mTextSize;
+    }
+
+    /**
+     * 设置文字大小
+     *
+     * @param size 文字大小
+     */
+    public void setTextSize(float size) {
+        if (mTextSize == size)
+            return;
+        mTextSize = size;
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            setTextSize(getChildAt(i));
+        }
+        requestLayout();
+    }
+
+    /**
+     * 获取文字默认颜色
+     *
+     * @return 颜色
+     */
+    public int getTextColorNormal() {
+        return mTextColorNormal;
+    }
+
+    /**
+     * 获取文字选中颜色
+     *
+     * @return 颜色
+     */
+    public int getTextColorSelected() {
+        return mTextColorSelected;
+    }
+
+    /**
+     * 设置文本颜色
+     *
+     * @param normal   默认颜色
+     * @param selected 选中颜色
+     */
+    public void setTextColor(@ColorInt int normal, @ColorInt int selected) {
+        if (mTextColorNormal == normal && mTextColorSelected == selected)
+            return;
+        mTextColorNormal = normal;
+        mTextColorSelected = selected;
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            setTextColor(getChildAt(i));
+        }
+    }
+
+    /**
+     * 获取图文间隔
+     *
+     * @return 间隔
+     */
+    public int getDrawablePadding() {
+        return mDrawablePadding;
+    }
+
+    /**
+     * 设置图文间隔
+     *
+     * @param padding 间隔
+     */
+    public void setDrawablePadding(int padding) {
+        if (padding == mDrawablePadding)
+            return;
+        mDrawablePadding = padding;
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            setDrawablePadding(getChildAt(i));
+        }
+        requestLayout();
+    }
+
+    /**
+     * 获取小圆点距离中心X轴距离（以中心点为直角坐标系原点）
+     *
+     * @return 距离
+     */
+    public int getDotMarginCenterX() {
+        return mDotMarginCenterX;
+    }
+
+    /**
+     * 小圆点距离中心Y轴距离（以中心点为直角坐标系原点）
+     *
+     * @return 距离
+     */
+    public int getDotMarginCenterY() {
+        return mDotMarginCenterY;
+    }
+
+    public void setDotMarginCenter(int x, int y) {
+
+    }
+
+    /**
      * Adapter
      */
-    @SuppressWarnings("unused")
     public static abstract class Adapter extends TabStripDotAdapter {
 
         private static final int ID_DOT = 0;

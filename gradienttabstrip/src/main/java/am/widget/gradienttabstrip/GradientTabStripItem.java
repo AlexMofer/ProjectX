@@ -26,7 +26,21 @@ final class GradientTabStripItem extends View {
         super(context);
     }
 
+    void setTextSize(float size) {
+
+    }
+
+    void setTextColor(int normal, int selected) {
+
+        invalidate();
+    }
+
+    void setDrawablePadding(int padding) {
+
+    }
+
     void set(CharSequence title, String dot, Drawable normal, Drawable selected, float offset) {
         // TODO
+        invalidate();
     }
 }
