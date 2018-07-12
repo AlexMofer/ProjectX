@@ -154,6 +154,8 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
     @Override
     public void onLayoutCompleted(RecyclerView.State state) {
         super.onLayoutCompleted(state);
+        if (onInterceptAdjustPagingAfterLayoutComplete())
+            return;
         if (mAdjustPagingAfterLayoutComplete) {
             mAdjustPagingAfterLayoutComplete = false;
             if (mPagingEnable) {
@@ -181,6 +183,10 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
                 }
             }
         }
+    }
+
+    protected boolean onInterceptAdjustPagingAfterLayoutComplete() {
+        return false;
     }
 
     @Override

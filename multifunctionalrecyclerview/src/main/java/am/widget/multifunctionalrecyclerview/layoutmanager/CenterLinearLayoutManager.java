@@ -107,18 +107,18 @@ public class CenterLinearLayoutManager extends PublicLinearLayoutManager {
     }
 
     /**
-     * 判断是否剧中布局
+     * 判断是否居中布局
      *
-     * @return 是否剧中布局
+     * @return 是否居中布局
      */
     public boolean isLayoutInCenter() {
         return mCenter;
     }
 
     /**
-     * 设置布局剧中
+     * 设置布局是否居中
      *
-     * @param center 剧中
+     * @param center 是否居中
      */
     public void setLayoutInCenter(boolean center) {
         if (mCenter == center)

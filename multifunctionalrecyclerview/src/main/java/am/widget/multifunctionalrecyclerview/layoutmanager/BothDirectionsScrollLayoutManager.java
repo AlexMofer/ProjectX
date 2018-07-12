@@ -371,6 +371,16 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
             requestLayout();
     }
 
+    public void scrollToPositionWithOffsetAndPercentage(int position, int offset,
+                                                        float percentage) {
+        if (mPendingPercentage == percentage || percentage < 0 || percentage > 1) {
+            scrollToPositionWithOffset(position, offset);
+            return;
+        }
+        mPendingPercentage = percentage;
+        scrollToPositionWithOffset(position, offset);
+    }
+
     public void setChildMaxSize(int width, int height) {
         mChildMaxWidth = width;
         mChildMaxHeight = height;
