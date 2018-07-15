@@ -31,8 +31,8 @@ final class GradientTabStripItem extends View {
     private int mTextColorNormal;// 文字默认颜色
     private int mTextColorSelected;// 文字选中颜色
     private int mDrawablePadding;// 图文间距
-    private int mDotMarginCenterX;// 小圆点距离中心X轴距离（以中心点为直角坐标系原点）
-    private int mDotMarginCenterY;// 小圆点距离中心Y轴距离（以中心点为直角坐标系原点）
+    private int mDotCenterToViewCenterX;// 小圆点中心距离View中心X轴距离（以中心点为直角坐标系原点）
+    private int mDotCenterToViewCenterY;// 小圆点中心距离View中心Y轴距离（以中心点为直角坐标系原点）
     private boolean mDotCanGoOutside;// 小圆点是否可绘制到视图外部
     private Drawable mDotBackground;// 小圆点背景图
     private float mDotTextSize;// 小圆点文字大小
@@ -144,7 +144,73 @@ final class GradientTabStripItem extends View {
     }
 
     private void drawDot(Canvas canvas) {
-        // TODO
+        if (mDot == null)
+            return;
+        mPaint.setTextSize(mDotTextSize);
+        final int dotTextWidth;
+        final int dotTextHeight;
+        if (mDot.length() <= 0) {
+            dotTextWidth = 0;
+            dotTextHeight = 0;
+        } else {
+            mPaint.getTextBounds(mDot, 0, mDot.length(), tRect);
+            dotTextWidth = tRect.width();
+            dotTextHeight = mDotTextHeight;
+        }
+        final int paddingLeft;
+        final int paddingTop;
+        final int paddingRight;
+        final int paddingBottom;
+        final int backgroundWidth;
+        final int backgroundHeight;
+        if (mDotBackground != null) {
+            mDotBackground.getPadding(tRect);
+            paddingLeft = tRect.left;
+            paddingTop = tRect.top;
+            paddingRight = tRect.right;
+            paddingBottom = tRect.bottom;
+            backgroundWidth = mDotBackground.getIntrinsicWidth();
+            backgroundHeight = mDotBackground.getIntrinsicHeight();
+        } else {
+            paddingLeft = 0;
+            paddingTop = 0;
+            paddingRight = 0;
+            paddingBottom = 0;
+            backgroundWidth = 0;
+            backgroundHeight = 0;
+        }
+        final int dotWidth = Math.max(dotTextWidth + paddingLeft + paddingRight, backgroundWidth);
+        final int dotHeight = Math.max(dotTextHeight + paddingTop + paddingBottom,
+                backgroundHeight);
+        final float centerX = getWidth() * 0.5f;
+        final float centerY = getHeight() * 0.5f;
+        float left = centerX + mDotCenterToViewCenterX - dotWidth * 0.5f;
+        if (!mDotCanGoOutside) {
+            if (left < 0)
+                left = 0;
+            if (left > getWidth() - dotWidth)
+                left = getWidth() - dotWidth;
+        }
+        float top = centerY + mDotCenterToViewCenterY - dotHeight * 0.5f;
+        if (!mDotCanGoOutside) {
+            if (top < 0)
+                top = 0;
+            if (top > getHeight() - dotHeight)
+                top = getHeight() - dotHeight;
+        }
+        canvas.save();
+        canvas.translate(left, top);
+        if (mDotBackground != null) {
+            mDotBackground.setBounds(0, 0, dotWidth, dotHeight);
+            mDotBackground.draw(canvas);
+        }
+        if (mDot.length() > 0) {
+            canvas.translate(paddingLeft, paddingTop);
+            canvas.translate(dotTextWidth * 0.5f, dotTextHeight * 0.5f);
+            mPaint.setColor(mDotTextColor);
+            canvas.drawText(mDot, 0, mDotTextDesc, mPaint);
+        }
+        canvas.restore();
     }
 
     void setTextSize(float size) {
@@ -167,11 +233,11 @@ final class GradientTabStripItem extends View {
         mDrawablePadding = padding;
     }
 
-    void setDotMarginCenter(int x, int y) {
-        if (mDotMarginCenterX == x && mDotMarginCenterY == y)
+    void setDotCenterToViewCenter(int x, int y) {
+        if (mDotCenterToViewCenterX == x && mDotCenterToViewCenterY == y)
             return;
-        mDotMarginCenterX = x;
-        mDotMarginCenterY = y;
+        mDotCenterToViewCenterX = x;
+        mDotCenterToViewCenterY = y;
         invalidate();
     }
 

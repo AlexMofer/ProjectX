@@ -48,8 +48,8 @@
         <!--<attr name="gtsTextColor" format="color" />-->
         <!--<attr name="gtsDrawablePadding" format="dimension" />-->
         <!--<attr name="gtsItemBackground" format="reference" />-->
-        <!--<attr name="gtsDotMarginCenterX" format="dimension" />-->
-        <!--<attr name="gtsDotMarginCenterY" format="dimension" />-->
+    <!--<attr name="gtsDotCenterToViewCenterX" format="dimension" />-->
+    <!--<attr name="gtsDotCenterToViewCenterY" format="dimension" />-->
         <!--<attr name="gtsDotCanGoOutside" format="boolean" />-->
         <!--<attr name="gtsDotBackground" format="reference" />-->
         <!--<attr name="gtsDotTextSize" format="dimension" />-->

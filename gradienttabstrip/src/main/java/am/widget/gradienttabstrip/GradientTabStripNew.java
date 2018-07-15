@@ -43,8 +43,8 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
     private static final int DEFAULT_TEXT_COLOR_SELECTED = Color.BLACK;// 默认字体选中颜色
     private static final int DEFAULT_DOT_MARGIN = 16;// 默认小圆点距离中心距离
     private static final int DEFAULT_DOT_BACKGROUND_COLOR = Color.RED;
-    private static final int DEFAULT_DOT_BACKGROUND_SIZE = 6;
-    private static final int DEFAULT_DOT_TEXT_SIZE = 8;
+    private static final int DEFAULT_DOT_BACKGROUND_SIZE = 10;
+    private static final int DEFAULT_DOT_TEXT_SIZE = 10;
     private static final int DEFAULT_DOT_TEXT_COLOR = Color.WHITE;
     private int mPosition = 0;
     private float mOffset = 0;
@@ -55,8 +55,8 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
     private int mTextColorNormal;// 文字默认颜色
     private int mTextColorSelected;// 文字选中颜色
     private int mDrawablePadding;// 图文间距
-    private int mDotMarginCenterX;// 小圆点距离中心X轴距离（以中心点为直角坐标系原点）
-    private int mDotMarginCenterY;// 小圆点距离中心Y轴距离（以中心点为直角坐标系原点）
+    private int mDotCenterToViewCenterX;// 小圆点中心距离View中心X轴距离（以中心点为直角坐标系原点）
+    private int mDotCenterToViewCenterY;// 小圆点中心距离View中心Y轴距离（以中心点为直角坐标系原点）
     private boolean mDotCanGoOutside;// 小圆点是否可绘制到视图外部
     private Drawable mDotBackground;// 小圆点背景图
     private float mDotTextSize;// 小圆点文字大小
@@ -83,7 +83,8 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
         mTextSize = DEFAULT_TEXT_SIZE * density;
         mTextColorNormal = DEFAULT_TEXT_COLOR_NORMAL;
         mTextColorSelected = DEFAULT_TEXT_COLOR_SELECTED;
-        mDotMarginCenterY = mDotMarginCenterX = Math.round(DEFAULT_DOT_MARGIN * density);
+        mDotCenterToViewCenterX = Math.round(DEFAULT_DOT_MARGIN * density);
+        mDotCenterToViewCenterY = -mDotCenterToViewCenterX;
         mDotBackground = getDefaultDotBackground();
         mDotTextSize = DEFAULT_DOT_TEXT_SIZE * density;
         mDotTextColor = DEFAULT_DOT_TEXT_COLOR;
@@ -109,7 +110,8 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
 
     private Drawable getDefaultDotBackground() {
         final GradientDrawable mBackground = new GradientDrawable();
-        mBackground.setShape(GradientDrawable.OVAL);
+        mBackground.setShape(GradientDrawable.RECTANGLE);
+        mBackground.setCornerRadius(1000);
         mBackground.setColor(DEFAULT_DOT_BACKGROUND_COLOR);
         final int size = Math.round(DEFAULT_DOT_BACKGROUND_SIZE *
                 getResources().getDisplayMetrics().density);
@@ -163,7 +165,7 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
         setTextSize(item);
         setTextColor(item);
         setDrawablePadding(item);
-        setDotMarginCenter(item);
+        setDotCenterToViewCenter(item);
         setDotCanGoOutside(item);
         setDotBackground(item);
         setDotTextSize(item);
@@ -199,8 +201,8 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
         item.setDrawablePadding(mDrawablePadding);
     }
 
-    private void setDotMarginCenter(GradientTabStripItem item) {
-        item.setDotMarginCenter(mDotMarginCenterX, mDotMarginCenterY);
+    private void setDotCenterToViewCenter(GradientTabStripItem item) {
+        item.setDotCenterToViewCenter(mDotCenterToViewCenterX, mDotCenterToViewCenterY);
     }
 
     private void setDotCanGoOutside(GradientTabStripItem item) {
@@ -391,12 +393,12 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
     }
 
     /**
-     * 获取小圆点距离中心X轴距离（以中心点为直角坐标系原点）
+     * 小圆点中心距离View中心X轴距离（以中心点为直角坐标系原点）
      *
      * @return 距离
      */
-    public int getDotMarginCenterX() {
-        return mDotMarginCenterX;
+    public int getDotCenterToViewCenterX() {
+        return mDotCenterToViewCenterX;
     }
 
     /**
@@ -404,24 +406,24 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
      *
      * @return 距离
      */
-    public int getDotMarginCenterY() {
-        return mDotMarginCenterY;
+    public int getDotCenterToViewCenterY() {
+        return mDotCenterToViewCenterY;
     }
 
     /**
-     * 设置小圆点距离中心距离（以中心点为直角坐标系原点）
+     * 小圆点中心距离View中心Y轴距离（以中心点为直角坐标系原点）
      *
      * @param x X轴距离
      * @param y Y轴距离
      */
-    public void setDotMarginCenter(int x, int y) {
-        if (mDotMarginCenterX == x && mDotMarginCenterY == y)
+    public void setDotCenterToViewCenter(int x, int y) {
+        if (mDotCenterToViewCenterX == x && mDotCenterToViewCenterY == y)
             return;
-        mDotMarginCenterX = x;
-        mDotMarginCenterY = y;
+        mDotCenterToViewCenterX = x;
+        mDotCenterToViewCenterY = y;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotMarginCenter(getChildAt(i));
+            setDotCenterToViewCenter(getChildAt(i));
         }
     }
 
