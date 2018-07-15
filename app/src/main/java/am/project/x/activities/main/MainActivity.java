@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 
 import am.project.x.R;
 import am.project.x.activities.main.adapters.MainPagerAdapter;
+import am.project.x.activities.main.adapters.TabStripAdapter;
 import am.project.x.activities.widgets.gradienttabstrip.GradientTabStripActivity;
 import am.widget.gradienttabstrip.GradientTabStrip;
 
@@ -27,29 +28,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    @SuppressWarnings("all")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ViewPager vpFragments = (ViewPager) findViewById(R.id.main_vp_fragments);
-        GradientTabStrip gtsTabs = (GradientTabStrip) findViewById(R.id.main_gts_tabs);
-        MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager(), this);
-        vpFragments.setAdapter(adapter);
-        gtsTabs.setAdapter(adapter);
-        gtsTabs.bindViewPager(vpFragments);
+        setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+        ((GradientTabStrip) findViewById(R.id.main_gts_tabs)).setAdapter(
+                new TabStripAdapter(this));
+        ((ViewPager) findViewById(R.id.main_vp_fragments)).setAdapter(
+                new MainPagerAdapter(getSupportFragmentManager(), this));
         if (savedInstanceState == null)
             GradientTabStripActivity.start(this);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        ViewPager vpFragments = findViewById(R.id.main_vp_fragments);
-        GradientTabStrip gtsTabs = findViewById(R.id.main_gts_tabs);
-        gtsTabs.bindViewPager(vpFragments);
     }
 }

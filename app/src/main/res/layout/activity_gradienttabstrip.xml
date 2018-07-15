@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/gradienttabstrip_title" />
 
-    <am.widget.gradienttabstrip.GradientTabStripNew
+    <am.widget.gradienttabstrip.GradientTabStrip
         android:id="@+id/gts_gts_tabs"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"

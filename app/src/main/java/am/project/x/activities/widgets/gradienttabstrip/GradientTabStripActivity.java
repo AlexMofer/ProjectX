@@ -19,7 +19,7 @@ import java.util.Locale;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
 import am.util.viewpager.adapter.ViewsPagerAdapter;
-import am.widget.gradienttabstrip.GradientTabStripNew;
+import am.widget.gradienttabstrip.GradientTabStrip;
 
 public class GradientTabStripActivity extends BaseActivity {
 
@@ -38,7 +38,7 @@ public class GradientTabStripActivity extends BaseActivity {
         setSupportActionBar(R.id.gts_toolbar);
         ((ViewPager) findViewById(R.id.gts_vp_pagers))
                 .setAdapter(new PagerAdapter(getPagers()));
-        ((GradientTabStripNew) findViewById(R.id.gts_gts_tabs))
+        ((GradientTabStrip) findViewById(R.id.gts_gts_tabs))
                 .setAdapter(new TabAdapter(this));
     }
 
@@ -78,7 +78,7 @@ public class GradientTabStripActivity extends BaseActivity {
         }
     }
 
-    private class TabAdapter extends GradientTabStripNew.Adapter {
+    private class TabAdapter extends GradientTabStrip.Adapter {
 
         private final Drawable mNormal0;
         private final Drawable mNormal1;
@@ -149,9 +149,9 @@ public class GradientTabStripActivity extends BaseActivity {
                 case 1:
                     return "";
                 case 2:
-                    return "888";
+                    return " 888 ";
                 case 3:
-                    return "new";
+                    return " new ";
             }
         }
     }
