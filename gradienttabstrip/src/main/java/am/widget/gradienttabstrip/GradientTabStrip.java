@@ -17,8 +17,8 @@
 package am.widget.gradienttabstrip;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.ColorInt;
@@ -46,6 +46,9 @@ public class GradientTabStrip extends BaseTabStripViewGroup<GradientTabStripItem
     private static final int DEFAULT_DOT_BACKGROUND_SIZE = 10;
     private static final int DEFAULT_DOT_TEXT_SIZE = 10;
     private static final int DEFAULT_DOT_TEXT_COLOR = Color.WHITE;
+    private static final int[] ATTRS = new int[]{android.R.attr.textSize,
+            android.R.attr.textColor, android.R.attr.divider, android.R.attr.showDividers,
+            android.R.attr.dividerPadding};
     private int mPosition = 0;
     private float mOffset = 0;
     private Adapter mAdapter;
@@ -55,8 +58,8 @@ public class GradientTabStrip extends BaseTabStripViewGroup<GradientTabStripItem
     private int mTextColorNormal;// 文字默认颜色
     private int mTextColorSelected;// 文字选中颜色
     private int mDrawablePadding;// 图文间距
-    private int mDotCenterToViewCenterX;// 小圆点中心距离View中心X轴距离（以中心点为直角坐标系原点）
-    private int mDotCenterToViewCenterY;// 小圆点中心距离View中心Y轴距离（以中心点为直角坐标系原点）
+    private float mDotCenterToViewCenterX;// 小圆点中心距离View中心X轴距离（以中心点为直角坐标系原点）
+    private float mDotCenterToViewCenterY;// 小圆点中心距离View中心Y轴距离（以中心点为直角坐标系原点）
     private boolean mDotCanGoOutside;// 小圆点是否可绘制到视图外部
     private boolean mDotAutoChangeWidth;// 小圆点是否自动修改宽度（宽度小于高度时调整宽度，使其为圆点）
     private Drawable mDotBackground;// 小圆点背景图
@@ -80,51 +83,93 @@ public class GradientTabStrip extends BaseTabStripViewGroup<GradientTabStripItem
 
     private void initView(Context context, @Nullable AttributeSet attrs) {
         final float density = getResources().getDisplayMetrics().density;
-        mItemBackgroundId = NO_ID;
-        mTextSize = DEFAULT_TEXT_SIZE * density;
-        mTextColorNormal = DEFAULT_TEXT_COLOR_NORMAL;
-        mTextColorSelected = DEFAULT_TEXT_COLOR_SELECTED;
-        mDotCenterToViewCenterX = Math.round(DEFAULT_DOT_MARGIN * density);
-        mDotCenterToViewCenterY = -mDotCenterToViewCenterX;
-        mDotBackground = getDefaultDotBackground();
-        mDotTextSize = DEFAULT_DOT_TEXT_SIZE * density;
-        mDotTextColor = DEFAULT_DOT_TEXT_COLOR;
-
-        // TODO 获取attrs
-        mItemBackgroundDrawable = new ColorDrawable(0xffffffff);
-        mDrawablePadding = Math.round(3 * density);
-        mDotCanGoOutside = false;
-        mDotAutoChangeWidth = true;
-        initView(getDefaultDrawable(0xff00ff00, 10),
-                SHOW_DIVIDER_MIDDLE | SHOW_DIVIDER_BEGINNING | SHOW_DIVIDER_END,
-                10,
-                getDefaultDrawable(0xffff0000, 46), true, 10);
-        setSmoothScroll(true);
-    }
-
-    private Drawable getDefaultDrawable(int color, int size) {
-        final GradientDrawable mBackground = new GradientDrawable();
-        mBackground.setShape(GradientDrawable.RECTANGLE);
-        mBackground.setColor(color);
-        mBackground.setSize(size, 0);
-        return mBackground;
+        final TypedArray custom = context.obtainStyledAttributes(attrs,
+                R.styleable.GradientTabStrip);
+        final Drawable divider = custom.getDrawable(R.styleable.GradientTabStrip_gtsDivider);
+        final int showDividers = custom.getInt(R.styleable.GradientTabStrip_gtsShowDividers,
+                SHOW_DIVIDER_NONE);
+        final int dividerPadding = custom.getDimensionPixelOffset(
+                R.styleable.GradientTabStrip_gtsDividerPadding, 0);
+        final Drawable center = custom.getDrawable(R.styleable.GradientTabStrip_gtsCenterInterval);
+        final boolean centerAsItem = custom.getBoolean(
+                R.styleable.GradientTabStrip_gtsCenterIntervalAsItem, false);
+        final int centerPadding = custom.getDimensionPixelOffset(
+                R.styleable.GradientTabStrip_gtsCenterIntervalPadding, 0);
+        final boolean smoothScroll = custom.getBoolean(
+                R.styleable.GradientTabStrip_gtsClickSmoothScroll, false);
+        mItemBackgroundId = custom.getResourceId(R.styleable.GradientTabStrip_gtsItemBackground,
+                NO_ID);
+        mTextSize = custom.getDimension(R.styleable.GradientTabStrip_gtsTextSize,
+                DEFAULT_TEXT_SIZE * density);
+        mTextColorNormal = custom.getColor(R.styleable.GradientTabStrip_gtsTextColorNormal,
+                DEFAULT_TEXT_COLOR_NORMAL);
+        mTextColorSelected = custom.getColor(R.styleable.GradientTabStrip_gtsTextColorSelected,
+                DEFAULT_TEXT_COLOR_SELECTED);
+        mDrawablePadding = custom.getDimensionPixelOffset(
+                R.styleable.GradientTabStrip_gtsDrawablePadding, 0);
+        mDotCenterToViewCenterX = custom.getDimension(
+                R.styleable.GradientTabStrip_gtsDotCenterToViewCenterX,
+                DEFAULT_DOT_MARGIN * density);
+        mDotCenterToViewCenterY = custom.getDimension(
+                R.styleable.GradientTabStrip_gtsDotCenterToViewCenterY, -mDotCenterToViewCenterX);
+        mDotCanGoOutside = custom.getBoolean(R.styleable.GradientTabStrip_gtsDotCanGoOutside,
+                false);
+        mDotAutoChangeWidth = custom.getBoolean(R.styleable.GradientTabStrip_gtsDotAutoChangeWidth,
+                true);
+        final Drawable background =
+                custom.getDrawable(R.styleable.GradientTabStrip_gtsDotBackground);
+        mDotTextSize = custom.getDimension(R.styleable.GradientTabStrip_gtsDotTextSize,
+                DEFAULT_DOT_TEXT_SIZE * density);
+        mDotTextColor = custom.getColor(R.styleable.GradientTabStrip_gtsDotTextColor,
+                DEFAULT_DOT_TEXT_COLOR);
+        custom.recycle();
+        initView(divider, showDividers, dividerPadding, center, centerAsItem, centerPadding);
+        setSmoothScroll(smoothScroll);
+        mDotBackground = background == null ? getDefaultDotBackground() : background;
     }
 
     private Drawable getDefaultDotBackground() {
-        final GradientDrawable mBackground = new GradientDrawable();
-        mBackground.setShape(GradientDrawable.RECTANGLE);
-        mBackground.setCornerRadius(1000);
-        mBackground.setColor(DEFAULT_DOT_BACKGROUND_COLOR);
+        final GradientDrawable background = new GradientDrawable();
+        background.setShape(GradientDrawable.RECTANGLE);
+        background.setCornerRadius(1000);
+        background.setColor(DEFAULT_DOT_BACKGROUND_COLOR);
         final int size = Math.round(DEFAULT_DOT_BACKGROUND_SIZE *
                 getResources().getDisplayMetrics().density);
-        mBackground.setSize(size, size);
-        return mBackground;
+        background.setSize(size, size);
+        return background;
+    }
+
+    private Drawable getPreviewDrawable(int color) {
+        final float density = getResources().getDisplayMetrics().density;
+        final GradientDrawable drawable = new GradientDrawable();
+        drawable.setShape(GradientDrawable.RECTANGLE);
+        drawable.setStroke(Math.round(2 * density), color);
+        final int size = Math.round(24 * density);
+        drawable.setSize(size, size);
+        return drawable;
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (isInEditMode()) {
-            // TODO 增加预览子项
+        if (isInEditMode() && getChildCount() == 0) {
+            final int count = 4;
+            for (int i = 0; i < count; i++) {
+                GradientTabStripItem item = onCreateView();
+                addViewInLayout(item, -1, generateDefaultLayoutParams());
+                final CharSequence title = "Tab " + i;
+                final String dot;
+                if (i == 0)
+                    dot = "999";
+                else if (i == 1)
+                    dot = "1";
+                else if (i == 2)
+                    dot = "";
+                else
+                    dot = null;
+                final Drawable selected;
+                item.set(title, dot, getPreviewDrawable(mTextColorNormal),
+                        getPreviewDrawable(mTextColorSelected), i == 0 ? 1 : 0);
+            }
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
@@ -404,7 +449,7 @@ public class GradientTabStrip extends BaseTabStripViewGroup<GradientTabStripItem
      *
      * @return 距离
      */
-    public int getDotCenterToViewCenterX() {
+    public float getDotCenterToViewCenterX() {
         return mDotCenterToViewCenterX;
     }
 
@@ -413,7 +458,7 @@ public class GradientTabStrip extends BaseTabStripViewGroup<GradientTabStripItem
      *
      * @return 距离
      */
-    public int getDotCenterToViewCenterY() {
+    public float getDotCenterToViewCenterY() {
         return mDotCenterToViewCenterY;
     }
 
@@ -423,7 +468,7 @@ public class GradientTabStrip extends BaseTabStripViewGroup<GradientTabStripItem
      * @param x X轴距离
      * @param y Y轴距离
      */
-    public void setDotCenterToViewCenter(int x, int y) {
+    public void setDotCenterToViewCenter(float x, float y) {
         if (mDotCenterToViewCenterX == x && mDotCenterToViewCenterY == y)
             return;
         mDotCenterToViewCenterX = x;

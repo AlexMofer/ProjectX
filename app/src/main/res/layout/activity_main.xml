@@ -43,12 +43,12 @@
             android:id="@+id/main_gts_tabs"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/bg_main_tab_bar"/>
-            <!--android:textColor="@color/color_main_tabs"-->
-            <!--android:textSize="@dimen/textSize_9"-->
-            <!--app:gtsBackground="@drawable/bg_common_press"-->
-            <!--app:gtsDrawablePadding="4dp"-->
-            <!--/>-->
+            android:background="@drawable/bg_main_tab_bar"
+            app:gtsDrawablePadding="4dp"
+            app:gtsItemBackground="@drawable/bg_common_press"
+            app:gtsTextColorNormal="#ff6d6d6d"
+            app:gtsTextColorSelected="#ff5591f5"
+            app:gtsTextSize="@dimen/textSize_9" />
 
     </LinearLayout>
 

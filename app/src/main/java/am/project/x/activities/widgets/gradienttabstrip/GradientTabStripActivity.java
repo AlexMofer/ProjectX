@@ -149,9 +149,9 @@ public class GradientTabStripActivity extends BaseActivity {
                 case 1:
                     return "";
                 case 2:
-                    return " 888 ";
+                    return "888";
                 case 3:
-                    return " new ";
+                    return "new";
             }
         }
     }

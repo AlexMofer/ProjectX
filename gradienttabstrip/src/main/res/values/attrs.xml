@@ -12,12 +12,12 @@
         <attr name="gtsCenterInterval" format="reference" />
         <attr name="gtsCenterIntervalAsItem" format="boolean" />
         <attr name="gtsCenterIntervalPadding" format="dimension" />
+        <attr name="gtsClickSmoothScroll" format="boolean" />
+        <attr name="gtsItemBackground" format="reference" />
         <attr name="gtsTextSize" format="dimension" />
         <attr name="gtsTextColorNormal" format="color" />
         <attr name="gtsTextColorSelected" format="color" />
-        <attr name="gtsTextColor" format="color" />
         <attr name="gtsDrawablePadding" format="dimension" />
-        <attr name="gtsItemBackground" format="reference" />
         <attr name="gtsDotCenterToViewCenterX" format="dimension" />
         <attr name="gtsDotCenterToViewCenterY" format="dimension" />
         <attr name="gtsDotCanGoOutside" format="boolean" />

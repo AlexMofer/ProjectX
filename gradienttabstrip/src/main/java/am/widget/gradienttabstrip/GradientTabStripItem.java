@@ -31,8 +31,8 @@ final class GradientTabStripItem extends View {
     private int mTextColorNormal;// 文字默认颜色
     private int mTextColorSelected;// 文字选中颜色
     private int mDrawablePadding;// 图文间距
-    private int mDotCenterToViewCenterX;// 小圆点中心距离View中心X轴距离（以中心点为直角坐标系原点）
-    private int mDotCenterToViewCenterY;// 小圆点中心距离View中心Y轴距离（以中心点为直角坐标系原点）
+    private float mDotCenterToViewCenterX;// 小圆点中心距离View中心X轴距离（以中心点为直角坐标系原点）
+    private float mDotCenterToViewCenterY;// 小圆点中心距离View中心Y轴距离（以中心点为直角坐标系原点）
     private boolean mDotCanGoOutside;// 小圆点是否可绘制到视图外部
     private boolean mDotAutoChangeWidth;// 小圆点是否自动修改宽度（宽度小于高度时调整宽度，使其为圆点）
     private Drawable mDotBackground;// 小圆点背景图
@@ -236,7 +236,7 @@ final class GradientTabStripItem extends View {
         mDrawablePadding = padding;
     }
 
-    void setDotCenterToViewCenter(int x, int y) {
+    void setDotCenterToViewCenter(float x, float y) {
         if (mDotCenterToViewCenterX == x && mDotCenterToViewCenterY == y)
             return;
         mDotCenterToViewCenterX = x;
