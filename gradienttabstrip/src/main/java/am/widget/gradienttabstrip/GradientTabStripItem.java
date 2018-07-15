@@ -34,6 +34,7 @@ final class GradientTabStripItem extends View {
     private int mDotCenterToViewCenterX;// 小圆点中心距离View中心X轴距离（以中心点为直角坐标系原点）
     private int mDotCenterToViewCenterY;// 小圆点中心距离View中心Y轴距离（以中心点为直角坐标系原点）
     private boolean mDotCanGoOutside;// 小圆点是否可绘制到视图外部
+    private boolean mDotAutoChangeWidth;// 小圆点是否自动修改宽度（宽度小于高度时调整宽度，使其为圆点）
     private Drawable mDotBackground;// 小圆点背景图
     private float mDotTextSize;// 小圆点文字大小
     private int mDotTextColor;// 小圆点文字颜色
@@ -179,9 +180,10 @@ final class GradientTabStripItem extends View {
             backgroundWidth = 0;
             backgroundHeight = 0;
         }
-        final int dotWidth = Math.max(dotTextWidth + paddingLeft + paddingRight, backgroundWidth);
-        final int dotHeight = Math.max(dotTextHeight + paddingTop + paddingBottom,
-                backgroundHeight);
+        final int dotSize = Math.max(dotTextHeight + paddingTop + paddingBottom, backgroundHeight);
+        int dotWidth = Math.max(dotTextWidth + paddingLeft + paddingRight, backgroundWidth);
+        if (dotWidth < dotSize && mDotAutoChangeWidth)
+            dotWidth = dotSize;
         final float centerX = getWidth() * 0.5f;
         final float centerY = getHeight() * 0.5f;
         float left = centerX + mDotCenterToViewCenterX - dotWidth * 0.5f;
@@ -191,22 +193,23 @@ final class GradientTabStripItem extends View {
             if (left > getWidth() - dotWidth)
                 left = getWidth() - dotWidth;
         }
-        float top = centerY + mDotCenterToViewCenterY - dotHeight * 0.5f;
+        float top = centerY + mDotCenterToViewCenterY - dotSize * 0.5f;
         if (!mDotCanGoOutside) {
             if (top < 0)
                 top = 0;
-            if (top > getHeight() - dotHeight)
-                top = getHeight() - dotHeight;
+            if (top > getHeight() - dotSize)
+                top = getHeight() - dotSize;
         }
         canvas.save();
         canvas.translate(left, top);
         if (mDotBackground != null) {
-            mDotBackground.setBounds(0, 0, dotWidth, dotHeight);
+            mDotBackground.setBounds(0, 0, dotWidth, dotSize);
             mDotBackground.draw(canvas);
         }
         if (mDot.length() > 0) {
-            canvas.translate(paddingLeft, paddingTop);
-            canvas.translate(dotTextWidth * 0.5f, dotTextHeight * 0.5f);
+            final float offsetX = Math.max(dotWidth * 0.5f, paddingLeft + dotTextWidth * 0.5f);
+            final float offsetY = Math.max(dotSize * 0.5f, paddingTop + dotTextHeight * 0.5f);
+            canvas.translate(offsetX, offsetY);
             mPaint.setColor(mDotTextColor);
             canvas.drawText(mDot, 0, mDotTextDesc, mPaint);
         }
@@ -245,6 +248,13 @@ final class GradientTabStripItem extends View {
         if (mDotCanGoOutside == can)
             return;
         mDotCanGoOutside = can;
+        invalidate();
+    }
+
+    void setDotAutoChangeWidth(boolean auto) {
+        if (mDotAutoChangeWidth == auto)
+            return;
+        mDotAutoChangeWidth = auto;
         invalidate();
     }
 

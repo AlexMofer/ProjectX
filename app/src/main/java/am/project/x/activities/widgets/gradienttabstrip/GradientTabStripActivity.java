@@ -144,12 +144,13 @@ public class GradientTabStripActivity extends BaseActivity {
         public String getDotText(int position, int count) {
             switch (position) {
                 default:
-                    return null;
                 case 0:
-                    return "888";
+                    return "1";
                 case 1:
                     return "";
                 case 2:
+                    return "888";
+                case 3:
                     return "new";
             }
         }

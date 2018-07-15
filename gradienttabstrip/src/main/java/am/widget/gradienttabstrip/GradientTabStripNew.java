@@ -58,6 +58,7 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
     private int mDotCenterToViewCenterX;// 小圆点中心距离View中心X轴距离（以中心点为直角坐标系原点）
     private int mDotCenterToViewCenterY;// 小圆点中心距离View中心Y轴距离（以中心点为直角坐标系原点）
     private boolean mDotCanGoOutside;// 小圆点是否可绘制到视图外部
+    private boolean mDotAutoChangeWidth;// 小圆点是否自动修改宽度（宽度小于高度时调整宽度，使其为圆点）
     private Drawable mDotBackground;// 小圆点背景图
     private float mDotTextSize;// 小圆点文字大小
     private int mDotTextColor;// 小圆点文字颜色
@@ -93,6 +94,7 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
         mItemBackgroundDrawable = new ColorDrawable(0xffffffff);
         mDrawablePadding = Math.round(3 * density);
         mDotCanGoOutside = false;
+        mDotAutoChangeWidth = true;
         initView(getDefaultDrawable(0xff00ff00, 10),
                 SHOW_DIVIDER_MIDDLE | SHOW_DIVIDER_BEGINNING | SHOW_DIVIDER_END,
                 10,
@@ -167,6 +169,7 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
         setDrawablePadding(item);
         setDotCenterToViewCenter(item);
         setDotCanGoOutside(item);
+        setDotAutoChangeWidth(item);
         setDotBackground(item);
         setDotTextSize(item);
         setDotTextColor(item);
@@ -207,6 +210,10 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
 
     private void setDotCanGoOutside(GradientTabStripItem item) {
         item.setDotCanGoOutside(mDotCanGoOutside);
+    }
+
+    private void setDotAutoChangeWidth(GradientTabStripItem item) {
+        item.setDotAutoChangeWidth(mDotAutoChangeWidth);
     }
 
     private void setDotBackground(GradientTabStripItem item) {
@@ -448,6 +455,30 @@ public class GradientTabStripNew extends BaseTabStripViewGroup<GradientTabStripI
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
             setDotCanGoOutside(getChildAt(i));
+        }
+    }
+
+    /**
+     * 判断小圆点是否自动修改宽度（宽度小于高度时调整宽度，使其为圆点）
+     *
+     * @return 是否自动
+     */
+    public boolean isDotAutoChangeWidth() {
+        return mDotAutoChangeWidth;
+    }
+
+    /**
+     * 设置小圆点是否自动修改宽度（宽度小于高度时调整宽度，使其为圆点）
+     *
+     * @param auto 是否自动
+     */
+    public void setDotAutoChangeWidth(boolean auto) {
+        if (mDotAutoChangeWidth == auto)
+            return;
+        mDotAutoChangeWidth = auto;
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            setDotAutoChangeWidth(getChildAt(i));
         }
     }
 
