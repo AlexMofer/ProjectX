@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package am.widget.gradienttabstrip;
+package am.widget.indicatortabstrip;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -25,12 +25,15 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
 
-final class GradientTabStripItem extends View {
+final class IndicatorTabStripItem extends View {
 
+    private final TextPaint mPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    private final Rect tRect = new Rect();
+    private int mColorBackgroundNormal;// 默认颜色背景
+    private int mColorBackgroundSelected;// 选中颜色背景
     private float mTextSize;// 文字大小
     private int mTextColorNormal;// 文字默认颜色
     private int mTextColorSelected;// 文字选中颜色
-    private int mDrawablePadding;// 图文间距
     private float mDotCenterToViewCenterX;// 小圆点中心距离View中心X轴距离（以中心点为直角坐标系原点）
     private float mDotCenterToViewCenterY;// 小圆点中心距离View中心Y轴距离（以中心点为直角坐标系原点）
     private boolean mDotCanGoOutside;// 小圆点是否可绘制到视图外部
@@ -40,19 +43,13 @@ final class GradientTabStripItem extends View {
     private int mDotTextColor;// 小圆点文字颜色
     private String mTitle;
     private String mDot;
-    private Drawable mNormal;
-    private Drawable mSelected;
     private float mOffset = 0;
-    private final TextPaint mPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-    private final Rect tRect = new Rect();
-    private int mDrawableWidth;
-    private int mTextHeight;
     private int mTextDesc;
-    private int mDrawableHeight;
+    private float mTextScale;// 选中文字缩放
     private int mDotTextHeight;
     private int mDotTextDesc;
 
-    GradientTabStripItem(Context context) {
+    IndicatorTabStripItem(Context context) {
         super(context);
         mPaint.density = getResources().getDisplayMetrics().density;
         mPaint.setTextAlign(Paint.Align.CENTER);
@@ -61,7 +58,6 @@ final class GradientTabStripItem extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mPaint.setTextSize(mTextSize);
-        mDrawableWidth = getDrawableWidth();
         final int textWidth;
         if (TextUtils.isEmpty(mTitle)) {
             textWidth = 0;
@@ -69,28 +65,17 @@ final class GradientTabStripItem extends View {
             mPaint.getTextBounds(mTitle, 0, mTitle.length(), tRect);
             textWidth = tRect.width();
         }
-        final int width = Math.max(mDrawableWidth, textWidth);
-        mDrawableHeight = getDrawableHeight();
+        final int width = mTextScale > 1 ?
+                (int) (Math.ceil((float) textWidth * mTextScale) + 1) : textWidth;
         Paint.FontMetricsInt metrics = mPaint.getFontMetricsInt();
-        mTextHeight = metrics.bottom - metrics.top;
+        final int textHeight = metrics.bottom - metrics.top;
         mTextDesc = metrics.bottom;
-        final int height = mDrawableHeight + mDrawablePadding + mTextHeight;
+        final int height = mTextScale > 1 ?
+                (int) (Math.ceil((float) textHeight * mTextScale) + 1) : textHeight;
         setMeasuredDimension(
                 resolveSize(Math.max(width, getSuggestedMinimumWidth()), widthMeasureSpec),
                 resolveSize(Math.max(height, getSuggestedMinimumHeight()), heightMeasureSpec));
         getDotTextInfo();
-    }
-
-    private int getDrawableWidth() {
-        final int normal = mNormal == null ? 0 : mNormal.getIntrinsicWidth();
-        final int selected = mSelected == null ? 0 : mSelected.getIntrinsicWidth();
-        return Math.max(normal, selected);
-    }
-
-    private int getDrawableHeight() {
-        final int normal = mNormal == null ? 0 : mNormal.getIntrinsicHeight();
-        final int selected = mSelected == null ? 0 : mSelected.getIntrinsicHeight();
-        return Math.max(normal, selected);
     }
 
     private void getDotTextInfo() {
@@ -101,32 +86,24 @@ final class GradientTabStripItem extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        drawDrawable(canvas);
-        drawText(canvas);
-        drawDot(canvas);
+    public void draw(Canvas canvas) {
+        drawColorBackground(canvas);
+        super.draw(canvas);
     }
 
-    private void drawDrawable(Canvas canvas) {
-        final float centerX = getWidth() * 0.5f;
-        final float centerY = getHeight() * 0.5f;
-        canvas.save();
-        canvas.translate(centerX, centerY);
-        canvas.translate(-mDrawableWidth * 0.5f,
-                -(mDrawableHeight + mDrawablePadding + mTextHeight) * 0.5f);
+    private void drawColorBackground(Canvas canvas) {
+        if (mColorBackgroundNormal == 0 && mColorBackgroundSelected == 0)
+            return;
+        final int color = IndicatorTabStripNew.makeColor(
+                mColorBackgroundNormal, mColorBackgroundSelected, mOffset);
+        canvas.drawColor(color);
+    }
 
-        if (mNormal != null && mOffset < 1) {
-            mNormal.setBounds(0, 0, mDrawableWidth, mDrawableHeight);
-            mNormal.setAlpha(Math.min(255, Math.max(0, Math.round((1 - mOffset) * 255))));
-            mNormal.draw(canvas);
-        }
-        if (mSelected != null && mOffset > 0) {
-            mSelected.setBounds(0, 0, mDrawableWidth, mDrawableHeight);
-            mSelected.setAlpha(Math.min(255, Math.max(0, Math.round(mOffset * 255))));
-            mSelected.draw(canvas);
-        }
-        canvas.restore();
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        drawText(canvas);
+        drawDot(canvas);
     }
 
     private void drawText(Canvas canvas) {
@@ -135,12 +112,22 @@ final class GradientTabStripItem extends View {
         final float centerX = getWidth() * 0.5f;
         final float centerY = getHeight() * 0.5f;
         mPaint.setTextSize(mTextSize);
-        mPaint.setColor(GradientTabStrip.makeColor(mTextColorNormal,
+        mPaint.setColor(IndicatorTabStripNew.makeColor(mTextColorNormal,
                 mTextColorSelected, mOffset));
+        float scale;
+        if (mOffset == 1) {
+            scale = mTextScale;
+        } else if (mOffset == 0) {
+            scale = 1;
+        } else {
+            scale = 1 + (mTextScale - 1) * mOffset;
+        }
         canvas.save();
-        canvas.translate(centerX, centerY);
-        canvas.translate(0, (mDrawableHeight + mDrawablePadding) * 0.5f);
-        canvas.drawText(mTitle, 0, mTextDesc, mPaint);
+        canvas.translate(centerX, centerY + mTextDesc);
+        if (scale != 1) {
+            canvas.scale(scale, scale, 0, -mTextDesc);
+        }
+        canvas.drawText(mTitle, 0, 0, mPaint);
         canvas.restore();
     }
 
@@ -216,6 +203,14 @@ final class GradientTabStripItem extends View {
         canvas.restore();
     }
 
+    void setColorBackground(int normal, int selected) {
+        if (mColorBackgroundNormal == normal && mColorBackgroundSelected == selected)
+            return;
+        mColorBackgroundNormal = normal;
+        mColorBackgroundSelected = selected;
+        invalidate();
+    }
+
     void setTextSize(float size) {
         if (mTextSize == size)
             return;
@@ -230,10 +225,10 @@ final class GradientTabStripItem extends View {
         invalidate();
     }
 
-    void setDrawablePadding(int padding) {
-        if (padding == mDrawablePadding)
+    void setTextScale(float scale) {
+        if (mTextScale == scale)
             return;
-        mDrawablePadding = padding;
+        mTextScale = scale;
     }
 
     void setDotCenterToViewCenter(float x, float y) {
@@ -280,15 +275,12 @@ final class GradientTabStripItem extends View {
         invalidate();
     }
 
-    void set(CharSequence title, String dot, Drawable normal, Drawable selected, float offset) {
+    void set(CharSequence title, String dot, float offset) {
         final String ts = title == null ? null : title.toString();
-        if (TextUtils.equals(mTitle, ts) && TextUtils.equals(mDot, dot) && mNormal == normal &&
-                mSelected == selected && mOffset == offset)
+        if (TextUtils.equals(mTitle, ts) && TextUtils.equals(mDot, dot) && mOffset == offset)
             return;
         mTitle = ts;
         mDot = dot;
-        mNormal = normal;
-        mSelected = selected;
         mOffset = offset;
         invalidate();
     }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package am.widget.gradienttabstrip;
+package am.widget.tabstrip;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -30,10 +30,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
-import am.widget.tabstrip.TabStripViewGroup;
-
 @SuppressWarnings("unused")
-abstract class BaseTabStripViewGroup<V extends View> extends TabStripViewGroup {
+public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends TabStripViewGroup {
 
     public static final int SHOW_DIVIDER_NONE = 0;
     public static final int SHOW_DIVIDER_BEGINNING = 1;
@@ -52,15 +50,15 @@ abstract class BaseTabStripViewGroup<V extends View> extends TabStripViewGroup {
     private int mCenterPadding;
     private boolean mSmoothScroll = false;
 
-    public BaseTabStripViewGroup(Context context) {
+    public HorizontalLinearTabStripViewGroup(Context context) {
         super(context);
     }
 
-    public BaseTabStripViewGroup(Context context, AttributeSet attrs) {
+    public HorizontalLinearTabStripViewGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public BaseTabStripViewGroup(Context context, AttributeSet attrs, int defStyleAttr) {
+    public HorizontalLinearTabStripViewGroup(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -516,7 +514,7 @@ abstract class BaseTabStripViewGroup<V extends View> extends TabStripViewGroup {
      * @param offset   偏移值
      * @return 合成色
      */
-    protected static int makeColor(int normal, int selected, float offset) {
+    public static int makeColor(int normal, int selected, float offset) {
         if (offset <= 0)
             return normal;
         if (offset >= 1)

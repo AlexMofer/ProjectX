@@ -7,10 +7,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import am.project.x.BuildConfig;
 import am.project.x.R;
 import am.project.x.activities.main.adapters.MainPagerAdapter;
 import am.project.x.activities.main.adapters.TabStripAdapter;
-import am.project.x.activities.widgets.gradienttabstrip.GradientTabStripActivity;
+import am.project.x.activities.widgets.indicatortabstrip.IndicatorTabStripActivity;
 import am.widget.gradienttabstrip.GradientTabStrip;
 
 /**
@@ -40,7 +41,11 @@ public class MainActivity extends AppCompatActivity {
                 new TabStripAdapter(this));
         ((ViewPager) findViewById(R.id.main_vp_fragments)).setAdapter(
                 new MainPagerAdapter(getSupportFragmentManager(), this));
-        if (savedInstanceState == null)
-            GradientTabStripActivity.start(this);
+        if (savedInstanceState == null && BuildConfig.DEBUG)
+            startDevelop();
+    }
+
+    private void startDevelop() {
+        IndicatorTabStripActivity.start(this);
     }
 }

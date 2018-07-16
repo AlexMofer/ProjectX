@@ -72,7 +72,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener{
                 TagTabStripActivity.startActivity(getContext());
                 break;
             case R.id.widget_btn_indicatortabstrip:
-                IndicatorTabStripActivity.startActivity(getContext());
+                IndicatorTabStripActivity.start(getContext());
                 break;
             case R.id.widget_btn_shapeimageview:
                 ShapeImageViewActivity.startActivity(getContext());

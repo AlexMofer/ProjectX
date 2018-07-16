@@ -42,4 +42,30 @@
         <attr name="ttsTagMinWidth" format="dimension" />
         <attr name="ttsTagMinHeight" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="IndicatorTabStripNew">
+        <attr name="itsDivider" format="reference" />
+        <attr name="itsShowDividers">
+            <flag name="none" value="0" />
+            <flag name="beginning" value="1" />
+            <flag name="middle" value="2" />
+            <flag name="end" value="4" />
+        </attr>
+        <attr name="itsDividerPadding" format="dimension" />
+        <attr name="itsClickSmoothScroll" format="boolean" />
+        <attr name="itsItemBackground" format="reference" />
+        <attr name="itsItemColorBackgroundNormal" format="color" />
+        <attr name="itsItemColorBackgroundSelected" format="color" />
+        <attr name="itsTextSize" format="dimension" />
+        <attr name="itsTextColorNormal" format="color" />
+        <attr name="itsTextColorSelected" format="color" />
+        <attr name="itsTextScale" format="float" />
+        <attr name="itsDotCenterToViewCenterX" format="dimension" />
+        <attr name="itsDotCenterToViewCenterY" format="dimension" />
+        <attr name="itsDotCanGoOutside" format="boolean" />
+        <attr name="itsDotAutoChangeWidth" format="boolean" />
+        <attr name="itsDotBackground" format="reference" />
+        <attr name="itsDotTextSize" format="dimension" />
+        <attr name="itsDotTextColor" format="color" />
+    </declare-styleable>
 </resources>
