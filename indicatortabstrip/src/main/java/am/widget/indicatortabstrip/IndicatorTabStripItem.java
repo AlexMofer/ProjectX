@@ -94,7 +94,7 @@ final class IndicatorTabStripItem extends View {
     private void drawColorBackground(Canvas canvas) {
         if (mColorBackgroundNormal == 0 && mColorBackgroundSelected == 0)
             return;
-        final int color = IndicatorTabStripNew.makeColor(
+        final int color = IndicatorTabStrip.makeColor(
                 mColorBackgroundNormal, mColorBackgroundSelected, mOffset);
         canvas.drawColor(color);
     }
@@ -112,7 +112,7 @@ final class IndicatorTabStripItem extends View {
         final float centerX = getWidth() * 0.5f;
         final float centerY = getHeight() * 0.5f;
         mPaint.setTextSize(mTextSize);
-        mPaint.setColor(IndicatorTabStripNew.makeColor(mTextColorNormal,
+        mPaint.setColor(IndicatorTabStrip.makeColor(mTextColorNormal,
                 mTextColorSelected, mOffset));
         float scale;
         if (mOffset == 1) {

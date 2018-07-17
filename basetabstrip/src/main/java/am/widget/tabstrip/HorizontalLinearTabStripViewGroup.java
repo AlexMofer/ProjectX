@@ -341,6 +341,14 @@ public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends 
         }
     }
 
+    protected int getChildWidth() {
+        return mChildWidth;
+    }
+
+    public int getChildHeight() {
+        return mChildHeight;
+    }
+
     protected void notifyItemChanged() {
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {

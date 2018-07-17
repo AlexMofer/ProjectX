@@ -1,49 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="IndicatorTabStrip">
-        <attr name="ttsTextSize" format="dimension" />
-        <attr name="ttsTextColor" format="color" />
-        <attr name="ttsTextScale" format="float" />
-        <attr name="ttsBackground" format="reference" />
-        <attr name="ttsGradient" format="color" />
-        <attr name="ttsDivider" format="reference" />
-        <attr name="ttsIndicator" format="reference" />
-        <attr name="ttsIndicatorWidthMode" format="enum">
-            <enum name="BySet" value="0" />
-            <enum name="ByTab" value="1" />
-        </attr>
-        <attr name="ttsIndicatorPadding" format="dimension" />
-        <attr name="ttsIndicatorWidth" format="dimension">
-            <flag name="DrawableWidth" value="-1" />
-        </attr>
-        <attr name="ttsIndicatorHeight" format="dimension">
-            <flag name="DrawableHeight" value="-1" />
-        </attr>
-        <attr name="ttsInterval" format="reference" />
-        <attr name="ttsMinItemWidth" format="dimension"/>
-        <attr name="ttsMinItemHeight" format="dimension"/>
-        <attr name="ttsTagTextSize" format="dimension" />
-        <attr name="ttsTagTextColor" format="color" />
-        <attr name="ttsTagBackground" format="reference" />
-        <attr name="ttsTagPadding" format="dimension" />
-        <attr name="ttsTagPaddingLeft" format="dimension" />
-        <attr name="ttsTagPaddingTop" format="dimension" />
-        <attr name="ttsTagPaddingRight" format="dimension" />
-        <attr name="ttsTagPaddingBottom" format="dimension" />
-        <attr name="ttsTagMargin" format="dimension" />
-        <attr name="ttsTagMarginLeft" format="dimension" />
-        <attr name="ttsTagMarginTop" format="dimension" />
-        <attr name="ttsTagMarginRight" format="dimension" />
-        <attr name="ttsTagMarginBottom" format="dimension" />
-        <attr name="ttsTagMinSizeMode" format="enum">
-            <enum name="OnlyHasText" value="0" />
-            <enum name="Always" value="1" />
-        </attr>
-        <attr name="ttsTagMinWidth" format="dimension" />
-        <attr name="ttsTagMinHeight" format="dimension" />
-    </declare-styleable>
-
-    <declare-styleable name="IndicatorTabStripNew">
         <attr name="itsDivider" format="reference" />
         <attr name="itsShowDividers">
             <flag name="none" value="0" />

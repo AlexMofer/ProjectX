@@ -16,9 +16,7 @@ import java.util.Locale;
 import am.project.x.R;
 import am.project.x.activities.BaseActivity;
 import am.util.viewpager.adapter.ViewsPagerAdapter;
-import am.widget.basetabstrip.BaseTabStrip;
 import am.widget.indicatortabstrip.IndicatorTabStrip;
-import am.widget.indicatortabstrip.IndicatorTabStripNew;
 
 public class IndicatorTabStripActivity extends BaseActivity {
 
@@ -44,8 +42,16 @@ public class IndicatorTabStripActivity extends BaseActivity {
         return views;
     }
 
-    private class IndicatorTabStripViewsPagerAdapter extends ViewsPagerAdapter {
-        public IndicatorTabStripViewsPagerAdapter(List<View> views) {
+    @Override
+    protected void initResource(Bundle savedInstanceState) {
+        setSupportActionBar(R.id.its_toolbar);
+        ((ViewPager) findViewById(R.id.its_vp_content)).setAdapter(new PagerAdapter(getPagers()));
+        ((IndicatorTabStrip) findViewById(R.id.its_its_tabs)).setAdapter(new TabAdapter());
+    }
+
+    private class PagerAdapter extends ViewsPagerAdapter {
+
+        PagerAdapter(List<View> views) {
             super(views);
         }
 
@@ -55,42 +61,7 @@ public class IndicatorTabStripActivity extends BaseActivity {
         }
     }
 
-    @Override
-    @SuppressWarnings("all")
-    protected void initResource(Bundle savedInstanceState) {
-        setSupportActionBar(R.id.its_toolbar);
-        ViewPager vpContent = (ViewPager) findViewById(R.id.its_vp_content);
-        IndicatorTabStrip tabs = (IndicatorTabStrip) findViewById(R.id.its_its_tabs);
-        vpContent.setAdapter(new IndicatorTabStripViewsPagerAdapter(getPagers()));
-        BaseTabStrip.ItemTabAdapter adapter = new BaseTabStrip.ItemTabAdapter() {
-
-            @Override
-            public boolean isTagEnable(int position) {
-                if (position == 0) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-
-            @Override
-            public String getTag(int position) {
-                switch (position) {
-                    default:
-                    case 0:
-                        return null;
-                    case 1:
-                        return "";
-                    case 2:
-                        return "3";
-                }
-            }
-        };
-        tabs.setAdapter(adapter);
-        ((IndicatorTabStripNew) findViewById(R.id.its_its_tabsn)).setAdapter(new TabAdapter());
-    }
-
-    private class TabAdapter extends IndicatorTabStripNew.Adapter {
+    private class TabAdapter extends IndicatorTabStrip.Adapter {
         @Override
         public String getDotText(int position, int count) {
             switch (position) {
