@@ -48,6 +48,7 @@
         android:id="@+id/its_its_tabsn"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:padding="5dp"
         app:itsDotBackground="@drawable/bg_gradienttabstrip_dot"
         app:itsDotCenterToViewCenterX="24dp"
         app:itsItemBackground="?selectableItemBackground"

@@ -42,6 +42,12 @@ public class IndicatorTabStripNew extends HorizontalLinearTabStripViewGroup<Indi
     private Drawable mDotBackground;// 小圆点背景图
     private float mDotTextSize;// 小圆点文字大小
     private int mDotTextColor;// 小圆点文字颜色
+    private int mUnderlineColor;// 下划线颜色
+    private int mUnderlineHeight;// 下划线高度
+    private int mUnderlinePadding;// 下划线两端间距
+    private int mIndicatorColor;// 游标颜色
+    private int mIndicatorHeight;// 游标高度
+    private int mIndicatorPadding;// 游标两端间距
 
     public IndicatorTabStripNew(Context context) {
         super(context);
@@ -98,6 +104,18 @@ public class IndicatorTabStripNew extends HorizontalLinearTabStripViewGroup<Indi
                 DEFAULT_DOT_TEXT_SIZE * density);
         mDotTextColor = custom.getColor(R.styleable.IndicatorTabStripNew_itsDotTextColor,
                 DEFAULT_DOT_TEXT_COLOR);
+        mUnderlineColor = custom.getColor(R.styleable.IndicatorTabStripNew_itsUnderlineColor,
+                Color.BLACK);
+        mUnderlineHeight = custom.getDimensionPixelOffset(
+                R.styleable.IndicatorTabStripNew_itsUnderlineHeight, 0);
+        mUnderlinePadding = custom.getDimensionPixelOffset(
+                R.styleable.IndicatorTabStripNew_itsUnderlinePadding, 0);
+        mIndicatorColor = custom.getColor(R.styleable.IndicatorTabStripNew_itsIndicatorColor,
+                Color.BLACK);
+        mIndicatorHeight = custom.getDimensionPixelOffset(
+                R.styleable.IndicatorTabStripNew_itsIndicatorHeight, 0);
+        mIndicatorPadding = custom.getDimensionPixelOffset(
+                R.styleable.IndicatorTabStripNew_itsIndicatorPadding, 0);
         custom.recycle();
         initView(divider, showDividers, dividerPadding, null, false,
                 0);
@@ -598,6 +616,132 @@ public class IndicatorTabStripNew extends HorizontalLinearTabStripViewGroup<Indi
         for (int i = 0; i < count; i++) {
             setDotTextColor(getChildAt(i));
         }
+    }
+
+    /**
+     * 获取下划线颜色
+     *
+     * @return 颜色
+     */
+    public int getUnderlineColor() {
+        return mUnderlineColor;
+    }
+
+    /**
+     * 设置下划线颜色
+     *
+     * @param color 颜色
+     */
+    public void setUnderlineColor(@ColorInt int color) {
+        if (mUnderlineColor == color)
+            return;
+        mUnderlineColor = color;
+        invalidate();
+    }
+
+    /**
+     * 获取下划线高度
+     *
+     * @return 高度
+     */
+    public int getUnderlineHeight() {
+        return mUnderlineHeight;
+    }
+
+    /**
+     * 设置下划线高度
+     *
+     * @param height 高度
+     */
+    public void setUnderlineHeight(int height) {
+        if (mUnderlineHeight == height)
+            return;
+        mUnderlineHeight = height;
+        invalidate();
+    }
+
+    /**
+     * 获取下划线两端间距
+     *
+     * @return 间距
+     */
+    public int getUnderlinePadding() {
+        return mUnderlinePadding;
+    }
+
+    /**
+     * 设置下划线两端间距
+     *
+     * @param padding 间距
+     */
+    public void setUnderlinePadding(int padding) {
+        if (mUnderlinePadding == padding)
+            return;
+        mUnderlinePadding = padding;
+        invalidate();
+    }
+
+    /**
+     * 获取游标颜色
+     *
+     * @return 颜色
+     */
+    public int getIndicatorColor() {
+        return mIndicatorColor;
+    }
+
+    /**
+     * 设置游标颜色
+     *
+     * @param color 颜色
+     */
+    public void setIndicatorColor(@ColorInt int color) {
+        if (mIndicatorColor == color)
+            return;
+        mIndicatorColor = color;
+        invalidate();
+    }
+
+    /**
+     * 获取游标高度
+     *
+     * @return 高度
+     */
+    public int getIndicatorHeight() {
+        return mIndicatorHeight;
+    }
+
+    /**
+     * 设置游标高度
+     *
+     * @param height 高度
+     */
+    public void setIndicatorHeight(int height) {
+        if (mIndicatorHeight == height)
+            return;
+        mIndicatorHeight = height;
+        invalidate();
+    }
+
+    /**
+     * 获取游标两端间距
+     *
+     * @return 间距
+     */
+    public int getIndicatorPadding() {
+        return mIndicatorPadding;
+    }
+
+    /**
+     * 设置游标两端间距
+     *
+     * @param padding 间距
+     */
+    public void setIndicatorPadding(int padding) {
+        if (mIndicatorPadding == padding)
+            return;
+        mIndicatorPadding = padding;
+        invalidate();
     }
 
     /**
