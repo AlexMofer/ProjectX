@@ -30,13 +30,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
+/**
+ * 水平线性TabStrip布局
+ *
+ * @param <V> 子View
+ */
 @SuppressWarnings("unused")
 public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends TabStripViewGroup {
 
-    public static final int SHOW_DIVIDER_NONE = 0;
-    public static final int SHOW_DIVIDER_BEGINNING = 1;
-    public static final int SHOW_DIVIDER_MIDDLE = 1 << 1;
-    public static final int SHOW_DIVIDER_END = 1 << 2;
+    public static final int SHOW_DIVIDER_NONE = 0;// 不显示
+    public static final int SHOW_DIVIDER_BEGINNING = 1;// 头部
+    public static final int SHOW_DIVIDER_MIDDLE = 1 << 1;// 中间
+    public static final int SHOW_DIVIDER_END = 1 << 2;// 尾部
     private final ArrayList<V> mRecycledChild = new ArrayList<>();
     private final OnClickListener mListener = new OnClickListener();
     private int mCount = 0;
@@ -49,6 +54,7 @@ public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends 
     private boolean mCenterAsItem = false;
     private int mCenterPadding;
     private boolean mSmoothScroll = false;
+    private boolean mBlockAddView = true;
 
     public HorizontalLinearTabStripViewGroup(Context context) {
         super(context);
@@ -70,7 +76,12 @@ public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends 
         mCenter = center;
         mCenterAsItem = centerAsItem;
         mCenterPadding = centerPadding;
-        setWillNotDraw(mCenter == null && !isShowingDividers());
+        setWillDraw();
+    }
+
+    private void setWillDraw() {
+        if (willNotDraw() && (isShowingDividers() || mCenter != null))
+            setWillNotDraw(false);
     }
 
     @Override
@@ -306,7 +317,7 @@ public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends 
             if (mCount >= 0) {
                 final int ic = getChildCount();
                 for (int i = 0; i < ic && i < mCount; i++) {
-                    final V child = getChildAt(i);
+                    final V child = getChildAtRaw(i);
                     onBindView(child, i);
                 }
                 boolean layout = false;
@@ -326,7 +337,7 @@ public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends 
                     layout = true;
                 }
                 while (getChildCount() > mCount) {
-                    final V child = getChildAt(getChildCount() - 1);
+                    final V child = getChildAtRaw(getChildCount() - 1);
                     removeViewInLayout(child);
                     mRecycledChild.add(child);
                     child.setId(NO_ID);
@@ -341,107 +352,202 @@ public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends 
         }
     }
 
+    /**
+     * 获取子项宽度（为了填充满，由于像素无法均分的问题，最后一个子项可能宽一点点或者窄一点点）
+     *
+     * @return 宽度
+     */
     protected int getChildWidth() {
         return mChildWidth;
     }
 
+    /**
+     * 获取子项高度
+     *
+     * @return 高度
+     */
     public int getChildHeight() {
         return mChildHeight;
     }
 
+    /**
+     * 通知全部子项变化
+     */
     protected void notifyItemChanged() {
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            final V child = getChildAt(i);
+            final V child = getChildAtRaw(i);
             onBindView(child, i);
         }
     }
 
 
+    /**
+     * 通知子项变化
+     *
+     * @param position 子项坐标
+     */
     protected void notifyItemChanged(int position) {
-        final V child = getChildAt(position);
+        final V child = getChildAtRaw(position);
         if (child == null)
             return;
         onBindView(child, position);
     }
 
+    /**
+     * 创建子项
+     *
+     * @return 子项
+     */
     protected abstract V onCreateView();
 
+    /**
+     * 绑定子项
+     *
+     * @param item     子项
+     * @param position 坐标
+     */
     protected abstract void onBindView(V item, int position);
 
+    /**
+     * 回收子项
+     *
+     * @param item 子项
+     */
     protected void onViewRecycled(V item) {
     }
 
+    /**
+     * 点击子项
+     *
+     * @param item     子项
+     * @param position 坐标
+     */
     protected void onViewClicked(V item, int position) {
         performClick(position, mSmoothScroll);
     }
 
+    /**
+     * 判断是否屏蔽添加子项
+     *
+     * @return 是否屏蔽
+     */
+    protected boolean isBlockAddView() {
+        return mBlockAddView;
+    }
+
+    /**
+     * 设置是否屏蔽添加子项
+     *
+     * @param block 是否屏蔽
+     */
+    protected void setBlockAddView(boolean block) {
+        mBlockAddView = block;
+    }
 
     @Override
     public void addView(View child) {
-        throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+        if (mBlockAddView)
+            throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+        super.addView(child);
     }
 
     @Override
     public void addView(View child, int index) {
-        throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+        if (mBlockAddView)
+            throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+        super.addView(child, index);
     }
 
     @Override
     public void addView(View child, int width, int height) {
-        throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+        if (mBlockAddView)
+            throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+        super.addView(child, width, height);
     }
 
     @Override
     public void addView(View child, LayoutParams params) {
-        throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+        if (mBlockAddView)
+            throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+        super.addView(child, params);
     }
 
     @Override
     public void addView(View child, int index, LayoutParams params) {
-        throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+        if (mBlockAddView)
+            throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+        super.addView(child, index, params);
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    public V getChildAt(int index) {
+    protected V getChildAtRaw(int index) {
         final View child = super.getChildAt(index);
         return child == null ? null : (V) child;
     }
 
+    /**
+     * 获取分割显示方式
+     *
+     * @return 显示方式
+     */
     @DividerMode
-    public int getShowDividers() {
+    protected int getShowDividers() {
         return mShowDividers;
     }
 
-    public void setShowDividers(@DividerMode int showDividers) {
+    /**
+     * 设置分割显示方式
+     *
+     * @param showDividers 显示方式
+     */
+    protected void setShowDividers(@DividerMode int showDividers) {
         if (showDividers == mShowDividers) {
             return;
         }
         mShowDividers = showDividers;
-
-        setWillNotDraw(!isShowingDividers());
+        setWillDraw();
         requestLayout();
     }
 
-    public Drawable getDividerDrawable() {
+    /**
+     * 获取分割图片
+     *
+     * @return 图片
+     */
+    protected Drawable getDividerDrawable() {
         return mDivider;
     }
 
-    public void setDividerDrawable(Drawable divider) {
+    /**
+     * 设置分割图片
+     *
+     * @param divider 图片
+     */
+    protected void setDividerDrawable(Drawable divider) {
         if (divider == mDivider) {
             return;
         }
         mDivider = divider;
-        setWillNotDraw(mCenter == null && !isShowingDividers());
+        setWillDraw();
         requestLayout();
     }
 
-    public int getDividerPadding() {
+    /**
+     * 获取分割两端间距
+     *
+     * @return 间距
+     */
+    protected int getDividerPadding() {
         return mDividerPadding;
     }
 
-    public void setDividerPadding(int padding) {
+    /**
+     * 设置分割两端间距
+     *
+     * @param padding 间距
+     */
+    protected void setDividerPadding(int padding) {
         if (padding == mDividerPadding) {
             return;
         }
@@ -451,31 +557,65 @@ public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends 
         }
     }
 
-    public void setCenterDrawable(Drawable center) {
+    /**
+     * 获取中间图片
+     *
+     * @return 图片
+     */
+    protected Drawable getCenterDrawable() {
+        return mCenter;
+    }
+
+    /**
+     * 设置中间图片
+     *
+     * @param center 图片
+     */
+    protected void setCenterDrawable(Drawable center) {
         if (center == mCenter) {
             return;
         }
         mCenter = center;
-        setWillNotDraw(mCenter == null && !isShowingDividers());
+        setWillDraw();
         requestLayout();
     }
 
-    public boolean isCenterAsItem() {
+    /**
+     * 判断中间图片是否作为子项（中间模式下，控制分割是否绘制在其两边）
+     *
+     * @return 是否作为
+     */
+    protected boolean isCenterAsItem() {
         return mCenterAsItem;
     }
 
-    public void setCenterAsItem(boolean centerAsItem) {
+    /**
+     * 设置中间图片是否作为子项（中间模式下，控制分割是否绘制在其两边）
+     *
+     * @param centerAsItem 是否作为
+     */
+    protected void setCenterAsItem(boolean centerAsItem) {
         if (mCenterAsItem == centerAsItem)
             return;
         mCenterAsItem = centerAsItem;
         requestLayout();
     }
 
-    public int getCenterPadding() {
+    /**
+     * 获取中间图片两端间距
+     *
+     * @return 间距
+     */
+    protected int getCenterPadding() {
         return mCenterPadding;
     }
 
-    public void setCenterPadding(int padding) {
+    /**
+     * 设置中间图片两端间距
+     *
+     * @param padding 间距
+     */
+    protected void setCenterPadding(int padding) {
         if (padding == mCenterPadding) {
             return;
         }
@@ -485,11 +625,21 @@ public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends 
         }
     }
 
-    public boolean isSmoothScroll() {
+    /**
+     * 判断子项点击是否平滑滚动
+     *
+     * @return 是否平滑滚动
+     */
+    protected boolean isItemClickSmoothScroll() {
         return mSmoothScroll;
     }
 
-    public void setSmoothScroll(boolean smoothScroll) {
+    /**
+     * 设置子项点击是否平滑滚动
+     *
+     * @param smoothScroll 是否平滑滚动
+     */
+    protected void setItemClickSmoothScroll(boolean smoothScroll) {
         mSmoothScroll = smoothScroll;
     }
 

@@ -288,7 +288,7 @@ public abstract class TabStripViewGroup extends ViewGroup {
      *
      * @param smoothScroll 是否平滑滚动
      */
-    public void setClickSmoothScroll(boolean smoothScroll) {
+    protected void setClickSmoothScroll(boolean smoothScroll) {
         mHelper.setClickSmoothScroll(smoothScroll);
     }
 }

@@ -287,7 +287,7 @@ public abstract class TabStripView extends View {
      *
      * @param smoothScroll 是否平滑滚动
      */
-    public void setClickSmoothScroll(boolean smoothScroll) {
+    protected void setClickSmoothScroll(boolean smoothScroll) {
         mHelper.setClickSmoothScroll(smoothScroll);
     }
 }

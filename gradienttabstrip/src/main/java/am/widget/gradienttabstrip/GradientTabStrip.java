@@ -123,11 +123,12 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
                 DEFAULT_DOT_TEXT_COLOR);
         custom.recycle();
         initView(divider, showDividers, dividerPadding, center, centerAsItem, centerPadding);
-        setSmoothScroll(smoothScroll);
+        setItemClickSmoothScroll(smoothScroll);
         mDotBackground = background == null ? getDefaultDotBackground() : background;
     }
 
     private Drawable getDefaultDotBackground() {
+        // TODO 可优化，使用自定义Drawable
         final GradientDrawable background = new GradientDrawable();
         background.setShape(GradientDrawable.RECTANGLE);
         background.setCornerRadius(1000);
@@ -337,7 +338,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mItemBackgroundDrawable = null;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setItemBackground(getChildAt(i));
+            setItemBackground(getChildAtRaw(i));
         }
     }
 
@@ -353,7 +354,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mItemBackgroundDrawable = background;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setItemBackground(getChildAt(i));
+            setItemBackground(getChildAtRaw(i));
         }
     }
 
@@ -377,7 +378,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mTextSize = size;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setTextSize(getChildAt(i));
+            setTextSize(getChildAtRaw(i));
         }
         requestLayout();
     }
@@ -413,7 +414,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mTextColorSelected = selected;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setTextColor(getChildAt(i));
+            setTextColor(getChildAtRaw(i));
         }
     }
 
@@ -437,7 +438,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDrawablePadding = padding;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDrawablePadding(getChildAt(i));
+            setDrawablePadding(getChildAtRaw(i));
         }
         requestLayout();
     }
@@ -473,7 +474,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDotCenterToViewCenterY = y;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotCenterToViewCenter(getChildAt(i));
+            setDotCenterToViewCenter(getChildAtRaw(i));
         }
     }
 
@@ -497,7 +498,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDotCanGoOutside = can;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotCanGoOutside(getChildAt(i));
+            setDotCanGoOutside(getChildAtRaw(i));
         }
     }
 
@@ -521,7 +522,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDotAutoChangeWidth = auto;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotAutoChangeWidth(getChildAt(i));
+            setDotAutoChangeWidth(getChildAtRaw(i));
         }
     }
 
@@ -545,7 +546,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDotBackground = background;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotBackground(getChildAt(i));
+            setDotBackground(getChildAtRaw(i));
         }
     }
 
@@ -578,7 +579,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDotTextSize = size;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotTextSize(getChildAt(i));
+            setDotTextSize(getChildAtRaw(i));
         }
     }
 
@@ -602,8 +603,79 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDotTextColor = color;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotTextColor(getChildAt(i));
+            setDotTextColor(getChildAtRaw(i));
         }
+    }
+
+    @Override
+    @DividerMode
+    public int getShowDividers() {
+        return super.getShowDividers();
+    }
+
+    @Override
+    public void setShowDividers(@DividerMode int showDividers) {
+        super.setShowDividers(showDividers);
+    }
+
+    @Override
+    public Drawable getDividerDrawable() {
+        return super.getDividerDrawable();
+    }
+
+    @Override
+    public void setDividerDrawable(Drawable divider) {
+        super.setDividerDrawable(divider);
+    }
+
+    @Override
+    public int getDividerPadding() {
+        return super.getDividerPadding();
+    }
+
+    @Override
+    public void setDividerPadding(int padding) {
+        super.setDividerPadding(padding);
+    }
+
+    @Override
+    public Drawable getCenterDrawable() {
+        return super.getCenterDrawable();
+    }
+
+    @Override
+    public void setCenterDrawable(Drawable center) {
+        super.setCenterDrawable(center);
+    }
+
+    @Override
+    public boolean isCenterAsItem() {
+        return super.isCenterAsItem();
+    }
+
+    @Override
+    public void setCenterAsItem(boolean centerAsItem) {
+        super.setCenterAsItem(centerAsItem);
+    }
+
+    @Override
+    public int getCenterPadding() {
+        return super.getCenterPadding();
+    }
+
+    @Override
+    public void setCenterPadding(int padding) {
+        super.setCenterPadding(padding);
+    }
+
+    @Override
+    public boolean isItemClickSmoothScroll() {
+        return super.isItemClickSmoothScroll();
+    }
+
+    @Override
+    public void setItemClickSmoothScroll(boolean smoothScroll) {
+        super.setItemClickSmoothScroll(smoothScroll);
     }
 
     /**
