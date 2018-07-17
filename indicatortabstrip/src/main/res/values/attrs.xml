@@ -67,5 +67,11 @@
         <attr name="itsDotBackground" format="reference" />
         <attr name="itsDotTextSize" format="dimension" />
         <attr name="itsDotTextColor" format="color" />
+        <attr name="itsUnderlineColor" format="color" />
+        <attr name="itsUnderlineHeight" format="dimension" />
+        <attr name="itsUnderlinePadding" format="dimension" />
+        <attr name="itsIndicatorColor" format="color" />
+        <attr name="itsIndicatorHeight" format="dimension" />
+        <attr name="itsIndicatorPadding" format="dimension" />
     </declare-styleable>
 </resources>
