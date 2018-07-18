@@ -28,6 +28,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.util.AttributeSet;
 
+import am.widget.tabstrip.DotDrawable;
 import am.widget.tabstrip.HorizontalLinearTabStripViewGroup;
 import am.widget.tabstrip.TabStripDotAdapter;
 
@@ -45,6 +46,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
     private static final int DEFAULT_DOT_MARGIN = 16;// 默认小圆点距离中心距离
     private static final int DEFAULT_DOT_BACKGROUND_COLOR = Color.RED;
     private static final int DEFAULT_DOT_BACKGROUND_SIZE = 10;
+    private static final int DEFAULT_DOT_BACKGROUND_PADDING = 3;
     private static final int DEFAULT_DOT_TEXT_SIZE = 10;
     private static final int DEFAULT_DOT_TEXT_COLOR = Color.WHITE;
     private int mPosition = 0;
@@ -115,6 +117,8 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
                 false);
         mDotAutoChangeWidth = custom.getBoolean(R.styleable.GradientTabStrip_gtsDotAutoChangeWidth,
                 true);
+        final int color = custom.getColor(R.styleable.GradientTabStrip_gtsDotColor,
+                DEFAULT_DOT_BACKGROUND_COLOR);
         final Drawable background =
                 custom.getDrawable(R.styleable.GradientTabStrip_gtsDotBackground);
         mDotTextSize = custom.getDimension(R.styleable.GradientTabStrip_gtsDotTextSize,
@@ -124,19 +128,14 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         custom.recycle();
         initView(divider, showDividers, dividerPadding, center, centerAsItem, centerPadding);
         setItemClickSmoothScroll(smoothScroll);
-        mDotBackground = background == null ? getDefaultDotBackground() : background;
+        mDotBackground = background == null ? getDefaultDotBackground(color) : background;
     }
 
-    private Drawable getDefaultDotBackground() {
-        // TODO 可优化，使用自定义Drawable
-        final GradientDrawable background = new GradientDrawable();
-        background.setShape(GradientDrawable.RECTANGLE);
-        background.setCornerRadius(1000);
-        background.setColor(DEFAULT_DOT_BACKGROUND_COLOR);
-        final int size = Math.round(DEFAULT_DOT_BACKGROUND_SIZE *
-                getResources().getDisplayMetrics().density);
-        background.setSize(size, size);
-        return background;
+    private Drawable getDefaultDotBackground(int color) {
+        final float density = getResources().getDisplayMetrics().density;
+        final int size = Math.round(DEFAULT_DOT_BACKGROUND_SIZE * density);
+        final int padding = Math.round(DEFAULT_DOT_BACKGROUND_PADDING * density);
+        return new DotDrawable(color, size, size, padding, 0, padding, 0);
     }
 
     private Drawable getPreviewDrawable(int color) {
@@ -557,6 +556,19 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
      */
     public void setDotBackground(@DrawableRes int resid) {
         setDotBackground(ContextCompat.getDrawable(getContext(), resid));
+    }
+
+    /**
+     * 设置小圆点背景图为默认背景
+     *
+     * @param color 颜色
+     */
+    public void setDotBackgroundUseDefault(int color) {
+        mDotBackground = getDefaultDotBackground(color);
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            setDotBackground(getChildAtRaw(i));
+        }
     }
 
     /**

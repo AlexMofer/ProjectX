@@ -22,6 +22,7 @@
         <attr name="gtsDotCenterToViewCenterY" format="dimension" />
         <attr name="gtsDotCanGoOutside" format="boolean" />
         <attr name="gtsDotAutoChangeWidth" format="boolean" />
+        <attr name="gtsDotColor" format="color" />
         <attr name="gtsDotBackground" format="reference" />
         <attr name="gtsDotTextSize" format="dimension" />
         <attr name="gtsDotTextColor" format="color" />

@@ -21,6 +21,7 @@
         <attr name="itsDotCenterToViewCenterY" format="dimension" />
         <attr name="itsDotCanGoOutside" format="boolean" />
         <attr name="itsDotAutoChangeWidth" format="boolean" />
+        <attr name="itsDotColor" format="color" />
         <attr name="itsDotBackground" format="reference" />
         <attr name="itsDotTextSize" format="dimension" />
         <attr name="itsDotTextColor" format="color" />

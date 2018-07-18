@@ -157,8 +157,8 @@ final class IndicatorTabStripItem extends View {
             paddingTop = tRect.top;
             paddingRight = tRect.right;
             paddingBottom = tRect.bottom;
-            backgroundWidth = mDotBackground.getIntrinsicWidth();
-            backgroundHeight = mDotBackground.getIntrinsicHeight();
+            backgroundWidth = mDotBackground.getMinimumWidth();
+            backgroundHeight = mDotBackground.getMinimumHeight();
         } else {
             paddingLeft = 0;
             paddingTop = 0;

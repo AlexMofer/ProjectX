@@ -22,7 +22,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -30,6 +29,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 
+import am.widget.tabstrip.DotDrawable;
 import am.widget.tabstrip.HorizontalLinearTabStripViewGroup;
 import am.widget.tabstrip.TabStripDotAdapter;
 
@@ -48,6 +48,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
     private static final int DEFAULT_DOT_MARGIN = 16;// 默认小圆点距离中心距离
     private static final int DEFAULT_DOT_BACKGROUND_COLOR = Color.RED;
     private static final int DEFAULT_DOT_BACKGROUND_SIZE = 10;
+    private static final int DEFAULT_DOT_BACKGROUND_PADDING = 3;
     private static final int DEFAULT_DOT_TEXT_SIZE = 10;
     private static final int DEFAULT_DOT_TEXT_COLOR = Color.WHITE;
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -125,6 +126,8 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
                 false);
         mDotAutoChangeWidth = custom.getBoolean(R.styleable.IndicatorTabStrip_itsDotAutoChangeWidth,
                 true);
+        final int color = custom.getColor(R.styleable.IndicatorTabStrip_itsDotColor,
+                DEFAULT_DOT_BACKGROUND_COLOR);
         final Drawable background =
                 custom.getDrawable(R.styleable.IndicatorTabStrip_itsDotBackground);
         mDotTextSize = custom.getDimension(R.styleable.IndicatorTabStrip_itsDotTextSize,
@@ -147,7 +150,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
         initView(divider, showDividers, dividerPadding, null, false,
                 0);
         setItemClickSmoothScroll(smoothScroll);
-        mDotBackground = background == null ? getDefaultDotBackground() : background;
+        mDotBackground = background == null ? getDefaultDotBackground(color) : background;
         setWillDraw();
     }
 
@@ -157,16 +160,11 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
             setWillNotDraw(false);
     }
 
-    private Drawable getDefaultDotBackground() {
-        // TODO 可优化，使用自定义Drawable
-        final GradientDrawable background = new GradientDrawable();
-        background.setShape(GradientDrawable.RECTANGLE);
-        background.setCornerRadius(1000);
-        background.setColor(DEFAULT_DOT_BACKGROUND_COLOR);
-        final int size = Math.round(DEFAULT_DOT_BACKGROUND_SIZE *
-                getResources().getDisplayMetrics().density);
-        background.setSize(size, size);
-        return background;
+    private Drawable getDefaultDotBackground(int color) {
+        final float density = getResources().getDisplayMetrics().density;
+        final int size = Math.round(DEFAULT_DOT_BACKGROUND_SIZE * density);
+        final int padding = Math.round(DEFAULT_DOT_BACKGROUND_PADDING * density);
+        return new DotDrawable(color, size, size, padding, 0, padding, 0);
     }
 
     @Override
@@ -665,6 +663,19 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
      */
     public void setDotBackground(@DrawableRes int resid) {
         setDotBackground(ContextCompat.getDrawable(getContext(), resid));
+    }
+
+    /**
+     * 设置小圆点背景图为默认背景
+     *
+     * @param color 颜色
+     */
+    public void setDotBackgroundUseDefault(int color) {
+        mDotBackground = getDefaultDotBackground(color);
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            setDotBackground(getChildAtRaw(i));
+        }
     }
 
     /**
