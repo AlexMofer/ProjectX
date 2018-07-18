@@ -17,34 +17,33 @@
 package am.widget.multifunctionalrecyclerview.layoutmanager;
 
 import android.content.Context;
-import android.support.v7.widget.PublicLinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+
+import am.widget.save.SaveLinearLayoutManager;
 
 /**
  * 剧中线性布局
  * Created by Alex on 2017/11/3.
  */
 @SuppressWarnings("all")
-public class CenterLinearLayoutManager extends PublicLinearLayoutManager {
+public class CenterLinearLayoutManager extends SaveLinearLayoutManager {
 
     private boolean mCenter = false;
 
     public CenterLinearLayoutManager(Context context) {
         super(context);
-        setSizeUnlimited(true);
     }
 
     public CenterLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
         super(context, orientation, reverseLayout);
-        setSizeUnlimited(true);
     }
 
-    public CenterLinearLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public CenterLinearLayoutManager(Context context, AttributeSet attrs, int defStyleAttr,
+                                     int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        setSizeUnlimited(true);
     }
 
     @Override

@@ -58,6 +58,16 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     @Override
+    public int getHeightMode() {
+        return View.MeasureSpec.UNSPECIFIED;
+    }
+
+    @Override
+    public int getWidthMode() {
+        return View.MeasureSpec.UNSPECIFIED;
+    }
+
+    @Override
     public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state,
                           int widthSpec, int heightSpec) {
         mWidthSize = View.MeasureSpec.getSize(widthSpec);

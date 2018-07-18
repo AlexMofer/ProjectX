@@ -17,7 +17,6 @@
 package am.widget.scalerecyclerview;
 
 import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.PublicRecyclerView;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 
@@ -28,7 +27,7 @@ import android.view.animation.Interpolator;
 class ScaleHelper implements Runnable {
     private final ScaleRecyclerView mView;
     private final AutoScale mAuto = new AutoScale();
-    private Interpolator mInterpolator = PublicRecyclerView.getScrollerInterpolator();
+    private Interpolator mInterpolator = ScaleRecyclerView.getScrollerInterpolator();
     private boolean mEatRunOnAnimationRequest = false;
     private boolean mReSchedulePostAnimationCallback = false;
     private float mFocusX;
