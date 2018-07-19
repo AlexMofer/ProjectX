@@ -25,6 +25,8 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
 
+import am.widget.tabstrip.ColorUtils;
+
 final class IndicatorTabStripItem extends View {
 
     private final TextPaint mPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
@@ -94,7 +96,7 @@ final class IndicatorTabStripItem extends View {
     private void drawColorBackground(Canvas canvas) {
         if (mColorBackgroundNormal == 0 && mColorBackgroundSelected == 0)
             return;
-        final int color = IndicatorTabStrip.makeColor(
+        final int color = ColorUtils.makeColor(
                 mColorBackgroundNormal, mColorBackgroundSelected, mOffset);
         canvas.drawColor(color);
     }
@@ -112,8 +114,7 @@ final class IndicatorTabStripItem extends View {
         final float centerX = getWidth() * 0.5f;
         final float centerY = getHeight() * 0.5f;
         mPaint.setTextSize(mTextSize);
-        mPaint.setColor(IndicatorTabStrip.makeColor(mTextColorNormal,
-                mTextColorSelected, mOffset));
+        mPaint.setColor(ColorUtils.makeColor(mTextColorNormal, mTextColorSelected, mOffset));
         float scale;
         if (mOffset == 1) {
             scale = mTextScale;

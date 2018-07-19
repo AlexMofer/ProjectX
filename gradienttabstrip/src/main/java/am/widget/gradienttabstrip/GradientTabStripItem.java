@@ -25,6 +25,8 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
 
+import am.widget.tabstrip.ColorUtils;
+
 final class GradientTabStripItem extends View {
 
     private float mTextSize;// 文字大小
@@ -135,7 +137,7 @@ final class GradientTabStripItem extends View {
         final float centerX = getWidth() * 0.5f;
         final float centerY = getHeight() * 0.5f;
         mPaint.setTextSize(mTextSize);
-        mPaint.setColor(GradientTabStrip.makeColor(mTextColorNormal,
+        mPaint.setColor(ColorUtils.makeColor(mTextColorNormal,
                 mTextColorSelected, mOffset));
         canvas.save();
         canvas.translate(centerX, centerY);

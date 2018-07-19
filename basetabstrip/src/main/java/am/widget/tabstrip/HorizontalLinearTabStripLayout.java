@@ -17,18 +17,14 @@ package am.widget.tabstrip;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IntDef;
-import android.support.annotation.Nullable;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
 
 /**
  * 水平线性TabStrip布局
@@ -36,15 +32,12 @@ import java.util.ArrayList;
  * @param <V> 子View
  */
 @SuppressWarnings("unused")
-public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends TabStripViewGroup {
+public abstract class HorizontalLinearTabStripLayout<V extends View> extends TabStripLayout<V> {
 
     public static final int SHOW_DIVIDER_NONE = 0;// 不显示
     public static final int SHOW_DIVIDER_BEGINNING = 1;// 头部
     public static final int SHOW_DIVIDER_MIDDLE = 1 << 1;// 中间
     public static final int SHOW_DIVIDER_END = 1 << 2;// 尾部
-    private final ArrayList<V> mRecycledChild = new ArrayList<>();
-    private final OnClickListener mListener = new OnClickListener();
-    private int mCount = 0;
     private int mChildWidth;
     private int mChildHeight;
     private Drawable mDivider;// 子项间隔
@@ -53,23 +46,21 @@ public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends 
     private Drawable mCenter;// 中间间隔（偶数个子项时有效）
     private boolean mCenterAsItem = false;
     private int mCenterPadding;
-    private boolean mSmoothScroll = false;
-    private boolean mBlockAddView = true;
 
-    public HorizontalLinearTabStripViewGroup(Context context) {
+    public HorizontalLinearTabStripLayout(Context context) {
         super(context);
     }
 
-    public HorizontalLinearTabStripViewGroup(Context context, AttributeSet attrs) {
+    public HorizontalLinearTabStripLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public HorizontalLinearTabStripViewGroup(Context context, AttributeSet attrs, int defStyleAttr) {
+    public HorizontalLinearTabStripLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    protected void initView(Drawable divider, int showDividers, int dividerPadding,
-                            Drawable center, boolean centerAsItem, int centerPadding) {
+    protected void set(Drawable divider, int showDividers, int dividerPadding,
+                       Drawable center, boolean centerAsItem, int centerPadding) {
         mDivider = divider;
         mShowDividers = showDividers;
         mDividerPadding = dividerPadding;
@@ -297,61 +288,6 @@ public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends 
         }
     }
 
-    @Override
-    protected void onViewPagerAdapterChanged(@Nullable PagerAdapter oldAdapter,
-                                             @Nullable PagerAdapter newAdapter) {
-        super.onViewPagerAdapterChanged(oldAdapter, newAdapter);
-        updateItemCount();
-    }
-
-    @Override
-    protected void onViewPagerAdapterDataChanged() {
-        super.onViewPagerAdapterDataChanged();
-        updateItemCount();
-    }
-
-    private void updateItemCount() {
-        final int count = getPageCount();
-        if (count != mCount) {
-            mCount = count;
-            if (mCount >= 0) {
-                final int ic = getChildCount();
-                for (int i = 0; i < ic && i < mCount; i++) {
-                    final V child = getChildAtRaw(i);
-                    onBindView(child, i);
-                }
-                boolean layout = false;
-                while (getChildCount() < mCount) {
-                    final V child;
-                    if (mRecycledChild.isEmpty()) {
-                        child = onCreateView();
-                    } else {
-                        child = mRecycledChild.get(mRecycledChild.size() - 1);
-                    }
-                    final int position = getChildCount();
-                    onBindView(child, position);
-                    child.setId(position);
-                    child.setOnClickListener(mListener);
-                    addViewInLayout(child, -1,
-                            generateDefaultLayoutParams(), true);
-                    layout = true;
-                }
-                while (getChildCount() > mCount) {
-                    final V child = getChildAtRaw(getChildCount() - 1);
-                    removeViewInLayout(child);
-                    mRecycledChild.add(child);
-                    child.setId(NO_ID);
-                    child.setOnClickListener(null);
-                    onViewRecycled(child);
-                    layout = true;
-                }
-                if (layout) {
-                    requestLayout();
-                }
-            }
-        }
-    }
-
     /**
      * 获取子项宽度（为了填充满，由于像素无法均分的问题，最后一个子项可能宽一点点或者窄一点点）
      *
@@ -368,122 +304,6 @@ public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends 
      */
     public int getChildHeight() {
         return mChildHeight;
-    }
-
-    /**
-     * 通知全部子项变化
-     */
-    protected void notifyItemChanged() {
-        final int count = getChildCount();
-        for (int i = 0; i < count; i++) {
-            final V child = getChildAtRaw(i);
-            onBindView(child, i);
-        }
-    }
-
-
-    /**
-     * 通知子项变化
-     *
-     * @param position 子项坐标
-     */
-    protected void notifyItemChanged(int position) {
-        final V child = getChildAtRaw(position);
-        if (child == null)
-            return;
-        onBindView(child, position);
-    }
-
-    /**
-     * 创建子项
-     *
-     * @return 子项
-     */
-    protected abstract V onCreateView();
-
-    /**
-     * 绑定子项
-     *
-     * @param item     子项
-     * @param position 坐标
-     */
-    protected abstract void onBindView(V item, int position);
-
-    /**
-     * 回收子项
-     *
-     * @param item 子项
-     */
-    protected void onViewRecycled(V item) {
-    }
-
-    /**
-     * 点击子项
-     *
-     * @param item     子项
-     * @param position 坐标
-     */
-    protected void onViewClicked(V item, int position) {
-        performClick(position, mSmoothScroll);
-    }
-
-    /**
-     * 判断是否屏蔽添加子项
-     *
-     * @return 是否屏蔽
-     */
-    protected boolean isBlockAddView() {
-        return mBlockAddView;
-    }
-
-    /**
-     * 设置是否屏蔽添加子项
-     *
-     * @param block 是否屏蔽
-     */
-    protected void setBlockAddView(boolean block) {
-        mBlockAddView = block;
-    }
-
-    @Override
-    public void addView(View child) {
-        if (mBlockAddView)
-            throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
-        super.addView(child);
-    }
-
-    @Override
-    public void addView(View child, int index) {
-        if (mBlockAddView)
-            throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
-        super.addView(child, index);
-    }
-
-    @Override
-    public void addView(View child, int width, int height) {
-        if (mBlockAddView)
-            throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
-        super.addView(child, width, height);
-    }
-
-    @Override
-    public void addView(View child, LayoutParams params) {
-        if (mBlockAddView)
-            throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
-        super.addView(child, params);
-    }
-
-    @Override
-    public void addView(View child, int index, LayoutParams params) {
-        if (mBlockAddView)
-            throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
-        super.addView(child, index, params);
-    }
-
-    @SuppressWarnings("unchecked")
-    protected V getChildAtRaw(int index) {
-        final View child = super.getChildAt(index);
-        return child == null ? null : (V) child;
     }
 
     /**
@@ -625,24 +445,6 @@ public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends 
         }
     }
 
-    /**
-     * 判断子项点击是否平滑滚动
-     *
-     * @return 是否平滑滚动
-     */
-    protected boolean isItemClickSmoothScroll() {
-        return mSmoothScroll;
-    }
-
-    /**
-     * 设置子项点击是否平滑滚动
-     *
-     * @param smoothScroll 是否平滑滚动
-     */
-    protected void setItemClickSmoothScroll(boolean smoothScroll) {
-        mSmoothScroll = smoothScroll;
-    }
-
     @SuppressWarnings("all")
     @IntDef(flag = true,
             value = {
@@ -653,43 +455,5 @@ public abstract class HorizontalLinearTabStripViewGroup<V extends View> extends 
             })
     @Retention(RetentionPolicy.SOURCE)
     public @interface DividerMode {
-    }
-
-    private class OnClickListener implements View.OnClickListener {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public void onClick(View v) {
-            onViewClicked((V) v, v.getId());
-        }
-    }
-
-    /**
-     * 双色合成
-     *
-     * @param normal   普通颜色
-     * @param selected 选中颜色
-     * @param offset   偏移值
-     * @return 合成色
-     */
-    public static int makeColor(int normal, int selected, float offset) {
-        if (offset <= 0)
-            return normal;
-        if (offset >= 1)
-            return selected;
-        int normalAlpha = Color.alpha(normal);
-        int normalRed = Color.red(normal);
-        int normalGreen = Color.green(normal);
-        int normalBlue = Color.blue(normal);
-        int selectedAlpha = Color.alpha(selected);
-        int selectedRed = Color.red(selected);
-        int selectedGreen = Color.green(selected);
-        int selectedBlue = Color.blue(selected);
-        int a = (int) Math.ceil((selectedAlpha - normalAlpha) * offset);
-        int r = (int) Math.ceil((selectedRed - normalRed) * offset);
-        int g = (int) Math.ceil((selectedGreen - normalGreen) * offset);
-        int b = (int) Math.ceil((selectedBlue - normalBlue) * offset);
-        return Color.argb(normalAlpha + a, normalRed + r, normalGreen + g,
-                normalBlue + b);
     }
 }

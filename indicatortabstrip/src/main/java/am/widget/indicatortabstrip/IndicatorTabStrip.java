@@ -30,7 +30,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 
 import am.widget.tabstrip.DotDrawable;
-import am.widget.tabstrip.HorizontalLinearTabStripViewGroup;
+import am.widget.tabstrip.HorizontalLinearTabStripLayout;
 import am.widget.tabstrip.TabStripDotAdapter;
 
 
@@ -40,7 +40,7 @@ import am.widget.tabstrip.TabStripDotAdapter;
  * @author Alex
  */
 @SuppressWarnings("unused")
-public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<IndicatorTabStripItem> {
+public class IndicatorTabStrip extends HorizontalLinearTabStripLayout<IndicatorTabStripItem> {
 
     private static final int DEFAULT_TEXT_SIZE = 14;// 默认字体大小dp
     private static final int DEFAULT_TEXT_COLOR_NORMAL = Color.DKGRAY;// 默认字体默认颜色
@@ -147,7 +147,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
         mIndicatorPadding = custom.getDimensionPixelOffset(
                 R.styleable.IndicatorTabStrip_itsIndicatorPadding, 0);
         custom.recycle();
-        initView(divider, showDividers, dividerPadding, null, false,
+        set(divider, showDividers, dividerPadding, null, false,
                 0);
         setItemClickSmoothScroll(smoothScroll);
         mDotBackground = background == null ? getDefaultDotBackground(color) : background;
@@ -222,22 +222,22 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
             if (mOffset == 0) {
                 if (getChildCount() <= mPosition)
                     return;
-                final IndicatorTabStripItem item = getChildAtRaw(mPosition);
+                final IndicatorTabStripItem item = getItemAt(mPosition);
                 if (item == null)
                     return;
                 left = item.getLeft() + (item.getWidth() - width) * 0.5f;
             } else if (mOffset == 1) {
                 if (getChildCount() <= mPosition + 1)
                     return;
-                final IndicatorTabStripItem next = getChildAtRaw(mPosition + 1);
+                final IndicatorTabStripItem next = getItemAt(mPosition + 1);
                 if (next == null)
                     return;
                 left = next.getLeft() + (next.getWidth() - width) * 0.5f;
             } else {
                 if (getChildCount() <= mPosition && getChildCount() <= mPosition + 1)
                     return;
-                final IndicatorTabStripItem item = getChildAtRaw(mPosition);
-                final IndicatorTabStripItem next = getChildAtRaw(mPosition + 1);
+                final IndicatorTabStripItem item = getItemAt(mPosition);
+                final IndicatorTabStripItem next = getItemAt(mPosition + 1);
                 if (item == null || next == null)
                     return;
                 final int offset = next.getLeft() - item.getLeft();
@@ -407,7 +407,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
         mItemBackgroundDrawable = null;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setItemBackground(getChildAtRaw(i));
+            setItemBackground(getItemAt(i));
         }
     }
 
@@ -423,7 +423,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
         mItemBackgroundDrawable = background;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setItemBackground(getChildAtRaw(i));
+            setItemBackground(getItemAt(i));
         }
     }
 
@@ -460,7 +460,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
         mItemColorBackgroundSelected = selected;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setItemColorBackground(getChildAtRaw(i));
+            setItemColorBackground(getItemAt(i));
         }
     }
 
@@ -484,7 +484,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
         mTextSize = size;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setTextSize(getChildAtRaw(i));
+            setTextSize(getItemAt(i));
         }
         requestLayout();
     }
@@ -520,7 +520,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
         mTextColorSelected = selected;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setTextColor(getChildAtRaw(i));
+            setTextColor(getItemAt(i));
         }
     }
 
@@ -544,7 +544,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
         mTextScale = scale;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setTextScale(getChildAtRaw(i));
+            setTextScale(getItemAt(i));
         }
         requestLayout();
     }
@@ -580,7 +580,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
         mDotCenterToViewCenterY = y;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotCenterToViewCenter(getChildAtRaw(i));
+            setDotCenterToViewCenter(getItemAt(i));
         }
     }
 
@@ -604,7 +604,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
         mDotCanGoOutside = can;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotCanGoOutside(getChildAtRaw(i));
+            setDotCanGoOutside(getItemAt(i));
         }
     }
 
@@ -628,7 +628,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
         mDotAutoChangeWidth = auto;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotAutoChangeWidth(getChildAtRaw(i));
+            setDotAutoChangeWidth(getItemAt(i));
         }
     }
 
@@ -652,7 +652,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
         mDotBackground = background;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotBackground(getChildAtRaw(i));
+            setDotBackground(getItemAt(i));
         }
     }
 
@@ -674,7 +674,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
         mDotBackground = getDefaultDotBackground(color);
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotBackground(getChildAtRaw(i));
+            setDotBackground(getItemAt(i));
         }
     }
 
@@ -698,7 +698,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
         mDotTextSize = size;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotTextSize(getChildAtRaw(i));
+            setDotTextSize(getItemAt(i));
         }
     }
 
@@ -722,7 +722,7 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripViewGroup<Indicat
         mDotTextColor = color;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotTextColor(getChildAtRaw(i));
+            setDotTextColor(getItemAt(i));
         }
     }
 

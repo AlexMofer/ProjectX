@@ -29,7 +29,7 @@ import android.support.v4.view.PagerAdapter;
 import android.util.AttributeSet;
 
 import am.widget.tabstrip.DotDrawable;
-import am.widget.tabstrip.HorizontalLinearTabStripViewGroup;
+import am.widget.tabstrip.HorizontalLinearTabStripLayout;
 import am.widget.tabstrip.TabStripDotAdapter;
 
 /**
@@ -38,7 +38,7 @@ import am.widget.tabstrip.TabStripDotAdapter;
  * @author Alex
  */
 @SuppressWarnings("unused")
-public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<GradientTabStripItem> {
+public class GradientTabStrip extends HorizontalLinearTabStripLayout<GradientTabStripItem> {
 
     private static final int DEFAULT_TEXT_SIZE = 12;// 默认字体大小dp
     private static final int DEFAULT_TEXT_COLOR_NORMAL = Color.DKGRAY;// 默认字体默认颜色
@@ -126,7 +126,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDotTextColor = custom.getColor(R.styleable.GradientTabStrip_gtsDotTextColor,
                 DEFAULT_DOT_TEXT_COLOR);
         custom.recycle();
-        initView(divider, showDividers, dividerPadding, center, centerAsItem, centerPadding);
+        set(divider, showDividers, dividerPadding, center, centerAsItem, centerPadding);
         setItemClickSmoothScroll(smoothScroll);
         mDotBackground = background == null ? getDefaultDotBackground(color) : background;
     }
@@ -337,7 +337,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mItemBackgroundDrawable = null;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setItemBackground(getChildAtRaw(i));
+            setItemBackground(getItemAt(i));
         }
     }
 
@@ -353,7 +353,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mItemBackgroundDrawable = background;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setItemBackground(getChildAtRaw(i));
+            setItemBackground(getItemAt(i));
         }
     }
 
@@ -377,7 +377,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mTextSize = size;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setTextSize(getChildAtRaw(i));
+            setTextSize(getItemAt(i));
         }
         requestLayout();
     }
@@ -413,7 +413,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mTextColorSelected = selected;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setTextColor(getChildAtRaw(i));
+            setTextColor(getItemAt(i));
         }
     }
 
@@ -437,7 +437,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDrawablePadding = padding;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDrawablePadding(getChildAtRaw(i));
+            setDrawablePadding(getItemAt(i));
         }
         requestLayout();
     }
@@ -473,7 +473,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDotCenterToViewCenterY = y;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotCenterToViewCenter(getChildAtRaw(i));
+            setDotCenterToViewCenter(getItemAt(i));
         }
     }
 
@@ -497,7 +497,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDotCanGoOutside = can;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotCanGoOutside(getChildAtRaw(i));
+            setDotCanGoOutside(getItemAt(i));
         }
     }
 
@@ -521,7 +521,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDotAutoChangeWidth = auto;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotAutoChangeWidth(getChildAtRaw(i));
+            setDotAutoChangeWidth(getItemAt(i));
         }
     }
 
@@ -545,7 +545,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDotBackground = background;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotBackground(getChildAtRaw(i));
+            setDotBackground(getItemAt(i));
         }
     }
 
@@ -567,7 +567,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDotBackground = getDefaultDotBackground(color);
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotBackground(getChildAtRaw(i));
+            setDotBackground(getItemAt(i));
         }
     }
 
@@ -591,7 +591,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDotTextSize = size;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotTextSize(getChildAtRaw(i));
+            setDotTextSize(getItemAt(i));
         }
     }
 
@@ -615,7 +615,7 @@ public class GradientTabStrip extends HorizontalLinearTabStripViewGroup<Gradient
         mDotTextColor = color;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            setDotTextColor(getChildAtRaw(i));
+            setDotTextColor(getItemAt(i));
         }
     }
 
