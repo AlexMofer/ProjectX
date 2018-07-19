@@ -199,12 +199,14 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
 
     @Override
     public void setLayoutManager(LayoutManager layout) {
-        if (!(layout instanceof ScaleLinearLayoutManager) && layout != null) {
-            throw new RuntimeException("Unsupport other LayoutManager");
-        }
+        if (layout != null && !(layout instanceof ScaleLinearLayoutManager))
+            throw new IllegalArgumentException("Only support ScaleLinearLayoutManager.");
         super.setLayoutManager(layout);
     }
 
+    /**
+     * 刷新布局管理器缩放比
+     */
     protected void invalidateLayoutManagerScale() {
         final ScaleLinearLayoutManager manager = getLayoutManager();
         if (manager != null) {
@@ -375,7 +377,7 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
     }
 
     /**
-     * 分发最后的缩放结果
+     * 处理最后的缩放结果
      *
      * @param scale  缩放比
      * @param focusX 焦点X
@@ -387,14 +389,35 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
         dispatchOnScrollStateChanged(SCROLL_STATE_IDLE);
     }
 
+    /**
+     * 双击缩放开始
+     *
+     * @param scale  缩放比
+     * @param focusX 焦点X
+     * @param focusY 焦点Y
+     */
     protected void onDoubleTapScaleBegin(float scale, float focusX, float focusY) {
         dispatchOnScrollStateChanged(SCROLL_STATE_SCALING);
     }
 
+    /**
+     * 双击缩放
+     *
+     * @param scale  缩放比
+     * @param focusX 焦点X
+     * @param focusY 焦点Y
+     */
     protected void onDoubleTapScale(float scale, float focusX, float focusY) {
         scaleTo(scale, focusX, focusY);
     }
 
+    /**
+     * 双击缩放结束
+     *
+     * @param scale  缩放比
+     * @param focusX 焦点X
+     * @param focusY 焦点Y
+     */
     protected void onDoubleTapScaleEnd(float scale, float focusX, float focusY) {
         if (mScaleBegin)
             return;
@@ -461,6 +484,9 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
         requestLayout();
     }
 
+    /**
+     * 单双击监听
+     */
     public interface OnTabListener {
         /**
          * 单击事件
@@ -502,6 +528,11 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
             super.onDetachedFromRecyclerView(recyclerView);
         }
 
+        /**
+         * 获取缩放比
+         *
+         * @return 缩放比
+         */
         public float getScale() {
             return mView == null ? 1 : mView.getScale();
         }
@@ -515,6 +546,11 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
             super(itemView);
         }
 
+        /**
+         * 设置缩放比
+         *
+         * @param scale 缩放比
+         */
         public void setScale(float scale) {
 
         }

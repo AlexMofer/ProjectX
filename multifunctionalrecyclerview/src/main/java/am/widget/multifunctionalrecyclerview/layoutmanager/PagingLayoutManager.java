@@ -126,14 +126,19 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
     }
 
     /**
-     * 页模式下页分割点
+     * 获取分页关键点（用于确定是聚焦哪一个子项）
      *
-     * @return 分割点 0~1
+     * @return 关键点 0~1
      */
     public float getPagingSplitPoint() {
         return mPagingSplitPoint;
     }
 
+    /**
+     * 设置分页关键点
+     *
+     * @param splitPoint 关键点
+     */
     public void setPagingSplitPoint(float splitPoint) {
         mPagingSplitPoint = splitPoint;
     }
@@ -185,6 +190,11 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
         }
     }
 
+    /**
+     * 完成布局以后拦截分页校调
+     *
+     * @return 是否拦截
+     */
     protected boolean onInterceptAdjustPagingAfterLayoutComplete() {
         return false;
     }
@@ -194,6 +204,12 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
         return mScrollState;
     }
 
+    /**
+     * 分页校调
+     *
+     * @param smooth 平滑滚动
+     * @return 是否进行了校调
+     */
     public boolean adjustPaging(boolean smooth) {
         if (!mPagingEnable)
             return false;
@@ -352,6 +368,13 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
         return true;
     }
 
+    /**
+     * 查询最靠近指定位置的子项
+     *
+     * @param x X轴坐标
+     * @param y Y轴坐标
+     * @return 子项
+     */
     @Nullable
     public View findChildViewNear(float x, float y) {
         if (getChildCount() <= 0)
@@ -492,16 +515,27 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
         setScrollState(RecyclerView.SCROLL_STATE_IDLE);
     }
 
+    /**
+     * 判断分页是否开启
+     *
+     * @return 是否开启
+     */
     public boolean isPagingEnable() {
         return mPagingEnable;
     }
 
+    /**
+     * 设置分页是否开启
+     *
+     * @param enable 是否开启
+     */
     public void setPagingEnable(boolean enable) {
         if (mPagingEnable == enable)
             return;
         mPagingEnable = enable;
-        if (isAttachedToWindow()) {
-            getRecyclerView().setOnFlingListener(mPagingEnable ? mFlingListener : null);
+        final RecyclerView view = getRecyclerView();
+        if (view != null) {
+            view.setOnFlingListener(mPagingEnable ? mFlingListener : null);
             mAdjustPagingAfterLayoutComplete = true;
             mRecoveryPosition = -1;
             if (!mPagingEnable && getChildCount() >= 1) {
@@ -537,14 +571,24 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
                     mRecoveryStart = target.getTop();
                 }
             }
+            requestLayout();
         }
-        requestLayout();
     }
 
+    /**
+     * 获取分页子项布局方位
+     *
+     * @return 方位
+     */
     public int getPagingGravity() {
         return mPagingGravity;
     }
 
+    /**
+     * 设置分页子项布局方位
+     *
+     * @param gravity 方位
+     */
     public void setPagingGravity(int gravity) {
         if (mPagingGravity == gravity)
             return;
@@ -552,16 +596,31 @@ public class PagingLayoutManager extends BothDirectionsScrollLayoutManager {
         requestLayout();
     }
 
+    /**
+     * 判断多页滑动是否开启
+     *
+     * @return 是否开启
+     */
     public boolean isMultiPageScrollEnable() {
         return mMultiPageScrollEnable;
     }
 
+    /**
+     * 设置多页滑动是否开启
+     *
+     * @param enable 是否开启
+     */
     public void setMultiPageScrollEnable(boolean enable) {
         mMultiPageScrollEnable = enable;
     }
 
+    /**
+     * 是否强制拦截分发滚动状态变化
+     *
+     * @param force 是否强制拦截
+     */
     public void setForceInterceptDispatchOnScrollStateChanged(boolean force) {
-        this.mForceInterceptDispatchOnScrollStateChanged = force;
+        mForceInterceptDispatchOnScrollStateChanged = force;
     }
 
     private class PagingOnFlingListener extends RecyclerView.OnFlingListener {

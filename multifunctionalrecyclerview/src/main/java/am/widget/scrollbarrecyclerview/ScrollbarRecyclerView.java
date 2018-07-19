@@ -150,6 +150,7 @@ public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView 
 
     /**
      * 获取滚动位置标记文本
+     * 优先通过IndicatorAdapter获取，未设置IndicatorAdapter时，则返回最靠近视图中心的子项坐标+1的数值文本
      *
      * @return 标记文本
      */
@@ -170,6 +171,7 @@ public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView 
 
     /**
      * 获取滚动默认位置标记计算偏移（如滚动位置为0，偏移为1，则显示文本为“1”啊啊。）
+     * 设置有IndicatorAdapter时，该方法不会调用
      *
      * @return 计算偏移
      */
@@ -177,6 +179,13 @@ public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView 
         return 1;
     }
 
+    /**
+     * 查询最靠近指定位置的子项
+     *
+     * @param x X轴坐标
+     * @param y Y轴坐标
+     * @return 子项
+     */
     @Nullable
     public View findChildViewNear(float x, float y) {
         if (getChildCount() <= 0)

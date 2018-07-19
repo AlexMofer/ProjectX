@@ -169,58 +169,132 @@ public class DefaultScrollbar extends ScrollbarRecyclerView.Scrollbar {
         }
     }
 
+    /**
+     * 设置水平滚动条的边距
+     *
+     * @param edge  底边缘间距
+     * @param start 左边边缘间距
+     * @param end   右边边缘间距
+     */
     public void setHorizontalPadding(int edge, int start, int end) {
         mHorizontalScrollbar.setPadding(edge, start, end);
     }
 
+    /**
+     * 获取水平滚动条的底边缘间距
+     *
+     * @return 底边缘间距
+     */
     public int getHorizontalPaddingEdge() {
         return mHorizontalScrollbar.getPaddingEdge();
     }
 
+    /**
+     * 设置水平滚动条的底边缘间距
+     *
+     * @param padding 底边缘间距
+     */
     public void setHorizontalPaddingEdge(int padding) {
         mHorizontalScrollbar.setPaddingEdge(padding);
     }
 
+    /**
+     * 获取水平滚动条的左边边缘间距
+     *
+     * @return 左边边缘间距
+     */
     public int getHorizontalPaddingStart() {
         return mHorizontalScrollbar.getPaddingStart();
     }
 
+    /**
+     * 设置水平滚动条的左边边缘间距
+     *
+     * @param padding 左边边缘间距
+     */
     public void setHorizontalPaddingStart(int padding) {
         mHorizontalScrollbar.setPaddingStart(padding);
     }
 
+    /**
+     * 获取水平滚动条的右边边缘间距
+     *
+     * @return 右边边缘间距
+     */
     public int getHorizontalPaddingEnd() {
         return mHorizontalScrollbar.getPaddingEnd();
     }
 
+    /**
+     * 设置水平滚动条的右边边缘间距
+     *
+     * @param padding 右边边缘间距
+     */
     public void setHorizontalPaddingEnd(int padding) {
         mHorizontalScrollbar.setPaddingEnd(padding);
     }
 
+    /**
+     * 设置垂直滚动条的边距
+     *
+     * @param edge  底边缘间距
+     * @param start 左边边缘间距
+     * @param end   右边边缘间距
+     */
     public void setVerticalPadding(int edge, int start, int end) {
         mVerticalScrollbar.setPadding(edge, start, end);
     }
 
+    /**
+     * 获取垂直滚动条的底边缘间距
+     *
+     * @return 底边缘间距
+     */
     public int getVerticalPaddingEdge() {
         return mVerticalScrollbar.getPaddingEdge();
     }
 
+    /**
+     * 设置垂直滚动条的底边缘间距
+     *
+     * @param padding 底边缘间距
+     */
     public void setVerticalPaddingEdge(int padding) {
         mVerticalScrollbar.setPaddingEdge(padding);
     }
 
+    /**
+     * 获取垂直滚动条的左边边缘间距
+     *
+     * @return 左边边缘间距
+     */
     public int getVerticalPaddingStart() {
         return mVerticalScrollbar.getPaddingStart();
     }
 
+    /**
+     * 设置垂直滚动条的左边边缘间距
+     *
+     * @param padding 左边边缘间距
+     */
     public void setVerticalPaddingStart(int padding) {
         mVerticalScrollbar.setPaddingStart(padding);
     }
 
+    /**
+     * 获取垂直滚动条的右边边缘间距
+     *
+     * @return 右边边缘间距
+     */
     public int getVerticalPaddingEnd() {
         return mVerticalScrollbar.getPaddingEnd();
     }
 
+    /**
+     * 设置垂直滚动条的右边边缘间距
+     *
+     * @param padding 右边边缘间距
+     */
     public void setVerticalPaddingEnd(int padding) {
         mVerticalScrollbar.setPaddingEnd(padding);
     }
