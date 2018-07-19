@@ -29,7 +29,6 @@ import am.widget.save.SaveRecyclerView;
  * 子项动画可控的RecyclerView
  * Created by Alex on 2017/10/23.
  */
-
 public class ItemAnimatorControllableRecyclerView extends SaveRecyclerView {
 
     private long mAddDuration = 0;
@@ -57,13 +56,17 @@ public class ItemAnimatorControllableRecyclerView extends SaveRecyclerView {
         TypedArray custom = context.obtainStyledAttributes(attrs,
                 R.styleable.ItemAnimatorControllableRecyclerView);
         setSupportsAddAnimations(custom.getBoolean(
-                R.styleable.ItemAnimatorControllableRecyclerView_iacAddAnimationsEnable, true));
+                R.styleable.ItemAnimatorControllableRecyclerView_iacAddAnimationsEnable,
+                true));
         setSupportsChangeAnimations(custom.getBoolean(
-                R.styleable.ItemAnimatorControllableRecyclerView_iacChangeAnimationsEnable, true));
+                R.styleable.ItemAnimatorControllableRecyclerView_iacChangeAnimationsEnable,
+                true));
         setSupportsMoveAnimations(custom.getBoolean(
-                R.styleable.ItemAnimatorControllableRecyclerView_iacMoveAnimationsEnable, true));
+                R.styleable.ItemAnimatorControllableRecyclerView_iacMoveAnimationsEnable,
+                true));
         setSupportsRemoveAnimations(custom.getBoolean(
-                R.styleable.ItemAnimatorControllableRecyclerView_iacRemoveAnimationsEnable, true));
+                R.styleable.ItemAnimatorControllableRecyclerView_iacRemoveAnimationsEnable,
+                true));
         custom.recycle();
     }
 

@@ -23,7 +23,6 @@ import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,7 +38,7 @@ import am.widget.multifunctionalrecyclerview.layoutmanager.PagingLayoutManager;
  * 带滚动条的RecyclerView
  * Created by Alex on 2017/10/18.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView {
 
     protected static final int[] PRESSED_STATE_SET;
@@ -51,10 +50,12 @@ public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView 
             PRESSED_STATE_SET = new int[]{android.R.attr.state_focused,
                     android.R.attr.state_pressed};
     }
+
     private final Rect mChildBound = new Rect();
     private Scrollbar mScrollbar;// 滚动条
     private IndicatorAdapter mAdapter;
     private boolean mInterceptTouch;
+
     public ScrollbarRecyclerView(Context context) {
         super(context);
         initView(context, null);
@@ -147,6 +148,11 @@ public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView 
         }
     }
 
+    /**
+     * 获取滚动位置标记文本
+     *
+     * @return 标记文本
+     */
     protected String getScrollbarIndicator() {
         if (isInEditMode())
             return "★";
@@ -159,10 +165,15 @@ public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView 
         if (target == null)
             return null;
         final int position = getChildAdapterPosition(target);
-        return Integer.toString(position + getDefaultScrollbarIndicatorOffset());
+        return Integer.toString(position + getScrollbarDefaultIndicatorOffset());
     }
 
-    protected int getDefaultScrollbarIndicatorOffset() {
+    /**
+     * 获取滚动默认位置标记计算偏移（如滚动位置为0，偏移为1，则显示文本为“1”啊啊。）
+     *
+     * @return 计算偏移
+     */
+    protected int getScrollbarDefaultIndicatorOffset() {
         return 1;
     }
 
@@ -184,8 +195,6 @@ public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView 
                 final View child = getChildAt(i);
                 mChildBound.set(child.getLeft(), child.getTop(),
                         child.getRight(), child.getBottom());
-                final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)
-                        child.getLayoutParams();
                 if (linear.getOrientation() == HORIZONTAL) {
                     if ((mChildBound.left < x && mChildBound.right > x)
                             || mChildBound.left == x || mChildBound.right == y) {
@@ -285,6 +294,7 @@ public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView 
     /**
      * 滚动条
      */
+    @SuppressWarnings("all")
     public static abstract class Scrollbar {
 
         public static final int SHOW_NONE = 0;// 不显示

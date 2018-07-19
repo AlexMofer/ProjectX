@@ -90,18 +90,18 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     /**
-     * Return the measured width of the parent RecyclerView
+     * 获取RecyclerView的测量宽度
      *
-     * @return Measured width in pixels
+     * @return 测量宽度
      */
     public int getMeasuredWidth() {
         return mWidthSize;
     }
 
     /**
-     * Return the measured height of the parent RecyclerView
+     * 获取RecyclerView的测量高度
      *
-     * @return Measured height in pixels
+     * @return 测量高度
      */
     public int getMeasuredHeight() {
         return mHeightSize;
@@ -138,11 +138,21 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         return 0;
     }
 
+    /**
+     * 计算另一方向上的默认滚动偏移
+     *
+     * @return 默认滚动偏移
+     */
     protected int computeAnotherDirectionDefaultScrollOffset() {
         return Math.round(getDefaultScrollOffsetPercentage() *
                 computeAnotherDirectionMaxScrollOffset());
     }
 
+    /**
+     * 计算另一方向上的最大滚动偏移
+     *
+     * @return 最大滚动偏移
+     */
     protected int computeAnotherDirectionMaxScrollOffset() {
         final int offset;
         if (getOrientation() == HORIZONTAL) {
@@ -202,6 +212,11 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         return computeHorizontalScrollOffset();
     }
 
+    /**
+     * 计算水平滚动偏移
+     *
+     * @return 滚动偏移
+     */
     public int computeHorizontalScrollOffset() {
         if (getOrientation() == HORIZONTAL) {
             final RecyclerView view = getRecyclerView();
@@ -218,6 +233,11 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         return computeVerticalScrollOffset();
     }
 
+    /**
+     * 计算垂直滚动偏移
+     *
+     * @return 滚动偏移
+     */
     public int computeVerticalScrollOffset() {
         if (getOrientation() == VERTICAL) {
             final RecyclerView view = getRecyclerView();
@@ -234,6 +254,11 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         return computeHorizontalScrollExtent();
     }
 
+    /**
+     * 计算水平滚动边界
+     *
+     * @return 滚动边界
+     */
     protected int computeHorizontalScrollExtent() {
         if (getOrientation() == HORIZONTAL) {
             final RecyclerView view = getRecyclerView();
@@ -250,6 +275,11 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         return computeVerticalScrollExtent();
     }
 
+    /**
+     * 计算垂直滚动边界
+     *
+     * @return 滚动边界
+     */
     protected int computeVerticalScrollExtent() {
         if (getOrientation() == VERTICAL) {
             final RecyclerView view = getRecyclerView();
@@ -266,6 +296,11 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         return computeHorizontalScrollRange();
     }
 
+    /**
+     * 计算水平滚动范围
+     *
+     * @return 滚动范围
+     */
     protected int computeHorizontalScrollRange() {
         if (getOrientation() == HORIZONTAL) {
             final RecyclerView view = getRecyclerView();
@@ -275,6 +310,12 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
                 mRightDecorationMaxWidthOfChildMaxWidth;
     }
 
+    /**
+     * 转换子项最宽宽度（为缩放布局做准备）
+     *
+     * @param width 宽度
+     * @return 宽度
+     */
     protected int getChildMaxWidth(int width) {
         return width;
     }
@@ -287,6 +328,11 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         return computeVerticalScrollRange();
     }
 
+    /**
+     * 计算垂直滚动范围
+     *
+     * @return 滚动范围
+     */
     protected int computeVerticalScrollRange() {
         if (getOrientation() == VERTICAL) {
             final RecyclerView view = getRecyclerView();
@@ -296,10 +342,21 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
                 mBottomDecorationMaxWidthOfChildMaxHeight;
     }
 
+    /**
+     * 转换子项最高高度（为缩放布局做准备）
+     *
+     * @param height 高度
+     * @return 高度
+     */
     protected int getChildMaxHeight(int height) {
         return height;
     }
 
+    /**
+     * 判断另一方向是否能够滚动
+     *
+     * @return 是否能够
+     */
     public boolean canScrollAnotherDirection() {
         if (getOrientation() == HORIZONTAL) {
             return canScrollVertically();
@@ -361,18 +418,39 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         return -move;
     }
 
+    /**
+     * 往另一方向滚动
+     *
+     * @param distance 距离
+     */
     public void scrollAnotherDirectionBy(int distance) {
         scrollBy(distance);
     }
 
+    /**
+     * 获取另一方向上滚动偏移百分比
+     *
+     * @return 百分比
+     */
     public float getAnotherDirectionScrollOffsetPercentage() {
         return mPercentage == INVALID_PERCENTAGE ? 0 : mPercentage;
     }
 
+    /**
+     * 设置另一方向上滚动偏移百分比
+     *
+     * @param percentage 百分比
+     */
     public void setAnotherDirectionScrollOffsetPercentage(float percentage) {
         setAnotherDirectionScrollOffsetPercentage(percentage, true);
     }
 
+    /**
+     * 设置另一方向上滚动偏移百分比
+     *
+     * @param percentage   百分比
+     * @param updateLayout 更新布局
+     */
     public void setAnotherDirectionScrollOffsetPercentage(float percentage, boolean updateLayout) {
         if (mPendingPercentage == percentage || percentage < 0 || percentage > 1)
             return;
@@ -381,6 +459,13 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
             requestLayout();
     }
 
+    /**
+     * 滚动到固定位置
+     *
+     * @param position   位置
+     * @param offset     常规滚动方向上的偏移
+     * @param percentage 另一滚动方向上的偏移百分比
+     */
     public void scrollToPositionWithOffsetAndPercentage(int position, int offset,
                                                         float percentage) {
         if (mPendingPercentage == percentage || percentage < 0 || percentage > 1) {
@@ -391,35 +476,79 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         scrollToPositionWithOffset(position, offset);
     }
 
+    /**
+     * 设置子项最大尺寸
+     *
+     * @param width  宽
+     * @param height 高
+     */
     public void setChildMaxSize(int width, int height) {
         mChildMaxWidth = width;
         mChildMaxHeight = height;
     }
 
+    /**
+     * 获取子项最大宽度
+     *
+     * @return 宽度
+     */
     public int getChildMaxWidth() {
         return mChildMaxWidth;
     }
 
+    /**
+     * 获取子项最大高度
+     *
+     * @return 高度
+     */
     public int getChildMaxHeight() {
         return mChildMaxHeight;
     }
 
+    /**
+     * 获取宽度最大子项拥有的最大左边装饰宽度
+     *
+     * @return 宽度
+     */
     public int getLeftDecorationMaxWidthOfChildMaxWidth() {
         return mLeftDecorationMaxWidthOfChildMaxWidth;
     }
 
+    /**
+     * 获取宽度最大子项拥有的最大右边装饰宽度
+     *
+     * @return 宽度
+     */
     public int getRightDecorationMaxWidthOfChildMaxWidth() {
         return mRightDecorationMaxWidthOfChildMaxWidth;
     }
 
+    /**
+     * 获取高度最大子项拥有的最大顶边装饰宽度
+     *
+     * @return 宽度
+     */
     public int getTopDecorationMaxWidthOfChildMaxHeight() {
         return mTopDecorationMaxWidthOfChildMaxHeight;
     }
 
+    /**
+     * 获取高度最大子项拥有的最大底边装饰宽度
+     *
+     * @return 宽度
+     */
     public int getBottomDecorationMaxWidthOfChildMaxHeight() {
         return mBottomDecorationMaxWidthOfChildMaxHeight;
     }
 
+    /**
+     * 设置具备最大宽度及最大高度的子项的各边装饰最大宽度
+     *
+     * @param left   左边
+     * @param right  右边
+     * @param top    顶边
+     * @param bottom 底边
+     */
     public void setDecorationMaxWidthOfChildWithMaxSize(int left, int right, int top, int bottom) {
         mLeftDecorationMaxWidthOfChildMaxWidth = left;
         mRightDecorationMaxWidthOfChildMaxWidth = right;
