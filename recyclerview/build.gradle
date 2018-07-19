@@ -7,12 +7,12 @@ android {
         minSdkVersion 14
         targetSdkVersion 27
         versionCode 1
-        versionName "27.0.2"
+        versionName "27.1.1"
     }
 }
 
 dependencies {
-    implementation 'com.android.support:recyclerview-v7:27.0.2'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
 }
 
 //apply from: "bintray.gradle"
