@@ -53,7 +53,7 @@ public class ItemAnimatorControllableRecyclerView extends SaveRecyclerView {
 
     private void initView(Context context, AttributeSet attrs) {
         updateItemAnimatorDurations();
-        TypedArray custom = context.obtainStyledAttributes(attrs,
+        final TypedArray custom = context.obtainStyledAttributes(attrs,
                 R.styleable.ItemAnimatorControllableRecyclerView);
         setSupportsAddAnimations(custom.getBoolean(
                 R.styleable.ItemAnimatorControllableRecyclerView_iacAddAnimationsEnable,

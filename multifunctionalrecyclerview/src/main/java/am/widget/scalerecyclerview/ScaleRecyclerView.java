@@ -17,6 +17,7 @@
 package am.widget.scalerecyclerview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,6 +30,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewParent;
 
+import am.widget.multifunctionalrecyclerview.R;
 import am.widget.scrollbarrecyclerview.ScrollbarRecyclerView;
 
 /**
@@ -49,24 +51,24 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
     private ScaleGestureDetector mScaleGestureDetector;
     private boolean mScaleBegin = false;
     private OnTabListener mListener;
-    private float mScale = 1;
-    private float mMaxScale = 6;
-    private float mMinScale = 0.000000001f;
+    private float mScale;
+    private float mMinScale;
+    private float mMaxScale;
     private final Rect tRect = new Rect();
 
     public ScaleRecyclerView(Context context) {
         super(context);
-        initView();
+        initView(context, null);
     }
 
     public ScaleRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initView();
+        initView(context, attrs);
     }
 
     public ScaleRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initView();
+        initView(context, attrs);
     }
 
     /**
@@ -85,9 +87,19 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
         }
     }
 
-    private void initView() {
-        mGestureDetector = new GestureDetectorCompat(getContext(), new DoubleTapListener());
-        mScaleGestureDetector = new ScaleGestureDetector(getContext(), new ScaleListener());
+    private void initView(Context context, @Nullable AttributeSet attrs) {
+        final TypedArray custom = context.obtainStyledAttributes(attrs,
+                R.styleable.ScaleRecyclerView);
+        mScaleEnable = custom.getBoolean(R.styleable.ScaleRecyclerView_srvScaleEnable,
+                false);
+        mScale = custom.getFloat(R.styleable.ScaleRecyclerView_srvScale, 1);
+        mMinScale = custom.getFloat(R.styleable.ScaleRecyclerView_srvMinScale,
+                0.000000001f);
+        mMaxScale = custom.getFloat(R.styleable.ScaleRecyclerView_srvMaxScale,
+                6);
+        custom.recycle();
+        mGestureDetector = new GestureDetectorCompat(context, new DoubleTapListener());
+        mScaleGestureDetector = new ScaleGestureDetector(context, new ScaleListener());
     }
 
     @Override

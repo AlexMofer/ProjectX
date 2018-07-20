@@ -64,4 +64,10 @@
         <attr name="dsHorizontalAlwaysTouchable" format="boolean" />
         <attr name="dsVerticalAlwaysTouchable" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="ScaleRecyclerView">
+        <attr name="srvScaleEnable" format="boolean" />
+        <attr name="srvScale" format="float" />
+        <attr name="srvMinScale" format="float" />
+        <attr name="srvMaxScale" format="float" />
+    </declare-styleable>
 </resources>
