@@ -35,7 +35,6 @@ public abstract class TabStripLayout<V extends View> extends TabStripViewGroup {
     private final OnClickListener mListener = new OnClickListener();
     private int mCount = 0;
     private boolean mSmoothScroll = false;
-    private boolean mBlockAddView = true;
 
     public TabStripLayout(Context context) {
         super(context);
@@ -49,38 +48,47 @@ public abstract class TabStripLayout<V extends View> extends TabStripViewGroup {
         super(context, attrs, defStyleAttr);
     }
 
+    /**
+     * 判断是否屏蔽添加子项
+     *
+     * @return 是否屏蔽
+     */
+    protected boolean isBlockAddView() {
+        return false;
+    }
+
     @Override
     public void addView(View child) {
-        if (mBlockAddView)
-            throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+        if (isBlockAddView())
+            return;
         super.addView(child);
     }
 
     @Override
     public void addView(View child, int index) {
-        if (mBlockAddView)
-            throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+        if (isBlockAddView())
+            return;
         super.addView(child, index);
     }
 
     @Override
     public void addView(View child, int width, int height) {
-        if (mBlockAddView)
-            throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+        if (isBlockAddView())
+            return;
         super.addView(child, width, height);
     }
 
     @Override
     public void addView(View child, LayoutParams params) {
-        if (mBlockAddView)
-            throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+        if (isBlockAddView())
+            return;
         super.addView(child, params);
     }
 
     @Override
     public void addView(View child, int index, LayoutParams params) {
-        if (mBlockAddView)
-            throw new UnsupportedOperationException("Not support add child in this ViewGroup.");
+        if (isBlockAddView())
+            return;
         super.addView(child, index, params);
     }
 
@@ -193,24 +201,6 @@ public abstract class TabStripLayout<V extends View> extends TabStripViewGroup {
      */
     protected void onViewClicked(V item, int position) {
         performClick(position, mSmoothScroll);
-    }
-
-    /**
-     * 判断是否屏蔽添加子项
-     *
-     * @return 是否屏蔽
-     */
-    protected boolean isBlockAddView() {
-        return mBlockAddView;
-    }
-
-    /**
-     * 设置是否屏蔽添加子项
-     *
-     * @param block 是否屏蔽
-     */
-    protected void setBlockAddView(boolean block) {
-        mBlockAddView = block;
     }
 
     /**

@@ -168,6 +168,11 @@ public class IndicatorTabStrip extends HorizontalLinearTabStripLayout<IndicatorT
     }
 
     @Override
+    protected boolean isBlockAddView() {
+        return true;
+    }
+
+    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (isInEditMode() && getChildCount() == 0) {
             final int count = 4;
