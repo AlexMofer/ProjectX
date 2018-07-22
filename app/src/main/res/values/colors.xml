@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ff3f51b5</color>
-    <color name="colorPrimaryDark">#ff303f9f</color>
-    <color name="colorAccent">#ffff4081</color>
-    <color name="colorRipple">#803f51b5</color>
-    <color name="colorBackground_welcome">#ff5591f5</color>
-    <color name="white">#ffffffff</color>
-    <color name="transparent">#00000000</color>
+    <color name="colorPrimary">#518EF4</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
 </resources>

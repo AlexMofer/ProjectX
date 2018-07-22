@@ -1,69 +1,23 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    signingConfigs {
-        Release {
-            keyAlias 'projectx'
-            keyPassword 'alexpx'
-            storeFile file('Alex.jks')
-            storePassword 'alex0330'
-        }
-    }
+    compileSdkVersion 28
     defaultConfig {
         applicationId "am.project.x"
         minSdkVersion 15
-        targetSdkVersion 27
-        versionCode 72
-        versionName "2.7.1"
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
     }
     buildTypes {
         release {
-            minifyEnabled true
-            zipAlignEnabled true
-            debuggable false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            shrinkResources true
-            signingConfig signingConfigs.Release
         }
-    }
-    lintOptions {
-        abortOnError false
-    }
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
     }
 }
 
 dependencies {
-    implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:appcompat-v7:28.0.0-alpha3'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    implementation 'com.google.zxing:core:3.3.0'
-    implementation project(':basetabstrip')
-    implementation project(':gradienttabstrip')
-    implementation project(':tagtabstrip')
-    implementation project(':indicatortabstrip')
-    implementation project(':shapeimageview')
-    implementation project(':stateframelayout')
-    implementation project(':wraplayout')
-    implementation project(':replacelayout')
-    implementation project(':drawableratingbar')
-    implementation project(':headerfootergridview')
-    implementation project(':multiactiontextview')
-    implementation project(':selectionview')
-    implementation project(':circleprogressbar')
-    implementation project(':zxingscanview')
-    implementation project(':smoothinputlayout')
-    implementation project(':cameraview')
-    implementation project(':drawable')
-    implementation project(':support')
-    implementation project(':printer')
-    implementation project(':viewpager')
-    implementation project(':recyclerview')
-    implementation project(':mvp')
-    implementation project(':multifunctionalrecyclerview')
-    implementation project(':ftpserver')
 }

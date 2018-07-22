@@ -1,1 +1,1 @@
-include ':app', ':gradienttabstrip', ':basetabstrip', ':tagtabstrip', ':indicatortabstrip', ':support', ':shapeimageview', ':stateframelayout', ':wraplayout', ':replacelayout', ':drawableratingbar', ':drawable', ':printer', ':headerfootergridview', ':multiactiontextview', ':selectionview', ':circleprogressbar', ':zxingscanview', ':smoothinputlayout', ':viewpager', ':recyclerview', ':cameraview', ':mvp', ':multifunctionalrecyclerview', ':ftpserver'
+include ':app'
