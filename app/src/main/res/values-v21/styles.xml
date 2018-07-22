@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppToolbar" parent="BaseToolbar">
+        <item name="android:elevation">4dp</item>
+    </style>
+
+    <style name="TransparentToolbar" parent="BaseToolbar">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+</resources>

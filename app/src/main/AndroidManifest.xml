@@ -3,7 +3,9 @@
     package="am.project.x">
 
     <application
+        android:name=".ProjectXApplication"
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"

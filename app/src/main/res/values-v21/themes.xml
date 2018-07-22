@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="BaseTheme">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:statusBarColor">?colorPrimaryDark</item>
+    </style>
+
+    <style name="Theme.Main" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/MainWindowAnimation</item>
+        <item name="android:statusBarColor">@color/colorDark</item>
+    </style>
+</resources>
