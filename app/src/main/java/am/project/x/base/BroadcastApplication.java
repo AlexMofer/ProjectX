@@ -38,10 +38,10 @@ public class BroadcastApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         final IntentFilter intentFilter = new IntentFilter();
-        onAddBroadcastIntentFilterAction(intentFilter);
+        onAddAction(intentFilter);
         registerReceiver(mBroadcastReceiver, intentFilter);
         final IntentFilter localIntentFilter = new IntentFilter();
-        onAddLocalBroadcastIntentFilterAction(localIntentFilter);
+        onAddLocalAction(localIntentFilter);
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
         mLocalBroadcastManager.registerReceiver(mLocalBroadcastReceiver, localIntentFilter);
     }
@@ -58,7 +58,7 @@ public class BroadcastApplication extends MultiDexApplication {
      *
      * @param filter 筛选器
      */
-    protected void onAddBroadcastIntentFilterAction(IntentFilter filter) {
+    protected void onAddAction(IntentFilter filter) {
     }
 
     /**
@@ -66,7 +66,7 @@ public class BroadcastApplication extends MultiDexApplication {
      *
      * @param filter 筛选器
      */
-    protected void onAddLocalBroadcastIntentFilterAction(IntentFilter filter) {
+    protected void onAddLocalAction(IntentFilter filter) {
     }
 
     /**
