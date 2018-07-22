@@ -2,7 +2,7 @@
 ProjectX
 ========
 
-<img src="images/svg/ic_launcher.svg" alt="Icon"/>
+<img src="images/svg/ic_launcher.svg" width="192" height="192" alt="Icon"/>
 
 所有个人开源项目合集，便于管理及维护。目前正在项目重构，因此部分源码暂时无法访问。
 
