@@ -10,6 +10,7 @@
 	<stop  offset="0" style="stop-color:#000000;stop-opacity:0.2"/>
 	<stop  offset="1" style="stop-color:#000000;stop-opacity:0"/>
 </linearGradient>
+<rect x="0" y="0" width="108" height="108" style="fill:#518EF4;"/>
 <polyline class="st0" points="39.1,30.9 56.6,48.4 71,30.9 108,67.9 108,108 67.2,107.9 36.3,77 54,52.2 39.1,30.9 "/>
 <path class="st1" d="M39.1,30.9L54,52.2l14.9-21.3H71L55,53.5L71.6,77h-2.1L53.9,54.8L38.4,77h-2.1l16.6-23.5l-16-22.6H39.1z"/>
 </svg>
