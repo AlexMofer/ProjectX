@@ -2,9 +2,9 @@
 ProjectX
 ========
 
-<img src="ProjectX.png" alt="Icon"/>
+<img src="images/svg/ic_launcher.svg" alt="Icon"/>
 
-整体项目合集，包括Widget、Drawable以及一些工具类。
+所有个人开源项目合集，便于管理及维护。目前正在项目重构，因此部分源码暂时无法访问。
 
 Widget
 ------
