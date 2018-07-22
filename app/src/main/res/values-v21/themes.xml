@@ -5,7 +5,7 @@
         <item name="android:statusBarColor">?colorPrimaryDark</item>
     </style>
 
-    <style name="Theme.Main" parent="AppTheme">
+    <style name="MainTheme" parent="AppTheme">
         <item name="android:windowAnimationStyle">@style/MainWindowAnimation</item>
         <item name="android:statusBarColor">@color/colorDark</item>
     </style>

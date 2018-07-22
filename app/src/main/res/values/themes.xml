@@ -15,13 +15,13 @@
 
     <style name="AppTheme" parent="BaseTheme" />
 
-    <style name="Theme.Welcome" parent="AppTheme">
-        <item name="android:windowBackground">@color/colorPrimary</item>
+    <style name="WelcomeTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/bg_welcome</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowAnimationStyle">@style/FadeWindowAnimation</item>
     </style>
 
-    <style name="Theme.Main" parent="AppTheme">
+    <style name="MainTheme" parent="AppTheme">
         <item name="android:windowAnimationStyle">@style/MainWindowAnimation</item>
     </style>
 </resources>
