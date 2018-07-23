@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><!--###WS@M Project:PDFelement-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_lyt_header"
+    android:layout_width="match_parent"
+    android:layout_height="172dp"
+    android:background="@drawable/bg_welcome"
+    android:foreground="?selectableItemBackground"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+</FrameLayout>

@@ -33,4 +33,14 @@
         <item name="android:activityOpenEnterAnimation">@null</item>
         <item name="android:activityOpenExitAnimation">@null</item>
     </style>
+
+    <style name="ThemeOverlay.Light" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="ThemeOverlay.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar" />
+
+    <style name="ThemeOverlay.Dark.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="ThemeOverlay.Dark.ActionBar.WhiteAccent" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorAccent">@android:color/white</item>
+    </style>
 </resources>
