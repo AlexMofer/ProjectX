@@ -4,33 +4,37 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/main_nav_local"
-            android:icon="@drawable/ic_main_develop_normal"
+            android:icon="@drawable/ic_main_widgets"
             android:title="控件" />
         <item
             android:id="@+id/main_nav_resent"
-            android:icon="@drawable/ic_main_develop_normal"
+            android:icon="@drawable/ic_main_drawables"
             android:title="图片" />
         <item
             android:id="@+id/main_nav_favorite"
-            android:icon="@drawable/ic_main_develop_normal"
+            android:icon="@drawable/ic_main_others"
             android:title="其他" />
+        <item
+            android:id="@+id/main_nav_cloud"
+            android:icon="@drawable/ic_main_develop"
+            android:title="Alpha" />
     </group>
 
 
     <item android:title="更多">
         <menu>
             <item
-                android:id="@+id/main_nav_cloud"
-                android:icon="@drawable/ic_main_develop_normal"
-                android:title="开发" />
-            <item
                 android:id="@+id/main_nav_ftp"
-                android:icon="@drawable/ic_main_develop_normal"
-                android:title="关于" />
+                android:icon="@drawable/ic_main_bug"
+                android:title="报告错误" />
             <item
                 android:id="@+id/main_nav_settings"
-                android:icon="@drawable/ic_main_develop_normal"
-                android:title="隐私权限" />
+                android:icon="@drawable/ic_main_email"
+                android:title="联系作者" />
+            <item
+                android:id="@+id/main_nav_about"
+                android:icon="@drawable/ic_main_info"
+                android:title="关于" />
         </menu>
     </item>
 </menu>
