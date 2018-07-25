@@ -15,6 +15,9 @@
  */
 package am.project.x.business.main;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -25,12 +28,19 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import am.project.x.BuildConfig;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
+import am.project.x.business.main.fragments.DevelopFragment;
+import am.project.x.business.main.fragments.DrawablesFragment;
+import am.project.x.business.main.fragments.OthersFragment;
+import am.project.x.business.main.fragments.WidgetsFragment;
+import am.project.x.utils.ContextUtils;
 import am.project.x.utils.ViewUtils;
 
 /**
@@ -39,14 +49,16 @@ import am.project.x.utils.ViewUtils;
 public class MainActivity extends BaseActivity implements View.OnClickListener,
         NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String EXTRA_TOGGLE = "toggle";
     private static final String EXTRA_FRAGMENT = "current";
-    private static final String TAG_LOCAL = "fragment_local";
-    private static final String TAG_RESENT = "fragment_resent";
-    private static final String TAG_FAVORITE = "fragment_favorite";
+    private static final String TAG_WIDGETS = "fragment_widgets";
+    private static final String TAG_DRAWABLES = "fragment_drawables";
+    private static final String TAG_OTHERS = "fragment_others";
+    private static final String TAG_DEVELOP = "fragment_develop";
+    private static final String REPORT = "https://github.com/AlexMofer/ProjectX/issues";
+    private static final String EMAIL = "moferalex@gmail.com";
     private DrawerLayout mVDrawer;
     private ViewGroup mVContent;
-    private String mCurrentFragment = TAG_LOCAL;
+    private String mCurrent;
 
     @Override
     protected int getContentViewLayout() {
@@ -65,112 +77,81 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         setSupportActionBar(toolbar);
         final ActionBarDrawerToggle toggle =
                 new ActionBarDrawerToggle(this, mVDrawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                        R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         toggle.setToolbarNavigationClickListener(this);
         mVDrawer.addDrawerListener(toggle);
         toggle.syncState();
         navigation.setNavigationItemSelectedListener(this);
-
-//        if (savedInstanceState == null) {
-//            MenuItem item = navigation.getMenu().findItem(R.id.main_nav_local);
-//            if (item != null) {
-//                item.setChecked(true);
-//                setTitle(item.getTitle());
-//            }
-//            setFragment(TAG_LOCAL);
-//        } else {
-//            mCurrentFragment = savedInstanceState.getString(EXTRA_FRAGMENT, TAG_LOCAL);
-//            MenuItem item;
-//            switch (mCurrentFragment) {
-//                default:
-//                case TAG_LOCAL:
-//                    item = navigation.getMenu().findItem(R.id.main_nav_local);
-//                    break;
-//                case TAG_RESENT:
-//                    item = navigation.getMenu().findItem(R.id.main_nav_resent);
-//                    break;
-//                case TAG_FAVORITE:
-//                    item = navigation.getMenu().findItem(R.id.main_nav_favorite);
-//                    break;
-//            }
-//            if (item != null) {
-//                item.setChecked(true);
-//                setTitle(item.getTitle());
-//            }
-//            setFragment(mCurrentFragment);
-//        }
+        final String tag;
+        final boolean debug = BuildConfig.DEBUG;
+        if (savedInstanceState == null) {
+            tag = TAG_WIDGETS;
+            final MenuItem item = navigation.getMenu().findItem(R.id.main_nav_widgets);
+            item.setChecked(true);
+            setTitle(item.getTitle());
+            if (debug) {
+                // TODO
+            }
+        } else {
+            tag = savedInstanceState.getString(EXTRA_FRAGMENT, TAG_WIDGETS);
+            MenuItem item;
+            switch (tag) {
+                default:
+                case TAG_WIDGETS:
+                    item = navigation.getMenu().findItem(R.id.main_nav_widgets);
+                    break;
+                case TAG_DRAWABLES:
+                    item = navigation.getMenu().findItem(R.id.main_nav_drawables);
+                    break;
+                case TAG_OTHERS:
+                    item = navigation.getMenu().findItem(R.id.main_nav_others);
+                    break;
+                case TAG_DEVELOP:
+                    item = navigation.getMenu().findItem(R.id.main_nav_develop);
+                    break;
+            }
+            item.setChecked(true);
+            setTitle(item.getTitle());
+        }
+        final MenuItem develop = navigation.getMenu().findItem(R.id.main_nav_develop);
+        develop.setVisible(debug);
+        setFragment(tag);
     }
 
-//    private void setFragment(String tag) {
-//        mCurrentFragment = tag;
-//        FragmentManager manager = getSupportFragmentManager();
-//        FragmentTransaction transaction = manager.beginTransaction();
-//        Fragment fragment = manager.findFragmentByTag(tag);
-//        if (fragment != null && fragment.isVisible())
-//            return;
-//        if (fragment == null) {
-//            switch (tag) {
-//                default:
-//                case TAG_LOCAL:
-//                    fragment = ManagerFragment.newInstance();
-//                    break;
-//                case TAG_RESENT:
-//                    fragment = RecentFragment.newInstance();
-//                    break;
-//                case TAG_FAVORITE:
-//                    fragment = FavoriteFragment.newInstance();
-//                    break;
-//            }
-//            transaction.add(mVContent.getId(), fragment, tag);
-//        }
-//        List<Fragment> fragments = manager.getFragments();
-//        for (Fragment f : fragments) {
-//            if (f == fragment) {
-//                transaction.show(f);
-//                f.setMenuVisibility(true);
-//                f.setUserVisibleHint(true);
-//            } else {
-//                f.setMenuVisibility(false);
-//                f.setUserVisibleHint(false);
-//                transaction.hide(f);
-//            }
-//        }
-//        transaction.commitNowAllowingStateLoss();
-//    }
-
-    // Listener
-    @Override
-    public void onClick(View v) {
-        onBackPressed();
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.main_nav_local:
-//                setTitle(item.getTitle());
-//                setFragment(TAG_LOCAL);
-//                break;
-//            case R.id.main_nav_resent:
-//                setTitle(item.getTitle());
-//                setFragment(TAG_RESENT);
-//                break;
-//            case R.id.main_nav_favorite:
-//                setTitle(item.getTitle());
-//                setFragment(TAG_FAVORITE);
-//                break;
-//            case R.id.main_nav_cloud:
-//                InstallerActivity.start(this, null);
-//                break;
-//            case R.id.main_nav_ftp:
-//                FTPActivity.start(this);
-//                break;
-//            case R.id.main_nav_settings:
-//                SettingsActivity.start(this);
-//                break;
-//        }
-        mVDrawer.closeDrawer(GravityCompat.START);
-        return true;
+    private void setFragment(String tag) {
+        final String oldTag = mCurrent;
+        mCurrent = tag;
+        final FragmentManager manager = getFragmentManager();
+        final FragmentTransaction transaction = manager.beginTransaction();
+        if (!TextUtils.isEmpty(oldTag)) {
+            final Fragment old = manager.findFragmentByTag(oldTag);
+            if (old != null && old.isVisible()) {
+                transaction.hide(old);
+            }
+        }
+        Fragment target = manager.findFragmentByTag(tag);
+        if (target != null && target.isVisible())
+            return;
+        if (target == null) {
+            switch (tag) {
+                default:
+                case TAG_WIDGETS:
+                    target = WidgetsFragment.newInstance();
+                    break;
+                case TAG_DRAWABLES:
+                    target = DrawablesFragment.newInstance();
+                    break;
+                case TAG_OTHERS:
+                    target = OthersFragment.newInstance();
+                    break;
+                case TAG_DEVELOP:
+                    target = DevelopFragment.newInstance();
+                    break;
+            }
+            transaction.add(mVContent.getId(), target, tag);
+        }
+        transaction.show(target);
+        transaction.commit();
     }
 
     @Override
@@ -180,6 +161,51 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(EXTRA_FRAGMENT, mCurrent);
+    }
+
+    // Listener
+    @Override
+    public void onClick(View v) {
+        onBackPressed();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.main_nav_widgets:
+                setTitle(item.getTitle());
+                setFragment(TAG_WIDGETS);
+                break;
+            case R.id.main_nav_drawables:
+                setTitle(item.getTitle());
+                setFragment(TAG_DRAWABLES);
+                break;
+            case R.id.main_nav_others:
+                setTitle(item.getTitle());
+                setFragment(TAG_OTHERS);
+                break;
+            case R.id.main_nav_develop:
+                setTitle(item.getTitle());
+                setFragment(TAG_DEVELOP);
+                break;
+            case R.id.main_nav_report:
+                ContextUtils.openBrowser(this, REPORT);
+                break;
+            case R.id.main_nav_contact:
+                ContextUtils.sendEmail(this, null, null, EMAIL);
+                break;
+            case R.id.main_nav_about:
+                // TODO
+                break;
+        }
+        mVDrawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     public static void start(Context context) {

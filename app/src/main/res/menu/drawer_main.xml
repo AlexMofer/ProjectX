@@ -1,40 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?><!--###WS@M Project:PDFelement-->
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/main_nav_local"
+            android:id="@+id/main_nav_widgets"
             android:icon="@drawable/ic_main_widgets"
-            android:title="控件" />
+            android:title="@string/main_nav_widgets" />
         <item
-            android:id="@+id/main_nav_resent"
+            android:id="@+id/main_nav_drawables"
             android:icon="@drawable/ic_main_drawables"
-            android:title="图片" />
+            android:title="@string/main_nav_drawables" />
         <item
-            android:id="@+id/main_nav_favorite"
+            android:id="@+id/main_nav_others"
             android:icon="@drawable/ic_main_others"
-            android:title="其他" />
+            android:title="@string/main_nav_others" />
         <item
-            android:id="@+id/main_nav_cloud"
+            android:id="@+id/main_nav_develop"
             android:icon="@drawable/ic_main_develop"
-            android:title="Alpha" />
+            android:title="@string/main_nav_develop" />
     </group>
 
-
-    <item android:title="更多">
-        <menu>
-            <item
-                android:id="@+id/main_nav_ftp"
-                android:icon="@drawable/ic_main_bug"
-                android:title="报告错误" />
-            <item
-                android:id="@+id/main_nav_settings"
-                android:icon="@drawable/ic_main_email"
-                android:title="联系作者" />
-            <item
-                android:id="@+id/main_nav_about"
-                android:icon="@drawable/ic_main_info"
-                android:title="关于" />
-        </menu>
-    </item>
+    <group
+        android:id="@+id/group_divider"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/main_nav_report"
+            android:icon="@drawable/ic_main_bug"
+            android:title="@string/main_nav_report" />
+        <item
+            android:id="@+id/main_nav_contact"
+            android:icon="@drawable/ic_main_email"
+            android:title="@string/main_nav_contact" />
+        <item
+            android:id="@+id/main_nav_about"
+            android:icon="@drawable/ic_main_info"
+            android:title="@string/main_nav_about" />
+    </group>
 </menu>

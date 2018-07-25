@@ -1,2 +1,9 @@
 <resources>
+    <string name="main_nav_widgets">控件</string>
+    <string name="main_nav_drawables">图形</string>
+    <string name="main_nav_others">其他</string>
+    <string name="main_nav_develop">开发</string>
+    <string name="main_nav_report">报告错误</string>
+    <string name="main_nav_contact">联系作者</string>
+    <string name="main_nav_about">关于</string>
 </resources>

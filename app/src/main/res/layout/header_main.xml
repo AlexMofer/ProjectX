@@ -1,11 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?><!--###WS@M Project:PDFelement-->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main_lyt_header"
     android:layout_width="match_parent"
     android:layout_height="172dp"
     android:background="@drawable/bg_welcome"
-    android:foreground="?selectableItemBackground"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:padding="12dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-</FrameLayout>
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/ic_main_nav" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="12dp" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+</LinearLayout>

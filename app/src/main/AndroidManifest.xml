@@ -31,7 +31,7 @@
 
                 <data
                     android:host="github.com"
-                    android:pathPrefix="/AlexMofer/ProjectX"
+                    android:path="/AlexMofer/ProjectX"
                     android:scheme="https" />
             </intent-filter>
         </activity>
