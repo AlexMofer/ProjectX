@@ -3,4 +3,8 @@
     <string name="app_name" translatable="false">ProjectX</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <!--关于-->
+    <string name="about_version" translatable="false">V%1$s</string>
+    <string name="about_url">https://github.com/AlexMofer/ProjectX</string>
+    <string name="about_copyright" translatable="false">Copyright © 2015 AlexMofer All rights reserved.</string>
 </resources>

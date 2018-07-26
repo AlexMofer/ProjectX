@@ -36,6 +36,8 @@ import android.view.ViewGroup;
 import am.project.x.BuildConfig;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
+import am.project.x.business.about.AboutActivity;
+import am.project.x.business.developing.DevelopingActivity;
 import am.project.x.business.main.fragments.DevelopFragment;
 import am.project.x.business.main.fragments.DrawablesFragment;
 import am.project.x.business.main.fragments.OthersFragment;
@@ -89,9 +91,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
             final MenuItem item = navigation.getMenu().findItem(R.id.main_nav_widgets);
             item.setChecked(true);
             setTitle(item.getTitle());
-            if (debug) {
-                // TODO
-            }
+            if (debug)
+                DevelopingActivity.start(this);
         } else {
             tag = savedInstanceState.getString(EXTRA_FRAGMENT, TAG_WIDGETS);
             MenuItem item;
@@ -201,7 +202,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                 ContextUtils.sendEmail(this, null, null, EMAIL);
                 break;
             case R.id.main_nav_about:
-                // TODO
+                AboutActivity.start(this);
                 break;
         }
         mVDrawer.closeDrawer(GravityCompat.START);
