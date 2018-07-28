@@ -1,14 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".business.main.fragments.OthersFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Others" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/other_btn_printer"
+            style="@style/ThemeOverlay.Dark.ActionBar.WhiteAccent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawablePadding="6dp"
+            android:drawableTop="@drawable/ic_main_bug"
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp"
+            android:text="打印"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/other_btn_security"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawablePadding="6dp"
+            android:drawableTop="@drawable/ic_main_bug"
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp"
+            android:text="加密解密"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/other_btn_printer"
+            app:layout_constraintStart_toEndOf="@id/other_btn_printer"
+            app:layout_constraintTop_toTopOf="@id/other_btn_printer"
+            app:layout_constraintWidth_percent="0.25" />
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

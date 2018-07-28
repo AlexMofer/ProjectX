@@ -3,6 +3,6 @@
     <color name="colorWindowBackground">@android:color/white</color>
     <color name="colorPrimary">#4788f4</color>
     <color name="colorPrimaryDark">#4272c4</color>
-    <color name="colorAccent">#c84efb</color>
+    <color name="colorAccent">#fe439b</color>
     <color name="colorDark">#28000000</color>
 </resources>

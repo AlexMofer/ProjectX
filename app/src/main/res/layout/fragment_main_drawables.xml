@@ -1,14 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".business.main.fragments.DrawablesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Drawables" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/drawable_btn_loading"
+            style="@style/ThemeOverlay.Dark.ActionBar.WhiteAccent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawablePadding="6dp"
+            android:drawableTop="@drawable/ic_main_bug"
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp"
+            android:text="载入动画"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/drawable_btn_center"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawablePadding="6dp"
+            android:drawableTop="@drawable/ic_main_bug"
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp"
+            android:text="中心图片"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/drawable_btn_loading"
+            app:layout_constraintStart_toEndOf="@id/drawable_btn_loading"
+            app:layout_constraintTop_toTopOf="@id/drawable_btn_loading"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/drawable_btn_combination"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawablePadding="6dp"
+            android:drawableTop="@drawable/ic_main_bug"
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp"
+            android:text="双层图片"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/drawable_btn_center"
+            app:layout_constraintStart_toEndOf="@id/drawable_btn_center"
+            app:layout_constraintTop_toTopOf="@id/drawable_btn_center"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/drawable_btn_sharpcornerbox"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawablePadding="6dp"
+            android:drawableTop="@drawable/ic_main_bug"
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp"
+            android:text="尖角框"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/drawable_btn_combination"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/drawable_btn_combination"
+            app:layout_constraintTop_toTopOf="@id/drawable_btn_combination" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/drawable_btn_line"
+            style="@style/ThemeOverlay.Dark.ActionBar.WhiteAccent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawablePadding="6dp"
+            android:drawableTop="@drawable/ic_main_bug"
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp"
+            android:text="横线图片"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/drawable_btn_loading"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/drawable_btn_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawablePadding="6dp"
+            android:drawableTop="@drawable/ic_main_bug"
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp"
+            android:text="线性图片"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/drawable_btn_line"
+            app:layout_constraintStart_toEndOf="@id/drawable_btn_line"
+            app:layout_constraintTop_toTopOf="@id/drawable_btn_line"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/drawable_btn_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawablePadding="6dp"
+            android:drawableTop="@drawable/ic_main_bug"
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp"
+            android:text="文本图片"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/drawable_btn_list"
+            app:layout_constraintStart_toEndOf="@id/drawable_btn_list"
+            app:layout_constraintTop_toTopOf="@id/drawable_btn_list"
+            app:layout_constraintWidth_percent="0.25" />
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

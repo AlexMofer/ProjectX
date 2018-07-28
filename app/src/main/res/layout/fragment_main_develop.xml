@@ -1,14 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".business.main.fragments.DevelopFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Develop" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/develop_btn_developing"
+            style="@style/ThemeOverlay.Dark.ActionBar.WhiteAccent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawablePadding="6dp"
+            android:drawableTop="@drawable/ic_main_bug"
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp"
+            android:text="开发中"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/develop_btn_supergridview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawablePadding="6dp"
+            android:drawableTop="@drawable/ic_main_bug"
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp"
+            android:text="拖拽网格"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/develop_btn_developing"
+            app:layout_constraintStart_toEndOf="@id/develop_btn_developing"
+            app:layout_constraintTop_toTopOf="@id/develop_btn_developing"
+            app:layout_constraintWidth_percent="0.25" />
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>
