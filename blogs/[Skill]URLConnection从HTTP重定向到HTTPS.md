@@ -1,0 +1,15 @@
+# URLConnection从HTTP重定向到HTTPS
+也不知什么原因，公司项目的服务端一直在吸引着大波攻击，于是服务端的同学打算把所有HTTP的请求都换为HTTPS，他们决定兼容旧版本于是就将之前的所有HTTP请求全部重定向到另一个HTTPS请求。
+项目请求框架搭建初期，考虑到应用也不会使用太复杂的请求模式，于是就简单使用URLConnection完成服务端交互。服务端一修改，全部请求都失败了。虽然URLConnection有是否遵循重定向开关（setInstanceFollowRedirects），其默认就是开启的，即便你再强制其打开，也是没有用，问题依旧。找了大量资料，其实问题的关键点不是重定向而是从HTTP重定向到HTTPS，关键点就在URLConnection的两个子类上。
+
+## HttpURLConnection与HttpsURLConnection
+HttpURLConnection为URLConnection的子类，而HttpsURLConnection为HttpURLConnection的子类，在HttpURLConnection基础上对HTTPS进行支持。
+URLConnection通常使用URL的openConnection()方法获得，而URL是根据其是否为Https开头来打开一个HttpURLConnection还是HttpsURLConnection。
+而当URLConnection进行connect()时，遇到了重定向，如果打开了遵循重定向，那么其会获取重定向的地址，然后尝试连接这个地址。值得注意的是，这时候并不是使用新的链接地址重新openConnection()一个URLConnection，而是直接尝试连接这个重定向的地址，否则也就不存在以上的Bug了。
+于是理论上分析，HTTP重定向到HTTP是不存在问题的，HTTPS重定向到HTTPS也是不存在问题的，而HTTP与HTTPS之间的重定向，那么就很可能会有问题了。HTTP重定向到HTTPS，URLConnection会将重定向的HTTPS以HTTP方式继续提交，那么服务端肯定是认为你是错误的提交方式；同理，HTTPS重定向HTTP也一样。
+
+## 问题解决
+ - 使用URLConnection抓取到重定向，就使用重定向的地址重新人为openConnection()一个新的URLConnection重新请求。
+ - 使用第三方请求框架，如OKHttp。
+
+具体项目具体分析，方法一是可行的，但是处理起来就很麻烦了。而方案二则更可选，因为URLConnection与OKHttp用法其实差不了多远。
