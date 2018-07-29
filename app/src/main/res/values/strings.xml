@@ -26,4 +26,11 @@
     <string name="main_widgets_circleprogressbar">环形进度条</string>
     <string name="main_widgets_zxingscanview">条码扫描</string>
     <string name="main_widgets_smoothinputlayout">输入面板</string>
+    <string name="main_drawables_loading">载入图片</string>
+    <string name="main_drawables_center">中心图片</string>
+    <string name="main_drawables_combination">双层图片</string>
+    <string name="main_drawables_sharpcornerbox">尖角框</string>
+    <string name="main_drawables_line">横线图片</string>
+    <string name="main_drawables_list">线性图片</string>
+    <string name="main_drawables_text">文本图片</string>
 </resources>

@@ -20,12 +20,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import am.project.x.R;
 import am.project.x.base.BaseFragment;
 
-public class DrawablesFragment extends BaseFragment {
+public class DrawablesFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected int getContentViewLayout(LayoutInflater inflater, ViewGroup container,
@@ -35,7 +36,33 @@ public class DrawablesFragment extends BaseFragment {
 
     @Override
     protected void initializeFragment(Activity activity, @Nullable Bundle savedInstanceState) {
+        findViewById(R.id.drawable_btn_loading).setOnClickListener(this);
+        findViewById(R.id.drawable_btn_center).setOnClickListener(this);
+        findViewById(R.id.drawable_btn_combination).setOnClickListener(this);
+        findViewById(R.id.drawable_btn_sharpcornerbox).setOnClickListener(this);
+        findViewById(R.id.drawable_btn_line).setOnClickListener(this);
+        findViewById(R.id.drawable_btn_list).setOnClickListener(this);
+        findViewById(R.id.drawable_btn_text).setOnClickListener(this);
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.drawable_btn_loading:
+                break;
+            case R.id.drawable_btn_center:
+                break;
+            case R.id.drawable_btn_combination:
+                break;
+            case R.id.drawable_btn_sharpcornerbox:
+                break;
+            case R.id.drawable_btn_line:
+                break;
+            case R.id.drawable_btn_list:
+                break;
+            case R.id.drawable_btn_text:
+                break;
+        }
     }
 
     public static DrawablesFragment newInstance() {
