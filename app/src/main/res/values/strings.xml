@@ -12,4 +12,18 @@
     <string name="about_more">更多信息，请参考Github项目主页：</string>
     <!--开发中-->
     <string name="developing_label">开发中</string>
+    <!--主页-->
+    <string name="main_widgets_gradienttabstrip">渐变底部栏</string>
+    <string name="main_widgets_tagtabstrip">图片标记栏</string>
+    <string name="main_widgets_indicatortabstrip">游标顶部栏</string>
+    <string name="main_widgets_shapeimageview">裁剪图片视图</string>
+    <string name="main_widgets_statelayout">状态布局</string>
+    <string name="main_widgets_wraplayout">自换行布局</string>
+    <string name="main_widgets_drawableratingbar">图片评级</string>
+    <string name="main_widgets_headerfootergridview">头尾网格视图</string>
+    <string name="main_widgets_multiactiontextview">文本点击</string>
+    <string name="main_widgets_recyclepager">回收页视图</string>
+    <string name="main_widgets_circleprogressbar">环形进度条</string>
+    <string name="main_widgets_zxingscanview">条码扫描</string>
+    <string name="main_widgets_smoothinputlayout">输入面板</string>
 </resources>

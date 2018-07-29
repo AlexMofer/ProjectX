@@ -16,6 +16,7 @@
 
 package am.util.mvp;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -70,7 +71,7 @@ public abstract class AMFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initializeFragment(savedInstanceState);
+        initializeFragment(getActivity(), savedInstanceState);
         if (isLocalBroadcastEnable()) {
             mLocalBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
             IntentFilter filter = new IntentFilter();
@@ -155,9 +156,11 @@ public abstract class AMFragment extends Fragment {
     /**
      * 初始化Fragment
      *
+     * @param activity           Activity
      * @param savedInstanceState 保存的实例数据
      */
-    protected abstract void initializeFragment(@Nullable Bundle savedInstanceState);
+    protected abstract void initializeFragment(Activity activity,
+                                               @Nullable Bundle savedInstanceState);
 
     /**
      * 获取基础Presenter

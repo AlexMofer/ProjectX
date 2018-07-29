@@ -16,6 +16,7 @@
 package am.project.x.business.main.fragments;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -33,7 +34,7 @@ public class DrawablesFragment extends BaseFragment {
     }
 
     @Override
-    protected void initializeFragment(@Nullable Bundle savedInstanceState) {
+    protected void initializeFragment(Activity activity, @Nullable Bundle savedInstanceState) {
 
     }
 

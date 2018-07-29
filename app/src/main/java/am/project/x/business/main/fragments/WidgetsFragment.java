@@ -15,15 +15,17 @@
  */
 package am.project.x.business.main.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import am.project.x.R;
 import am.project.x.base.BaseFragment;
 
-public class WidgetsFragment extends BaseFragment {
+public class WidgetsFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected int getContentViewLayout(LayoutInflater inflater, ViewGroup container,
@@ -32,8 +34,50 @@ public class WidgetsFragment extends BaseFragment {
     }
 
     @Override
-    protected void initializeFragment(@Nullable Bundle savedInstanceState) {
+    protected void initializeFragment(Activity activity, @Nullable Bundle savedInstanceState) {
+        findViewById(R.id.widget_btn_gradienttabstrip).setOnClickListener(this);
+        findViewById(R.id.widget_btn_tagtabstrip).setOnClickListener(this);
+        findViewById(R.id.widget_btn_indicatortabstrip).setOnClickListener(this);
+        findViewById(R.id.widget_btn_shapeimageview).setOnClickListener(this);
+        findViewById(R.id.widget_btn_statelayout).setOnClickListener(this);
+        findViewById(R.id.widget_btn_wraplayout).setOnClickListener(this);
+        findViewById(R.id.widget_btn_drawableratingbar).setOnClickListener(this);
+        findViewById(R.id.widget_btn_headerfootergridview).setOnClickListener(this);
+        findViewById(R.id.widget_btn_multiactiontextview).setOnClickListener(this);
+        findViewById(R.id.widget_btn_recyclepager).setOnClickListener(this);
+        findViewById(R.id.widget_btn_circleprogressbar).setOnClickListener(this);
+        findViewById(R.id.widget_btn_zxingscanview).setOnClickListener(this);
+        findViewById(R.id.widget_btn_smoothinputlayout).setOnClickListener(this);
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.widget_btn_gradienttabstrip:
+                break;
+            case R.id.widget_btn_tagtabstrip:
+                break;
+            case R.id.widget_btn_indicatortabstrip:
+                break;
+            case R.id.widget_btn_shapeimageview:
+                break;
+            case R.id.widget_btn_statelayout:
+                break;
+            case R.id.widget_btn_wraplayout:
+                break;
+            case R.id.widget_btn_drawableratingbar:
+                break;
+            case R.id.widget_btn_headerfootergridview:
+                break;
+            case R.id.widget_btn_recyclepager:
+                break;
+            case R.id.widget_btn_circleprogressbar:
+                break;
+            case R.id.widget_btn_zxingscanview:
+                break;
+            case R.id.widget_btn_smoothinputlayout:
+                break;
+        }
     }
 
     public static WidgetsFragment newInstance() {
