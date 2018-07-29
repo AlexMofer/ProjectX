@@ -19,12 +19,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import am.project.x.R;
 import am.project.x.base.BaseFragment;
 
-public class OthersFragment extends BaseFragment {
+public class OthersFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected int getContentViewLayout(LayoutInflater inflater, ViewGroup container,
@@ -34,7 +35,18 @@ public class OthersFragment extends BaseFragment {
 
     @Override
     protected void initializeFragment(Activity activity, @Nullable Bundle savedInstanceState) {
+        findViewById(R.id.other_btn_printer).setOnClickListener(this);
+        findViewById(R.id.other_btn_encrypt).setOnClickListener(this);
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.other_btn_printer:
+                break;
+            case R.id.other_btn_encrypt:
+                break;
+        }
     }
 
     public static OthersFragment newInstance() {

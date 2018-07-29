@@ -33,4 +33,6 @@
     <string name="main_drawables_line">横线图片</string>
     <string name="main_drawables_list">线性图片</string>
     <string name="main_drawables_text">文本图片</string>
+    <string name="main_others_printer">小票打印</string>
+    <string name="main_others_encrypt">加密解密</string>
 </resources>

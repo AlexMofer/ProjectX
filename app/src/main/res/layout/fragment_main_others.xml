@@ -20,7 +20,7 @@
             android:drawableTop="@drawable/ic_main_bug"
             android:paddingBottom="18dp"
             android:paddingTop="18dp"
-            android:text="打印"
+            android:text="@string/main_others_printer"
             android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +28,7 @@
             app:layout_constraintWidth_percent="0.25" />
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/other_btn_security"
+            android:id="@+id/other_btn_encrypt"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
@@ -36,7 +36,7 @@
             android:drawableTop="@drawable/ic_main_bug"
             android:paddingBottom="18dp"
             android:paddingTop="18dp"
-            android:text="加密解密"
+            android:text="@string/main_others_encrypt"
             android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/other_btn_printer"
