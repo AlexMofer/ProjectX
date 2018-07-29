@@ -19,12 +19,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import am.project.x.R;
 import am.project.x.base.BaseFragment;
+import am.project.x.business.developing.DevelopingActivity;
 
-public class DevelopFragment extends BaseFragment {
+public class DevelopFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected int getContentViewLayout(LayoutInflater inflater, ViewGroup container,
@@ -34,7 +36,19 @@ public class DevelopFragment extends BaseFragment {
 
     @Override
     protected void initializeFragment(Activity activity, @Nullable Bundle savedInstanceState) {
+        findViewById(R.id.develop_btn_developing).setOnClickListener(this);
+        findViewById(R.id.develop_btn_supergridview).setOnClickListener(this);
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.develop_btn_developing:
+                DevelopingActivity.start(getActivity());
+                break;
+            case R.id.develop_btn_supergridview:
+                break;
+        }
     }
 
     public static DevelopFragment newInstance() {

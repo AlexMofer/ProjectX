@@ -10,8 +10,6 @@
     <string name="about_label">关于</string>
     <string name="about_info">ProjectX是一款为Android开发者AlexMofer，提供开发及维护其所有开源控件的合集应用，同时也可以用于展示其所有开源控件的功能及属性。</string>
     <string name="about_more">更多信息，请参考Github项目主页：</string>
-    <!--开发中-->
-    <string name="developing_label">开发中</string>
     <!--主页-->
     <string name="main_widgets_gradienttabstrip">渐变底部栏</string>
     <string name="main_widgets_tagtabstrip">图片标记栏</string>
@@ -35,4 +33,8 @@
     <string name="main_drawables_text">文本图片</string>
     <string name="main_others_printer">小票打印</string>
     <string name="main_others_encrypt">加密解密</string>
+    <string name="main_develop_developing">开发中</string>
+    <string name="main_develop_supergridview">拖拽网格</string>
+    <!--开发中-->
+    <string name="developing_label">开发中</string>
 </resources>
