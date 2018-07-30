@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 
 import am.project.x.R;
 import am.project.x.base.BaseFragment;
+import am.project.x.business.widgets.gradienttabstrip.GradientTabStripActivity;
 
 public class WidgetsFragment extends BaseFragment implements View.OnClickListener {
 
@@ -54,6 +55,7 @@ public class WidgetsFragment extends BaseFragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.widget_btn_gradienttabstrip:
+                GradientTabStripActivity.start(getActivity());
                 break;
             case R.id.widget_btn_tagtabstrip:
                 break;
