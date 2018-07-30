@@ -1,1 +1,1 @@
-include ':app', ':mvp', ':basetabstrip'
+include ':app', ':mvp', ':basetabstrip', ':gradienttabstrip'
