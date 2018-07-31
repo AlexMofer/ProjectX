@@ -44,6 +44,9 @@
         <activity
             android:name=".business.widgets.gradienttabstrip.GradientTabStripActivity"
             android:label="@string/gts_label" />
+        <activity
+            android:name=".business.widgets.tagtabstrip.TagTabStripActivity"
+            android:label="@string/tts_label" />
     </application>
 
 </manifest>

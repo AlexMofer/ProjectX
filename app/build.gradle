@@ -40,4 +40,5 @@ dependencies {
     api project(':basetabstrip')
     api project(':viewpager')
     api project(':gradienttabstrip')
+    api project(':tagtabstrip')
 }

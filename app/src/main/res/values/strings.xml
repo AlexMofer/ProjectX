@@ -39,4 +39,6 @@
     <string name="developing_label">开发中</string>
     <!--渐变底部栏-->
     <string name="gts_label">渐变底部栏</string>
+    <!--图片标记栏-->
+    <string name="tts_label">图片标记栏</string>
 </resources>
