@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/bg_gradienttabstrip_tab"
-        app:gtsDotColor="@color/colorAccent"
+        app:gtsDotColor="#ffff0000"
         app:gtsDrawablePadding="4dp"
         app:gtsItemBackground="?selectableItemBackgroundBorderless"
         app:gtsTextColorNormal="#FF999999"
