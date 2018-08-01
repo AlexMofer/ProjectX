@@ -31,6 +31,10 @@ import am.project.x.business.widgets.tagtabstrip.TagTabStripActivity;
 
 public class WidgetsFragment extends BaseFragment implements View.OnClickListener {
 
+    public static WidgetsFragment newInstance() {
+        return new WidgetsFragment();
+    }
+
     @Override
     protected int getContentViewLayout(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState) {
@@ -86,9 +90,5 @@ public class WidgetsFragment extends BaseFragment implements View.OnClickListene
             case R.id.widget_btn_smoothinputlayout:
                 break;
         }
-    }
-
-    public static WidgetsFragment newInstance() {
-        return new WidgetsFragment();
     }
 }

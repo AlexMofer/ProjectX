@@ -40,6 +40,7 @@ import am.widget.gradienttabstrip.GradientTabStrip;
  * 渐变底部栏
  */
 public class GradientTabStripActivity extends BaseActivity {
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, GradientTabStripActivity.class));
     }

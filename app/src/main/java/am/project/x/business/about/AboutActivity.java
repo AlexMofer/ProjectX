@@ -31,6 +31,10 @@ import am.project.x.utils.ViewUtils;
  */
 public class AboutActivity extends BaseActivity {
 
+    public static void start(Context context) {
+        context.startActivity(new Intent(context, AboutActivity.class));
+    }
+
     @Override
     protected int getContentViewLayout() {
         return R.layout.activity_about;
@@ -42,9 +46,5 @@ public class AboutActivity extends BaseActivity {
         setSupportActionBar(R.id.about_toolbar);
         ((TextView) findViewById(R.id.about_tv_version)).setText(
                 getString(R.string.about_version, BuildConfig.VERSION_NAME));
-    }
-
-    public static void start(Context context) {
-        context.startActivity(new Intent(context, AboutActivity.class));
     }
 }

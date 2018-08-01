@@ -39,13 +39,13 @@ import am.widget.indicatortabstrip.IndicatorTabStrip;
  */
 public class IndicatorTabStripActivity extends BaseActivity {
 
+    public static void start(Context context) {
+        context.startActivity(new Intent(context, IndicatorTabStripActivity.class));
+    }
+
     @Override
     protected int getContentViewLayout() {
         return R.layout.activity_indicatortabstrip;
-    }
-
-    public static void start(Context context) {
-        context.startActivity(new Intent(context, IndicatorTabStripActivity.class));
     }
 
     @Override

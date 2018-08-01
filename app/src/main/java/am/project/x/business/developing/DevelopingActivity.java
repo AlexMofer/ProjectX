@@ -28,6 +28,10 @@ import am.project.x.base.BaseActivity;
  */
 public class DevelopingActivity extends BaseActivity {
 
+    public static void start(Context context) {
+        context.startActivity(new Intent(context, DevelopingActivity.class));
+    }
+
     @Override
     protected int getContentViewLayout() {
         return R.layout.activity_developing;
@@ -37,9 +41,5 @@ public class DevelopingActivity extends BaseActivity {
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.developing_toolbar);
         finish();
-    }
-
-    public static void start(Context context) {
-        context.startActivity(new Intent(context, DevelopingActivity.class));
     }
 }

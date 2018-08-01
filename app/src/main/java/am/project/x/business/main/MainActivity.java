@@ -20,9 +20,9 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -61,6 +61,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     private DrawerLayout mVDrawer;
     private ViewGroup mVContent;
     private String mCurrent;
+
+    public static void start(Context context) {
+        context.startActivity(new Intent(context, MainActivity.class));
+    }
 
     @Override
     protected int getContentViewLayout() {
@@ -207,9 +211,5 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         }
         mVDrawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public static void start(Context context) {
-        context.startActivity(new Intent(context, MainActivity.class));
     }
 }

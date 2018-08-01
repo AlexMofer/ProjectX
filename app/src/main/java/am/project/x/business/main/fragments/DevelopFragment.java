@@ -28,6 +28,10 @@ import am.project.x.business.developing.DevelopingActivity;
 
 public class DevelopFragment extends BaseFragment implements View.OnClickListener {
 
+    public static DevelopFragment newInstance() {
+        return new DevelopFragment();
+    }
+
     @Override
     protected int getContentViewLayout(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState) {
@@ -49,9 +53,5 @@ public class DevelopFragment extends BaseFragment implements View.OnClickListene
             case R.id.develop_btn_supergridview:
                 break;
         }
-    }
-
-    public static DevelopFragment newInstance() {
-        return new DevelopFragment();
     }
 }

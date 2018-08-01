@@ -28,6 +28,10 @@ import am.project.x.base.BaseFragment;
 
 public class DrawablesFragment extends BaseFragment implements View.OnClickListener {
 
+    public static DrawablesFragment newInstance() {
+        return new DrawablesFragment();
+    }
+
     @Override
     protected int getContentViewLayout(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState) {
@@ -63,9 +67,5 @@ public class DrawablesFragment extends BaseFragment implements View.OnClickListe
             case R.id.drawable_btn_text:
                 break;
         }
-    }
-
-    public static DrawablesFragment newInstance() {
-        return new DrawablesFragment();
     }
 }

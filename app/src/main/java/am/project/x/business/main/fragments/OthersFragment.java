@@ -27,6 +27,10 @@ import am.project.x.base.BaseFragment;
 
 public class OthersFragment extends BaseFragment implements View.OnClickListener {
 
+    public static OthersFragment newInstance() {
+        return new OthersFragment();
+    }
+
     @Override
     protected int getContentViewLayout(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState) {
@@ -47,9 +51,5 @@ public class OthersFragment extends BaseFragment implements View.OnClickListener
             case R.id.other_btn_encrypt:
                 break;
         }
-    }
-
-    public static OthersFragment newInstance() {
-        return new OthersFragment();
     }
 }
