@@ -41,4 +41,6 @@
     <string name="gts_label">渐变底部栏</string>
     <!--图片标记栏-->
     <string name="tts_label">图片标记栏</string>
+    <!--游标顶部栏-->
+    <string name="its_label">游标顶部栏</string>
 </resources>

@@ -47,6 +47,9 @@
         <activity
             android:name=".business.widgets.tagtabstrip.TagTabStripActivity"
             android:label="@string/tts_label" />
+        <activity
+            android:name=".business.widgets.indicatortabstrip.IndicatorTabStripActivity"
+            android:label="@string/its_label" />
     </application>
 
 </manifest>
