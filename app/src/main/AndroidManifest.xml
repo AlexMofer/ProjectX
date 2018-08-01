@@ -50,6 +50,9 @@
         <activity
             android:name=".business.widgets.indicatortabstrip.IndicatorTabStripActivity"
             android:label="@string/its_label" />
+        <activity
+            android:name=".business.widgets.shapeimageview.ShapeImageViewActivity"
+            android:label="@string/siv_label" />
     </application>
 
 </manifest>

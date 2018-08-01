@@ -26,6 +26,7 @@ import am.project.x.R;
 import am.project.x.base.BaseFragment;
 import am.project.x.business.widgets.gradienttabstrip.GradientTabStripActivity;
 import am.project.x.business.widgets.indicatortabstrip.IndicatorTabStripActivity;
+import am.project.x.business.widgets.shapeimageview.ShapeImageViewActivity;
 import am.project.x.business.widgets.tagtabstrip.TagTabStripActivity;
 
 public class WidgetsFragment extends BaseFragment implements View.OnClickListener {
@@ -66,6 +67,7 @@ public class WidgetsFragment extends BaseFragment implements View.OnClickListene
                 IndicatorTabStripActivity.start(getActivity());
                 break;
             case R.id.widget_btn_shapeimageview:
+                ShapeImageViewActivity.start(getActivity());
                 break;
             case R.id.widget_btn_statelayout:
                 break;

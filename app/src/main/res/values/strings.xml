@@ -43,4 +43,6 @@
     <string name="tts_label">图片标记栏</string>
     <!--游标顶部栏-->
     <string name="its_label">游标顶部栏</string>
+    <!--裁剪图片视图-->
+    <string name="siv_label">裁剪图片视图</string>
 </resources>
