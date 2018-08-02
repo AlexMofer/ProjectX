@@ -45,4 +45,10 @@
     <string name="its_label">游标顶部栏</string>
     <!--裁剪图片视图-->
     <string name="siv_label">裁剪图片视图</string>
+    <string name="siv_crop_type">裁剪为圆形：</string>
+    <string name="siv_height_width_scale">宽高比(100/100~100/50)：</string>
+    <string name="siv_border_width">边线宽(0dp~10dp)：</string>
+    <string name="siv_radius">圆角(0dp~30dp)：</string>
+    <string name="siv_padding">Padding(0dp~20dp)：</string>
+    <string name="siv_scaletype">ScaleType：</string>
 </resources>

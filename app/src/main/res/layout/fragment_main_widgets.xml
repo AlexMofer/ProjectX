@@ -12,7 +12,6 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/widget_btn_gradienttabstrip"
-            style="@style/ThemeOverlay.Dark.ActionBar.WhiteAccent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
@@ -80,7 +79,6 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/widget_btn_statelayout"
-            style="@style/ThemeOverlay.Dark.ActionBar.WhiteAccent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
@@ -148,7 +146,6 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/widget_btn_multiactiontextview"
-            style="@style/ThemeOverlay.Dark.ActionBar.WhiteAccent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
@@ -216,7 +213,6 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/widget_btn_smoothinputlayout"
-            style="@style/ThemeOverlay.Dark.ActionBar.WhiteAccent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"

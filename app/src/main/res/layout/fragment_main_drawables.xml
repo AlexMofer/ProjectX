@@ -12,7 +12,6 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/drawable_btn_loading"
-            style="@style/ThemeOverlay.Dark.ActionBar.WhiteAccent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
@@ -80,7 +79,6 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/drawable_btn_line"
-            style="@style/ThemeOverlay.Dark.ActionBar.WhiteAccent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"

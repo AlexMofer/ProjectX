@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="siv_scale_type">
+        <item>center</item>
+        <item>centerCrop</item>
+        <item>centerInside</item>
+        <item>fitCenter</item>
+        <item>fitEnd</item>
+        <item>fitStart</item>
+        <item>fitXY</item>
+        <item>matrix</item>
+    </string-array>
+</resources>
