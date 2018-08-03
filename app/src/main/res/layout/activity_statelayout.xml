@@ -17,4 +17,121 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/sl_label" />
 
+    <RadioGroup
+        android:id="@+id/sl_rg_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:isScrollContainer="true"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/sl_rb_drawable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/sl_change_mode_drawable" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/sl_rb_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/sl_change_mode_view" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="invisible" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="invisible" />
+    </RadioGroup>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:text="@string/sl_change_mode"
+        android:textColor="#ff666666"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/sl_rg_mode" />
+
+    <RadioGroup
+        android:id="@+id/sl_rg_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:isScrollContainer="true"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/sl_rg_mode">
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/sl_rb_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/sl_change_state_normal" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/sl_rb_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/sl_change_state_loading" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/sl_rb_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/sl_change_state_error" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/sl_rb_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/sl_change_state_empty" />
+    </RadioGroup>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:text="@string/sl_change_state"
+        android:textColor="#ff666666"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/sl_rg_state" />
+
+    <am.widget.stateframelayout.StateFrameLayout
+        android:id="@+id/sl_lyt_state"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@id/sl_rg_state"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sl_toolbar">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?selectableItemBackground"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_welcome"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+    </am.widget.stateframelayout.StateFrameLayout>
+
 </android.support.constraint.ConstraintLayout>

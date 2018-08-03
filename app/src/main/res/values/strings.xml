@@ -53,4 +53,12 @@
     <string name="siv_scaletype">ScaleType：</string>
     <!--状态布局-->
     <string name="sl_label">状态布局</string>
+    <string name="sl_change_state">状态修改：</string>
+    <string name="sl_change_state_normal">普通</string>
+    <string name="sl_change_state_loading">载入</string>
+    <string name="sl_change_state_error">错误</string>
+    <string name="sl_change_state_empty">空白</string>
+    <string name="sl_change_mode">模式修改：</string>
+    <string name="sl_change_mode_drawable">图片</string>
+    <string name="sl_change_mode_view">视图</string>
 </resources>
