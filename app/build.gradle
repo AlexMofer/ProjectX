@@ -43,4 +43,5 @@ dependencies {
     api project(':tagtabstrip')
     api project(':indicatortabstrip')
     api project(':shapeimageview')
+    api project(':stateframelayout')
 }
