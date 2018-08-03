@@ -51,4 +51,6 @@
     <string name="siv_radius">圆角(0dp~30dp)：</string>
     <string name="siv_padding">Padding(0dp~20dp)：</string>
     <string name="siv_scaletype">ScaleType：</string>
+    <!--状态布局-->
+    <string name="sl_label">状态布局</string>
 </resources>

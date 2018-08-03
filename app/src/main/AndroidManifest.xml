@@ -53,6 +53,9 @@
         <activity
             android:name=".business.widgets.shapeimageview.ShapeImageViewActivity"
             android:label="@string/siv_label" />
+        <activity
+            android:name=".business.widgets.statelayout.StateLayoutActivity"
+            android:label="@string/sl_label" />
     </application>
 
 </manifest>
