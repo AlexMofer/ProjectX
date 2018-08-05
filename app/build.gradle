@@ -45,4 +45,5 @@ dependencies {
     api project(':shapeimageview')
     api project(':stateframelayout')
     api project(':wraplayout')
+    api project(':drawableratingbar')
 }
