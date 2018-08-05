@@ -29,6 +29,7 @@ import am.project.x.business.widgets.indicatortabstrip.IndicatorTabStripActivity
 import am.project.x.business.widgets.shapeimageview.ShapeImageViewActivity;
 import am.project.x.business.widgets.statelayout.StateLayoutActivity;
 import am.project.x.business.widgets.tagtabstrip.TagTabStripActivity;
+import am.project.x.business.widgets.wraplayout.WrapLayoutActivity;
 
 public class WidgetsFragment extends BaseFragment implements View.OnClickListener {
 
@@ -78,6 +79,7 @@ public class WidgetsFragment extends BaseFragment implements View.OnClickListene
                 StateLayoutActivity.start(getActivity());
                 break;
             case R.id.widget_btn_wraplayout:
+                WrapLayoutActivity.start(getActivity());
                 break;
             case R.id.widget_btn_drawableratingbar:
                 break;

@@ -56,6 +56,9 @@
         <activity
             android:name=".business.widgets.statelayout.StateLayoutActivity"
             android:label="@string/sl_label" />
+        <activity
+            android:name=".business.widgets.wraplayout.WrapLayoutActivity"
+            android:label="@string/wl_label" />
     </application>
 
 </manifest>

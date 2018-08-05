@@ -61,4 +61,6 @@
     <string name="sl_change_mode">模式修改：</string>
     <string name="sl_change_mode_drawable">图片</string>
     <string name="sl_change_mode_view">视图</string>
+    <!--自换行布局-->
+    <string name="wl_label">自换行布局</string>
 </resources>
