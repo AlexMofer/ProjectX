@@ -63,4 +63,11 @@
     <string name="sl_change_mode_view">视图</string>
     <!--自换行布局-->
     <string name="wl_label">自换行布局</string>
+    <string name="wl_text">文本框</string>
+    <string name="wl_text_gravity">布局：</string>
+    <string name="wl_gravity_top">上</string>
+    <string name="wl_gravity_center">中</string>
+    <string name="wl_gravity_bottom">下</string>
+    <string name="wl_text_horizontal">水平间距（0dp～30dp）：</string>
+    <string name="wl_text_vertical">垂直间距（0dp～30dp）：</string>
 </resources>

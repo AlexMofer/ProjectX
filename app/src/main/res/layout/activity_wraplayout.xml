@@ -17,4 +17,221 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/wl_label" />
 
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/wl_sb_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:max="30"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:text="@string/wl_text_vertical"
+        android:textColor="#ff666666"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/wl_sb_vertical" />
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/wl_sb_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:max="30"
+        app:layout_constraintBottom_toTopOf="@id/wl_sb_vertical" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:text="@string/wl_text_horizontal"
+        android:textColor="#ff666666"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/wl_sb_horizontal" />
+
+    <RadioGroup
+        android:id="@+id/wl_rg_gravity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/wl_sb_horizontal">
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/wl_rb_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/wl_gravity_top" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/wl_rb_center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/wl_gravity_center" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/wl_rb_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/wl_gravity_bottom" />
+
+    </RadioGroup>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:text="@string/wl_text_gravity"
+        android:textColor="#ff666666"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/wl_rg_gravity" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@id/wl_rg_gravity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/wl_toolbar">
+
+        <am.widget.wraplayout.WrapLayout
+            android:id="@+id/wl_wl_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_wraplayout_content"
+            android:horizontalSpacing="10dp"
+            android:padding="10dp"
+            android:verticalSpacing="10dp"
+            app:wlyGravity="top">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorRipple"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/wl_text"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorRipple"
+                android:gravity="center"
+                android:minWidth="72dp"
+                android:padding="10dp"
+                android:text="@string/wl_text"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorRipple"
+                android:gravity="center"
+                android:minWidth="86dp"
+                android:padding="10dp"
+                android:text="@string/wl_text"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorRipple"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/wl_text"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorRipple"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/wl_text"
+                android:textColor="@android:color/white"
+                app:wlyLayout_gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorRipple"
+                android:gravity="center"
+                android:minHeight="64dp"
+                android:minWidth="142dp"
+                android:padding="10dp"
+                android:text="@string/wl_text"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorRipple"
+                android:gravity="center"
+                android:minHeight="64dp"
+                android:padding="10dp"
+                android:text="@string/wl_text"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorRipple"
+                android:gravity="center"
+                android:minHeight="64dp"
+                android:minWidth="108dp"
+                android:padding="10dp"
+                android:text="@string/wl_text"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorRipple"
+                android:gravity="center"
+                android:minWidth="96dp"
+                android:padding="10dp"
+                android:text="@string/wl_text"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorRipple"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/wl_text"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorRipple"
+                android:gravity="center"
+                android:minWidth="96dp"
+                android:padding="10dp"
+                android:text="@string/wl_text"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorRipple"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/wl_text"
+                android:textColor="@android:color/white" />
+
+        </am.widget.wraplayout.WrapLayout>
+
+    </ScrollView>
+
 </android.support.constraint.ConstraintLayout>
