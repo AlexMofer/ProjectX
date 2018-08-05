@@ -44,4 +44,5 @@ dependencies {
     api project(':indicatortabstrip')
     api project(':shapeimageview')
     api project(':stateframelayout')
+    api project(':wraplayout')
 }
