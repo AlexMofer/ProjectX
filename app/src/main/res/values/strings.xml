@@ -70,4 +70,6 @@
     <string name="wl_gravity_bottom">下</string>
     <string name="wl_text_horizontal">水平间距（0dp～30dp）：</string>
     <string name="wl_text_vertical">垂直间距（0dp～30dp）：</string>
+    <!--图片评级-->
+    <string name="drb_label">图片评级</string>
 </resources>

@@ -59,6 +59,9 @@
         <activity
             android:name=".business.widgets.wraplayout.WrapLayoutActivity"
             android:label="@string/wl_label" />
+        <activity
+            android:name=".business.widgets.drawableratingbar.DrawableRatingBarActivity"
+            android:label="@string/drb_label" />
     </application>
 
 </manifest>

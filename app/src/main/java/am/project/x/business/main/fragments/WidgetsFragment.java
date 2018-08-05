@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 
 import am.project.x.R;
 import am.project.x.base.BaseFragment;
+import am.project.x.business.widgets.drawableratingbar.DrawableRatingBarActivity;
 import am.project.x.business.widgets.gradienttabstrip.GradientTabStripActivity;
 import am.project.x.business.widgets.indicatortabstrip.IndicatorTabStripActivity;
 import am.project.x.business.widgets.shapeimageview.ShapeImageViewActivity;
@@ -82,6 +83,7 @@ public class WidgetsFragment extends BaseFragment implements View.OnClickListene
                 WrapLayoutActivity.start(getActivity());
                 break;
             case R.id.widget_btn_drawableratingbar:
+                DrawableRatingBarActivity.start(getActivity());
                 break;
             case R.id.widget_btn_headerfootergridview:
                 break;
