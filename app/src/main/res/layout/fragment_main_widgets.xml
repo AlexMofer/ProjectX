@@ -133,7 +133,7 @@
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
             android:drawablePadding="6dp"
-            android:drawableTop="@drawable/ic_develop_developing"
+            android:drawableTop="@drawable/ic_widgets_headerfootergridview"
             android:paddingBottom="18dp"
             android:paddingTop="18dp"
             android:text="@string/main_widgets_headerfootergridview"
