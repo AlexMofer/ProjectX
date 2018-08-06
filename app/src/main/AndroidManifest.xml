@@ -62,6 +62,9 @@
         <activity
             android:name=".business.widgets.drawableratingbar.DrawableRatingBarActivity"
             android:label="@string/drb_label" />
+        <activity
+            android:name=".business.widgets.headerfootergridview.HeaderFooterGridViewActivity"
+            android:label="@string/hfg_label" />
     </application>
 
 </manifest>

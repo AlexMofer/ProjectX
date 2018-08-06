@@ -77,4 +77,6 @@
     <string name="drawableratingbar_only_item_touchable">仅子项内部响应触摸事件：</string>
     <string name="drawableratingbar_max">最大值(6~10)：</string>
     <string name="drawableratingbar_min">子项不得少于个数(0~6)：</string>
+    <!--头尾网格视图-->
+    <string name="hfg_label">头尾网格视图</string>
 </resources>

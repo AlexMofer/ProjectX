@@ -26,6 +26,7 @@ import am.project.x.R;
 import am.project.x.base.BaseFragment;
 import am.project.x.business.widgets.drawableratingbar.DrawableRatingBarActivity;
 import am.project.x.business.widgets.gradienttabstrip.GradientTabStripActivity;
+import am.project.x.business.widgets.headerfootergridview.HeaderFooterGridViewActivity;
 import am.project.x.business.widgets.indicatortabstrip.IndicatorTabStripActivity;
 import am.project.x.business.widgets.shapeimageview.ShapeImageViewActivity;
 import am.project.x.business.widgets.statelayout.StateLayoutActivity;
@@ -86,6 +87,7 @@ public class WidgetsFragment extends BaseFragment implements View.OnClickListene
                 DrawableRatingBarActivity.start(getActivity());
                 break;
             case R.id.widget_btn_headerfootergridview:
+                HeaderFooterGridViewActivity.start(getActivity());
                 break;
             case R.id.widget_btn_recyclepager:
                 break;
