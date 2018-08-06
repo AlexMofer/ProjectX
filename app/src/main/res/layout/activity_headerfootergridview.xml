@@ -17,4 +17,77 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/hfg_label" />
 
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/hfg_sb_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:max="50"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="@string/hfg_item_number"
+        android:textColor="#ff666666"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/hfg_sb_number"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/hfg_v_cbs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/hfg_sb_number">
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/hfg_cb_hv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hfg_header_view" />
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/hfg_cb_hi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hfg_header_item" />
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/hfg_cb_fi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hfg_footer_item" />
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/hfg_cb_fv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hfg_footer_view" />
+
+    </LinearLayout>
+
+    <am.widget.headerfootergridview.HeaderFooterGridView
+        android:id="@+id/hfg_hfg_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:columnWidth="64dp"
+        android:gravity="center"
+        android:horizontalSpacing="10dip"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dip"
+        app:layout_constraintBottom_toTopOf="@id/hfg_v_cbs"
+        app:layout_constraintTop_toBottomOf="@id/hfg_toolbar" />
+
+
 </android.support.constraint.ConstraintLayout>

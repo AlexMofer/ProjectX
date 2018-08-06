@@ -72,11 +72,22 @@
     <string name="wl_text_vertical">垂直间距（0dp～30dp）：</string>
     <!--图片评级-->
     <string name="drb_label">图片评级</string>
-    <string name="drawableratingbar_gravity">布局：</string>
-    <string name="drawableratingbar_manually">可手动控制：</string>
-    <string name="drawableratingbar_only_item_touchable">仅子项内部响应触摸事件：</string>
-    <string name="drawableratingbar_max">最大值(6~10)：</string>
-    <string name="drawableratingbar_min">子项不得少于个数(0~6)：</string>
+    <string name="drb_gravity">布局：</string>
+    <string name="drb_manually">可手动控制：</string>
+    <string name="drb_only_item_touchable">仅子项内部响应触摸事件：</string>
+    <string name="drb_max">最大值(6~10)：</string>
+    <string name="drb_min">子项不得少于个数(0~6)：</string>
     <!--头尾网格视图-->
     <string name="hfg_label">头尾网格视图</string>
+    <string name="hfg_header_view">头View</string>
+    <string name="hfg_header_item">头Item</string>
+    <string name="hfg_footer_view">尾View</string>
+    <string name="hfg_footer_item">尾Item</string>
+    <string name="hfg_item_number">子项数目：</string>
+    <string name="headerfootergridview_item">Item %1$d</string>
+    <string name="headerfootergridview_header">Header %1$d</string>
+    <string name="headerfootergridview_footer">Footer %1$d</string>
+    <string name="headerfootergridview_hv">Header View %1$d</string>
+    <string name="headerfootergridview_fv">Footer View %1$d</string>
+    <string name="headerfootergridview_toast">第%1$d个子项</string>
 </resources>
