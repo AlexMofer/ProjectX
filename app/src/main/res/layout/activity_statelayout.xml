@@ -59,10 +59,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:text="@string/sl_change_mode"
         android:textColor="#ff666666"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/sl_rg_mode" />
+        app:layout_constraintBottom_toTopOf="@id/sl_rg_mode"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <RadioGroup
         android:id="@+id/sl_rg_state"
@@ -106,10 +109,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:text="@string/sl_change_state"
         android:textColor="#ff666666"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/sl_rg_state" />
+        app:layout_constraintBottom_toTopOf="@id/sl_rg_state"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <am.widget.stateframelayout.StateFrameLayout
         android:id="@+id/sl_lyt_state"

@@ -29,10 +29,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:text="@string/wl_text_vertical"
         android:textColor="#ff666666"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/wl_sb_vertical" />
+        app:layout_constraintBottom_toTopOf="@id/wl_sb_vertical"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.v7.widget.AppCompatSeekBar
         android:id="@+id/wl_sb_horizontal"
@@ -46,10 +49,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:text="@string/wl_text_horizontal"
         android:textColor="#ff666666"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/wl_sb_horizontal" />
+        app:layout_constraintBottom_toTopOf="@id/wl_sb_horizontal"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <RadioGroup
         android:id="@+id/wl_rg_gravity"
@@ -86,10 +92,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:text="@string/wl_text_gravity"
         android:textColor="#ff666666"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/wl_rg_gravity" />
+        app:layout_constraintBottom_toTopOf="@id/wl_rg_gravity"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <ScrollView

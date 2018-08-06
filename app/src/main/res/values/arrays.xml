@@ -10,4 +10,15 @@
         <item>fitXY</item>
         <item>matrix</item>
     </string-array>
+    <string-array name="drb_gravity">
+        <item>center</item>
+        <item>left</item>
+        <item>center_horizontal</item>
+        <item>right</item>
+        <item>center_vertical</item>
+        <item>center_vertical|right</item>
+        <item>bottom</item>
+        <item>bottom|center_horizontal</item>
+        <item>bottom|right</item>
+    </string-array>
 </resources>

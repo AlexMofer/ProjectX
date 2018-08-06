@@ -72,4 +72,9 @@
     <string name="wl_text_vertical">垂直间距（0dp～30dp）：</string>
     <!--图片评级-->
     <string name="drb_label">图片评级</string>
+    <string name="drawableratingbar_gravity">布局：</string>
+    <string name="drawableratingbar_manually">可手动控制：</string>
+    <string name="drawableratingbar_only_item_touchable">仅子项内部响应触摸事件：</string>
+    <string name="drawableratingbar_max">最大值(6~10)：</string>
+    <string name="drawableratingbar_min">子项不得少于个数(0~6)：</string>
 </resources>
