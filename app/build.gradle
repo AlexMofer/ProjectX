@@ -46,4 +46,5 @@ dependencies {
     api project(':stateframelayout')
     api project(':wraplayout')
     api project(':drawableratingbar')
+    api project(':headerfootergridview')
 }
