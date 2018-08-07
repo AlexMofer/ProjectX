@@ -47,4 +47,5 @@ dependencies {
     api project(':wraplayout')
     api project(':drawableratingbar')
     api project(':headerfootergridview')
+    api project(':multiactiontextview')
 }
