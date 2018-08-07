@@ -78,29 +78,29 @@ public class HeaderFooterGridViewActivity extends BaseActivity implements
         tvFooterItem3 = createTextView(this);
 
         tvHeaderView1.setText(String.format(Locale.getDefault(),
-                getString(R.string.headerfootergridview_hv), 1));
+                getString(R.string.hfg_hv), 1));
         tvHeaderView2.setText(String.format(Locale.getDefault(),
-                getString(R.string.headerfootergridview_hv), 2));
+                getString(R.string.hfg_hv), 2));
         tvHeaderView3.setText(String.format(Locale.getDefault(),
-                getString(R.string.headerfootergridview_hv), 3));
+                getString(R.string.hfg_hv), 3));
         tvHeaderItem1.setText(String.format(Locale.getDefault(),
-                getString(R.string.headerfootergridview_header), 1));
+                getString(R.string.hfg_header), 1));
         tvHeaderItem2.setText(String.format(Locale.getDefault(),
-                getString(R.string.headerfootergridview_header), 2));
+                getString(R.string.hfg_header), 2));
         tvHeaderItem3.setText(String.format(Locale.getDefault(),
-                getString(R.string.headerfootergridview_header), 3));
+                getString(R.string.hfg_header), 3));
         tvFooterView1.setText(String.format(Locale.getDefault(),
-                getString(R.string.headerfootergridview_fv), 1));
+                getString(R.string.hfg_fv), 1));
         tvFooterView2.setText(String.format(Locale.getDefault(),
-                getString(R.string.headerfootergridview_fv), 2));
+                getString(R.string.hfg_fv), 2));
         tvFooterView3.setText(String.format(Locale.getDefault(),
-                getString(R.string.headerfootergridview_fv), 3));
+                getString(R.string.hfg_fv), 3));
         tvFooterItem1.setText(String.format(Locale.getDefault(),
-                getString(R.string.headerfootergridview_footer), 1));
+                getString(R.string.hfg_footer), 1));
         tvFooterItem2.setText(String.format(Locale.getDefault(),
-                getString(R.string.headerfootergridview_footer), 2));
+                getString(R.string.hfg_footer), 2));
         tvFooterItem3.setText(String.format(Locale.getDefault(),
-                getString(R.string.headerfootergridview_footer), 3));
+                getString(R.string.hfg_footer), 3));
 
 
         tvHeaderView1.setOnClickListener(this);
@@ -258,7 +258,7 @@ public class HeaderFooterGridViewActivity extends BaseActivity implements
                 view = createTextView(context);
             final TextView tvItem = (TextView) view;
             tvItem.setText(String.format(Locale.getDefault(),
-                    context.getString(R.string.headerfootergridview_item), position + 1));
+                    context.getString(R.string.hfg_item), position + 1));
             return view;
         }
     }

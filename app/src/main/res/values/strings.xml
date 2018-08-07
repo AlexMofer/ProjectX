@@ -84,10 +84,9 @@
     <string name="hfg_footer_view">尾View</string>
     <string name="hfg_footer_item">尾Item</string>
     <string name="hfg_item_number">子项数目：</string>
-    <string name="headerfootergridview_item">Item %1$d</string>
-    <string name="headerfootergridview_header">Header %1$d</string>
-    <string name="headerfootergridview_footer">Footer %1$d</string>
-    <string name="headerfootergridview_hv">Header View %1$d</string>
-    <string name="headerfootergridview_fv">Footer View %1$d</string>
-    <string name="headerfootergridview_toast">第%1$d个子项</string>
+    <string name="hfg_item">Item %1$d</string>
+    <string name="hfg_header">Header %1$d</string>
+    <string name="hfg_footer">Footer %1$d</string>
+    <string name="hfg_hv">Header View %1$d</string>
+    <string name="hfg_fv">Footer View %1$d</string>
 </resources>
