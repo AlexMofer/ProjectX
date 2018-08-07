@@ -65,6 +65,9 @@
         <activity
             android:name=".business.widgets.headerfootergridview.HeaderFooterGridViewActivity"
             android:label="@string/hfg_label" />
+        <activity
+            android:name=".business.widgets.multiactiontextview.MultiActionTextViewActivity"
+            android:label="@string/mat_label" />
     </application>
 
 </manifest>

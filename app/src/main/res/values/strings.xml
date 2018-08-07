@@ -89,4 +89,6 @@
     <string name="hfg_footer">Footer %1$d</string>
     <string name="hfg_hv">Header View %1$d</string>
     <string name="hfg_fv">Footer View %1$d</string>
+    <!--文本点击-->
+    <string name="mat_label">文本点击</string>
 </resources>
