@@ -17,4 +17,15 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/mat_label" />
 
+    <am.widget.multiactiontextview.MultiActionTextView
+        android:id="@+id/mat_tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/multiactiontextview_content"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mat_toolbar" />
+
 </android.support.constraint.ConstraintLayout>
