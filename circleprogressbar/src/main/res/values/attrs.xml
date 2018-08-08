@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircleProgressBar">
+        <attr name="cpbGravity">
+            <flag name="top" value="0x30" />
+            <flag name="bottom" value="0x50" />
+            <flag name="left" value="0x03" />
+            <flag name="right" value="0x05" />
+            <flag name="center_vertical" value="0x10" />
+            <flag name="center_horizontal" value="0x01" />
+            <flag name="center" value="0x11" />
+            <flag name="start" value="0x00800003" />
+            <flag name="end" value="0x00800005" />
+        </attr>
+        <attr name="cpbRadius" format="dimension" />
+        <attr name="cpbStartAngle" format="integer" />
+        <attr name="cpbSweepAngle" format="integer" />
+        <attr name="cpbBackgroundSize" format="dimension" />
+        <attr name="cpbBackgroundColor" format="color" />
+        <attr name="cpbProgressSize" format="dimension" />
+        <attr name="cpbMax" format="integer" />
+        <attr name="cpbProgress" format="integer" />
+        <attr name="cpbFirstGradientColors" format="color" />
+        <attr name="cpbSecondGradientColors" format="color" />
+        <attr name="cpbThirdGradientColors" format="color" />
+        <attr name="cpbFourthGradientColors" format="color" />
+        <attr name="cpbFirstGradientPositions" format="float" />
+        <attr name="cpbSecondGradientPositions" format="float" />
+        <attr name="cpbThirdGradientPositions" format="float" />
+        <attr name="cpbFourthGradientPositions" format="float" />
+        <attr name="cpbDialVisibility" format="enum">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+        <attr name="cpbDialGap" format="dimension" />
+        <attr name="cpbDialAngle" format="integer" />
+        <attr name="cpbDialHeight" format="dimension" />
+        <attr name="cpbDialWidth" format="dimension" />
+        <attr name="cpbDialColor" format="color" />
+        <attr name="cpbDialSpecialUnit" format="integer" />
+        <attr name="cpbDialSpecialHeight" format="dimension" />
+        <attr name="cpbDialSpecialWidth" format="dimension" />
+        <attr name="cpbDialSpecialColor" format="color" />
+        <attr name="cpbDialGravity" format="enum">
+            <enum name="Center" value="17" />
+            <enum name="Top" value="48" />
+            <enum name="Bottom" value="80" />
+        </attr>
+        <attr name="cpbShowSpecialDialValue" format="boolean" />
+        <attr name="cpbSpecialDialValueGap" format="dimension" />
+        <attr name="cpbSpecialDialValueTextSize" format="dimension" />
+        <attr name="cpbSpecialDialValueTextColor" format="color" />
+        <attr name="cpbShowProgressValue" format="boolean" />
+        <attr name="cpbProgressValueTextSize" format="dimension" />
+        <attr name="cpbProgressValueTextColor" format="color" />
+        <attr name="cpbTopText" format="string" />
+        <attr name="cpbTopTextGap" format="dimension" />
+        <attr name="cpbTopTextSize" format="dimension" />
+        <attr name="cpbTopTextColor" format="color" />
+        <attr name="cpbBottomText" format="string" />
+        <attr name="cpbBottomTextGap" format="dimension" />
+        <attr name="cpbBottomTextSize" format="dimension" />
+        <attr name="cpbBottomTextColor" format="color" />
+        <attr name="cpbScaleType">
+            <flag name="None" value="0" />
+            <flag name="Inside" value="1" />
+            <flag name="Crop" value="2" />
+        </attr>
+        <attr name="cpbProgressDuration" format="integer" />
+        <attr name="cpbProgressMode" format="enum">
+            <enum name="Progress" value="0" />
+            <enum name="Loading" value="1" />
+        </attr>
+        <attr name="cpbLoadingStartAngle" format="integer" />
+        <attr name="cpbLoadingSweepAngle" format="integer" />
+        <attr name="cpbLoadingDuration" format="integer" />
+        <attr name="cpbLoadingRepeatMode" format="enum">
+            <enum name="Restart" value="1" />
+            <enum name="Reverse" value="2" />
+        </attr>
+        <attr name="cpbLoadingDrawOther" format="boolean" />
+        <attr name="cpbLoadingText" format="string" />
+    </declare-styleable>
+</resources>
