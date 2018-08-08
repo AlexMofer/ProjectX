@@ -68,6 +68,9 @@
         <activity
             android:name=".business.widgets.multiactiontextview.MultiActionTextViewActivity"
             android:label="@string/mat_label" />
+        <activity
+            android:name=".business.widgets.recyclepager.RecyclePagerActivity"
+            android:label="@string/rp_label" />
     </application>
 
 </manifest>

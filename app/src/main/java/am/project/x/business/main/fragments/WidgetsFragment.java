@@ -29,6 +29,7 @@ import am.project.x.business.widgets.gradienttabstrip.GradientTabStripActivity;
 import am.project.x.business.widgets.headerfootergridview.HeaderFooterGridViewActivity;
 import am.project.x.business.widgets.indicatortabstrip.IndicatorTabStripActivity;
 import am.project.x.business.widgets.multiactiontextview.MultiActionTextViewActivity;
+import am.project.x.business.widgets.recyclepager.RecyclePagerActivity;
 import am.project.x.business.widgets.shapeimageview.ShapeImageViewActivity;
 import am.project.x.business.widgets.statelayout.StateLayoutActivity;
 import am.project.x.business.widgets.tagtabstrip.TagTabStripActivity;
@@ -94,6 +95,7 @@ public class WidgetsFragment extends BaseFragment implements View.OnClickListene
                 MultiActionTextViewActivity.start(getActivity());
                 break;
             case R.id.widget_btn_recyclepager:
+                RecyclePagerActivity.start(getActivity());
                 break;
             case R.id.widget_btn_circleprogressbar:
                 break;
