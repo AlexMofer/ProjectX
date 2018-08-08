@@ -95,4 +95,6 @@
     <string name="mat_toast">点击整个文本</string>
     <!--回收页视图-->
     <string name="rp_label">回收页视图</string>
+    <string name="rp_remove">减少页面</string>
+    <string name="rp_add">增加页面</string>
 </resources>

@@ -17,4 +17,33 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/rp_label" />
 
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/rp_btn_remove"
+        style="?buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/rp_remove"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/rp_btn_add"
+        style="?buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/rp_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/rp_vp_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/rp_btn_remove"
+        app:layout_constraintTop_toBottomOf="@id/rp_toolbar" />
+
 </android.support.constraint.ConstraintLayout>
