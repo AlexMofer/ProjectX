@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 
 import am.project.x.R;
 import am.project.x.base.BaseFragment;
+import am.project.x.business.widgets.circleprogressbar.CircleProgressBarActivity;
 import am.project.x.business.widgets.drawableratingbar.DrawableRatingBarActivity;
 import am.project.x.business.widgets.gradienttabstrip.GradientTabStripActivity;
 import am.project.x.business.widgets.headerfootergridview.HeaderFooterGridViewActivity;
@@ -98,6 +99,7 @@ public class WidgetsFragment extends BaseFragment implements View.OnClickListene
                 RecyclePagerActivity.start(getActivity());
                 break;
             case R.id.widget_btn_circleprogressbar:
+                CircleProgressBarActivity.start(getActivity());
                 break;
             case R.id.widget_btn_zxingscanview:
                 break;

@@ -71,6 +71,9 @@
         <activity
             android:name=".business.widgets.recyclepager.RecyclePagerActivity"
             android:label="@string/rp_label" />
+        <activity
+            android:name=".business.widgets.circleprogressbar.CircleProgressBarActivity"
+            android:label="@string/cpb_label" />
     </application>
 
 </manifest>

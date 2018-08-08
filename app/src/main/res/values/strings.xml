@@ -97,4 +97,6 @@
     <string name="rp_label">回收页视图</string>
     <string name="rp_remove">减少页面</string>
     <string name="rp_add">增加页面</string>
+    <!--环形进度条-->
+    <string name="cpb_label">环形进度条</string>
 </resources>
