@@ -21,4 +21,20 @@
         <item>bottom|center_horizontal</item>
         <item>bottom|right</item>
     </string-array>
+    <string-array name="cpb_scale_type">
+        <item>inside</item>
+        <item>crop</item>
+        <item>inside|crop</item>
+        <item>none</item>
+    </string-array>
+    <string-array name="cpb_dial_visibility">
+        <item>visible</item>
+        <item>invisible</item>
+        <item>gone</item>
+    </string-array>
+    <string-array name="cpb_dial_gravity">
+        <item>center</item>
+        <item>top</item>
+        <item>bottom</item>
+    </string-array>
 </resources>

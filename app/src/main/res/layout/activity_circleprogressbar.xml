@@ -17,4 +17,629 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/cpb_label" />
 
+    <am.widget.circleprogressbar.CircleProgressBar
+        android:id="@+id/cpb_cpb_bar"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/bg_circleprogressbar_bar"
+        app:cpbBackgroundColor="@color/colorPrimary"
+        app:cpbBackgroundSize="2dp"
+        app:cpbBottomText="@string/cpb_bar_bottom"
+        app:cpbBottomTextColor="#ffffbb33"
+        app:cpbBottomTextGap="40dp"
+        app:cpbBottomTextSize="16sp"
+        app:cpbDialAngle="5"
+        app:cpbDialColor="@color/colorPrimary"
+        app:cpbDialGap="4dp"
+        app:cpbDialHeight="10dp"
+        app:cpbDialSpecialColor="@color/colorAccent"
+        app:cpbDialSpecialHeight="15dp"
+        app:cpbDialSpecialUnit="3"
+        app:cpbDialWidth="2dp"
+        app:cpbFirstGradientColors="#ff33b5e5"
+        app:cpbFourthGradientColors="#ffff4444"
+        app:cpbGravity="center"
+        app:cpbLoadingDrawOther="true"
+        app:cpbLoadingDuration="3000"
+        app:cpbLoadingRepeatMode="Reverse"
+        app:cpbLoadingText="@string/cpb_bar_loading"
+        app:cpbMax="810"
+        app:cpbProgress="315"
+        app:cpbProgressDuration="2000"
+        app:cpbProgressMode="Loading"
+        app:cpbProgressSize="20dp"
+        app:cpbProgressValueTextColor="#ff33b5e5"
+        app:cpbProgressValueTextSize="72sp"
+        app:cpbRadius="160dp"
+        app:cpbScaleType="None"
+        app:cpbSecondGradientColors="#ff99cc00"
+        app:cpbShowProgressValue="true"
+        app:cpbShowSpecialDialValue="true"
+        app:cpbSpecialDialValueGap="2dp"
+        app:cpbSpecialDialValueTextColor="#ff99cc00"
+        app:cpbSpecialDialValueTextSize="12sp"
+        app:cpbStartAngle="135"
+        app:cpbSweepAngle="270"
+        app:cpbThirdGradientColors="#ffffbb33"
+        app:cpbTopText="@string/cpb_bar_top"
+        app:cpbTopTextColor="@color/colorPrimary"
+        app:cpbTopTextGap="40dp"
+        app:cpbTopTextSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/cpb_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cpb_cpb_bar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_gravity"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/cpb_sp_gravity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/drb_gravity"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_radius"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_radius"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:progress="60" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_scale_type"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/cpb_sp_scale_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/cpb_scale_type"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp" />
+
+            <Switch
+                android:id="@+id/cpb_sh_progress_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:checked="true"
+                android:text="@string/cpb_progress_mode"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_loading_start_angle"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_loading_start_angle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="360"
+                android:progress="135" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_loading_sweep_angle"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_loading_sweep_angle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="360"
+                android:progress="270" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_loading_duration"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_loading_duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="49"
+                android:progress="29" />
+
+            <Switch
+                android:id="@+id/cpb_sh_repeat_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:checked="true"
+                android:text="@string/cpb_repeat_mode"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <Switch
+                android:id="@+id/cpb_sh_loading_draw_other"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:checked="true"
+                android:text="@string/cpb_loading_draw_other"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_start_angle"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_start_angle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="360"
+                android:progress="135" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_sweep_angle"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_sweep_angle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="360"
+                android:progress="270" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_background_size"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_background_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="30"
+                android:progress="2" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_progress_size"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_progress_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="30"
+                android:progress="20" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_progress_progress"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="810"
+                android:progress="315" />
+
+            <Switch
+                android:id="@+id/cpb_sh_gradient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:checked="true"
+                android:text="@string/cpb_gradient"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <Switch
+                android:id="@+id/cpb_sh_progress_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:checked="true"
+                android:text="@string/cpb_progress_value"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_progress_value_text_size"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_progress_value_text_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="50"
+                android:progress="22" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_top_text_gap"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_top_text_gap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="50"
+                android:progress="40" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_top_text_size"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_top_text_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="30"
+                android:progress="10" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_bottom_text_gap"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_bottom_text_gap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="50"
+                android:progress="40" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_bottom_text_size"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_bottom_text_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="30"
+                android:progress="6" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_progress_duration"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_progress_duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="49"
+                android:progress="19" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_visibility"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/cpb_sp_dial_visibility"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/cpb_dial_visibility"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_dial_gap"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_dial_gap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="10"
+                android:progress="4" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_dial_angle"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_dial_angle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="10"
+                android:progress="5" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_dial_height"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_dial_height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="20"
+                android:progress="10" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_dial_width"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_dial_width"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="5"
+                android:progress="2" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_dial_special_unit"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_dial_special_unit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="10"
+                android:progress="3" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_dial_special_height"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_dial_special_height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="20"
+                android:progress="15" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_dial_special_width"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_dial_special_width"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="5"
+                android:progress="2" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_dial_gravity"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/cpb_sp_dial_gravity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/cpb_dial_gravity"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp" />
+
+            <Switch
+                android:id="@+id/cpb_sh_special_dial_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:checked="true"
+                android:text="@string/cpb_special_dial_value"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_special_dial_value_gap"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_special_dial_value_gap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="10"
+                android:progress="2" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpb_special_dial_value_text_size"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/cpb_sb_special_dial_value_text_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="10"
+                android:progress="7" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/cpb_btn_progress_animator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/cpb_progress_animator" />
+        </LinearLayout>
+
+    </ScrollView>
+
 </android.support.constraint.ConstraintLayout>
