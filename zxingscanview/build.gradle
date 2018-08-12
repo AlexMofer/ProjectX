@@ -1,0 +1,17 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 27
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 27
+        versionCode 1
+        versionName "3.3.0"
+    }
+}
+
+dependencies {
+    implementation 'com.google.zxing:core:3.3.0'
+}
+//apply from: "bintray.gradle"

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ZxingScanView">
+        <attr name="zsvAmbientLight" format="enum">
+            <enum name="auto" value="0" />
+            <enum name="open" value="1" />
+            <enum name="close" value="2" />
+        </attr>
+        <attr name="zsvFeedback" format="enum">
+            <enum name="auto" value="0" />
+            <enum name="audio_only" value="1" />
+            <enum name="vibrator_only" value="2" />
+            <enum name="audio_vibrator" value="3" />
+        </attr>
+        <attr name="zsvAudioAssetsFileName" format="string" />
+        <attr name="zsvAudioRaw" format="reference" />
+        <attr name="zsvVibrateMilliseconds" format="integer" />
+        <attr name="zsvScanWidth" format="dimension">
+            <enum name="match_parent" value="-1" />
+        </attr>
+        <attr name="zsvScanHeight" format="dimension">
+            <enum name="match_parent" value="-1" />
+        </attr>
+        <attr name="zsvCameraId" format="integer" />
+        <attr name="zsvBarcode">
+            <flag name="Product_1D" value="1" />
+            <flag name="Industrial_1D" value="2" />
+            <flag name="QR" value="4" />
+            <flag name="Data_Matrix" value="8" />
+            <flag name="Aztec" value="16" />
+            <flag name="PDF417" value="32" />
+        </attr>
+        <attr name="zsvCharacterSet" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="ZxingForegroundView">
+        <attr name="zfvOpenDrawable" format="reference" />
+        <attr name="zfvErrorDrawable" format="reference" />
+        <attr name="zfvZxingScanView" format="reference" />
+        <attr name="zfvMode" format="enum">
+            <enum name="open" value="0" />
+            <enum name="error" value="1" />
+        </attr>
+        <attr name="zfvCoverColor" format="color" />
+        <attr name="zfvScanRectDrawable" format="reference" />
+        <attr name="zfvScanFlagDrawable" format="reference" />
+        <attr name="zfvFlagAnimatorDuration" format="integer" />
+        <attr name="zfvFlagAnimatorRepeatMode" format="enum">
+            <enum name="Restart" value="1" />
+            <enum name="Reverse" value="2" />
+        </attr>
+        <attr name="zfvShowResultPoints" format="boolean" />
+        <attr name="zfvResultPointsAnimatorDuration" format="integer" />
+        <attr name="zfvMaxResultPointsNumber" format="integer" />
+        <attr name="zfvResultPointsColor" format="color" />
+        <attr name="zfvResultPointsSize" format="dimension" />
+    </declare-styleable>
+</resources>

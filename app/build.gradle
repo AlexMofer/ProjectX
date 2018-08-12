@@ -49,4 +49,5 @@ dependencies {
     api project(':headerfootergridview')
     api project(':multiactiontextview')
     api project(':circleprogressbar')
+    api project(':zxingscanview')
 }
