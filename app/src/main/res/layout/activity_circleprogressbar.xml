@@ -196,7 +196,7 @@
                 android:progress="29" />
 
             <Switch
-                android:id="@+id/cpb_sh_repeat_mode"
+                android:id="@+id/cpb_sh_loading_repeat_mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
