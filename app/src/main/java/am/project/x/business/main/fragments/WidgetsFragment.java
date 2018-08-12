@@ -35,6 +35,7 @@ import am.project.x.business.widgets.shapeimageview.ShapeImageViewActivity;
 import am.project.x.business.widgets.statelayout.StateLayoutActivity;
 import am.project.x.business.widgets.tagtabstrip.TagTabStripActivity;
 import am.project.x.business.widgets.wraplayout.WrapLayoutActivity;
+import am.project.x.business.widgets.zxingscanview.ZxingScanViewActivity;
 
 public class WidgetsFragment extends BaseFragment implements View.OnClickListener {
 
@@ -102,6 +103,7 @@ public class WidgetsFragment extends BaseFragment implements View.OnClickListene
                 CircleProgressBarActivity.start(getActivity());
                 break;
             case R.id.widget_btn_zxingscanview:
+                ZxingScanViewActivity.start(getActivity());
                 break;
             case R.id.widget_btn_smoothinputlayout:
                 break;

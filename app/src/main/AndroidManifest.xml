@@ -74,6 +74,9 @@
         <activity
             android:name=".business.widgets.circleprogressbar.CircleProgressBarActivity"
             android:label="@string/cpb_label" />
+        <activity
+            android:name=".business.widgets.zxingscanview.ZxingScanViewActivity"
+            android:label="@string/zsv_label" />
     </application>
 
 </manifest>

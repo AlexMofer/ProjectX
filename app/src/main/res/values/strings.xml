@@ -137,4 +137,6 @@
     <string name="cpb_repeat_mode">载入动画是否逆转：</string>
     <string name="cpb_loading_draw_other">载入模式下绘制其他内容：</string>
     <string name="cpb_progress_animator">进度条动画</string>
+    <!--条码扫描-->
+    <string name="zsv_label">条码扫描</string>
 </resources>
