@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="am.project.x">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:name=".ProjectXApplication"
         android:allowBackup="true"

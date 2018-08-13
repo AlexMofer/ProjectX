@@ -139,4 +139,5 @@
     <string name="cpb_progress_animator">进度条动画</string>
     <!--条码扫描-->
     <string name="zsv_label">条码扫描</string>
+    <string name="zsv_error">很遗憾，相机出现问题。你可能需要重启设备。</string>
 </resources>
