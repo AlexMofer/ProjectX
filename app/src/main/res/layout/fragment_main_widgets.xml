@@ -217,7 +217,7 @@
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
             android:drawablePadding="6dp"
-            android:drawableTop="@drawable/ic_develop_developing"
+            android:drawableTop="@drawable/ic_widgets_smoothinputlayout"
             android:paddingBottom="18dp"
             android:paddingTop="18dp"
             android:text="@string/main_widgets_smoothinputlayout"
