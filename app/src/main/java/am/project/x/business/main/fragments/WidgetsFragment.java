@@ -32,6 +32,7 @@ import am.project.x.business.widgets.indicatortabstrip.IndicatorTabStripActivity
 import am.project.x.business.widgets.multiactiontextview.MultiActionTextViewActivity;
 import am.project.x.business.widgets.recyclepager.RecyclePagerActivity;
 import am.project.x.business.widgets.shapeimageview.ShapeImageViewActivity;
+import am.project.x.business.widgets.smoothinputlayout.SmoothInputLayoutActivity;
 import am.project.x.business.widgets.statelayout.StateLayoutActivity;
 import am.project.x.business.widgets.tagtabstrip.TagTabStripActivity;
 import am.project.x.business.widgets.wraplayout.WrapLayoutActivity;
@@ -106,6 +107,7 @@ public class WidgetsFragment extends BaseFragment implements View.OnClickListene
                 ZxingScanViewActivity.start(getActivity());
                 break;
             case R.id.widget_btn_smoothinputlayout:
+                SmoothInputLayoutActivity.start(getActivity());
                 break;
         }
     }

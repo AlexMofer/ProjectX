@@ -79,6 +79,9 @@
         <activity
             android:name=".business.widgets.zxingscanview.ZxingScanViewActivity"
             android:label="@string/zsv_label" />
+        <activity
+            android:name=".business.widgets.smoothinputlayout.SmoothInputLayoutActivity"
+            android:label="@string/sil_label" />
     </application>
 
 </manifest>
