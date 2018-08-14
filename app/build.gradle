@@ -51,4 +51,5 @@ dependencies {
     api project(':multiactiontextview')
     api project(':circleprogressbar')
     api project(':zxingscanview')
+    api project(':smoothinputlayout')
 }

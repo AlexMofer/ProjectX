@@ -1,1 +1,1 @@
-include ':app', ':mvp', ':basetabstrip', ':viewpager', ':gradienttabstrip', ':tagtabstrip', ':indicatortabstrip', ':shapeimageview', ':stateframelayout', ':wraplayout', ':drawableratingbar', ':headerfootergridview', ':multiactiontextview', ':circleprogressbar', ':zxingscanview'
+include ':app', ':mvp', ':basetabstrip', ':viewpager', ':gradienttabstrip', ':tagtabstrip', ':indicatortabstrip', ':shapeimageview', ':stateframelayout', ':wraplayout', ':drawableratingbar', ':headerfootergridview', ':multiactiontextview', ':circleprogressbar', ':zxingscanview', ':smoothinputlayout'
