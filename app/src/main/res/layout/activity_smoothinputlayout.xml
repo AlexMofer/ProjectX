@@ -1,20 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<am.widget.smoothinputlayout.SmoothInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sil_lyt_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    app:silInputPane="@+id/sil_lyt_pane"
+    app:silInputView="@+id/sil_edt_input"
     tools:context=".business.widgets.smoothinputlayout.SmoothInputLayoutActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/sil_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/sil_label" />
 
-</android.support.constraint.ConstraintLayout>
+    <View
+        android:id="@+id/sil_v_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_smoothinputlayout_bar"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/sil_ibtn_voice"
+            style="@style/Widget.AppCompat.Toolbar.Button.Navigation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_smoothinputlayout_voice" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@id/sil_edt_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="textMultiLine"
+            android:maxLines="4" />
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/sil_ibtn_emoji"
+            style="@style/Widget.AppCompat.Toolbar.Button.Navigation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_smoothinputlayout_emoji" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/sil_btn_send_voice"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_smoothinputlayout_voice"
+            android:text="@string/smoothinputlayout_voice"
+            android:textColor="#ff959595"
+            android:visibility="gone" />
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/sil_ibtn_more"
+            style="@style/Widget.AppCompat.Toolbar.Button.Navigation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_smoothinputlayout_more" />
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/sil_ibtn_send"
+            style="@style/Widget.AppCompat.Toolbar.Button.Navigation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_smoothinputlayout_send"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@id/sil_lyt_pane"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/sil_lyt_emoji"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/merge_smoothinputlayout_emoji" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sil_lyt_more"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/merge_smoothinputlayout_more" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+</am.widget.smoothinputlayout.SmoothInputLayout>
