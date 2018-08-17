@@ -142,7 +142,7 @@
     <string name="zsv_error">很遗憾，相机出现问题。你可能需要重启设备。</string>
     <!--输入面板-->
     <string name="sil_label">输入面板</string>
-    <string name="smoothinputlayout_voice">按住 说话</string>
-    <string name="smoothinputlayout_picture">图片</string>
-    <string name="smoothinputlayout_take_photo">拍照</string>
+    <string name="sil_voice">按住 说话</string>
+    <string name="sil_picture">图片</string>
+    <string name="sil_camera">拍照</string>
 </resources>

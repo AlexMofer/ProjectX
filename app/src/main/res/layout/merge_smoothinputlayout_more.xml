@@ -13,7 +13,7 @@
             android:drawablePadding="5dp"
             android:drawableTop="@drawable/ic_smoothinputlayout_picture"
             android:gravity="center"
-            android:text="@string/smoothinputlayout_picture" />
+            android:text="@string/sil_picture" />
 
         <TextView
             android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:drawablePadding="5dp"
             android:drawableTop="@drawable/ic_smoothinputlayout_camera"
             android:gravity="center"
-            android:text="@string/smoothinputlayout_take_photo" />
+            android:text="@string/sil_camera" />
 
     </LinearLayout>
 

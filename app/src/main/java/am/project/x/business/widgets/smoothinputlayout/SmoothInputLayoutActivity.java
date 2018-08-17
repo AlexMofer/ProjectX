@@ -105,7 +105,7 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
                 }
                 break;
             case R.id.sil_btn_send_voice:
-                Toast.makeText(getApplicationContext(), R.string.smoothinputlayout_voice,
+                Toast.makeText(getApplicationContext(), R.string.sil_voice,
                         Toast.LENGTH_SHORT).show();
                 break;
             case R.id.sil_ibtn_emoji:
