@@ -84,8 +84,11 @@
             android:label="@string/sil_label"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".business.drawables.loading.LoadingActivity"
-            android:label="@string/loading_label" />
+            android:name=".business.drawables.loadingdrawable.LoadingDrawableActivity"
+            android:label="@string/ld_label" />
+        <activity
+            android:name=".business.drawables.centerdrawable.CenterDrawableActivity"
+            android:label="@string/cd_label" />
     </application>
 
 </manifest>

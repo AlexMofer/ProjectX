@@ -146,5 +146,7 @@
     <string name="sil_picture">图片</string>
     <string name="sil_camera">拍照</string>
     <!--载入图片-->
-    <string name="loading_label">载入图片</string>
+    <string name="ld_label">载入图片</string>
+    <!--中心图片-->
+    <string name="cd_label">中心图片</string>
 </resources>

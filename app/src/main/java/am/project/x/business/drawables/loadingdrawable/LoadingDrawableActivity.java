@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package am.project.x.business.drawables.loading;
+package am.project.x.business.drawables.loadingdrawable;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,22 +31,22 @@ import am.project.x.base.BaseActivity;
 /**
  * 载入图片
  */
-public class LoadingActivity extends BaseActivity {
+public class LoadingDrawableActivity extends BaseActivity {
 
     private float density;
 
     public static void start(Context context) {
-        context.startActivity(new Intent(context, LoadingActivity.class));
+        context.startActivity(new Intent(context, LoadingDrawableActivity.class));
     }
 
     @Override
     protected int getContentViewLayout() {
-        return R.layout.activity_loading;
+        return R.layout.activity_loadingdrawable;
     }
 
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
-        setSupportActionBar(R.id.loading_toolbar);
+        setSupportActionBar(R.id.ld_toolbar);
         density = getResources().getDisplayMetrics().density;
         setDoubleCircleDrawable();
         setCirclingDrawable();
@@ -54,14 +54,14 @@ public class LoadingActivity extends BaseActivity {
     }
 
     private void setDoubleCircleDrawable() {
-        final ImageView loading = findViewById(R.id.loading_iv_01);
+        final ImageView loading = findViewById(R.id.ld_iv_01);
         final DoubleCircleDrawable drawable = new DoubleCircleDrawable(density);
         loading.setImageDrawable(drawable);
         drawable.start();
     }
 
     private void setCirclingDrawable() {
-        final ImageView loading = findViewById(R.id.loading_iv_02);
+        final ImageView loading = findViewById(R.id.ld_iv_02);
         final CirclingDrawable drawable = new CirclingDrawable((int) (4 * density),
                 ContextCompat.getColor(this, R.color.colorAccent),
                 ContextCompat.getDrawable(this, R.drawable.ic_drawables_drawable));
@@ -70,7 +70,7 @@ public class LoadingActivity extends BaseActivity {
     }
 
     private void setMaterialProgressDrawable() {
-        final ImageView loading = findViewById(R.id.loading_iv_03);
+        final ImageView loading = findViewById(R.id.ld_iv_03);
         final MaterialProgressDrawable drawable = new MaterialProgressDrawable(density,
                 MaterialProgressDrawable.DEFAULT, 0x00000000, 255,
                 0xff33b5e5, 0xff99cc00, 0xffff4444, 0xffffbb33);

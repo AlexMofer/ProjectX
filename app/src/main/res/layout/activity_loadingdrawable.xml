@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".business.drawables.loading.LoadingActivity">
+    tools:context=".business.drawables.loadingdrawable.LoadingDrawableActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/loading_toolbar"
+        android:id="@+id/ld_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -15,22 +15,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="@string/loading_label" />
+        app:title="@string/ld_label" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/loading_toolbar">
+        app:layout_constraintTop_toBottomOf="@id/ld_toolbar">
 
         <am.widget.wraplayout.WrapLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:padding="10dp"
+            android:padding="30dp"
             app:wlyGravity="center"
-            app:wlyHorizontalSpacing="10dp"
-            app:wlyVerticalSpacing="10dp">
+            app:wlyHorizontalSpacing="30dp"
+            app:wlyVerticalSpacing="30dp">
 
             <am.widget.MaterialProgressImageView
                 android:layout_width="wrap_content"
@@ -43,25 +43,25 @@
                 app:mpiSchemeColor4="#ffffbb33" />
 
             <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/loading_iv_01"
+                android:id="@+id/ld_iv_01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center" />
 
             <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/loading_iv_02"
+                android:id="@+id/ld_iv_02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center" />
 
             <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/loading_iv_03"
+                android:id="@+id/ld_iv_03"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center" />
 
         </am.widget.wraplayout.WrapLayout>
-        
+
     </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
