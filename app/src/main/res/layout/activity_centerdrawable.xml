@@ -7,7 +7,7 @@
     tools:context=".business.drawables.centerdrawable.CenterDrawableActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/center_toolbar"
+        android:id="@+id/cd_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,5 +16,102 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/cd_label" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cd_toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:gravity="center">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/center_iv_rectangle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_centerdrawable_item"
+                android:minHeight="80dp"
+                android:padding="1px" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/center_iv_rectangle_e"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_centerdrawable_item"
+                android:minHeight="80dp"
+                android:padding="1px" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:gravity="center">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/center_iv_rounded_rectangle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_centerdrawable_item"
+                android:minHeight="80dp"
+                android:padding="1px" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/center_iv_rounded_rectangle_e"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_centerdrawable_item"
+                android:minHeight="80dp"
+                android:padding="1px" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:gravity="center">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/center_iv_oval"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_centerdrawable_item"
+                android:minHeight="80dp"
+                android:padding="1px" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/center_iv_oval_e"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_centerdrawable_item"
+                android:minHeight="80dp"
+                android:padding="1px" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
