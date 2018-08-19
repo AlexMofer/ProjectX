@@ -52,4 +52,5 @@ dependencies {
     api project(':circleprogressbar')
     api project(':zxingscanview')
     api project(':smoothinputlayout')
+    api project(':drawable')
 }
