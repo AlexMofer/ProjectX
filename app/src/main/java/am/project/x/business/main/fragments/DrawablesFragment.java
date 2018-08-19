@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import am.project.x.R;
 import am.project.x.base.BaseFragment;
 import am.project.x.business.drawables.centerdrawable.CenterDrawableActivity;
+import am.project.x.business.drawables.combinationdrawable.CombinationDrawableActivity;
 import am.project.x.business.drawables.loadingdrawable.LoadingDrawableActivity;
 
 public class DrawablesFragment extends BaseFragment implements View.OnClickListener {
@@ -61,6 +62,7 @@ public class DrawablesFragment extends BaseFragment implements View.OnClickListe
                 CenterDrawableActivity.start(getActivity());
                 break;
             case R.id.drawable_btn_combination:
+                CombinationDrawableActivity.start(getActivity());
                 break;
             case R.id.drawable_btn_sharpcornerbox:
                 break;

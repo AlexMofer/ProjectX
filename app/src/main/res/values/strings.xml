@@ -149,4 +149,6 @@
     <string name="ld_label">载入图片</string>
     <!--中心图片-->
     <string name="cd_label">中心图片</string>
+    <!--双层图片-->
+    <string name="cod_label">双层图片</string>
 </resources>

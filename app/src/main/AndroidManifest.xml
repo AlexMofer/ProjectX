@@ -89,6 +89,9 @@
         <activity
             android:name=".business.drawables.centerdrawable.CenterDrawableActivity"
             android:label="@string/cd_label" />
+        <activity
+            android:name=".business.drawables.combinationdrawable.CombinationDrawableActivity"
+            android:label="@string/cod_label" />
     </application>
 
 </manifest>
