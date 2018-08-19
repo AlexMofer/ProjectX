@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 
 import am.project.x.R;
 import am.project.x.base.BaseFragment;
+import am.project.x.business.drawables.loading.LoadingActivity;
 
 public class DrawablesFragment extends BaseFragment implements View.OnClickListener {
 
@@ -53,6 +54,7 @@ public class DrawablesFragment extends BaseFragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.drawable_btn_loading:
+                LoadingActivity.start(getActivity());
                 break;
             case R.id.drawable_btn_center:
                 break;

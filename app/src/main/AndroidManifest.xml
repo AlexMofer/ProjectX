@@ -83,6 +83,9 @@
             android:name=".business.widgets.smoothinputlayout.SmoothInputLayoutActivity"
             android:label="@string/sil_label"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".business.drawables.loading.LoadingActivity"
+            android:label="@string/loading_label" />
     </application>
 
 </manifest>

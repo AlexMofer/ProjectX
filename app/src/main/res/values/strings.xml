@@ -145,4 +145,6 @@
     <string name="sil_voice">按住 说话</string>
     <string name="sil_picture">图片</string>
     <string name="sil_camera">拍照</string>
+    <!--载入图片-->
+    <string name="loading_label">载入图片</string>
 </resources>
