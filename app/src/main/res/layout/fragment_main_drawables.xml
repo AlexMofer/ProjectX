@@ -61,15 +61,15 @@
             app:layout_constraintWidth_percent="0.25" />
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/drawable_btn_sharpcornerbox"
+            android:id="@+id/drawable_btn_cornerdrawable"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
             android:drawablePadding="6dp"
-            android:drawableTop="@drawable/ic_drawables_sharpcornerbox"
+            android:drawableTop="@drawable/ic_drawables_cornerdrawable"
             android:paddingBottom="18dp"
             android:paddingTop="18dp"
-            android:text="@string/main_drawables_sharpcornerbox"
+            android:text="@string/main_drawables_cornerdrawable"
             android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/drawable_btn_combination"

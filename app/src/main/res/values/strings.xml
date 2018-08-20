@@ -27,7 +27,7 @@
     <string name="main_drawables_loading">载入图片</string>
     <string name="main_drawables_center">中心图片</string>
     <string name="main_drawables_combination">双层图片</string>
-    <string name="main_drawables_sharpcornerbox">尖角框</string>
+    <string name="main_drawables_cornerdrawable">尖角框</string>
     <string name="main_drawables_line">横线图片</string>
     <string name="main_drawables_list">线性图片</string>
     <string name="main_drawables_text">文本图片</string>
@@ -153,4 +153,6 @@
     <string name="cod_label">双层图片</string>
     <string name="cod_gravity">布局：</string>
     <string name="cod_reserved_width">留边宽度（0dp～20dp）：</string>
+    <!--尖角框-->
+    <string name="cnd_label">尖角框</string>
 </resources>

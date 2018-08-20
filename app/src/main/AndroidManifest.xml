@@ -92,6 +92,9 @@
         <activity
             android:name=".business.drawables.combinationdrawable.CombinationDrawableActivity"
             android:label="@string/cod_label" />
+        <activity
+            android:name=".business.drawables.cornerdrawable.CornerDrawableActivity"
+            android:label="@string/cnd_label" />
     </application>
 
 </manifest>

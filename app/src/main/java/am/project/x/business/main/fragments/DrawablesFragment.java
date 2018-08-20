@@ -27,6 +27,7 @@ import am.project.x.R;
 import am.project.x.base.BaseFragment;
 import am.project.x.business.drawables.centerdrawable.CenterDrawableActivity;
 import am.project.x.business.drawables.combinationdrawable.CombinationDrawableActivity;
+import am.project.x.business.drawables.cornerdrawable.CornerDrawableActivity;
 import am.project.x.business.drawables.loadingdrawable.LoadingDrawableActivity;
 
 public class DrawablesFragment extends BaseFragment implements View.OnClickListener {
@@ -46,7 +47,7 @@ public class DrawablesFragment extends BaseFragment implements View.OnClickListe
         findViewById(R.id.drawable_btn_loading).setOnClickListener(this);
         findViewById(R.id.drawable_btn_center).setOnClickListener(this);
         findViewById(R.id.drawable_btn_combination).setOnClickListener(this);
-        findViewById(R.id.drawable_btn_sharpcornerbox).setOnClickListener(this);
+        findViewById(R.id.drawable_btn_cornerdrawable).setOnClickListener(this);
         findViewById(R.id.drawable_btn_line).setOnClickListener(this);
         findViewById(R.id.drawable_btn_list).setOnClickListener(this);
         findViewById(R.id.drawable_btn_text).setOnClickListener(this);
@@ -64,7 +65,8 @@ public class DrawablesFragment extends BaseFragment implements View.OnClickListe
             case R.id.drawable_btn_combination:
                 CombinationDrawableActivity.start(getActivity());
                 break;
-            case R.id.drawable_btn_sharpcornerbox:
+            case R.id.drawable_btn_cornerdrawable:
+                CornerDrawableActivity.start(getActivity());
                 break;
             case R.id.drawable_btn_line:
                 break;
