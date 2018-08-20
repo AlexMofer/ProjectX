@@ -17,4 +17,63 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/cod_label" />
 
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/cod_sb_width"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:max="20"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/cod_reserved_width"
+        android:textColor="#ff666666"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/cod_sb_width"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/cod_sp_gravity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:entries="@array/cod_gravity"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        app:layout_constraintBottom_toTopOf="@id/cod_sb_width"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/cod_gravity"
+        android:textColor="#ff666666"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/cod_sp_gravity"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/cod_iv_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="38dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toTopOf="@id/cod_sp_gravity"
+        app:layout_constraintTop_toBottomOf="@id/cod_toolbar" />
+
 </android.support.constraint.ConstraintLayout>

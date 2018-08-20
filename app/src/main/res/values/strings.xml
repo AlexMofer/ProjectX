@@ -151,4 +151,6 @@
     <string name="cd_label">中心图片</string>
     <!--双层图片-->
     <string name="cod_label">双层图片</string>
+    <string name="cod_gravity">布局：</string>
+    <string name="cod_reserved_width">留边宽度（0dp～20dp）：</string>
 </resources>
