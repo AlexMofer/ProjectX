@@ -48,4 +48,15 @@
         <item>bottom|center_horizontal</item>
         <item>bottom|right</item>
     </string-array>
+    <string-array name="cnd_direction">
+        <item>top</item>
+        <item>left</item>
+        <item>right</item>
+        <item>bottom</item>
+    </string-array>
+    <string-array name="cnd_location">
+        <item>center</item>
+        <item>start</item>
+        <item>end</item>
+    </string-array>
 </resources>
