@@ -171,4 +171,7 @@
     <string name="lid_line_size">线条粗细（1px～10px）：</string>
     <!--线性图片-->
     <string name="lrd_label">线性图片</string>
+    <string name="lrd_orientation">切换到垂直排列：</string>
+    <string name="lrd_number">数目（1～6）：</string>
+    <string name="lrd_gap">间隔（1dp～10dp）：</string>
 </resources>

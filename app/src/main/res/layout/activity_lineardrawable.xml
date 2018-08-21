@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".business.drawables.lineardrawable.LinearDrawableActivity">
 
     <android.support.v7.widget.Toolbar
@@ -17,4 +18,58 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/lrd_label" />
 
-</android.support.constraint.ConstraintLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/lrd_iv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="centerInside" />
+
+    </FrameLayout>
+
+    <Switch
+        android:id="@+id/lrd_sh_orientation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/lrd_orientation"
+        android:textColor="#ff666666"
+        android:textSize="14sp" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/lrd_number"
+        android:textColor="#ff666666"
+        android:textSize="14sp" />
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/lrd_sb_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="5" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/lrd_gap"
+        android:textColor="#ff666666"
+        android:textSize="14sp" />
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/lrd_sb_gap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:max="9" />
+
+</LinearLayout>

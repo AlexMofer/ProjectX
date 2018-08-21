@@ -30,43 +30,37 @@
 
     </FrameLayout>
 
-    <LinearLayout
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/cnd_location"
+        android:textColor="#ff666666"
+        android:textSize="14sp" />
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/lid_sp_gravity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:entries="@array/lid_gravity"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp" />
 
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/cnd_location"
-            android:textColor="#ff666666"
-            android:textSize="14sp" />
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/lid_line_size"
+        android:textColor="#ff666666"
+        android:textSize="14sp" />
 
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/lid_sp_gravity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:entries="@array/lid_gravity"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp" />
-
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/lid_line_size"
-            android:textColor="#ff666666"
-            android:textSize="14sp" />
-
-        <android.support.v7.widget.AppCompatSeekBar
-            android:id="@+id/lid_sb_size"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:max="9" />
-    </LinearLayout>
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/lid_sb_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:max="9" />
 
 </LinearLayout>
