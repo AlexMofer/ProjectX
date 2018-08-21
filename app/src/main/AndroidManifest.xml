@@ -98,6 +98,9 @@
         <activity
             android:name=".business.drawables.linedrawable.LineDrawableActivity"
             android:label="@string/lid_label" />
+        <activity
+            android:name=".business.drawables.lineardrawable.LinearDrawableActivity"
+            android:label="@string/lrd_label" />
     </application>
 
 </manifest>

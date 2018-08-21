@@ -94,7 +94,7 @@
             app:layout_constraintWidth_percent="0.25" />
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/drawable_btn_list"
+            android:id="@+id/drawable_btn_lineardrawable"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
@@ -102,7 +102,7 @@
             android:drawableTop="@drawable/ic_drawables_drawable"
             android:paddingBottom="18dp"
             android:paddingTop="18dp"
-            android:text="@string/main_drawables_list"
+            android:text="@string/main_drawables_lineardrawable"
             android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/drawable_btn_linedrawable"
@@ -122,9 +122,9 @@
             android:text="@string/main_drawables_text"
             android:textColor="@color/colorAccent"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/drawable_btn_list"
-            app:layout_constraintStart_toEndOf="@id/drawable_btn_list"
-            app:layout_constraintTop_toTopOf="@id/drawable_btn_list"
+            app:layout_constraintBottom_toBottomOf="@id/drawable_btn_lineardrawable"
+            app:layout_constraintStart_toEndOf="@id/drawable_btn_lineardrawable"
+            app:layout_constraintTop_toTopOf="@id/drawable_btn_lineardrawable"
             app:layout_constraintWidth_percent="0.25" />
     </android.support.constraint.ConstraintLayout>
 

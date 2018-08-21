@@ -28,6 +28,7 @@ import am.project.x.base.BaseFragment;
 import am.project.x.business.drawables.centerdrawable.CenterDrawableActivity;
 import am.project.x.business.drawables.combinationdrawable.CombinationDrawableActivity;
 import am.project.x.business.drawables.cornerdrawable.CornerDrawableActivity;
+import am.project.x.business.drawables.lineardrawable.LinearDrawableActivity;
 import am.project.x.business.drawables.linedrawable.LineDrawableActivity;
 import am.project.x.business.drawables.loadingdrawable.LoadingDrawableActivity;
 
@@ -50,7 +51,7 @@ public class DrawablesFragment extends BaseFragment implements View.OnClickListe
         findViewById(R.id.drawable_btn_combination).setOnClickListener(this);
         findViewById(R.id.drawable_btn_cornerdrawable).setOnClickListener(this);
         findViewById(R.id.drawable_btn_linedrawable).setOnClickListener(this);
-        findViewById(R.id.drawable_btn_list).setOnClickListener(this);
+        findViewById(R.id.drawable_btn_lineardrawable).setOnClickListener(this);
         findViewById(R.id.drawable_btn_text).setOnClickListener(this);
     }
 
@@ -72,7 +73,8 @@ public class DrawablesFragment extends BaseFragment implements View.OnClickListe
             case R.id.drawable_btn_linedrawable:
                 LineDrawableActivity.start(getActivity());
                 break;
-            case R.id.drawable_btn_list:
+            case R.id.drawable_btn_lineardrawable:
+                LinearDrawableActivity.start(getActivity());
                 break;
             case R.id.drawable_btn_text:
                 break;

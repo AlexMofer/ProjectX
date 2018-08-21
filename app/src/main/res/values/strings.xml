@@ -29,7 +29,7 @@
     <string name="main_drawables_combination">双层图片</string>
     <string name="main_drawables_cornerdrawable">尖角框</string>
     <string name="main_drawables_linedrawable">横线图片</string>
-    <string name="main_drawables_list">线性图片</string>
+    <string name="main_drawables_lineardrawable">线性图片</string>
     <string name="main_drawables_text">文本图片</string>
     <string name="main_others_printer">小票打印</string>
     <string name="main_others_encrypt">加密解密</string>
@@ -169,4 +169,6 @@
     <!--横线图片-->
     <string name="lid_label">横线图片</string>
     <string name="lid_line_size">线条粗细（1px～10px）：</string>
+    <!--线性图片-->
+    <string name="lrd_label">线性图片</string>
 </resources>
