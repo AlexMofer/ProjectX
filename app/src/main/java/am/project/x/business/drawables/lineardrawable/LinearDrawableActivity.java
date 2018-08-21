@@ -19,14 +19,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.Switch;
 
+import am.drawable.LinearDrawable;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
 
 /**
  * 线性图片
  */
-public class LinearDrawableActivity extends BaseActivity {
+public class LinearDrawableActivity extends BaseActivity implements
+        CompoundButton.OnCheckedChangeListener, SeekBar.OnSeekBarChangeListener {
+
+    private LinearDrawable drawable;
+    private float density;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, LinearDrawableActivity.class));
@@ -40,5 +50,41 @@ public class LinearDrawableActivity extends BaseActivity {
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.lrd_toolbar);
+        drawable = new LinearDrawable(
+                ContextCompat.getDrawable(this, R.drawable.ic_drawableratingbar_selected));
+        drawable.setCount(1);
+        density = getResources().getDisplayMetrics().density;
+        this.<ImageView>findViewById(R.id.lrd_iv_content).setImageDrawable(drawable);
+        this.<Switch>findViewById(R.id.lrd_sh_orientation).setOnCheckedChangeListener(this);
+        this.<SeekBar>findViewById(R.id.lrd_sb_number).setOnSeekBarChangeListener(this);
+        this.<SeekBar>findViewById(R.id.lrd_sb_gap).setOnSeekBarChangeListener(this);
+    }
+
+    // Listener
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        drawable.setOrientation(isChecked ? LinearDrawable.VERTICAL : LinearDrawable.HORIZONTAL);
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        switch (seekBar.getId()) {
+            case R.id.lrd_sb_number:
+                drawable.setCount(progress + 1);
+                break;
+            case R.id.lrd_sb_gap:
+                drawable.setGap((int) (density * progress));
+                break;
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
 }
