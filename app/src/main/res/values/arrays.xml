@@ -59,4 +59,14 @@
         <item>start</item>
         <item>end</item>
     </string-array>
+    <string-array name="lid_gravity">
+        <item>bottom</item>
+        <item>left</item>
+        <item>top</item>
+        <item>right</item>
+        <item>center_horizontal</item>
+        <item>center_vertical</item>
+        <item>top|bottom</item>
+        <item>left|right</item>
+    </string-array>
 </resources>

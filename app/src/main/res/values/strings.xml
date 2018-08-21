@@ -168,4 +168,5 @@
     <string name="cnd_padding">内容间隔（0dp～10dp）：</string>
     <!--横线图片-->
     <string name="lid_label">横线图片</string>
+    <string name="lid_line_size">线条粗细（1px～10px）：</string>
 </resources>
