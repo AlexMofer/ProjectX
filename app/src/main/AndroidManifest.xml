@@ -95,6 +95,9 @@
         <activity
             android:name=".business.drawables.cornerdrawable.CornerDrawableActivity"
             android:label="@string/cnd_label" />
+        <activity
+            android:name=".business.drawables.linedrawable.LineDrawableActivity"
+            android:label="@string/lid_label" />
     </application>
 
 </manifest>

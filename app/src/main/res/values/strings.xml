@@ -28,7 +28,7 @@
     <string name="main_drawables_center">中心图片</string>
     <string name="main_drawables_combination">双层图片</string>
     <string name="main_drawables_cornerdrawable">尖角框</string>
-    <string name="main_drawables_line">横线图片</string>
+    <string name="main_drawables_linedrawable">横线图片</string>
     <string name="main_drawables_list">线性图片</string>
     <string name="main_drawables_text">文本图片</string>
     <string name="main_others_printer">小票打印</string>
@@ -155,15 +155,17 @@
     <string name="cod_reserved_width">留边宽度（0dp～20dp）：</string>
     <!--尖角框-->
     <string name="cnd_label">尖角框</string>
-    <string name="corner_text">尖角对话框图片，主要用于聊天对话框背景。支持各个方向，同时支持箭头剧中与靠边、内容圆角、箭头圆角、及绘制边线。</string>
-    <string name="corner_direction">朝向：</string>
-    <string name="corner_location">位置：</string>
-    <string name="corner_corner_width">尖角宽度（20dp～30dp）：</string>
-    <string name="corner_corner_height">尖角高度（10dp～20dp）：</string>
-    <string name="corner_corner_radius">尖角圆角（0px～5px）：</string>
-    <string name="corner_corner_margin">尖角边距（0dp～15dp）：</string>
-    <string name="corner_bezier">贝塞尔尖角（0～1）：</string>
-    <string name="corner_stoke">描边线宽（0px～20px）：</string>
-    <string name="corner_radius">内容圆角（0dp～10dp）：</string>
-    <string name="corner_padding">内容间隔（0dp～10dp）：</string>
+    <string name="cnd_text">尖角对话框图片，主要用于聊天对话框背景。支持各个方向，同时支持箭头剧中与靠边、内容圆角、箭头圆角、及绘制边线。</string>
+    <string name="cnd_direction">朝向：</string>
+    <string name="cnd_location">位置：</string>
+    <string name="cnd_corner_width">尖角宽度（20dp～30dp）：</string>
+    <string name="cnd_corner_height">尖角高度（10dp～20dp）：</string>
+    <string name="cnd_corner_radius">尖角圆角（0px～5px）：</string>
+    <string name="cnd_corner_margin">尖角边距（0dp～15dp）：</string>
+    <string name="cnd_bezier">贝塞尔尖角（0～1）：</string>
+    <string name="cnd_stoke">描边线宽（0px～20px）：</string>
+    <string name="cnd_radius">内容圆角（0dp～10dp）：</string>
+    <string name="cnd_padding">内容间隔（0dp～10dp）：</string>
+    <!--横线图片-->
+    <string name="lid_label">横线图片</string>
 </resources>

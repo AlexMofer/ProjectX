@@ -27,7 +27,7 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:maxWidth="200dp"
-            android:text="@string/corner_text"
+            android:text="@string/cnd_text"
             android:textSize="18sp" />
 
     </FrameLayout>
@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="@string/corner_direction"
+                android:text="@string/cnd_direction"
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="@string/corner_location"
+                android:text="@string/cnd_location"
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="@string/corner_corner_width"
+                android:text="@string/cnd_corner_width"
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
@@ -96,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="@string/corner_corner_height"
+                android:text="@string/cnd_corner_height"
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
@@ -110,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="@string/corner_corner_margin"
+                android:text="@string/cnd_corner_margin"
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
@@ -124,7 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="@string/corner_bezier"
+                android:text="@string/cnd_bezier"
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
@@ -138,7 +138,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="@string/corner_stoke"
+                android:text="@string/cnd_stoke"
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
@@ -152,7 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="@string/corner_radius"
+                android:text="@string/cnd_radius"
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
@@ -166,7 +166,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="@string/corner_padding"
+                android:text="@string/cnd_padding"
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
