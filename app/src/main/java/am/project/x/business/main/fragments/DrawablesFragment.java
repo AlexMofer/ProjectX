@@ -31,6 +31,7 @@ import am.project.x.business.drawables.cornerdrawable.CornerDrawableActivity;
 import am.project.x.business.drawables.lineardrawable.LinearDrawableActivity;
 import am.project.x.business.drawables.linedrawable.LineDrawableActivity;
 import am.project.x.business.drawables.loadingdrawable.LoadingDrawableActivity;
+import am.project.x.business.drawables.textdrawable.TextDrawableActivity;
 
 public class DrawablesFragment extends BaseFragment implements View.OnClickListener {
 
@@ -52,7 +53,7 @@ public class DrawablesFragment extends BaseFragment implements View.OnClickListe
         findViewById(R.id.drawable_btn_cornerdrawable).setOnClickListener(this);
         findViewById(R.id.drawable_btn_linedrawable).setOnClickListener(this);
         findViewById(R.id.drawable_btn_lineardrawable).setOnClickListener(this);
-        findViewById(R.id.drawable_btn_text).setOnClickListener(this);
+        findViewById(R.id.drawable_btn_textdrawable).setOnClickListener(this);
     }
 
     @Override
@@ -76,7 +77,8 @@ public class DrawablesFragment extends BaseFragment implements View.OnClickListe
             case R.id.drawable_btn_lineardrawable:
                 LinearDrawableActivity.start(getActivity());
                 break;
-            case R.id.drawable_btn_text:
+            case R.id.drawable_btn_textdrawable:
+                TextDrawableActivity.start(getActivity());
                 break;
         }
     }

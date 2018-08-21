@@ -101,6 +101,9 @@
         <activity
             android:name=".business.drawables.lineardrawable.LinearDrawableActivity"
             android:label="@string/lrd_label" />
+        <activity
+            android:name=".business.drawables.textdrawable.TextDrawableActivity"
+            android:label="@string/td_label" />
     </application>
 
 </manifest>

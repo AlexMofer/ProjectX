@@ -30,7 +30,7 @@
     <string name="main_drawables_cornerdrawable">尖角框</string>
     <string name="main_drawables_linedrawable">横线图片</string>
     <string name="main_drawables_lineardrawable">线性图片</string>
-    <string name="main_drawables_text">文本图片</string>
+    <string name="main_drawables_textdrawable">文本图片</string>
     <string name="main_others_printer">小票打印</string>
     <string name="main_others_encrypt">加密解密</string>
     <string name="main_develop_developing">开发中</string>
@@ -174,4 +174,6 @@
     <string name="lrd_orientation">切换到垂直排列：</string>
     <string name="lrd_number">数目（1～6）：</string>
     <string name="lrd_gap">间隔（1dp～10dp）：</string>
+    <!--文本图片-->
+    <string name="td_label">文本图片</string>
 </resources>
