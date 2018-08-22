@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 
 import am.project.x.R;
 import am.project.x.base.BaseFragment;
+import am.project.x.business.others.printer.PrinterActivity;
 
 public class OthersFragment extends BaseFragment implements View.OnClickListener {
 
@@ -47,6 +48,7 @@ public class OthersFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.other_btn_printer:
+                PrinterActivity.start(getActivity());
                 break;
             case R.id.other_btn_crypto:
                 break;

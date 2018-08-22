@@ -178,4 +178,6 @@
     <string name="td_label">文本图片</string>
     <string name="td_scale">文字大小自动缩放：</string>
     <string name="td_content">图</string>
+    <!--小票打印-->
+    <string name="printer_label">小票打印</string>
 </resources>

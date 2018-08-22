@@ -104,6 +104,9 @@
         <activity
             android:name=".business.drawables.textdrawable.TextDrawableActivity"
             android:label="@string/td_label" />
+        <activity
+            android:name=".business.others.printer.PrinterActivity"
+            android:label="@string/printer_label" />
     </application>
 
 </manifest>
