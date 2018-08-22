@@ -180,4 +180,6 @@
     <string name="td_content">图</string>
     <!--小票打印-->
     <string name="printer_label">小票打印</string>
+    <!--加密解密-->
+    <string name="crypto_label">加密解密</string>
 </resources>

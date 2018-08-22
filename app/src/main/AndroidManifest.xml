@@ -107,6 +107,9 @@
         <activity
             android:name=".business.others.printer.PrinterActivity"
             android:label="@string/printer_label" />
+        <activity
+            android:name=".business.others.crypto.CryptoActivity"
+            android:label="@string/crypto_label" />
     </application>
 
 </manifest>
