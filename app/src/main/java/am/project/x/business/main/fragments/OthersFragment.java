@@ -40,7 +40,7 @@ public class OthersFragment extends BaseFragment implements View.OnClickListener
     @Override
     protected void initializeFragment(Activity activity, @Nullable Bundle savedInstanceState) {
         findViewById(R.id.other_btn_printer).setOnClickListener(this);
-        findViewById(R.id.other_btn_encrypt).setOnClickListener(this);
+        findViewById(R.id.other_btn_crypto).setOnClickListener(this);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class OthersFragment extends BaseFragment implements View.OnClickListener
         switch (v.getId()) {
             case R.id.other_btn_printer:
                 break;
-            case R.id.other_btn_encrypt:
+            case R.id.other_btn_crypto:
                 break;
         }
     }

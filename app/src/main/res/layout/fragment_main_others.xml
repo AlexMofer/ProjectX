@@ -27,15 +27,15 @@
             app:layout_constraintWidth_percent="0.25" />
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/other_btn_encrypt"
+            android:id="@+id/other_btn_crypto"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
             android:drawablePadding="6dp"
-            android:drawableTop="@drawable/ic_others_security"
+            android:drawableTop="@drawable/ic_others_crypto"
             android:paddingBottom="18dp"
             android:paddingTop="18dp"
-            android:text="@string/main_others_encrypt"
+            android:text="@string/main_others_crypto"
             android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/other_btn_printer"

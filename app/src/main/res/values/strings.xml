@@ -32,7 +32,7 @@
     <string name="main_drawables_lineardrawable">线性图片</string>
     <string name="main_drawables_textdrawable">文本图片</string>
     <string name="main_others_printer">小票打印</string>
-    <string name="main_others_encrypt">加密解密</string>
+    <string name="main_others_crypto">加密解密</string>
     <string name="main_develop_developing">开发中</string>
     <string name="main_develop_supergridview">拖拽网格</string>
     <!--开发中-->
