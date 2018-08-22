@@ -1,0 +1,14 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 27
+
+    defaultConfig {
+        minSdkVersion 5
+        targetSdkVersion 27
+        versionCode 7
+        versionName "2.1.0"
+    }
+}
+
+//apply from: "bintray.gradle"

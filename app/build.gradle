@@ -53,4 +53,5 @@ dependencies {
     api project(':zxingscanview')
     api project(':smoothinputlayout')
     api project(':drawable')
+    api project(':printer')
 }
