@@ -67,17 +67,11 @@ public class PrinterActivity extends BaseActivity implements RadioGroup.OnChecke
                 if (mAdapter.isEnabled()) {
                     if (mShouldOpen) {
                         mShouldOpen = false;
-                        showBluetoothTest();
+                        PrinterBluetoothTestDialogFragment.showDialog(getFragmentManager());
                         mShouldClose = true;
                     }
                 } else {
-                    // TODO
-//                    Fragment fragment = getFragmentManager().findFragmentByTag(FRAGMENT_BLUETOOTH);
-//                    if (fragment != null && fragment instanceof BluetoothTestDialogFragment) {
-//                        BluetoothTestDialogFragment bluetooth =
-//                                (BluetoothTestDialogFragment) fragment;
-//                        bluetooth.dismissAllowingStateLoss();
-//                    }
+                    PrinterBluetoothTestDialogFragment.dismissDialog(getFragmentManager());
                 }
             } else if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
                 // TODO
@@ -223,31 +217,10 @@ public class PrinterActivity extends BaseActivity implements RadioGroup.OnChecke
             if (mBluetoothOpen != null && mBluetoothOpen.isShowing())
                 mBluetoothOpen.dismiss();
             // 载入设备
-            showBluetoothTest();
+            PrinterBluetoothTestDialogFragment.showDialog(getFragmentManager());
         } else {
             showForceTurnOnBluetoothDialog();
         }
-    }
-
-
-    private void showBluetoothTest() {
-        // TODO
-//        int width;
-//        try {
-//            width = Integer.valueOf(mVWidth.getText().toString());
-//        } catch (Exception e) {
-//            width = 500;
-//        }
-//        String strQRCode = mVQRCode.getText().toString();
-//        FragmentTransaction ft = getFragmentManager().beginTransaction();
-//        Fragment prev = getFragmentManager().findFragmentByTag(FRAGMENT_BLUETOOTH);
-//        if (prev != null) {
-//            ft.remove(prev);
-//        }
-//        ft.addToBackStack(null);
-//        BluetoothTestDialogFragment fragment = BluetoothTestDialogFragment
-//                .getFragment(mType, width, mHeight, strQRCode);
-//        fragment.show(ft, FRAGMENT_BLUETOOTH);
     }
 
     private void showForceTurnOnBluetoothDialog() {

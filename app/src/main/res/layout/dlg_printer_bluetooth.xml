@@ -8,32 +8,16 @@
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:text="@string/printer_ip"
+        android:text="@string/printer_bluetooth"
         android:textColor="#ff000000"
         android:textSize="18sp" />
 
-    <android.support.v7.widget.AppCompatEditText
-        android:id="@+id/printer_edt_ip"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/printer_rv_bonded"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:digits="0123456789."
-        android:hint="@string/printer_ip_hint"
-        android:imeOptions="actionDone"
-        android:inputType="numberDecimal"
-        android:maxLength="15" />
-
-    <android.support.v7.widget.AppCompatEditText
-        android:id="@+id/printer_edt_port"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/printer_port_hint"
-        android:imeOptions="actionDone"
-        android:inputType="number"
-        android:maxLength="5"
-        android:text="@string/printer_port_text" />
+        android:layout_height="200dp" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/printer_tv_state"
