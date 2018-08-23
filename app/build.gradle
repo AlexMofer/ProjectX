@@ -54,4 +54,5 @@ dependencies {
     api project(':smoothinputlayout')
     api project(':drawable')
     api project(':printer')
+    api project(':support')
 }
