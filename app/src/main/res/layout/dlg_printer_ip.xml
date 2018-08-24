@@ -43,25 +43,10 @@
         android:lines="2"
         android:text="@string/printer_state" />
 
-    <LinearLayout
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/printer_btn_test_print"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/printer_btn_test_connect"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/printer_connect"
-            android:visibility="gone" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/printer_btn_test_print"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/printer_print" />
-    </LinearLayout>
+        android:text="@string/printer_print" />
 
 </LinearLayout>

@@ -43,11 +43,11 @@ import am.util.printer.PrinterWriter80mm;
 /**
  * 小票打印
  */
-public class PrinterActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener,
-        CompoundButton.OnCheckedChangeListener, SeekBar.OnSeekBarChangeListener,
-        View.OnClickListener {
+public class PrinterActivity extends BaseActivity implements PrinterView,
+        RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener,
+        SeekBar.OnSeekBarChangeListener, View.OnClickListener {
 
-    private static final String FRAGMENT_BLUETOOTH = "bluetooth";
+    private final PrinterPresenter mPresenter = new PrinterPresenter(this);
     private final BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
     private EditText mVWidth;
     private EditText mVQRCode;
@@ -111,6 +111,11 @@ public class PrinterActivity extends BaseActivity implements RadioGroup.OnChecke
     }
 
     @Override
+    protected PrinterPresenter getPresenter() {
+        return mPresenter;
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mReceiver);
@@ -161,6 +166,8 @@ public class PrinterActivity extends BaseActivity implements RadioGroup.OnChecke
             super.onBackPressed();
         }
     }
+
+    // View
 
     // Listener
     @Override
