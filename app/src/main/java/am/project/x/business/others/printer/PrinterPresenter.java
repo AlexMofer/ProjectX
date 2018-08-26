@@ -31,4 +31,30 @@ class PrinterPresenter extends AMPresenter<PrinterView, PrinterModel> implements
     protected PrinterModel getModel() {
         return mModel;
     }
+
+    // ViewModel
+    @Override
+    public void setType(int type) {
+        getModel().setType(type);
+    }
+
+    @Override
+    public void setImageEnable(boolean enable) {
+        getModel().setImageEnable(enable);
+    }
+
+    @Override
+    public void setImageWidth(int width) {
+        getModel().setImageWidth(width);
+    }
+
+    @Override
+    public void setImageHeightParting(int height) {
+        getModel().setImageHeightParting(height);
+    }
+
+    @Override
+    public void setQRCode(String data) {
+        getModel().setQRCode(data);
+    }
 }

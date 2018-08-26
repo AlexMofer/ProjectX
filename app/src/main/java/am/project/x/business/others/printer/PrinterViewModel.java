@@ -19,4 +19,42 @@ package am.project.x.business.others.printer;
  * ViewModel
  */
 interface PrinterViewModel {
+    int TYPE_80 = 0;
+    int TYPE_58 = 1;
+    int PARTING_MAX = 255;
+
+    /**
+     * 设置打印机类型
+     *
+     * @param type 类型
+     */
+    void setType(int type);
+
+    /**
+     * 设置打印图片是否开启
+     *
+     * @param enable 是否开启
+     */
+    void setImageEnable(boolean enable);
+
+    /**
+     * 设置图片宽度
+     *
+     * @param width 宽度
+     */
+    void setImageWidth(int width);
+
+    /**
+     * 设置图片分段高度
+     *
+     * @param height 分段高度
+     */
+    void setImageHeightParting(int height);
+
+    /**
+     * 设置二维码数据
+     *
+     * @param data 数据
+     */
+    void setQRCode(String data);
 }

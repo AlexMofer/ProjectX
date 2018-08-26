@@ -194,6 +194,8 @@
     <string name="printer_image_width">图片宽度：</string>
     <string name="printer_image_width_default">300</string>
     <string name="printer_image_height_parting">图片高度分段像素值：</string>
+    <string name="printer_image_height_parting_default">255</string>
+    <string name="printer_image_height_parting_error">图片高度分段像素值最大不能超过255</string>
     <string name="printer_test_ip">测试固定IP打印机</string>
     <string name="printer_test_bluetooth">测试蓝牙打印机</string>
     <string name="printer_cancel">取消</string>

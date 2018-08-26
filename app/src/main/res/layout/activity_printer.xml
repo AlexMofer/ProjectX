@@ -97,13 +97,13 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
-                android:id="@+id/printer_sb_height"
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/printer_edt_height"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:max="254"
-                android:progress="254" />
+                android:inputType="number"
+                android:text="@string/printer_image_height_parting_default" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"

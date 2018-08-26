@@ -26,34 +26,30 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
-import am.util.printer.PrinterWriter;
-import am.util.printer.PrinterWriter58mm;
-import am.util.printer.PrinterWriter80mm;
 
 /**
  * 小票打印
  */
 public class PrinterActivity extends BaseActivity implements PrinterView,
         RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener,
-        SeekBar.OnSeekBarChangeListener, View.OnClickListener {
+        View.OnClickListener {
 
     private final PrinterPresenter mPresenter = new PrinterPresenter(this);
     private final BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
-    private EditText mVWidth;
-    private EditText mVQRCode;
-    private int mType = PrinterWriter80mm.TYPE_80;
-    private boolean mImageEnable = true;
-    private int mHeight = PrinterWriter.HEIGHT_PARTING_DEFAULT;
+
+
     private AlertDialog mBluetoothOpen;
     private AlertDialog mBluetoothClose;
     private boolean mShouldOpen = false;
@@ -97,17 +93,26 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.printer_toolbar);
-        mVWidth = findViewById(R.id.printer_edt_width);
-        mVQRCode = findViewById(R.id.printer_edt_code);
         this.<RadioGroup>findViewById(R.id.printer_rg_type).setOnCheckedChangeListener(this);
         this.<Switch>findViewById(R.id.printer_sh_image).setOnCheckedChangeListener(this);
-        this.<SeekBar>findViewById(R.id.printer_sb_height).setOnSeekBarChangeListener(this);
+        this.<EditText>findViewById(R.id.printer_edt_width).addTextChangedListener(
+                new WidthTextWatcher());
+        this.<EditText>findViewById(R.id.printer_edt_height).addTextChangedListener(
+                new HeightPartingTextWatcher());
+        this.<EditText>findViewById(R.id.printer_edt_code).addTextChangedListener(
+                new QRCodeTextWatcher());
         findViewById(R.id.printer_btn_test_ip).setOnClickListener(this);
         findViewById(R.id.printer_btn_test_bluetooth).setOnClickListener(this);
+
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         registerReceiver(mReceiver, intentFilter);
+
+        mPresenter.setType(PrinterPresenter.TYPE_80);
+        mPresenter.setImageEnable(true);
+        mPresenter.setImageHeightParting(PrinterPresenter.PARTING_MAX);
+
     }
 
     @Override
@@ -174,32 +179,17 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.printer_rb_80:
-                mType = PrinterWriter80mm.TYPE_80;
+                mPresenter.setType(PrinterPresenter.TYPE_80);
                 break;
             case R.id.printer_rb_58:
-                mType = PrinterWriter58mm.TYPE_58;
+                mPresenter.setType(PrinterPresenter.TYPE_58);
                 break;
         }
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        mImageEnable = isChecked;
-    }
-
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        mHeight = progress + 1;
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-
+        mPresenter.setImageEnable(isChecked);
     }
 
     @Override
@@ -256,9 +246,89 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
     }
 
     private void showSystemTurnOnBluetoothDialog() {
-        Intent requestBluetoothOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        requestBluetoothOn.setAction(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        requestBluetoothOn.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 120);
-        startActivity(requestBluetoothOn);
+        final Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        intent.setAction(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        intent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 120);
+        startActivity(intent);
+    }
+
+    private class WidthTextWatcher implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (TextUtils.isEmpty(s)) {
+                mPresenter.setImageWidth(0);
+                return;
+            }
+            try {
+                mPresenter.setImageWidth(Integer.valueOf(s.toString()));
+            } catch (Exception e) {
+                mPresenter.setImageWidth(0);
+            }
+        }
+    }
+
+    private class HeightPartingTextWatcher implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (TextUtils.isEmpty(s)) {
+                mPresenter.setImageHeightParting(0);
+                return;
+            }
+            int height;
+            try {
+                height = Integer.valueOf(s.toString());
+            } catch (Exception e) {
+                height = 0;
+            }
+            if (height > PrinterPresenter.PARTING_MAX) {
+                height = 255;
+                Toast.makeText(PrinterActivity.this,
+                        R.string.printer_image_height_parting_error, Toast.LENGTH_SHORT).show();
+            }
+            mPresenter.setImageHeightParting(height);
+        }
+    }
+
+    private class QRCodeTextWatcher implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (TextUtils.isEmpty(s))
+                mPresenter.setQRCode(null);
+            else
+                mPresenter.setQRCode(s.toString());
+        }
     }
 }
