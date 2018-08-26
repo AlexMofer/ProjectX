@@ -48,8 +48,6 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
 
     private final PrinterPresenter mPresenter = new PrinterPresenter(this);
     private final BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
-
-
     private AlertDialog mBluetoothOpen;
     private AlertDialog mBluetoothClose;
     private boolean mShouldOpen = false;
@@ -70,12 +68,7 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
                     PrinterBluetoothTestDialogFragment.dismissDialog(getFragmentManager());
                 }
             } else if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
-                // TODO
-//                Fragment fragment = getFragmentManager().findFragmentByTag(FRAGMENT_BLUETOOTH);
-//                if (fragment != null && fragment instanceof BluetoothTestDialogFragment) {
-//                    BluetoothTestDialogFragment bluetooth = (BluetoothTestDialogFragment) fragment;
-//                    bluetooth.updateAdapter();
-//                }
+                PrinterBluetoothTestDialogFragment.notifyDataSetChanged(getFragmentManager());
             }
         }
 
@@ -112,7 +105,6 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
         mPresenter.setType(PrinterPresenter.TYPE_80);
         mPresenter.setImageEnable(true);
         mPresenter.setImageHeightParting(PrinterPresenter.PARTING_MAX);
-
     }
 
     @Override
