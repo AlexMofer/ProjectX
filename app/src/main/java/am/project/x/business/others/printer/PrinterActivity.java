@@ -73,6 +73,7 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
         }
 
     };
+    private PrinterIPTestDialog mIP;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, PrinterActivity.class));
@@ -188,7 +189,9 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.printer_btn_test_ip:
-                PrinterIPTestDialogFragment.showDialog(getFragmentManager());
+                if (mIP == null)
+                    mIP = new PrinterIPTestDialog(this);
+                showDialog(mIP);
                 break;
             case R.id.printer_btn_test_bluetooth:
                 checkBluetooth();
