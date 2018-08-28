@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 AlexMofer
+ * Copyright (C) 2017 AlexMofer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package am.project.support.compat;
+package am.project.support.font;
 
 import android.os.Build;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -35,7 +33,7 @@ import java.util.ArrayList;
 public class AMFontCompat {
 
     private static final FontCompatImpl IMPL;
-    private static final FamilySet DEFAULT;
+    private static final FontFamilySet DEFAULT;
 
     static {
         if (Build.VERSION.SDK_INT >= 21) {
@@ -45,10 +43,10 @@ public class AMFontCompat {
         } else {
             IMPL = new FontCompatBaseImpl();
         }
-        DEFAULT = new FamilySet((String) null);
-        DEFAULT.families.add(new Family("sans-serif"));
-        DEFAULT.families.add(new Family("serif"));
-        DEFAULT.families.add(new Family("monospace"));
+        DEFAULT = new FontFamilySet((String) null);
+        DEFAULT.getFamilies().add(new FontFamily("sans-serif"));
+        DEFAULT.getFamilies().add(new FontFamily("serif"));
+        DEFAULT.getFamilies().add(new FontFamily("monospace"));
     }
 
     private AMFontCompat() {
@@ -69,7 +67,7 @@ public class AMFontCompat {
      *
      * @return 字体信息
      */
-    public static FamilySet getFamilySet() {
+    public static FontFamilySet getFamilySet() {
         return IMPL.getFamilySet();
     }
 
@@ -77,269 +75,7 @@ public class AMFontCompat {
 
         String getConfigFilePath();
 
-        FamilySet getFamilySet();
-    }
-
-    public static class FamilySet implements Parcelable {
-        public static final Parcelable.Creator<FamilySet> CREATOR = new Parcelable.Creator<FamilySet>() {
-            @Override
-            public FamilySet createFromParcel(Parcel source) {
-                return new FamilySet(source);
-            }
-
-            @Override
-            public FamilySet[] newArray(int size) {
-                return new FamilySet[size];
-            }
-        };
-        private final ArrayList<Family> families = new ArrayList<>();
-        private final ArrayList<Alias> aliases = new ArrayList<>();
-        private String version;
-
-        private FamilySet(String version) {
-            this.version = version;
-        }
-
-        private FamilySet(Parcel in) {
-            this.version = in.readString();
-            this.families.addAll(in.createTypedArrayList(Family.CREATOR));
-            this.aliases.addAll(in.createTypedArrayList(Alias.CREATOR));
-        }
-
-        public String getVersion() {
-            return version;
-        }
-
-        public ArrayList<Family> getFamilies() {
-            return families;
-        }
-
-        public ArrayList<Alias> getAliases() {
-            return aliases;
-        }
-
-        @Override
-        public String toString() {
-            return "FamilySet{" +
-                    "version='" + version + '\'' +
-                    ", families=" + families +
-                    ", aliases=" + aliases +
-                    '}';
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(this.version);
-            dest.writeTypedList(this.families);
-            dest.writeTypedList(this.aliases);
-        }
-    }
-
-    public static class Family implements Parcelable {
-        public static final Parcelable.Creator<Family> CREATOR = new Parcelable.Creator<Family>() {
-            @Override
-            public Family createFromParcel(Parcel source) {
-                return new Family(source);
-            }
-
-            @Override
-            public Family[] newArray(int size) {
-                return new Family[size];
-            }
-        };
-        private final ArrayList<Font> fonts = new ArrayList<>();
-        private String name;
-        private String lang;
-        private String variant;
-
-        private Family(String name) {
-            this.name = name;
-        }
-
-        private Family(String name, String lang, String variant) {
-            this.name = name;
-            this.lang = lang;
-            this.variant = variant;
-        }
-
-        private Family(Parcel in) {
-            this.name = in.readString();
-            this.lang = in.readString();
-            this.variant = in.readString();
-            this.fonts.addAll(in.createTypedArrayList(Font.CREATOR));
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getLang() {
-            return lang;
-        }
-
-        public String getVariant() {
-            return variant;
-        }
-
-        public ArrayList<Font> getFonts() {
-            return fonts;
-        }
-
-        @Override
-        public String toString() {
-            return "Family{" +
-                    "name='" + name + '\'' +
-                    ", lang='" + lang + '\'' +
-                    ", variant='" + variant + '\'' +
-                    ", fonts=" + fonts +
-                    '}';
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(this.name);
-            dest.writeString(this.lang);
-            dest.writeString(this.variant);
-            dest.writeTypedList(this.fonts);
-        }
-    }
-
-    public static class Alias implements Parcelable {
-        public static final Parcelable.Creator<Alias> CREATOR = new Parcelable.Creator<Alias>() {
-            @Override
-            public Alias createFromParcel(Parcel source) {
-                return new Alias(source);
-            }
-
-            @Override
-            public Alias[] newArray(int size) {
-                return new Alias[size];
-            }
-        };
-        private String name;
-        private String to;
-        private String weight;
-
-        private Alias(String name, String to, String weight) {
-            this.name = name;
-            this.to = to;
-            this.weight = weight;
-        }
-
-        private Alias(Parcel in) {
-            this.name = in.readString();
-            this.to = in.readString();
-            this.weight = in.readString();
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getTo() {
-            return to;
-        }
-
-        public String getWeight() {
-            return weight;
-        }
-
-        @Override
-        public String toString() {
-            return "Alias{" +
-                    "name='" + name + '\'' +
-                    ", to='" + to + '\'' +
-                    ", weight='" + weight + '\'' +
-                    '}';
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(this.name);
-            dest.writeString(this.to);
-            dest.writeString(this.weight);
-        }
-    }
-
-    public static class Font implements Parcelable {
-        public static final Parcelable.Creator<Font> CREATOR = new Parcelable.Creator<Font>() {
-            @Override
-            public Font createFromParcel(Parcel source) {
-                return new Font(source);
-            }
-
-            @Override
-            public Font[] newArray(int size) {
-                return new Font[size];
-            }
-        };
-        private String weight;
-        private String style;
-        private String ttf;
-
-        private Font(String ttf) {
-            this.ttf = ttf;
-        }
-
-        private Font(String weight, String style, String ttf) {
-            this.weight = weight;
-            this.style = style;
-            this.ttf = ttf;
-        }
-
-        private Font(Parcel in) {
-            this.weight = in.readString();
-            this.style = in.readString();
-            this.ttf = in.readString();
-        }
-
-        public String getWeight() {
-            return weight;
-        }
-
-        public String getStyle() {
-            return style;
-        }
-
-        public String getTtf() {
-            return ttf;
-        }
-
-        @Override
-        public String toString() {
-            return "Font{" +
-                    "weight='" + weight + '\'' +
-                    ", style='" + style + '\'' +
-                    ", ttf='" + ttf + '\'' +
-                    '}';
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(this.weight);
-            dest.writeString(this.style);
-            dest.writeString(this.ttf);
-        }
+        FontFamilySet getFamilySet();
     }
 
     private static class FontCompatBaseImpl implements FontCompatImpl {
@@ -350,7 +86,7 @@ public class AMFontCompat {
         }
 
         @Override
-        public FamilySet getFamilySet() {
+        public FontFamilySet getFamilySet() {
             File configFilename = new File(getConfigFilePath());
             FontsBase fonts = null;
             try {
@@ -373,15 +109,15 @@ public class AMFontCompat {
             if (fonts == null || fonts.fonts.isEmpty()) {
                 return DEFAULT;
             }
-            FamilySet familySet = new FamilySet((String) null);
+            FontFamilySet familySet = new FontFamilySet((String) null);
             for (FontBase font : fonts.fonts) {
                 for (String name : font.names) {
-                    Family family = new Family(name);
-                    family.fonts.add(new Font(font.ttf + ".ttf"));
-                    familySet.families.add(family);
+                    FontFamily family = new FontFamily(name);
+                    family.getFonts().add(new Font(font.ttf + ".ttf"));
+                    familySet.getFamilies().add(family);
                 }
             }
-            if (familySet.families.isEmpty())
+            if (familySet.getFamilies().isEmpty())
                 return DEFAULT;
             return familySet;
         }
@@ -443,7 +179,7 @@ public class AMFontCompat {
         }
 
         @Override
-        public FamilySet getFamilySet() {
+        public FontFamilySet getFamilySet() {
             File configFilename = new File(getConfigFilePath());
             FamilySetApi14 familySet = null;
             try {
@@ -466,17 +202,17 @@ public class AMFontCompat {
             if (familySet == null || familySet.families.isEmpty()) {
                 return DEFAULT;
             }
-            FamilySet familySetCompat = new FamilySet((String) null);
+            FontFamilySet familySetCompat = new FontFamilySet((String) null);
             for (FamilyApi14 family : familySet.families) {
                 for (String name : family.names) {
-                    Family familyCompat = new Family(name);
+                    FontFamily familyCompat = new FontFamily(name);
                     for (String file : family.files) {
-                        familyCompat.fonts.add(new Font(file));
+                        familyCompat.getFonts().add(new Font(file));
                     }
-                    familySetCompat.families.add(familyCompat);
+                    familySetCompat.getFamilies().add(familyCompat);
                 }
             }
-            if (familySetCompat.families.isEmpty())
+            if (familySetCompat.getFamilies().isEmpty())
                 return DEFAULT;
             return familySetCompat;
         }
@@ -539,7 +275,7 @@ public class AMFontCompat {
         }
 
         @Override
-        public FamilySet getFamilySet() {
+        public FontFamilySet getFamilySet() {
             File configFilename = new File(getConfigFilePath());
             FontFamilySetApi21 familySet = null;
             try {
@@ -562,18 +298,18 @@ public class AMFontCompat {
             if (familySet == null || familySet.families.isEmpty()) {
                 return DEFAULT;
             }
-            FamilySet familySetCompat = new FamilySet(familySet.version);
+            FontFamilySet familySetCompat = new FontFamilySet(familySet.version);
             for (FamilyApi21 family : familySet.families) {
-                Family familyCompat = new Family(family.name, family.lang, family.variant);
+                FontFamily familyCompat = new FontFamily(family.name, family.lang, family.variant);
                 for (FontApi21 font : family.fonts) {
-                    familyCompat.fonts.add(new Font(font.weight, font.style, font.ttf));
+                    familyCompat.getFonts().add(new Font(font.weight, font.style, font.ttf));
                 }
-                familySetCompat.families.add(familyCompat);
+                familySetCompat.getFamilies().add(familyCompat);
             }
             for (AliasApi21 alias : familySet.aliases) {
-                familySetCompat.aliases.add(new Alias(alias.name, alias.to, alias.weight));
+                familySetCompat.getAliases().add(new FontAlias(alias.name, alias.to, alias.weight));
             }
-            if (familySetCompat.families.isEmpty())
+            if (familySetCompat.getFamilies().isEmpty())
                 return DEFAULT;
             return familySetCompat;
         }
