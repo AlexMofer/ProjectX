@@ -30,13 +30,13 @@ import am.project.x.utils.StringUtils;
 /**
  * 固定IP填写对话框
  */
-class PrinterIPTestDialog extends AppCompatDialog implements View.OnClickListener {
+class PrinterIPDialog extends AppCompatDialog implements View.OnClickListener {
 
     private final OnDialogListener mListener;
     private EditText mVIp;
     private EditText mVPort;
 
-    PrinterIPTestDialog(@NonNull Context context, @NonNull OnDialogListener listener) {
+    PrinterIPDialog(@NonNull Context context, @NonNull OnDialogListener listener) {
         super(context, AlertDialogUtils.getAlertDialogTheme(context));
         mListener = listener;
         setContentView(R.layout.dlg_printer_ip);

@@ -1,36 +1,35 @@
 package am.project.x.business.others.printer;
 
 import android.bluetooth.BluetoothDevice;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * DeviceAdapter
  * Created by Alex on 2016/6/22.
  */
-public class DeviceAdapter extends RecyclerView.Adapter<DeviceViewHolder> implements
-        DeviceViewHolder.OnHolderListener {
+class DeviceAdapter extends RecyclerView.Adapter<DeviceViewHolder> {
 
-    private DeviceViewHolder.OnHolderListener listener;
-    private ArrayList<BluetoothDevice> mData = new ArrayList<>();
-    private BluetoothDevice selectedDevice;
+    private final DeviceViewHolder.OnHolderListener mListener;
+    private final ArrayList<BluetoothDevice> mData = new ArrayList<>();
 
-    public DeviceAdapter(DeviceViewHolder.OnHolderListener listener) {
-        this.listener = listener;
+    DeviceAdapter(DeviceViewHolder.OnHolderListener listener) {
+        mListener = listener;
+    }
+
+    @NonNull
+    @Override
+    public DeviceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new DeviceViewHolder(parent, mListener);
     }
 
     @Override
-    public DeviceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new DeviceViewHolder(parent, this);
-    }
-
-    @Override
-    public void onBindViewHolder(DeviceViewHolder holder, int position) {
-        BluetoothDevice device = mData.get(position);
-        holder.setData(device, device == selectedDevice);
+    public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
+        holder.bind(mData.get(position));
     }
 
     @Override
@@ -38,26 +37,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceViewHolder> implem
         return mData.size();
     }
 
-    @Override
-    public void onItemClicked(BluetoothDevice device) {
-        BluetoothDevice oldDevice = selectedDevice;
-        selectedDevice = device;
-        if (oldDevice != null && mData != null)
-            notifyItemChanged(mData.indexOf(oldDevice));
-        if (listener != null)
-            listener.onItemClicked(device);
-    }
-
-    public void setDevices(Set<BluetoothDevice> devices) {
-        clear();
-        mData.addAll(devices);
-        if (mData.size() > 0)
-            notifyItemRangeInserted(0, mData.size());
-    }
-
-    public void clear() {
-        if (mData.size() > 0)
-            notifyItemRangeRemoved(0, mData.size());
+    void setDevices(Collection<? extends BluetoothDevice> devices) {
         mData.clear();
+        if (devices != null)
+            mData.addAll(devices);
+        notifyDataSetChanged();
     }
 }

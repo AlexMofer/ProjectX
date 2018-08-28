@@ -1,51 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <android.support.v7.widget.AppCompatTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:gravity="center"
-        android:text="@string/printer_bluetooth"
-        android:textColor="#ff000000"
-        android:textSize="18sp" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/printer_rv_bonded"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
-
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/printer_tv_state"
+        style="?android:attr/windowTitleStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:lines="2"
-        android:text="@string/printer_state" />
+        android:paddingLeft="?attr/dialogPreferredPadding"
+        android:paddingRight="?attr/dialogPreferredPadding"
+        android:paddingTop="18dp"
+        android:singleLine="true"
+        android:text="@string/printer_bluetooth"
+        android:textSize="18sp" />
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/dpb_rv_bonded"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/printer_btn_test_connect"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/printer_connect"
-            android:visibility="gone" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/printer_btn_test_print"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/printer_print" />
-    </LinearLayout>
+        android:layout_height="168dp"
+        android:paddingBottom="12dp"
+        android:paddingLeft="?attr/dialogPreferredPadding"
+        android:paddingRight="?attr/dialogPreferredPadding" />
 
 </LinearLayout>

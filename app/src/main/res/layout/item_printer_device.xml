@@ -4,9 +4,8 @@
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
     android:clickable="true"
+    android:ellipsize="end"
     android:focusable="true"
-    android:gravity="center"
+    android:gravity="center_vertical"
     android:minHeight="48dp"
-    android:singleLine="true"
-    android:textColor="@color/text_printer_device"
-    android:textSize="16sp" />
+    android:singleLine="true" />

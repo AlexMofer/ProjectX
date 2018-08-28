@@ -44,7 +44,8 @@ import am.project.x.base.BaseActivity;
  */
 public class PrinterActivity extends BaseActivity implements PrinterView,
         RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener,
-        View.OnClickListener, PrinterIPTestDialog.OnDialogListener {
+        View.OnClickListener, PrinterIPDialog.OnDialogListener,
+        PrinterBluetoothDialog.OnDialogListener {
 
     private final PrinterPresenter mPresenter = new PrinterPresenter(this);
     private final BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -52,6 +53,8 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
     private AlertDialog mBluetoothClose;
     private boolean mShouldOpen = false;
     private boolean mShouldClose = false;
+    private PrinterIPDialog mIP;
+    private PrinterBluetoothDialog mBluetooth;
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
         @Override
@@ -61,19 +64,24 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
                 if (mAdapter.isEnabled()) {
                     if (mShouldOpen) {
                         mShouldOpen = false;
-                        PrinterBluetoothTestDialogFragment.showDialog(getFragmentManager());
+                        if (mBluetooth == null)
+                            mBluetooth = new PrinterBluetoothDialog(PrinterActivity.this,
+                                    PrinterActivity.this);
+                        mBluetooth.invalidateBondedBluetoothDevices(mAdapter.getBondedDevices());
+                        showDialog(mBluetooth);
                         mShouldClose = true;
                     }
                 } else {
-                    PrinterBluetoothTestDialogFragment.dismissDialog(getFragmentManager());
+                    if (mBluetooth != null)
+                        dismissDialog(mBluetooth);
                 }
             } else if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
-                PrinterBluetoothTestDialogFragment.notifyDataSetChanged(getFragmentManager());
+                if (mBluetooth != null)
+                    mBluetooth.invalidateBondedBluetoothDevices(mAdapter.getBondedDevices());
             }
         }
 
     };
-    private PrinterIPTestDialog mIP;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, PrinterActivity.class));
@@ -190,7 +198,7 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
         switch (v.getId()) {
             case R.id.printer_btn_test_ip:
                 if (mIP == null)
-                    mIP = new PrinterIPTestDialog(this, this);
+                    mIP = new PrinterIPDialog(this, this);
                 showDialog(mIP);
                 break;
             case R.id.printer_btn_test_bluetooth:
@@ -208,8 +216,10 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
         if (mAdapter.isEnabled()) {
             if (mBluetoothOpen != null && mBluetoothOpen.isShowing())
                 mBluetoothOpen.dismiss();
-            // 载入设备
-            PrinterBluetoothTestDialogFragment.showDialog(getFragmentManager());
+            if (mBluetooth == null)
+                mBluetooth = new PrinterBluetoothDialog(this, this);
+            mBluetooth.invalidateBondedBluetoothDevices(mAdapter.getBondedDevices());
+            showDialog(mBluetooth);
         } else {
             showForceTurnOnBluetoothDialog();
         }
@@ -250,6 +260,13 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
     @Override
     public void onIPCommit(String ip, int port) {
         Toast.makeText(this, ip, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBluetoothDeviceSelect(BluetoothDevice device) {
+        if (device == null)
+            return;
+        Toast.makeText(this, device.getName(), Toast.LENGTH_SHORT).show();
     }
 
     private class WidthTextWatcher implements TextWatcher {

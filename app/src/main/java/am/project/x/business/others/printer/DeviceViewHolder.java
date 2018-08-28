@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2018 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package am.project.x.business.others.printer;
 
 import android.bluetooth.BluetoothDevice;
@@ -7,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
+
 import am.project.x.R;
 
 /**
@@ -15,8 +32,8 @@ import am.project.x.R;
  */
 class DeviceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    private OnHolderListener mListener;
-    private BluetoothDevice mDevice;
+    private final OnHolderListener mListener;
+    private WeakReference<BluetoothDevice> mDevice;
 
     DeviceViewHolder(ViewGroup parent, OnHolderListener listener) {
         super(LayoutInflater.from(parent.getContext())
@@ -27,17 +44,13 @@ class DeviceViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        if (mListener != null)
-            mListener.onItemClicked(mDevice);
-        view.setSelected(true);
+        mListener.onItemClicked(mDevice == null ? null : mDevice.get());
     }
 
-    public void setData(BluetoothDevice device, boolean isSelected) {
-        itemView.setSelected(isSelected);
-        mDevice = device;
-        if (itemView instanceof TextView && mDevice != null) {
-            TextView tvName = (TextView) itemView;
-            tvName.setText(mDevice.getName());
+    void bind(BluetoothDevice device) {
+        mDevice = new WeakReference<>(device);
+        if (itemView instanceof TextView && device != null) {
+            ((TextView) itemView).setText(device.getName());
         }
     }
 
