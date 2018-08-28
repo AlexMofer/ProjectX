@@ -18,17 +18,86 @@ package am.project.x.business.others.printer;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatDialog;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import am.project.support.utils.InputMethodUtils;
 import am.project.x.R;
 import am.project.x.utils.AlertDialogUtils;
+import am.project.x.utils.StringUtils;
 
 /**
- * 固定IP测试对话框
+ * 固定IP填写对话框
  */
-class PrinterIPTestDialog extends AppCompatDialog {
+class PrinterIPTestDialog extends AppCompatDialog implements View.OnClickListener {
 
-    PrinterIPTestDialog(@NonNull Context context) {
+    private final OnDialogListener mListener;
+    private EditText mVIp;
+    private EditText mVPort;
+
+    PrinterIPTestDialog(@NonNull Context context, @NonNull OnDialogListener listener) {
         super(context, AlertDialogUtils.getAlertDialogTheme(context));
-        setContentView(R.layout.dlg_printer_ip_new);
+        mListener = listener;
+        setContentView(R.layout.dlg_printer_ip);
+        mVIp = findViewById(R.id.dpi_edt_ip);
+        mVPort = findViewById(R.id.dpi_edt_port);
+        final View positive = findViewById(R.id.dpi_btn_positive);
+        if (positive != null)
+            positive.setOnClickListener(this);
+    }
+
+    // Listener
+    @Override
+    public void onClick(View v) {
+        final String ip = mVIp.getText().toString().trim();
+        if (ip.length() <= 0) {
+            Toast.makeText(getContext(), R.string.printer_edit_toast_1, Toast.LENGTH_SHORT).show();
+            InputMethodUtils.openInputMethod(mVIp);
+            return;
+        } else if (!StringUtils.isIp(ip)) {
+            Toast.makeText(getContext(), R.string.printer_edit_toast_2, Toast.LENGTH_SHORT).show();
+            mVIp.setText(null);
+            InputMethodUtils.openInputMethod(mVIp);
+            return;
+        }
+        int port;
+        String portStr = mVPort.getText().toString().trim();
+        if (portStr.length() <= 0) {
+            Toast.makeText(getContext(), R.string.printer_edit_toast_3, Toast.LENGTH_SHORT).show();
+            InputMethodUtils.openInputMethod(mVPort);
+            return;
+        } else {
+            try {
+                port = Integer.valueOf(portStr);
+            } catch (Exception e) {
+                port = -1;
+            }
+            if (port < 0 || port > 65535) {
+                Toast.makeText(getContext(), R.string.printer_edit_toast_4, Toast.LENGTH_SHORT).show();
+                mVPort.setText(null);
+                InputMethodUtils.openInputMethod(mVPort);
+                return;
+            }
+        }
+        if (mVIp.isFocused())
+            InputMethodUtils.closeInputMethod(mVIp);
+        if (mVPort.isFocused())
+            InputMethodUtils.closeInputMethod(mVPort);
+        dismiss();
+        mListener.onIPCommit(ip, port);
+    }
+
+    /**
+     * 对话框监听
+     */
+    public interface OnDialogListener {
+        /**
+         * IP信息已确认
+         *
+         * @param ip   IP
+         * @param port 端口
+         */
+        void onIPCommit(String ip, int port);
     }
 }

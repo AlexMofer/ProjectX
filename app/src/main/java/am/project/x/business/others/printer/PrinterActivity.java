@@ -44,7 +44,7 @@ import am.project.x.base.BaseActivity;
  */
 public class PrinterActivity extends BaseActivity implements PrinterView,
         RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener,
-        View.OnClickListener {
+        View.OnClickListener, PrinterIPTestDialog.OnDialogListener {
 
     private final PrinterPresenter mPresenter = new PrinterPresenter(this);
     private final BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -190,7 +190,7 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
         switch (v.getId()) {
             case R.id.printer_btn_test_ip:
                 if (mIP == null)
-                    mIP = new PrinterIPTestDialog(this);
+                    mIP = new PrinterIPTestDialog(this, this);
                 showDialog(mIP);
                 break;
             case R.id.printer_btn_test_bluetooth:
@@ -245,6 +245,11 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
         intent.setAction(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         intent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 120);
         startActivity(intent);
+    }
+
+    @Override
+    public void onIPCommit(String ip, int port) {
+        Toast.makeText(this, ip, Toast.LENGTH_SHORT).show();
     }
 
     private class WidthTextWatcher implements TextWatcher {
