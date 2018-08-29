@@ -9,11 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="?attr/dialogPreferredPadding"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:layout_marginRight="?attr/dialogPreferredPadding"
         android:layout_marginTop="18dp"
         android:ellipsize="end"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:singleLine="true"
         android:text="@string/printer_ip"
         android:textSize="18sp" />
@@ -49,8 +49,11 @@
         style="?attr/buttonBarPositiveButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_marginTop="12dp"
+        android:layout_gravity="end"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="4dp"
         android:text="@string/printer_print" />
 
 </LinearLayout>

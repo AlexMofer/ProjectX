@@ -45,7 +45,7 @@ import am.project.x.base.BaseActivity;
 public class PrinterActivity extends BaseActivity implements PrinterView,
         RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener,
         View.OnClickListener, PrinterIPDialog.OnDialogListener,
-        PrinterBluetoothDialog.OnDialogListener {
+        PrinterBluetoothDialog.OnDialogListener, PrinterStateDialog.OnDialogListener {
 
     private final PrinterPresenter mPresenter = new PrinterPresenter(this);
     private final BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -55,6 +55,7 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
     private boolean mShouldClose = false;
     private PrinterIPDialog mIP;
     private PrinterBluetoothDialog mBluetooth;
+    private PrinterStateDialog mState;
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
         @Override
@@ -259,14 +260,23 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
 
     @Override
     public void onIPCommit(String ip, int port) {
-        Toast.makeText(this, ip, Toast.LENGTH_SHORT).show();
+        if (mState == null)
+            mState = new PrinterStateDialog(this, this);
+        mState.start();
+        showDialog(mState);
     }
 
     @Override
     public void onBluetoothDeviceSelect(BluetoothDevice device) {
-        if (device == null)
-            return;
-        Toast.makeText(this, device.getName(), Toast.LENGTH_SHORT).show();
+        if (mState == null)
+            mState = new PrinterStateDialog(this, this);
+        mState.start();
+        showDialog(mState);
+    }
+
+    @Override
+    public void onReprint() {
+        mState.start();
     }
 
     private class WidthTextWatcher implements TextWatcher {
