@@ -17,7 +17,9 @@ package am.project.x.business.others.printer;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,9 +31,11 @@ import am.project.x.utils.AlertDialogUtils;
 /**
  * 打印信息对话框
  */
-class PrinterStateDialog extends AppCompatDialog implements View.OnClickListener {
+class PrinterStateDialog extends AppCompatDialog implements View.OnLayoutChangeListener,
+        View.OnClickListener {
 
     private final OnDialogListener mListener;
+    private NestedScrollView mVContent;
     private TextView mVState;
     private View mVNegative;
     private View mVPositive;
@@ -40,9 +44,11 @@ class PrinterStateDialog extends AppCompatDialog implements View.OnClickListener
         super(context, AlertDialogUtils.getAlertDialogTheme(context));
         mListener = listener;
         setContentView(R.layout.dlg_printer_state);
+        mVContent = findViewById(R.id.dps_sv_content);
         mVState = findViewById(R.id.dps_tv_state);
         mVNegative = findViewById(R.id.dps_btn_negative);
         mVPositive = findViewById(R.id.dps_btn_positive);
+        mVState.addOnLayoutChangeListener(this);
         mVNegative.setOnClickListener(this);
         mVPositive.setOnClickListener(this);
     }
@@ -56,6 +62,8 @@ class PrinterStateDialog extends AppCompatDialog implements View.OnClickListener
     }
 
     void addState(String state) {
+        if (TextUtils.isEmpty(state))
+            return;
         final String text = mVState.getText().toString();
         mVState.setText(String.format(Locale.getDefault(), "%s\n%s", text, state));
     }
@@ -68,6 +76,14 @@ class PrinterStateDialog extends AppCompatDialog implements View.OnClickListener
     }
 
     // Listener
+
+
+    @Override
+    public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                               int oldLeft, int oldTop, int oldRight, int oldBottom) {
+        mVContent.fullScroll(View.FOCUS_DOWN);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

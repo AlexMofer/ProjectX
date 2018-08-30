@@ -15,6 +15,8 @@
  */
 package am.project.x.business.others.printer;
 
+import android.bluetooth.BluetoothDevice;
+
 import am.util.mvp.AMPresenter;
 
 /**
@@ -30,6 +32,21 @@ class PrinterPresenter extends AMPresenter<PrinterView, PrinterModel> implements
     @Override
     protected PrinterModel getModel() {
         return mModel;
+    }
+
+    // View
+    @Override
+    public void onPrinterStateChanged(String state) {
+        if (isDetachedFromView())
+            return;
+        getView().onPrinterStateChanged(state);
+    }
+
+    @Override
+    public void onPrinterResult(String result) {
+        if (isDetachedFromView())
+            return;
+        getView().onPrinterResult(result);
     }
 
     // ViewModel
@@ -56,5 +73,20 @@ class PrinterPresenter extends AMPresenter<PrinterView, PrinterModel> implements
     @Override
     public void setQRCode(String data) {
         getModel().setQRCode(data);
+    }
+
+    @Override
+    public void print(String ip, int port) {
+        getModel().print(ip, port);
+    }
+
+    @Override
+    public void print(BluetoothDevice device) {
+        getModel().print(device);
+    }
+
+    @Override
+    public void print() {
+        getModel().print();
     }
 }

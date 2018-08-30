@@ -15,6 +15,8 @@
  */
 package am.project.x.business.others.printer;
 
+import android.bluetooth.BluetoothDevice;
+
 /**
  * ViewModel
  */
@@ -57,4 +59,24 @@ interface PrinterViewModel {
      * @param data 数据
      */
     void setQRCode(String data);
+
+    /**
+     * 打印
+     *
+     * @param ip   IP
+     * @param port 端口
+     */
+    void print(String ip, int port);
+
+    /**
+     * 打印
+     *
+     * @param device 蓝牙设备
+     */
+    void print(BluetoothDevice device);
+
+    /**
+     * 打印
+     */
+    void print();
 }

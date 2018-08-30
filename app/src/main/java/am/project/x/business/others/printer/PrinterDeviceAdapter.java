@@ -9,26 +9,26 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * DeviceAdapter
+ * PrinterDeviceAdapter
  * Created by Alex on 2016/6/22.
  */
-class DeviceAdapter extends RecyclerView.Adapter<DeviceViewHolder> {
+class PrinterDeviceAdapter extends RecyclerView.Adapter<PrinterDeviceViewHolder> {
 
-    private final DeviceViewHolder.OnHolderListener mListener;
+    private final PrinterDeviceViewHolder.OnHolderListener mListener;
     private final ArrayList<BluetoothDevice> mData = new ArrayList<>();
 
-    DeviceAdapter(DeviceViewHolder.OnHolderListener listener) {
+    PrinterDeviceAdapter(PrinterDeviceViewHolder.OnHolderListener listener) {
         mListener = listener;
     }
 
     @NonNull
     @Override
-    public DeviceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new DeviceViewHolder(parent, mListener);
+    public PrinterDeviceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new PrinterDeviceViewHolder(parent, mListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PrinterDeviceViewHolder holder, int position) {
         holder.bind(mData.get(position));
     }
 

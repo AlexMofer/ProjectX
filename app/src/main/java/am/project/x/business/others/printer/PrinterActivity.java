@@ -49,6 +49,9 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
 
     private final PrinterPresenter mPresenter = new PrinterPresenter(this);
     private final BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
+    private EditText mVWidth;
+    private EditText mVHeight;
+    private EditText mVQRCode;
     private AlertDialog mBluetoothOpen;
     private AlertDialog mBluetoothClose;
     private boolean mShouldOpen = false;
@@ -96,14 +99,15 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.printer_toolbar);
+        mVWidth = findViewById(R.id.printer_edt_width);
+        mVHeight = findViewById(R.id.printer_edt_height);
+        mVQRCode = findViewById(R.id.printer_edt_code);
+
         this.<RadioGroup>findViewById(R.id.printer_rg_type).setOnCheckedChangeListener(this);
         this.<Switch>findViewById(R.id.printer_sh_image).setOnCheckedChangeListener(this);
-        this.<EditText>findViewById(R.id.printer_edt_width).addTextChangedListener(
-                new WidthTextWatcher());
-        this.<EditText>findViewById(R.id.printer_edt_height).addTextChangedListener(
-                new HeightPartingTextWatcher());
-        this.<EditText>findViewById(R.id.printer_edt_code).addTextChangedListener(
-                new QRCodeTextWatcher());
+        mVWidth.addTextChangedListener(new WidthTextWatcher());
+        mVHeight.addTextChangedListener(new HeightPartingTextWatcher());
+        mVQRCode.addTextChangedListener(new QRCodeTextWatcher());
         findViewById(R.id.printer_btn_test_ip).setOnClickListener(this);
         findViewById(R.id.printer_btn_test_bluetooth).setOnClickListener(this);
 
@@ -175,6 +179,20 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
     }
 
     // View
+    @Override
+    public void onPrinterStateChanged(String state) {
+        if (mState == null)
+            return;
+        mState.addState(state);
+    }
+
+    @Override
+    public void onPrinterResult(String result) {
+        if (mState == null)
+            return;
+        mState.addState(result);
+        mState.end();
+    }
 
     // Listener
     @Override
@@ -192,6 +210,9 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mPresenter.setImageEnable(isChecked);
+        mVWidth.setEnabled(isChecked);
+        mVHeight.setEnabled(isChecked);
+        mVQRCode.setEnabled(isChecked);
     }
 
     @Override
@@ -264,6 +285,7 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
             mState = new PrinterStateDialog(this, this);
         mState.start();
         showDialog(mState);
+        mPresenter.print(ip, port);
     }
 
     @Override
@@ -272,11 +294,13 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
             mState = new PrinterStateDialog(this, this);
         mState.start();
         showDialog(mState);
+        mPresenter.print(device);
     }
 
     @Override
     public void onReprint() {
         mState.start();
+        mPresenter.print();
     }
 
     private class WidthTextWatcher implements TextWatcher {

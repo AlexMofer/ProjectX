@@ -17,6 +17,7 @@
         android:textSize="18sp" />
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/dps_sv_content"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:paddingLeft="?attr/dialogPreferredPadding"
@@ -27,7 +28,8 @@
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/printer_test_start" />
+            android:text="@string/printer_test_start"
+            android:textColor="@color/colorAccent" />
 
     </android.support.v4.widget.NestedScrollView>
 

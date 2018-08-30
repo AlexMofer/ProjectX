@@ -33,10 +33,10 @@ import am.project.x.utils.AlertDialogUtils;
 /**
  * 蓝牙设备选择对话框
  */
-class PrinterBluetoothDialog extends AppCompatDialog implements DeviceViewHolder.OnHolderListener {
+class PrinterBluetoothDialog extends AppCompatDialog implements PrinterDeviceViewHolder.OnHolderListener {
 
     private final OnDialogListener mListener;
-    private final DeviceAdapter mAdapter = new DeviceAdapter(this);
+    private final PrinterDeviceAdapter mAdapter = new PrinterDeviceAdapter(this);
 
     PrinterBluetoothDialog(@NonNull Context context, @NonNull OnDialogListener listener) {
         super(context, AlertDialogUtils.getAlertDialogTheme(context));

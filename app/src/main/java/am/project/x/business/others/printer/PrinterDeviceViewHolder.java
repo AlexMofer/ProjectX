@@ -27,15 +27,15 @@ import java.lang.ref.WeakReference;
 import am.project.x.R;
 
 /**
- * DeviceViewHolder
+ * PrinterDeviceViewHolder
  * Created by Alex on 2016/6/22.
  */
-class DeviceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+class PrinterDeviceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private final OnHolderListener mListener;
     private WeakReference<BluetoothDevice> mDevice;
 
-    DeviceViewHolder(ViewGroup parent, OnHolderListener listener) {
+    PrinterDeviceViewHolder(ViewGroup parent, OnHolderListener listener) {
         super(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_printer_device, parent, false));
         mListener = listener;

@@ -15,6 +15,9 @@
  */
 package am.project.x.business.others.printer;
 
+import android.bluetooth.BluetoothDevice;
+
+import am.project.x.ProjectXApplication;
 import am.util.mvp.AMModel;
 import am.util.printer.PrinterWriter;
 import am.util.printer.PrinterWriter58mm;
@@ -30,6 +33,9 @@ class PrinterModel extends AMModel<PrinterPresenter> implements PrinterViewModel
     private int mWidth = 300;
     private int mHeight = PrinterWriter.HEIGHT_PARTING_DEFAULT;
     private String mQRCodeData;
+    private String mIP;
+    private int mPort;
+    private BluetoothDevice mDevice;
 
     PrinterModel(PrinterPresenter presenter) {
         super(presenter);
@@ -62,5 +68,36 @@ class PrinterModel extends AMModel<PrinterPresenter> implements PrinterViewModel
     @Override
     public void setQRCode(String data) {
         mQRCodeData = data;
+    }
+
+    @Override
+    public void print(String ip, int port) {
+        mIP = ip;
+        mPort = port;
+        mDevice = null;
+    }
+
+    @Override
+    public void print(BluetoothDevice device) {
+        mIP = null;
+        mPort = 0;
+        mDevice = device;
+    }
+
+    @Override
+    public void print() {
+
+    }
+
+    private void notifyPrinterStateChanged(int strId) {
+        if (isDetachedFromPresenter())
+            return;
+        getPresenter().onPrinterStateChanged(ProjectXApplication.getInstance().getString(strId));
+    }
+
+    private void notifyPrinterResult(int strId) {
+        if (isDetachedFromPresenter())
+            return;
+        getPresenter().onPrinterResult(ProjectXApplication.getInstance().getString(strId));
     }
 }

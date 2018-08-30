@@ -21,4 +21,17 @@ import am.util.mvp.AMView;
  * View
  */
 interface PrinterView extends AMView {
+    /**
+     * 打印状态变化
+     *
+     * @param state 状态信息
+     */
+    void onPrinterStateChanged(String state);
+
+    /**
+     * 打印结果
+     *
+     * @param result 结果信息
+     */
+    void onPrinterResult(String result);
 }
