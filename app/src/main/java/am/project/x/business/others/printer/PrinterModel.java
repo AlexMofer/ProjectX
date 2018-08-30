@@ -16,9 +16,13 @@
 package am.project.x.business.others.printer;
 
 import android.bluetooth.BluetoothDevice;
+import android.text.TextUtils;
 
 import am.project.x.ProjectXApplication;
+import am.project.x.R;
 import am.util.mvp.AMModel;
+import am.util.printer.PrintExecutor;
+import am.util.printer.PrintSocketHolder;
 import am.util.printer.PrinterWriter;
 import am.util.printer.PrinterWriter58mm;
 import am.util.printer.PrinterWriter80mm;
@@ -26,19 +30,30 @@ import am.util.printer.PrinterWriter80mm;
 /**
  * Model
  */
-class PrinterModel extends AMModel<PrinterPresenter> implements PrinterViewModel {
+class PrinterModel extends AMModel<PrinterPresenter> implements PrinterViewModel,
+        PrintSocketHolder.OnStateChangedListener, PrintExecutor.OnPrintResultListener {
 
     private int mType = PrinterWriter80mm.TYPE_80;
     private boolean mImageEnable = true;
     private int mWidth = 300;
     private int mHeight = PrinterWriter.HEIGHT_PARTING_DEFAULT;
     private String mQRCodeData;
-    private String mIP;
-    private int mPort;
-    private BluetoothDevice mDevice;
+    private PrintExecutor mExecutor;
+    private PrinterPrintDataMaker mMaker;
 
     PrinterModel(PrinterPresenter presenter) {
         super(presenter);
+        mMaker = new PrinterPrintDataMaker(ProjectXApplication.getInstance(), mQRCodeData,
+                mImageEnable, mWidth, mHeight);
+    }
+
+    @Override
+    protected void onStopped() {
+        super.onStopped();
+        if (mExecutor != null) {
+            mExecutor.closeSocket();
+            mExecutor = null;
+        }
     }
 
     @Override
@@ -52,41 +67,82 @@ class PrinterModel extends AMModel<PrinterPresenter> implements PrinterViewModel
 
     @Override
     public void setImageEnable(boolean enable) {
+        if (mImageEnable == enable)
+            return;
         mImageEnable = enable;
+        mMaker = new PrinterPrintDataMaker(ProjectXApplication.getInstance(), mQRCodeData,
+                mImageEnable, mWidth, mHeight);
     }
 
     @Override
     public void setImageWidth(int width) {
+        if (mWidth == width)
+            return;
         mWidth = width;
+        mMaker = new PrinterPrintDataMaker(ProjectXApplication.getInstance(), mQRCodeData,
+                mImageEnable, mWidth, mHeight);
     }
 
     @Override
     public void setImageHeightParting(int height) {
+        if (mHeight == height)
+            return;
         mHeight = height;
+        mMaker = new PrinterPrintDataMaker(ProjectXApplication.getInstance(), mQRCodeData,
+                mImageEnable, mWidth, mHeight);
     }
 
     @Override
     public void setQRCode(String data) {
+        if (TextUtils.equals(mQRCodeData, data))
+            return;
         mQRCodeData = data;
+        mMaker = new PrinterPrintDataMaker(ProjectXApplication.getInstance(), mQRCodeData,
+                mImageEnable, mWidth, mHeight);
     }
 
     @Override
     public void print(String ip, int port) {
-        mIP = ip;
-        mPort = port;
-        mDevice = null;
+        if (TextUtils.isEmpty(ip) || mMaker == null) {
+            notifyPrinterResult(R.string.printer_result_message_6);
+            return;
+        }
+        if (mExecutor != null) {
+            mExecutor.closeSocket();
+            mExecutor = null;
+        }
+        mExecutor = new PrintExecutor(ip, port, mType);
+        mExecutor.setOnStateChangedListener(this);
+        mExecutor.setOnPrintResultListener(this);
+        mExecutor.doPrinterRequestAsync(mMaker);
+        notifyPrinterStateChanged(R.string.printer_test_message_0);
     }
 
     @Override
     public void print(BluetoothDevice device) {
-        mIP = null;
-        mPort = 0;
-        mDevice = device;
+        if (device == null || mMaker == null) {
+            notifyPrinterResult(R.string.printer_result_message_6);
+            return;
+        }
+        if (mExecutor != null) {
+            mExecutor.closeSocket();
+            mExecutor = null;
+        }
+        mExecutor = new PrintExecutor(device, mType);
+        mExecutor.setOnStateChangedListener(this);
+        mExecutor.setOnPrintResultListener(this);
+        mExecutor.doPrinterRequestAsync(mMaker);
+        notifyPrinterStateChanged(R.string.printer_test_message_0);
     }
 
     @Override
     public void print() {
-
+        if (mExecutor == null || mMaker == null) {
+            notifyPrinterResult(R.string.printer_result_message_6);
+            return;
+        }
+        mExecutor.doPrinterRequestAsync(mMaker);
+        notifyPrinterStateChanged(R.string.printer_test_message_0);
     }
 
     private void notifyPrinterStateChanged(int strId) {
@@ -99,5 +155,57 @@ class PrinterModel extends AMModel<PrinterPresenter> implements PrinterViewModel
         if (isDetachedFromPresenter())
             return;
         getPresenter().onPrinterResult(ProjectXApplication.getInstance().getString(strId));
+    }
+
+    // Listener
+    @Override
+    public void onResult(int errorCode) {
+        switch (errorCode) {
+            case PrintSocketHolder.ERROR_0:
+                notifyPrinterResult(R.string.printer_result_message_1);
+                break;
+            case PrintSocketHolder.ERROR_1:
+                notifyPrinterResult(R.string.printer_result_message_2);
+                break;
+            case PrintSocketHolder.ERROR_2:
+                notifyPrinterResult(R.string.printer_result_message_3);
+                break;
+            case PrintSocketHolder.ERROR_3:
+                notifyPrinterResult(R.string.printer_result_message_4);
+                break;
+            case PrintSocketHolder.ERROR_4:
+                notifyPrinterResult(R.string.printer_result_message_5);
+                break;
+            case PrintSocketHolder.ERROR_5:
+                notifyPrinterResult(R.string.printer_result_message_6);
+                break;
+            case PrintSocketHolder.ERROR_6:
+                notifyPrinterResult(R.string.printer_result_message_7);
+                break;
+            case PrintSocketHolder.ERROR_100:
+                notifyPrinterResult(R.string.printer_result_message_8);
+                break;
+        }
+    }
+
+    @Override
+    public void onStateChanged(int state) {
+        switch (state) {
+            case PrintSocketHolder.STATE_0:
+                notifyPrinterStateChanged(R.string.printer_test_message_1);
+                break;
+            case PrintSocketHolder.STATE_1:
+                notifyPrinterStateChanged(R.string.printer_test_message_2);
+                break;
+            case PrintSocketHolder.STATE_2:
+                notifyPrinterStateChanged(R.string.printer_test_message_3);
+                break;
+            case PrintSocketHolder.STATE_3:
+                notifyPrinterStateChanged(R.string.printer_test_message_4);
+                break;
+            case PrintSocketHolder.STATE_4:
+                notifyPrinterStateChanged(R.string.printer_test_message_5);
+                break;
+        }
     }
 }
