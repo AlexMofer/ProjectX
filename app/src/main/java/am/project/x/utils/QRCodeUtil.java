@@ -1,7 +1,24 @@
+/*
+ * Copyright (C) 2018 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package am.project.x.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -11,7 +28,6 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import java.io.FileOutputStream;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 二维码生成工具类
@@ -19,56 +35,98 @@ import java.util.Map;
  */
 
 public class QRCodeUtil {
+
+    private QRCodeUtil() {
+        //no instance
+    }
+
     /**
-     * 生成二维码Bitmap
+     * 创建二维码
      *
-     * @param content   内容
-     * @param widthPix  图片宽度
-     * @param heightPix 图片高度
-     * @param logoBm    二维码中心的Logo图标（可以为null）
-     * @param filePath  用于存储二维码图片的文件路径
-     * @return 生成二维码及保存文件是否成功
+     * @param content 内容
+     * @param bitmap  图像
+     * @return 是否成功
      */
-    public static boolean createQRImage(String content, int widthPix, int heightPix,
-                                        Bitmap logoBm, String filePath) {
+    @Nullable
+    public static boolean createQRCode(String content, Bitmap bitmap) {
+        return false;
+    }
+
+    /**
+     * 创建二维码
+     *
+     * @param content 内容
+     * @param width   宽度
+     * @param height  高度
+     * @return 图像
+     */
+    @Nullable
+    public static Bitmap createQRCode(String content, int width, int height) {
+        if (TextUtils.isEmpty(content) || width <= 0 || height <= 0)
+            return null;
+        final HashMap<EncodeHintType, Object> hints = new HashMap<>();
+        hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+        final BitMatrix matrix;
         try {
-            if (content == null || content.length() <= 0) {
-                return false;
-            }
-            //配置参数
-            Map<EncodeHintType, Object> hints = new HashMap<>();
-            hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
-            //容错级别
-            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-            // 图像数据转换，使用了矩阵转换
-            BitMatrix bitMatrix = new QRCodeWriter().encode(content, BarcodeFormat.QR_CODE,
-                    widthPix, heightPix, hints);
-            int[] pixels = new int[widthPix * heightPix];
-            // 下面这里按照二维码的算法，逐个生成二维码的图片，
-            // 两个for循环是图片横列扫描的结果
-            for (int y = 0; y < heightPix; y++) {
-                for (int x = 0; x < widthPix; x++) {
-                    if (bitMatrix.get(x, y)) {
-                        pixels[y * widthPix + x] = 0xff000000;
-                    } else {
-                        pixels[y * widthPix + x] = 0xffffffff;
-                    }
+            matrix = new QRCodeWriter().encode(content, BarcodeFormat.QR_CODE,
+                    width, height, hints);
+        } catch (Exception e) {
+            return null;
+        } catch (OutOfMemoryError error) {
+            return null;
+        }
+        final int[] pixels = new int[width * height];// TODO
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (matrix.get(x, y)) {
+                    pixels[y * width + x] = 0xff000000;
+                } else {
+                    pixels[y * width + x] = 0xffffffff;
                 }
             }
+        }
+        final Bitmap bitmap;
+        try {
+            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        } catch (OutOfMemoryError error) {
+            return null;
+        }
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+        return bitmap;
+    }
 
-            // 生成二维码图片的格式，使用ARGB_8888
-            Bitmap bitmap = Bitmap.createBitmap(widthPix, heightPix, Bitmap.Config.ARGB_8888);
-            bitmap.setPixels(pixels, 0, widthPix, 0, 0, widthPix, heightPix);
-
-            if (logoBm != null) {
-                bitmap = addLogo(bitmap, logoBm);
-            }
-            //必须使用compress方法将bitmap保存到文件中再进行读取。直接返回的bitmap是没有任何压缩的，内存消耗巨大！
-            return bitmap != null && bitmap.compress(Bitmap.CompressFormat.JPEG, 100,
-                    new FileOutputStream(filePath));
+    public static boolean createQRImage(String content, int width, int height,
+                                        Bitmap logo, String path) {
+        if (TextUtils.isEmpty(path))
+            return false;
+        final Bitmap qr = createQRCode(content, width, height);
+        if (qr == null)
+            return false;
+        if (logo != null) {
+            // TODO 增加LOGO
+//            bitmap = addLogo(bitmap, logoBm);
+        }
+        final FileOutputStream stream;
+        try {
+            stream = new FileOutputStream(path);
         } catch (Exception e) {
+            qr.recycle();
             return false;
         }
+        boolean result = qr.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        qr.recycle();
+        try {
+            stream.flush();
+        } catch (Exception e) {
+            result = false;
+        }
+        try {
+            stream.close();
+        } catch (Exception e) {
+            result = false;
+        }
+        return result;
     }
 
     /**

@@ -199,7 +199,6 @@
     <string name="printer_test_ip">测试固定IP打印机</string>
     <string name="printer_test_bluetooth">测试蓝牙打印机</string>
     <string name="printer_cancel">取消</string>
-    <string name="printer_determine">确定</string>
     <string name="printer_edit_toast_1">请填写打印机IP地址</string>
     <string name="printer_edit_toast_2">请正确填写打印机IP地址</string>
     <string name="printer_edit_toast_3">请填写打印机端口号</string>
@@ -212,7 +211,6 @@
     <string name="printer_yes">"是"</string>
     <string name="printer_no">"否"</string>
     <string name="printer_bluetooth_dlg_close_error">由于某些原因导致应用关闭蓝牙失败，请到系统设置中自行关闭</string>
-    <string name="printer_is_bonded">已配对设备:</string>
     <string name="printer_test_start">开始执行打印&#8230;</string>
     <string name="printer_test_message_0">开始测试&#8230;</string>
     <string name="printer_test_message_1">生成测试页面数据&#8230;</string>
@@ -229,8 +227,27 @@
     <string name="printer_result_message_7">关闭Socket出错！</string>
     <string name="printer_result_message_8">打印失败！</string>
     <string name="printer_state">打印机状态</string>
-    <string name="printer_connect">连接</string>
     <string name="printer_print">打印</string>
+    <string name="printer_data_1">我的餐厅</string>
+    <string name="printer_data_2">最时尚的明星餐厅</string>
+    <string name="printer_data_3">客服电话：400&#8211;8008800</string>
+    <string name="printer_data_4">订单号：88888888888888888</string>
+    <string name="printer_data_5">"预计送达："</string>
+    <string name="printer_data_6">#8（已付款）</string>
+    <string name="printer_data_7">××区××路×××大厦××楼×××室</string>
+    <string name="printer_data_8">13888888888</string>
+    <string name="printer_data_9">（张某某）</string>
+    <string name="printer_data_10">备注：这是一条测试打印单，用于测试打印机是否正常工作，以及打印排版是否正常。</string>
+    <string name="printer_data_11">星级美食（豪华套餐）×1</string>
+    <string name="printer_data_12">￥88.88</string>
+    <string name="printer_data_13">星级美食（限量套餐）×1</string>
+    <string name="printer_data_14">￥888.88</string>
+    <string name="printer_data_15">餐具×1</string>
+    <string name="printer_data_16">￥0.00</string>
+    <string name="printer_data_17">配送费</string>
+    <string name="printer_data_18">免费</string>
+    <string name="printer_data_19">合计：977.76</string>
+    <string name="printer_data_20">扫一扫，查看详情</string>
     <!--加密解密-->
     <string name="crypto_label">加密解密</string>
 </resources>

@@ -16,11 +16,11 @@
 package am.project.x.business.others.printer;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -38,6 +38,7 @@ import am.util.printer.PrinterWriter80mm;
 
 class PrinterPrintDataMaker implements PrintDataMaker {
 
+    private static final String PATTERN = "yyyy/MM/dd HH:mm";
     private Context context;
     private String qr;
     private boolean enable;
@@ -65,9 +66,8 @@ class PrinterPrintDataMaker implements PrintDataMaker {
             data.add(printer.getDataAndReset());
 
             if (enable) {
-                ArrayList<byte[]> image1 = printer.getImageByte(context.getResources(),
-                        R.drawable.ic_printer_logo);
-                data.addAll(image1);
+                data.addAll(printer.getImageByte(context.getResources(),
+                        R.drawable.ic_printer_logo));
             }
 
             printer.setAlignLeft();
@@ -78,57 +78,61 @@ class PrinterPrintDataMaker implements PrintDataMaker {
             printer.setAlignCenter();
             printer.setEmphasizedOn();
             printer.setFontSize(1);
-            printer.print("我的餐厅");
+            printer.print(context.getString(R.string.printer_data_1));
             printer.printLineFeed();
             printer.setFontSize(0);
             printer.setEmphasizedOff();
             printer.printLineFeed();
 
-            printer.print("最时尚的明星餐厅");
+            printer.print(context.getString(R.string.printer_data_2));
             printer.printLineFeed();
-            printer.print("客服电话：400-8008800");
+            printer.print(context.getString(R.string.printer_data_3));
             printer.printLineFeed();
 
             printer.setAlignLeft();
             printer.printLineFeed();
 
-            printer.print("订单号：88888888888888888");
+            printer.print(context.getString(R.string.printer_data_4));
             printer.printLineFeed();
 
-            printer.print("预计送达：" +
-                    new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
-                            .format(new Date(System.currentTimeMillis())));
+            printer.print(context.getString(R.string.printer_data_5) +
+                    new SimpleDateFormat(PATTERN, Locale.getDefault())
+                            .format(GregorianCalendar.getInstance().getTime()));
             printer.printLineFeed();
 
             printer.setEmphasizedOn();
-            printer.print("#8（已付款）");
+            printer.print(context.getString(R.string.printer_data_6));
             printer.printLineFeed();
-            printer.print("××区××路×××大厦××楼×××室");
+            printer.print(context.getString(R.string.printer_data_7));
             printer.printLineFeed();
             printer.setEmphasizedOff();
-            printer.print("13843211234");
-            printer.print("（张某某）");
+            printer.print(context.getString(R.string.printer_data_8));
+            printer.print(context.getString(R.string.printer_data_9));
             printer.printLineFeed();
-            printer.print("备注：多加点辣椒，多加点香菜，多加点酸萝卜，多送点一次性手套");
+            printer.print(context.getString(R.string.printer_data_10));
             printer.printLineFeed();
 
             printer.printLine();
             printer.printLineFeed();
 
-            printer.printInOneLine("星级美食（豪华套餐）×1", "￥88.88", 0);
+            printer.printInOneLine(context.getString(R.string.printer_data_11),
+                    context.getString(R.string.printer_data_12), 0);
             printer.printLineFeed();
-            printer.printInOneLine("星级美食（限量套餐）×1", "￥888.88", 0);
+            printer.printInOneLine(context.getString(R.string.printer_data_13),
+                    context.getString(R.string.printer_data_14), 0);
             printer.printLineFeed();
-            printer.printInOneLine("餐具×1", "￥0.00", 0);
+            printer.printInOneLine(context.getString(R.string.printer_data_15),
+                    context.getString(R.string.printer_data_16), 0);
             printer.printLineFeed();
-            printer.printInOneLine("配送费", "免费", 0);
+            printer.printInOneLine(context.getString(R.string.printer_data_17),
+                    context.getString(R.string.printer_data_18), 0);
             printer.printLineFeed();
 
             printer.printLine();
             printer.printLineFeed();
 
             printer.setAlignRight();
-            printer.print("合计：977.76");
+            printer.print(context.getString(R.string.printer_data_19));
             printer.printLineFeed();
             printer.printLineFeed();
 
@@ -137,24 +141,11 @@ class PrinterPrintDataMaker implements PrintDataMaker {
             data.add(printer.getDataAndReset());
 
             if (enable) {
-                File dir = context.getExternalFilesDir("Temp");
-                if (dir == null) {
-                    dir = context.getFilesDir();
-                }
-                String bitmapPath = dir.getPath() + "/tmp_qr.jpg";
-                if (QRCodeUtil.createQRImage(qr, 380, 380, null,
-                        bitmapPath)) {
-                    ArrayList<byte[]> image2 = printer.getImageByte(bitmapPath);
-                    data.addAll(image2);
-                } else {
-                    ArrayList<byte[]> image2 = printer
-                            .getImageByte(context.getResources(), R.drawable.ic_printer_qr);
-                    data.addAll(image2);
-                }
+                printQRCode(printer, data);
             }
 
             printer.printLineFeed();
-            printer.print("扫一扫，查看详情");
+            printer.print(context.getString(R.string.printer_data_20));
             printer.printLineFeed();
             printer.printLineFeed();
             printer.printLineFeed();
@@ -168,5 +159,22 @@ class PrinterPrintDataMaker implements PrintDataMaker {
         } catch (Exception e) {
             return new ArrayList<>();
         }
+    }
+
+    private void printQRCode(PrinterWriter printer, ArrayList<byte[]> data) {
+        final int size = 380;
+        final Bitmap image;
+        try {
+            image = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+        } catch (OutOfMemoryError error) {
+            data.addAll(printer.getImageByte(context.getResources(), R.drawable.ic_printer_qr));
+            return;
+        }
+        if (QRCodeUtil.createQRCode(qr, image)) {
+            data.addAll(printer.getImageByte(image));
+        } else {
+            data.addAll(printer.getImageByte(context.getResources(), R.drawable.ic_printer_qr));
+        }
+        image.recycle();
     }
 }
