@@ -60,7 +60,7 @@
         app:layout_constraintWidth_percent="0.25" />
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/cipher_btn_rsa"
+        android:id="@+id/crypto_btn_rsa"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
