@@ -250,4 +250,12 @@
     <string name="printer_data_20">扫一扫，查看详情</string>
     <!--加密解密-->
     <string name="crypto_label">加密解密</string>
+    <string name="crypto_title">加密解密</string>
+    <string name="crypto_input">输入待处理文本</string>
+    <string name="crypto_message_digest">信息摘要</string>
+    <string name="crypto_des">DES</string>
+    <string name="crypto_aes">AES</string>
+    <string name="crypto_rsa">RSA</string>
+    <string name="crypto_output">输出信息：</string>
+    <string name="crypto_dlg_message">正在计算&#8230;</string>
 </resources>

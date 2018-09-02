@@ -17,4 +17,80 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/crypto_label" />
 
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/crypto_edt_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="@string/crypto_input"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@id/crypto_toolbar" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/crypto_btn_message"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/crypto_message_digest"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/crypto_edt_input"
+        app:layout_constraintWidth_percent="0.25" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/crypto_btn_des"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/crypto_des"
+        app:layout_constraintBottom_toBottomOf="@id/crypto_btn_message"
+        app:layout_constraintStart_toEndOf="@id/crypto_btn_message"
+        app:layout_constraintTop_toTopOf="@id/crypto_btn_message"
+        app:layout_constraintWidth_percent="0.25" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/crypto_btn_aes"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/crypto_aes"
+        app:layout_constraintBottom_toBottomOf="@id/crypto_btn_des"
+        app:layout_constraintStart_toEndOf="@id/crypto_btn_des"
+        app:layout_constraintTop_toTopOf="@id/crypto_btn_des"
+        app:layout_constraintWidth_percent="0.25" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/cipher_btn_rsa"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/crypto_rsa"
+        app:layout_constraintBottom_toBottomOf="@id/crypto_btn_aes"
+        app:layout_constraintStart_toEndOf="@id/crypto_btn_aes"
+        app:layout_constraintTop_toTopOf="@id/crypto_btn_aes"
+        app:layout_constraintWidth_percent="0.25" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/crypto_output"
+        app:layout_constraintTop_toBottomOf="@id/crypto_btn_message" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="42dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/crypto_btn_message">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/crypto_tv_output"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </ScrollView>
+
 </android.support.constraint.ConstraintLayout>
