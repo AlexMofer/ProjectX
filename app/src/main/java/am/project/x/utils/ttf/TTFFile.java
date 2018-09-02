@@ -16,7 +16,7 @@
  */
 
 /* $Id: TTFFile.java 1395925 2012-10-09 09:13:18Z jeremias $ */
-package org.apache.fop;
+package am.project.x.utils.ttf;
 
 import java.io.IOException;
 import java.util.HashMap;

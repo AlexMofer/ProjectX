@@ -17,7 +17,7 @@
 
 /* $Id: TTFTableName.java 1357883 2012-07-05 20:29:53Z gadams $ */
 
-package org.apache.fop;
+package am.project.x.utils.ttf;
 
 /**
  * Represents table names as found in a TrueType font's Table Directory. TrueType fonts may have

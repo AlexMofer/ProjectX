@@ -16,7 +16,7 @@
  */
 
 /* $Id: TTFDirTabEntry.java 1357883 2012-07-05 20:29:53Z gadams $ */
-package org.apache.fop;
+package am.project.x.utils.ttf;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
