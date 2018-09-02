@@ -32,8 +32,9 @@ import am.project.x.base.BaseActivity;
 /**
  * 加密解密
  */
-public class CryptoActivity extends BaseActivity implements View.OnClickListener {
+public class CryptoActivity extends BaseActivity implements CryptoView, View.OnClickListener {
 
+    private final CryptoPresenter mPresenter = new CryptoPresenter(this);
     private EditText mVInput;
     private TextView mVOutput;
     private AlertDialog mDLoading;
@@ -59,6 +60,18 @@ public class CryptoActivity extends BaseActivity implements View.OnClickListener
         findViewById(R.id.crypto_btn_rsa).setOnClickListener(this);
     }
 
+    @Override
+    protected CryptoPresenter getPresenter() {
+        return mPresenter;
+    }
+
+    // View
+    @Override
+    public void onResult(String output) {
+        mVOutput.setText(output);
+        dismissDialog(mDLoading);
+    }
+
     // Listener
     @Override
     public void onClick(View v) {
@@ -79,12 +92,16 @@ public class CryptoActivity extends BaseActivity implements View.OnClickListener
         showDialog(mDLoading);
         switch (v.getId()) {
             case R.id.crypto_btn_message:
+                mPresenter.getMessage(input);
                 break;
             case R.id.crypto_btn_des:
+                mPresenter.getDES(input);
                 break;
             case R.id.crypto_btn_aes:
+                mPresenter.getAES(input);
                 break;
             case R.id.crypto_btn_rsa:
+                mPresenter.getRSA(input);
                 break;
         }
     }
