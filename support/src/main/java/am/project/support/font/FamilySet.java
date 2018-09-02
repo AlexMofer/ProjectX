@@ -20,12 +20,13 @@ class FamilySet {
         mVersion = version;
     }
 
-    void putFamily(Family family) {
+    boolean putFamily(Family family) {
         if (family == null || !family.isAvailable())
-            return;
+            return false;
         final String name = family.getName();
         mNames.add(name);
         mSystemFamily.put(name, family);
+        return true;
     }
 
     void putAlias(Alias alias) {

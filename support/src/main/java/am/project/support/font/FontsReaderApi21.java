@@ -17,7 +17,7 @@ import java.io.Reader;
  * 结构完全改变，参照：SDK\platforms\android-21\data\fonts\fonts.xml
  * Created by Alex on 2018/8/31.
  */
-class FontsReaderApi21 extends FontsReaderApi20 {
+class FontsReaderApi21 extends FontsReaderApi17 {
 
     @SuppressWarnings("all")
     protected static final String NAME_ALIAS = "alias";

@@ -8,7 +8,7 @@ import org.xmlpull.v1.XmlPullParser;
  * font标签增加fallbackFor字段
  * Created by Alex on 2018/8/30.
  */
-class FontsReaderApi28 extends FontsReaderApi27 {
+class FontsReaderApi28 extends FontsReaderApi26 {
 
     @SuppressWarnings("all")
     protected static final String ATTR_FALLBACKFOR = "fallbackFor";

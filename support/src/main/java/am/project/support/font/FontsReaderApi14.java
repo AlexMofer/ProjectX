@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * 增加大量字体，更易于解析及匹配
  * Created by Alex on 2018/8/31.
  */
-class FontsReaderApi14 extends FontsReaderApi13 {
+class FontsReaderApi14 extends FontsReaderBase {
 
     @SuppressWarnings("all")
     protected static final String NAME_FAMILYSET = "familyset";

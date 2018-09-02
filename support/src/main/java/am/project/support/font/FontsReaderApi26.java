@@ -12,7 +12,7 @@ import org.xmlpull.v1.XmlPullParser;
  * fallback 字体限定仅一个无语言参数，其他均包含语言参数
  * Created by Alex on 2018/8/31.
  */
-class FontsReaderApi26 extends FontsReaderApi25 {
+class FontsReaderApi26 extends FontsReaderApi24 {
 
     @SuppressWarnings("all")
     protected static final String NAME_AXIS = "axis";
