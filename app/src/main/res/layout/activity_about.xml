@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="12dp"
-            android:src="@drawable/ic_main_nav" />
+            android:src="@drawable/ic_common_logo" />
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/about_toolbar"

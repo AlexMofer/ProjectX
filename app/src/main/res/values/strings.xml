@@ -1,4 +1,5 @@
 <resources>
+    <string name="main_nav_title">自由、开放、平等、分享</string>
     <string name="main_nav_widgets">控件</string>
     <string name="main_nav_drawables">图形</string>
     <string name="main_nav_others">其他</string>
@@ -8,7 +9,7 @@
     <string name="main_nav_about">关于</string>
     <!--关于-->
     <string name="about_label">关于</string>
-    <string name="about_info">ProjectX是一款为Android开发者AlexMofer，提供开发及维护其所有开源控件的合集应用，同时也可以用于展示其所有开源控件的功能及属性。</string>
+    <string name="about_info">ProjectX为个人开源控件合集，旨在辅助开发、维护、更新个人所有开源控件，同时也可以用于展示其所有开源控件的功能及属性。</string>
     <string name="about_more">更多信息，请参考Github项目主页：</string>
     <!--主页-->
     <string name="main_widgets_gradienttabstrip">渐变底部栏</string>
