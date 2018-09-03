@@ -16,7 +16,7 @@
     <style name="AppTheme" parent="BaseTheme" />
 
     <style name="WelcomeTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/bg_welcome</item>
+        <item name="android:windowBackground">@drawable/bg_common</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowAnimationStyle">@style/FadeWindowAnimation</item>
     </style>

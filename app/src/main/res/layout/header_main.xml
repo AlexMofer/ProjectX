@@ -3,7 +3,7 @@
     android:id="@+id/main_lyt_header"
     android:layout_width="match_parent"
     android:layout_height="172dp"
-    android:background="@drawable/bg_welcome"
+    android:background="@drawable/bg_common"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="12dp"

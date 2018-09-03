@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><!--###WS@M Project:PDFelement-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <gradient
+                android:angle="-90"
+                android:endColor="#518EF4"
+                android:startColor="@color/colorPrimary" />
+        </shape>
+    </item>
+    <item>
+        <bitmap
+            android:src="@drawable/ic_common_bg_item"
+            android:tileMode="repeat" />
+    </item>
+</layer-list>
