@@ -12,17 +12,15 @@
     <android.support.v7.widget.AppCompatImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_common_logo" />
+        android:src="@drawable/ic_nav_logo" />
 
     <Space
         android:layout_width="wrap_content"
         android:layout_height="18dp" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <android.support.v7.widget.AppCompatImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/main_nav_title"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:src="@drawable/ic_nav_title" />
 
 </LinearLayout>
