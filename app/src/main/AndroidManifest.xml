@@ -113,6 +113,7 @@
         <activity
             android:name=".business.others.crypto.CryptoActivity"
             android:label="@string/crypto_label" />
+        <activity android:name=".business.browser.BrowserActivity" />
     </application>
 
 </manifest>

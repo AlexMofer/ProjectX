@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".business.browser.BrowserActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/browser_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <am.project.x.widget.PowerfulWebView
+        android:id="@+id/browser_wb_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:pwvProgressColor="@color/colorAccent"
+        app:pwvProgressHeight="4dp" />
+
+</LinearLayout>

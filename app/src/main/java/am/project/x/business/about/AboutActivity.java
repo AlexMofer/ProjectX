@@ -19,11 +19,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import am.project.x.BuildConfig;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
+import am.project.x.business.browser.BrowserActivity;
 import am.project.x.utils.ViewUtils;
 
 /**
@@ -46,5 +49,24 @@ public class AboutActivity extends BaseActivity {
         setSupportActionBar(R.id.about_toolbar);
         ((TextView) findViewById(R.id.about_tv_version)).setText(
                 getString(R.string.about_version, BuildConfig.VERSION_NAME));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_about, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.about_privacy:
+                BrowserActivity.start(this, "file:///android_asset/html/privacy.html");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 }
