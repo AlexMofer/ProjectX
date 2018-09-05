@@ -42,7 +42,8 @@
         </activity>
         <activity
             android:name=".business.about.AboutActivity"
-            android:label="@string/about_label" />
+            android:label="@string/about_label"
+            android:theme="@style/AboutTheme" />
         <activity
             android:name=".business.developing.DevelopingActivity"
             android:label="@string/developing_label" />

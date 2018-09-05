@@ -24,4 +24,6 @@
     <style name="MainTheme" parent="AppTheme">
         <item name="android:windowAnimationStyle">@style/MainWindowAnimation</item>
     </style>
+
+    <style name="AboutTheme" parent="AppTheme" />
 </resources>

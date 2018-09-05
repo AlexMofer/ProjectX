@@ -9,4 +9,8 @@
         <item name="android:windowAnimationStyle">@style/MainWindowAnimation</item>
         <item name="android:statusBarColor">@color/colorDark</item>
     </style>
+
+    <style name="AboutTheme" parent="AppTheme">
+        <item name="android:statusBarColor">@color/colorDark</item>
+    </style>
 </resources>
