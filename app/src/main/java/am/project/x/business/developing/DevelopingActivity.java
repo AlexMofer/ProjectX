@@ -20,12 +20,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import java.io.File;
-import java.util.List;
-
-import am.project.support.font.truetype.TrueTypeFullNameUtils;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
+import am.util.opentype.OpenTypeUtils;
 
 /**
  * 正在开发
@@ -44,50 +41,7 @@ public class DevelopingActivity extends BaseActivity {
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.developing_toolbar);
-//        final TypefaceConfig config = TypefaceConfig.getInstance();
-//        if (config.isAvailable()) {
-//            final List<String> names = config.getNames();
-//            for (String name : names) {
-//                System.out.println("lallalalalla-----------------------------name:" + name);
-//            }
-//            final TypefaceCollection collection = config.getTypefaceCollection("sans-serif");
-//            if (collection != null) {
-//                Log.d("MainActivity", collection.toString());
-//                final List<TypefaceItem> items = collection.getItems();
-//                for (TypefaceItem item : items) {
-//                    System.out.println("lallalalalla-----------------------------items name:" + item.getName());
-//                }
-//                final List<TypefaceFallback> fallbacks = collection.getFallbacks();
-//                for (TypefaceFallback fallback : fallbacks) {
-//                    System.out.println("lallalalalla----------------------------------------------fallback lang:" + fallback.getLang());
-//                    final List<TypefaceItem> its = fallback.getItems();
-//                    for (TypefaceItem item : its) {
-//                        System.out.println("lallalalalla-----------------------------fallback items name:" + item.getName());
-//                    }
-//                }
-//            }
-//        }
-
-        final File dir = new File("/system/fonts");
-        if (dir.exists() && dir.isDirectory()) {
-            // list
-            final File[] fonts = dir.listFiles();
-            if (fonts != null) {
-                for (File font : fonts) {
-                    List<String> names;
-                    try {
-                        names = TrueTypeFullNameUtils.getFullNames(font);
-                    } catch (Exception e) {
-                        names = null;
-                    }
-                    if (names != null) {
-                        for (String name : names) {
-                            System.out.println("lalalalal-----------------------------------------font:" + name);
-                        }
-                    }
-                }
-            }
-        }
+        OpenTypeUtils.test();
         finish();
     }
 }

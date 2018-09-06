@@ -1,19 +1,4 @@
-/*
- * Copyright (C) 2018 AlexMofer
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package am.project.support.font.truetype;
+package am.util.opentype;
 
 import java.io.EOFException;
 import java.io.File;
@@ -24,12 +9,12 @@ import java.io.RandomAccessFile;
  * Reads a TrueType font file into a RandomAccessFile.
  * Created by Alex on 2018/9/5.
  */
-public class FileTrueTypeReader implements TrueTypeReader {
+public class FileOpenTypeReader implements OpenTypeReader {
 
     private final RandomAccessFile mFile;
 
     @SuppressWarnings("all")
-    public FileTrueTypeReader(File font) throws IOException {
+    public FileOpenTypeReader(File font) throws IOException {
         mFile = new RandomAccessFile(font, "r");
     }
 
@@ -85,32 +70,50 @@ public class FileTrueTypeReader implements TrueTypeReader {
     }
 
     @Override
+    public int readUnsignedInt24() throws IOException {
+        final int ch1 = read();
+        final int ch2 = read();
+        final int ch3 = read();
+        if ((ch1 | ch2 | ch3) < 0)
+            throw new EOFException();
+        return ((ch1 << 16) + (ch2 << 8) + ch3);
+    }
+
+    @Override
     public int readInt() throws IOException {
         return mFile.readInt();
     }
 
     @Override
-    public String readString(int len, String charsetName) throws IOException {
-        if ((len + mFile.getFilePointer()) > mFile.length())
-            throw new EOFException();
-        final byte[] tmp = new byte[len];
-        mFile.read(tmp);
-        return new String(tmp, charsetName);
+    public int readUnsignedInt() throws IOException {
+        return Math.abs(mFile.readInt());
     }
 
     @Override
-    public String readString(int len) throws IOException {
-        if ((len + mFile.getFilePointer()) > mFile.length())
-            throw new EOFException();
-        final byte[] tmp = new byte[len];
-        mFile.read(tmp);
-        final String charsetName;
-        if ((tmp.length > 0) && (tmp[0] == 0)) {
-            charsetName = CHARSET_UTF_16BE;
-        } else {
-            charsetName = CHARSET_ISO_8859_1;
-        }
-        return new String(tmp, charsetName);
+    public float readFloat() throws IOException {
+        return mFile.readFloat();
+    }
+
+    @Override
+    public float readFloat2Dot14() throws IOException {
+        final int ch1 = read();
+        final int ch2 = read();
+        final int f2 = (ch1 >> 6) & 0x3;
+        final int dot14 = (((ch1 << 2) & 0xff) << 6) + ch2;
+        if (f2 == 3)
+            // 11
+            return -1 + dot14 / 16384.0f;
+        else if (f2 == 2)
+            // 10
+            return -2 + dot14 / 16384.0f;
+        else
+            // 01 or 00
+            return f2 + dot14 / 16384.0f;
+    }
+
+    @Override
+    public long readLong() throws IOException {
+        return mFile.readLong();
     }
 
     @Override
