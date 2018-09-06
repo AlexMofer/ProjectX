@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * 字体解析器
  * Created by Alex on 2018/9/5.
  */
+@SuppressWarnings("unused")
 public class OpenTypeParser {
 
     private static final int OTF = 0x00010000;// OpenType fonts that contain TrueType outlines
@@ -108,18 +109,38 @@ public class OpenTypeParser {
                 offsetTableOffsets, DSIGTableEnable, dsigLength, dsigOffset, fonts);
     }
 
+    /**
+     * 判断是否为无效字体
+     *
+     * @return 是否为无效字体
+     */
     public boolean isInvalid() {
         return mInvalid;
     }
 
+    /**
+     * 判断是否为字体集
+     *
+     * @return 是否为字体集
+     */
     public boolean isCollection() {
         return mCollection;
     }
 
+    /**
+     * 获取解析后的字体对象
+     *
+     * @return 字体对象，在无效或者为字体集的情况下返回空
+     */
     public OpenType getOpenType() {
         return mFont;
     }
 
+    /**
+     * 获取解析后的字体集对象
+     *
+     * @return 字体集对象，在无效或不为字体集的情况下返回空
+     */
     public OpenTypeCollection getOpenTypeCollection() {
         return mFonts;
     }
