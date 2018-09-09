@@ -1,11 +1,11 @@
 package am.util.opentype;
 
 /**
- * 表记录条目
+ * 表记录
  * Created by Alex on 2018/9/5.
  */
 @SuppressWarnings("all")
-public class TableRecordEntry {
+public class TableRecord {
 
     // Required Tables
     // Whether TrueType or CFF outlines are used in an OpenType font,
@@ -77,7 +77,7 @@ public class TableRecordEntry {
     private final int mOffset;// Offset from beginning of TrueType font file.
     private final int mLength;// Length of this table.
 
-    public TableRecordEntry(int tableTag, int checkSum, int offset, int length) {
+    public TableRecord(int tableTag, int checkSum, int offset, int length) {
         mTableTag = tableTag;
         mCheckSum = checkSum;
         mOffset = offset;

@@ -5,6 +5,10 @@ import android.util.SparseArray;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import am.util.opentype.tables.LangTagRecord;
+import am.util.opentype.tables.NameRecord;
+import am.util.opentype.tables.NameTable;
+
 /**
  * 字体解析器
  * Created by Alex on 2018/9/5.
@@ -59,6 +63,51 @@ public class OpenTypeParser {
         }
     }
 
+    /**
+     * 解析命名表
+     *
+     * @param reader 数据读取器
+     * @param record 表记录
+     * @return 命名表
+     */
+    static NameTable parseNameTable(OpenTypeReader reader, long begin, TableRecord record)
+            throws IOException {
+        if (record.getTableTag() != TableRecord.TAG_NAME)
+            return null;
+        reader.seek(begin + record.getOffset());
+        final int format = reader.readUnsignedShort();
+        final int count = reader.readUnsignedShort();
+        final int stringOffset = reader.readUnsignedShort();
+        final ArrayList<NameRecord> nameRecords = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            final int platformID = reader.readUnsignedShort();
+            final int encodingID = reader.readUnsignedShort();
+            final int languageID = reader.readUnsignedShort();
+            final int nameID = reader.readUnsignedShort();
+            final int length = reader.readUnsignedShort();
+            final int offset = reader.readUnsignedShort();
+            nameRecords.add(new NameRecord(platformID, encodingID, languageID, nameID,
+                    length, offset));
+        }
+        ArrayList<LangTagRecord> langTagRecords = null;
+        if (format == 1) {
+            // Naming table format 1
+            final int langTagCount = reader.readUnsignedShort();
+            langTagRecords = new ArrayList<>();
+            for (int i = 0; i < langTagCount; i++) {
+                final int length = reader.readUnsignedShort();
+                final int offset = reader.readUnsignedShort();
+                langTagRecords.add(new LangTagRecord(length, offset));
+            }
+        }
+        final NameTable name = new NameTable(format, count, stringOffset, nameRecords,
+                langTagRecords);
+
+        System.out.println("lallalalla--------------------------------here");
+
+        return name;
+    }
+
     private OpenType parseOpenType(OpenTypeReader reader, long begin, int... tags)
             throws IOException {
         reader.seek(begin);
@@ -67,49 +116,18 @@ public class OpenTypeParser {
         final int searchRange = reader.readUnsignedShort();
         final int entrySelector = reader.readUnsignedShort();
         final int rangeShift = reader.readUnsignedShort();
-        final SparseArray<TableRecordEntry> entries = new SparseArray<>();
+        final SparseArray<TableRecord> records = new SparseArray<>();
         for (int i = 0; i < numTables; i++) {
             final int tableTag = reader.readInt();
             final int checkSum = reader.readUnsignedInt();
             final int offset = reader.readUnsignedInt();
             final int length = reader.readUnsignedInt();
-            entries.put(tableTag, new TableRecordEntry(tableTag, checkSum, offset, length));
+            records.put(tableTag, new TableRecord(tableTag, checkSum, offset, length));
         }
-        return new OpenType(begin, sfntVersion, numTables, searchRange, entrySelector,
-                rangeShift, entries);
-    }
-
-    private OpenTypeCollection parseCollection(OpenTypeReader reader, int... tags)
-            throws IOException {
-        reader.seek(0);
-        final int ttcTag = reader.readInt();
-        final int majorVersion = reader.readUnsignedShort();
-        final int minorVersion = reader.readUnsignedShort();
-        final int numFonts = reader.readUnsignedInt();
-        final int[] offsetTableOffsets = new int[numFonts];
-        for (int i = 0; i < numFonts; i++) {
-            offsetTableOffsets[i] = reader.readInt();
-        }
-        boolean DSIGTableEnable = false;
-        int dsigLength = -1;
-        int dsigOffset = -1;
-        if (majorVersion == 2 && minorVersion == 0) {
-            // TTC Header Version 2.0
-            final int dsigTag = reader.readUnsignedInt();
-            if (dsigTag == TableRecordEntry.TAG_DSIG) {
-                dsigLength = reader.readUnsignedInt();
-                dsigOffset = reader.readUnsignedInt();
-                if (dsigLength > 0 && dsigOffset > 0) {
-                    DSIGTableEnable = true;
-                }
-            }
-        }
-        final ArrayList<OpenType> fonts = new ArrayList<>();
-        for (int i = 0; i < numFonts; i++) {
-            fonts.add(parseOpenType(reader, offsetTableOffsets[i], tags));
-        }
-        return new OpenTypeCollection(ttcTag, majorVersion, minorVersion, numFonts,
-                offsetTableOffsets, DSIGTableEnable, dsigLength, dsigOffset, fonts);
+        final OpenType ot = new OpenType(begin, sfntVersion, numTables, searchRange, entrySelector,
+                rangeShift, records);
+        ot.parseTables(reader, tags);
+        return ot;
     }
 
     /**
@@ -146,5 +164,38 @@ public class OpenTypeParser {
      */
     public OpenTypeCollection getOpenTypeCollection() {
         return mFonts;
+    }
+
+    private OpenTypeCollection parseCollection(OpenTypeReader reader, int... tags)
+            throws IOException {
+        reader.seek(0);
+        final int ttcTag = reader.readInt();
+        final int majorVersion = reader.readUnsignedShort();
+        final int minorVersion = reader.readUnsignedShort();
+        final int numFonts = reader.readUnsignedInt();
+        final int[] offsetTableOffsets = new int[numFonts];
+        for (int i = 0; i < numFonts; i++) {
+            offsetTableOffsets[i] = reader.readInt();
+        }
+        boolean DSIGTableEnable = false;
+        int dsigLength = -1;
+        int dsigOffset = -1;
+        if (majorVersion == 2 && minorVersion == 0) {
+            // TTC Header Version 2.0
+            final int dsigTag = reader.readUnsignedInt();
+            if (dsigTag == TableRecord.TAG_DSIG) {
+                dsigLength = reader.readUnsignedInt();
+                dsigOffset = reader.readUnsignedInt();
+                if (dsigLength > 0 && dsigOffset > 0) {
+                    DSIGTableEnable = true;
+                }
+            }
+        }
+        final ArrayList<OpenType> fonts = new ArrayList<>();
+        for (int i = 0; i < numFonts; i++) {
+            fonts.add(parseOpenType(reader, offsetTableOffsets[i], tags));
+        }
+        return new OpenTypeCollection(ttcTag, majorVersion, minorVersion, numFonts,
+                offsetTableOffsets, DSIGTableEnable, dsigLength, dsigOffset, fonts);
     }
 }
