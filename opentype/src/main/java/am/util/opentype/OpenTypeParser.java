@@ -24,9 +24,10 @@ public class OpenTypeParser {
     /**
      * 解析字体
      *
-     * @param reader 数据源
+     * @param reader 字体数据读取器
+     * @param tags   表集合
      */
-    public void parse(OpenTypeReader reader) {
+    public void parse(OpenTypeReader reader, int... tags) {
         mInvalid = false;
         mCollection = false;
         mFont = null;
@@ -46,11 +47,11 @@ public class OpenTypeParser {
                     break;
                 case OTF:
                 case OTTO:
-                    mFont = parseOpenType(reader, 0);
+                    mFont = parseOpenType(reader, 0, tags);
                     break;
                 case TTCF:
                     mCollection = true;
-                    mFonts = parseCollection(reader);
+                    mFonts = parseCollection(reader, tags);
                     break;
             }
         } catch (IOException e) {
@@ -58,7 +59,8 @@ public class OpenTypeParser {
         }
     }
 
-    private OpenType parseOpenType(OpenTypeReader reader, long begin) throws IOException {
+    private OpenType parseOpenType(OpenTypeReader reader, long begin, int... tags)
+            throws IOException {
         reader.seek(begin);
         final int sfntVersion = reader.readInt();
         final int numTables = reader.readUnsignedShort();
@@ -77,7 +79,8 @@ public class OpenTypeParser {
                 rangeShift, entries);
     }
 
-    private OpenTypeCollection parseCollection(OpenTypeReader reader) throws IOException {
+    private OpenTypeCollection parseCollection(OpenTypeReader reader, int... tags)
+            throws IOException {
         reader.seek(0);
         final int ttcTag = reader.readInt();
         final int majorVersion = reader.readUnsignedShort();
@@ -103,7 +106,7 @@ public class OpenTypeParser {
         }
         final ArrayList<OpenType> fonts = new ArrayList<>();
         for (int i = 0; i < numFonts; i++) {
-            fonts.add(parseOpenType(reader, offsetTableOffsets[i]));
+            fonts.add(parseOpenType(reader, offsetTableOffsets[i], tags));
         }
         return new OpenTypeCollection(ttcTag, majorVersion, minorVersion, numFonts,
                 offsetTableOffsets, DSIGTableEnable, dsigLength, dsigOffset, fonts);
