@@ -59,6 +59,133 @@ public class NameRecord {
     public static final int ENCODING_MACINTOSH_31 = 31;// Sindhi
     public static final int ENCODING_MACINTOSH_32 = 32;// Uninterpreted
 
+    public static final int LANGUAGE_MACINTOSH_0 = 0;// English
+    public static final int LANGUAGE_MACINTOSH_1 = 1;// French
+    public static final int LANGUAGE_MACINTOSH_2 = 2;// German
+    public static final int LANGUAGE_MACINTOSH_3 = 3;// Italian
+    public static final int LANGUAGE_MACINTOSH_4 = 4;// Dutch
+    public static final int LANGUAGE_MACINTOSH_5 = 5;// Swedish
+    public static final int LANGUAGE_MACINTOSH_6 = 6;// Spanish
+    public static final int LANGUAGE_MACINTOSH_7 = 7;// Danish
+    public static final int LANGUAGE_MACINTOSH_8 = 8;// Portuguese
+    public static final int LANGUAGE_MACINTOSH_9 = 9;// Norwegian
+    public static final int LANGUAGE_MACINTOSH_10 = 10;// Hebrew
+    public static final int LANGUAGE_MACINTOSH_11 = 11;// Japanese
+    public static final int LANGUAGE_MACINTOSH_12 = 12;// Arabic
+    public static final int LANGUAGE_MACINTOSH_13 = 13;// Finnish
+    public static final int LANGUAGE_MACINTOSH_14 = 14;// Greek
+    public static final int LANGUAGE_MACINTOSH_15 = 15;// Icelandic
+    public static final int LANGUAGE_MACINTOSH_16 = 16;// Maltese
+    public static final int LANGUAGE_MACINTOSH_17 = 17;// Turkish
+    public static final int LANGUAGE_MACINTOSH_18 = 18;// Croatian
+    public static final int LANGUAGE_MACINTOSH_19 = 19;// Chinese (Traditional)
+    public static final int LANGUAGE_MACINTOSH_20 = 20;// Urdu
+    public static final int LANGUAGE_MACINTOSH_21 = 21;// Hindi
+    public static final int LANGUAGE_MACINTOSH_22 = 22;// Thai
+    public static final int LANGUAGE_MACINTOSH_23 = 23;// Korean
+    public static final int LANGUAGE_MACINTOSH_24 = 24;// Lithuanian
+    public static final int LANGUAGE_MACINTOSH_25 = 25;// Polish
+    public static final int LANGUAGE_MACINTOSH_26 = 26;// Hungarian
+    public static final int LANGUAGE_MACINTOSH_27 = 27;// Estonian
+    public static final int LANGUAGE_MACINTOSH_28 = 28;// Latvian
+    public static final int LANGUAGE_MACINTOSH_29 = 29;// Sami
+    public static final int LANGUAGE_MACINTOSH_30 = 30;// Faroese
+    public static final int LANGUAGE_MACINTOSH_31 = 31;// Farsi/Persian
+    public static final int LANGUAGE_MACINTOSH_32 = 32;// Russian
+    public static final int LANGUAGE_MACINTOSH_33 = 33;// Chinese (Simplified)
+    public static final int LANGUAGE_MACINTOSH_34 = 34;// Flemish
+    public static final int LANGUAGE_MACINTOSH_35 = 35;// Irish Gaelic
+    public static final int LANGUAGE_MACINTOSH_36 = 36;// Albanian
+    public static final int LANGUAGE_MACINTOSH_37 = 37;// Romanian
+    public static final int LANGUAGE_MACINTOSH_38 = 38;// Czech
+    public static final int LANGUAGE_MACINTOSH_39 = 39;// Slovak
+    public static final int LANGUAGE_MACINTOSH_40 = 40;// Slovenian
+    public static final int LANGUAGE_MACINTOSH_41 = 41;// Yiddish
+    public static final int LANGUAGE_MACINTOSH_42 = 42;// Serbian
+    public static final int LANGUAGE_MACINTOSH_43 = 43;// Macedonian
+    public static final int LANGUAGE_MACINTOSH_44 = 44;// Bulgarian
+    public static final int LANGUAGE_MACINTOSH_45 = 45;// Ukrainian
+    public static final int LANGUAGE_MACINTOSH_46 = 46;// Byelorussian
+    public static final int LANGUAGE_MACINTOSH_47 = 47;// Uzbek
+    public static final int LANGUAGE_MACINTOSH_48 = 48;// Kazakh
+    public static final int LANGUAGE_MACINTOSH_49 = 49;// Azerbaijani (Cyrillic script)
+    public static final int LANGUAGE_MACINTOSH_50 = 50;// Azerbaijani (Arabic script)
+    public static final int LANGUAGE_MACINTOSH_51 = 51;// Armenian
+    public static final int LANGUAGE_MACINTOSH_52 = 52;// Georgian
+    public static final int LANGUAGE_MACINTOSH_53 = 53;// Moldavian
+    public static final int LANGUAGE_MACINTOSH_54 = 54;// Kirghiz
+    public static final int LANGUAGE_MACINTOSH_55 = 55;// Tajiki
+    public static final int LANGUAGE_MACINTOSH_56 = 56;// Turkmen
+    public static final int LANGUAGE_MACINTOSH_57 = 57;// Mongolian (Mongolian script)
+    public static final int LANGUAGE_MACINTOSH_58 = 58;// Mongolian (Cyrillic script)
+    public static final int LANGUAGE_MACINTOSH_59 = 59;// Pashto
+    public static final int LANGUAGE_MACINTOSH_60 = 60;// Kurdish
+    public static final int LANGUAGE_MACINTOSH_61 = 61;// Kashmiri
+    public static final int LANGUAGE_MACINTOSH_62 = 62;// Sindhi
+    public static final int LANGUAGE_MACINTOSH_63 = 63;// Tibetan
+    public static final int LANGUAGE_MACINTOSH_64 = 64;// Nepali
+    public static final int LANGUAGE_MACINTOSH_65 = 65;// Sanskrit
+    public static final int LANGUAGE_MACINTOSH_66 = 66;// Marathi
+    public static final int LANGUAGE_MACINTOSH_67 = 67;// Bengali
+    public static final int LANGUAGE_MACINTOSH_68 = 68;// Assamese
+    public static final int LANGUAGE_MACINTOSH_69 = 69;// Gujarati
+    public static final int LANGUAGE_MACINTOSH_70 = 70;// Punjabi
+    public static final int LANGUAGE_MACINTOSH_71 = 71;// Oriya
+    public static final int LANGUAGE_MACINTOSH_72 = 72;// Malayalam
+    public static final int LANGUAGE_MACINTOSH_73 = 73;// Kannada
+    public static final int LANGUAGE_MACINTOSH_74 = 74;// Tamil
+    public static final int LANGUAGE_MACINTOSH_75 = 75;// Telugu
+    public static final int LANGUAGE_MACINTOSH_76 = 76;// Sinhalese
+    public static final int LANGUAGE_MACINTOSH_77 = 77;// Burmese
+    public static final int LANGUAGE_MACINTOSH_78 = 78;// Khmer
+    public static final int LANGUAGE_MACINTOSH_79 = 79;// Lao
+    public static final int LANGUAGE_MACINTOSH_80 = 80;// Vietnamese
+    public static final int LANGUAGE_MACINTOSH_81 = 81;// Indonesian
+    public static final int LANGUAGE_MACINTOSH_82 = 82;// Tagalog
+    public static final int LANGUAGE_MACINTOSH_83 = 83;// Malay (Roman script)
+    public static final int LANGUAGE_MACINTOSH_84 = 84;// Malay (Arabic script)
+    public static final int LANGUAGE_MACINTOSH_85 = 85;// Amharic
+    public static final int LANGUAGE_MACINTOSH_86 = 86;// Tigrinya
+    public static final int LANGUAGE_MACINTOSH_87 = 87;// Galla
+    public static final int LANGUAGE_MACINTOSH_88 = 88;// Somali
+    public static final int LANGUAGE_MACINTOSH_89 = 89;// Swahili
+    public static final int LANGUAGE_MACINTOSH_90 = 90;// Kinyarwanda/Ruanda
+    public static final int LANGUAGE_MACINTOSH_91 = 91;// Rundi
+    public static final int LANGUAGE_MACINTOSH_92 = 92;// Nyanja/Chewa
+    public static final int LANGUAGE_MACINTOSH_93 = 93;// Malagasy
+    public static final int LANGUAGE_MACINTOSH_94 = 94;// Esperanto
+    public static final int LANGUAGE_MACINTOSH_128 = 128;// Welsh
+    public static final int LANGUAGE_MACINTOSH_129 = 129;// Basque
+    public static final int LANGUAGE_MACINTOSH_130 = 130;// Catalan
+    public static final int LANGUAGE_MACINTOSH_131 = 131;// Latin
+    public static final int LANGUAGE_MACINTOSH_132 = 132;// Quechua
+    public static final int LANGUAGE_MACINTOSH_133 = 133;// Guarani
+    public static final int LANGUAGE_MACINTOSH_134 = 134;// Aymara
+    public static final int LANGUAGE_MACINTOSH_135 = 135;// Tatar
+    public static final int LANGUAGE_MACINTOSH_136 = 136;// Uighur
+    public static final int LANGUAGE_MACINTOSH_137 = 137;// Dzongkha
+    public static final int LANGUAGE_MACINTOSH_138 = 138;// Javanese (Roman script)
+    public static final int LANGUAGE_MACINTOSH_139 = 139;// Sundanese (Roman script)
+    public static final int LANGUAGE_MACINTOSH_140 = 140;// Galician
+    public static final int LANGUAGE_MACINTOSH_141 = 141;// Afrikaans
+    public static final int LANGUAGE_MACINTOSH_142 = 142;// Breton
+    public static final int LANGUAGE_MACINTOSH_143 = 143;// Inuktitut
+    public static final int LANGUAGE_MACINTOSH_144 = 144;// Scottish Gaelic
+    public static final int LANGUAGE_MACINTOSH_145 = 145;// Manx Gaelic
+    public static final int LANGUAGE_MACINTOSH_146 = 146;// Irish Gaelic (with dot above)
+    public static final int LANGUAGE_MACINTOSH_147 = 147;// Tongan
+    public static final int LANGUAGE_MACINTOSH_148 = 148;// Greek (polytonic)
+    public static final int LANGUAGE_MACINTOSH_149 = 149;// Greenlandic
+    public static final int LANGUAGE_MACINTOSH_150 = 150;// Azerbaijani (Roman script)
+
+    // Platform-specific encoding and language IDs: ISO platform (platform ID=2) [Deprecated]
+    @Deprecated
+    public static final int ENCODING_ISO_0 = 0;// 7-bit ASCII
+    @Deprecated
+    public static final int ENCODING_ISO_1 = 1;// ISO 10646
+    @Deprecated
+    public static final int ENCODING_ISO_2 = 2;// ISO 8859-1
+
     // Platform-specific encoding and language IDs: Windows platform (platform ID= 3)
     public static final int ENCODING_WINDOWS_0 = 0;// Symbol
     public static final int ENCODING_WINDOWS_1 = 1;// Unicode BMP
@@ -278,7 +405,7 @@ public class NameRecord {
     public static final int LANGUAGE_WINDOWS_0478 = 0x0478;// Yi PRC
     public static final int LANGUAGE_WINDOWS_046A = 0x046A;// Yoruba Nigeria
 
-
+    
     private final int mPlatformID;// Platform ID. Platform ID values 240 through 255 are reserved for user-defined platforms. This specification will never assign these values to a registered platform.
     private final int mEncodingID;// Platform-specific encoding ID.
     private final int mLanguageID;// Language ID.
