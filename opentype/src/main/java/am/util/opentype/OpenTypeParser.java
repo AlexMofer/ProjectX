@@ -102,8 +102,7 @@ public class OpenTypeParser {
         }
         final NameTable name = new NameTable(format, count, stringOffset, nameRecords,
                 langTagRecords);
-
-        System.out.println("lallalalla--------------------------------here");
+        // TODO
 
         return name;
     }
