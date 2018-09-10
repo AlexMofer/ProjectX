@@ -405,7 +405,33 @@ public class NameRecord {
     public static final int LANGUAGE_WINDOWS_0478 = 0x0478;// Yi PRC
     public static final int LANGUAGE_WINDOWS_046A = 0x046A;// Yoruba Nigeria
 
-    
+    public static final int NAME_0 = 0;// Copyright notice.
+    public static final int NAME_1 = 1;// Font Family name.
+    public static final int NAME_2 = 2;// Font Subfamily name.
+    public static final int NAME_3 = 3;// Unique font identifier.
+    public static final int NAME_4 = 4;// Full font name that reflects all family and relevant subfamily descriptors.
+    public static final int NAME_5 = 5;// Version string.
+    public static final int NAME_6 = 6;// PostScript name for the font.
+    public static final int NAME_7 = 7;// Trademark; this is used to save any trademark notice/information for this font.
+    public static final int NAME_8 = 8;// Manufacturer Name.
+    public static final int NAME_9 = 9;// Designer; name of the designer of the typeface.
+    public static final int NAME_10 = 10;// Description; description of the typeface.
+    public static final int NAME_11 = 11;// URL Vendor; URL of font vendor (with protocol, e.g., http://, ftp://).
+    public static final int NAME_12 = 12;// URL Designer; URL of typeface designer (with protocol, e.g., http://, ftp://).
+    public static final int NAME_13 = 13;// License Description; description of how the font may be legally used, or different example scenarios for licensed use.
+    public static final int NAME_14 = 14;// License Info URL; URL where additional licensing information can be found.
+    public static final int NAME_15 = 15;// Reserved.
+    public static final int NAME_16 = 16;// Typographic Family name.
+    public static final int NAME_17 = 17;// Typographic Subfamily name.
+    public static final int NAME_18 = 18;// Compatible Full (Macintosh only).
+    public static final int NAME_19 = 19;// Sample text.
+    public static final int NAME_20 = 20;// PostScript CID findfont name
+    public static final int NAME_21 = 21;// WWS Family Name.
+    public static final int NAME_22 = 22;// WWS Subfamily Name.
+    public static final int NAME_23 = 23;// Light Background Palette.
+    public static final int NAME_24 = 24;// Dark Background Palette.
+    public static final int NAME_25 = 25;// Variations PostScript Name Prefix.
+
     private final int mPlatformID;// Platform ID. Platform ID values 240 through 255 are reserved for user-defined platforms. This specification will never assign these values to a registered platform.
     private final int mEncodingID;// Platform-specific encoding ID.
     private final int mLanguageID;// Language ID.
