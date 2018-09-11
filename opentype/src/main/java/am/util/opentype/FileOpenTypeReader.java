@@ -12,6 +12,7 @@ import java.io.RandomAccessFile;
 public class FileOpenTypeReader implements OpenTypeReader {
 
     private final RandomAccessFile mFile;
+    private byte[] BUFFER;
 
     @SuppressWarnings("all")
     public FileOpenTypeReader(File font) throws IOException {
@@ -114,6 +115,25 @@ public class FileOpenTypeReader implements OpenTypeReader {
     @Override
     public long readLong() throws IOException {
         return mFile.readLong();
+    }
+
+    @Override
+    public String readString(long length, String charsetName) throws IOException {
+        if (BUFFER == null) {
+            BUFFER = new byte[1024];
+        }
+        long i = length;
+        final StringBuilder builder = new StringBuilder();
+        while (i > 1024) {
+            final int len = mFile.read(BUFFER);
+            builder.append(new String(BUFFER, 0, len, charsetName));
+            i -= 1024;
+        }
+        if (i > 0) {
+            final int len = mFile.read(BUFFER, 0, (int) i);
+            builder.append(new String(BUFFER, 0, len, charsetName));
+        }
+        return builder.toString();
     }
 
     @Override

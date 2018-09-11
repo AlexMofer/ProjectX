@@ -24,6 +24,8 @@ public class NameRecord {
     public static final int ENCODING_UNICODE_5 = 5;// Unicode Variation Sequences ('cmap' subtable format 14).
     public static final int ENCODING_UNICODE_6 = 6;// Unicode full repertoire ('cmap' subtable formats 0, 4, 6, 10, 12, 13).
 
+    public static final int LANGUAGE_DIVIDE = 0x8000;//  If a language ID is less than 0x8000, it has a platform-specific interpretation as with a format 0 naming table. If a language ID is equal to or greater than 0x8000, it is associated with a language-tag record (LangTagRecord) that references a language-tag string.
+
     // Platform-specific encoding and language IDs: Macintosh platform (platform ID = 1)
     public static final int ENCODING_MACINTOSH_0 = 0;// Roman
     public static final int ENCODING_MACINTOSH_1 = 1;// Japanese
@@ -447,5 +449,7 @@ public class NameRecord {
         mNameID = nameID;
         mLength = length;
         mOffset = offset;
+
+
     }
 }

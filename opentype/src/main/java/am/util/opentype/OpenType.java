@@ -11,7 +11,6 @@ import am.util.opentype.tables.NameTable;
  * Created by Alex on 2018/9/6.
  */
 public class OpenType {
-    private final long mBegin;// 起始偏移量（该字段仅针对字体集有效，单个字体必然为0）
     private final int mSFNTVersion;// 0x00010000 or 0x4F54544F ('OTTO')
     private final int mNumTables;// Number of tables.
     private final int mSearchRange;// (Maximum power of 2 <= numTables) x 16.
@@ -20,9 +19,8 @@ public class OpenType {
     private final SparseArray<TableRecord> mRecords;
     private NameTable mName;
 
-    public OpenType(long begin, int sfntVersion, int numTables, int searchRange, int entrySelector,
+    public OpenType(int sfntVersion, int numTables, int searchRange, int entrySelector,
                     int rangeShift, SparseArray<TableRecord> records) {
-        mBegin = begin;
         mSFNTVersion = sfntVersion;
         mNumTables = numTables;
         mSearchRange = searchRange;
@@ -49,19 +47,10 @@ public class OpenType {
                     // 暂不支持的表
                     break;
                 case TableRecord.TAG_NAME:
-                    mName = OpenTypeParser.parseNameTable(reader, mBegin, record);
+                    mName = OpenTypeParser.parseNameTable(reader, record);
                     break;
             }
         }
-    }
-
-    /**
-     * 获取起始偏移（该字段仅针对字体集有效，单个字体必然为0）
-     *
-     * @return 偏移
-     */
-    public long getBegin() {
-        return mBegin;
     }
 
     /**

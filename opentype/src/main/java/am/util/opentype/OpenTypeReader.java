@@ -277,4 +277,22 @@ public interface OpenTypeReader extends Closeable {
      * @throws IOException  if an I/O error occurs.
      */
     long readLong() throws IOException;
+
+    /**
+     * Reads a string from this file. This method reads {@code length}
+     * bytes from the file, starting at the current file pointer.
+     * <p>
+     * This method blocks until the {@code length} bytes are read, the end of the
+     * stream is detected, or an exception is thrown.
+     *
+     * @param length      The length of the string to read
+     * @param charsetName The name of a supported {@linkplain java.nio.charset.Charset
+     *                    charset}
+     * @return the next {@code length} bytes of this file, interpreted as a
+     * {@code java.lang.String}.
+     * @throws EOFException if this file reaches the end before reading
+     *                      eight bytes.
+     * @throws IOException  if an I/O error occurs.
+     */
+    String readString(long length, String charsetName) throws IOException;
 }

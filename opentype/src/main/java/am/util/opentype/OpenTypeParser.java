@@ -19,6 +19,8 @@ public class OpenTypeParser {
     private static final int OTF = 0x00010000;// OpenType fonts that contain TrueType outlines
     private static final int OTTO = 0x4F54544F;// OpenType fonts containing CFF data (version 1 or 2)
     private static final int TTCF = 0x74746366;// An OpenType Font Collection (formerly known as TrueType Collection)
+    private static final String CHARSET_UTF_16BE = "UTF-16BE";
+    private static final String CHARSET_ISO_8859_1 = "ISO-8859-1";
 
     private boolean mInvalid;// 无效字体文件
     private boolean mCollection;// 是否为字体集
@@ -70,11 +72,11 @@ public class OpenTypeParser {
      * @param record 表记录
      * @return 命名表
      */
-    static NameTable parseNameTable(OpenTypeReader reader, long begin, TableRecord record)
+    static NameTable parseNameTable(OpenTypeReader reader, TableRecord record)
             throws IOException {
         if (record.getTableTag() != TableRecord.TAG_NAME)
             return null;
-        reader.seek(begin + record.getOffset());
+        reader.seek(record.getOffset());
         final int format = reader.readUnsignedShort();
         final int count = reader.readUnsignedShort();
         final int stringOffset = reader.readUnsignedShort();
@@ -90,18 +92,26 @@ public class OpenTypeParser {
                     length, offset));
         }
         ArrayList<LangTagRecord> langTagRecords = null;
-        if (format == 1) {
+        ArrayList<String> langTags = null;
+        if (format == 1 && (record.getOffset() + stringOffset) > reader.getPointer()) {
             // Naming table format 1
             final int langTagCount = reader.readUnsignedShort();
-            langTagRecords = new ArrayList<>();
-            for (int i = 0; i < langTagCount; i++) {
-                final int length = reader.readUnsignedShort();
-                final int offset = reader.readUnsignedShort();
-                langTagRecords.add(new LangTagRecord(length, offset));
+            if (langTagCount > 0) {
+                langTagRecords = new ArrayList<>();
+                for (int i = 0; i < langTagCount; i++) {
+                    final int length = reader.readUnsignedShort();
+                    final int offset = reader.readUnsignedShort();
+                    langTagRecords.add(new LangTagRecord(length, offset));
+                }
+                langTags = new ArrayList<>();
+                for (LangTagRecord re : langTagRecords) {
+                    reader.seek(record.getOffset() + re.getOffset());
+                    langTags.add(reader.readString(re.getLength(), CHARSET_UTF_16BE));
+                }
             }
         }
         final NameTable name = new NameTable(format, count, stringOffset, nameRecords,
-                langTagRecords);
+                langTagRecords, langTags);
         // TODO
 
         return name;
@@ -123,7 +133,7 @@ public class OpenTypeParser {
             final int length = reader.readUnsignedInt();
             records.put(tableTag, new TableRecord(tableTag, checkSum, offset, length));
         }
-        final OpenType ot = new OpenType(begin, sfntVersion, numTables, searchRange, entrySelector,
+        final OpenType ot = new OpenType(sfntVersion, numTables, searchRange, entrySelector,
                 rangeShift, records);
         ot.parseTables(reader, tags);
         return ot;

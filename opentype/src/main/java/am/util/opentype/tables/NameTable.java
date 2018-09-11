@@ -13,13 +13,15 @@ public class NameTable {
     private final int mStringOffset;// Offset to start of string storage (from start of table).
     private final List<NameRecord> mNameRecords;
     private final List<LangTagRecord> mLangTagRecords;
+    private final List<String> mLangTags;
 
     public NameTable(int format, int count, int stringOffset, List<NameRecord> nameRecords,
-                     List<LangTagRecord> langTagRecords) {
+                     List<LangTagRecord> langTagRecords, List<String> langTags) {
         mFormat = format;
         mCount = count;
         mStringOffset = stringOffset;
         mNameRecords = nameRecords;
         mLangTagRecords = langTagRecords;
+        mLangTags = langTags;
     }
 }

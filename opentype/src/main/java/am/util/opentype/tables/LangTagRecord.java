@@ -12,4 +12,12 @@ public class LangTagRecord {
         mLength = length;
         mOffset = offset;
     }
+
+    public int getLength() {
+        return mLength;
+    }
+
+    public int getOffset() {
+        return mOffset;
+    }
 }
