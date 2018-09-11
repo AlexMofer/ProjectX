@@ -24,4 +24,20 @@ public class NameTable {
         mLangTagRecords = langTagRecords;
         mLangTags = langTags;
     }
+
+    /**
+     * 获取语言标签
+     * 语言ID大于等于0x8000时，匹配一个语言标签
+     *
+     * @param languageID 命名记录中的语言ID
+     * @return 语言标签，不存在或错误的语言ID返回空
+     */
+    public String getLangTag(int languageID) {
+        if (mLangTags == null)
+            return null;
+        final int index = languageID - NameRecord.LANGUAGE_DIVIDE;
+        if (index < 0 || index >= mLangTags.size())
+            return null;
+        return mLangTags.get(index);
+    }
 }
