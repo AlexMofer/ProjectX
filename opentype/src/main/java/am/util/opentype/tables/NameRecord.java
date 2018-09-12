@@ -3,6 +3,7 @@ package am.util.opentype.tables;
 /**
  * 命名记录
  */
+@SuppressWarnings("all")
 public class NameRecord {
 
     public static final int PLATFORM_UNICODE = 0;
@@ -440,16 +441,79 @@ public class NameRecord {
     private final int mNameID;// Name ID.
     private final int mLength;// String length (in bytes).
     private final int mOffset;// String offset from start of storage area (in bytes).
+    private final byte[] mData;
 
     public NameRecord(int platformID, int encodingID, int languageID, int nameID,
-                      int length, int offset) {
+                      int length, int offset, byte[] data) {
         mPlatformID = platformID;
         mEncodingID = encodingID;
         mLanguageID = languageID;
         mNameID = nameID;
         mLength = length;
         mOffset = offset;
+        mData = data;
+    }
 
+    /**
+     * 获取平台ID
+     *
+     * @return 平台ID
+     */
+    public int getPlatformID() {
+        return mPlatformID;
+    }
 
+    /**
+     * 获取编码ID
+     *
+     * @return 编码ID
+     */
+    public int getEncodingID() {
+        return mEncodingID;
+    }
+
+    /**
+     * 获取语言ID（名字表格式0的语言ID必然小于0x8000，而名字表格式1中的语言ID可能大于或等于0x8000，此时需参照语言标签记录，以语言ID减去0x8000的结果作为List下标获取语言标签）
+     *
+     * @return 语言ID
+     */
+    public int getLanguageID() {
+        return mLanguageID;
+    }
+
+    /**
+     * 获取名字ID
+     *
+     * @return 名字ID
+     */
+    public int getNameID() {
+        return mNameID;
+    }
+
+    /**
+     * 获取字符串长度
+     *
+     * @return 长度
+     */
+    public int getLength() {
+        return mLength;
+    }
+
+    /**
+     * 获取字符串偏移（相对于名字表起始位置）
+     *
+     * @return 偏移
+     */
+    public int getOffset() {
+        return mOffset;
+    }
+
+    /**
+     * 获取字符串字节流
+     *
+     * @return 字节流
+     */
+    public byte[] getData() {
+        return mData;
     }
 }

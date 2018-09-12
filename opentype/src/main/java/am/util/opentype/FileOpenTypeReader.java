@@ -56,6 +56,11 @@ public class FileOpenTypeReader implements OpenTypeReader {
     }
 
     @Override
+    public int read(byte[] b, int off, int len) throws IOException {
+        return mFile.read(b, off, len);
+    }
+
+    @Override
     public int readUnsignedByte() throws IOException {
         return mFile.readUnsignedByte();
     }

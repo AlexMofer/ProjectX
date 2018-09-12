@@ -13,10 +13,20 @@ public class LangTagRecord {
         mOffset = offset;
     }
 
+    /**
+     * 获取语言标记记录字符串长度
+     *
+     * @return 长度
+     */
     public int getLength() {
         return mLength;
     }
 
+    /**
+     * 获取语言标记记录字符串起始偏移（相对于名字表的起始位置）
+     *
+     * @return 起始偏移
+     */
     public int getOffset() {
         return mOffset;
     }

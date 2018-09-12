@@ -28,6 +28,7 @@ public class NameTable {
     /**
      * 获取语言标签
      * 语言ID大于等于0x8000时，匹配一个语言标签
+     * 语言标签命名规范：IETF specification BCP 47(https://tools.ietf.org/html/bcp47)
      *
      * @param languageID 命名记录中的语言ID
      * @return 语言标签，不存在或错误的语言ID返回空

@@ -81,6 +81,33 @@ public interface OpenTypeReader extends Closeable {
     int read() throws IOException;
 
     /**
+     * Reads up to {@code len} bytes of data from this file into an
+     * array of bytes. This method blocks until at least one byte of input
+     * is available.
+     * <p>
+     * Although {@code RandomAccessFile} is not a subclass of
+     * {@code InputStream}, this method behaves in exactly the
+     * same way as the {@link InputStream#read(byte[], int, int)} method of
+     * {@code InputStream}.
+     *
+     * @param b   the buffer into which the data is read.
+     * @param off the start offset in array {@code b}
+     *            at which the data is written.
+     * @param len the maximum number of bytes read.
+     * @return the total number of bytes read into the buffer, or
+     * {@code -1} if there is no more data because the end of
+     * the file has been reached.
+     * @throws IOException               If the first byte cannot be read for any reason
+     *                                   other than end of file, or if the random access file has been closed, or if
+     *                                   some other I/O error occurs.
+     * @throws NullPointerException      If {@code b} is {@code null}.
+     * @throws IndexOutOfBoundsException If {@code off} is negative,
+     *                                   {@code len} is negative, or {@code len} is greater than
+     *                                   {@code b.length - off}
+     */
+    int read(byte b[], int off, int len) throws IOException;
+
+    /**
      * Reads an unsigned 8-bit number from this file. This method reads
      * a byte from this file, starting at the current file pointer,
      * and returns that byte.

@@ -88,8 +88,13 @@ public class OpenTypeParser {
             final int nameID = reader.readUnsignedShort();
             final int length = reader.readUnsignedShort();
             final int offset = reader.readUnsignedShort();
+            final long pos = reader.getPointer();
+            final byte[] data = new byte[length];
+            reader.seek(record.getOffset() + offset);
+            reader.read(data, 0, length);
+            reader.seek(pos);
             nameRecords.add(new NameRecord(platformID, encodingID, languageID, nameID,
-                    length, offset));
+                    length, offset, data));
         }
         ArrayList<LangTagRecord> langTagRecords = null;
         ArrayList<String> langTags = null;
@@ -110,11 +115,7 @@ public class OpenTypeParser {
                 }
             }
         }
-        final NameTable name = new NameTable(format, count, stringOffset, nameRecords,
-                langTagRecords, langTags);
-        // TODO
-
-        return name;
+        return new NameTable(format, count, stringOffset, nameRecords, langTagRecords, langTags);
     }
 
     private OpenType parseOpenType(OpenTypeReader reader, long begin, int... tags)
