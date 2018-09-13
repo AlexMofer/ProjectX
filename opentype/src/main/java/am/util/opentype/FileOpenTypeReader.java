@@ -11,6 +11,8 @@ import java.io.RandomAccessFile;
  */
 public class FileOpenTypeReader implements OpenTypeReader {
 
+    public static final String CHARSET_UTF_16BE = "UTF-16BE";
+    public static final String CHARSET_ISO_8859_15 = "ISO-8859-15";
     private final RandomAccessFile mFile;
     private byte[] BUFFER;
 

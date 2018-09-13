@@ -24,6 +24,11 @@ public class OpenTypeUtils {
                 }
             }
         }
+//        SortedMap<String, Charset> cs = Charset.availableCharsets();
+//        Set<String> keys = cs.keySet();
+//        for (String key : keys) {
+//            System.out.println("lallalalal-----------------------key:" + key);
+//        }
     }
 
     private static void test(File font) {

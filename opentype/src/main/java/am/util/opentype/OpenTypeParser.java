@@ -90,7 +90,7 @@ public class OpenTypeParser {
             final int offset = reader.readUnsignedShort();
             final long pos = reader.getPointer();
             final byte[] data = new byte[length];
-            reader.seek(record.getOffset() + offset);
+            reader.seek(record.getOffset() + stringOffset + offset);
             reader.read(data, 0, length);
             reader.seek(pos);
             nameRecords.add(new NameRecord(platformID, encodingID, languageID, nameID,
@@ -110,7 +110,7 @@ public class OpenTypeParser {
                 }
                 langTags = new ArrayList<>();
                 for (LangTagRecord re : langTagRecords) {
-                    reader.seek(record.getOffset() + re.getOffset());
+                    reader.seek(record.getOffset() + stringOffset + re.getOffset());
                     langTags.add(reader.readString(re.getLength(), CHARSET_UTF_16BE));
                 }
             }
