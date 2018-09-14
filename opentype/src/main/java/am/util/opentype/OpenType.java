@@ -11,6 +11,7 @@ import am.util.opentype.tables.OS2Table;
  * OpenType字体
  * Created by Alex on 2018/9/6.
  */
+@SuppressWarnings("unused")
 public class OpenType {
     private final int mSFNTVersion;// 0x00010000 or 0x4F54544F ('OTTO')
     private final int mNumTables;// Number of tables.
@@ -49,10 +50,10 @@ public class OpenType {
                     // 暂不支持的表
                     break;
                 case TableRecord.TAG_NAME:
-                    mName = OpenTypeParser.parseNameTable(reader, record);
+                    mName = new NameTable(reader, record);
                     break;
                 case TableRecord.TAG_OS2:
-                    mOS2 = OpenTypeParser.parseOS2Table(reader, record);
+                    mOS2 = new OS2Table(reader, record);
                     break;
             }
         }

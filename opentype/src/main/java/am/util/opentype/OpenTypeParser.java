@@ -5,11 +5,6 @@ import android.util.SparseArray;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import am.util.opentype.tables.LangTagRecord;
-import am.util.opentype.tables.NameRecord;
-import am.util.opentype.tables.NameTable;
-import am.util.opentype.tables.OS2Table;
-
 /**
  * 字体解析器
  * Created by Alex on 2018/9/5.
@@ -20,8 +15,6 @@ public class OpenTypeParser {
     private static final int OTF = 0x00010000;// OpenType fonts that contain TrueType outlines
     private static final int OTTO = 0x4F54544F;// OpenType fonts containing CFF data (version 1 or 2)
     private static final int TTCF = 0x74746366;// An OpenType Font Collection (formerly known as TrueType Collection)
-    private static final String CHARSET_UTF_16BE = "UTF-16BE";
-    private static final String CHARSET_ISO_8859_1 = "ISO-8859-1";
 
     private boolean mInvalid;// 无效字体文件
     private boolean mCollection;// 是否为字体集
@@ -64,56 +57,6 @@ public class OpenTypeParser {
         } catch (IOException e) {
             mInvalid = true;
         }
-    }
-
-    static NameTable parseNameTable(OpenTypeReader reader, TableRecord record)
-            throws IOException {
-        if (record.getTableTag() != TableRecord.TAG_NAME)
-            return null;
-        reader.seek(record.getOffset());
-        final int format = reader.readUnsignedShort();
-        final int count = reader.readUnsignedShort();
-        final int stringOffset = reader.readUnsignedShort();
-        final ArrayList<NameRecord> nameRecords = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            final int platformID = reader.readUnsignedShort();
-            final int encodingID = reader.readUnsignedShort();
-            final int languageID = reader.readUnsignedShort();
-            final int nameID = reader.readUnsignedShort();
-            final int length = reader.readUnsignedShort();
-            final int offset = reader.readUnsignedShort();
-            final long pos = reader.getPointer();
-            final byte[] data = new byte[length];
-            reader.seek(record.getOffset() + stringOffset + offset);
-            reader.read(data, 0, length);
-            reader.seek(pos);
-            nameRecords.add(new NameRecord(platformID, encodingID, languageID, nameID,
-                    length, offset, data));
-        }
-        ArrayList<LangTagRecord> langTagRecords = null;
-        ArrayList<String> langTags = null;
-        if (format == 1 && (record.getOffset() + stringOffset) > reader.getPointer()) {
-            // Naming table format 1
-            final int langTagCount = reader.readUnsignedShort();
-            if (langTagCount > 0) {
-                langTagRecords = new ArrayList<>();
-                for (int i = 0; i < langTagCount; i++) {
-                    final int length = reader.readUnsignedShort();
-                    final int offset = reader.readUnsignedShort();
-                    langTagRecords.add(new LangTagRecord(length, offset));
-                }
-                langTags = new ArrayList<>();
-                for (LangTagRecord re : langTagRecords) {
-                    reader.seek(record.getOffset() + stringOffset + re.getOffset());
-                    langTags.add(reader.readString(re.getLength(), CHARSET_UTF_16BE));
-                }
-            }
-        }
-        return new NameTable(format, count, stringOffset, nameRecords, langTagRecords, langTags);
-    }
-
-    static OS2Table parseOS2Table(OpenTypeReader reader, TableRecord record) {
-        return null;
     }
 
     private OpenType parseOpenType(OpenTypeReader reader, long begin, int... tags)

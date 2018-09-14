@@ -1,11 +1,14 @@
 package am.util.opentype.tables;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import am.util.opentype.FileOpenTypeReader;
+import am.util.opentype.OpenTypeReader;
+import am.util.opentype.TableRecord;
 
 /**
  * 命名表
@@ -46,8 +49,49 @@ public class NameTable {
     private String mBackgroundPaletteDark;
     private String mVariationsPostScriptNamePrefix;
 
-    public NameTable(int format, int count, int stringOffset, List<NameRecord> nameRecords,
-                     List<LangTagRecord> langTagRecords, List<String> langTags) {
+    public NameTable(OpenTypeReader reader, TableRecord record) throws IOException {
+        if (reader == null || record == null || record.getTableTag() != TableRecord.TAG_NAME)
+            throw new IOException();
+        reader.seek(record.getOffset());
+        final int format = reader.readUnsignedShort();
+        final int count = reader.readUnsignedShort();
+        final int stringOffset = reader.readUnsignedShort();
+        final ArrayList<NameRecord> nameRecords = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            final int platformID = reader.readUnsignedShort();
+            final int encodingID = reader.readUnsignedShort();
+            final int languageID = reader.readUnsignedShort();
+            final int nameID = reader.readUnsignedShort();
+            final int length = reader.readUnsignedShort();
+            final int offset = reader.readUnsignedShort();
+            final long pos = reader.getPointer();
+            final byte[] data = new byte[length];
+            reader.seek(record.getOffset() + stringOffset + offset);
+            reader.read(data, 0, length);
+            reader.seek(pos);
+            nameRecords.add(new NameRecord(platformID, encodingID, languageID, nameID,
+                    length, offset, data));
+        }
+        ArrayList<LangTagRecord> langTagRecords = null;
+        ArrayList<String> langTags = null;
+        if (format == 1 && (record.getOffset() + stringOffset) > reader.getPointer()) {
+            // Naming table format 1
+            final int langTagCount = reader.readUnsignedShort();
+            if (langTagCount > 0) {
+                langTagRecords = new ArrayList<>();
+                for (int i = 0; i < langTagCount; i++) {
+                    final int length = reader.readUnsignedShort();
+                    final int offset = reader.readUnsignedShort();
+                    langTagRecords.add(new LangTagRecord(length, offset));
+                }
+                langTags = new ArrayList<>();
+                for (LangTagRecord re : langTagRecords) {
+                    reader.seek(record.getOffset() + stringOffset + re.getOffset());
+                    langTags.add(reader.readString(re.getLength(),
+                            FileOpenTypeReader.CHARSET_UTF_16BE));
+                }
+            }
+        }
         mFormat = format;
         mCount = count;
         mStringOffset = stringOffset;
