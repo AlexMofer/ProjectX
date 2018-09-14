@@ -38,7 +38,7 @@ public class OpenTypeUtils {
         try {
             reader = new FileOpenTypeReader(font);
             final OpenTypeParser parser = new OpenTypeParser();
-            parser.parse(reader, TableRecord.TAG_NAME);
+            parser.parse(reader, TableRecord.TAG_NAME, TableRecord.TAG_OS2);
         } catch (Exception e) {
             // ignore
         } finally {

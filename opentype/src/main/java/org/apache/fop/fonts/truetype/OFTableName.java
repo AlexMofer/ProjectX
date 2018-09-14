@@ -32,56 +32,6 @@ public final class OFTableName {
     public static final OFTableName TABLE_DIRECTORY = new OFTableName("tableDirectory");
 
     /**
-     * Baseline data
-     */
-    public static final OFTableName BASE = new OFTableName("BASE");
-
-    /**
-     * CFF data/
-     */
-    public static final OFTableName CFF = new OFTableName("CFF ");
-
-    /**
-     * Embedded bitmap data.
-     */
-    public static final OFTableName EBDT = new OFTableName("EBDT");
-
-    /**
-     * Embedded bitmap location data.
-     */
-    public static final OFTableName EBLC = new OFTableName("EBLC");
-
-    /**
-     * Embedded bitmap scaling data.
-     */
-    public static final OFTableName EBSC = new OFTableName("EBSC");
-
-    /**
-     * A FontForge specific table.
-     */
-    public static final OFTableName FFTM = new OFTableName("FFTM");
-
-    /**
-     * Divides glyphs into various classes that make using the GPOS/GSUB tables easier.
-     */
-    public static final OFTableName GDEF = new OFTableName("GDEF");
-
-    /**
-     * Provides kerning information, mark-to-base, etc. for opentype fonts.
-     */
-    public static final OFTableName GPOS = new OFTableName("GPOS");
-
-    /**
-     * Provides ligature information, swash, etc. for opentype fonts.
-     */
-    public static final OFTableName GSUB = new OFTableName("GSUB");
-
-    /**
-     * Linear threshold table.
-     */
-    public static final OFTableName LTSH = new OFTableName("LTSH");
-
-    /**
      * OS/2 and Windows specific metrics.
      */
     public static final OFTableName OS2 = new OFTableName("OS/2");
@@ -92,39 +42,14 @@ public final class OFTableName {
     public static final OFTableName PCLT = new OFTableName("PCLT");
 
     /**
-     * Vertical Device Metrics table.
-     */
-    public static final OFTableName VDMX = new OFTableName("VDMX");
-
-    /**
      * Character to glyph mapping.
      */
     public static final OFTableName CMAP = new OFTableName("cmap");
 
     /**
-     * Control Value Table.
-     */
-    public static final OFTableName CVT = new OFTableName("cvt ");
-
-    /**
-     * Font program.
-     */
-    public static final OFTableName FPGM = new OFTableName("fpgm");
-
-    /**
-     * Grid-fitting and scan conversion procedure (grayscale).
-     */
-    public static final OFTableName GASP = new OFTableName("gasp");
-
-    /**
      * Glyph data.
      */
     public static final OFTableName GLYF = new OFTableName("glyf");
-
-    /**
-     * Horizontal device metrics.
-     */
-    public static final OFTableName HDMX = new OFTableName("hdmx");
 
     /**
      * Font header.
@@ -165,21 +90,6 @@ public final class OFTableName {
      * PostScript information.
      */
     public static final OFTableName POST = new OFTableName("post");
-
-    /**
-     * CVT Program.
-     */
-    public static final OFTableName PREP = new OFTableName("prep");
-
-    /**
-     * Vertical Metrics header.
-     */
-    public static final OFTableName VHEA = new OFTableName("vhea");
-
-    /**
-     * Vertical Metrics.
-     */
-    public static final OFTableName VMTX = new OFTableName("vmtx");
 
     private final String name;
 

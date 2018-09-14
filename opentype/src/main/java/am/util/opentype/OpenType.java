@@ -5,6 +5,7 @@ import android.util.SparseArray;
 import java.io.IOException;
 
 import am.util.opentype.tables.NameTable;
+import am.util.opentype.tables.OS2Table;
 
 /**
  * OpenType字体
@@ -18,6 +19,7 @@ public class OpenType {
     private final int mRangeShift;// NumTables x 16-searchRange.
     private final SparseArray<TableRecord> mRecords;
     private NameTable mName;
+    private OS2Table mOS2;
 
     public OpenType(int sfntVersion, int numTables, int searchRange, int entrySelector,
                     int rangeShift, SparseArray<TableRecord> records) {
@@ -48,6 +50,9 @@ public class OpenType {
                     break;
                 case TableRecord.TAG_NAME:
                     mName = OpenTypeParser.parseNameTable(reader, record);
+                    break;
+                case TableRecord.TAG_OS2:
+                    mOS2 = OpenTypeParser.parseOS2Table(reader, record);
                     break;
             }
         }
@@ -143,5 +148,14 @@ public class OpenType {
      */
     public NameTable getNamingTable() {
         return mName;
+    }
+
+    /**
+     * 获取OS/2表
+     *
+     * @return OS/2表
+     */
+    public OS2Table getOS2Table() {
+        return mOS2;
     }
 }

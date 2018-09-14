@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import am.util.opentype.tables.LangTagRecord;
 import am.util.opentype.tables.NameRecord;
 import am.util.opentype.tables.NameTable;
+import am.util.opentype.tables.OS2Table;
 
 /**
  * 字体解析器
@@ -65,13 +66,6 @@ public class OpenTypeParser {
         }
     }
 
-    /**
-     * 解析命名表
-     *
-     * @param reader 数据读取器
-     * @param record 表记录
-     * @return 命名表
-     */
     static NameTable parseNameTable(OpenTypeReader reader, TableRecord record)
             throws IOException {
         if (record.getTableTag() != TableRecord.TAG_NAME)
@@ -116,6 +110,10 @@ public class OpenTypeParser {
             }
         }
         return new NameTable(format, count, stringOffset, nameRecords, langTagRecords, langTags);
+    }
+
+    static OS2Table parseOS2Table(OpenTypeReader reader, TableRecord record) {
+        return null;
     }
 
     private OpenType parseOpenType(OpenTypeReader reader, long begin, int... tags)
