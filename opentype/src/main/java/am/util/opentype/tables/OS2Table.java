@@ -185,8 +185,6 @@ public class OS2Table {
         mMaxContext = usMaxContext;
         mLowerOpticalPointSize = usLowerOpticalPointSize;
         mUpperOpticalPointSize = usUpperOpticalPointSize;
-
-        System.out.println("lallalall-----------------------------:" + toString());
     }
 
     /**

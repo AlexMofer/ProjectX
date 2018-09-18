@@ -46,64 +46,7 @@ public class TTFFile extends OpenFont {
      *
      * @throws IOException In case of a I/O problem
      */
-    protected void readName() throws IOException {
-        seekTab(fontFile, OFTableName.NAME, 2);
-        long i = fontFile.getPointer();
-        int n = fontFile.readUnsignedShort();
-        long j = fontFile.readUnsignedShort() + i - 2;
-        i += 2 * 2;
-
-        while (n-- > 0) {
-            // getLogger().debug("Iteration: " + n);
-            fontFile.seek(i);
-            final int platformID = fontFile.readUnsignedShort();
-            final int encodingID = fontFile.readUnsignedShort();
-            final int languageID = fontFile.readUnsignedShort();
-
-            int k = fontFile.readUnsignedShort();
-            int l = fontFile.readUnsignedShort();
-
-            if (((platformID == 1 || platformID == 3)
-                    && (encodingID == 0 || encodingID == 1))) {
-                fontFile.seek(j + fontFile.readUnsignedShort());
-                String txt;
-                if (platformID == 3) {
-                    txt = fontFile.readString(l, FontFileReader.CHARSET_UTF_16BE);
-                } else {
-                    txt = fontFile.readString(l);
-                }
-
-                switch (k) {
-                    case 0:
-                        if (notice.length() == 0) {
-                            notice = txt;
-                        }
-                        break;
-                    case 1: //Font Family Name
-                    case 16: //Preferred Family
-                        familyNames.add(txt);
-                        break;
-                    case 2:
-                        if (subFamilyName.length() == 0) {
-                            subFamilyName = txt;
-                        }
-                        break;
-                    case 4:
-                        if (fullName.length() == 0 || (platformID == 3 && languageID == 1033)) {
-                            fullName = txt;
-                        }
-                        break;
-                    case 6:
-                        if (postScriptName.length() == 0) {
-                            postScriptName = txt;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-            i += 6 * 2;
-        }
+    protected void readName() {
     }
 
     /**

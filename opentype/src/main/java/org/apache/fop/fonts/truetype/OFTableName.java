@@ -32,11 +32,6 @@ public final class OFTableName {
     public static final OFTableName TABLE_DIRECTORY = new OFTableName("tableDirectory");
 
     /**
-     * OS/2 and Windows specific metrics.
-     */
-    public static final OFTableName OS2 = new OFTableName("OS/2");
-
-    /**
      * PCL 5 data.
      */
     public static final OFTableName PCLT = new OFTableName("PCLT");
@@ -50,11 +45,6 @@ public final class OFTableName {
      * Glyph data.
      */
     public static final OFTableName GLYF = new OFTableName("glyf");
-
-    /**
-     * Font header.
-     */
-    public static final OFTableName HEAD = new OFTableName("head");
 
     /**
      * Horizontal header.
@@ -80,11 +70,6 @@ public final class OFTableName {
      * Maximum profile.
      */
     public static final OFTableName MAXP = new OFTableName("maxp");
-
-    /**
-     * Naming table.
-     */
-    public static final OFTableName NAME = new OFTableName("name");
 
     /**
      * PostScript information.

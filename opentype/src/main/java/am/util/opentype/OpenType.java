@@ -4,6 +4,7 @@ import android.util.SparseArray;
 
 import java.io.IOException;
 
+import am.util.opentype.tables.HeadTable;
 import am.util.opentype.tables.NameTable;
 import am.util.opentype.tables.OS2Table;
 
@@ -21,6 +22,7 @@ public class OpenType {
     private final SparseArray<TableRecord> mRecords;
     private NameTable mName;
     private OS2Table mOS2;
+    private HeadTable mHead;
 
     public OpenType(int sfntVersion, int numTables, int searchRange, int entrySelector,
                     int rangeShift, SparseArray<TableRecord> records) {
@@ -54,6 +56,9 @@ public class OpenType {
                     break;
                 case TableRecord.TAG_OS2:
                     mOS2 = new OS2Table(reader, record);
+                    break;
+                case TableRecord.TAG_HEAD:
+                    mHead = new HeadTable(reader, record);
                     break;
             }
         }
@@ -158,5 +163,14 @@ public class OpenType {
      */
     public OS2Table getOS2Table() {
         return mOS2;
+    }
+
+    /**
+     * 获取首表
+     *
+     * @return 首表
+     */
+    public HeadTable getHeadTable() {
+        return mHead;
     }
 }

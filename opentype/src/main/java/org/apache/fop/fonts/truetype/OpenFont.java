@@ -1025,21 +1025,7 @@ public abstract class OpenFont {
      *
      * @throws IOException in case of an I/O problem
      */
-    protected void readFontHeader() throws IOException {
-        seekTab(fontFile, OFTableName.HEAD, 2 * 4 + 2 * 4);
-        int flags = fontFile.readUnsignedShort();
-        upem = fontFile.readUnsignedShort();
-
-        fontFile.skip(16);
-
-        fontBBox1 = fontFile.readShort();
-        fontBBox2 = fontFile.readShort();
-        fontBBox3 = fontFile.readShort();
-        fontBBox4 = fontFile.readShort();
-
-        fontFile.skip(2 + 2 + 2);
-
-        locaFormat = fontFile.readShort();
+    protected void readFontHeader() {
     }
 
     /**
@@ -1175,45 +1161,7 @@ public abstract class OpenFont {
     /**
      * Read the "OS/2" table
      */
-    protected void readOS2() throws IOException {
-        // Check if font is embeddable
-        OFDirTabEntry os2Entry = dirTabs.get(OFTableName.OS2);
-        if (os2Entry != null) {
-            seekTab(fontFile, OFTableName.OS2, 0);
-            int version = fontFile.readUnsignedShort();
-            fontFile.skip(2); //xAvgCharWidth
-            this.usWeightClass = fontFile.readUnsignedShort();
-
-            // usWidthClass
-            fontFile.skip(2);
-
-            int fsType = fontFile.readUnsignedShort();
-            isEmbeddable = fsType != 2;
-            fontFile.skip(8 * 2);
-            strikeoutThickness = fontFile.readShort();
-            strikeoutPosition = fontFile.readShort();
-            fontFile.skip(2);
-            fontFile.skip(10); //panose array
-            fontFile.skip(4 * 4); //unicode ranges
-            fontFile.skip(4);
-            fontFile.skip(3 * 2);
-            int v;
-            os2Ascender = fontFile.readShort(); //sTypoAscender
-            os2Descender = fontFile.readShort(); //sTypoDescender
-            v = fontFile.readShort(); //sTypoLineGap
-            v = fontFile.readUnsignedShort(); //usWinAscent
-            v = fontFile.readUnsignedShort(); //usWinDescent
-
-            //version 1 OS/2 table might end here
-            if (os2Entry.getLength() >= 78 + (2 * 4) + (2 * 2)) {
-                fontFile.skip(2 * 4);
-                this.os2xHeight = fontFile.readShort(); //sxHeight
-                this.os2CapHeight = fontFile.readShort(); //sCapHeight
-            }
-
-        } else {
-            isEmbeddable = true;
-        }
+    protected void readOS2() {
     }
 
     /**
