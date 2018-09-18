@@ -12,7 +12,7 @@ import am.util.opentype.TableRecord;
  * the purposes of these calculations.
  */
 @SuppressWarnings("unused")
-public class HeadTable {
+public class HeaderTable {
 
     private final int mMajorVersion;
     private final int mMinorVersion;
@@ -33,7 +33,7 @@ public class HeadTable {
     private final int mIndexToLocFormat;
     private final int mGlyphDataFormat;
 
-    public HeadTable(OpenTypeReader reader, TableRecord record) throws IOException {
+    public HeaderTable(OpenTypeReader reader, TableRecord record) throws IOException {
         if (reader == null || record == null || record.getTableTag() != TableRecord.TAG_HEAD)
             throw new IOException();
         reader.seek(record.getOffset());

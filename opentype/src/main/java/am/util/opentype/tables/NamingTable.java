@@ -11,11 +11,22 @@ import am.util.opentype.OpenTypeReader;
 import am.util.opentype.TableRecord;
 
 /**
- * 命名表
- * Created by Alex on 2018/9/6.
+ * Naming Table
+ * The naming table allows multilingual strings to be associated with the OpenType™ font.
+ * These strings can represent copyright notices, font names, family names, style names, and so on.
+ * To keep this table short, the font manufacturer may wish to make a limited set of entries
+ * in some small set of languages; later, the font can be “localized” and the strings
+ * translated or added. Other parts of the OpenType font that require these strings can
+ * refer to them using a language-independent name ID. In addition to language variants,
+ * the table also allows for platform-specific character-encoding variants. Clients that
+ * need a particular string can look it up by its platform ID, encoding ID, language ID and name ID.
+ * Note that different platforms may have different requirements for the encoding of strings.
+ * Many newer platforms can use strings intended for different platforms if a font does not
+ * include strings for that platform. Some applications might display incorrect strings, however,
+ * if strings for the current platform are not included.
  */
 @SuppressWarnings("unused")
-public class NameTable {
+public class NamingTable {
 
     private final int mFormat;// Format selector (0 or 1).
     private final int mCount;// Number of name records.
@@ -49,7 +60,7 @@ public class NameTable {
     private String mBackgroundPaletteDark;
     private String mVariationsPostScriptNamePrefix;
 
-    public NameTable(OpenTypeReader reader, TableRecord record) throws IOException {
+    public NamingTable(OpenTypeReader reader, TableRecord record) throws IOException {
         if (reader == null || record == null || record.getTableTag() != TableRecord.TAG_NAME)
             throw new IOException();
         reader.seek(record.getOffset());

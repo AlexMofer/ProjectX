@@ -4,8 +4,9 @@ import android.util.SparseArray;
 
 import java.io.IOException;
 
-import am.util.opentype.tables.HeadTable;
-import am.util.opentype.tables.NameTable;
+import am.util.opentype.tables.HeaderTable;
+import am.util.opentype.tables.HorizontalHeaderTable;
+import am.util.opentype.tables.NamingTable;
 import am.util.opentype.tables.OS2Table;
 
 /**
@@ -20,9 +21,10 @@ public class OpenType {
     private final int mEntrySelector;// Log2(maximum power of 2 <= numTables).
     private final int mRangeShift;// NumTables x 16-searchRange.
     private final SparseArray<TableRecord> mRecords;
-    private NameTable mName;
+    private NamingTable mName;
     private OS2Table mOS2;
-    private HeadTable mHead;
+    private HeaderTable mHead;
+    private HorizontalHeaderTable mHHEA;
 
     public OpenType(int sfntVersion, int numTables, int searchRange, int entrySelector,
                     int rangeShift, SparseArray<TableRecord> records) {
@@ -52,13 +54,16 @@ public class OpenType {
                     // 暂不支持的表
                     break;
                 case TableRecord.TAG_NAME:
-                    mName = new NameTable(reader, record);
+                    mName = new NamingTable(reader, record);
                     break;
                 case TableRecord.TAG_OS2:
                     mOS2 = new OS2Table(reader, record);
                     break;
                 case TableRecord.TAG_HEAD:
-                    mHead = new HeadTable(reader, record);
+                    mHead = new HeaderTable(reader, record);
+                    break;
+                case TableRecord.TAG_HHEA:
+                    mHHEA = new HorizontalHeaderTable(reader, record);
                     break;
             }
         }
@@ -152,7 +157,7 @@ public class OpenType {
      *
      * @return 命名表，不包含、未解析或解析出错的情况下为空
      */
-    public NameTable getNamingTable() {
+    public NamingTable getNamingTable() {
         return mName;
     }
 
@@ -170,7 +175,16 @@ public class OpenType {
      *
      * @return 首表
      */
-    public HeadTable getHeadTable() {
+    public HeaderTable getHeadTable() {
         return mHead;
+    }
+
+    /**
+     * 获取Horizontal Header Table
+     *
+     * @return Horizontal Header Table
+     */
+    public HorizontalHeaderTable getHorizontalHeaderTable() {
+        return mHHEA;
     }
 }

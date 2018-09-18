@@ -7,6 +7,9 @@ import am.util.opentype.TableRecord;
 
 /**
  * OS/2 and Windows Metrics Table
+ * The OS/2 table consists of a set of metrics and other data that are required in OpenType fonts.
+ * Six versions of the OS/2 table have been defined: versions 0 to 5.
+ * All versions are supported, but use of version 4 or later is strongly recommended.
  */
 @SuppressWarnings("unused")
 public class OS2Table {
