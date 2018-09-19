@@ -98,12 +98,17 @@ public class FileOpenTypeReader implements OpenTypeReader {
     }
 
     @Override
-    public float readFloat() throws IOException {
-        return mFile.readFloat();
+    public float readFixed() throws IOException {
+        final int fixed = mFile.readInt();
+        try {
+            return Integer.parseInt(Integer.toHexString(fixed)) * 0.0001f;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     @Override
-    public float readFloat2Dot14() throws IOException {
+    public float readFixed2Dot14() throws IOException {
         final int ch1 = read();
         final int ch2 = read();
         final int f2 = (ch1 >> 6) & 0x3;

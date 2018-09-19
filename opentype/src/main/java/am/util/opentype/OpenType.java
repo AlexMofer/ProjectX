@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import am.util.opentype.tables.HeaderTable;
 import am.util.opentype.tables.HorizontalHeaderTable;
+import am.util.opentype.tables.MaximumProfileTable;
 import am.util.opentype.tables.NamingTable;
 import am.util.opentype.tables.OS2Table;
 
@@ -25,6 +26,7 @@ public class OpenType {
     private OS2Table mOS2;
     private HeaderTable mHead;
     private HorizontalHeaderTable mHHEA;
+    private MaximumProfileTable mMAXP;
 
     public OpenType(int sfntVersion, int numTables, int searchRange, int entrySelector,
                     int rangeShift, SparseArray<TableRecord> records) {
@@ -64,6 +66,9 @@ public class OpenType {
                     break;
                 case TableRecord.TAG_HHEA:
                     mHHEA = new HorizontalHeaderTable(reader, record);
+                    break;
+                case TableRecord.TAG_MAXP:
+                    mMAXP = new MaximumProfileTable(reader, record);
                     break;
             }
         }
@@ -186,5 +191,14 @@ public class OpenType {
      */
     public HorizontalHeaderTable getHorizontalHeaderTable() {
         return mHHEA;
+    }
+
+    /**
+     * 获取Maximum Profile Table
+     *
+     * @return Maximum Profile Table
+     */
+    public MaximumProfileTable getMaximumProfileTable() {
+        return mMAXP;
     }
 }

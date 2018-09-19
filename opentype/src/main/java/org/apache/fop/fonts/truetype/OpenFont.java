@@ -1047,11 +1047,6 @@ public abstract class OpenFont {
      */
     protected void readHorizontalHeader()
             throws IOException {
-        seekTab(fontFile, OFTableName.HHEA, 4);
-        hheaAscender = fontFile.readShort();
-        hheaDescender = fontFile.readShort();
-
-        fontFile.skip(2 + 2 + 3 * 2 + 8 * 2);
         nhmtx = fontFile.readUnsignedShort();
     }
 

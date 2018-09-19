@@ -251,7 +251,7 @@ public interface OpenTypeReader extends Closeable {
      * @see java.io.RandomAccessFile#readInt()
      * @see Float#intBitsToFloat(int)
      */
-    float readFloat() throws IOException;
+    float readFixed() throws IOException;
 
     /**
      * Reads a {@code float} from this file. This method reads
@@ -273,7 +273,7 @@ public interface OpenTypeReader extends Closeable {
      *                      two bytes.
      * @throws IOException  if an I/O error occurs.
      */
-    float readFloat2Dot14() throws IOException;
+    float readFixed2Dot14() throws IOException;
 
     /**
      * Reads a signed 64-bit integer from this file. This method reads eight

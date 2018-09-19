@@ -47,11 +47,6 @@ public final class OFTableName {
     public static final OFTableName GLYF = new OFTableName("glyf");
 
     /**
-     * Horizontal header.
-     */
-    public static final OFTableName HHEA = new OFTableName("hhea");
-
-    /**
      * Horizontal metrics.
      */
     public static final OFTableName HMTX = new OFTableName("hmtx");
