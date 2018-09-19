@@ -95,62 +95,153 @@ public class MaximumProfileTable {
         mMaxComponentDepth = maxComponentDepth;
     }
 
+    /**
+     * version 0.5 is 0x00005000
+     * version 1.0 is 0x00010000
+     *
+     * @return Version.
+     */
     public float getVersion() {
         return mVersion;
     }
 
+    /**
+     * The number of glyphs in the font.
+     *
+     * @return Number of glyphs.
+     */
     public int getNumGlyphs() {
         return mNumGlyphs;
     }
 
+    /**
+     * Maximum points in a non-composite glyph.
+     * (version 1.0 only)
+     *
+     * @return Maximum points.
+     */
     public int getMaxPoints() {
         return mMaxPoints;
     }
 
+    /**
+     * Maximum contours in a non-composite glyph.
+     * (version 1.0 only)
+     *
+     * @return Maximum contours.
+     */
     public int getMaxContours() {
         return mMaxContours;
     }
 
+    /**
+     * Maximum points in a composite glyph.
+     * (version 1.0 only)
+     *
+     * @return Maximum composite points.
+     */
     public int getMaxCompositePoints() {
         return mMaxCompositePoints;
     }
 
+    /**
+     * Maximum contours in a composite glyph.
+     * (version 1.0 only)
+     *
+     * @return Maximum composite contours.
+     */
     public int getMaxCompositeContours() {
         return mMaxCompositeContours;
     }
 
+    /**
+     * 1 if instructions do not use the twilight zone (Z0), or 2 if instructions do use Z0;
+     * should be set to 2 in most cases.
+     * (version 1.0 only)
+     *
+     * @return Maximum zones.
+     */
     public int getMaxZones() {
         return mMaxZones;
     }
 
+    /**
+     * Maximum points used in Z0.
+     * (version 1.0 only)
+     *
+     * @return Maximum points used in Z0.
+     */
     public int getMaxTwilightPoints() {
         return mMaxTwilightPoints;
     }
 
+    /**
+     * Number of Storage Area locations.
+     * (version 1.0 only)
+     *
+     * @return Maximum storage.
+     */
     public int getMaxStorage() {
         return mMaxStorage;
     }
 
+    /**
+     * Number of FDEFs, equal to the highest function number + 1.
+     * (version 1.0 only)
+     *
+     * @return Number of FDEFs.
+     */
     public int getMaxFunctionDefs() {
         return mMaxFunctionDefs;
     }
 
+    /**
+     * Number of IDEFs.
+     * (version 1.0 only)
+     *
+     * @return Number of IDEFs.
+     */
     public int getMaxInstructionDefs() {
         return mMaxInstructionDefs;
     }
 
+    /**
+     * Maximum stack depth across Font Program ('fpgm' table), CVT Program ('prep' table) and
+     * all glyph instructions (in the 'glyf' table).
+     * (version 1.0 only)
+     *
+     * @return Maximum stack depth.
+     */
     public int getMaxStackElements() {
         return mMaxStackElements;
     }
 
+    /**
+     * Maximum byte count for glyph instructions.
+     * (version 1.0 only)
+     *
+     * @return Maximum byte count for glyph instructions.
+     */
     public int getMaxSizeOfInstructions() {
         return mMaxSizeOfInstructions;
     }
 
+    /**
+     * Maximum number of components referenced at “top level” for any composite glyph.
+     * (version 1.0 only)
+     *
+     * @return Maximum number of components referenced.
+     */
     public int getMaxComponentElements() {
         return mMaxComponentElements;
     }
 
+    /**
+     * Maximum levels of recursion; 1 for simple components.
+     * (version 1.0 only)
+     *
+     * @return Maximum levels of recursion.
+     */
     public int getMaxComponentDepth() {
         return mMaxComponentDepth;
     }
