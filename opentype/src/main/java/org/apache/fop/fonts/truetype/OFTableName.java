@@ -27,11 +27,6 @@ package org.apache.fop.fonts.truetype;
 public final class OFTableName {
 
     /**
-     * The first table in a TrueType font file containing metadata about other tables.
-     */
-    public static final OFTableName TABLE_DIRECTORY = new OFTableName("tableDirectory");
-
-    /**
      * PCL 5 data.
      */
     public static final OFTableName PCLT = new OFTableName("PCLT");
@@ -60,16 +55,6 @@ public final class OFTableName {
      * Index to location.
      */
     public static final OFTableName LOCA = new OFTableName("loca");
-
-    /**
-     * Maximum profile.
-     */
-    public static final OFTableName MAXP = new OFTableName("maxp");
-
-    /**
-     * PostScript information.
-     */
-    public static final OFTableName POST = new OFTableName("post");
 
     private final String name;
 

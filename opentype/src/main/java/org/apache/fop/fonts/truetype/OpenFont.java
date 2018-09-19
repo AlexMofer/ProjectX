@@ -1015,8 +1015,6 @@ public abstract class OpenFont {
             String tableName = pd[i].read(fontFile);
             dirTabs.put(OFTableName.getValue(tableName), pd[i]);
         }
-        dirTabs.put(OFTableName.TABLE_DIRECTORY,
-                new OFDirTabEntry(0L, fontFile.getPointer()));
     }
 
     /**
@@ -1034,7 +1032,6 @@ public abstract class OpenFont {
      * @throws IOException in case of an I/O problem
      */
     protected void getNumGlyphs() throws IOException {
-        seekTab(fontFile, OFTableName.MAXP, 4);
         numberOfGlyphs = fontFile.readUnsignedShort();
     }
 
@@ -1088,7 +1085,6 @@ public abstract class OpenFont {
      * containing the PostScript names of the glyphs.
      */
     protected void readPostScript() throws IOException {
-        seekTab(fontFile, OFTableName.POST, 0);
         int postFormat = fontFile.readInt();
         italicAngle = fontFile.readInt();
         underlinePosition = fontFile.readShort();

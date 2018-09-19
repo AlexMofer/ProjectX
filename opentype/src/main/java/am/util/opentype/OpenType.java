@@ -9,6 +9,7 @@ import am.util.opentype.tables.HorizontalHeaderTable;
 import am.util.opentype.tables.MaximumProfileTable;
 import am.util.opentype.tables.NamingTable;
 import am.util.opentype.tables.OS2Table;
+import am.util.opentype.tables.PostScriptTable;
 
 /**
  * OpenType字体
@@ -25,8 +26,9 @@ public class OpenType {
     private NamingTable mName;
     private OS2Table mOS2;
     private HeaderTable mHead;
-    private HorizontalHeaderTable mHHEA;
-    private MaximumProfileTable mMAXP;
+    private HorizontalHeaderTable mHhea;
+    private MaximumProfileTable mMaxp;
+    private PostScriptTable mPost;
 
     public OpenType(int sfntVersion, int numTables, int searchRange, int entrySelector,
                     int rangeShift, SparseArray<TableRecord> records) {
@@ -65,10 +67,13 @@ public class OpenType {
                     mHead = new HeaderTable(reader, record);
                     break;
                 case TableRecord.TAG_HHEA:
-                    mHHEA = new HorizontalHeaderTable(reader, record);
+                    mHhea = new HorizontalHeaderTable(reader, record);
                     break;
                 case TableRecord.TAG_MAXP:
-                    mMAXP = new MaximumProfileTable(reader, record);
+                    mMaxp = new MaximumProfileTable(reader, record);
+                    break;
+                case TableRecord.TAG_POST:
+                    mPost = new PostScriptTable(reader, record);
                     break;
             }
         }
@@ -190,7 +195,7 @@ public class OpenType {
      * @return Horizontal Header Table
      */
     public HorizontalHeaderTable getHorizontalHeaderTable() {
-        return mHHEA;
+        return mHhea;
     }
 
     /**
@@ -199,6 +204,15 @@ public class OpenType {
      * @return Maximum Profile Table
      */
     public MaximumProfileTable getMaximumProfileTable() {
-        return mMAXP;
+        return mMaxp;
+    }
+
+    /**
+     * 获取PostScript Table
+     *
+     * @return PostScript Table
+     */
+    public PostScriptTable getPostScriptTable() {
+        return mPost;
     }
 }
