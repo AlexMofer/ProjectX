@@ -99,11 +99,12 @@ public class FileOpenTypeReader implements OpenTypeReader {
 
     @Override
     public float readFixed() throws IOException {
-        final int fixed = mFile.readInt();
+        final int integer = mFile.readShort();
+        final int decimal = mFile.readShort();
         try {
-            return Integer.parseInt(Integer.toHexString(fixed)) * 0.0001f;
+            return integer + Integer.parseInt(Integer.toHexString(decimal)) * 0.0001f;
         } catch (Exception e) {
-            return 0;
+            return integer;
         }
     }
 
