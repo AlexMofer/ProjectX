@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import am.util.opentype.tables.HeaderTable;
 import am.util.opentype.tables.HorizontalHeaderTable;
+import am.util.opentype.tables.HorizontalMetricsTable;
 import am.util.opentype.tables.MaximumProfileTable;
 import am.util.opentype.tables.NamingTable;
 import am.util.opentype.tables.OS2Table;
@@ -29,6 +30,7 @@ public class OpenType {
     private HorizontalHeaderTable mHhea;
     private MaximumProfileTable mMaxp;
     private PostScriptTable mPost;
+    private HorizontalMetricsTable mHmtx;
 
     public OpenType(int sfntVersion, int numTables, int searchRange, int entrySelector,
                     int rangeShift, SparseArray<TableRecord> records) {
@@ -74,6 +76,14 @@ public class OpenType {
                     break;
                 case TableRecord.TAG_POST:
                     mPost = new PostScriptTable(reader, record);
+                    break;
+                case TableRecord.TAG_HMTX:
+                    if (mHhea != null && mMaxp != null) {
+                        final int numberOfHMetrics = mHhea.getNumberOfHMetrics();
+                        final int numGlyphs = mMaxp.getNumGlyphs();
+                        mHmtx = new HorizontalMetricsTable(reader, record,
+                                numberOfHMetrics, numGlyphs);
+                    }
                     break;
             }
         }
@@ -214,5 +224,14 @@ public class OpenType {
      */
     public PostScriptTable getPostScriptTable() {
         return mPost;
+    }
+
+    /**
+     * 获取Horizontal Metrics Table
+     *
+     * @return Horizontal Metrics Table
+     */
+    public HorizontalMetricsTable getHorizontalMetricsTable() {
+        return mHmtx;
     }
 }

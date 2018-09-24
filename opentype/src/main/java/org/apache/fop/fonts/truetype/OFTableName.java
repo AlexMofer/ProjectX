@@ -42,11 +42,6 @@ public final class OFTableName {
     public static final OFTableName GLYF = new OFTableName("glyf");
 
     /**
-     * Horizontal metrics.
-     */
-    public static final OFTableName HMTX = new OFTableName("hmtx");
-
-    /**
      * Kerning.
      */
     public static final OFTableName KERN = new OFTableName("kern");

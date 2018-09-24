@@ -1031,8 +1031,7 @@ public abstract class OpenFont {
      *
      * @throws IOException in case of an I/O problem
      */
-    protected void getNumGlyphs() throws IOException {
-        numberOfGlyphs = fontFile.readUnsignedShort();
+    protected void getNumGlyphs() {
     }
 
     /**
@@ -1042,9 +1041,7 @@ public abstract class OpenFont {
      *
      * @throws IOException in case of an I/O problem
      */
-    protected void readHorizontalHeader()
-            throws IOException {
-        nhmtx = fontFile.readUnsignedShort();
+    protected void readHorizontalHeader() {
     }
 
     /**
@@ -1055,29 +1052,7 @@ public abstract class OpenFont {
      *
      * @throws IOException in case of an I/O problem
      */
-    protected void readHorizontalMetrics()
-            throws IOException {
-        seekTab(fontFile, OFTableName.HMTX, 0);
-
-        int mtxSize = Math.max(numberOfGlyphs, nhmtx);
-        mtxTab = new OFMtxEntry[mtxSize];
-
-        for (int i = 0; i < mtxSize; i++) {
-            mtxTab[i] = new OFMtxEntry();
-        }
-        for (int i = 0; i < nhmtx; i++) {
-            mtxTab[i].setWx(fontFile.readUnsignedShort());
-            mtxTab[i].setLsb(fontFile.readUnsignedShort());
-        }
-
-        if (cid && nhmtx < mtxSize) {
-            // Fill in the missing widths
-            int lastWidth = mtxTab[nhmtx - 1].getWx();
-            for (int i = nhmtx; i < mtxSize; i++) {
-                mtxTab[i].setWx(lastWidth);
-                mtxTab[i].setLsb(fontFile.readUnsignedShort());
-            }
-        }
+    protected void readHorizontalMetrics() {
     }
 
     /**
