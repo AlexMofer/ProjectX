@@ -1,6 +1,7 @@
 package am.util.opentype.tables;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import am.util.opentype.FileOpenTypeReader;
@@ -86,7 +87,8 @@ public class PostScriptTable {
     private final int mMaxMemType1;
     private final int mNumGlyphs;
     private final int[] mGlyphNameIndex;
-    private final ArrayList<String> mNames;
+    //    private final ArrayList<String> mNames;
+    private final ArrayList<byte[]> mNames;
     private final int[] mOffset;
 
     public PostScriptTable(OpenTypeReader reader, TableRecord record) throws IOException {
@@ -104,7 +106,7 @@ public class PostScriptTable {
         final int maxMemType1 = reader.readUnsignedInt();
         final int numGlyphs;
         final int[] glyphNameIndex;
-        final ArrayList<String> names;
+        final ArrayList<byte[]> names;
         final int[] offset;
         if (version == 1.0f) {
             // This version is used in order to supply PostScript glyph names when the font file
@@ -137,7 +139,8 @@ public class PostScriptTable {
                 names = new ArrayList<>();
                 for (int i = 0; i < numberNewGlyphs; i++) {
                     final int length = reader.readUnsignedByte();
-                    names.add(reader.readString(length, FileOpenTypeReader.CHARSET_ISO_8859_15));
+                    final byte[] name = new byte[length];
+                    reader.read(name, 0, length);
                 }
             } else {
                 names = null;
@@ -311,14 +314,46 @@ public class PostScriptTable {
      * Glyph name
      *
      * @param glyphNameIndex Glyph name index.
+     * @param charsetName    The name of a supported {@linkplain java.nio.charset.Charset
+     *                       charset}
      * @return Glyph name.
      */
-    public String getGlyphName(int glyphNameIndex) {
+    public byte[] getGlyphNameBytes(int glyphNameIndex, String charsetName)
+            throws UnsupportedEncodingException {
         if (glyphNameIndex >= 258) {
             return mNames.get(glyphNameIndex - 258);
         } else {
+            return MAC_GLYPHS[glyphNameIndex].getBytes(charsetName);
+        }
+    }
+
+    /**
+     * Glyph name
+     *
+     * @param glyphNameIndex Glyph name index.
+     * @param charsetName    The name of a supported {@linkplain java.nio.charset.Charset
+     *                       charset}
+     * @return Glyph name.
+     */
+    @SuppressWarnings("all")
+    public String getGlyphName(int glyphNameIndex, String charsetName)
+            throws UnsupportedEncodingException {
+        if (glyphNameIndex >= 258) {
+            return new String(mNames.get(glyphNameIndex - 258), charsetName);
+        } else {
             return MAC_GLYPHS[glyphNameIndex];
         }
+    }
+
+    /**
+     * Glyph name
+     *
+     * @param glyphNameIndex Glyph name index.
+     * @return Glyph name.
+     */
+    public String getGlyphName(int glyphNameIndex)
+            throws UnsupportedEncodingException {
+        return getGlyphName(glyphNameIndex, FileOpenTypeReader.CHARSET_ISO_8859_15);
     }
 
     /**
