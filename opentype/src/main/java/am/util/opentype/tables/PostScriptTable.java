@@ -317,6 +317,7 @@ public class PostScriptTable {
      * @param charsetName    The name of a supported {@linkplain java.nio.charset.Charset
      *                       charset}
      * @return Glyph name.
+     * @throws UnsupportedEncodingException If the named charset is not supported
      */
     public byte[] getGlyphNameBytes(int glyphNameIndex, String charsetName)
             throws UnsupportedEncodingException {
@@ -334,6 +335,7 @@ public class PostScriptTable {
      * @param charsetName    The name of a supported {@linkplain java.nio.charset.Charset
      *                       charset}
      * @return Glyph name.
+     * @throws UnsupportedEncodingException If the named charset is not supported
      */
     @SuppressWarnings("all")
     public String getGlyphName(int glyphNameIndex, String charsetName)
@@ -350,6 +352,7 @@ public class PostScriptTable {
      *
      * @param glyphNameIndex Glyph name index.
      * @return Glyph name.
+     * @throws UnsupportedEncodingException If the named charset is not supported
      */
     public String getGlyphName(int glyphNameIndex)
             throws UnsupportedEncodingException {
