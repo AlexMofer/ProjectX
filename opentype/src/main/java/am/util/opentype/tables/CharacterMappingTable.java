@@ -202,9 +202,10 @@ public class CharacterMappingTable {
                 varSelectors.add(new VariationSelectorRecord(varSelector, defaultUVSOffset,
                         nonDefaultUVSOffset));
             }
+        } else {
+            // Unknown
+
         }
-
-
     }
 
     /**

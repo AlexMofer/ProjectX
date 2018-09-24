@@ -32,11 +32,6 @@ public final class OFTableName {
     public static final OFTableName PCLT = new OFTableName("PCLT");
 
     /**
-     * Character to glyph mapping.
-     */
-    public static final OFTableName CMAP = new OFTableName("cmap");
-
-    /**
      * Glyph data.
      */
     public static final OFTableName GLYF = new OFTableName("glyf");
