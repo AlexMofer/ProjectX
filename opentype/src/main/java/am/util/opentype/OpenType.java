@@ -4,6 +4,7 @@ import android.util.SparseArray;
 
 import java.io.IOException;
 
+import am.util.opentype.tables.CharacterMappingTable;
 import am.util.opentype.tables.HeaderTable;
 import am.util.opentype.tables.HorizontalHeaderTable;
 import am.util.opentype.tables.HorizontalMetricsTable;
@@ -31,6 +32,7 @@ public class OpenType {
     private MaximumProfileTable mMaxp;
     private PostScriptTable mPost;
     private HorizontalMetricsTable mHmtx;
+    private CharacterMappingTable mCmap;
 
     public OpenType(int sfntVersion, int numTables, int searchRange, int entrySelector,
                     int rangeShift, SparseArray<TableRecord> records) {
@@ -84,6 +86,9 @@ public class OpenType {
                         mHmtx = new HorizontalMetricsTable(reader, record,
                                 numberOfHMetrics, numGlyphs);
                     }
+                    break;
+                case TableRecord.TAG_CMAP:
+                    mCmap = new CharacterMappingTable(reader, record);
                     break;
             }
         }
@@ -233,5 +238,14 @@ public class OpenType {
      */
     public HorizontalMetricsTable getHorizontalMetricsTable() {
         return mHmtx;
+    }
+
+    /**
+     * 获取Character Mapping Table
+     *
+     * @return Character Mapping Table
+     */
+    public CharacterMappingTable getCharacterMappingTable() {
+        return mCmap;
     }
 }

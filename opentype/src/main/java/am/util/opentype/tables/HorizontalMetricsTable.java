@@ -18,7 +18,7 @@ import am.util.opentype.TableRecord;
 public class HorizontalMetricsTable {
 
     private final List<LongHorMetricRecord> mHMetrics;
-    private final short[] mLeftSideBearings;
+    private final int[] mLeftSideBearings;
 
     public HorizontalMetricsTable(OpenTypeReader reader, TableRecord record,
                                   int numberOfHMetrics, int numGlyphs) throws IOException {
@@ -29,9 +29,9 @@ public class HorizontalMetricsTable {
         for (int i = 0; i < numberOfHMetrics; i++) {
             hMetrics.add(new LongHorMetricRecord(reader.readUnsignedShort(), reader.readShort()));
         }
-        final short[] leftSideBearings;
+        final int[] leftSideBearings;
         if (numGlyphs > numberOfHMetrics) {
-            leftSideBearings = new short[numGlyphs - numberOfHMetrics];
+            leftSideBearings = new int[numGlyphs - numberOfHMetrics];
 
             for (int i = numberOfHMetrics; i < numGlyphs; i++) {
                 leftSideBearings[i - numberOfHMetrics] = reader.readShort();
@@ -62,7 +62,45 @@ public class HorizontalMetricsTable {
      *              the numGlyphs field in the 'maxp' table.
      * @return Left side bearing.
      */
-    public short getLeftSideBearing(int index) {
+    public int getLeftSideBearing(int index) {
         return mLeftSideBearings == null ? 0 : mLeftSideBearings[index];
+    }
+
+    /**
+     * LongHorMetric Record
+     * In a font with TrueType outlines, xMin and xMax values for each glyph are given in the 'glyf'
+     * table. The advance width (“aw”) and left side bearing (“lsb”) can be derived from the glyph
+     * “phantom points”, which are computed by the TrueType rasterizer; or they can be obtained from
+     * the 'hmtx' table. In a font with CFF or CFF2 outlines, xMin (= left side bearing) and xMax
+     * values can be obtained from the CFF / CFF2 rasterizer.
+     */
+    @SuppressWarnings("unused")
+    public static class LongHorMetricRecord {
+        private final int mAdvanceWidth;
+        private final int mLsb;
+
+        @SuppressWarnings("all")
+        public LongHorMetricRecord(int advanceWidth, int lsb) {
+            mAdvanceWidth = advanceWidth;
+            mLsb = lsb;
+        }
+
+        /**
+         * Advance width, in font design units.
+         *
+         * @return Advance width.
+         */
+        public int getAdvanceWidth() {
+            return mAdvanceWidth;
+        }
+
+        /**
+         * Glyph left side bearing, in font design units.
+         *
+         * @return Glyph left side bearing.
+         */
+        public int getLsb() {
+            return mLsb;
+        }
     }
 }

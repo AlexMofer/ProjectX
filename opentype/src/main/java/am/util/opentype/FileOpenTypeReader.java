@@ -68,7 +68,7 @@ public class FileOpenTypeReader implements OpenTypeReader {
     }
 
     @Override
-    public short readShort() throws IOException {
+    public int readShort() throws IOException {
         return mFile.readShort();
     }
 

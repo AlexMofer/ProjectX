@@ -142,7 +142,7 @@ public interface OpenTypeReader extends Closeable {
      *                      two bytes.
      * @throws IOException  if an I/O error occurs.
      */
-    short readShort() throws IOException;
+    int readShort() throws IOException;
 
     /**
      * Reads an unsigned 16-bit number from this file. This method reads
