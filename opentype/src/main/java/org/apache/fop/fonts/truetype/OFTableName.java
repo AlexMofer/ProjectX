@@ -41,11 +41,6 @@ public final class OFTableName {
      */
     public static final OFTableName KERN = new OFTableName("kern");
 
-    /**
-     * Index to location.
-     */
-    public static final OFTableName LOCA = new OFTableName("loca");
-
     private final String name;
 
     private OFTableName(String name) {

@@ -114,22 +114,7 @@ public class TTFFile extends OpenFont {
      *
      * @throws IOException In case of a I/O problem
      */
-    protected final void readIndexToLocation()
-            throws IOException {
-        if (!seekTab(fontFile, OFTableName.LOCA, 0)) {
-            // TODO
-            // 'loca' table not found, happens when the font file doesn't contain TrueType outlines.
-            // (trying to read an OpenType CFF font maybe?)
-            return;
-//            throw new IOException("'loca' table not found, happens when the font file doesn't"
-//                    + " contain TrueType outlines (trying to read an OpenType CFF font maybe?)");
-        }
-        for (int i = 0; i < numberOfGlyphs; i++) {
-            mtxTab[i].setOffset(locaFormat == 1 ? fontFile.readInt()
-                    : (fontFile.readUnsignedShort() << 1));
-        }
-        lastLoca = (locaFormat == 1 ? fontFile.readInt()
-                : (fontFile.readUnsignedShort() << 1));
+    protected final void readIndexToLocation() {
     }
 
     /**

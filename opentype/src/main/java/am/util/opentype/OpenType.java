@@ -8,6 +8,7 @@ import am.util.opentype.tables.CharacterMappingTable;
 import am.util.opentype.tables.HeaderTable;
 import am.util.opentype.tables.HorizontalHeaderTable;
 import am.util.opentype.tables.HorizontalMetricsTable;
+import am.util.opentype.tables.IndexToLocationTable;
 import am.util.opentype.tables.MaximumProfileTable;
 import am.util.opentype.tables.NamingTable;
 import am.util.opentype.tables.OS2Table;
@@ -33,6 +34,7 @@ public class OpenType {
     private PostScriptTable mPost;
     private HorizontalMetricsTable mHmtx;
     private CharacterMappingTable mCmap;
+    private IndexToLocationTable mLoca;
 
     public OpenType(int sfntVersion, int numTables, int searchRange, int entrySelector,
                     int rangeShift, SparseArray<TableRecord> records) {
@@ -95,7 +97,14 @@ public class OpenType {
                 case TableRecord.TAG_CVT:
                 case TableRecord.TAG_FPGM:
                 case TableRecord.TAG_GLYF:
+                    // 暂不支持的表
+                    break;
                 case TableRecord.TAG_LOCA:
+                    if (mHead != null && mMaxp != null) {
+                        mLoca = new IndexToLocationTable(reader, record,
+                                mHead.getIndexToLocFormat(), mMaxp.getNumGlyphs());
+                    }
+                    break;
                 case TableRecord.TAG_PREP:
                 case TableRecord.TAG_GASP:
                     // 暂不支持的表
@@ -313,5 +322,14 @@ public class OpenType {
      */
     public CharacterMappingTable getCharacterMappingTable() {
         return mCmap;
+    }
+
+    /**
+     * 获取Index To Location Table
+     *
+     * @return Index To Location Table
+     */
+    public IndexToLocationTable getIndexToLocationTable() {
+        return mLoca;
     }
 }
