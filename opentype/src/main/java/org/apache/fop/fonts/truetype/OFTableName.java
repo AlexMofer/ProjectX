@@ -27,11 +27,6 @@ package org.apache.fop.fonts.truetype;
 public final class OFTableName {
 
     /**
-     * PCL 5 data.
-     */
-    public static final OFTableName PCLT = new OFTableName("PCLT");
-
-    /**
      * Glyph data.
      */
     public static final OFTableName GLYF = new OFTableName("glyf");

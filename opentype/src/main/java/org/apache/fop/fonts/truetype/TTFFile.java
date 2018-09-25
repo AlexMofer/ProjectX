@@ -26,6 +26,7 @@ import java.io.IOException;
  * The TrueType spec can be found at the Microsoft.
  * Typography site: http://www.microsoft.com/truetype/
  */
+@SuppressWarnings("all")
 public class TTFFile extends OpenFont {
 
     public TTFFile() {
@@ -57,7 +58,6 @@ public class TTFFile extends OpenFont {
     private void readGlyf() throws IOException {
         OFDirTabEntry dirTab = dirTabs.get(OFTableName.GLYF);
         if (dirTab == null) {
-            // TODO
             // glyf table not found, cannot continue
             return;
 //            throw new IOException("glyf table not found, cannot continue");
@@ -90,7 +90,6 @@ public class TTFFile extends OpenFont {
                         fontFile.readShort()};
                 mtxTab[i].setBoundingBox(bbox);
             } else {
-                /**@todo Verify that this is correct, looks like a copy/paste bug (jm)*/
                 final int bbox0 = mtxTab[0].getBoundingBox()[0];
                 final int[] bbox = {bbox0, bbox0, bbox0, bbox0};
                 mtxTab[i].setBoundingBox(bbox);

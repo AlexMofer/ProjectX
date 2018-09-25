@@ -12,6 +12,7 @@ import am.util.opentype.tables.IndexToLocationTable;
 import am.util.opentype.tables.MaximumProfileTable;
 import am.util.opentype.tables.NamingTable;
 import am.util.opentype.tables.OS2Table;
+import am.util.opentype.tables.PCL5Table;
 import am.util.opentype.tables.PostScriptTable;
 
 /**
@@ -35,6 +36,7 @@ public class OpenType {
     private HorizontalMetricsTable mHmtx;
     private CharacterMappingTable mCmap;
     private IndexToLocationTable mLoca;
+    private PCL5Table mPclt;
 
     public OpenType(int sfntVersion, int numTables, int searchRange, int entrySelector,
                     int rangeShift, SparseArray<TableRecord> records) {
@@ -159,7 +161,11 @@ public class OpenType {
                 case TableRecord.TAG_LTSH:
                 case TableRecord.TAG_MERG:
                 case TableRecord.TAG_META:
+                    // 暂不支持的表
+                    break;
                 case TableRecord.TAG_PCLT:
+                    mPclt = new PCL5Table(reader, record);
+                    break;
                 case TableRecord.TAG_VDMX:
                 case TableRecord.TAG_VHEA:
                 case TableRecord.TAG_VMTX:
@@ -331,5 +337,14 @@ public class OpenType {
      */
     public IndexToLocationTable getIndexToLocationTable() {
         return mLoca;
+    }
+
+    /**
+     * 获取PCL 5 Table
+     *
+     * @return PCL 5 Table
+     */
+    public PCL5Table getPCL5Table() {
+        return mPclt;
     }
 }

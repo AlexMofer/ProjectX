@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@SuppressWarnings("all")
 public abstract class OpenFont {
 
     private static final String[] MAC_GLYPH_ORDERING = {
@@ -911,22 +912,7 @@ public abstract class OpenFont {
      * @throws IOException In case of a I/O problem
      */
     protected boolean readPCLT() throws IOException {
-        OFDirTabEntry dirTab = dirTabs.get(OFTableName.PCLT);
-        if (dirTab != null) {
-            fontFile.seek(dirTab.getOffset() + 4 + 4 + 2);
-            xHeight = fontFile.readUnsignedShort();
-            fontFile.skip(2 * 2);
-            capHeight = fontFile.readUnsignedShort();
-            fontFile.skip(2 + 16 + 8 + 6 + 1 + 1);
-
-            int serifStyle = fontFile.readUnsignedByte();
-            serifStyle = serifStyle >> 6;
-            serifStyle = serifStyle & 3;
-            hasSerifs = serifStyle != 1;
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 
     /**
