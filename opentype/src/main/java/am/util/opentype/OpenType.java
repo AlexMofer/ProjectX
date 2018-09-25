@@ -61,23 +61,15 @@ public class OpenType {
                 default:
                     // 暂不支持的表
                     break;
-                case TableRecord.TAG_NAME:
-                    mName = new NamingTable(reader, record);
-                    break;
-                case TableRecord.TAG_OS2:
-                    mOS2 = new OS2Table(reader, record);
+                // Required Tables
+                case TableRecord.TAG_CMAP:
+                    mCmap = new CharacterMappingTable(reader, record);
                     break;
                 case TableRecord.TAG_HEAD:
                     mHead = new HeaderTable(reader, record);
                     break;
                 case TableRecord.TAG_HHEA:
                     mHhea = new HorizontalHeaderTable(reader, record);
-                    break;
-                case TableRecord.TAG_MAXP:
-                    mMaxp = new MaximumProfileTable(reader, record);
-                    break;
-                case TableRecord.TAG_POST:
-                    mPost = new PostScriptTable(reader, record);
                     break;
                 case TableRecord.TAG_HMTX:
                     if (mHhea != null && mMaxp != null) {
@@ -87,8 +79,82 @@ public class OpenType {
                                 numberOfHMetrics, numGlyphs);
                     }
                     break;
-                case TableRecord.TAG_CMAP:
-                    mCmap = new CharacterMappingTable(reader, record);
+                case TableRecord.TAG_MAXP:
+                    mMaxp = new MaximumProfileTable(reader, record);
+                    break;
+                case TableRecord.TAG_NAME:
+                    mName = new NamingTable(reader, record);
+                    break;
+                case TableRecord.TAG_OS2:
+                    mOS2 = new OS2Table(reader, record);
+                    break;
+                case TableRecord.TAG_POST:
+                    mPost = new PostScriptTable(reader, record);
+                    break;
+                // Tables Related to TrueType Outlines
+                case TableRecord.TAG_CVT:
+                case TableRecord.TAG_FPGM:
+                case TableRecord.TAG_GLYF:
+                case TableRecord.TAG_LOCA:
+                case TableRecord.TAG_PREP:
+                case TableRecord.TAG_GASP:
+                    // 暂不支持的表
+                    break;
+                // Tables Related to CFF Outlines
+                case TableRecord.TAG_CFF:
+                case TableRecord.TAG_CFF2:
+                case TableRecord.TAG_VORG:
+                    // 暂不支持的表
+                    break;
+                // Table Related to SVG Outlines
+                case TableRecord.TAG_SVG:
+                    // 暂不支持的表
+                    break;
+                // Tables Related to Bitmap Glyphs
+                case TableRecord.TAG_EBDT:
+                case TableRecord.TAG_EBLC:
+                case TableRecord.TAG_EBSC:
+                case TableRecord.TAG_CBDT:
+                case TableRecord.TAG_CBLC:
+                case TableRecord.TAG_SBIX:
+                    // 暂不支持的表
+                    break;
+                // Advanced Typographic Tables
+                case TableRecord.TAG_BASE:
+                case TableRecord.TAG_GDEF:
+                case TableRecord.TAG_GPOS:
+                case TableRecord.TAG_GSUB:
+                case TableRecord.TAG_JSTF:
+                case TableRecord.TAG_MATH:
+                    // 暂不支持的表
+                    break;
+                // Tables used for OpenType Font Variations
+                case TableRecord.TAG_AVAR:
+                case TableRecord.TAG_CVAR:
+                case TableRecord.TAG_FVAR:
+                case TableRecord.TAG_GVAR:
+                case TableRecord.TAG_HVAR:
+                case TableRecord.TAG_MVAR:
+                case TableRecord.TAG_STAT:
+                case TableRecord.TAG_VVAR:
+                    // 暂不支持的表
+                    break;
+                // Tables Related to Color Fonts
+                case TableRecord.TAG_COLR:
+                case TableRecord.TAG_CPAL:
+                    // 暂不支持的表
+                    break;
+                // Other OpenType Tables
+                case TableRecord.TAG_HDMX:
+                case TableRecord.TAG_KERN:
+                case TableRecord.TAG_LTSH:
+                case TableRecord.TAG_MERG:
+                case TableRecord.TAG_META:
+                case TableRecord.TAG_PCLT:
+                case TableRecord.TAG_VDMX:
+                case TableRecord.TAG_VHEA:
+                case TableRecord.TAG_VMTX:
+                    // 暂不支持的表
                     break;
             }
         }
