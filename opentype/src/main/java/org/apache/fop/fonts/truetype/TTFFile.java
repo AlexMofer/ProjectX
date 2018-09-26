@@ -56,50 +56,6 @@ public class TTFFile extends OpenFont {
      * @throws IOException In case of a I/O problem
      */
     private void readGlyf() throws IOException {
-        OFDirTabEntry dirTab = dirTabs.get(OFTableName.GLYF);
-        if (dirTab == null) {
-            // glyf table not found, cannot continue
-            return;
-//            throw new IOException("glyf table not found, cannot continue");
-        }
-        for (int i = 0; i < (numberOfGlyphs - 1); i++) {
-            if (mtxTab[i].getOffset() != mtxTab[i + 1].getOffset()) {
-                fontFile.seek(dirTab.getOffset() + mtxTab[i].getOffset());
-                fontFile.skip(2);
-                final int[] bbox = {
-                        fontFile.readShort(),
-                        fontFile.readShort(),
-                        fontFile.readShort(),
-                        fontFile.readShort()};
-                mtxTab[i].setBoundingBox(bbox);
-            } else {
-                mtxTab[i].setBoundingBox(mtxTab[0].getBoundingBox());
-            }
-        }
-
-        long n = (dirTabs.get(OFTableName.GLYF)).getOffset();
-        for (int i = 0; i < numberOfGlyphs; i++) {
-            if ((i + 1) >= mtxTab.length
-                    || mtxTab[i].getOffset() != mtxTab[i + 1].getOffset()) {
-                fontFile.seek(n + mtxTab[i].getOffset());
-                fontFile.skip(2);
-                final int[] bbox = {
-                        fontFile.readShort(),
-                        fontFile.readShort(),
-                        fontFile.readShort(),
-                        fontFile.readShort()};
-                mtxTab[i].setBoundingBox(bbox);
-            } else {
-                final int bbox0 = mtxTab[0].getBoundingBox()[0];
-                final int[] bbox = {bbox0, bbox0, bbox0, bbox0};
-                mtxTab[i].setBoundingBox(bbox);
-                /* Original code
-                mtxTab[i].bbox[0] = mtxTab[0].bbox[0];
-                mtxTab[i].bbox[1] = mtxTab[0].bbox[0];
-                mtxTab[i].bbox[2] = mtxTab[0].bbox[0];
-                mtxTab[i].bbox[3] = mtxTab[0].bbox[0]; */
-            }
-        }
     }
 
     @Override

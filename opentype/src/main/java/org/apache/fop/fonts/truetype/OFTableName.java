@@ -27,11 +27,6 @@ package org.apache.fop.fonts.truetype;
 public final class OFTableName {
 
     /**
-     * Glyph data.
-     */
-    public static final OFTableName GLYF = new OFTableName("glyf");
-
-    /**
      * Kerning.
      */
     public static final OFTableName KERN = new OFTableName("kern");

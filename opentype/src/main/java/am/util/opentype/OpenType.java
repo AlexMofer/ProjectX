@@ -5,6 +5,7 @@ import android.util.SparseArray;
 import java.io.IOException;
 
 import am.util.opentype.tables.CharacterMappingTable;
+import am.util.opentype.tables.GlyphTable;
 import am.util.opentype.tables.HeaderTable;
 import am.util.opentype.tables.HorizontalHeaderTable;
 import am.util.opentype.tables.HorizontalMetricsTable;
@@ -37,6 +38,7 @@ public class OpenType {
     private CharacterMappingTable mCmap;
     private IndexToLocationTable mLoca;
     private PCL5Table mPclt;
+    private GlyphTable mGlyf;
 
     public OpenType(int sfntVersion, int numTables, int searchRange, int entrySelector,
                     int rangeShift, SparseArray<TableRecord> records) {
@@ -54,6 +56,7 @@ public class OpenType {
      * @param reader 字体数据读取器
      * @param tags   表集合
      */
+    @SuppressWarnings("all")
     public void parseTables(OpenTypeReader reader, int... tags) throws IOException {
         if (tags == null || tags.length <= 0 || mRecords == null)
             return;
@@ -98,8 +101,10 @@ public class OpenType {
                 // Tables Related to TrueType Outlines
                 case TableRecord.TAG_CVT:
                 case TableRecord.TAG_FPGM:
-                case TableRecord.TAG_GLYF:
                     // 暂不支持的表
+                    break;
+                case TableRecord.TAG_GLYF:
+                    mGlyf = new GlyphTable(reader, record);
                     break;
                 case TableRecord.TAG_LOCA:
                     if (mHead != null && mMaxp != null) {
@@ -328,6 +333,15 @@ public class OpenType {
      */
     public CharacterMappingTable getCharacterMappingTable() {
         return mCmap;
+    }
+
+    /**
+     * 获取Glyph Table
+     *
+     * @return Glyph Table
+     */
+    public GlyphTable getGlyphTable() {
+        return mGlyf;
     }
 
     /**
