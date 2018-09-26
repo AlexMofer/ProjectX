@@ -10,6 +10,7 @@ import am.util.opentype.tables.HeaderTable;
 import am.util.opentype.tables.HorizontalHeaderTable;
 import am.util.opentype.tables.HorizontalMetricsTable;
 import am.util.opentype.tables.IndexToLocationTable;
+import am.util.opentype.tables.KerningTable;
 import am.util.opentype.tables.MaximumProfileTable;
 import am.util.opentype.tables.NamingTable;
 import am.util.opentype.tables.OS2Table;
@@ -39,6 +40,7 @@ public class OpenType {
     private IndexToLocationTable mLoca;
     private PCL5Table mPclt;
     private GlyphTable mGlyf;
+    private KerningTable mKern;
 
     public OpenType(int sfntVersion, int numTables, int searchRange, int entrySelector,
                     int rangeShift, SparseArray<TableRecord> records) {
@@ -162,7 +164,11 @@ public class OpenType {
                     break;
                 // Other OpenType Tables
                 case TableRecord.TAG_HDMX:
+                    // 暂不支持的表
+                    break;
                 case TableRecord.TAG_KERN:
+                    mKern = new KerningTable(reader, record);
+                    break;
                 case TableRecord.TAG_LTSH:
                 case TableRecord.TAG_MERG:
                 case TableRecord.TAG_META:
@@ -360,5 +366,14 @@ public class OpenType {
      */
     public PCL5Table getPCL5Table() {
         return mPclt;
+    }
+
+    /**
+     * 获取Kerning Table
+     *
+     * @return Kerning Table
+     */
+    public KerningTable getKerningTable() {
+        return mKern;
     }
 }
