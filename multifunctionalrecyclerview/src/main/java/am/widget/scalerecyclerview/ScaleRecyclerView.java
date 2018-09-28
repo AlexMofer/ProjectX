@@ -236,7 +236,17 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
      * 分发单击事件
      */
     protected boolean dispatchSingleTap() {
-        return mShouldReactSingleTab && mListener != null && mListener.onSingleTap(this);
+        if (mShouldReactSingleTab) {
+            onSingleTap();
+            return mListener != null && mListener.onSingleTap(this);
+        }
+        return false;
+    }
+
+    /**
+     * 单击事件
+     */
+    protected void onSingleTap() {
     }
 
     /**
@@ -252,6 +262,7 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
         if (!mShouldReactDoubleTab)
             return false;
         // 监听拦截双击事件
+        onDoubleTapEvent(e);
         if (mListener != null && mListener.onDoubleTap(this))
             return true;
         // 执行双击缩放事件
@@ -260,6 +271,14 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
             return false;
         mScaleHelper.scale(mScale, targetScale, e.getX(), e.getY());
         return true;
+    }
+
+    /**
+     * 双击事件
+     *
+     * @param e 触摸事件
+     */
+    protected void onDoubleTapEvent(MotionEvent e) {
     }
 
     private float getDoubleTapScale(float scale) {
