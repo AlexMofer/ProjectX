@@ -22,6 +22,7 @@ import android.support.annotation.Nullable;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
+import am.project.x.business.developing.display.DisplayRecyclerView;
 
 /**
  * 正在开发
@@ -32,6 +33,9 @@ public class DevelopingActivity extends BaseActivity {
         context.startActivity(new Intent(context, DevelopingActivity.class));
     }
 
+    private final DisplayAdapter mAdapter = new DisplayAdapter();
+    private DisplayRecyclerView mVContent;
+
     @Override
     protected int getContentViewLayout() {
         return R.layout.activity_developing;
@@ -40,7 +44,7 @@ public class DevelopingActivity extends BaseActivity {
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.developing_toolbar);
-        OpenTypeUtils.test();
-        finish();
+        mVContent = findViewById(R.id.display_rv_content);
+        mVContent.setAdapter(mAdapter);
     }
 }

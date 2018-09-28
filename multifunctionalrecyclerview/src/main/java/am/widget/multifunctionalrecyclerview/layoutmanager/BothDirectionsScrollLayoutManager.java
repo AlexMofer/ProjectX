@@ -17,7 +17,9 @@
 package am.widget.multifunctionalrecyclerview.layoutmanager;
 
 import android.content.Context;
-import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.v4.view.AbsSavedState;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -30,7 +32,6 @@ import android.view.View;
 public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager {
 
     public static final float INVALID_PERCENTAGE = -1;
-    private static final String KEY_OFFSET = "am.widget.multifunctionalrecyclerview.BothDirectionsScrollLayoutManager.KEY_OFFSET";
     private int mChildMaxWidth;
     private int mChildMaxHeight;
     private int mLeftDecorationMaxWidthOfChildMaxWidth;
@@ -116,15 +117,21 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle bundle) {
-        super.onSaveInstanceState(bundle);
-        bundle.putFloat(KEY_OFFSET, mPercentage);
+    public SavedState onSaveInstanceState() {
+        return new SavedState(super.onSaveInstanceState(), mPercentage);
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle bundle) {
-        super.onRestoreInstanceState(bundle);
-        mPendingPercentage = bundle.getFloat(KEY_OFFSET);
+    public void onRestoreInstanceState(Parcelable state) {
+        if (!(state instanceof SavedState))
+            super.onRestoreInstanceState(state);
+        else {
+            final SavedState saved = (SavedState) state;
+            super.onRestoreInstanceState(saved.getSuperState());
+            mPendingPercentage = saved.getPercentage();
+        }
+
+
     }
 
     /**
@@ -554,5 +561,49 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
         mRightDecorationMaxWidthOfChildMaxWidth = right;
         mTopDecorationMaxWidthOfChildMaxHeight = top;
         mBottomDecorationMaxWidthOfChildMaxHeight = bottom;
+    }
+
+    protected static class SavedState extends AbsSavedState {
+
+        public static final Creator<SavedState> CREATOR =
+                new ClassLoaderCreator<SavedState>() {
+
+                    @Override
+                    public SavedState createFromParcel(Parcel source, ClassLoader loader) {
+                        return new SavedState(source, loader);
+                    }
+
+                    @Override
+                    public SavedState createFromParcel(Parcel in) {
+                        return new SavedState(in, null);
+                    }
+
+                    @Override
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                };
+
+        private final float mPercentage;
+
+        private SavedState(Parcel in, ClassLoader loader) {
+            super(in, loader);
+            mPercentage = in.readFloat();
+        }
+
+        private SavedState(Parcelable superState, float percentage) {
+            super(superState);
+            mPercentage = percentage;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+            dest.writeFloat(mPercentage);
+        }
+
+        float getPercentage() {
+            return mPercentage;
+        }
     }
 }

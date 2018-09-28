@@ -17,19 +17,18 @@
 package am.widget.multifunctionalrecyclerview.layoutmanager;
 
 import android.content.Context;
+import android.support.v7.widget.PublicLinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-
-import am.widget.save.SaveLinearLayoutManager;
 
 /**
  * 剧中线性布局
  * Created by Alex on 2017/11/3.
  */
 @SuppressWarnings("all")
-public class CenterLinearLayoutManager extends SaveLinearLayoutManager {
+public class CenterLinearLayoutManager extends PublicLinearLayoutManager {
 
     private boolean mCenter = false;
 

@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".business.developing.DevelopingActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/developing_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/developing_label" />
 
-</android.support.constraint.ConstraintLayout>
+    <am.project.x.business.developing.display.DisplayRecyclerView
+        android:id="@+id/display_rv_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:iacChangeAnimationsEnable="false" />
+
+</LinearLayout>
