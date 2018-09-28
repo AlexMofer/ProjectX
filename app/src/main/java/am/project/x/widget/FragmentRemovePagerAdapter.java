@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package am.util.viewpager.adapter;
+package am.project.x.widget;
 
 import android.os.Bundle;
 import android.os.Parcelable;

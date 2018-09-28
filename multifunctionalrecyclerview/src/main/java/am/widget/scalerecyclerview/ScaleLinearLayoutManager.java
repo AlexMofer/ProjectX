@@ -17,6 +17,7 @@
 package am.widget.scalerecyclerview;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -45,7 +46,7 @@ public class ScaleLinearLayoutManager extends PagingLayoutManager {
     }
 
     @Override
-    public void measureChild(View child, int widthUsed, int heightUsed) {
+    public void measureChild(@NonNull View child, int widthUsed, int heightUsed) {
         ScaleRecyclerView.setScale(child);
         super.measureChild(child, widthUsed, heightUsed);
     }

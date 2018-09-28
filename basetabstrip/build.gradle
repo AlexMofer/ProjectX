@@ -1,17 +1,17 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 40
-        versionName "27.1.1"
+        versionName "28.0.0"
     }
 }
 
 dependencies {
-    implementation 'com.android.support:support-core-ui:27.1.1'
+    implementation 'com.android.support:viewpager:28.0.0'
 }
 
 //apply from: "bintray.gradle"

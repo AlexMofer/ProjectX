@@ -72,17 +72,17 @@ class TabStripHelper extends DataSetObserver implements
         if (id != View.NO_ID) {
             View target = null;
             final ViewParent parent = view.getParent();
-            if (parent != null && parent instanceof View)
+            if (parent instanceof View)
                 target = ((View) parent).findViewById(id);
             if (target == null)
                 target = view.getRootView().findViewById(id);
-            if (target != null && target instanceof ViewPager) {
+            if (target instanceof ViewPager) {
                 pager = (ViewPager) target;
             }
         }
         if (pager == null && traversal) {
             final ViewParent parent = view.getParent();
-            if (parent != null && parent instanceof View)
+            if (parent instanceof View)
                 pager = traversal((View) parent);
             if (pager == null)
                 pager = traversal(view.getRootView());
