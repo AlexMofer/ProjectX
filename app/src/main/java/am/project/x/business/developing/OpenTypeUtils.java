@@ -1,12 +1,18 @@
-package am.util.opentype;
+package am.project.x.business.developing;
 
 import java.io.File;
+
+import am.util.opentype.FileOpenTypeReader;
+import am.util.opentype.OpenTypeParser;
+import am.util.opentype.OpenTypeReader;
+import am.util.opentype.TableRecord;
 
 
 /**
  * 字体工具
  * Created by Alex on 2018/9/6.
  */
+@SuppressWarnings("all")
 public class OpenTypeUtils {
 
     private OpenTypeUtils() {
@@ -38,7 +44,7 @@ public class OpenTypeUtils {
         try {
             reader = new FileOpenTypeReader(font);
             final OpenTypeParser parser = new OpenTypeParser();
-            parser.parse(reader, TableRecord.TAG_NAME, TableRecord.TAG_KERN);
+            parser.parse(reader, TableRecord.TAG_NAME);
         } catch (Exception e) {
             // ignore
         } finally {

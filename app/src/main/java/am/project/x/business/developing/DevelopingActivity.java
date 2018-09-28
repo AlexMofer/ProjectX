@@ -22,7 +22,6 @@ import android.support.annotation.Nullable;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
-import am.util.opentype.OpenTypeUtils;
 
 /**
  * 正在开发
