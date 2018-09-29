@@ -117,7 +117,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     @Override
-    public SavedState onSaveInstanceState() {
+    public Parcelable onSaveInstanceState() {
         return new SavedState(super.onSaveInstanceState(), mPercentage);
     }
 
@@ -130,8 +130,6 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
             super.onRestoreInstanceState(saved.getSuperState());
             mPendingPercentage = saved.getPercentage();
         }
-
-
     }
 
     /**
