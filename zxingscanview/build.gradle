@@ -12,6 +12,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.zxing:core:3.3.0'
+    api 'com.google.zxing:core:3.3.0'
+//    implementation 'com.google.zxing:core:3.3.0'
 }
 //apply from: "bintray.gradle"

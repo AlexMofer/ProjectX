@@ -12,7 +12,8 @@ android {
 }
 
 dependencies {
-    implementation 'org.apache.ftpserver:ftpserver-core:1.1.1'
+    api 'org.apache.ftpserver:ftpserver-core:1.1.1'
+//    implementation 'org.apache.ftpserver:ftpserver-core:1.1.1'
 }
 
 //apply from: "bintray.gradle"
