@@ -261,4 +261,6 @@
     <string name="crypto_rsa">RSA</string>
     <string name="crypto_output">输出信息：</string>
     <string name="crypto_dlg_message">正在计算&#8230;</string>
+    <!--文件传输-->
+    <string name="ftp_label">文件传输</string>
 </resources>

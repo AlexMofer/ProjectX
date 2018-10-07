@@ -115,6 +115,9 @@
             android:name=".business.others.crypto.CryptoActivity"
             android:label="@string/crypto_label" />
         <activity android:name=".business.browser.BrowserActivity" />
+        <activity
+            android:name=".business.others.ftp.FtpActivity"
+            android:label="@string/ftp_label" />
     </application>
 
 </manifest>

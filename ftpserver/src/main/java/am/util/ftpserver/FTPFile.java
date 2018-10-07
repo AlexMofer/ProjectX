@@ -29,8 +29,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import am.util.ftpserver.util.RandomAccessFileOutputStream;
-
 /**
  * FTP文件
  * Created by Alex on 2017/12/20.
@@ -194,10 +192,7 @@ public class FTPFile implements FtpFile {
         } else if (offset == mFile.length()) {
             output = new FileOutputStream(mFile, true);
         } else {
-            final RandomAccessFileOutputStream random =
-                    new RandomAccessFileOutputStream(mFile, "rw");
-            random.seek(offset);
-            output = random;
+            output = new RandomAccessFileOutputStream(mFile, "rw", offset);
         }
         return new BufferedOutputStream(output, mStreamSize);
     }

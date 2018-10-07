@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import am.project.x.R;
 import am.project.x.base.BaseFragment;
 import am.project.x.business.others.crypto.CryptoActivity;
+import am.project.x.business.others.ftp.FtpActivity;
 import am.project.x.business.others.printer.PrinterActivity;
 
 public class OthersFragment extends BaseFragment implements View.OnClickListener {
@@ -56,6 +57,7 @@ public class OthersFragment extends BaseFragment implements View.OnClickListener
                 CryptoActivity.start(getActivity());
                 break;
             case R.id.other_btn_ftp:
+                FtpActivity.start(getActivity());
                 break;
         }
     }
