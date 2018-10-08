@@ -26,10 +26,10 @@ import am.project.x.base.BaseActivity;
 /**
  * 文件传输
  */
-public class FtpActivity extends BaseActivity {
+public class FTPActivity extends BaseActivity {
 
     public static void start(Context context) {
-        context.startActivity(new Intent(context, FtpActivity.class));
+        context.startActivity(new Intent(context, FTPActivity.class));
     }
 
     @Override

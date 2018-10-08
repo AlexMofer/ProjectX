@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".ProjectXApplication"
@@ -25,6 +26,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".business.main.MainActivity"
@@ -117,8 +121,11 @@
             android:label="@string/crypto_label" />
         <activity android:name=".business.browser.BrowserActivity" />
         <activity
-            android:name=".business.others.ftp.FtpActivity"
+            android:name=".business.others.ftp.FTPActivity"
             android:label="@string/ftp_label" />
+        <activity
+            android:name=".business.others.ftp.FTPSwitcherActivity"
+            android:theme="@style/CompletelyTransparentDialog" />
 
         <service
             android:name=".business.others.ftp.FTPService"
