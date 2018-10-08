@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name=".ProjectXApplication"
@@ -118,6 +119,19 @@
         <activity
             android:name=".business.others.ftp.FtpActivity"
             android:label="@string/ftp_label" />
+
+        <service
+            android:name=".business.others.ftp.FTPService"
+            android:exported="false" />
+        <service
+            android:name=".business.others.ftp.FTPTileService"
+            android:icon="@drawable/ic_tile_ftp"
+            android:label="@string/ftp_tile_label_inactive"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

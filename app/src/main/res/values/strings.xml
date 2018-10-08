@@ -1,4 +1,6 @@
 <resources>
+    <string name="notification_name_low">服务通知</string>
+    <!--主页面-->
     <string name="main_nav_title">自由、开放、平等、分享</string>
     <string name="main_nav_widgets">控件</string>
     <string name="main_nav_drawables">图形</string>
@@ -263,4 +265,13 @@
     <string name="crypto_dlg_message">正在计算&#8230;</string>
     <!--文件传输-->
     <string name="ftp_label">文件传输</string>
+    <string name="ftp_notification_title">已启动 FTP 服务器</string>
+    <string name="ftp_notification_text">访问 ftp://%1$s:%2$d/ 进行文件传输。</string>
+    <string name="ftp_toast_no_wifi">未连接到WIFI网络</string>
+    <string name="ftp_tile_label_active">FTP 运行中&#8230;</string>
+    <string name="ftp_tile_label_inactive">FTP 服务</string>
+    <string name="ftp_switcher_shortcuts_long">启动或者关闭 FTP 文件传输服务</string>
+    <string name="ftp_switcher_shortcuts_short">开关 FTP</string>
+    <string name="ftp_switcher_toast_start">正在启动 FTP 服务&#8230;</string>
+    <string name="ftp_switcher_toast_stop">正在停止 FTP 服务&#8230;</string>
 </resources>

@@ -27,6 +27,10 @@ import am.project.x.ProjectXApplication;
  */
 @SuppressWarnings("all")
 public class LocalBroadcastHelper {
+
+    public static final String ACTION_FTP_STARTED = "am.project.x.action.ACTION_FTP_STARTED";
+    public static final String ACTION_FTP_STOPPED = "am.project.x.action.ACTION_FTP_STOPPED";
+
     private LocalBroadcastHelper() {
         //no instance
     }
