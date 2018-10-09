@@ -274,4 +274,7 @@
     <string name="ftp_switcher_shortcuts_short">开关 FTP</string>
     <string name="ftp_switcher_toast_start">正在启动 FTP 服务&#8230;</string>
     <string name="ftp_switcher_toast_stop">正在停止 FTP 服务&#8230;</string>
+    <string name="ftp_port">2020</string>
+    <string name="ftp_open">打开</string>
+    <string name="ftp_close">关闭</string>
 </resources>
