@@ -11,6 +11,8 @@
         android:id="@+id/ftp_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -25,7 +27,8 @@
         android:layout_margin="10dp"
         android:hint="@string/ftp_port"
         android:imeOptions="actionDone"
-        android:inputType="text"
+        android:inputType="numberSigned"
+        android:maxLength="5"
         app:layout_constraintTop_toBottomOf="@id/ftp_toolbar" />
 
     <android.support.v7.widget.AppCompatButton

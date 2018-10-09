@@ -122,7 +122,8 @@
         <activity android:name=".business.browser.BrowserActivity" />
         <activity
             android:name=".business.others.ftp.FTPActivity"
-            android:label="@string/ftp_label" />
+            android:label="@string/ftp_label"
+            android:launchMode="singleTask" />
         <activity
             android:name=".business.others.ftp.FTPSwitcherActivity"
             android:theme="@style/CompletelyTransparentDialog" />

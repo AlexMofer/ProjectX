@@ -277,4 +277,6 @@
     <string name="ftp_port">2020</string>
     <string name="ftp_open">打开</string>
     <string name="ftp_close">关闭</string>
+    <string name="ftp_toast_bad_port">无效的端口号</string>
+    <string name="ftp_toast_running">FTP 服务正在运行</string>
 </resources>

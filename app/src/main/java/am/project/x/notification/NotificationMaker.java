@@ -23,7 +23,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
 import am.project.x.R;
-import am.project.x.utils.ContextUtils;
 
 
 /**
@@ -34,8 +33,8 @@ public class NotificationMaker {
 
     public static final int ID_FTP = 1;
 
-
-    public static Notification getFTPRunning(Context context, String title, String text) {
+    public static Notification getFTPRunning(Context context, String title, String text,
+                                             PendingIntent intent) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,
                 NotificationChannelHelper.getChannelLow(context))
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
@@ -50,8 +49,7 @@ public class NotificationMaker {
                 .setOngoing(true)
                 .setContentTitle(title)
                 .setContentText(text)
-                .setContentIntent(PendingIntent.getActivity(context, ID_FTP,
-                        ContextUtils.getLaunchIntent(context), PendingIntent.FLAG_UPDATE_CURRENT));
+                .setContentIntent(intent);
         return builder.build();
     }
 }

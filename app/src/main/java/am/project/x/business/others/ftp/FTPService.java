@@ -15,6 +15,7 @@
  */
 package am.project.x.business.others.ftp;
 
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -109,7 +110,10 @@ public class FTPService extends Service {
         final String text = getString(R.string.ftp_notification_text,
                 ContextUtils.getWifiIp(this), port);
         startForeground(NotificationMaker.ID_FTP,
-                NotificationMaker.getFTPRunning(this, title, text));
+                NotificationMaker.getFTPRunning(this, title, text,
+                        PendingIntent.getActivity(this, NotificationMaker.ID_FTP,
+                                FTPActivity.getStarter(this),
+                                PendingIntent.FLAG_UPDATE_CURRENT)));
         STARTED = true;
         LocalBroadcastHelper.sendBroadcast(LocalBroadcastHelper.ACTION_FTP_STARTED);
         return super.onStartCommand(intent, flags, startId);

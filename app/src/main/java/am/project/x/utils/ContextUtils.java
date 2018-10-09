@@ -123,7 +123,7 @@ public class ContextUtils {
      * @param context Context
      * @return 启动Intent
      */
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings("all")
     public static Intent getLaunchIntent(Context context) {
         return context.getPackageManager().getLaunchIntentForPackage(
                 context.getPackageName()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
