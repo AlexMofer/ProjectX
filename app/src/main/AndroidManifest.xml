@@ -127,6 +127,9 @@
         <activity
             android:name=".business.others.ftp.FTPSwitcherActivity"
             android:theme="@style/CompletelyTransparentDialog" />
+        <activity
+            android:name=".business.others.font.FontActivity"
+            android:label="@string/font_label" />
 
         <service
             android:name=".business.others.ftp.FTPService"
