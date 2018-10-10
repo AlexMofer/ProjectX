@@ -283,4 +283,6 @@
     <string name="ftp_toast_running">FTP 服务正在运行</string>
     <!--字体-->
     <string name="font_label">字体</string>
+    <!--字体文件-->
+    <string name="opentype_label">字体文件</string>
 </resources>

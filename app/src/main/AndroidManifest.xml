@@ -130,6 +130,9 @@
         <activity
             android:name=".business.others.font.FontActivity"
             android:label="@string/font_label" />
+        <activity
+            android:name=".business.others.opentype.OpenTypeActivity"
+            android:label="@string/opentype_label" />
 
         <service
             android:name=".business.others.ftp.FTPService"
