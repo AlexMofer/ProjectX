@@ -45,6 +45,8 @@ public class OthersFragment extends BaseFragment implements View.OnClickListener
         findViewById(R.id.other_btn_printer).setOnClickListener(this);
         findViewById(R.id.other_btn_crypto).setOnClickListener(this);
         findViewById(R.id.other_btn_ftp).setOnClickListener(this);
+        findViewById(R.id.other_btn_font).setOnClickListener(this);
+        findViewById(R.id.other_btn_opentype).setOnClickListener(this);
     }
 
     @Override
@@ -58,6 +60,10 @@ public class OthersFragment extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.other_btn_ftp:
                 FTPActivity.start(getActivity());
+                break;
+            case R.id.other_btn_font:
+                break;
+            case R.id.other_btn_opentype:
                 break;
         }
     }

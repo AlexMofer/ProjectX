@@ -59,6 +59,40 @@
             app:layout_constraintStart_toEndOf="@id/other_btn_crypto"
             app:layout_constraintTop_toTopOf="@id/other_btn_crypto"
             app:layout_constraintWidth_percent="0.25" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/other_btn_font"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawableTop="@drawable/ic_others_font"
+            android:drawablePadding="6dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp"
+            android:text="@string/main_others_font"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/other_btn_ftp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/other_btn_ftp"
+            app:layout_constraintTop_toTopOf="@id/other_btn_ftp" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/other_btn_opentype"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawableTop="@drawable/ic_others_opentype"
+            android:drawablePadding="6dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp"
+            android:text="@string/main_others_opentype"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/other_btn_printer"
+            app:layout_constraintWidth_percent="0.25" />
+
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>
