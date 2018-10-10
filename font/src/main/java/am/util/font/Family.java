@@ -13,38 +13,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package am.project.support.font;
+package am.util.font;
 
 import android.text.TextUtils;
 
+import java.util.ArrayList;
+
 /**
- * 字体族别名
+ * 字体族
  * Created by Alex on 2018/8/30.
  */
-class Alias {
+class Family {
     private final String mName;// 名称
-    private final String mTo;// 映射字体族名称
-    private final int mWeight;// 字体粗细筛选条件，为-1时表示不筛选
+    private final ArrayList<Font> mFonts = new ArrayList<>();// 字体
 
-    Alias(String name, String to, int weight) {
+    Family(String name) {
         mName = name;
-        mTo = to;
-        mWeight = weight;
     }
 
     boolean isAvailable() {
-        return !TextUtils.isEmpty(mName) && !TextUtils.isEmpty(mTo);
+        return !TextUtils.isEmpty(mName) && mFonts.size() > 0;
+    }
+
+    void addFont(Font font) {
+        if (font == null)
+            return;
+        mFonts.add(font);
     }
 
     String getName() {
         return mName;
     }
 
-    String getTo() {
-        return mTo;
-    }
-
-    int getWeight() {
-        return mWeight;
+    ArrayList<TypefaceItem> convert(int weight) {
+        final ArrayList<TypefaceItem> items = new ArrayList<>();
+        for (Font font : mFonts) {
+            if (weight == -1)
+                items.add(font.convert());
+            else {
+                if (weight == font.getWeight())
+                    items.add(font.convert());
+            }
+        }
+        return items.isEmpty() ? null : items;
     }
 }

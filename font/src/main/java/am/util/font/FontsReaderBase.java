@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package am.project.support.font;
+package am.util.font;
 
 import android.text.TextUtils;
 import android.util.Xml;
