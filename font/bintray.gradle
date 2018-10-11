@@ -29,7 +29,29 @@ def developerEmail = properties.getProperty("developer.email")
 def bintrayUser = properties.getProperty("bintray.user")
 def bintrayApikey = properties.getProperty("bintray.apikey")
 
-// This generates POM.xml with proper parameters
+task androidJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.sourceFiles
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+    }
+}
+
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    classifier = 'javadoc'
+    from androidJavadocs.destinationDir
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.sourceFiles
+}
+
+artifacts {
+    archives androidSourcesJar
+    archives androidJavadocsJar
+}
+
 install {
     repositories.mavenInstaller {
         pom.project {
@@ -61,43 +83,6 @@ install {
     }
 }
 
-task androidJavadocs(type: Javadoc) {
-    source = android.sourceSets.main.java.source
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    options {
-        encoding "UTF-8"
-        charSet 'UTF-8'
-        author true
-        version projectVersionName
-        links "http://docs.oracle.com/javase/7/docs/api"
-        title projectName
-    }
-}
-
-task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
-    from androidJavadocs.destinationDir
-    classifier = 'javadoc'
-}
-
-task androidSourcesJar(type: Jar) {
-    from android.sourceSets.main.java.source
-    classifier = 'sources'
-}
-
-if (JavaVersion.current().isJava8Compatible()) {
-    allprojects {
-        tasks.withType(Javadoc) {
-            options.addStringOption('Xdoclint:none', '-quiet')
-        }
-    }
-}
-
-artifacts {
-    archives androidSourcesJar
-    archives androidJavadocsJar
-}
-
-// bintray configuration
 bintray {
     user = bintrayUser
     key = bintrayApikey
@@ -115,5 +100,11 @@ bintray {
         vcsUrl = projectGitUrl
         licenses = ["Apache-2.0"]
         publicDownloadNumbers = true
+        version {
+            name = projectVersionName
+            desc = projectDesc
+            released  = new Date()
+            vcsTag = projectVersionName
+        }
     }
 }
