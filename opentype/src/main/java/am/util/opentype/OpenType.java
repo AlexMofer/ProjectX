@@ -15,9 +15,8 @@
  */
 package am.util.opentype;
 
-import android.util.SparseArray;
-
 import java.io.IOException;
+import java.util.Map;
 
 import am.util.opentype.tables.CharacterMappingTable;
 import am.util.opentype.tables.GlyphTable;
@@ -43,7 +42,7 @@ public class OpenType {
     private final int mSearchRange;// (Maximum power of 2 <= numTables) x 16.
     private final int mEntrySelector;// Log2(maximum power of 2 <= numTables).
     private final int mRangeShift;// NumTables x 16-searchRange.
-    private final SparseArray<TableRecord> mRecords;
+    private final Map<Integer, TableRecord> mRecords;
     private NamingTable mName;
     private OS2Table mOS2;
     private HeaderTable mHead;
@@ -58,7 +57,7 @@ public class OpenType {
     private KerningTable mKern;
 
     public OpenType(int sfntVersion, int numTables, int searchRange, int entrySelector,
-                    int rangeShift, SparseArray<TableRecord> records) {
+                    int rangeShift, Map<Integer, TableRecord> records) {
         mSFNTVersion = sfntVersion;
         mNumTables = numTables;
         mSearchRange = searchRange;
@@ -72,6 +71,7 @@ public class OpenType {
      *
      * @param reader 字体数据读取器
      * @param tags   表集合
+     * @throws IOException 读写错误
      */
     @SuppressWarnings("all")
     public void parseTables(OpenTypeReader reader, int... tags) throws IOException {
@@ -222,7 +222,7 @@ public class OpenType {
     /**
      * 获取搜索范围
      *
-     * @return 搜索范围(Maximum power of 2 < = numTables) x 16.
+     * @return 搜索范围(Maximum power of 2 & lt ; = numTables) x 16.
      */
     public int getSearchRange() {
         return mSearchRange;
@@ -231,7 +231,7 @@ public class OpenType {
     /**
      * 获取条目选择器
      *
-     * @return 条目选择器 Log2(maximum power of 2 <= numTables).
+     * @return 条目选择器 Log2(maximum power of 2 &lt;= numTables).
      */
     public int getEntrySelector() {
         return mEntrySelector;
@@ -270,7 +270,7 @@ public class OpenType {
      *
      * @return 表记录集
      */
-    public SparseArray<TableRecord> getTableRecords() {
+    public Map<Integer, TableRecord> getTableRecords() {
         return mRecords;
     }
 

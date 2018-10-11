@@ -1,14 +1,10 @@
-apply plugin: 'com.android.library'
+apply plugin: 'java-library'
 
-android {
-    compileSdkVersion 28
-
-    defaultConfig {
-        minSdkVersion 1
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0.0"
-    }
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
 }
+
+sourceCompatibility = "7"
+targetCompatibility = "7"
 
 //apply from: "bintray.gradle"

@@ -46,8 +46,7 @@ public interface OpenTypeReader extends Closeable {
     /**
      * Attempts to skip over {@code n} bytes of input discarding the
      * skipped bytes.
-     * <p>
-     * <p>
+     *
      * This method may skip over some smaller number of bytes, possibly zero.
      * This may result from any of a number of conditions; reaching end of
      * file before {@code n} bytes have been skipped is only one

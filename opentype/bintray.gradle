@@ -1,4 +1,4 @@
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'maven'
 apply plugin: 'com.jfrog.bintray'
 
 // load properties
@@ -17,7 +17,7 @@ def projectName = properties.getProperty("project.name")
 def projectDesc = properties.getProperty("project.desc")
 def projectGroupId = properties.getProperty("project.groupId")
 def projectArtifactId = properties.getProperty("project.artifactId")
-def projectVersionName = android.defaultConfig.versionName
+def projectVersionName = '1.0.2'
 def projectPackaging = properties.getProperty("project.packaging")
 def projectSiteUrl = properties.getProperty("project.siteUrl")
 def projectGitUrl = properties.getProperty("project.gitUrl")
@@ -29,7 +29,30 @@ def developerEmail = properties.getProperty("developer.email")
 def bintrayUser = properties.getProperty("bintray.user")
 def bintrayApikey = properties.getProperty("bintray.apikey")
 
-// This generates POM.xml with proper parameters
+javadoc {
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+version = projectVersionName
+
 install {
     repositories.mavenInstaller {
         pom.project {
@@ -61,43 +84,6 @@ install {
     }
 }
 
-task androidJavadocs(type: Javadoc) {
-    source = android.sourceSets.main.java.source
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    options {
-        encoding "UTF-8"
-        charSet 'UTF-8'
-        author true
-        version projectVersionName
-        links "http://docs.oracle.com/javase/7/docs/api"
-        title projectName
-    }
-}
-
-task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
-    from androidJavadocs.destinationDir
-    classifier = 'javadoc'
-}
-
-task androidSourcesJar(type: Jar) {
-    from android.sourceSets.main.java.source
-    classifier = 'sources'
-}
-
-if (JavaVersion.current().isJava8Compatible()) {
-    allprojects {
-        tasks.withType(Javadoc) {
-            options.addStringOption('Xdoclint:none', '-quiet')
-        }
-    }
-}
-
-artifacts {
-    archives androidSourcesJar
-    archives androidJavadocsJar
-}
-
-// bintray configuration
 bintray {
     user = bintrayUser
     key = bintrayApikey
@@ -115,5 +101,31 @@ bintray {
         vcsUrl = projectGitUrl
         licenses = ["Apache-2.0"]
         publicDownloadNumbers = true
+        version {
+            name = projectVersionName
+            desc = projectDesc
+            released  = new Date()
+            vcsTag = projectVersionName
+        }
     }
 }
+
+//task androidJavadocs(type: Javadoc) {
+//    source = android.sourceSets.main.java.sourceFiles
+//    options.encoding = "UTF-8"
+//}
+//
+//task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+//    classifier = 'javadoc'
+//    from androidJavadocs.destinationDir
+//}
+//
+//task androidSourcesJar(type: Jar) {
+//    classifier = 'sources'
+//    from android.sourceSets.main.java.sourceFiles
+//}
+//
+//artifacts {
+//    archives androidSourcesJar
+//    archives androidJavadocsJar
+//}

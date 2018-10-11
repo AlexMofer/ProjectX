@@ -118,7 +118,7 @@ public class PCL5Table {
      * A      Adobe Systems
      * B      Bitstream Inc.
      * C      Agfa Corporation
-     * H      Bigelow & Holmes
+     * H      Bigelow &amp; Holmes
      * L      Linotype Company
      * M      Monotype Typography Ltd.
      *

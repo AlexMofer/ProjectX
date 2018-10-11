@@ -300,12 +300,12 @@ public class OS2Table {
      * _                  2: Restricted License embedding: the font must not be modified,
      * _                  embedded or exchanged in any manner without first obtaining explicit
      * _                  permission of the legal owner.
-     * _                  4: Preview & Print embedding: the font may be embedded, and may be
+     * _                  4: Preview &amp; Print embedding: the font may be embedded, and may be
      * _                  temporarily loaded on other systems for purposes of viewing or printing
-     * _                  the document. Documents containing Preview & Print fonts must be opened
+     * _                  the document. Documents containing Preview &amp; Print fonts must be opened
      * _                  “read-only”; no edits can be applied to the document.
      * _                  8: Editable embedding: the font may be embedded, and may be temporarily
-     * _                  loaded on other systems. As with Preview & Print embedding, documents
+     * _                  loaded on other systems. As with Preview &amp; Print embedding, documents
      * _                  containing Editable fonts may be opened for reading. In addition,
      * _                  editing is permitted, including ability to format new text using the
      * _                  embedded font, and changes may be saved.
@@ -328,7 +328,7 @@ public class OS2Table {
      * licensed to permit embedding. Also, when embedding a font into a document,
      * applications must not modify the embedding permissions and restrictions indicated
      * in this field. In addition, applications loading embedded fonts for temporary use
-     * (Preview & Print or Editable embedding) must delete the fonts when the document containing
+     * (Preview &amp; Print or Editable embedding) must delete the fonts when the document containing
      * the embedded font is closed.
      * Bits 0 to 3 (the embedding permissions sub-field) are mutually exclusive:
      * fonts should never have more than of these bits set. Note that, if two or more bits are set,
@@ -910,7 +910,7 @@ public class OS2Table {
      * 7                      USE_TYPO_METRICS   If set, it is strongly recommended that applications use OS/2.sTypoAscender - OS/2.sTypoDescender + OS/2.sTypoLineGap as the default line spacing for this font.
      * 8                      WWS                The font has 'name' table strings consistent with a weight/width/slope family without requiring use of name IDs 21 and 22. (Please see more detailed description below.)
      * 9                      OBLIQUE            Font contains oblique glyphs.
-     * 10–15                  <reserved>         Reserved; set to 0.
+     * 10–15                  &lt;reserved&gt;   Reserved; set to 0.
      * All undefined bits must be zero.
      * Bit 0: The setting of bits 0 must match the setting of bit 1 in the macStyle field of
      * the 'head' table.

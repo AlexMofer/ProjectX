@@ -15,10 +15,9 @@
  */
 package am.util.opentype;
 
-import android.util.SparseArray;
-
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * 字体解析器
@@ -82,7 +81,7 @@ public class OpenTypeParser {
         final int searchRange = reader.readUnsignedShort();
         final int entrySelector = reader.readUnsignedShort();
         final int rangeShift = reader.readUnsignedShort();
-        final SparseArray<TableRecord> records = new SparseArray<>();
+        final HashMap<Integer, TableRecord> records = new HashMap<>();
         for (int i = 0; i < numTables; i++) {
             final int tableTag = reader.readInt();
             final int checkSum = reader.readUnsignedInt();
