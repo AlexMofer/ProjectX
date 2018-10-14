@@ -26,6 +26,7 @@ import android.support.v7.widget.RecyclerView;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
+import am.project.x.business.others.opentype.OpenTypeActivity;
 
 /**
  * 字体文件列表
@@ -74,7 +75,7 @@ public class OpenTypeListActivity extends BaseActivity implements OpenTypeListVi
 
     // Listener
     @Override
-    public void onItemClick(int position, Object item) {
-
+    public void onItemClick(Object item) {
+        OpenTypeActivity.start(this, mPresenter.getItemPath(item));
     }
 }

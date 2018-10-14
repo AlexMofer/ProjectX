@@ -133,6 +133,9 @@
         <activity
             android:name=".business.others.opentypelist.OpenTypeListActivity"
             android:label="@string/otl_label" />
+        <activity
+            android:name=".business.others.opentype.OpenTypeActivity"
+            android:label="@string/ot_label" />
 
         <service
             android:name=".business.others.ftp.FTPService"

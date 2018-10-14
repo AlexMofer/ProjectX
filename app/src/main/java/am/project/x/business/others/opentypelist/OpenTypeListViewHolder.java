@@ -48,10 +48,10 @@ class OpenTypeListViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     @Override
     public void onClick(View v) {
-        mListener.onItemClick(getAdapterPosition(), mItem);
+        mListener.onItemClick(mItem);
     }
 
     public interface OnViewHolderListener {
-        void onItemClick(int position, Object item);
+        void onItemClick(Object item);
     }
 }

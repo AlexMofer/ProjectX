@@ -285,4 +285,5 @@
     <string name="font_label">字体</string>
     <!--字体文件-->
     <string name="otl_label">字体文件</string>
+    <string name="ot_label">字体详情</string>
 </resources>
