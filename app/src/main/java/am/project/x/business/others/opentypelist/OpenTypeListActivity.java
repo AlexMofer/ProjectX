@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package am.project.x.business.others.opentype;
+package am.project.x.business.others.opentypelist;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,27 +28,27 @@ import am.project.x.R;
 import am.project.x.base.BaseActivity;
 
 /**
- * 字体文件
+ * 字体文件列表
  */
-public class OpenTypeActivity extends BaseActivity implements OpenTypeView,
-        OpenTypeViewHolder.OnViewHolderListener {
+public class OpenTypeListActivity extends BaseActivity implements OpenTypeListView,
+        OpenTypeListViewHolder.OnViewHolderListener {
 
-    private final OpenTypePresenter mPresenter = new OpenTypePresenter(this);
-    private final OpenTypeAdapter mAdapter = new OpenTypeAdapter(mPresenter, this);
+    private final OpenTypeListPresenter mPresenter = new OpenTypeListPresenter(this);
+    private final OpenTypeListAdapter mAdapter = new OpenTypeListAdapter(mPresenter, this);
 
     public static void start(Context context) {
-        context.startActivity(new Intent(context, OpenTypeActivity.class));
+        context.startActivity(new Intent(context, OpenTypeListActivity.class));
     }
 
     @Override
     protected int getContentViewLayout() {
-        return R.layout.activity_opentype;
+        return R.layout.activity_opentypelist;
     }
 
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
-        setSupportActionBar(R.id.opentype_toolbar);
-        final RecyclerView list = findViewById(R.id.opentype_content);
+        setSupportActionBar(R.id.otl_toolbar);
+        final RecyclerView list = findViewById(R.id.otl_content);
         final Drawable divider = ContextCompat.getDrawable(this, R.drawable.divider_common);
         if (divider != null) {
             final DividerItemDecoration decoration = new DividerItemDecoration(list.getContext(),
@@ -62,7 +62,7 @@ public class OpenTypeActivity extends BaseActivity implements OpenTypeView,
     }
 
     @Override
-    protected OpenTypePresenter getPresenter() {
+    protected OpenTypeListPresenter getPresenter() {
         return mPresenter;
     }
 

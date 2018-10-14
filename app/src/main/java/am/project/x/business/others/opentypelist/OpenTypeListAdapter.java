@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package am.project.x.business.others.opentype;
+package am.project.x.business.others.opentypelist;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -22,25 +22,25 @@ import android.view.ViewGroup;
 /**
  * Adapter
  */
-class OpenTypeAdapter extends RecyclerView.Adapter<OpenTypeViewHolder> {
+class OpenTypeListAdapter extends RecyclerView.Adapter<OpenTypeListViewHolder> {
 
-    private final OpenTypeAdapterViewModel mModel;
-    private final OpenTypeViewHolder.OnViewHolderListener mListener;
+    private final OpenTypeListAdapterViewModel mModel;
+    private final OpenTypeListViewHolder.OnViewHolderListener mListener;
 
-    OpenTypeAdapter(OpenTypeAdapterViewModel model,
-                    OpenTypeViewHolder.OnViewHolderListener listener) {
+    OpenTypeListAdapter(OpenTypeListAdapterViewModel model,
+                        OpenTypeListViewHolder.OnViewHolderListener listener) {
         mModel = model;
         mListener = listener;
     }
 
     @NonNull
     @Override
-    public OpenTypeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-        return new OpenTypeViewHolder(parent, mListener);
+    public OpenTypeListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
+        return new OpenTypeListViewHolder(parent, mListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OpenTypeViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OpenTypeListViewHolder holder, int position) {
         holder.bind(position, mModel);
     }
 

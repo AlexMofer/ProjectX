@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package am.project.x.business.others.opentype;
+package am.project.x.business.others.opentypelist;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -27,13 +27,13 @@ import am.project.x.R;
 /**
  * ViewHolder
  */
-class OpenTypeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+class OpenTypeListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private final TextView mVName;
     private final OnViewHolderListener mListener;
     private Object mItem;
 
-    OpenTypeViewHolder(@NonNull ViewGroup parent, OnViewHolderListener listener) {
+    OpenTypeListViewHolder(@NonNull ViewGroup parent, OnViewHolderListener listener) {
         super(LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.item_opentype_item, parent, false));
         mListener = listener;
@@ -41,9 +41,9 @@ class OpenTypeViewHolder extends RecyclerView.ViewHolder implements View.OnClick
         itemView.setOnClickListener(this);
     }
 
-    void bind(int position, OpenTypeAdapterViewModel model) {
+    void bind(int position, OpenTypeListAdapterViewModel model) {
         mItem = model.getItem(position);
-        mVName.setText(model.getItemName(position));
+        mVName.setText(model.getItemName(mItem));
     }
 
     @Override

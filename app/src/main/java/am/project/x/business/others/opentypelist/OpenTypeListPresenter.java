@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package am.project.x.business.others.opentype;
+package am.project.x.business.others.opentypelist;
 
 import am.util.mvp.AMPresenter;
 
 /**
  * Presenter
  */
-class OpenTypePresenter extends AMPresenter<OpenTypeView, OpenTypeModel> implements
-        OpenTypeView, OpenTypeViewModel {
+class OpenTypeListPresenter extends AMPresenter<OpenTypeListView, OpenTypeListModel> implements
+        OpenTypeListView, OpenTypeListViewModel {
 
-    private final OpenTypeModel mModel = new OpenTypeModel(this);
+    private final OpenTypeListModel mModel = new OpenTypeListModel(this);
 
-    OpenTypePresenter(OpenTypeView view) {
+    OpenTypeListPresenter(OpenTypeListView view) {
         super(view);
     }
 
     @Override
-    protected OpenTypeModel getModel() {
+    protected OpenTypeListModel getModel() {
         return mModel;
     }
 
@@ -54,13 +54,18 @@ class OpenTypePresenter extends AMPresenter<OpenTypeView, OpenTypeModel> impleme
     }
 
     @Override
-    public String getItemName(int position) {
-        return getModel().getItemName(position);
+    public String getItemName(Object item) {
+        return getModel().getItemName(item);
     }
 
     // ViewModel
     @Override
     public void loadOpenType() {
         getModel().loadOpenType();
+    }
+
+    @Override
+    public String getItemPath(Object item) {
+        return getModel().getItemPath(item);
     }
 }

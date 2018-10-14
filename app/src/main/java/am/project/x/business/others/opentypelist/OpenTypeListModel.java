@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package am.project.x.business.others.opentype;
+package am.project.x.business.others.opentypelist;
 
 import java.io.File;
 
@@ -22,13 +22,13 @@ import am.util.mvp.AMModel;
 /**
  * Model
  */
-class OpenTypeModel extends AMModel<OpenTypePresenter> implements OpenTypeViewModel {
+class OpenTypeListModel extends AMModel<OpenTypeListPresenter> implements OpenTypeListViewModel {
 
     private static final String DIR_FONTS = "/system/fonts";
     private final File dir = new File(DIR_FONTS);
     private File[] mItems;
 
-    OpenTypeModel(OpenTypePresenter presenter) {
+    OpenTypeListModel(OpenTypeListPresenter presenter) {
         super(presenter);
     }
 
@@ -44,11 +44,8 @@ class OpenTypeModel extends AMModel<OpenTypePresenter> implements OpenTypeViewMo
     }
 
     @Override
-    public String getItemName(int position) {
-        final File file = getItem(position);
-        if (file == null)
-            return null;
-        return file.getName();
+    public String getItemName(Object item) {
+        return item instanceof File ? ((File) item).getName() : null;
     }
 
     // ViewModel
@@ -58,5 +55,10 @@ class OpenTypeModel extends AMModel<OpenTypePresenter> implements OpenTypeViewMo
         if (isDetachedFromPresenter())
             return;
         getPresenter().onOpenTypeLoaded();
+    }
+
+    @Override
+    public String getItemPath(Object item) {
+        return item instanceof File ? ((File) item).getPath() : null;
     }
 }

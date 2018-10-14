@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package am.project.x.business.others.opentype;
+package am.project.x.business.others.opentypelist;
 
 /**
  * AdapterViewModel
  */
-interface OpenTypeAdapterViewModel {
+interface OpenTypeListAdapterViewModel {
     int getItemCount();
 
     Object getItem(int position);
 
-    String getItemName(int position);
+    String getItemName(Object item);
 }

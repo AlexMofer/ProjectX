@@ -27,7 +27,7 @@ import am.project.x.base.BaseFragment;
 import am.project.x.business.others.crypto.CryptoActivity;
 import am.project.x.business.others.font.FontActivity;
 import am.project.x.business.others.ftp.FTPActivity;
-import am.project.x.business.others.opentype.OpenTypeActivity;
+import am.project.x.business.others.opentypelist.OpenTypeListActivity;
 import am.project.x.business.others.printer.PrinterActivity;
 
 public class OthersFragment extends BaseFragment implements View.OnClickListener {
@@ -67,7 +67,7 @@ public class OthersFragment extends BaseFragment implements View.OnClickListener
                 FontActivity.start(getActivity());
                 break;
             case R.id.other_btn_opentype:
-                OpenTypeActivity.start(getActivity());
+                OpenTypeListActivity.start(getActivity());
                 break;
         }
     }

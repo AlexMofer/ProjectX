@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package am.project.x.business.others.opentype;
+package am.project.x.business.others.opentypelist;
+
+import am.util.mvp.AMView;
 
 /**
- * ViewModel
+ * View
  */
-interface OpenTypeViewModel extends OpenTypeAdapterViewModel {
-    void loadOpenType();
+interface OpenTypeListView extends AMView {
+    void onOpenTypeLoaded();
 }
