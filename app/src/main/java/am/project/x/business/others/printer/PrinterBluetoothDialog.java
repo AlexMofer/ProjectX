@@ -46,7 +46,7 @@ class PrinterBluetoothDialog extends AppCompatDialog implements PrinterDeviceVie
         if (bonded == null)
             return;
         final Drawable divider = ContextCompat.getDrawable(context,
-                R.drawable.divider_printer_device);
+                R.drawable.divider_common);
         if (divider != null) {
             final DividerItemDecoration decoration = new DividerItemDecoration(context,
                     DividerItemDecoration.VERTICAL);

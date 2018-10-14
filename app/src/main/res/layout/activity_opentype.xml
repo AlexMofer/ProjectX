@@ -18,6 +18,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/opentype_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:divider="@drawable/divider_common"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
 </LinearLayout>
