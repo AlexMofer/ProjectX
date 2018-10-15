@@ -35,7 +35,7 @@ class OpenTypeListViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     OpenTypeListViewHolder(@NonNull ViewGroup parent, OnViewHolderListener listener) {
         super(LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.item_opentype_item, parent, false));
+                R.layout.item_opentypelist_item, parent, false));
         mListener = listener;
         mVName = (TextView) itemView;
         itemView.setOnClickListener(this);

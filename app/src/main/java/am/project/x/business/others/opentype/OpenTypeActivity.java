@@ -19,7 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
+import android.support.v7.widget.RecyclerView;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
@@ -30,6 +30,7 @@ import am.project.x.base.BaseActivity;
 public class OpenTypeActivity extends BaseActivity {
 
     private static final String EXTRA_PATH = "am.project.x.business.others.opentype.OpenTypeActivity.EXTRA_PATH";
+    private final OpenTypeAdapter mAdapter = new OpenTypeAdapter();
 
     public static void start(Context context, String path) {
         context.startActivity(
@@ -44,7 +45,11 @@ public class OpenTypeActivity extends BaseActivity {
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.ot_toolbar);
-        final String path = getIntent().getStringExtra(EXTRA_PATH);
-        Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
+        final RecyclerView content = findViewById(R.id.ot_content);
+
+        content.setAdapter(mAdapter);
+
+
+//        final String path = getIntent().getStringExtra(EXTRA_PATH);
     }
 }

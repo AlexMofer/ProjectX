@@ -15,4 +15,10 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/ot_label" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/ot_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
 </LinearLayout>
