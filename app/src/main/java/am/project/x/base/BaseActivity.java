@@ -15,12 +15,19 @@
  */
 package am.project.x.base;
 
+import android.app.Dialog;
+
+import am.project.x.business.common.LoadingDialog;
 import am.util.mvp.AMAppCompatActivity;
 
 /**
  * 基础Activity
  * Created by Alex on 2018/7/23.
  */
-@SuppressWarnings("unused")
 public abstract class BaseActivity extends AMAppCompatActivity {
+
+    @Override
+    protected Dialog getLoadingDialog() {
+        return new LoadingDialog(this);
+    }
 }

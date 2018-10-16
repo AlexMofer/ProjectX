@@ -48,7 +48,7 @@ public class OpenTypeActivity extends BaseActivity implements OpenTypeView {
         setSupportActionBar(R.id.ot_toolbar);
         final RecyclerView content = findViewById(R.id.ot_content);
         content.setAdapter(mAdapter);
-
+        showLoading();
         mPresenter.parse(getIntent().getStringExtra(EXTRA_PATH));
     }
 

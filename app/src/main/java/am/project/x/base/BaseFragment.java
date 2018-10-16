@@ -23,7 +23,6 @@ import am.util.mvp.AMFragment;
  * 基础Fragment
  * Created by Alex on 2018/7/23.
  */
-@SuppressWarnings("unused")
 @RequiresApi(11)
 public abstract class BaseFragment extends AMFragment {
 }
