@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
@@ -32,6 +33,7 @@ public class OpenTypeActivity extends BaseActivity implements OpenTypeView {
     private static final String EXTRA_PATH = "am.project.x.business.others.opentype.OpenTypeActivity.EXTRA_PATH";
     private final OpenTypePresenter mPresenter = new OpenTypePresenter(this);
     private final OpenTypeAdapter mAdapter = new OpenTypeAdapter(mPresenter);
+    private OpenTypePickerDialog mPicker;
 
     public static void start(Context context, String path) {
         context.startActivity(
@@ -60,11 +62,20 @@ public class OpenTypeActivity extends BaseActivity implements OpenTypeView {
     // View
     @Override
     public void onParseFailure() {
-
+        dismissLoading();
+        Toast.makeText(this, R.string.ot_toast_parse_failure, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onParseSuccess(boolean isCollection) {
-
+        dismissLoading();
+        mAdapter.notifyDataSetChanged();
+        if (isCollection) {
+            // 显示字体选择对话框
+            if (mPicker == null)
+                mPicker = new OpenTypePickerDialog(this);
+            mPicker.setItems();
+            showDialog(mPicker);
+        }
     }
 }

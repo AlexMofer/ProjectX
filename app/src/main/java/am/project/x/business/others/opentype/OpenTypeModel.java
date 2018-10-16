@@ -50,6 +50,6 @@ class OpenTypeModel extends AMModel<OpenTypePresenter> implements OpenTypeViewMo
     // ViewModel
     @Override
     public void parse(String path) {
-
+        getPresenter().onParseSuccess(true);
     }
 }
