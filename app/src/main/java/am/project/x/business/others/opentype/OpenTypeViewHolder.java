@@ -18,6 +18,7 @@ package am.project.x.business.others.opentype;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import am.project.x.R;
 
@@ -26,8 +27,19 @@ import am.project.x.R;
  */
 class OpenTypeViewHolder extends RecyclerView.ViewHolder {
 
+    private final TextView mVLabel;
+    private final TextView mVInfo;
+
     OpenTypeViewHolder(ViewGroup parent) {
         super(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_opentype_item, parent, false));
+        mVLabel = itemView.findViewById(R.id.ioi_tv_label);
+        mVInfo = itemView.findViewById(R.id.ioi_tv_info);
+    }
+
+    void bind(int position, OpenTypeAdapterViewModel model) {
+        final Object item = model.getItem(position);
+        mVLabel.setText(model.getItemLabel(item));
+        mVInfo.setText(model.getItemInfo(item));
     }
 }

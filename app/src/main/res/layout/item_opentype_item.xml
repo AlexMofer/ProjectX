@@ -14,9 +14,9 @@
         android:padding="10dp">
 
         <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/ioi_tv_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="基础信息"
             android:textColor="#FF333333"
             android:textSize="18sp" />
 
@@ -26,9 +26,9 @@
             android:background="@drawable/divider_common" />
 
         <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/ioi_tv_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
             android:textColor="#FF666666"
             android:textSize="12sp" />
 

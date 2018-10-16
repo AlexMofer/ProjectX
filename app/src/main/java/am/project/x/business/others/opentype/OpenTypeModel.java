@@ -15,34 +15,41 @@
  */
 package am.project.x.business.others.opentype;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
+import am.util.mvp.AMModel;
 
 /**
- * Adapter
+ * Model
  */
-class OpenTypeAdapter extends RecyclerView.Adapter<OpenTypeViewHolder> {
+class OpenTypeModel extends AMModel<OpenTypePresenter> implements OpenTypeViewModel {
 
-    private final OpenTypeAdapterViewModel mModel;
-
-    OpenTypeAdapter(OpenTypeAdapterViewModel model) {
-        mModel = model;
+    OpenTypeModel(OpenTypePresenter presenter) {
+        super(presenter);
     }
 
-    @NonNull
-    @Override
-    public OpenTypeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-        return new OpenTypeViewHolder(parent);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull OpenTypeViewHolder holder, int position) {
-        holder.bind(position, mModel);
-    }
-
+    // AdapterViewModel
     @Override
     public int getItemCount() {
-        return mModel.getItemCount();
+        return 20;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public String getItemLabel(Object item) {
+        return "基础信息";
+    }
+
+    @Override
+    public String getItemInfo(Object item) {
+        return "kjvnoiushueojoiajfknkjneonnfjndjnfuihsugfjio  jdeindnioasj jijdijieji";
+    }
+
+    // ViewModel
+    @Override
+    public void parse(String path) {
+
     }
 }

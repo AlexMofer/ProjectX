@@ -27,10 +27,11 @@ import am.project.x.base.BaseActivity;
 /**
  * OpenType
  */
-public class OpenTypeActivity extends BaseActivity {
+public class OpenTypeActivity extends BaseActivity implements OpenTypeView {
 
     private static final String EXTRA_PATH = "am.project.x.business.others.opentype.OpenTypeActivity.EXTRA_PATH";
-    private final OpenTypeAdapter mAdapter = new OpenTypeAdapter();
+    private final OpenTypePresenter mPresenter = new OpenTypePresenter(this);
+    private final OpenTypeAdapter mAdapter = new OpenTypeAdapter(mPresenter);
 
     public static void start(Context context, String path) {
         context.startActivity(
@@ -46,10 +47,24 @@ public class OpenTypeActivity extends BaseActivity {
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.ot_toolbar);
         final RecyclerView content = findViewById(R.id.ot_content);
-
         content.setAdapter(mAdapter);
 
+        mPresenter.parse(getIntent().getStringExtra(EXTRA_PATH));
+    }
 
-//        final String path = getIntent().getStringExtra(EXTRA_PATH);
+    @Override
+    protected OpenTypePresenter getPresenter() {
+        return mPresenter;
+    }
+
+    // View
+    @Override
+    public void onParseFailure() {
+
+    }
+
+    @Override
+    public void onParseSuccess(boolean isCollection) {
+
     }
 }
