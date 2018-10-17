@@ -20,6 +20,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import am.project.x.R;
@@ -28,7 +30,8 @@ import am.project.x.base.BaseActivity;
 /**
  * OpenType
  */
-public class OpenTypeActivity extends BaseActivity implements OpenTypeView {
+public class OpenTypeActivity extends BaseActivity implements OpenTypeView,
+        OpenTypePickerDialog.OnPickerListener {
 
     private static final String EXTRA_PATH = "am.project.x.business.others.opentype.OpenTypeActivity.EXTRA_PATH";
     private final OpenTypePresenter mPresenter = new OpenTypePresenter(this);
@@ -59,6 +62,26 @@ public class OpenTypeActivity extends BaseActivity implements OpenTypeView {
         return mPresenter;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_opentype, menu);
+        final MenuItem item = menu.findItem(R.id.ot_collection);
+        item.setVisible(mPresenter.isCollection());
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.ot_collection:
+                if (mPresenter.isCollection())
+                    showPicker();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     // View
     @Override
     public void onParseFailure() {
@@ -71,11 +94,24 @@ public class OpenTypeActivity extends BaseActivity implements OpenTypeView {
         dismissLoading();
         mAdapter.notifyDataSetChanged();
         if (isCollection) {
+            invalidateOptionsMenu();
             // 显示字体选择对话框
-            if (mPicker == null)
-                mPicker = new OpenTypePickerDialog(this);
-            mPicker.setItems();
-            showDialog(mPicker);
+            showPicker();
         }
+    }
+
+    private void showPicker() {
+        if (mPicker == null)
+            mPicker = new OpenTypePickerDialog(this, mPresenter, this);
+        mPicker.notifyDataSetChanged();
+        showDialog(mPicker);
+    }
+
+    // Listener
+    @Override
+    public void onItemPicked(int position) {
+        mPicker.dismiss();
+        // TODO
+        Toast.makeText(this, "position:" + position, Toast.LENGTH_SHORT).show();
     }
 }
