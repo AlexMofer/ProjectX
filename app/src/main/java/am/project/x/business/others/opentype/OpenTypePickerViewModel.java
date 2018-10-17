@@ -16,10 +16,12 @@
 package am.project.x.business.others.opentype;
 
 /**
- * ViewModel
+ * PickerViewModel
  */
-interface OpenTypeViewModel extends OpenTypeAdapterViewModel, OpenTypePickerViewModel {
-    void parse(String path);
+interface OpenTypePickerViewModel {
+    int getSubCount();
 
-    boolean isCollection();
+    Object getSubItem(int position);
+
+    String getSubName(Object item);
 }

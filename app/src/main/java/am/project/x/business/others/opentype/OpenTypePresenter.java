@@ -70,9 +70,30 @@ class OpenTypePresenter extends AMPresenter<OpenTypeView, OpenTypeModel> impleme
         return getModel().getItemInfo(item);
     }
 
+    // PickerViewModel
+    @Override
+    public int getSubCount() {
+        return getModel().getSubCount();
+    }
+
+    @Override
+    public Object getSubItem(int position) {
+        return getModel().getSubItem(position);
+    }
+
+    @Override
+    public String getSubName(Object item) {
+        return getModel().getSubName(item);
+    }
+
     // ViewModel
     @Override
     public void parse(String path) {
         getModel().parse(path);
+    }
+
+    @Override
+    public boolean isCollection() {
+        return getModel().isCollection();
     }
 }

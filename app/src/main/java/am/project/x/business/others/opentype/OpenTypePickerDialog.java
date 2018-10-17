@@ -17,27 +17,82 @@ package am.project.x.business.others.opentype;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import am.project.x.R;
 
 /**
  * 字体选择对话框
  */
-class OpenTypePickerDialog extends AlertDialog {
+class OpenTypePickerDialog extends AlertDialog implements AdapterView.OnItemClickListener {
 
-    private final ViewGroup mContent;
+    private final Adapter mAdapter;
+    private final OnPickerListener mListener;
 
-    OpenTypePickerDialog(Context context) {
+    OpenTypePickerDialog(Context context, OpenTypePickerViewModel model,
+                         OnPickerListener listener) {
         super(context);
+        mAdapter = new Adapter(model);
+        mListener = listener;
         setTitle(R.string.ot_title_picker);
-        final View content = View.inflate(context, R.layout.dlg_opentype_picker, null);
+        final ListView content = (ListView) View.inflate(context, R.layout.dlg_opentype_picker,
+                null);
+        content.setAdapter(mAdapter);
+        content.setOnItemClickListener(this);
         setView(content);
-        mContent = (ViewGroup) content;
     }
 
-    void setItems() {
-        mContent.removeAllViews();
+    void notifyDataSetChanged() {
+        mAdapter.notifyDataSetChanged();
+    }
+
+    // Listener
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        mListener.onItemPicked(position);
+    }
+
+    public interface OnPickerListener {
+        void onItemPicked(int position);
+    }
+
+    private class Adapter extends BaseAdapter {
+
+        private final OpenTypePickerViewModel mModel;
+
+        Adapter(OpenTypePickerViewModel model) {
+            mModel = model;
+        }
+
+        @Override
+        public int getCount() {
+            return mModel.getSubCount();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mModel.getSubItem(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_opentype_font, parent, false);
+            }
+            (((TextView) convertView)).setText(mModel.getSubName(getItem(position)));
+            return convertView;
+        }
     }
 }

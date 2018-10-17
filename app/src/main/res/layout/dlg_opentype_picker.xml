@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="160dp"
-    android:orientation="vertical" />
+    android:divider="@drawable/divider_common"
+    android:dividerHeight="1px"
+    android:padding="20dp" />

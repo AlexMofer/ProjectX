@@ -288,4 +288,5 @@
     <string name="ot_label">字体详情</string>
     <string name="ot_toast_parse_failure">字体文件解析失败，请确保其为有效字体文件</string>
     <string name="ot_title_picker">该字体集包含多个字体，请选择：</string>
+    <string name="ot_menu_collection">选择字体</string>
 </resources>

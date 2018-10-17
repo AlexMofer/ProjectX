@@ -22,6 +22,7 @@ import am.util.mvp.AMModel;
  */
 class OpenTypeModel extends AMModel<OpenTypePresenter> implements OpenTypeViewModel {
 
+    private boolean mCollection = false;
     OpenTypeModel(OpenTypePresenter presenter) {
         super(presenter);
     }
@@ -47,9 +48,31 @@ class OpenTypeModel extends AMModel<OpenTypePresenter> implements OpenTypeViewMo
         return "kjvnoiushueojoiajfknkjneonnfjndjnfuihsugfjio  jdeindnioasj jijdijieji";
     }
 
+    // PickerViewModel
+    @Override
+    public int getSubCount() {
+        return 3;
+    }
+
+    @Override
+    public Object getSubItem(int position) {
+        return null;
+    }
+
+    @Override
+    public String getSubName(Object item) {
+        return "字体名称-------------";
+    }
+
     // ViewModel
     @Override
     public void parse(String path) {
+        mCollection = true;
         getPresenter().onParseSuccess(true);
+    }
+
+    @Override
+    public boolean isCollection() {
+        return mCollection;
     }
 }
