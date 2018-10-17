@@ -96,4 +96,9 @@ class OpenTypePresenter extends AMPresenter<OpenTypeView, OpenTypeModel> impleme
     public boolean isCollection() {
         return getModel().isCollection();
     }
+
+    @Override
+    public void setCollectionItem(int position) {
+        getModel().setCollectionItem(position);
+    }
 }

@@ -22,4 +22,6 @@ interface OpenTypeViewModel extends OpenTypeAdapterViewModel, OpenTypePickerView
     void parse(String path);
 
     boolean isCollection();
+
+    void setCollectionItem(int position);
 }

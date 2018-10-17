@@ -111,7 +111,7 @@ public class OpenTypeActivity extends BaseActivity implements OpenTypeView,
     @Override
     public void onItemPicked(int position) {
         mPicker.dismiss();
-        // TODO
-        Toast.makeText(this, "position:" + position, Toast.LENGTH_SHORT).show();
+        mPresenter.setCollectionItem(position);
+        mAdapter.notifyDataSetChanged();
     }
 }

@@ -75,4 +75,9 @@ class OpenTypeModel extends AMModel<OpenTypePresenter> implements OpenTypeViewMo
     public boolean isCollection() {
         return mCollection;
     }
+
+    @Override
+    public void setCollectionItem(int position) {
+
+    }
 }
