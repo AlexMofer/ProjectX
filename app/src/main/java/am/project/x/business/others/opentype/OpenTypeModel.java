@@ -24,6 +24,7 @@ import am.util.mvp.AMModel;
 import am.util.opentype.OpenType;
 import am.util.opentype.OpenTypeCollection;
 import am.util.opentype.TableRecord;
+import am.util.opentype.tables.BaseTable;
 import am.util.opentype.tables.NamingTable;
 
 /**
@@ -80,22 +81,122 @@ class OpenTypeModel extends AMModel<OpenTypePresenter> implements OpenTypeViewMo
             return context.getString(R.string.ot_title_font);
         if (item instanceof TableRecord) {
             final TableRecord record = (TableRecord) item;
-
+            switch (record.getTableTag()) {
+                default:
+                    return context.getString(R.string.ot_title_unknown_table);
+                case TableRecord.TAG_CMAP:
+                    return "cmap";
+                case TableRecord.TAG_HEAD:
+                    return "head";
+                case TableRecord.TAG_HHEA:
+                    return "hhea";
+                case TableRecord.TAG_HMTX:
+                    return "hmtx";
+                case TableRecord.TAG_MAXP:
+                    return "maxp";
+                case TableRecord.TAG_NAME:
+                    return "name";
+                case TableRecord.TAG_OS2:
+                    return "OS/2";
+                case TableRecord.TAG_POST:
+                    return "post";
+                case TableRecord.TAG_CVT:
+                    return "cvt";
+                case TableRecord.TAG_FPGM:
+                    return "fpgm";
+                case TableRecord.TAG_GLYF:
+                    return "glyf";
+                case TableRecord.TAG_LOCA:
+                    return "loca";
+                case TableRecord.TAG_PREP:
+                    return "prep";
+                case TableRecord.TAG_GASP:
+                    return "gasp";
+                case TableRecord.TAG_CFF:
+                    return "CFF";
+                case TableRecord.TAG_CFF2:
+                    return "CFF2";
+                case TableRecord.TAG_VORG:
+                    return "VORG";
+                case TableRecord.TAG_SVG:
+                    return "SVG";
+                case TableRecord.TAG_EBDT:
+                    return "EBDT";
+                case TableRecord.TAG_EBLC:
+                    return "EBLC";
+                case TableRecord.TAG_EBSC:
+                    return "EBSC";
+                case TableRecord.TAG_CBDT:
+                    return "CBDT";
+                case TableRecord.TAG_CBLC:
+                    return "CBLC";
+                case TableRecord.TAG_SBIX:
+                    return "sbix";
+                case TableRecord.TAG_BASE:
+                    return "BASE";
+                case TableRecord.TAG_GDEF:
+                    return "GDEF";
+                case TableRecord.TAG_GPOS:
+                    return "GPOS";
+                case TableRecord.TAG_GSUB:
+                    return "GSUB";
+                case TableRecord.TAG_JSTF:
+                    return "JSTF";
+                case TableRecord.TAG_MATH:
+                    return "MATH";
+                case TableRecord.TAG_AVAR:
+                    return "avar";
+                case TableRecord.TAG_CVAR:
+                    return "cvar";
+                case TableRecord.TAG_FVAR:
+                    return "fvar";
+                case TableRecord.TAG_GVAR:
+                    return "gvar";
+                case TableRecord.TAG_HVAR:
+                    return "HVAR";
+                case TableRecord.TAG_MVAR:
+                    return "MAVR";
+                case TableRecord.TAG_STAT:
+                    return "STAT";
+                case TableRecord.TAG_VVAR:
+                    return "VVAR";
+                case TableRecord.TAG_COLR:
+                    return "COLR";
+                case TableRecord.TAG_CPAL:
+                    return "CPAL";
+                case TableRecord.TAG_DSIG:
+                    return "DSIG";
+                case TableRecord.TAG_HDMX:
+                    return "hdmx";
+                case TableRecord.TAG_KERN:
+                    return "kern";
+                case TableRecord.TAG_LTSH:
+                    return "LTSH";
+                case TableRecord.TAG_MERG:
+                    return "MERG";
+                case TableRecord.TAG_META:
+                    return "meta";
+                case TableRecord.TAG_PCLT:
+                    return "PCLT";
+                case TableRecord.TAG_VDMX:
+                    return "VDMX";
+                case TableRecord.TAG_VHEA:
+                    return "vhea";
+                case TableRecord.TAG_VMTX:
+                    return "vmtx";
+            }
         }
         return null;
     }
 
     @Override
     public String getItemInfo(Object item) {
-        // TODO
-        if (item instanceof OpenTypeCollection) {
-            return "字体集合字体集合字体集合字体集合字体集合字体集合字体集合";
-        }
-        if (item instanceof OpenType) {
-            return "字体字体字体字体字体字体字体字体字体字体字体字体";
-        }
-        if (item instanceof TableRecord) {
-            return "表表表表表表表表表表表表表表表表表表表";
+        if (item instanceof OpenTypeCollection || item instanceof OpenType)
+            return item.toString();
+        if (item instanceof TableRecord && mFont != null) {
+            final BaseTable table = mFont.getTable(((TableRecord) item).getTableTag());
+            return table == null ? ProjectXApplication.getInstance().getString(
+                    R.string.ot_content_unknown_table) : table.toString();
         }
         return null;
     }
