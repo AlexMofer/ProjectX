@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import am.util.opentype.tables.BaseTable;
 import am.util.opentype.tables.CharacterMappingTable;
 import am.util.opentype.tables.GlyphTable;
 import am.util.opentype.tables.HeaderTable;
@@ -404,5 +405,111 @@ public class OpenType {
      */
     public KerningTable getKerningTable() {
         return mKern;
+    }
+
+    /**
+     * 获取表
+     *
+     * @param tag 表记录标签
+     * @return 表，返回空时，可能未解析、不包含该表或者暂未支持解析该类型的表
+     */
+    public BaseTable getTable(int tag) {
+        switch (tag) {
+            default:
+                // 暂不支持的表
+                return null;
+            // Required Tables
+            case TableRecord.TAG_CMAP:
+                return mCmap;
+            case TableRecord.TAG_HEAD:
+                return mHead;
+            case TableRecord.TAG_HHEA:
+                return mHhea;
+            case TableRecord.TAG_HMTX:
+                return mHmtx;
+            case TableRecord.TAG_MAXP:
+                return mMaxp;
+            case TableRecord.TAG_NAME:
+                return mName;
+            case TableRecord.TAG_OS2:
+                return mOS2;
+            case TableRecord.TAG_POST:
+                return mPost;
+            // Tables Related to TrueType Outlines
+            case TableRecord.TAG_CVT:
+            case TableRecord.TAG_FPGM:
+                // 暂不支持的表
+                return null;
+            case TableRecord.TAG_GLYF:
+                return mGlyf;
+            case TableRecord.TAG_LOCA:
+                return mLoca;
+            case TableRecord.TAG_PREP:
+            case TableRecord.TAG_GASP:
+                // 暂不支持的表
+                return null;
+            // Tables Related to CFF Outlines
+            case TableRecord.TAG_CFF:
+            case TableRecord.TAG_CFF2:
+            case TableRecord.TAG_VORG:
+                // 暂不支持的表
+                return null;
+            // Table Related to SVG Outlines
+            case TableRecord.TAG_SVG:
+                // 暂不支持的表
+                return null;
+            // Tables Related to Bitmap Glyphs
+            case TableRecord.TAG_EBDT:
+            case TableRecord.TAG_EBLC:
+            case TableRecord.TAG_EBSC:
+            case TableRecord.TAG_CBDT:
+            case TableRecord.TAG_CBLC:
+            case TableRecord.TAG_SBIX:
+                // 暂不支持的表
+                return null;
+            // Advanced Typographic Tables
+            case TableRecord.TAG_BASE:
+            case TableRecord.TAG_GDEF:
+            case TableRecord.TAG_GPOS:
+            case TableRecord.TAG_GSUB:
+            case TableRecord.TAG_JSTF:
+            case TableRecord.TAG_MATH:
+                // 暂不支持的表
+                return null;
+            // Tables used for OpenType Font Variations
+            case TableRecord.TAG_AVAR:
+            case TableRecord.TAG_CVAR:
+            case TableRecord.TAG_FVAR:
+            case TableRecord.TAG_GVAR:
+            case TableRecord.TAG_HVAR:
+            case TableRecord.TAG_MVAR:
+            case TableRecord.TAG_STAT:
+            case TableRecord.TAG_VVAR:
+                // 暂不支持的表
+                return null;
+            // Tables Related to Color Fonts
+            case TableRecord.TAG_COLR:
+            case TableRecord.TAG_CPAL:
+                // 暂不支持的表
+                return null;
+            // Other OpenType Tables
+            case TableRecord.TAG_HDMX:
+                // 暂不支持的表
+                return null;
+            case TableRecord.TAG_KERN:
+                return mKern;
+            case TableRecord.TAG_LTSH:
+            case TableRecord.TAG_MERG:
+            case TableRecord.TAG_META:
+                // 暂不支持的表
+                return null;
+            case TableRecord.TAG_PCLT:
+                return mPclt;
+            case TableRecord.TAG_VDMX:
+            case TableRecord.TAG_VHEA:
+            case TableRecord.TAG_VMTX:
+                // 暂不支持的表
+                return null;
+        }
     }
 }
