@@ -41,7 +41,7 @@ import am.util.opentype.TableRecord;
  * if strings for the current platform are not included.
  */
 @SuppressWarnings("unused")
-public class NamingTable {
+public class NamingTable extends BaseTable {
 
     private final int mFormat;// Format selector (0 or 1).
     private final int mCount;// Number of name records.
@@ -76,6 +76,7 @@ public class NamingTable {
     private String mVariationsPostScriptNamePrefix;
 
     public NamingTable(OpenTypeReader reader, TableRecord record) throws IOException {
+        super(record);
         if (reader == null || record == null || record.getTableTag() != TableRecord.TAG_NAME)
             throw new IOException();
         reader.seek(record.getOffset());

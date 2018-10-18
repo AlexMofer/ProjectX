@@ -27,7 +27,7 @@ import am.util.opentype.TableRecord;
  * the purposes of these calculations.
  */
 @SuppressWarnings("unused")
-public class HeaderTable {
+public class HeaderTable extends BaseTable {
 
     private final int mMajorVersion;
     private final int mMinorVersion;
@@ -49,6 +49,7 @@ public class HeaderTable {
     private final int mGlyphDataFormat;
 
     public HeaderTable(OpenTypeReader reader, TableRecord record) throws IOException {
+        super(record);
         if (reader == null || record == null || record.getTableTag() != TableRecord.TAG_HEAD)
             throw new IOException();
         reader.seek(record.getOffset());

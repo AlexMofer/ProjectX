@@ -29,7 +29,7 @@ import am.util.opentype.TableRecord;
  * encoding scheme.
  */
 @SuppressWarnings("unused")
-public class CharacterMappingTable {
+public class CharacterMappingTable extends BaseTable {
 
     private final int mVersion;
     private final int mNumTables;
@@ -37,6 +37,7 @@ public class CharacterMappingTable {
     private final SubTable mSubTable;
 
     public CharacterMappingTable(OpenTypeReader reader, TableRecord record) throws IOException {
+        super(record);
         if (reader == null || record == null || record.getTableTag() != TableRecord.TAG_CMAP)
             throw new IOException();
         reader.seek(record.getOffset());

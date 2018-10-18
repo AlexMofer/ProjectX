@@ -37,13 +37,14 @@ import am.util.opentype.TableRecord;
  * so that they can be used to limit the total effect of other subtables.
  */
 @SuppressWarnings("unused")
-public class KerningTable {
+public class KerningTable extends BaseTable {
 
     private final int mVersion;
     private final int mNumberOfTables;
     private final List<SubTable> mSubTables;
 
     public KerningTable(OpenTypeReader reader, TableRecord record) throws IOException {
+        super(record);
         if (reader == null || record == null || record.getTableTag() != TableRecord.TAG_KERN)
             throw new IOException();
         reader.seek(record.getOffset());

@@ -27,7 +27,7 @@ import am.util.opentype.TableRecord;
  * must use Version 1.0 of this table, where all data is required.
  */
 @SuppressWarnings("unused")
-public class MaximumProfileTable {
+public class MaximumProfileTable extends BaseTable {
 
     private final float mVersion;
     private final int mNumGlyphs;
@@ -46,6 +46,7 @@ public class MaximumProfileTable {
     private final int mMaxComponentDepth;
 
     public MaximumProfileTable(OpenTypeReader reader, TableRecord record) throws IOException {
+        super(record);
         if (reader == null || record == null || record.getTableTag() != TableRecord.TAG_MAXP)
             throw new IOException();
         reader.seek(record.getOffset());

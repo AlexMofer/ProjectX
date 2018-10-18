@@ -30,13 +30,14 @@ import am.util.opentype.TableRecord;
  * The horizontal metrics ('hmtx') table provides glyph advance widths and left side bearings.
  */
 @SuppressWarnings("unused")
-public class HorizontalMetricsTable {
+public class HorizontalMetricsTable extends BaseTable {
 
     private final List<LongHorMetricRecord> mHMetrics;
     private final int[] mLeftSideBearings;
 
     public HorizontalMetricsTable(OpenTypeReader reader, TableRecord record,
                                   int numberOfHMetrics, int numGlyphs) throws IOException {
+        super(record);
         if (reader == null || record == null || record.getTableTag() != TableRecord.TAG_HMTX)
             throw new IOException();
         reader.seek(record.getOffset());

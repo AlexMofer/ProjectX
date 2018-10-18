@@ -35,7 +35,7 @@ import am.util.opentype.TableRecord;
  * OpenType fonts with CFF data use Version 3.0 only.
  */
 @SuppressWarnings("unused")
-public class PostScriptTable {
+public class PostScriptTable extends BaseTable {
 
     private static final String[] MAC_GLYPHS = {
             ".notdef", ".null", "nonmarkingreturn", "space", "exclam", "quotedbl",
@@ -107,6 +107,7 @@ public class PostScriptTable {
     private final int[] mOffset;
 
     public PostScriptTable(OpenTypeReader reader, TableRecord record) throws IOException {
+        super(record);
         if (reader == null || record == null || record.getTableTag() != TableRecord.TAG_POST)
             throw new IOException();
         reader.seek(record.getOffset());

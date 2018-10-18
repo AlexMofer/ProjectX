@@ -38,7 +38,7 @@ import am.util.opentype.TableRecord;
  * in glyph ID order.
  */
 @SuppressWarnings("unused")
-public class GlyphTable {
+public class GlyphTable extends BaseTable {
 
     private final int mNumberOfContours;
     private final int mXMin;
@@ -48,6 +48,7 @@ public class GlyphTable {
     private final Object mGlyphDescription;
 
     public GlyphTable(OpenTypeReader reader, TableRecord record) throws IOException {
+        super(record);
         if (reader == null || record == null || record.getTableTag() != TableRecord.TAG_GLYF)
             throw new IOException();
         reader.seek(record.getOffset());

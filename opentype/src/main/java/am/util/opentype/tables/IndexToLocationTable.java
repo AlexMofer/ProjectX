@@ -27,12 +27,13 @@ import am.util.opentype.TableRecord;
  * the last glyph element, there is an extra entry after the last valid index.
  */
 @SuppressWarnings("unused")
-public class IndexToLocationTable {
+public class IndexToLocationTable extends BaseTable {
 
     private final int[] mOffsets;
 
     public IndexToLocationTable(OpenTypeReader reader, TableRecord record, int indexToLocFormat,
                                 int numGlyphs) throws IOException {
+        super(record);
         if (reader == null || record == null || record.getTableTag() != TableRecord.TAG_LOCA)
             throw new IOException();
         reader.seek(record.getOffset());

@@ -27,7 +27,7 @@ import am.util.opentype.TableRecord;
  * All versions are supported, but use of version 4 or later is strongly recommended.
  */
 @SuppressWarnings("unused")
-public class OS2Table {
+public class OS2Table extends BaseTable {
     private final int mVersion;
     private final int mAvgCharWidth;
     private final int mWeightClass;
@@ -70,6 +70,7 @@ public class OS2Table {
     private final int mUpperOpticalPointSize;
 
     public OS2Table(OpenTypeReader reader, TableRecord record) throws IOException {
+        super(record);
         if (reader == null || record == null || record.getTableTag() != TableRecord.TAG_OS2)
             throw new IOException();
         reader.seek(record.getOffset());

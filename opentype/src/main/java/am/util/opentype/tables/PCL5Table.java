@@ -27,7 +27,7 @@ import am.util.opentype.TableRecord;
  * Technical Reference Manual available from Hewlett-Packard Boise Printer Division.
  */
 @SuppressWarnings("unused")
-public class PCL5Table {
+public class PCL5Table extends BaseTable {
 
     private final int mMajorVersion;
     private final int mMinorVersion;
@@ -46,6 +46,7 @@ public class PCL5Table {
     private final int mSerifStyle;
 
     public PCL5Table(OpenTypeReader reader, TableRecord record) throws IOException {
+        super(record);
         if (reader == null || record == null || record.getTableTag() != TableRecord.TAG_PCLT)
             throw new IOException();
         reader.seek(record.getOffset());

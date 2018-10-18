@@ -28,7 +28,7 @@ import am.util.opentype.TableRecord;
  * All reserved areas must be set to 0.
  */
 @SuppressWarnings("unused")
-public class HorizontalHeaderTable {
+public class HorizontalHeaderTable extends BaseTable {
 
     private final int mMajorVersion;
     private final int mMinorVersion;
@@ -46,6 +46,7 @@ public class HorizontalHeaderTable {
     private final int mNumberOfHMetrics;
 
     public HorizontalHeaderTable(OpenTypeReader reader, TableRecord record) throws IOException {
+        super(record);
         if (reader == null || record == null || record.getTableTag() != TableRecord.TAG_HHEA)
             throw new IOException();
         reader.seek(record.getOffset());
