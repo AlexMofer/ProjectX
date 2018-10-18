@@ -15,11 +15,15 @@
  */
 package am.project.x.business.others.opentype;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 
+import am.project.x.ProjectXApplication;
+import am.project.x.R;
 import am.util.mvp.AMModel;
 import am.util.opentype.OpenType;
 import am.util.opentype.OpenTypeCollection;
+import am.util.opentype.TableRecord;
 import am.util.opentype.tables.NamingTable;
 
 /**
@@ -39,34 +43,61 @@ class OpenTypeModel extends AMModel<OpenTypePresenter> implements OpenTypeViewMo
     // AdapterViewModel
     @Override
     public int getItemCount() {
-        if (mFont != null) {
+        if (mFont == null && mFonts == null)
+            return 0;
+        if (mFonts == null) {
             return mFont.getTablesSize() + 1;
+        } else {
+            if (mFont == null)
+                return 1;
+            return mFont.getTablesSize() + 2;
         }
-        return mFonts == null ? 0 : 1;
     }
 
     @Override
     public Object getItem(int position) {
-        if (mFont != null) {
+        if (mFont == null && mFonts == null)
+            return null;
+        if (mFonts == null) {
+            return position == 0 ? mFont : mFont.getTableRecordByIndex(position - 1);
+        } else {
+            if (mFont == null)
+                return mFonts;
             if (position == 0)
+                return mFonts;
+            else if (position == 1)
                 return mFont;
-            return null;// TODO
+            return mFont.getTableRecordByIndex(position - 2);
         }
-        return mFonts;
     }
 
     @Override
     public String getItemLabel(Object item) {
-        // TODO
-        if (item instanceof OpenType || item instanceof OpenTypeCollection)
-            return "基础信息";
-        return "表";
+        final Context context = ProjectXApplication.getInstance();
+        if (item instanceof OpenTypeCollection)
+            return context.getString(R.string.ot_title_collection);
+        if (item instanceof OpenType)
+            return context.getString(R.string.ot_title_font);
+        if (item instanceof TableRecord) {
+            final TableRecord record = (TableRecord) item;
+
+        }
+        return null;
     }
 
     @Override
     public String getItemInfo(Object item) {
         // TODO
-        return "kjvnoiushueojoiajfknkjneonnfjndjnfuihsugfjio  jdeindnioasj jijdijieji";
+        if (item instanceof OpenTypeCollection) {
+            return "字体集合字体集合字体集合字体集合字体集合字体集合字体集合";
+        }
+        if (item instanceof OpenType) {
+            return "字体字体字体字体字体字体字体字体字体字体字体字体";
+        }
+        if (item instanceof TableRecord) {
+            return "表表表表表表表表表表表表表表表表表表表";
+        }
+        return null;
     }
 
     // PickerViewModel
