@@ -16,6 +16,7 @@
 package am.util.opentype;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import am.util.opentype.tables.CharacterMappingTable;
@@ -55,6 +56,7 @@ public class OpenType {
     private PCL5Table mPclt;
     private GlyphTable mGlyf;
     private KerningTable mKern;
+    private final ArrayList<TableRecord> mRecordArray = new ArrayList<>();
 
     public OpenType(int sfntVersion, int numTables, int searchRange, int entrySelector,
                     int rangeShift, Map<Integer, TableRecord> records) {
@@ -64,6 +66,8 @@ public class OpenType {
         mEntrySelector = entrySelector;
         mRangeShift = rangeShift;
         mRecords = records;
+        if (records != null)
+            mRecordArray.addAll(records.values());
     }
 
     /**
@@ -272,6 +276,16 @@ public class OpenType {
      */
     public Map<Integer, TableRecord> getTableRecords() {
         return mRecords;
+    }
+
+    /**
+     * 获取表记录
+     *
+     * @param index 表记录集合位置
+     * @return 表记录
+     */
+    public TableRecord getTableRecordByIndex(int index) {
+        return mRecordArray.get(index);
     }
 
     /**
