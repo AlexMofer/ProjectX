@@ -701,7 +701,7 @@ public class OpenType {
                 ", searchRange=" + mSearchRange +
                 ", entrySelector=" + mEntrySelector +
                 ", rangeShift=" + mRangeShift +
-                ", records=" + mRecordArray.toString() +
+                ", records=" + String.valueOf(mRecordArray) +
                 '}';
     }
 }
