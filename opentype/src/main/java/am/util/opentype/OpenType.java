@@ -45,19 +45,57 @@ public class OpenType {
     private final int mEntrySelector;// Log2(maximum power of 2 <= numTables).
     private final int mRangeShift;// NumTables x 16-searchRange.
     private final Map<Integer, TableRecord> mRecords;
-    private NamingTable mName;
-    private OS2Table mOS2;
+    private final ArrayList<TableRecord> mRecordArray = new ArrayList<>();
+    private CharacterMappingTable mCmap;
     private HeaderTable mHead;
     private HorizontalHeaderTable mHhea;
-    private MaximumProfileTable mMaxp;
-    private PostScriptTable mPost;
     private HorizontalMetricsTable mHmtx;
-    private CharacterMappingTable mCmap;
-    private IndexToLocationTable mLoca;
-    private PCL5Table mPclt;
+    private MaximumProfileTable mMaxp;
+    private NamingTable mName;
+    private OS2Table mOS2;
+    private PostScriptTable mPost;
+    private BaseTable mCvt;
+    private BaseTable mFpgm;
     private GlyphTable mGlyf;
+    private IndexToLocationTable mLoca;
+    private BaseTable mPrep;
+    private BaseTable mGasp;
+    private BaseTable mCff;
+    private BaseTable mCff2;
+    private BaseTable mVorg;
+    private BaseTable mSvg;
+    private BaseTable mEbdt;
+    private BaseTable mEblc;
+    private BaseTable mEbsc;
+    private BaseTable mCbdt;
+    private BaseTable mCblc;
+    private BaseTable mSbix;
+    private BaseTable mBase;
+    private BaseTable mGdef;
+    private BaseTable mGpos;
+    private BaseTable mGsub;
+    private BaseTable mJstf;
+    private BaseTable mMath;
+    private BaseTable mAvar;
+    private BaseTable mCvar;
+    private BaseTable mFvar;
+    private BaseTable mGvar;
+    private BaseTable mHvar;
+    private BaseTable mMvar;
+    private BaseTable mStat;
+    private BaseTable mVvar;
+    private BaseTable mColr;
+    private BaseTable mCpal;
+    private BaseTable mDsig;
+    private BaseTable mHdmx;
     private KerningTable mKern;
-    private final ArrayList<TableRecord> mRecordArray = new ArrayList<>();
+    private BaseTable mLtsh;
+    private BaseTable mMerg;
+    private BaseTable mMeta;
+    private PCL5Table mPclt;
+    private BaseTable mVdmx;
+    private BaseTable mVhea;
+    private BaseTable mVmtx;
 
     public OpenType(int sfntVersion, int numTables, int searchRange, int entrySelector,
                     int rangeShift, Map<Integer, TableRecord> records) {
@@ -78,7 +116,8 @@ public class OpenType {
      * @param tags   表集合
      * @throws IOException 读写错误
      */
-    @SuppressWarnings("all")
+    // TODO: 2018/10/21 完成剩余的表支持
+    @SuppressWarnings("WeakerAccess")
     public void parseTables(OpenTypeReader reader, int... tags) throws IOException {
         if (tags == null || tags.length <= 0 || mRecords == null)
             return;
@@ -122,8 +161,10 @@ public class OpenType {
                     break;
                 // Tables Related to TrueType Outlines
                 case TableRecord.TAG_CVT:
+                    mCvt = null;
+                    break;
                 case TableRecord.TAG_FPGM:
-                    // 暂不支持的表
+                    mFpgm = null;
                     break;
                 case TableRecord.TAG_GLYF:
                     mGlyf = new GlyphTable(reader, record);
@@ -135,72 +176,122 @@ public class OpenType {
                     }
                     break;
                 case TableRecord.TAG_PREP:
+                    mPrep = null;
+                    break;
                 case TableRecord.TAG_GASP:
-                    // 暂不支持的表
+                    mGasp = null;
                     break;
                 // Tables Related to CFF Outlines
                 case TableRecord.TAG_CFF:
+                    mCff = null;
+                    break;
                 case TableRecord.TAG_CFF2:
+                    mCff2 = null;
+                    break;
                 case TableRecord.TAG_VORG:
-                    // 暂不支持的表
+                    mVorg = null;
                     break;
                 // Table Related to SVG Outlines
                 case TableRecord.TAG_SVG:
-                    // 暂不支持的表
+                    mSvg = null;
                     break;
                 // Tables Related to Bitmap Glyphs
                 case TableRecord.TAG_EBDT:
+                    mEbdt = null;
+                    break;
                 case TableRecord.TAG_EBLC:
+                    mEblc = null;
+                    break;
                 case TableRecord.TAG_EBSC:
+                    mEbsc = null;
+                    break;
                 case TableRecord.TAG_CBDT:
+                    mCbdt = null;
+                    break;
                 case TableRecord.TAG_CBLC:
+                    mCblc = null;
+                    break;
                 case TableRecord.TAG_SBIX:
-                    // 暂不支持的表
+                    mSbix = null;
                     break;
                 // Advanced Typographic Tables
                 case TableRecord.TAG_BASE:
+                    mBase = null;
+                    break;
                 case TableRecord.TAG_GDEF:
+                    mGdef = null;
+                    break;
                 case TableRecord.TAG_GPOS:
+                    mGpos = null;
+                    break;
                 case TableRecord.TAG_GSUB:
+                    mGsub = null;
+                    break;
                 case TableRecord.TAG_JSTF:
+                    mJstf = null;
+                    break;
                 case TableRecord.TAG_MATH:
-                    // 暂不支持的表
+                    mMath = null;
                     break;
                 // Tables used for OpenType Font Variations
                 case TableRecord.TAG_AVAR:
+                    mAvar = null;
+                    break;
                 case TableRecord.TAG_CVAR:
+                    mCvar = null;
+                    break;
                 case TableRecord.TAG_FVAR:
+                    mFvar = null;
+                    break;
                 case TableRecord.TAG_GVAR:
+                    mGvar = null;
+                    break;
                 case TableRecord.TAG_HVAR:
+                    mHvar = null;
+                    break;
                 case TableRecord.TAG_MVAR:
+                    mMvar = null;
+                    break;
                 case TableRecord.TAG_STAT:
+                    mStat = null;
+                    break;
                 case TableRecord.TAG_VVAR:
-                    // 暂不支持的表
+                    mVvar = null;
                     break;
                 // Tables Related to Color Fonts
                 case TableRecord.TAG_COLR:
+                    mColr = null;
+                    break;
                 case TableRecord.TAG_CPAL:
-                    // 暂不支持的表
+                    mCpal = null;
                     break;
                 // Other OpenType Tables
                 case TableRecord.TAG_HDMX:
-                    // 暂不支持的表
+                    mHdmx = null;
                     break;
                 case TableRecord.TAG_KERN:
                     mKern = new KerningTable(reader, record);
                     break;
                 case TableRecord.TAG_LTSH:
+                    mLtsh = null;
+                    break;
                 case TableRecord.TAG_MERG:
+                    mMerg = null;
+                    break;
                 case TableRecord.TAG_META:
-                    // 暂不支持的表
+                    mMeta = null;
                     break;
                 case TableRecord.TAG_PCLT:
                     mPclt = new PCL5Table(reader, record);
                     break;
                 case TableRecord.TAG_VDMX:
+                    mVdmx = null;
+                    break;
                 case TableRecord.TAG_VHEA:
+                    mVhea = null;
+                    break;
                 case TableRecord.TAG_VMTX:
-                    // 暂不支持的表
+                    mVmtx = null;
                     break;
             }
         }
@@ -437,79 +528,106 @@ public class OpenType {
                 return mPost;
             // Tables Related to TrueType Outlines
             case TableRecord.TAG_CVT:
+                return mCvt;
             case TableRecord.TAG_FPGM:
-                // 暂不支持的表
-                return null;
+                return mFpgm;
             case TableRecord.TAG_GLYF:
                 return mGlyf;
             case TableRecord.TAG_LOCA:
                 return mLoca;
             case TableRecord.TAG_PREP:
+                return mPrep;
             case TableRecord.TAG_GASP:
-                // 暂不支持的表
-                return null;
+                return mGasp;
             // Tables Related to CFF Outlines
             case TableRecord.TAG_CFF:
+                return mCff;
             case TableRecord.TAG_CFF2:
+                return mCff2;
             case TableRecord.TAG_VORG:
-                // 暂不支持的表
-                return null;
+                return mVorg;
             // Table Related to SVG Outlines
             case TableRecord.TAG_SVG:
-                // 暂不支持的表
-                return null;
+                return mSvg;
             // Tables Related to Bitmap Glyphs
             case TableRecord.TAG_EBDT:
+                return mEbdt;
             case TableRecord.TAG_EBLC:
+                return mEblc;
             case TableRecord.TAG_EBSC:
+                return mEbsc;
             case TableRecord.TAG_CBDT:
+                return mCbdt;
             case TableRecord.TAG_CBLC:
+                return mCblc;
             case TableRecord.TAG_SBIX:
-                // 暂不支持的表
-                return null;
+                return mSbix;
             // Advanced Typographic Tables
             case TableRecord.TAG_BASE:
+                return mBase;
             case TableRecord.TAG_GDEF:
+                return mGdef;
             case TableRecord.TAG_GPOS:
+                return mGpos;
             case TableRecord.TAG_GSUB:
+                return mGsub;
             case TableRecord.TAG_JSTF:
+                return mJstf;
             case TableRecord.TAG_MATH:
-                // 暂不支持的表
-                return null;
+                return mMath;
             // Tables used for OpenType Font Variations
             case TableRecord.TAG_AVAR:
+                return mAvar;
             case TableRecord.TAG_CVAR:
+                return mCvar;
             case TableRecord.TAG_FVAR:
+                return mFvar;
             case TableRecord.TAG_GVAR:
+                return mGvar;
             case TableRecord.TAG_HVAR:
+                return mHvar;
             case TableRecord.TAG_MVAR:
+                return mMvar;
             case TableRecord.TAG_STAT:
+                return mStat;
             case TableRecord.TAG_VVAR:
-                // 暂不支持的表
-                return null;
+                return mVvar;
             // Tables Related to Color Fonts
             case TableRecord.TAG_COLR:
+                return mColr;
             case TableRecord.TAG_CPAL:
-                // 暂不支持的表
-                return null;
+                return mCpal;
             // Other OpenType Tables
             case TableRecord.TAG_HDMX:
-                // 暂不支持的表
-                return null;
+                return mHdmx;
             case TableRecord.TAG_KERN:
                 return mKern;
             case TableRecord.TAG_LTSH:
+                return mLtsh;
             case TableRecord.TAG_MERG:
+                return mMerg;
             case TableRecord.TAG_META:
-                // 暂不支持的表
-                return null;
+                return mMeta;
             case TableRecord.TAG_PCLT:
                 return mPclt;
             case TableRecord.TAG_VDMX:
+                return mVdmx;
             case TableRecord.TAG_VHEA:
+                return mVhea;
             case TableRecord.TAG_VMTX:
-                // 暂不支持的表
-                return null;
+                return mVmtx;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "OpenType{" +
+                "SFNTVersion=" + mSFNTVersion +
+                ", numTables=" + mNumTables +
+                ", searchRange=" + mSearchRange +
+                ", entrySelector=" + mEntrySelector +
+                ", rangeShift=" + mRangeShift +
+                ", records=" + mRecordArray.toString() +
+                '}';
     }
 }
