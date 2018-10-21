@@ -33,7 +33,7 @@ public class BaseTable {
      *
      * @return 表记录
      */
-    @SuppressWarnings("unused")
+    @SuppressWarnings("WeakerAccess")
     public TableRecord getTableRecord() {
         return mRecord;
     }
