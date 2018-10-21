@@ -37,4 +37,24 @@ public class BaseTable {
     public TableRecord getTableRecord() {
         return mRecord;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BaseTable table = (BaseTable) o;
+        return Objects.equals(mRecord, table.mRecord);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mRecord);
+    }
+
+    @Override
+    public String toString() {
+        return "BaseTable{" +
+                "record=" + String.valueOf(mRecord) +
+                '}';
+    }
 }
