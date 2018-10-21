@@ -15,13 +15,14 @@
  */
 package am.util.opentype;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * OpenType字体集
  * Created by Alex on 2018/9/6.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public class OpenTypeCollection {
 
     private final int mTtcTag;// Font Collection ID string: 'ttcf'
@@ -34,6 +35,7 @@ public class OpenTypeCollection {
     private final int mDSIGOffset;// The offset (in bytes) of the DSIG table from the beginning of the TTC file (null if no signature)
     private final List<OpenType> mFonts;
 
+    @SuppressWarnings("WeakerAccess")
     public OpenTypeCollection(int ttcTag, int majorVersion, int minorVersion, int numFonts,
                               int[] offsetTableOffsets,
                               boolean DSIGTableEnable, int DSIGLength, int DSIGOffset,
@@ -138,5 +140,44 @@ public class OpenTypeCollection {
      */
     public OpenType getOpenType(int index) {
         return mFonts.get(index);
+    }
+
+    @Override
+    public String toString() {
+        return "OpenTypeCollection{" +
+                "ttcTag=" + mTtcTag +
+                ", majorVersion=" + mMajorVersion +
+                ", minorVersion=" + mMinorVersion +
+                ", numFonts=" + mNumFonts +
+                ", offsetTableOffsets=" + Arrays.toString(mOffsetTableOffsets) +
+                ", DSIGTableEnable=" + mDSIGTableEnable +
+                ", DSIGLength=" + mDSIGLength +
+                ", DSIGOffset=" + mDSIGOffset +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OpenTypeCollection that = (OpenTypeCollection) o;
+        return mTtcTag == that.mTtcTag &&
+                mMajorVersion == that.mMajorVersion &&
+                mMinorVersion == that.mMinorVersion &&
+                mNumFonts == that.mNumFonts &&
+                mDSIGTableEnable == that.mDSIGTableEnable &&
+                mDSIGLength == that.mDSIGLength &&
+                mDSIGOffset == that.mDSIGOffset &&
+                Arrays.equals(mOffsetTableOffsets, that.mOffsetTableOffsets) &&
+                Objects.equals(mFonts, that.mFonts);
+    }
+
+    @Override
+    public int hashCode() {
+
+        int result = Objects.hash(mTtcTag, mMajorVersion, mMinorVersion, mNumFonts,
+                mDSIGTableEnable, mDSIGLength, mDSIGOffset, mFonts);
+        result = 31 * result + Arrays.hashCode(mOffsetTableOffsets);
+        return result;
     }
 }
