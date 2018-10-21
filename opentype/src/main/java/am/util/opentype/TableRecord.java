@@ -19,7 +19,6 @@ package am.util.opentype;
  * 表记录
  * Created by Alex on 2018/9/5.
  */
-@SuppressWarnings("all")
 public class TableRecord {
 
     // Required Tables
@@ -133,5 +132,31 @@ public class TableRecord {
      */
     public int getLength() {
         return mLength;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TableRecord record = (TableRecord) o;
+        return mTableTag == record.mTableTag &&
+                mCheckSum == record.mCheckSum &&
+                mOffset == record.mOffset &&
+                mLength == record.mLength;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mTableTag, mCheckSum, mOffset, mLength);
+    }
+
+    @Override
+    public String toString() {
+        return "TableRecord{" +
+                "tableTag=" + mTableTag +
+                ", checkSum=" + mCheckSum +
+                ", offset=" + mOffset +
+                ", length=" + mLength +
+                '}';
     }
 }
