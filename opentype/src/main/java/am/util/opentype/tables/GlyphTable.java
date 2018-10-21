@@ -16,6 +16,7 @@
 package am.util.opentype.tables;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import am.util.opentype.OpenTypeReader;
 import am.util.opentype.TableRecord;
@@ -148,10 +149,41 @@ public class GlyphTable extends BaseTable {
         return mGlyphDescription;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GlyphTable)) return false;
+        if (!super.equals(o)) return false;
+        GlyphTable that = (GlyphTable) o;
+        return mNumberOfContours == that.mNumberOfContours &&
+                mXMin == that.mXMin &&
+                mYMin == that.mYMin &&
+                mXMax == that.mXMax &&
+                mYMax == that.mYMax &&
+                Objects.equals(mGlyphDescription, that.mGlyphDescription);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), mNumberOfContours, mXMin, mYMin, mXMax, mYMax, mGlyphDescription);
+    }
+
+    @Override
+    public String toString() {
+        return "GlyphTable{" +
+                "record=" + String.valueOf(getTableRecord()) +
+                "numberOfContours=" + mNumberOfContours +
+                ", xMin=" + mXMin +
+                ", yMin=" + mYMin +
+                ", xMax=" + mXMax +
+                ", yMax=" + mYMax +
+                ", glyphDescription=" + String.valueOf(mGlyphDescription) +
+                '}';
+    }
+
     /**
      * Simple Glyph Description
      */
-    @SuppressWarnings("unused")
     public static class SimpleGlyphDescription {
 
         private final int[] mEndPtsOfContours;
@@ -161,7 +193,7 @@ public class GlyphTable extends BaseTable {
         private final int[] mXCoordinates;
         private final int[] mYCoordinates;
 
-        @SuppressWarnings("all")
+        @SuppressWarnings("WeakerAccess")
         public SimpleGlyphDescription(int[] endPtsOfContours, int instructionLength,
                                       int[] instructions,
                                       int[] flags, int[] xCoordinates, int[] yCoordinates) {
@@ -230,19 +262,54 @@ public class GlyphTable extends BaseTable {
         public int[] getYCoordinates() {
             return mYCoordinates;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            SimpleGlyphDescription that = (SimpleGlyphDescription) o;
+            return mInstructionLength == that.mInstructionLength &&
+                    Arrays.equals(mEndPtsOfContours, that.mEndPtsOfContours) &&
+                    Arrays.equals(mInstructions, that.mInstructions) &&
+                    Arrays.equals(mFlags, that.mFlags) &&
+                    Arrays.equals(mXCoordinates, that.mXCoordinates) &&
+                    Arrays.equals(mYCoordinates, that.mYCoordinates);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = Objects.hash(mInstructionLength);
+            result = 31 * result + Arrays.hashCode(mEndPtsOfContours);
+            result = 31 * result + Arrays.hashCode(mInstructions);
+            result = 31 * result + Arrays.hashCode(mFlags);
+            result = 31 * result + Arrays.hashCode(mXCoordinates);
+            result = 31 * result + Arrays.hashCode(mYCoordinates);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "SimpleGlyphDescription{" +
+                    "endPtsOfContours=" + Arrays.toString(mEndPtsOfContours) +
+                    ", instructionLength=" + mInstructionLength +
+                    ", instructions=" + Arrays.toString(mInstructions) +
+                    ", flags=" + Arrays.toString(mFlags) +
+                    ", xCoordinates=" + Arrays.toString(mXCoordinates) +
+                    ", yCoordinates=" + Arrays.toString(mYCoordinates) +
+                    '}';
+        }
     }
 
     /**
      * Composite Glyph Description
      */
-    @SuppressWarnings("unused")
     public static class CompositeGlyphDescription {
         private final int mFlags;
         private final int mGlyphIndex;
         private final int mArgument1;
         private final int mArgument2;
 
-        @SuppressWarnings("all")
+        @SuppressWarnings("WeakerAccess")
         public CompositeGlyphDescription(int flags, int glyphIndex, int argument1, int argument2) {
             mFlags = flags;
             mGlyphIndex = glyphIndex;
@@ -284,6 +351,32 @@ public class GlyphTable extends BaseTable {
          */
         public int getArgument2() {
             return mArgument2;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CompositeGlyphDescription that = (CompositeGlyphDescription) o;
+            return mFlags == that.mFlags &&
+                    mGlyphIndex == that.mGlyphIndex &&
+                    mArgument1 == that.mArgument1 &&
+                    mArgument2 == that.mArgument2;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(mFlags, mGlyphIndex, mArgument1, mArgument2);
+        }
+
+        @Override
+        public String toString() {
+            return "CompositeGlyphDescription{" +
+                    "flags=" + mFlags +
+                    ", glyphIndex=" + mGlyphIndex +
+                    ", argument1=" + mArgument1 +
+                    ", argument2=" + mArgument2 +
+                    '}';
         }
     }
 }
