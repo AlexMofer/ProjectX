@@ -31,7 +31,6 @@ public class FileOpenTypeReader implements OpenTypeReader {
     private final RandomAccessFile mFile;
     private byte[] BUFFER;
 
-    @SuppressWarnings("all")
     public FileOpenTypeReader(File font) throws IOException {
         mFile = new RandomAccessFile(font, "r");
     }

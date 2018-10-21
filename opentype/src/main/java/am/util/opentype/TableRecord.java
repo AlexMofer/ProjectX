@@ -112,6 +112,7 @@ public class TableRecord {
      *
      * @return 校验码
      */
+    @SuppressWarnings("unused")
     public int getCheckSum() {
         return mCheckSum;
     }
