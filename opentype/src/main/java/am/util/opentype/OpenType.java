@@ -620,6 +620,80 @@ public class OpenType {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OpenType openType = (OpenType) o;
+        return mSFNTVersion == openType.mSFNTVersion &&
+                mNumTables == openType.mNumTables &&
+                mSearchRange == openType.mSearchRange &&
+                mEntrySelector == openType.mEntrySelector &&
+                mRangeShift == openType.mRangeShift &&
+                Objects.equals(mRecords, openType.mRecords) &&
+                Objects.equals(mRecordArray, openType.mRecordArray) &&
+                Objects.equals(mCmap, openType.mCmap) &&
+                Objects.equals(mHead, openType.mHead) &&
+                Objects.equals(mHhea, openType.mHhea) &&
+                Objects.equals(mHmtx, openType.mHmtx) &&
+                Objects.equals(mMaxp, openType.mMaxp) &&
+                Objects.equals(mName, openType.mName) &&
+                Objects.equals(mOS2, openType.mOS2) &&
+                Objects.equals(mPost, openType.mPost) &&
+                Objects.equals(mCvt, openType.mCvt) &&
+                Objects.equals(mFpgm, openType.mFpgm) &&
+                Objects.equals(mGlyf, openType.mGlyf) &&
+                Objects.equals(mLoca, openType.mLoca) &&
+                Objects.equals(mPrep, openType.mPrep) &&
+                Objects.equals(mGasp, openType.mGasp) &&
+                Objects.equals(mCff, openType.mCff) &&
+                Objects.equals(mCff2, openType.mCff2) &&
+                Objects.equals(mVorg, openType.mVorg) &&
+                Objects.equals(mSvg, openType.mSvg) &&
+                Objects.equals(mEbdt, openType.mEbdt) &&
+                Objects.equals(mEblc, openType.mEblc) &&
+                Objects.equals(mEbsc, openType.mEbsc) &&
+                Objects.equals(mCbdt, openType.mCbdt) &&
+                Objects.equals(mCblc, openType.mCblc) &&
+                Objects.equals(mSbix, openType.mSbix) &&
+                Objects.equals(mBase, openType.mBase) &&
+                Objects.equals(mGdef, openType.mGdef) &&
+                Objects.equals(mGpos, openType.mGpos) &&
+                Objects.equals(mGsub, openType.mGsub) &&
+                Objects.equals(mJstf, openType.mJstf) &&
+                Objects.equals(mMath, openType.mMath) &&
+                Objects.equals(mAvar, openType.mAvar) &&
+                Objects.equals(mCvar, openType.mCvar) &&
+                Objects.equals(mFvar, openType.mFvar) &&
+                Objects.equals(mGvar, openType.mGvar) &&
+                Objects.equals(mHvar, openType.mHvar) &&
+                Objects.equals(mMvar, openType.mMvar) &&
+                Objects.equals(mStat, openType.mStat) &&
+                Objects.equals(mVvar, openType.mVvar) &&
+                Objects.equals(mColr, openType.mColr) &&
+                Objects.equals(mCpal, openType.mCpal) &&
+                Objects.equals(mDsig, openType.mDsig) &&
+                Objects.equals(mHdmx, openType.mHdmx) &&
+                Objects.equals(mKern, openType.mKern) &&
+                Objects.equals(mLtsh, openType.mLtsh) &&
+                Objects.equals(mMerg, openType.mMerg) &&
+                Objects.equals(mMeta, openType.mMeta) &&
+                Objects.equals(mPclt, openType.mPclt) &&
+                Objects.equals(mVdmx, openType.mVdmx) &&
+                Objects.equals(mVhea, openType.mVhea) &&
+                Objects.equals(mVmtx, openType.mVmtx);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mSFNTVersion, mNumTables, mSearchRange, mEntrySelector, mRangeShift,
+                mRecords, mRecordArray, mCmap, mHead, mHhea, mHmtx, mMaxp, mName, mOS2, mPost,
+                mCvt, mFpgm, mGlyf, mLoca, mPrep, mGasp, mCff, mCff2, mVorg, mSvg, mEbdt, mEblc,
+                mEbsc, mCbdt, mCblc, mSbix, mBase, mGdef, mGpos, mGsub, mJstf, mMath, mAvar, mCvar,
+                mFvar, mGvar, mHvar, mMvar, mStat, mVvar, mColr, mCpal, mDsig, mHdmx, mKern, mLtsh,
+                mMerg, mMeta, mPclt, mVdmx, mVhea, mVmtx);
+    }
+
+    @Override
     public String toString() {
         return "OpenType{" +
                 "SFNTVersion=" + mSFNTVersion +

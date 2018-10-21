@@ -143,20 +143,6 @@ public class OpenTypeCollection {
     }
 
     @Override
-    public String toString() {
-        return "OpenTypeCollection{" +
-                "ttcTag=" + mTtcTag +
-                ", majorVersion=" + mMajorVersion +
-                ", minorVersion=" + mMinorVersion +
-                ", numFonts=" + mNumFonts +
-                ", offsetTableOffsets=" + Arrays.toString(mOffsetTableOffsets) +
-                ", DSIGTableEnable=" + mDSIGTableEnable +
-                ", DSIGLength=" + mDSIGLength +
-                ", DSIGOffset=" + mDSIGOffset +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -174,10 +160,23 @@ public class OpenTypeCollection {
 
     @Override
     public int hashCode() {
-
         int result = Objects.hash(mTtcTag, mMajorVersion, mMinorVersion, mNumFonts,
                 mDSIGTableEnable, mDSIGLength, mDSIGOffset, mFonts);
         result = 31 * result + Arrays.hashCode(mOffsetTableOffsets);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OpenTypeCollection{" +
+                "ttcTag=" + mTtcTag +
+                ", majorVersion=" + mMajorVersion +
+                ", minorVersion=" + mMinorVersion +
+                ", numFonts=" + mNumFonts +
+                ", offsetTableOffsets=" + Arrays.toString(mOffsetTableOffsets) +
+                ", DSIGTableEnable=" + mDSIGTableEnable +
+                ", DSIGLength=" + mDSIGLength +
+                ", DSIGOffset=" + mDSIGOffset +
+                '}';
     }
 }
