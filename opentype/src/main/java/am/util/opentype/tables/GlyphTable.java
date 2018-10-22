@@ -172,7 +172,7 @@ public class GlyphTable extends BaseTable {
     public String toString() {
         return "GlyphTable{" +
                 "record=" + String.valueOf(getTableRecord()) +
-                "numberOfContours=" + mNumberOfContours +
+                ", numberOfContours=" + mNumberOfContours +
                 ", xMin=" + mXMin +
                 ", yMin=" + mYMin +
                 ", xMax=" + mXMax +

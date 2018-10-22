@@ -338,7 +338,7 @@ public class CharacterMappingTable extends BaseTable {
     public String toString() {
         return "CharacterMappingTable{" +
                 "record=" + String.valueOf(getTableRecord()) +
-                "version=" + mVersion +
+                ", version=" + mVersion +
                 ", numTables=" + mNumTables +
                 ", encodingRecords=" + String.valueOf(mEncodingRecords) +
                 ", subTable=" + String.valueOf(mSubTable) +
