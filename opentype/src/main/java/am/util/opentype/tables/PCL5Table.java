@@ -16,6 +16,7 @@
 package am.util.opentype.tables;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import am.util.opentype.OpenTypeReader;
 import am.util.opentype.TableRecord;
@@ -411,5 +412,61 @@ public class PCL5Table extends BaseTable {
      */
     public int getSerifStyle() {
         return mSerifStyle;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PCL5Table)) return false;
+        if (!super.equals(o)) return false;
+        PCL5Table pcl5Table = (PCL5Table) o;
+        return mMajorVersion == pcl5Table.mMajorVersion &&
+                mMinorVersion == pcl5Table.mMinorVersion &&
+                mFontNumber == pcl5Table.mFontNumber &&
+                mPitch == pcl5Table.mPitch &&
+                mXHeight == pcl5Table.mXHeight &&
+                mStyle == pcl5Table.mStyle &&
+                mTypeFamily == pcl5Table.mTypeFamily &&
+                mCapHeight == pcl5Table.mCapHeight &&
+                mSymbolSet == pcl5Table.mSymbolSet &&
+                mStrokeWeight == pcl5Table.mStrokeWeight &&
+                mWidthType == pcl5Table.mWidthType &&
+                mSerifStyle == pcl5Table.mSerifStyle &&
+                Arrays.equals(mTypeface, pcl5Table.mTypeface) &&
+                Arrays.equals(mCharacterComplement, pcl5Table.mCharacterComplement) &&
+                Arrays.equals(mFileName, pcl5Table.mFileName);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(super.hashCode(), mMajorVersion, mMinorVersion, mFontNumber,
+                mPitch, mXHeight, mStyle, mTypeFamily, mCapHeight, mSymbolSet, mStrokeWeight,
+                mWidthType, mSerifStyle);
+        result = 31 * result + Arrays.hashCode(mTypeface);
+        result = 31 * result + Arrays.hashCode(mCharacterComplement);
+        result = 31 * result + Arrays.hashCode(mFileName);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PCL5Table{" +
+                "record=" + String.valueOf(getTableRecord()) +
+                ", majorVersion=" + mMajorVersion +
+                ", minorVersion=" + mMinorVersion +
+                ", fontNumber=" + mFontNumber +
+                ", pitch=" + mPitch +
+                ", xHeight=" + mXHeight +
+                ", style=" + mStyle +
+                ", typeFamily=" + mTypeFamily +
+                ", capHeight=" + mCapHeight +
+                ", symbolSet=" + mSymbolSet +
+                ", typeface=" + Arrays.toString(mTypeface) +
+                ", characterComplement=" + Arrays.toString(mCharacterComplement) +
+                ", fileName=" + Arrays.toString(mFileName) +
+                ", strokeWeight=" + mStrokeWeight +
+                ", widthType=" + mWidthType +
+                ", serifStyle=" + mSerifStyle +
+                '}';
     }
 }
