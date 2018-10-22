@@ -17,6 +17,7 @@ package am.util.opentype.tables;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -545,10 +546,99 @@ public class NamingTable extends BaseTable {
         return mVariationsPostScriptNamePrefix;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NamingTable)) return false;
+        if (!super.equals(o)) return false;
+        NamingTable that = (NamingTable) o;
+        return mFormat == that.mFormat &&
+                mCount == that.mCount &&
+                mStringOffset == that.mStringOffset &&
+                Objects.equals(mNameRecords, that.mNameRecords) &&
+                Objects.equals(mLangTagRecords, that.mLangTagRecords) &&
+                Objects.equals(mLangTags, that.mLangTags) &&
+                Objects.equals(mFamilyNames, that.mFamilyNames) &&
+                Objects.equals(mTypographicFamilyNames, that.mTypographicFamilyNames) &&
+                Objects.equals(mWWSFamilyNames, that.mWWSFamilyNames) &&
+                Objects.equals(mCopyrightNotice, that.mCopyrightNotice) &&
+                Objects.equals(mSubfamilyName, that.mSubfamilyName) &&
+                Objects.equals(mUID, that.mUID) &&
+                Objects.equals(mFullName, that.mFullName) &&
+                Objects.equals(mVersion, that.mVersion) &&
+                Objects.equals(mPostScriptName, that.mPostScriptName) &&
+                Objects.equals(mTrademark, that.mTrademark) &&
+                Objects.equals(mManufacturer, that.mManufacturer) &&
+                Objects.equals(mDesigner, that.mDesigner) &&
+                Objects.equals(mDescription, that.mDescription) &&
+                Objects.equals(mURLVendor, that.mURLVendor) &&
+                Objects.equals(mURLDesigner, that.mURLDesigner) &&
+                Objects.equals(mLicense, that.mLicense) &&
+                Objects.equals(mURLLicense, that.mURLLicense) &&
+                Objects.equals(mTypographicSubfamilyName, that.mTypographicSubfamilyName) &&
+                Objects.equals(mCompatible, that.mCompatible) &&
+                Objects.equals(mSample, that.mSample) &&
+                Objects.equals(mPostScriptCID, that.mPostScriptCID) &&
+                Objects.equals(mWWSSubfamilyName, that.mWWSSubfamilyName) &&
+                Objects.equals(mBackgroundPaletteLight, that.mBackgroundPaletteLight) &&
+                Objects.equals(mBackgroundPaletteDark, that.mBackgroundPaletteDark) &&
+                Objects.equals(mVariationsPostScriptNamePrefix,
+                        that.mVariationsPostScriptNamePrefix);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), mFormat, mCount, mStringOffset, mNameRecords,
+                mLangTagRecords, mLangTags, mFamilyNames, mTypographicFamilyNames, mWWSFamilyNames,
+                mCopyrightNotice, mSubfamilyName, mUID, mFullName, mVersion, mPostScriptName,
+                mTrademark, mManufacturer, mDesigner, mDescription, mURLVendor, mURLDesigner,
+                mLicense, mURLLicense, mTypographicSubfamilyName, mCompatible, mSample,
+                mPostScriptCID, mWWSSubfamilyName, mBackgroundPaletteLight, mBackgroundPaletteDark,
+                mVariationsPostScriptNamePrefix);
+    }
+
+    @Override
+    public String toString() {
+        return "NamingTable{" +
+                "record=" + String.valueOf(getTableRecord()) +
+                ", format=" + mFormat +
+                ", count=" + mCount +
+                ", stringOffset=" + mStringOffset +
+                ", copyrightNotice='" + mCopyrightNotice + '\'' +
+                ", subfamilyName='" + mSubfamilyName + '\'' +
+                ", UID='" + mUID + '\'' +
+                ", fullName='" + mFullName + '\'' +
+                ", version='" + mVersion + '\'' +
+                ", postScriptName='" + mPostScriptName + '\'' +
+                ", trademark='" + mTrademark + '\'' +
+                ", manufacturer='" + mManufacturer + '\'' +
+                ", designer='" + mDesigner + '\'' +
+                ", description='" + mDescription + '\'' +
+                ", URLVendor='" + mURLVendor + '\'' +
+                ", URLDesigner='" + mURLDesigner + '\'' +
+                ", license='" + mLicense + '\'' +
+                ", URLLicense='" + mURLLicense + '\'' +
+                ", typographicSubfamilyName='" + mTypographicSubfamilyName + '\'' +
+                ", compatible='" + mCompatible + '\'' +
+                ", sample='" + mSample + '\'' +
+                ", postScriptCID='" + mPostScriptCID + '\'' +
+                ", WWSSubfamilyName='" + mWWSSubfamilyName + '\'' +
+                ", backgroundPaletteLight='" + mBackgroundPaletteLight + '\'' +
+                ", backgroundPaletteDark='" + mBackgroundPaletteDark + '\'' +
+                ", variationsPostScriptNamePrefix='" + mVariationsPostScriptNamePrefix + '\'' +
+                ", nameRecords=" + String.valueOf(mNameRecords) +
+                ", langTagRecords=" + String.valueOf(mLangTagRecords) +
+                ", langTags=" + String.valueOf(mLangTags) +
+                ", familyNames=" + String.valueOf(mFamilyNames) +
+                ", typographicFamilyNames=" + String.valueOf(mTypographicFamilyNames) +
+                ", WWSFamilyNames=" + String.valueOf(mWWSFamilyNames) +
+                '}';
+    }
+
     /**
      * 命名记录
      */
-    @SuppressWarnings("all")
+    @SuppressWarnings("WeakerAccess")
     public static class NameRecord {
 
         public static final int PLATFORM_UNICODE = 0;
@@ -569,6 +659,7 @@ public class NamingTable extends BaseTable {
         public static final int ENCODING_UNICODE_4 = 4;// Unicode 2.0 and onwards semantics, Unicode full repertoire ('cmap' subtable formats 0, 4, 6, 10, 12).
         public static final int ENCODING_UNICODE_5 = 5;// Unicode Variation Sequences ('cmap' subtable format 14).
         public static final int ENCODING_UNICODE_6 = 6;// Unicode full repertoire ('cmap' subtable formats 0, 4, 6, 10, 12, 13).
+
 
         public static final int LANGUAGE_DIVIDE = 0x8000;//  If a language ID is less than 0x8000, it has a platform-specific interpretation as with a format 0 naming table. If a language ID is equal to or greater than 0x8000, it is associated with a language-tag record (LangTagRecord) that references a language-tag string.
 
@@ -1061,6 +1152,40 @@ public class NamingTable extends BaseTable {
         public byte[] getData() {
             return mData;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            NameRecord that = (NameRecord) o;
+            return mPlatformID == that.mPlatformID &&
+                    mEncodingID == that.mEncodingID &&
+                    mLanguageID == that.mLanguageID &&
+                    mNameID == that.mNameID &&
+                    mLength == that.mLength &&
+                    mOffset == that.mOffset &&
+                    Arrays.equals(mData, that.mData);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = Objects.hash(mPlatformID, mEncodingID, mLanguageID, mNameID, mLength, mOffset);
+            result = 31 * result + Arrays.hashCode(mData);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "NameRecord{" +
+                    "platformID=" + mPlatformID +
+                    ", encodingID=" + mEncodingID +
+                    ", languageID=" + mLanguageID +
+                    ", nameID=" + mNameID +
+                    ", length=" + mLength +
+                    ", offset=" + mOffset +
+                    ", data=" + Arrays.toString(mData) +
+                    '}';
+        }
     }
 
     /**
@@ -1071,7 +1196,7 @@ public class NamingTable extends BaseTable {
         private final int mLength;// Language-tag string length (in bytes)
         private final int mOffset;// Language-tag string offset from start of storage area (in bytes).
 
-        @SuppressWarnings("all")
+        @SuppressWarnings("WeakerAccess")
         public LangTagRecord(int length, int offset) {
             mLength = length;
             mOffset = offset;
@@ -1093,6 +1218,28 @@ public class NamingTable extends BaseTable {
          */
         public int getOffset() {
             return mOffset;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            LangTagRecord that = (LangTagRecord) o;
+            return mLength == that.mLength &&
+                    mOffset == that.mOffset;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(mLength, mOffset);
+        }
+
+        @Override
+        public String toString() {
+            return "LangTagRecord{" +
+                    "length=" + mLength +
+                    ", offset=" + mOffset +
+                    '}';
         }
     }
 }
