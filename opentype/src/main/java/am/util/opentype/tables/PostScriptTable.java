@@ -359,7 +359,7 @@ public class PostScriptTable extends BaseTable {
         if (glyphNameIndex >= 258) {
             return new String(mNames.get(glyphNameIndex - 258), charsetName);
         } else {
-            return MAC_GLYPHS[glyphNameIndex];
+            return new String(MAC_GLYPHS[glyphNameIndex].getBytes(), charsetName);
         }
     }
 
