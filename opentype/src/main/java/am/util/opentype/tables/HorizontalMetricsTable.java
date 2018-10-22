@@ -17,6 +17,7 @@ package am.util.opentype.tables;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import am.util.opentype.OpenTypeReader;
@@ -82,6 +83,32 @@ public class HorizontalMetricsTable extends BaseTable {
         return mLeftSideBearings == null ? 0 : mLeftSideBearings[index];
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof HorizontalMetricsTable)) return false;
+        if (!super.equals(o)) return false;
+        HorizontalMetricsTable that = (HorizontalMetricsTable) o;
+        return Objects.equals(mHMetrics, that.mHMetrics) &&
+                Arrays.equals(mLeftSideBearings, that.mLeftSideBearings);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(super.hashCode(), mHMetrics);
+        result = 31 * result + Arrays.hashCode(mLeftSideBearings);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HorizontalMetricsTable{" +
+                "record=" + String.valueOf(getTableRecord()) +
+                ", hMetrics=" + String.valueOf(mHMetrics) +
+                ", leftSideBearings=" + Arrays.toString(mLeftSideBearings) +
+                '}';
+    }
+
     /**
      * LongHorMetric Record
      * In a font with TrueType outlines, xMin and xMax values for each glyph are given in the 'glyf'
@@ -90,12 +117,11 @@ public class HorizontalMetricsTable extends BaseTable {
      * the 'hmtx' table. In a font with CFF or CFF2 outlines, xMin (= left side bearing) and xMax
      * values can be obtained from the CFF / CFF2 rasterizer.
      */
-    @SuppressWarnings("unused")
     public static class LongHorMetricRecord {
         private final int mAdvanceWidth;
         private final int mLsb;
 
-        @SuppressWarnings("all")
+        @SuppressWarnings("WeakerAccess")
         public LongHorMetricRecord(int advanceWidth, int lsb) {
             mAdvanceWidth = advanceWidth;
             mLsb = lsb;
@@ -117,6 +143,28 @@ public class HorizontalMetricsTable extends BaseTable {
          */
         public int getLsb() {
             return mLsb;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            LongHorMetricRecord that = (LongHorMetricRecord) o;
+            return mAdvanceWidth == that.mAdvanceWidth &&
+                    mLsb == that.mLsb;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(mAdvanceWidth, mLsb);
+        }
+
+        @Override
+        public String toString() {
+            return "LongHorMetricRecord{" +
+                    "advanceWidth=" + mAdvanceWidth +
+                    ", lsb=" + mLsb +
+                    '}';
         }
     }
 }
