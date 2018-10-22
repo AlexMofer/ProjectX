@@ -211,4 +211,55 @@ public class HorizontalHeaderTable extends BaseTable {
     public int getNumberOfHMetrics() {
         return mNumberOfHMetrics;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof HorizontalHeaderTable)) return false;
+        if (!super.equals(o)) return false;
+        HorizontalHeaderTable that = (HorizontalHeaderTable) o;
+        return mMajorVersion == that.mMajorVersion &&
+                mMinorVersion == that.mMinorVersion &&
+                mAscender == that.mAscender &&
+                mDescender == that.mDescender &&
+                mLineGap == that.mLineGap &&
+                mAdvanceWidthMax == that.mAdvanceWidthMax &&
+                mMinLeftSideBearing == that.mMinLeftSideBearing &&
+                mMinRightSideBearing == that.mMinRightSideBearing &&
+                mXMaxExtent == that.mXMaxExtent &&
+                mCaretSlopeRise == that.mCaretSlopeRise &&
+                mCaretSlopeRun == that.mCaretSlopeRun &&
+                mCaretOffset == that.mCaretOffset &&
+                mMetricDataFormat == that.mMetricDataFormat &&
+                mNumberOfHMetrics == that.mNumberOfHMetrics;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), mMajorVersion, mMinorVersion, mAscender, mDescender,
+                mLineGap, mAdvanceWidthMax, mMinLeftSideBearing, mMinRightSideBearing, mXMaxExtent,
+                mCaretSlopeRise, mCaretSlopeRun, mCaretOffset, mMetricDataFormat,
+                mNumberOfHMetrics);
+    }
+
+    @Override
+    public String toString() {
+        return "HorizontalHeaderTable{" +
+                "record=" + String.valueOf(getTableRecord()) +
+                ", majorVersion=" + mMajorVersion +
+                ", minorVersion=" + mMinorVersion +
+                ", ascender=" + mAscender +
+                ", descender=" + mDescender +
+                ", lineGap=" + mLineGap +
+                ", advanceWidthMax=" + mAdvanceWidthMax +
+                ", minLeftSideBearing=" + mMinLeftSideBearing +
+                ", minRightSideBearing=" + mMinRightSideBearing +
+                ", xMaxExtent=" + mXMaxExtent +
+                ", caretSlopeRise=" + mCaretSlopeRise +
+                ", caretSlopeRun=" + mCaretSlopeRun +
+                ", caretOffset=" + mCaretOffset +
+                ", metricDataFormat=" + mMetricDataFormat +
+                ", numberOfHMetrics=" + mNumberOfHMetrics +
+                '}';
+    }
 }
