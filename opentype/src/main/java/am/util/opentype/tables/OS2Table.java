@@ -16,6 +16,7 @@
 package am.util.opentype.tables;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import am.util.opentype.OpenTypeReader;
 import am.util.opentype.TableRecord;
@@ -1433,5 +1434,115 @@ public class OS2Table extends BaseTable {
      */
     public int getUpperOpticalPointSize() {
         return mUpperOpticalPointSize;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof OS2Table)) return false;
+        if (!super.equals(o)) return false;
+        OS2Table os2Table = (OS2Table) o;
+        return mVersion == os2Table.mVersion &&
+                mAvgCharWidth == os2Table.mAvgCharWidth &&
+                mWeightClass == os2Table.mWeightClass &&
+                mWidthClass == os2Table.mWidthClass &&
+                mType == os2Table.mType &&
+                mSubscriptXSize == os2Table.mSubscriptXSize &&
+                mSubscriptYSize == os2Table.mSubscriptYSize &&
+                mSubscriptXOffset == os2Table.mSubscriptXOffset &&
+                mSubscriptYOffset == os2Table.mSubscriptYOffset &&
+                mSuperscriptXSize == os2Table.mSuperscriptXSize &&
+                mSuperscriptYSize == os2Table.mSuperscriptYSize &&
+                mSuperscriptXOffset == os2Table.mSuperscriptXOffset &&
+                mSuperscriptYOffset == os2Table.mSuperscriptYOffset &&
+                mStrikeoutSize == os2Table.mStrikeoutSize &&
+                mStrikeoutPosition == os2Table.mStrikeoutPosition &&
+                mFamilyClass == os2Table.mFamilyClass &&
+                mUnicodeRange1 == os2Table.mUnicodeRange1 &&
+                mUnicodeRange2 == os2Table.mUnicodeRange2 &&
+                mUnicodeRange3 == os2Table.mUnicodeRange3 &&
+                mUnicodeRange4 == os2Table.mUnicodeRange4 &&
+                mVendID == os2Table.mVendID &&
+                mSelection == os2Table.mSelection &&
+                mFirstCharIndex == os2Table.mFirstCharIndex &&
+                mLastCharIndex == os2Table.mLastCharIndex &&
+                mLegacy == os2Table.mLegacy &&
+                mTypoAscender == os2Table.mTypoAscender &&
+                mTypoDescender == os2Table.mTypoDescender &&
+                mTypoLineGap == os2Table.mTypoLineGap &&
+                mWinAscent == os2Table.mWinAscent &&
+                mWinDescent == os2Table.mWinDescent &&
+                mCodePageRange1 == os2Table.mCodePageRange1 &&
+                mCodePageRange2 == os2Table.mCodePageRange2 &&
+                mHeight == os2Table.mHeight &&
+                mCapHeight == os2Table.mCapHeight &&
+                mDefaultChar == os2Table.mDefaultChar &&
+                mBreakChar == os2Table.mBreakChar &&
+                mMaxContext == os2Table.mMaxContext &&
+                mLowerOpticalPointSize == os2Table.mLowerOpticalPointSize &&
+                mUpperOpticalPointSize == os2Table.mUpperOpticalPointSize &&
+                Arrays.equals(mPanose, os2Table.mPanose);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(super.hashCode(), mVersion, mAvgCharWidth, mWeightClass,
+                mWidthClass, mType, mSubscriptXSize, mSubscriptYSize, mSubscriptXOffset,
+                mSubscriptYOffset, mSuperscriptXSize, mSuperscriptYSize, mSuperscriptXOffset,
+                mSuperscriptYOffset, mStrikeoutSize, mStrikeoutPosition, mFamilyClass,
+                mUnicodeRange1, mUnicodeRange2, mUnicodeRange3, mUnicodeRange4, mVendID, mSelection,
+                mFirstCharIndex, mLastCharIndex, mLegacy, mTypoAscender, mTypoDescender,
+                mTypoLineGap, mWinAscent, mWinDescent, mCodePageRange1, mCodePageRange2, mHeight,
+                mCapHeight, mDefaultChar, mBreakChar, mMaxContext, mLowerOpticalPointSize,
+                mUpperOpticalPointSize);
+        result = 31 * result + Arrays.hashCode(mPanose);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OS2Table{" +
+                "record=" + String.valueOf(getTableRecord()) +
+                ", version=" + mVersion +
+                ", avgCharWidth=" + mAvgCharWidth +
+                ", weightClass=" + mWeightClass +
+                ", widthClass=" + mWidthClass +
+                ", type=" + mType +
+                ", subscriptXSize=" + mSubscriptXSize +
+                ", subscriptYSize=" + mSubscriptYSize +
+                ", subscriptXOffset=" + mSubscriptXOffset +
+                ", subscriptYOffset=" + mSubscriptYOffset +
+                ", superscriptXSize=" + mSuperscriptXSize +
+                ", superscriptYSize=" + mSuperscriptYSize +
+                ", superscriptXOffset=" + mSuperscriptXOffset +
+                ", superscriptYOffset=" + mSuperscriptYOffset +
+                ", strikeoutSize=" + mStrikeoutSize +
+                ", strikeoutPosition=" + mStrikeoutPosition +
+                ", familyClass=" + mFamilyClass +
+                ", panose=" + Arrays.toString(mPanose) +
+                ", unicodeRange1=" + mUnicodeRange1 +
+                ", unicodeRange2=" + mUnicodeRange2 +
+                ", unicodeRange3=" + mUnicodeRange3 +
+                ", unicodeRange4=" + mUnicodeRange4 +
+                ", vendID=" + mVendID +
+                ", selection=" + mSelection +
+                ", firstCharIndex=" + mFirstCharIndex +
+                ", lastCharIndex=" + mLastCharIndex +
+                ", legacy=" + mLegacy +
+                ", typoAscender=" + mTypoAscender +
+                ", typoDescender=" + mTypoDescender +
+                ", typoLineGap=" + mTypoLineGap +
+                ", winAscent=" + mWinAscent +
+                ", winDescent=" + mWinDescent +
+                ", codePageRange1=" + mCodePageRange1 +
+                ", codePageRange2=" + mCodePageRange2 +
+                ", height=" + mHeight +
+                ", capHeight=" + mCapHeight +
+                ", defaultChar=" + mDefaultChar +
+                ", breakChar=" + mBreakChar +
+                ", maxContext=" + mMaxContext +
+                ", lowerOpticalPointSize=" + mLowerOpticalPointSize +
+                ", upperOpticalPointSize=" + mUpperOpticalPointSize +
+                '}';
     }
 }
