@@ -306,4 +306,63 @@ public class HeaderTable extends BaseTable {
     public int getGlyphDataFormat() {
         return mGlyphDataFormat;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof HeaderTable)) return false;
+        if (!super.equals(o)) return false;
+        HeaderTable that = (HeaderTable) o;
+        return mMajorVersion == that.mMajorVersion &&
+                mMinorVersion == that.mMinorVersion &&
+                mFontRevision == that.mFontRevision &&
+                mCheckSumAdjustment == that.mCheckSumAdjustment &&
+                mMagicNumber == that.mMagicNumber &&
+                mFlags == that.mFlags &&
+                mUnitsPerEm == that.mUnitsPerEm &&
+                mCreated == that.mCreated &&
+                mModified == that.mModified &&
+                mXMin == that.mXMin &&
+                mYMin == that.mYMin &&
+                mXMax == that.mXMax &&
+                mYMax == that.mYMax &&
+                mMacStyle == that.mMacStyle &&
+                mLowestRecPPEM == that.mLowestRecPPEM &&
+                mFontDirectionHint == that.mFontDirectionHint &&
+                mIndexToLocFormat == that.mIndexToLocFormat &&
+                mGlyphDataFormat == that.mGlyphDataFormat;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), mMajorVersion, mMinorVersion, mFontRevision,
+                mCheckSumAdjustment, mMagicNumber, mFlags, mUnitsPerEm, mCreated, mModified,
+                mXMin, mYMin, mXMax, mYMax, mMacStyle, mLowestRecPPEM, mFontDirectionHint,
+                mIndexToLocFormat, mGlyphDataFormat);
+    }
+
+    @Override
+    public String toString() {
+        return "HeaderTable{" +
+                "record=" + String.valueOf(getTableRecord()) +
+                ", majorVersion=" + mMajorVersion +
+                ", minorVersion=" + mMinorVersion +
+                ", fontRevision=" + mFontRevision +
+                ", checkSumAdjustment=" + mCheckSumAdjustment +
+                ", magicNumber=" + mMagicNumber +
+                ", flags=" + mFlags +
+                ", unitsPerEm=" + mUnitsPerEm +
+                ", created=" + mCreated +
+                ", modified=" + mModified +
+                ", xMin=" + mXMin +
+                ", yMin=" + mYMin +
+                ", xMax=" + mXMax +
+                ", yMax=" + mYMax +
+                ", macStyle=" + mMacStyle +
+                ", lowestRecPPEM=" + mLowestRecPPEM +
+                ", fontDirectionHint=" + mFontDirectionHint +
+                ", indexToLocFormat=" + mIndexToLocFormat +
+                ", glyphDataFormat=" + mGlyphDataFormat +
+                '}';
+    }
 }
