@@ -84,24 +84,14 @@ public class HorizontalMetricsTable extends BaseTable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof HorizontalMetricsTable)) return false;
-        if (!super.equals(o)) return false;
-        HorizontalMetricsTable that = (HorizontalMetricsTable) o;
-        return Objects.equals(mHMetrics, that.mHMetrics) &&
-                Arrays.equals(mLeftSideBearings, that.mLeftSideBearings);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(super.hashCode(), mHMetrics);
+    public int getHashCode() {
+        int result = Objects.hash(super.getHashCode(), mHMetrics);
         result = 31 * result + Arrays.hashCode(mLeftSideBearings);
         return result;
     }
 
     @Override
-    public String toString() {
+    public String getString() {
         return "HorizontalMetricsTable{" +
                 "record=" + String.valueOf(getTableRecord()) +
                 ", hMetrics=" + String.valueOf(mHMetrics) +

@@ -547,48 +547,8 @@ public class NamingTable extends BaseTable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof NamingTable)) return false;
-        if (!super.equals(o)) return false;
-        NamingTable that = (NamingTable) o;
-        return mFormat == that.mFormat &&
-                mCount == that.mCount &&
-                mStringOffset == that.mStringOffset &&
-                Objects.equals(mNameRecords, that.mNameRecords) &&
-                Objects.equals(mLangTagRecords, that.mLangTagRecords) &&
-                Objects.equals(mLangTags, that.mLangTags) &&
-                Objects.equals(mFamilyNames, that.mFamilyNames) &&
-                Objects.equals(mTypographicFamilyNames, that.mTypographicFamilyNames) &&
-                Objects.equals(mWWSFamilyNames, that.mWWSFamilyNames) &&
-                Objects.equals(mCopyrightNotice, that.mCopyrightNotice) &&
-                Objects.equals(mSubfamilyName, that.mSubfamilyName) &&
-                Objects.equals(mUID, that.mUID) &&
-                Objects.equals(mFullName, that.mFullName) &&
-                Objects.equals(mVersion, that.mVersion) &&
-                Objects.equals(mPostScriptName, that.mPostScriptName) &&
-                Objects.equals(mTrademark, that.mTrademark) &&
-                Objects.equals(mManufacturer, that.mManufacturer) &&
-                Objects.equals(mDesigner, that.mDesigner) &&
-                Objects.equals(mDescription, that.mDescription) &&
-                Objects.equals(mURLVendor, that.mURLVendor) &&
-                Objects.equals(mURLDesigner, that.mURLDesigner) &&
-                Objects.equals(mLicense, that.mLicense) &&
-                Objects.equals(mURLLicense, that.mURLLicense) &&
-                Objects.equals(mTypographicSubfamilyName, that.mTypographicSubfamilyName) &&
-                Objects.equals(mCompatible, that.mCompatible) &&
-                Objects.equals(mSample, that.mSample) &&
-                Objects.equals(mPostScriptCID, that.mPostScriptCID) &&
-                Objects.equals(mWWSSubfamilyName, that.mWWSSubfamilyName) &&
-                Objects.equals(mBackgroundPaletteLight, that.mBackgroundPaletteLight) &&
-                Objects.equals(mBackgroundPaletteDark, that.mBackgroundPaletteDark) &&
-                Objects.equals(mVariationsPostScriptNamePrefix,
-                        that.mVariationsPostScriptNamePrefix);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), mFormat, mCount, mStringOffset, mNameRecords,
+    public int getHashCode() {
+        return Objects.hash(super.getHashCode(), mFormat, mCount, mStringOffset, mNameRecords,
                 mLangTagRecords, mLangTags, mFamilyNames, mTypographicFamilyNames, mWWSFamilyNames,
                 mCopyrightNotice, mSubfamilyName, mUID, mFullName, mVersion, mPostScriptName,
                 mTrademark, mManufacturer, mDesigner, mDescription, mURLVendor, mURLDesigner,
@@ -598,7 +558,7 @@ public class NamingTable extends BaseTable {
     }
 
     @Override
-    public String toString() {
+    public String getString() {
         return "NamingTable{" +
                 "record=" + String.valueOf(getTableRecord()) +
                 ", format=" + mFormat +

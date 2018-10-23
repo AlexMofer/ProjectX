@@ -415,31 +415,8 @@ public class PCL5Table extends BaseTable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PCL5Table)) return false;
-        if (!super.equals(o)) return false;
-        PCL5Table pcl5Table = (PCL5Table) o;
-        return mMajorVersion == pcl5Table.mMajorVersion &&
-                mMinorVersion == pcl5Table.mMinorVersion &&
-                mFontNumber == pcl5Table.mFontNumber &&
-                mPitch == pcl5Table.mPitch &&
-                mXHeight == pcl5Table.mXHeight &&
-                mStyle == pcl5Table.mStyle &&
-                mTypeFamily == pcl5Table.mTypeFamily &&
-                mCapHeight == pcl5Table.mCapHeight &&
-                mSymbolSet == pcl5Table.mSymbolSet &&
-                mStrokeWeight == pcl5Table.mStrokeWeight &&
-                mWidthType == pcl5Table.mWidthType &&
-                mSerifStyle == pcl5Table.mSerifStyle &&
-                Arrays.equals(mTypeface, pcl5Table.mTypeface) &&
-                Arrays.equals(mCharacterComplement, pcl5Table.mCharacterComplement) &&
-                Arrays.equals(mFileName, pcl5Table.mFileName);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(super.hashCode(), mMajorVersion, mMinorVersion, mFontNumber,
+    public int getHashCode() {
+        int result = Objects.hash(super.getHashCode(), mMajorVersion, mMinorVersion, mFontNumber,
                 mPitch, mXHeight, mStyle, mTypeFamily, mCapHeight, mSymbolSet, mStrokeWeight,
                 mWidthType, mSerifStyle);
         result = 31 * result + Arrays.hashCode(mTypeface);
@@ -449,7 +426,7 @@ public class PCL5Table extends BaseTable {
     }
 
     @Override
-    public String toString() {
+    public String getString() {
         return "PCL5Table{" +
                 "record=" + String.valueOf(getTableRecord()) +
                 ", majorVersion=" + mMajorVersion +

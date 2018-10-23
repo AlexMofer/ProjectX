@@ -386,29 +386,8 @@ public class PostScriptTable extends BaseTable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PostScriptTable)) return false;
-        if (!super.equals(o)) return false;
-        PostScriptTable that = (PostScriptTable) o;
-        return Float.compare(that.mVersion, mVersion) == 0 &&
-                Float.compare(that.mItalicAngle, mItalicAngle) == 0 &&
-                mUnderlinePosition == that.mUnderlinePosition &&
-                mUnderlineThickness == that.mUnderlineThickness &&
-                mIsFixedPitch == that.mIsFixedPitch &&
-                mMinMemType42 == that.mMinMemType42 &&
-                mMaxMemType42 == that.mMaxMemType42 &&
-                mMinMemType1 == that.mMinMemType1 &&
-                mMaxMemType1 == that.mMaxMemType1 &&
-                mNumGlyphs == that.mNumGlyphs &&
-                Arrays.equals(mGlyphNameIndex, that.mGlyphNameIndex) &&
-                Objects.equals(mNames, that.mNames) &&
-                Arrays.equals(mOffset, that.mOffset);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(super.hashCode(), mVersion, mItalicAngle, mUnderlinePosition,
+    public int getHashCode() {
+        int result = Objects.hash(super.getHashCode(), mVersion, mItalicAngle, mUnderlinePosition,
                 mUnderlineThickness, mIsFixedPitch, mMinMemType42, mMaxMemType42, mMinMemType1,
                 mMaxMemType1, mNumGlyphs, mNames);
         result = 31 * result + Arrays.hashCode(mGlyphNameIndex);
@@ -417,7 +396,7 @@ public class PostScriptTable extends BaseTable {
     }
 
     @Override
-    public String toString() {
+    public String getString() {
         return "PostScriptTable{" +
                 "record=" + String.valueOf(getTableRecord()) +
                 ", version=" + mVersion +

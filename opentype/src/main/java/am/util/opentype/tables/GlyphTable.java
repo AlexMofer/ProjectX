@@ -150,26 +150,13 @@ public class GlyphTable extends BaseTable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof GlyphTable)) return false;
-        if (!super.equals(o)) return false;
-        GlyphTable that = (GlyphTable) o;
-        return mNumberOfContours == that.mNumberOfContours &&
-                mXMin == that.mXMin &&
-                mYMin == that.mYMin &&
-                mXMax == that.mXMax &&
-                mYMax == that.mYMax &&
-                Objects.equals(mGlyphDescription, that.mGlyphDescription);
+    public int getHashCode() {
+        return Objects.hash(super.getHashCode(), mNumberOfContours, mXMin, mYMin, mXMax, mYMax,
+                mGlyphDescription);
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), mNumberOfContours, mXMin, mYMin, mXMax, mYMax, mGlyphDescription);
-    }
-
-    @Override
-    public String toString() {
+    public String getString() {
         return "GlyphTable{" +
                 "record=" + String.valueOf(getTableRecord()) +
                 ", numberOfContours=" + mNumberOfContours +

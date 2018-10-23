@@ -1437,56 +1437,8 @@ public class OS2Table extends BaseTable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof OS2Table)) return false;
-        if (!super.equals(o)) return false;
-        OS2Table os2Table = (OS2Table) o;
-        return mVersion == os2Table.mVersion &&
-                mAvgCharWidth == os2Table.mAvgCharWidth &&
-                mWeightClass == os2Table.mWeightClass &&
-                mWidthClass == os2Table.mWidthClass &&
-                mType == os2Table.mType &&
-                mSubscriptXSize == os2Table.mSubscriptXSize &&
-                mSubscriptYSize == os2Table.mSubscriptYSize &&
-                mSubscriptXOffset == os2Table.mSubscriptXOffset &&
-                mSubscriptYOffset == os2Table.mSubscriptYOffset &&
-                mSuperscriptXSize == os2Table.mSuperscriptXSize &&
-                mSuperscriptYSize == os2Table.mSuperscriptYSize &&
-                mSuperscriptXOffset == os2Table.mSuperscriptXOffset &&
-                mSuperscriptYOffset == os2Table.mSuperscriptYOffset &&
-                mStrikeoutSize == os2Table.mStrikeoutSize &&
-                mStrikeoutPosition == os2Table.mStrikeoutPosition &&
-                mFamilyClass == os2Table.mFamilyClass &&
-                mUnicodeRange1 == os2Table.mUnicodeRange1 &&
-                mUnicodeRange2 == os2Table.mUnicodeRange2 &&
-                mUnicodeRange3 == os2Table.mUnicodeRange3 &&
-                mUnicodeRange4 == os2Table.mUnicodeRange4 &&
-                mVendID == os2Table.mVendID &&
-                mSelection == os2Table.mSelection &&
-                mFirstCharIndex == os2Table.mFirstCharIndex &&
-                mLastCharIndex == os2Table.mLastCharIndex &&
-                mLegacy == os2Table.mLegacy &&
-                mTypoAscender == os2Table.mTypoAscender &&
-                mTypoDescender == os2Table.mTypoDescender &&
-                mTypoLineGap == os2Table.mTypoLineGap &&
-                mWinAscent == os2Table.mWinAscent &&
-                mWinDescent == os2Table.mWinDescent &&
-                mCodePageRange1 == os2Table.mCodePageRange1 &&
-                mCodePageRange2 == os2Table.mCodePageRange2 &&
-                mHeight == os2Table.mHeight &&
-                mCapHeight == os2Table.mCapHeight &&
-                mDefaultChar == os2Table.mDefaultChar &&
-                mBreakChar == os2Table.mBreakChar &&
-                mMaxContext == os2Table.mMaxContext &&
-                mLowerOpticalPointSize == os2Table.mLowerOpticalPointSize &&
-                mUpperOpticalPointSize == os2Table.mUpperOpticalPointSize &&
-                Arrays.equals(mPanose, os2Table.mPanose);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(super.hashCode(), mVersion, mAvgCharWidth, mWeightClass,
+    public int getHashCode() {
+        int result = Objects.hash(super.getHashCode(), mVersion, mAvgCharWidth, mWeightClass,
                 mWidthClass, mType, mSubscriptXSize, mSubscriptYSize, mSubscriptXOffset,
                 mSubscriptYOffset, mSuperscriptXSize, mSuperscriptYSize, mSuperscriptXOffset,
                 mSuperscriptYOffset, mStrikeoutSize, mStrikeoutPosition, mFamilyClass,
@@ -1500,7 +1452,7 @@ public class OS2Table extends BaseTable {
     }
 
     @Override
-    public String toString() {
+    public String getString() {
         return "OS2Table{" +
                 "record=" + String.valueOf(getTableRecord()) +
                 ", version=" + mVersion +

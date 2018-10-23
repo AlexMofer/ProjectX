@@ -125,23 +125,12 @@ public class KerningTable extends BaseTable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof KerningTable)) return false;
-        if (!super.equals(o)) return false;
-        KerningTable that = (KerningTable) o;
-        return mVersion == that.mVersion &&
-                mNumberOfTables == that.mNumberOfTables &&
-                Objects.equals(mSubTables, that.mSubTables);
+    public int getHashCode() {
+        return Objects.hash(super.getHashCode(), mVersion, mNumberOfTables, mSubTables);
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), mVersion, mNumberOfTables, mSubTables);
-    }
-
-    @Override
-    public String toString() {
+    public String getString() {
         return "KerningTable{" +
                 "record=" + String.valueOf(getTableRecord()) +
                 ", version=" + mVersion +

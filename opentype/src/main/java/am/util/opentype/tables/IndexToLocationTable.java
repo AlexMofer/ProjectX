@@ -64,23 +64,14 @@ public class IndexToLocationTable extends BaseTable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof IndexToLocationTable)) return false;
-        if (!super.equals(o)) return false;
-        IndexToLocationTable that = (IndexToLocationTable) o;
-        return Arrays.equals(mOffsets, that.mOffsets);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
+    public int getHashCode() {
+        int result = super.getHashCode();
         result = 31 * result + Arrays.hashCode(mOffsets);
         return result;
     }
 
     @Override
-    public String toString() {
+    public String getString() {
         return "IndexToLocationTable{" +
                 "record=" + String.valueOf(getTableRecord()) +
                 ", offsets=" + Arrays.toString(mOffsets) +

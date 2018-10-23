@@ -263,38 +263,15 @@ public class MaximumProfileTable extends BaseTable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MaximumProfileTable)) return false;
-        if (!super.equals(o)) return false;
-        MaximumProfileTable that = (MaximumProfileTable) o;
-        return Float.compare(that.mVersion, mVersion) == 0 &&
-                mNumGlyphs == that.mNumGlyphs &&
-                mMaxPoints == that.mMaxPoints &&
-                mMaxContours == that.mMaxContours &&
-                mMaxCompositePoints == that.mMaxCompositePoints &&
-                mMaxCompositeContours == that.mMaxCompositeContours &&
-                mMaxZones == that.mMaxZones &&
-                mMaxTwilightPoints == that.mMaxTwilightPoints &&
-                mMaxStorage == that.mMaxStorage &&
-                mMaxFunctionDefs == that.mMaxFunctionDefs &&
-                mMaxInstructionDefs == that.mMaxInstructionDefs &&
-                mMaxStackElements == that.mMaxStackElements &&
-                mMaxSizeOfInstructions == that.mMaxSizeOfInstructions &&
-                mMaxComponentElements == that.mMaxComponentElements &&
-                mMaxComponentDepth == that.mMaxComponentDepth;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), mVersion, mNumGlyphs, mMaxPoints, mMaxContours,
+    public int getHashCode() {
+        return Objects.hash(super.getHashCode(), mVersion, mNumGlyphs, mMaxPoints, mMaxContours,
                 mMaxCompositePoints, mMaxCompositeContours, mMaxZones, mMaxTwilightPoints,
                 mMaxStorage, mMaxFunctionDefs, mMaxInstructionDefs, mMaxStackElements,
                 mMaxSizeOfInstructions, mMaxComponentElements, mMaxComponentDepth);
     }
 
     @Override
-    public String toString() {
+    public String getString() {
         return "MaximumProfileTable{" +
                 "record=" + String.valueOf(getTableRecord()) +
                 ", version=" + mVersion +

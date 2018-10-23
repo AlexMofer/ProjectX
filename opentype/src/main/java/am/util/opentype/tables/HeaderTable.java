@@ -308,41 +308,15 @@ public class HeaderTable extends BaseTable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof HeaderTable)) return false;
-        if (!super.equals(o)) return false;
-        HeaderTable that = (HeaderTable) o;
-        return mMajorVersion == that.mMajorVersion &&
-                mMinorVersion == that.mMinorVersion &&
-                mFontRevision == that.mFontRevision &&
-                mCheckSumAdjustment == that.mCheckSumAdjustment &&
-                mMagicNumber == that.mMagicNumber &&
-                mFlags == that.mFlags &&
-                mUnitsPerEm == that.mUnitsPerEm &&
-                mCreated == that.mCreated &&
-                mModified == that.mModified &&
-                mXMin == that.mXMin &&
-                mYMin == that.mYMin &&
-                mXMax == that.mXMax &&
-                mYMax == that.mYMax &&
-                mMacStyle == that.mMacStyle &&
-                mLowestRecPPEM == that.mLowestRecPPEM &&
-                mFontDirectionHint == that.mFontDirectionHint &&
-                mIndexToLocFormat == that.mIndexToLocFormat &&
-                mGlyphDataFormat == that.mGlyphDataFormat;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), mMajorVersion, mMinorVersion, mFontRevision,
+    public int getHashCode() {
+        return Objects.hash(super.getHashCode(), mMajorVersion, mMinorVersion, mFontRevision,
                 mCheckSumAdjustment, mMagicNumber, mFlags, mUnitsPerEm, mCreated, mModified,
                 mXMin, mYMin, mXMax, mYMax, mMacStyle, mLowestRecPPEM, mFontDirectionHint,
                 mIndexToLocFormat, mGlyphDataFormat);
     }
 
     @Override
-    public String toString() {
+    public String getString() {
         return "HeaderTable{" +
                 "record=" + String.valueOf(getTableRecord()) +
                 ", majorVersion=" + mMajorVersion +
