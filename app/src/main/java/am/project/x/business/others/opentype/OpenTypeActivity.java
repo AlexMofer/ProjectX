@@ -15,6 +15,7 @@
  */
 package am.project.x.business.others.opentype;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,12 +32,13 @@ import am.project.x.base.BaseActivity;
  * OpenType
  */
 public class OpenTypeActivity extends BaseActivity implements OpenTypeView,
-        OpenTypePickerDialog.OnPickerListener {
+        OpenTypePickerDialog.OnPickerListener, OpenTypeViewHolder.OnViewHolderListener {
 
     private static final String EXTRA_PATH = "am.project.x.business.others.opentype.OpenTypeActivity.EXTRA_PATH";
     private final OpenTypePresenter mPresenter = new OpenTypePresenter(this);
-    private final OpenTypeAdapter mAdapter = new OpenTypeAdapter(mPresenter);
+    private final OpenTypeAdapter mAdapter = new OpenTypeAdapter(mPresenter, this);
     private OpenTypePickerDialog mPicker;
+    private AlertDialog mInfo;
 
     public static void start(Context context, String path) {
         context.startActivity(
@@ -86,7 +88,8 @@ public class OpenTypeActivity extends BaseActivity implements OpenTypeView,
     @Override
     public void onParseFailure() {
         dismissLoading();
-        Toast.makeText(this, R.string.ot_toast_parse_failure, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.ot_toast_parse_failure,
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -113,5 +116,16 @@ public class OpenTypeActivity extends BaseActivity implements OpenTypeView,
         mPicker.dismiss();
         mPresenter.setCollectionItem(position);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(Object item) {
+        if (mInfo == null)
+            mInfo = new AlertDialog.Builder(this)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .create();
+        mInfo.setTitle(mPresenter.getItemLabel(item));
+        mInfo.setMessage(mPresenter.getItemInfo(item));
+        mInfo.show();
     }
 }

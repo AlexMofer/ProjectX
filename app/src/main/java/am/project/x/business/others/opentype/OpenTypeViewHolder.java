@@ -17,6 +17,7 @@ package am.project.x.business.others.opentype;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -25,21 +26,35 @@ import am.project.x.R;
 /**
  * ViewHolder
  */
-class OpenTypeViewHolder extends RecyclerView.ViewHolder {
+class OpenTypeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private final TextView mVLabel;
     private final TextView mVInfo;
+    private final OnViewHolderListener mListener;
+    private Object mItem;
 
-    OpenTypeViewHolder(ViewGroup parent) {
+    OpenTypeViewHolder(ViewGroup parent, OnViewHolderListener listener) {
         super(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_opentype_item, parent, false));
+        mListener = listener;
         mVLabel = itemView.findViewById(R.id.ioi_tv_label);
         mVInfo = itemView.findViewById(R.id.ioi_tv_info);
+        itemView.setOnClickListener(this);
     }
 
     void bind(int position, OpenTypeAdapterViewModel model) {
-        final Object item = model.getItem(position);
-        mVLabel.setText(model.getItemLabel(item));
-        mVInfo.setText(model.getItemInfo(item));
+        mItem = model.getItem(position);
+        mVLabel.setText(model.getItemLabel(mItem));
+        mVInfo.setText(model.getItemInfo(mItem));
+    }
+
+    // Listener
+    @Override
+    public void onClick(View v) {
+        mListener.onItemClick(mItem);
+    }
+
+    public interface OnViewHolderListener {
+        void onItemClick(Object item);
     }
 }

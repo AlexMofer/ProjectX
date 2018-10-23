@@ -25,15 +25,18 @@ import android.view.ViewGroup;
 class OpenTypeAdapter extends RecyclerView.Adapter<OpenTypeViewHolder> {
 
     private final OpenTypeAdapterViewModel mModel;
+    private final OpenTypeViewHolder.OnViewHolderListener mListener;
 
-    OpenTypeAdapter(OpenTypeAdapterViewModel model) {
+    OpenTypeAdapter(OpenTypeAdapterViewModel model,
+                    OpenTypeViewHolder.OnViewHolderListener listener) {
         mModel = model;
+        mListener = listener;
     }
 
     @NonNull
     @Override
     public OpenTypeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-        return new OpenTypeViewHolder(parent);
+        return new OpenTypeViewHolder(parent, mListener);
     }
 
     @Override
