@@ -318,24 +318,12 @@ public class CharacterMappingTable extends BaseTable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CharacterMappingTable)) return false;
-        if (!super.equals(o)) return false;
-        CharacterMappingTable that = (CharacterMappingTable) o;
-        return mVersion == that.mVersion &&
-                mNumTables == that.mNumTables &&
-                Objects.equals(mEncodingRecords, that.mEncodingRecords) &&
-                Objects.equals(mSubTable, that.mSubTable);
+    public int getHashCode() {
+        return Objects.hash(super.getHashCode(), mVersion, mNumTables, mEncodingRecords, mSubTable);
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), mVersion, mNumTables, mEncodingRecords, mSubTable);
-    }
-
-    @Override
-    public String toString() {
+    public String getString() {
         return "CharacterMappingTable{" +
                 "record=" + String.valueOf(getTableRecord()) +
                 ", version=" + mVersion +
