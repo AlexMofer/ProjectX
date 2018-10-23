@@ -24,9 +24,9 @@ import org.xmlpull.v1.XmlPullParser;
  * font增加ttc文件支持，增加index属性，用于获取ttc角标
  * Created by Alex on 2018/8/31.
  */
+@SuppressWarnings("WeakerAccess")
 class FontsReaderApi24 extends FontsReaderApi21 {
 
-    @SuppressWarnings("all")
     protected static final String ATTR_INDEX = "index";
 
     @Override

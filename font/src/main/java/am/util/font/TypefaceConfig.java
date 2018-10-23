@@ -89,7 +89,6 @@ public class TypefaceConfig {
      *
      * @return 目录
      */
-    @SuppressWarnings("unused")
     public static String getFontsDir() {
         return FontsReaderCompat.getFontsReader().getFontsDir();
     }

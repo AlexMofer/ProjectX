@@ -22,7 +22,7 @@ import android.os.Parcelable;
  * 字体对称轴
  * Created by Alex on 2018/8/30.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class TypefaceAxis implements Parcelable {
     public static final String TAG_ITAL = "ital";// Italic
     public static final String TAG_OPSZ = "opsz";// Optical size
@@ -32,7 +32,6 @@ public class TypefaceAxis implements Parcelable {
     private final String mTag;// 标签
     private final float mStyleValue;// 值
 
-    @SuppressWarnings("all")
     public TypefaceAxis(String tag, float value) {
         mTag = tag;
         mStyleValue = value;

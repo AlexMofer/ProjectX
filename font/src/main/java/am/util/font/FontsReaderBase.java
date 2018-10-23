@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * API 9
  * Created by Alex on 2018/8/30.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("WeakerAccess")
 class FontsReaderBase implements FontsReader {
 
     protected static final String NAME_FONTS = "fonts";
@@ -120,7 +120,7 @@ class FontsReaderBase implements FontsReader {
         return false;
     }
 
-    protected void startFonts(XmlPullParser parser) {
+    protected void startFonts(@SuppressWarnings("unused") XmlPullParser parser) {
         mSet = new FamilySet(null);
     }
 

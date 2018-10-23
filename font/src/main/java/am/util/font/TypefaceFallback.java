@@ -24,13 +24,12 @@ import java.util.List;
  * 备选字体
  * Created by Alex on 2018/8/30.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class TypefaceFallback implements Parcelable {
     private final String mLang;// 语言，可能为空（API 26 后仅一个，API 25 存在两个，表示匹配不到的语言的备选项），带空格表示多种语言
     private final String mVariant;// 变种，可能为空
     private final List<TypefaceItem> mItems;// 子项
 
-    @SuppressWarnings("all")
     public TypefaceFallback(String lang, String variant, List<TypefaceItem> items) {
         mLang = lang;
         mVariant = variant;

@@ -19,6 +19,7 @@ package am.util.font;
  * 字体对称轴
  * Created by Alex on 2018/8/30.
  */
+@SuppressWarnings("WeakerAccess")
 class Axis {
     public static final String TAG_ITAL = "ital";// Italic
     public static final String TAG_OPSZ = "opsz";// Optical size

@@ -24,11 +24,10 @@ import org.xmlpull.v1.XmlPullParser;
  * 去除以fallback_fonts文件名加语言后缀的方式，因此仅留下单独一个fallback_fonts.xml文件
  * Created by Alex on 2018/8/31.
  */
+@SuppressWarnings("WeakerAccess")
 class FontsReaderApi17 extends FontsReaderApi14 {
 
-    @SuppressWarnings("all")
     protected static final String ATTR_LANG = "lang";
-    @SuppressWarnings("all")
     protected static final String ATTR_VARIANT = "variant";
 
     @Override

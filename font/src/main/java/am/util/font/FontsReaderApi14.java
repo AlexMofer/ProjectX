@@ -32,23 +32,16 @@ import java.util.ArrayList;
  * 增加大量字体，更易于解析及匹配
  * Created by Alex on 2018/8/31.
  */
+@SuppressWarnings("WeakerAccess")
 class FontsReaderApi14 extends FontsReaderBase {
 
-    @SuppressWarnings("all")
     protected static final String NAME_FAMILYSET = "familyset";
-    @SuppressWarnings("all")
     protected static final String NAME_FAMILY = "family";
-    @SuppressWarnings("all")
     protected static final String NAME_NAMESET = "nameset";
-    @SuppressWarnings("all")
     protected static final String NAME_FILESET = "fileset";
-    @SuppressWarnings("all")
     protected static final String NAME_FILE = "file";
-    @SuppressWarnings("all")
     protected Family mFamily;
-    @SuppressWarnings("all")
     protected Fallback mFallback;
-    @SuppressWarnings("all")
     protected boolean mIsFallback = false;
     private ArrayList<String> mNames = new ArrayList<>();
 
@@ -138,7 +131,6 @@ class FontsReaderApi14 extends FontsReaderBase {
         }
     }
 
-    @SuppressWarnings("all")
     protected void startNameSet() {
         mNames.clear();
     }
@@ -237,7 +229,6 @@ class FontsReaderApi14 extends FontsReaderBase {
         return false;
     }
 
-    @SuppressWarnings("all")
     protected void endFamilySet() {
         // familyset
         if (!mIsFallback)
@@ -247,7 +238,6 @@ class FontsReaderApi14 extends FontsReaderBase {
         mSet = null;
     }
 
-    @SuppressWarnings("all")
     protected void endFamily() {
         // family
         if (mSet != null) {
@@ -265,7 +255,6 @@ class FontsReaderApi14 extends FontsReaderBase {
         mFallback = null;
     }
 
-    @SuppressWarnings("all")
     protected void endNameSet() {
         if (mNames.isEmpty())
             return;

@@ -27,15 +27,12 @@ import org.xmlpull.v1.XmlPullParser;
  * fallback 字体限定仅一个无语言参数，其他均包含语言参数
  * Created by Alex on 2018/8/31.
  */
+@SuppressWarnings("WeakerAccess")
 class FontsReaderApi26 extends FontsReaderApi24 {
 
-    @SuppressWarnings("all")
     protected static final String NAME_AXIS = "axis";
-    @SuppressWarnings("all")
     protected static final String ATTR_TAG = "tag";
-    @SuppressWarnings("all")
     protected static final String ATTR_STYLEVALUE = "stylevalue";
-    @SuppressWarnings("all")
     protected Axis mAxis;
 
     @Override
@@ -51,7 +48,6 @@ class FontsReaderApi26 extends FontsReaderApi24 {
         return false;
     }
 
-    @SuppressWarnings("all")
     protected void startAxis(XmlPullParser parser) {
         // axis
         final String tag = parser.getAttributeValue(null, ATTR_TAG);
@@ -83,7 +79,6 @@ class FontsReaderApi26 extends FontsReaderApi24 {
         return false;
     }
 
-    @SuppressWarnings("all")
     protected void endAxis() {
         // axis
         if (mFont != null)

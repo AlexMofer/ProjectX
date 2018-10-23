@@ -24,13 +24,12 @@ import java.util.List;
  * 字体集（常规字体集合及备用字体集合的封装）
  * Created by Alex on 2018/8/30.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class TypefaceCollection implements Parcelable {
     private final String mName;// 名称
     private final List<TypefaceItem> mItems;// 常规字体
     private final List<TypefaceFallback> mFallbacks;// 备用字体
 
-    @SuppressWarnings("all")
     public TypefaceCollection(String name, List<TypefaceItem> items,
                               List<TypefaceFallback> fallbacks) {
         mName = name;

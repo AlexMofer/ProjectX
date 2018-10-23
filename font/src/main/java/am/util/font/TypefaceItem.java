@@ -26,7 +26,7 @@ import java.util.Set;
  * 字体子项
  * Created by Alex on 2018/8/30.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class TypefaceItem implements Parcelable {
     public static final int STYLE_NORMAL = 0;// 常规
     public static final int STYLE_ITALIC = 1;// 斜体
@@ -37,7 +37,6 @@ public class TypefaceItem implements Parcelable {
     private final int mIndex;// 字体集中的角标，该参数仅对ttc文件有效
     private final Map<String, TypefaceAxis> mAxises;// 对称信息，可能为空
 
-    @SuppressWarnings("all")
     public TypefaceItem(String name, int weight, int style, int index,
                         Map<String, TypefaceAxis> axises) {
         mName = name;

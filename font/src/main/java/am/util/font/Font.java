@@ -25,6 +25,7 @@ import java.util.Set;
  * 字体
  * Created by Alex on 2018/8/30.
  */
+@SuppressWarnings("WeakerAccess")
 class Font {
     public static final int STYLE_NORMAL = 0;// 常规
     public static final int STYLE_ITALIC = 1;// 斜体

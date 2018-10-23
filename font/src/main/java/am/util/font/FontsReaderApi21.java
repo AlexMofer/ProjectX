@@ -32,23 +32,16 @@ import java.io.Reader;
  * 结构完全改变，参照：SDK\platforms\android-21\data\fonts\fonts.xml
  * Created by Alex on 2018/8/31.
  */
+@SuppressWarnings("WeakerAccess")
 class FontsReaderApi21 extends FontsReaderApi17 {
 
-    @SuppressWarnings("all")
     protected static final String NAME_ALIAS = "alias";
-    @SuppressWarnings("all")
     protected static final String ATTR_VERSION = "version";
-    @SuppressWarnings("all")
     protected static final String ATTR_NAME = "name";
-    @SuppressWarnings("all")
     protected static final String ATTR_TO = "to";
-    @SuppressWarnings("all")
     protected static final String ATTR_WEIGHT = "weight";
-    @SuppressWarnings("all")
     protected static final String ATTR_STYLE = "style";
-    @SuppressWarnings("all")
     protected Alias mAlias;
-    @SuppressWarnings("all")
     protected Font mFont;
 
     @Override
@@ -113,7 +106,6 @@ class FontsReaderApi21 extends FontsReaderApi17 {
         }
     }
 
-    @SuppressWarnings("all")
     protected void startAlias(XmlPullParser parser) {
         // alias
         final String name = parser.getAttributeValue(null, ATTR_NAME);
@@ -174,7 +166,6 @@ class FontsReaderApi21 extends FontsReaderApi17 {
         return false;
     }
 
-    @SuppressWarnings("all")
     protected void endAlias() {
         // alias
         if (mSet != null) {
