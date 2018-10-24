@@ -62,5 +62,6 @@ dependencies {
     api project(':support')
     api project(':multifunctionalrecyclerview')
     api project(':ftpserver')
+    api project(':font')
     api project(':opentype')
 }

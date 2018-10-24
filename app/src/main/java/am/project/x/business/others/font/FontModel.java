@@ -15,12 +15,15 @@
  */
 package am.project.x.business.others.font;
 
+import am.util.font.TypefaceConfig;
 import am.util.mvp.AMModel;
 
 /**
  * Model
  */
-class FontModel extends AMModel<FontPresenter> implements FontViewModel {
+class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob.Callback {
+
+    private TypefaceConfig mConfig;
 
     FontModel(FontPresenter presenter) {
         super(presenter);
@@ -31,6 +34,22 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel {
     // ViewModel
     @Override
     public void loadConfig() {
-        
+        FontJob.loadConfig(this);
+    }
+
+    // Callback
+    @Override
+    public void onLoadConfigFailure() {
+        if (isDetachedFromPresenter())
+            return;
+        getPresenter().onLoadConfigFailure();
+    }
+
+    @Override
+    public void onLoadConfigSuccess(TypefaceConfig config) {
+        mConfig = config;
+        if (isDetachedFromPresenter())
+            return;
+        getPresenter().onLoadConfigSuccess();
     }
 }
