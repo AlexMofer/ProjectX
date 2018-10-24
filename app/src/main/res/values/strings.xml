@@ -283,6 +283,10 @@
     <string name="ftp_toast_running">FTP 服务正在运行</string>
     <!--字体-->
     <string name="font_label">字体</string>
+    <string name="font_error">无法载入字体配置文件</string>
+    <string name="font_menu_family">选择字体家族</string>
+    <string name="font_picker_title">选择字体家族</string>
+    <string name="font_picker_message">以下列表为字体家族名及字体家族别名集合，系统中给定的默认字体家族名为“%1$s”。请选择一个进行展示：</string>
     <!--字体文件-->
     <string name="otl_label">字体文件</string>
     <string name="ot_label">字体详情</string>

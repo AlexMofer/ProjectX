@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/font_family"
+        android:icon="@drawable/ic_opentype_collection"
+        android:title="@string/font_menu_family"
+        app:showAsAction="ifRoom" />
+</menu>

@@ -48,6 +48,22 @@ class FontPresenter extends AMPresenter<FontView, FontModel> implements FontView
         getView().onLoadConfigSuccess();
     }
 
+    // PickerViewModel
+    @Override
+    public String getDefaultFamilyName() {
+        return getModel().getDefaultFamilyName();
+    }
+
+    @Override
+    public int getFamilyNameOrAliaCount() {
+        return getModel().getFamilyNameOrAliaCount();
+    }
+
+    @Override
+    public String getFamilyNameOrAlia(int position) {
+        return getModel().getFamilyNameOrAlia(position);
+    }
+
     // AdapterViewModel
 
     // ViewModel

@@ -19,6 +19,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import am.project.x.R;
@@ -27,9 +29,11 @@ import am.project.x.base.BaseActivity;
 /**
  * 字体
  */
-public class FontActivity extends BaseActivity implements FontView {
+public class FontActivity extends BaseActivity implements FontView,
+        FontFamilyPickerDialog.OnPickerListener {
 
     private final FontPresenter mPresenter = new FontPresenter(this);
+    private FontFamilyPickerDialog mPicker;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, FontActivity.class));
@@ -53,17 +57,53 @@ public class FontActivity extends BaseActivity implements FontView {
         return mPresenter;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_font, menu);
+        final MenuItem item = menu.findItem(R.id.font_family);
+        item.setVisible(mPresenter.getFamilyNameOrAliaCount() > 0);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.font_family:
+                if (mPresenter.getFamilyNameOrAliaCount() > 0)
+                    showPicker(true);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     // View
     @Override
     public void onLoadConfigFailure() {
         dismissLoading();
-        Toast.makeText(this, "无法载入字体配置文件", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.font_error, Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
     public void onLoadConfigSuccess() {
         dismissLoading();
-        Toast.makeText(this, "展示字体列表", Toast.LENGTH_SHORT).show();
+        invalidateOptionsMenu();
+        showPicker(false);
+    }
+
+    // Listener
+    @Override
+    public void onItemPicked(String item) {
+        dismissDialog(mPicker);
+    }
+
+    private void showPicker(boolean cancelable) {
+        if (mPicker == null)
+            mPicker = new FontFamilyPickerDialog(this, mPresenter, this);
+        mPicker.notifyDataSetChanged();
+        mPicker.setCancelable(cancelable);
+        mPicker.setCanceledOnTouchOutside(cancelable);
+        showDialog(mPicker);
     }
 }

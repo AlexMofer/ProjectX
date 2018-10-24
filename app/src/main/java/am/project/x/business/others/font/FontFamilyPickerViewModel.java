@@ -15,7 +15,14 @@
  */
 package am.project.x.business.others.font;
 
-interface FontViewModel extends FontFamilyPickerViewModel, FontAdapterViewModel {
+/**
+ * PickerViewModel
+ */
+interface FontFamilyPickerViewModel {
 
-    void loadConfig();
+    String getDefaultFamilyName();
+
+    int getFamilyNameOrAliaCount();
+
+    String getFamilyNameOrAlia(int position);
 }

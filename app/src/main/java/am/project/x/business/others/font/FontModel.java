@@ -15,6 +15,8 @@
  */
 package am.project.x.business.others.font;
 
+import java.util.List;
+
 import am.util.font.TypefaceConfig;
 import am.util.mvp.AMModel;
 
@@ -24,9 +26,32 @@ import am.util.mvp.AMModel;
 class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob.Callback {
 
     private TypefaceConfig mConfig;
+    private String mDefaultName;
+    private List<String> mNames;
+    private List<String> mAlias;
 
     FontModel(FontPresenter presenter) {
         super(presenter);
+    }
+
+    // PickerViewModel
+    @Override
+    public String getDefaultFamilyName() {
+        return mDefaultName;
+    }
+
+    @Override
+    public int getFamilyNameOrAliaCount() {
+        final int nameCount = mNames == null ? 0 : mNames.size();
+        final int aliaCount = mAlias == null ? 0 : mAlias.size();
+        return nameCount + aliaCount;
+    }
+
+    @Override
+    public String getFamilyNameOrAlia(int position) {
+        final int nameCount = mNames == null ? 0 : mNames.size();
+        //noinspection ConstantConditions
+        return position < nameCount ? mNames.get(position) : mAlias.get(position - nameCount);
     }
 
     // AdapterViewModel
@@ -48,6 +73,9 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob
     @Override
     public void onLoadConfigSuccess(TypefaceConfig config) {
         mConfig = config;
+        mDefaultName = config.getDefaultName();
+        mNames = config.getNames();
+        mAlias = config.getAlias();
         if (isDetachedFromPresenter())
             return;
         getPresenter().onLoadConfigSuccess();
