@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
@@ -26,7 +27,9 @@ import am.project.x.base.BaseActivity;
 /**
  * 字体
  */
-public class FontActivity extends BaseActivity {
+public class FontActivity extends BaseActivity implements FontView {
+
+    private final FontPresenter mPresenter = new FontPresenter(this);
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, FontActivity.class));
@@ -40,5 +43,27 @@ public class FontActivity extends BaseActivity {
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.font_toolbar);
+
+        showLoading();
+        mPresenter.loadConfig();
+    }
+
+    @Override
+    protected FontPresenter getPresenter() {
+        return mPresenter;
+    }
+
+    // View
+    @Override
+    public void onLoadConfigFailure() {
+        dismissLoading();
+        Toast.makeText(this, "无法载入字体配置文件", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onLoadConfigSuccess() {
+        dismissLoading();
+        Toast.makeText(this, "展示字体列表", Toast.LENGTH_SHORT).show();
     }
 }
