@@ -98,6 +98,7 @@ class FontFamilyPickerDialog extends AlertDialog implements AdapterView.OnItemCl
                         .inflate(R.layout.item_opentype_font, parent, false);
             }
             (((TextView) convertView)).setText(getItem(position));
+            convertView.setActivated(mModel.isFamilyAlia(position));
             return convertView;
         }
     }

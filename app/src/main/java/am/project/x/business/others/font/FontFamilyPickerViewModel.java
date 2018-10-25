@@ -25,4 +25,6 @@ interface FontFamilyPickerViewModel {
     int getFamilyNameOrAliaCount();
 
     String getFamilyNameOrAlia(int position);
+
+    boolean isFamilyAlia(int position);
 }

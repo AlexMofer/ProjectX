@@ -54,6 +54,11 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob
         return position < nameCount ? mNames.get(position) : mAlias.get(position - nameCount);
     }
 
+    @Override
+    public boolean isFamilyAlia(int position) {
+        return position >= (mNames == null ? 0 : mNames.size());
+    }
+
     // AdapterViewModel
 
     // ViewModel
