@@ -2,6 +2,12 @@
 <android.support.v7.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:drawableStart="@drawable/ic_font_family"
+    android:drawableLeft="@drawable/ic_font_family"
+    android:drawablePadding="10dp"
+    android:ellipsize="end"
+    android:gravity="center_vertical"
+    android:singleLine="true"
     android:padding="10dp"
     android:textColor="#FF333333"
     android:textSize="18sp" />
