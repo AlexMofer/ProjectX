@@ -132,6 +132,8 @@ class FontsReaderApi21 extends FontsReaderApi17 {
         } catch (Exception e) {
             return;
         }
+        final int style = "italic".equals(parser.getAttributeValue(null, ATTR_STYLE))
+                ? Font.STYLE_ITALIC : Font.STYLE_NORMAL;
         try {
             if (parser.next() != XmlPullParser.TEXT)
                 return;
@@ -141,8 +143,6 @@ class FontsReaderApi21 extends FontsReaderApi17 {
         final String name = parser.getText();
         if (TextUtils.isEmpty(name))
             return;
-        final int style = "italic".equals(parser.getAttributeValue(null, ATTR_STYLE))
-                ? Font.STYLE_ITALIC : Font.STYLE_NORMAL;
         mFont = new Font(name, weight, style);
     }
 

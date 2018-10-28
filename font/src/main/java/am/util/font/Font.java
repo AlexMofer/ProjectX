@@ -33,7 +33,7 @@ class Font {
     private final String mName;// 文件名，ttf、ttc、otf等类型的字体文件
     private final int mWeight;// 默认值为400，常规字体
     private final int mStyle;// 样式，常规或斜体
-    private int mIndex = -1;// 字体集中的角标，该参数仅对ttc文件有效
+    private final int mIndex;// 字体集中的角标，该参数仅对ttc文件有效
     private final HashMap<String, Axis> mAxises = new HashMap<>();// 对称信息，可能为空
     private String mFallbackFor;// 作为备选字体，值为系统字体族名称（仅备选字体族中有效）
 
@@ -41,14 +41,18 @@ class Font {
         mName = name;
         mWeight = weight;
         mStyle = style;
+        mIndex = -1;
+    }
+
+    Font(String name, int weight, int style, int index) {
+        mName = name;
+        mWeight = weight;
+        mStyle = style;
+        mIndex = index;
     }
 
     int getWeight() {
         return mWeight;
-    }
-
-    void setIndex(int index) {
-        mIndex = index;
     }
 
     void putAxis(Axis axis) {

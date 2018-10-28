@@ -15,6 +15,8 @@
  */
 package am.util.font;
 
+import android.text.TextUtils;
+
 import org.xmlpull.v1.XmlPullParser;
 
 /**
@@ -31,14 +33,30 @@ class FontsReaderApi24 extends FontsReaderApi21 {
 
     @Override
     protected void startFont(XmlPullParser parser) {
-        super.startFont(parser);
-        if (mFont != null) {
-            try {
-                mFont.setIndex(Integer.parseInt(
-                        parser.getAttributeValue(null, ATTR_INDEX)));
-            } catch (Exception e) {
-                // ignore
-            }
+        // font
+        final int weight;
+        try {
+            weight = Integer.parseInt(parser.getAttributeValue(null, ATTR_WEIGHT));
+        } catch (Exception e) {
+            return;
         }
+        final int style = "italic".equals(parser.getAttributeValue(null, ATTR_STYLE))
+                ? Font.STYLE_ITALIC : Font.STYLE_NORMAL;
+        int index;
+        try {
+            index = Integer.parseInt(parser.getAttributeValue(null, ATTR_INDEX));
+        } catch (Exception e) {
+            index = -1;
+        }
+        try {
+            if (parser.next() != XmlPullParser.TEXT)
+                return;
+        } catch (Exception e) {
+            return;
+        }
+        final String name = parser.getText();
+        if (TextUtils.isEmpty(name))
+            return;
+        mFont = new Font(name, weight, style, index);
     }
 }
