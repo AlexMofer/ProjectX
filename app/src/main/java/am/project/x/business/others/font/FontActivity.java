@@ -19,20 +19,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
+import am.project.x.business.others.opentype.OpenTypeActivity;
 
 /**
  * 字体
  */
 public class FontActivity extends BaseActivity implements FontView,
-        FontFamilyPickerDialog.OnPickerListener {
+        FontFamilyPickerDialog.OnPickerListener, FontViewHolder.OnViewHolderListener {
 
     private final FontPresenter mPresenter = new FontPresenter(this);
+    private final FontAdapter mAdapter = new FontAdapter(mPresenter, this);
+
     private FontFamilyPickerDialog mPicker;
 
     public static void start(Context context) {
@@ -47,7 +51,8 @@ public class FontActivity extends BaseActivity implements FontView,
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.font_toolbar);
-
+        final RecyclerView content = findViewById(R.id.font_content);
+        content.setAdapter(mAdapter);
         showLoading();
         mPresenter.loadConfig();
     }
@@ -100,7 +105,8 @@ public class FontActivity extends BaseActivity implements FontView,
 
     @Override
     public void onLoadTypefaceCollectionSuccess() {
-        // TODO
+        dismissLoading();
+        mAdapter.notifyDataSetChanged();
     }
 
     // Listener
@@ -109,6 +115,11 @@ public class FontActivity extends BaseActivity implements FontView,
         dismissDialog(mPicker);
         showLoading();
         mPresenter.loadTypefaceCollection(item);
+    }
+
+    @Override
+    public void onItemClick(Object item) {
+        OpenTypeActivity.start(this, mPresenter.getTypefaceItemPath(item));
     }
 
     private void showPicker(boolean cancelable) {

@@ -84,6 +84,60 @@ class FontPresenter extends AMPresenter<FontView, FontModel> implements FontView
     }
 
     // AdapterViewModel
+    @Override
+    public int getTypefaceFallbackCount() {
+        return getModel().getTypefaceFallbackCount();
+    }
+
+    @Override
+    public String getTypefaceName() {
+        return getModel().getTypefaceName();
+    }
+
+    @Override
+    public String getCommonTitle() {
+        return getModel().getCommonTitle();
+    }
+
+    @Override
+    public int getCommonItemCount() {
+        return getModel().getCommonItemCount();
+    }
+
+    @Override
+    public Object getCommonItem(int position) {
+        return getModel().getCommonItem(position);
+    }
+
+    @Override
+    public Object getFallback(int position) {
+        return getModel().getFallback(position);
+    }
+
+    @Override
+    public String getFallbackTitle(Object fallback) {
+        return getModel().getFallbackTitle(fallback);
+    }
+
+    @Override
+    public int getFallbackItemCount(Object fallback) {
+        return getModel().getFallbackItemCount(fallback);
+    }
+
+    @Override
+    public Object getFallbackItem(Object fallback, int position) {
+        return getModel().getFallbackItem(fallback, position);
+    }
+
+    @Override
+    public String getTypefaceItemName(Object item) {
+        return getModel().getTypefaceItemName(item);
+    }
+
+    @Override
+    public String getTypefaceItemInfo(Object item) {
+        return getModel().getTypefaceItemInfo(item);
+    }
 
     // ViewModel
     @Override
@@ -94,5 +148,10 @@ class FontPresenter extends AMPresenter<FontView, FontModel> implements FontView
     @Override
     public void loadTypefaceCollection(String nameOrAlias) {
         getModel().loadTypefaceCollection(nameOrAlias);
+    }
+
+    @Override
+    public String getTypefaceItemPath(Object item) {
+        return getModel().getTypefaceItemPath(item);
     }
 }

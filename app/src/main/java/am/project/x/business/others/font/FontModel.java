@@ -15,10 +15,17 @@
  */
 package am.project.x.business.others.font;
 
+import android.content.Context;
+
+import java.io.File;
 import java.util.List;
 
+import am.project.x.ProjectXApplication;
+import am.project.x.R;
 import am.util.font.TypefaceCollection;
 import am.util.font.TypefaceConfig;
+import am.util.font.TypefaceFallback;
+import am.util.font.TypefaceItem;
 import am.util.mvp.AMModel;
 
 /**
@@ -31,6 +38,8 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob
     private List<String> mNames;
     private List<String> mAlias;
     private TypefaceCollection mTypeface;
+    private List<TypefaceItem> mItems;// 常规字体
+    private List<TypefaceFallback> mFallbacks;// 备用字体
 
     FontModel(FontPresenter presenter) {
         super(presenter);
@@ -62,6 +71,116 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob
     }
 
     // AdapterViewModel
+    @Override
+    public int getTypefaceFallbackCount() {
+        return mFallbacks == null ? 0 : mFallbacks.size();
+    }
+
+    @Override
+    public String getTypefaceName() {
+        return mTypeface == null ? null : mTypeface.getName();
+    }
+
+    @Override
+    public String getCommonTitle() {
+        return ProjectXApplication.getInstance().getString(R.string.font_common);
+    }
+
+    @Override
+    public int getCommonItemCount() {
+        return mItems == null ? 0 : mItems.size();
+    }
+
+    @Override
+    public Object getCommonItem(int position) {
+        return mItems == null ? null : mItems.get(position);
+    }
+
+    @Override
+    public Object getFallback(int position) {
+        return mFallbacks == null ? null : mFallbacks.get(position);
+    }
+
+    @Override
+    public String getFallbackTitle(Object fallback) {
+        if (fallback instanceof TypefaceFallback) {
+            final TypefaceFallback f = (TypefaceFallback) fallback;
+            final Context context = ProjectXApplication.getInstance();
+            if (f.getLang() != null && f.getVariant() != null) {
+                final String more = "lang=" + f.getLang() + ", variant=" + f.getVariant();
+                return context.getString(R.string.font_fallback_more, more);
+            } else if (f.getVariant() != null) {
+                final String more = "variant=" + f.getVariant();
+                return context.getString(R.string.font_fallback_more, more);
+            } else if (f.getLang() != null) {
+                final String more = "lang=" + f.getLang();
+                return context.getString(R.string.font_fallback_more, more);
+            } else {
+                return context.getString(R.string.font_fallback);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public int getFallbackItemCount(Object fallback) {
+        if (fallback instanceof TypefaceFallback) {
+            final List<TypefaceItem> items = ((TypefaceFallback) fallback).getItems();
+            return items == null ? 0 : items.size();
+        }
+        return 0;
+    }
+
+    @Override
+    public Object getFallbackItem(Object fallback, int position) {
+        if (fallback instanceof TypefaceFallback) {
+            final List<TypefaceItem> items = ((TypefaceFallback) fallback).getItems();
+            return items == null ? null : items.get(position);
+        }
+        return null;
+    }
+
+    @Override
+    public String getTypefaceItemName(Object item) {
+        return item instanceof TypefaceItem ? ((TypefaceItem) item).getName() : null;
+    }
+
+    @Override
+    public String getTypefaceItemInfo(Object item) {
+        if (item instanceof TypefaceItem) {
+            final TypefaceItem ti = (TypefaceItem) item;
+            final StringBuilder builder = new StringBuilder();
+            builder.append("Weight:");
+            builder.append(ti.getWeight());
+            builder.append(" ");
+            builder.append("Style:");
+            switch (ti.getStyle()) {
+                default:
+                    builder.append("unknown");
+                    break;
+                case TypefaceItem.STYLE_NORMAL:
+                    builder.append("normal");
+                    break;
+                case TypefaceItem.STYLE_ITALIC:
+                    builder.append("italic");
+                    break;
+            }
+            builder.append(" ");
+            final int index = ti.getIndex();
+            if (index >= 0) {
+                builder.append("Index:");
+                builder.append(index);
+                builder.append(" ");
+            }
+            final int axisCount = ti.getAxisCount();
+            if (axisCount > 0) {
+                builder.append("AxisesCount:");
+                builder.append(axisCount);
+            }
+            return builder.toString();
+        }
+        return null;
+    }
 
     // ViewModel
     @Override
@@ -72,6 +191,14 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob
     @Override
     public void loadTypefaceCollection(String nameOrAlias) {
         FontJob.loadTypefaceCollection(this, mConfig, nameOrAlias);
+    }
+
+    @Override
+    public String getTypefaceItemPath(Object item) {
+        if (item instanceof TypefaceItem)
+            return TypefaceConfig.getFontsDir() + File.pathSeparator +
+                    ((TypefaceItem) item).getName();
+        return null;
     }
 
     // Callback
@@ -103,6 +230,8 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob
     @Override
     public void onLoadTypefaceCollectionSuccess(TypefaceCollection collection) {
         mTypeface = collection;
+        mItems = mTypeface.getItems();
+        mFallbacks = mTypeface.getFallbacks();
         if (isDetachedFromPresenter())
             return;
         getPresenter().onLoadTypefaceCollectionSuccess();

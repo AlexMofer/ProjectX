@@ -20,4 +20,6 @@ interface FontViewModel extends FontFamilyPickerViewModel, FontAdapterViewModel 
     void loadConfig();
 
     void loadTypefaceCollection(String nameOrAlias);
+
+    String getTypefaceItemPath(Object item);
 }

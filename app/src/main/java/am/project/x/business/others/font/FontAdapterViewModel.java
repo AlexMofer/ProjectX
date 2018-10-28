@@ -19,4 +19,25 @@ package am.project.x.business.others.font;
  * AdapterViewModel
  */
 interface FontAdapterViewModel {
+    int getTypefaceFallbackCount();
+
+    String getTypefaceName();
+
+    String getCommonTitle();
+
+    int getCommonItemCount();
+
+    Object getCommonItem(int position);
+
+    Object getFallback(int position);
+
+    String getFallbackTitle(Object fallback);
+
+    int getFallbackItemCount(Object fallback);
+
+    Object getFallbackItem(Object fallback, int position);
+
+    String getTypefaceItemName(Object item);
+
+    String getTypefaceItemInfo(Object item);
 }
