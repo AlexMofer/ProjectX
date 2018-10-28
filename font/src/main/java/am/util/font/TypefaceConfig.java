@@ -70,8 +70,8 @@ public class TypefaceConfig {
      *
      * @return 别名集合，不可用情况下为空
      */
-    public List<String> getAlias() {
-        return mFamilySet == null ? null : mFamilySet.getAlias();
+    public List<String> getAliases() {
+        return mFamilySet == null ? null : mFamilySet.getAliases();
     }
 
     /**

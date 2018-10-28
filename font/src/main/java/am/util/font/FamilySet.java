@@ -27,7 +27,7 @@ class FamilySet {
 
     private final ArrayList<String> mNames = new ArrayList<>();
     private final HashMap<String, Family> mSystemFamily = new HashMap<>();// 基础系统字体族（按名称检索）
-    private final ArrayList<String> mAlias = new ArrayList<>();
+    private final ArrayList<String> mAliases = new ArrayList<>();
     private final HashMap<String, Alias> mSystemFamilyAlias = new HashMap<>();// 基础系统字体族别名（按名称检索）
     private final ArrayList<Fallback> mFallbacks = new ArrayList<>();// 备选字体族（可能存在多个无语言参数的默认备选字体）
 
@@ -51,7 +51,7 @@ class FamilySet {
         final String to = alias.getTo();
         if (mSystemFamily.containsKey(to)) {
             final String name = alias.getName();
-            mAlias.add(name);
+            mAliases.add(name);
             mSystemFamilyAlias.put(name, alias);
         }
     }
@@ -74,8 +74,8 @@ class FamilySet {
         return mNames;
     }
 
-    ArrayList<String> getAlias() {
-        return mAlias;
+    ArrayList<String> getAliases() {
+        return mAliases;
     }
 
     TypefaceCollection getTypefaceCollection(String nameOrAlias) {
