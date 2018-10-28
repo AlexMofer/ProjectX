@@ -56,6 +56,20 @@ public class TypefaceAxis implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TypefaceAxis that = (TypefaceAxis) o;
+        return Float.compare(that.mStyleValue, mStyleValue) == 0 &&
+                Objects.equals(mTag, that.mTag);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mTag, mStyleValue);
+    }
+
+    @Override
     public String toString() {
         return "TypefaceAxis{" +
                 "tag='" + mTag + '\'' +

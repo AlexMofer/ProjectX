@@ -64,11 +64,26 @@ public class TypefaceFallback implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TypefaceFallback that = (TypefaceFallback) o;
+        return Objects.equals(mLang, that.mLang) &&
+                Objects.equals(mVariant, that.mVariant) &&
+                Objects.equals(mItems, that.mItems);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mLang, mVariant, mItems);
+    }
+
+    @Override
     public String toString() {
         return "TypefaceFallback{" +
                 "lang='" + mLang + '\'' +
                 ", variant='" + mVariant + '\'' +
-                ", items=" + mItems.toString() +
+                ", items=" + String.valueOf(mItems) +
                 '}';
     }
 

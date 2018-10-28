@@ -65,11 +65,26 @@ public class TypefaceCollection implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TypefaceCollection that = (TypefaceCollection) o;
+        return Objects.equals(mName, that.mName) &&
+                Objects.equals(mItems, that.mItems) &&
+                Objects.equals(mFallbacks, that.mFallbacks);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mName, mItems, mFallbacks);
+    }
+
+    @Override
     public String toString() {
         return "TypefaceCollection{" +
                 "name='" + mName + '\'' +
-                ", items=" + mItems.toString() +
-                ", fallbacks=" + mFallbacks.toString() +
+                ", items=" + String.valueOf(mItems) +
+                ", fallbacks=" + String.valueOf(mFallbacks) +
                 '}';
     }
 

@@ -117,13 +117,30 @@ public class TypefaceItem implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TypefaceItem that = (TypefaceItem) o;
+        return mWeight == that.mWeight &&
+                mStyle == that.mStyle &&
+                mIndex == that.mIndex &&
+                Objects.equals(mName, that.mName) &&
+                Objects.equals(mAxises, that.mAxises);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mName, mWeight, mStyle, mIndex, mAxises);
+    }
+
+    @Override
     public String toString() {
         return "TypefaceItem{" +
                 "name='" + mName + '\'' +
                 ", weight=" + mWeight +
                 ", style=" + mStyle +
                 ", index=" + mIndex +
-                ", axises=" + (mAxises == null ? "null" : mAxises.toString()) +
+                ", axises=" + String.valueOf(mAxises) +
                 '}';
     }
 
