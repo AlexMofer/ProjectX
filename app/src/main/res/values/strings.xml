@@ -288,6 +288,9 @@
     <string name="font_picker_title">选择字体家族</string>
     <string name="font_picker_message">以下列表为字体家族名及字体家族别名集合，系统中给定的默认字体家族名为“%1$s”。请选择一个进行展示：</string>
     <string name="font_error_typeface">根据给定的名称或别名无法查询到字体</string>
+    <string name="font_common">常规字体</string>
+    <string name="font_fallback">备用字体</string>
+    <string name="font_fallback_more">备用字体（%1$s）</string>
     <!--字体文件-->
     <string name="otl_label">字体文件</string>
     <string name="ot_label">字体详情</string>
