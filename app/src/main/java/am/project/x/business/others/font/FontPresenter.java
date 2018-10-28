@@ -48,6 +48,20 @@ class FontPresenter extends AMPresenter<FontView, FontModel> implements FontView
         getView().onLoadConfigSuccess();
     }
 
+    @Override
+    public void onLoadTypefaceCollectionFailure() {
+        if (isDetachedFromView())
+            return;
+        getView().onLoadTypefaceCollectionFailure();
+    }
+
+    @Override
+    public void onLoadTypefaceCollectionSuccess() {
+        if (isDetachedFromView())
+            return;
+        getView().onLoadTypefaceCollectionSuccess();
+    }
+
     // PickerViewModel
     @Override
     public String getDefaultFamilyName() {
@@ -55,24 +69,30 @@ class FontPresenter extends AMPresenter<FontView, FontModel> implements FontView
     }
 
     @Override
-    public int getFamilyNameOrAliaCount() {
-        return getModel().getFamilyNameOrAliaCount();
+    public int getFamilyNameOrAliasCount() {
+        return getModel().getFamilyNameOrAliasCount();
     }
 
     @Override
-    public String getFamilyNameOrAlia(int position) {
-        return getModel().getFamilyNameOrAlia(position);
+    public String getFamilyNameOrAlias(int position) {
+        return getModel().getFamilyNameOrAlias(position);
     }
 
     @Override
-    public boolean isFamilyAlia(int position) {
-        return getModel().isFamilyAlia(position);
+    public boolean isFamilyAlias(int position) {
+        return getModel().isFamilyAlias(position);
     }
-// AdapterViewModel
+
+    // AdapterViewModel
 
     // ViewModel
     @Override
     public void loadConfig() {
         getModel().loadConfig();
+    }
+
+    @Override
+    public void loadTypefaceCollection(String nameOrAlias) {
+        getModel().loadTypefaceCollection(nameOrAlias);
     }
 }

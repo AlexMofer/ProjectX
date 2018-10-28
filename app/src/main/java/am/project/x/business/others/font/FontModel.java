@@ -17,6 +17,7 @@ package am.project.x.business.others.font;
 
 import java.util.List;
 
+import am.util.font.TypefaceCollection;
 import am.util.font.TypefaceConfig;
 import am.util.mvp.AMModel;
 
@@ -29,6 +30,7 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob
     private String mDefaultName;
     private List<String> mNames;
     private List<String> mAlias;
+    private TypefaceCollection mTypeface;
 
     FontModel(FontPresenter presenter) {
         super(presenter);
@@ -41,21 +43,21 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob
     }
 
     @Override
-    public int getFamilyNameOrAliaCount() {
+    public int getFamilyNameOrAliasCount() {
         final int nameCount = mNames == null ? 0 : mNames.size();
         final int aliaCount = mAlias == null ? 0 : mAlias.size();
         return nameCount + aliaCount;
     }
 
     @Override
-    public String getFamilyNameOrAlia(int position) {
+    public String getFamilyNameOrAlias(int position) {
         final int nameCount = mNames == null ? 0 : mNames.size();
         //noinspection ConstantConditions
         return position < nameCount ? mNames.get(position) : mAlias.get(position - nameCount);
     }
 
     @Override
-    public boolean isFamilyAlia(int position) {
+    public boolean isFamilyAlias(int position) {
         return position >= (mNames == null ? 0 : mNames.size());
     }
 
@@ -65,6 +67,11 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob
     @Override
     public void loadConfig() {
         FontJob.loadConfig(this);
+    }
+
+    @Override
+    public void loadTypefaceCollection(String nameOrAlias) {
+        FontJob.loadTypefaceCollection(this, mConfig, nameOrAlias);
     }
 
     // Callback
@@ -80,9 +87,24 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob
         mConfig = config;
         mDefaultName = config.getDefaultName();
         mNames = config.getNames();
-        mAlias = config.getAlias();
+        mAlias = config.getAliases();
         if (isDetachedFromPresenter())
             return;
         getPresenter().onLoadConfigSuccess();
+    }
+
+    @Override
+    public void onLoadTypefaceCollectionFailure() {
+        if (isDetachedFromPresenter())
+            return;
+        getPresenter().onLoadTypefaceCollectionFailure();
+    }
+
+    @Override
+    public void onLoadTypefaceCollectionSuccess(TypefaceCollection collection) {
+        mTypeface = collection;
+        if (isDetachedFromPresenter())
+            return;
+        getPresenter().onLoadTypefaceCollectionSuccess();
     }
 }

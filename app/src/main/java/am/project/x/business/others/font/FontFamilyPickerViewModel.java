@@ -22,9 +22,9 @@ interface FontFamilyPickerViewModel {
 
     String getDefaultFamilyName();
 
-    int getFamilyNameOrAliaCount();
+    int getFamilyNameOrAliasCount();
 
-    String getFamilyNameOrAlia(int position);
+    String getFamilyNameOrAlias(int position);
 
-    boolean isFamilyAlia(int position);
+    boolean isFamilyAlias(int position);
 }

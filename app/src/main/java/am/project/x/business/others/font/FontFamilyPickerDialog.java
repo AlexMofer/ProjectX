@@ -78,12 +78,12 @@ class FontFamilyPickerDialog extends AlertDialog implements AdapterView.OnItemCl
 
         @Override
         public int getCount() {
-            return mModel.getFamilyNameOrAliaCount();
+            return mModel.getFamilyNameOrAliasCount();
         }
 
         @Override
         public String getItem(int position) {
-            return mModel.getFamilyNameOrAlia(position);
+            return mModel.getFamilyNameOrAlias(position);
         }
 
         @Override
@@ -98,7 +98,7 @@ class FontFamilyPickerDialog extends AlertDialog implements AdapterView.OnItemCl
                         .inflate(R.layout.item_opentype_font, parent, false);
             }
             (((TextView) convertView)).setText(getItem(position));
-            convertView.setActivated(mModel.isFamilyAlia(position));
+            convertView.setActivated(mModel.isFamilyAlias(position));
             return convertView;
         }
     }

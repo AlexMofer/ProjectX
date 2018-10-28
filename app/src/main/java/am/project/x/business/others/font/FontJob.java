@@ -16,6 +16,7 @@
 package am.project.x.business.others.font;
 
 import am.project.support.job.Job;
+import am.util.font.TypefaceCollection;
 import am.util.font.TypefaceConfig;
 
 /**
@@ -24,6 +25,7 @@ import am.util.font.TypefaceConfig;
 class FontJob extends Job<FontJob.Callback> {
 
     private static final int ACTION_CONFIG = 0;
+    private static final int ACTION_TYPEFACE = 1;
 
     private FontJob(Callback callback, int action, Object... params) {
         super(callback, action, params);
@@ -33,11 +35,19 @@ class FontJob extends Job<FontJob.Callback> {
         new FontJob(callback, ACTION_CONFIG).execute();
     }
 
+    static void loadTypefaceCollection(Callback callback, TypefaceConfig config,
+                                       String nameOrAlias) {
+        new FontJob(callback, ACTION_TYPEFACE, config, nameOrAlias).execute();
+    }
+
     @Override
     protected void doInBackground() {
         switch (getAction()) {
             case ACTION_CONFIG:
                 handleActionConfig();
+                break;
+            case ACTION_TYPEFACE:
+                handleActionTypeface();
                 break;
         }
     }
@@ -46,6 +56,14 @@ class FontJob extends Job<FontJob.Callback> {
         final TypefaceConfig config = TypefaceConfig.getInstance();
         if (config.isAvailable())
             setResult(true, config);
+    }
+
+    private void handleActionTypeface() {
+        final TypefaceConfig config = getParam(0);
+        final String nameOrAlias = getParam(1);
+        final TypefaceCollection collection = config.getTypefaceCollection(nameOrAlias);
+        if (collection != null)
+            setResult(true, collection);
     }
 
     @Override
@@ -57,6 +75,9 @@ class FontJob extends Job<FontJob.Callback> {
             case ACTION_CONFIG:
                 notifyActionConfig(callback);
                 break;
+            case ACTION_TYPEFACE:
+                notifyActionTypeface(callback);
+                break;
         }
     }
 
@@ -67,9 +88,20 @@ class FontJob extends Job<FontJob.Callback> {
             callback.onLoadConfigFailure();
     }
 
+    private void notifyActionTypeface(Callback callback) {
+        if (isSuccess())
+            callback.onLoadTypefaceCollectionSuccess(this.<TypefaceCollection>getResult(0));
+        else
+            callback.onLoadTypefaceCollectionFailure();
+    }
+
     public interface Callback {
         void onLoadConfigFailure();
 
         void onLoadConfigSuccess(TypefaceConfig config);
+
+        void onLoadTypefaceCollectionFailure();
+
+        void onLoadTypefaceCollectionSuccess(TypefaceCollection collection);
     }
 }

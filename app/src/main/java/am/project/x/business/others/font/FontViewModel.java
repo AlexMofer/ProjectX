@@ -18,4 +18,6 @@ package am.project.x.business.others.font;
 interface FontViewModel extends FontFamilyPickerViewModel, FontAdapterViewModel {
 
     void loadConfig();
+
+    void loadTypefaceCollection(String nameOrAlias);
 }

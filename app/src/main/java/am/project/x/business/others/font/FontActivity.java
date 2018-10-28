@@ -62,7 +62,7 @@ public class FontActivity extends BaseActivity implements FontView,
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_font, menu);
         final MenuItem item = menu.findItem(R.id.font_family);
-        item.setVisible(mPresenter.getFamilyNameOrAliaCount() > 0);
+        item.setVisible(mPresenter.getFamilyNameOrAliasCount() > 0);
         return true;
     }
 
@@ -70,7 +70,7 @@ public class FontActivity extends BaseActivity implements FontView,
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.font_family:
-                if (mPresenter.getFamilyNameOrAliaCount() > 0)
+                if (mPresenter.getFamilyNameOrAliasCount() > 0)
                     showPicker(true);
                 return true;
         }
@@ -81,7 +81,7 @@ public class FontActivity extends BaseActivity implements FontView,
     @Override
     public void onLoadConfigFailure() {
         dismissLoading();
-        Toast.makeText(this, R.string.font_error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.font_error_config, Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -92,10 +92,23 @@ public class FontActivity extends BaseActivity implements FontView,
         showPicker(false);
     }
 
+    @Override
+    public void onLoadTypefaceCollectionFailure() {
+        dismissLoading();
+        Toast.makeText(this, R.string.font_error_typeface, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLoadTypefaceCollectionSuccess() {
+        // TODO
+    }
+
     // Listener
     @Override
     public void onItemPicked(String item) {
         dismissDialog(mPicker);
+        showLoading();
+        mPresenter.loadTypefaceCollection(item);
     }
 
     private void showPicker(boolean cancelable) {

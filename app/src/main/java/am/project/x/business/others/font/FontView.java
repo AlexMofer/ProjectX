@@ -24,4 +24,8 @@ interface FontView extends AMView {
     void onLoadConfigFailure();
 
     void onLoadConfigSuccess();
+
+    void onLoadTypefaceCollectionFailure();
+
+    void onLoadTypefaceCollectionSuccess();
 }
