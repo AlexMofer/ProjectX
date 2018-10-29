@@ -4,7 +4,7 @@ ProjectX
 
 <img src="images/svg/ic_launcher.svg" width="192" height="192" alt="Icon"/>
 
-所有个人开源项目合集，便于管理及维护。目前正在项目重构，因此部分源码暂时无法访问。
+所有个人开源项目合集，便于管理及维护。
 
 Widget
 ------
@@ -42,9 +42,6 @@ Widget
 - ***[MultiActionTextView][11]***
 
     文字可点击TextView，设置文字部分可点击，点击执行不同操作。
-- ***[SelectionView][12]***
-
-    快速跳选，常用于联系人列表快速选取。
 - ***[CircleProgressBar][13]***
 
     带载入动画的环形进度条，可高度配置，支持配置成表盘。
