@@ -196,8 +196,7 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob
     @Override
     public String getTypefaceItemPath(Object item) {
         if (item instanceof TypefaceItem)
-            return TypefaceConfig.getFontsDir() + File.pathSeparator +
-                    ((TypefaceItem) item).getName();
+            return TypefaceConfig.getFontsDir() + File.separator + ((TypefaceItem) item).getName();
         return null;
     }
 
