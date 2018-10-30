@@ -64,4 +64,5 @@ dependencies {
     api project(':ftpserver')
     api project(':font')
     api project(':opentype')
+    api project(':floatingactionmode')
 }
