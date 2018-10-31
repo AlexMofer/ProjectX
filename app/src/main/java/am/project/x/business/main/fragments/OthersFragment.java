@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import am.project.x.R;
 import am.project.x.base.BaseFragment;
 import am.project.x.business.others.crypto.CryptoActivity;
+import am.project.x.business.others.floatingactionmode.FloatingActionModeActivity;
 import am.project.x.business.others.font.FontActivity;
 import am.project.x.business.others.ftp.FTPActivity;
 import am.project.x.business.others.opentypelist.OpenTypeListActivity;
@@ -71,6 +72,7 @@ public class OthersFragment extends BaseFragment implements View.OnClickListener
                 OpenTypeListActivity.start(getActivity());
                 break;
             case R.id.other_btn_floating:
+                FloatingActionModeActivity.start(getActivity());
                 break;
         }
     }

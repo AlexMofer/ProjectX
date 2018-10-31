@@ -302,4 +302,6 @@
     <string name="ot_title_font">字体信息</string>
     <string name="ot_title_unknown_table">未知的表</string>
     <string name="ot_content_unknown_table">暂不支持解析该表信息。</string>
+    <!--悬浮菜单-->
+    <string name="floating_label">悬浮菜单</string>
 </resources>
