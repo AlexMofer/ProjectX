@@ -93,6 +93,23 @@
             app:layout_constraintTop_toBottomOf="@id/other_btn_printer"
             app:layout_constraintWidth_percent="0.25" />
 
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/other_btn_floating"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawableTop="@drawable/ic_others_floatingactionmode"
+            android:drawablePadding="6dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp"
+            android:text="@string/main_others_floating"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/other_btn_opentype"
+            app:layout_constraintStart_toEndOf="@id/other_btn_opentype"
+            app:layout_constraintTop_toTopOf="@id/other_btn_opentype"
+            app:layout_constraintWidth_percent="0.25" />
+
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>

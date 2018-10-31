@@ -40,6 +40,7 @@
     <string name="main_others_ftp">文件传输</string>
     <string name="main_others_font">字体</string>
     <string name="main_others_opentype">字体文件</string>
+    <string name="main_others_floating">悬浮菜单</string>
     <string name="main_develop_developing">开发中</string>
     <string name="main_develop_supergridview">拖拽网格</string>
     <!--开发中-->
