@@ -243,6 +243,7 @@ final class MenuWindow implements View.OnLayoutChangeListener, View.OnAttachStat
         applyLayout();
         mType = TYPE_MAIN;
         applyType();
+        applyHide();
         mManager.updateViewLayout(mAnimationLayout, mAnimationParams);
         mManager.updateViewLayout(mSubLayout, mSubParams);
         mManager.updateViewLayout(mOverflowLayout, mOverflowParams);
@@ -498,6 +499,20 @@ final class MenuWindow implements View.OnLayoutChangeListener, View.OnAttachStat
             mSwitchParams.flags = computeFlags(mSwitchParams.flags, true);
             mSwitchLayout.setVisibility(View.VISIBLE);
             mSwitchLayout.setArrow(false);
+        }
+    }
+
+    private void applyHide() {
+        if (mHidden) {
+            mAnimationLayout.setVisibility(View.INVISIBLE);
+            mMainParams.flags = computeFlags(mMainParams.flags, false);
+            mMainLayout.setVisibility(View.INVISIBLE);
+            mOverflowParams.flags = computeFlags(mOverflowParams.flags, false);
+            mOverflowLayout.setVisibility(View.INVISIBLE);
+            mSubParams.flags = computeFlags(mSubParams.flags, false);
+            mSubLayout.setVisibility(View.INVISIBLE);
+            mSwitchParams.flags = computeFlags(mSwitchParams.flags, false);
+            mSwitchLayout.setVisibility(View.INVISIBLE);
         }
     }
 
