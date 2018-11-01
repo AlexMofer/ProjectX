@@ -1,18 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".business.others.floatingactionmode.FloatingActionModeActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/floating_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/floating_label" />
 
-</LinearLayout>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/floating_tv_notice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/floating_notice"
+        android:textColor="?colorAccent"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/floating_toolbar" />
+
+    <am.project.x.business.others.floatingactionmode.DrawView
+        android:id="@+id/floating_dv_bound"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/floating_toolbar" />
+
+</android.support.constraint.ConstraintLayout>

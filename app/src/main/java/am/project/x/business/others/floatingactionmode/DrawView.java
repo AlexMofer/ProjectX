@@ -16,36 +16,24 @@
 package am.project.x.business.others.floatingactionmode;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.AttributeSet;
 import android.view.View;
 
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
-
 /**
- * 悬浮菜单
+ * 触摸绘图
  */
-public class FloatingActionModeActivity extends BaseActivity {
+public class DrawView extends View {
 
-    private View mVNotice;
-    private DrawView mVBound;
-
-    public static void start(Context context) {
-        context.startActivity(new Intent(context, FloatingActionModeActivity.class));
+    public DrawView(Context context) {
+        super(context);
     }
 
-    @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_floatingactionmode;
+    public DrawView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
     }
 
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
-        setSupportActionBar(R.id.floating_toolbar);
-        mVNotice = findViewById(R.id.floating_tv_notice);
-        mVBound = findViewById(R.id.floating_dv_bound);
-
+    public DrawView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
     }
 }
