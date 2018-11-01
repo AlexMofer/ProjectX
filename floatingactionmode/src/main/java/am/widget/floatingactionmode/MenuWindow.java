@@ -411,9 +411,10 @@ final class MenuWindow implements View.OnLayoutChangeListener, View.OnAttachStat
                 break;
         }
         final int y = mBelow ? baselineBelow : baselineAbove;
-
-        mMainCoordinates.set(Math.max(0, Math.round(x - mMainSize.x * 0.5f)),
-                Math.max(0, (mBelow ? y : y - mMainSize.y)));
+        mMainCoordinates.set(Math.min(Math.max(offsetX, Math.round(x - mMainSize.x * 0.5f)),
+                maxWidth + offsetX - mMainSize.x),
+                Math.min(Math.max(offsetY, (mBelow ? y : y - mMainSize.y)),
+                        mViewPortOnScreen.bottom - mViewPortOnScreen.top + offsetY - mMainSize.y));
         mSwitchCoordinates.set(mMainCoordinates.x + mMainSize.x - mSwitchSize.x - mMargin,
                 mMainCoordinates.y + mMargin);
 
