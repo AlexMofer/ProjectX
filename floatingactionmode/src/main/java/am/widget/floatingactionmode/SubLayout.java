@@ -89,7 +89,7 @@ final class SubLayout extends FrameLayout implements AdapterView.OnItemClickList
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    boolean setData(FloatingMenuImpl menu, Point size) {
+    boolean setData(FloatingMenuImpl menu, Point size, FloatingActionMode mode) {
         boolean hasSubMenu = false;
         int width = 0;
         int height = 0;
@@ -101,6 +101,7 @@ final class SubLayout extends FrameLayout implements AdapterView.OnItemClickList
             final FloatingSubMenu subMenu = item.getSubMenu();
             if (subMenu.isCustomMenu()) {
                 final View custom = subMenu.getCustomView();
+                FloatingActionMode.setFloatingActionMode(custom, mode);
                 custom.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
                 final int cw = custom.getMeasuredWidth();
                 final int ch = custom.getMeasuredHeight();

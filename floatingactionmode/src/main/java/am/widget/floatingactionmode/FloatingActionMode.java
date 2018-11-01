@@ -20,7 +20,7 @@ import android.view.View;
 
 /**
  * 浮动ActionMode
- * TODO 面板切换动画Drawable，各面板的视图裁剪
+ * TODO 面板切换动画Drawable，各面板的视图裁剪，使用attribute进行主题样式定义
  * Created by Alex on 2018/10/24.
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
@@ -40,6 +40,19 @@ public class FloatingActionMode {
     public static FloatingActionMode startFloatingActionMode(View target, Callback callback) {
         final FloatingActionMode mode = new FloatingActionMode(target, callback);
         return mode.start() ? mode : null;
+    }
+
+    static void setFloatingActionMode(View custom, FloatingActionMode mode) {
+        custom.setTag(android.R.id.custom, mode);
+        if (custom instanceof FloatingSubMenuCustomView)
+            ((FloatingSubMenuCustomView) custom).onAttachedToFloatingActionMode(mode);
+    }
+
+    public static FloatingActionMode getFloatingActionMode(View custom) {
+        final Object tag = custom.getTag(android.R.id.custom);
+        if (tag instanceof FloatingActionMode)
+            return (FloatingActionMode) tag;
+        return null;
     }
 
     private boolean start() {
@@ -155,6 +168,14 @@ public class FloatingActionMode {
      */
     public boolean isFinished() {
         return mWindow.isFinished();
+    }
+
+    public void performActionItemClicked(FloatingMenuItem item) {
+        mWindow.performActionItemClicked(this, item);
+    }
+
+    public FloatingMenu getMenu() {
+        return mWindow.getMenu();
     }
 
     public interface Callback {

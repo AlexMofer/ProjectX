@@ -160,7 +160,7 @@ final class MenuWindow implements View.OnLayoutChangeListener, View.OnAttachStat
         final int maxWidth = mViewPortOnScreen.right - mViewPortOnScreen.left;
         mMainLayout.setData(mMenu, maxWidth);
         mHasOverflow = mOverflowLayout.setData(mMenu, mOverflowNeedSize);
-        mSubLayout.setData(mMenu, mSubMaxSize);
+        mSubLayout.setData(mMenu, mSubMaxSize, mode);
         updateLayout();
         applyLayout();
         mType = TYPE_MAIN;
@@ -222,7 +222,7 @@ final class MenuWindow implements View.OnLayoutChangeListener, View.OnAttachStat
             final int maxWidth = mViewPortOnScreen.right - mViewPortOnScreen.left;
             mMainLayout.setData(mMenu, maxWidth);
             mHasOverflow = mOverflowLayout.setData(mMenu, mOverflowNeedSize);
-            mSubLayout.setData(mMenu, mSubMaxSize);
+            mSubLayout.setData(mMenu, mSubMaxSize, mode);
         }
         invalidate();
     }
@@ -318,6 +318,14 @@ final class MenuWindow implements View.OnLayoutChangeListener, View.OnAttachStat
 
     boolean isFinished() {
         return mFinished;
+    }
+
+    void performActionItemClicked(FloatingActionMode mode, FloatingMenuItem item) {
+        mCallback.onActionItemClicked(mode, item);
+    }
+
+    FloatingMenu getMenu() {
+        return mMenu;
     }
 
     private int computeFlags(int curFlags, boolean touchable) {
