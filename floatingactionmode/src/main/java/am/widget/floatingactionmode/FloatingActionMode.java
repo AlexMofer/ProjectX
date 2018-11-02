@@ -42,19 +42,6 @@ public class FloatingActionMode {
         return mode.start() ? mode : null;
     }
 
-    static void setFloatingActionMode(View custom, FloatingActionMode mode) {
-        custom.setTag(android.R.id.custom, mode);
-        if (custom instanceof FloatingSubMenuCustomView)
-            ((FloatingSubMenuCustomView) custom).onAttachedToFloatingActionMode(mode);
-    }
-
-    public static FloatingActionMode getFloatingActionMode(View custom) {
-        final Object tag = custom.getTag(android.R.id.custom);
-        if (tag instanceof FloatingActionMode)
-            return (FloatingActionMode) tag;
-        return null;
-    }
-
     private boolean start() {
         return mWindow.start(this);
     }

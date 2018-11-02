@@ -101,7 +101,8 @@ final class SubLayout extends FrameLayout implements AdapterView.OnItemClickList
             final FloatingSubMenu subMenu = item.getSubMenu();
             if (subMenu.isCustomMenu()) {
                 final View custom = subMenu.getCustomView();
-                FloatingActionMode.setFloatingActionMode(custom, mode);
+                if (custom instanceof FloatingSubMenuCustomView)
+                    ((FloatingSubMenuCustomView) custom).onAttachedToFloatingActionMode(mode);
                 custom.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
                 final int cw = custom.getMeasuredWidth();
                 final int ch = custom.getMeasuredHeight();
