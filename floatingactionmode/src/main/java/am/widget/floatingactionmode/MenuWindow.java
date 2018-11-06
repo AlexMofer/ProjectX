@@ -288,6 +288,7 @@ final class MenuWindow implements View.OnLayoutChangeListener, View.OnAttachStat
                 mManager.removeView(mMainLayout);
                 mManager.removeView(mSwitchLayout);
             }
+            mSubLayout.clear();
             mCallback.onDestroyActionMode(mode);
             mTarget.removeOnAttachStateChangeListener(this);
             final View root = mTarget.getRootView();
@@ -504,6 +505,7 @@ final class MenuWindow implements View.OnLayoutChangeListener, View.OnAttachStat
             mOverflowLayout.setVisibility(View.INVISIBLE);
             mSubParams.flags = computeFlags(mSubParams.flags, false);
             mSubLayout.setVisibility(View.INVISIBLE);
+            mSubLayout.clear();
             mSwitchParams.flags = computeFlags(mSwitchParams.flags, mHasOverflow);
             mSwitchLayout.setVisibility(mHasOverflow ? View.VISIBLE : View.INVISIBLE);
             mSwitchLayout.setOverflow(false);
@@ -515,6 +517,7 @@ final class MenuWindow implements View.OnLayoutChangeListener, View.OnAttachStat
             mOverflowLayout.setVisibility(View.VISIBLE);
             mSubParams.flags = computeFlags(mSubParams.flags, false);
             mSubLayout.setVisibility(View.INVISIBLE);
+            mSubLayout.clear();
             mSwitchParams.flags = computeFlags(mSwitchParams.flags, true);
             mSwitchLayout.setVisibility(View.VISIBLE);
             mSwitchLayout.setArrow(false);

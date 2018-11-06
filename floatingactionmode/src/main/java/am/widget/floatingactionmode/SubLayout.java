@@ -24,6 +24,8 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 
@@ -130,6 +132,9 @@ final class SubLayout extends FrameLayout implements AdapterView.OnItemClickList
             final View custom = subMenu.getCustomView();
             custom.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
             size.set(custom.getMeasuredWidth(), custom.getMeasuredHeight());
+            final ViewParent parent = custom.getParent();
+            if (parent instanceof ViewGroup)
+                ((ViewGroup) parent).removeView(custom);
             mContent.addView(custom, mParams);
         } else {
             mSubList.setData(subMenu, size, false);
