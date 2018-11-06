@@ -17,6 +17,7 @@ package am.widget.floatingactionmode;
 
 import android.graphics.Rect;
 import android.view.View;
+import android.view.WindowManager;
 
 /**
  * 浮动ActionMode
@@ -82,6 +83,47 @@ public class FloatingActionMode {
                 location != LOCATION_ABOVE_PRIORITY && location != LOCATION_ABOVE_ALWAYS)
             return;
         mWindow.setLocation(location);
+    }
+
+    /**
+     * Indicates whether clipping of the popup window is enabled.
+     *
+     * @return true if the clipping is enabled, false otherwise
+     * @see #setClippingEnabled(boolean)
+     */
+    public boolean isClippingEnabled() {
+        return mWindow.isClippingEnabled();
+    }
+
+    /**
+     * Allows the action mode to extend beyond the bounds of the screen. By default the
+     * action mode is not clip to the screen boundaries.
+     *
+     * @param enabled false if the window should be allowed to extend outside of the screen
+     */
+    public void setClippingEnabled(boolean enabled) {
+        mWindow.setClippingEnabled(enabled);
+    }
+
+    /**
+     * <p>Indicates whether the action mode will be forced into using absolute screen coordinates
+     * for positioning.</p>
+     *
+     * @return true if the action mode will always be positioned in screen coordinates.
+     */
+    public boolean isLayoutInScreenEnabled() {
+        return mWindow.isLayoutInScreenEnabled();
+    }
+
+    /**
+     * <p>Allows the action mode to force the flag
+     * {@link WindowManager.LayoutParams#FLAG_LAYOUT_IN_SCREEN}, overriding default behavior.
+     * This will cause the action mode to be positioned in absolute screen coordinates.</p>
+     *
+     * @param enabled true if the action mode should always be positioned in screen coordinates
+     */
+    public void setLayoutInScreenEnabled(boolean enabled) {
+        mWindow.setLayoutInScreenEnabled(enabled);
     }
 
     /**

@@ -86,6 +86,8 @@ final class MenuWindow implements View.OnLayoutChangeListener, View.OnAttachStat
     private boolean mReverse;// 是否逆向向上展开（默认向下为正向展开）
     private int mType;// 面板类型
     private int mPreviousType = TYPE_MAIN;// 前一个面板类型
+    private boolean mClippingEnabled;
+    private boolean mLayoutInScreen;
 
     MenuWindow(View target, FloatingActionMode.Callback callback, FloatingActionMode mode) {
         mTarget = target;
@@ -183,6 +185,22 @@ final class MenuWindow implements View.OnLayoutChangeListener, View.OnAttachStat
         if (mFinished || !mStarted)
             return;
         invalidate();
+    }
+
+    boolean isClippingEnabled() {
+        return mClippingEnabled;
+    }
+
+    void setClippingEnabled(boolean enabled) {
+        mClippingEnabled = enabled;
+    }
+
+    boolean isLayoutInScreenEnabled() {
+        return mLayoutInScreen;
+    }
+
+    void setLayoutInScreenEnabled(boolean enabled) {
+        mLayoutInScreen = enabled;
     }
 
     void setLightTheme(boolean light, boolean useTheme) {
@@ -343,7 +361,10 @@ final class MenuWindow implements View.OnLayoutChangeListener, View.OnAttachStat
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1)
             curFlags |= WindowManager.LayoutParams.FLAG_LAYOUT_ATTACHED_IN_DECOR;
         curFlags |= WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
-        curFlags |= WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+        if (!mClippingEnabled)
+            curFlags |= WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+        if (mLayoutInScreen)
+            curFlags |= WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
         return curFlags;
     }
 
