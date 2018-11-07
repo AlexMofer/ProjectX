@@ -27,10 +27,9 @@ import am.project.x.base.BaseActivity;
 /**
  * 悬浮菜单
  */
-public class FloatingActionModeActivity extends BaseActivity {
+public class FloatingActionModeActivity extends BaseActivity implements DrawView.OnPressListener {
 
     private View mVNotice;
-    private DrawView mVBound;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, FloatingActionModeActivity.class));
@@ -45,7 +44,12 @@ public class FloatingActionModeActivity extends BaseActivity {
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.floating_toolbar);
         mVNotice = findViewById(R.id.floating_tv_notice);
-        mVBound = findViewById(R.id.floating_dv_bound);
+        final DrawView bound = findViewById(R.id.floating_dv_bound);
+        bound.setOnPressListener(this);
+    }
+
+    @Override
+    public void onPressed(View view, int left, int top, int right, int bottom) {
 
     }
 }

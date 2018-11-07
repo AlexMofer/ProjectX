@@ -16,6 +16,7 @@
 package am.project.x.business.others.floatingactionmode;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -24,6 +25,8 @@ import android.view.View;
  * 触摸绘图
  */
 public class DrawView extends View {
+
+    private OnPressListener mListener;
 
     public DrawView(Context context) {
         super(context);
@@ -35,5 +38,18 @@ public class DrawView extends View {
 
     public DrawView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+    }
+
+    public void setOnPressListener(OnPressListener listener) {
+        mListener = listener;
+    }
+
+    public interface OnPressListener {
+        void onPressed(View view, int left, int top, int right, int bottom);
     }
 }
