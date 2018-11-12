@@ -33,7 +33,7 @@ final class MenuWindow implements View.OnLayoutChangeListener, View.OnAttachStat
         View.OnClickListener, SwitchAnimation.AnimationListener, MainLayout.OnMainListener,
         OverflowLayout.OnOverflowListener, SubLayout.OnSubListener {
 
-    private static final int DIP_MARGIN = 20;
+    private static final int DIP_MARGIN = 12;
     private static final int DIP_ITEM_HEIGHT = 48;
     private static final int DIP_ELEVATION = 2;
     private static final int MAX_OVERFLOW_SHOW_COUNT = 4;
