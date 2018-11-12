@@ -30,6 +30,7 @@ import am.project.x.business.widgets.gradienttabstrip.GradientTabStripActivity;
 import am.project.x.business.widgets.headerfootergridview.HeaderFooterGridViewActivity;
 import am.project.x.business.widgets.indicatortabstrip.IndicatorTabStripActivity;
 import am.project.x.business.widgets.multiactiontextview.MultiActionTextViewActivity;
+import am.project.x.business.widgets.multifunctionalrecyclerview.MultifunctionalRecyclerViewActivity;
 import am.project.x.business.widgets.recyclepager.RecyclePagerActivity;
 import am.project.x.business.widgets.shapeimageview.ShapeImageViewActivity;
 import am.project.x.business.widgets.smoothinputlayout.SmoothInputLayoutActivity;
@@ -65,6 +66,7 @@ public class WidgetsFragment extends BaseFragment implements View.OnClickListene
         findViewById(R.id.widget_btn_circleprogressbar).setOnClickListener(this);
         findViewById(R.id.widget_btn_zxingscanview).setOnClickListener(this);
         findViewById(R.id.widget_btn_smoothinputlayout).setOnClickListener(this);
+        findViewById(R.id.widget_btn_multifunctionalrecyclerview).setOnClickListener(this);
     }
 
     @Override
@@ -108,6 +110,9 @@ public class WidgetsFragment extends BaseFragment implements View.OnClickListene
                 break;
             case R.id.widget_btn_smoothinputlayout:
                 SmoothInputLayoutActivity.start(getActivity());
+                break;
+            case R.id.widget_btn_multifunctionalrecyclerview:
+                MultifunctionalRecyclerViewActivity.start(getActivity());
                 break;
         }
     }
