@@ -139,6 +139,9 @@
         <activity
             android:name=".business.others.floatingactionmode.FloatingActionModeActivity"
             android:label="@string/floating_label" />
+        <activity
+            android:name=".business.widgets.multifunctionalrecyclerview.MultifunctionalRecyclerViewActivity"
+            android:label="@string/mrv_label" />
 
         <service
             android:name=".business.others.ftp.FTPService"

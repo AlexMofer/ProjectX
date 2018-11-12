@@ -319,4 +319,6 @@
     <string name="floating_menu_12">样式</string>
     <string name="floating_menu_13">对齐方式</string>
     <string name="floating_menu_14">网页搜索</string>
+    <!--多功能RecyclerView-->
+    <string name="mrv_label">多功能RecyclerView</string>
 </resources>
