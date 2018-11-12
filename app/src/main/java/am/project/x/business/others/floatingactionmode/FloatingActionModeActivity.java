@@ -70,22 +70,20 @@ public class FloatingActionModeActivity extends BaseActivity implements PressVie
 
     @Override
     public boolean onPrepareActionMode(FloatingActionMode mode, FloatingMenu menu) {
-        menu.add("复制");
-        menu.add("剪切");
-        menu.add("粘贴");
-        menu.add("选择");
-        menu.add("全选");
-        menu.add("分享");
-        menu.add("翻译");
-        menu.add("搜索");
-        menu.add("颜色");
-        menu.add("字体");
-        menu.add("字号");
-        menu.add("样式");
-        menu.add("左对齐");
-        menu.add("右对齐");
-        menu.add("居中");
-        menu.add("网页搜索");
+        menu.add(R.string.floating_menu_1);
+        menu.add(R.string.floating_menu_2);
+        menu.add(R.string.floating_menu_3);
+        menu.add(R.string.floating_menu_4);
+        menu.add(R.string.floating_menu_5);
+        menu.add(R.string.floating_menu_6);
+        menu.add(R.string.floating_menu_7);
+        menu.add(R.string.floating_menu_8);
+        menu.add(R.string.floating_menu_9);
+        menu.add(R.string.floating_menu_10);
+        menu.add(R.string.floating_menu_11);
+        menu.add(R.string.floating_menu_12);
+        menu.add(R.string.floating_menu_13);
+        menu.add(R.string.floating_menu_14);
         return false;
     }
 

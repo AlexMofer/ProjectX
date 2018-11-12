@@ -305,4 +305,18 @@
     <!--悬浮菜单-->
     <string name="floating_label">悬浮菜单</string>
     <string name="floating_notice">触摸以显示悬浮菜单</string>
+    <string name="floating_menu_1">复制</string>
+    <string name="floating_menu_2">剪切</string>
+    <string name="floating_menu_3">粘贴</string>
+    <string name="floating_menu_4">选择</string>
+    <string name="floating_menu_5">全选</string>
+    <string name="floating_menu_6">分享</string>
+    <string name="floating_menu_7">翻译</string>
+    <string name="floating_menu_8">搜索</string>
+    <string name="floating_menu_9">颜色</string>
+    <string name="floating_menu_10">字体</string>
+    <string name="floating_menu_11">字号</string>
+    <string name="floating_menu_12">样式</string>
+    <string name="floating_menu_13">对齐方式</string>
+    <string name="floating_menu_14">网页搜索</string>
 </resources>
