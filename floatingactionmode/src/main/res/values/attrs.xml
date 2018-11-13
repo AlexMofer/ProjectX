@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FloatingActionMode">
+        <attr name="floatingActionModeBackgroundColor" format="color" />
+        <attr name="floatingActionModeBackgroundRadius" format="dimension" />
+        <attr name="floatingActionModeElevation" format="dimension" />
+    </declare-styleable>
+</resources>

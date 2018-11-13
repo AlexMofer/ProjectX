@@ -59,15 +59,11 @@ public class FloatingActionModeActivity extends BaseActivity implements PressVie
         if (mMode != null)
             mMode.finish();
         mBound.set(left, top, right, bottom);
-        mMode = FloatingActionMode.startFloatingActionMode(view, this);
+        mMode = new FloatingActionMode(view, this);
+        mMode.start();
     }
 
     // Callback
-    @Override
-    public boolean onCreateActionMode(FloatingActionMode mode, FloatingMenu menu) {
-        return true;
-    }
-
     @Override
     public boolean onPrepareActionMode(FloatingActionMode mode, FloatingMenu menu) {
         menu.add(R.string.floating_menu_1);

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <public name="floatingActionModeBackgroundColor" type="attr" />
+    <public name="floatingActionModeBackgroundRadius" type="attr" />
+    <public name="floatingActionModeElevation" type="attr" />
+    <public name="FloatingActionMode" type="style" />
+</resources>

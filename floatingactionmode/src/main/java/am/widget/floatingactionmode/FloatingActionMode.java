@@ -17,11 +17,12 @@ package am.widget.floatingactionmode;
 
 import android.graphics.Rect;
 import android.view.View;
-import android.view.WindowManager;
+
+import am.widget.floatingactionmode.impl.FloatingActionModeImpl;
 
 /**
  * 浮动ActionMode
- * TODO 面板切换动画Drawable，各面板的视图裁剪，使用attribute进行主题样式定义
+ * TODO 面板切换动画Drawable，各面板的视图裁剪
  * Created by Alex on 2018/10/24.
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
@@ -31,193 +32,97 @@ public class FloatingActionMode {
     public static final int LOCATION_BELOW_ALWAYS = 1;// 固定显示在矩形区域的下方
     public static final int LOCATION_ABOVE_PRIORITY = 2;// 优先考虑显示在矩形区域的上方
     public static final int LOCATION_ABOVE_ALWAYS = 3;// 固定显示在矩形区域的上方
-    private final MenuWindow mWindow;
     private Object mTag;
+    private final FloatingActionModeImpl mImpl;
 
-    private FloatingActionMode(View target, Callback callback) {
-        mWindow = new MenuWindow(target, callback, this);
+    public FloatingActionMode(View target, Callback callback) {
+        this(target, callback, 0);
     }
 
-    public static FloatingActionMode startFloatingActionMode(View target, Callback callback) {
-        final FloatingActionMode mode = new FloatingActionMode(target, callback);
-        return mode.start() ? mode : null;
+    public FloatingActionMode(View target, Callback callback, int themeResId) {
+        mImpl = new FloatingActionModeImpl(this, target, callback, themeResId);
     }
 
-    private boolean start() {
-        return mWindow.start(this);
-    }
-
-    /**
-     * Retrieve the tag object associated with this FloatingActionMode.
-     *
-     * <p>Like the tag available to views, this allows applications to associate arbitrary
-     * data with an FloatingActionMode for later reference.
-     *
-     * @return Tag associated with this FloatingActionMode
-     * @see #setTag(Object)
-     */
     public Object getTag() {
         return mTag;
     }
 
-    /**
-     * Set a tag object associated with this FloatingActionMode.
-     *
-     * <p>Like the tag available to views, this allows applications to associate arbitrary
-     * data with an FloatingActionMode for later reference.
-     *
-     * @param tag Tag to associate with this FloatingActionMode
-     * @see #getTag()
-     */
     public void setTag(Object tag) {
         mTag = tag;
     }
 
-    /**
-     * Sets this action mode show location.
-     *
-     * @param location where to show this action mode.
-     */
     public void setLocation(int location) {
         if (location != LOCATION_BELOW_PRIORITY && location != LOCATION_BELOW_ALWAYS &&
                 location != LOCATION_ABOVE_PRIORITY && location != LOCATION_ABOVE_ALWAYS)
             return;
-        mWindow.setLocation(location);
+        mImpl.setLocation(location);
     }
 
-    /**
-     * Indicates whether clipping of the popup window is enabled.
-     *
-     * @return true if the clipping is enabled, false otherwise
-     * @see #setClippingEnabled(boolean)
-     */
     public boolean isClippingEnabled() {
-        return mWindow.isClippingEnabled();
+        return mImpl.isClippingEnabled();
     }
 
-    /**
-     * Allows the action mode to extend beyond the bounds of the screen. By default the
-     * action mode is not clip to the screen boundaries.
-     *
-     * @param enabled false if the window should be allowed to extend outside of the screen
-     */
     public void setClippingEnabled(boolean enabled) {
-        mWindow.setClippingEnabled(enabled);
+        mImpl.setClippingEnabled(enabled);
     }
 
-    /**
-     * <p>Indicates whether the action mode will be forced into using absolute screen coordinates
-     * for positioning.</p>
-     *
-     * @return true if the action mode will always be positioned in screen coordinates.
-     */
     public boolean isLayoutInScreenEnabled() {
-        return mWindow.isLayoutInScreenEnabled();
+        return mImpl.isLayoutInScreenEnabled();
     }
 
-    /**
-     * <p>Allows the action mode to force the flag
-     * {@link WindowManager.LayoutParams#FLAG_LAYOUT_IN_SCREEN}, overriding default behavior.
-     * This will cause the action mode to be positioned in absolute screen coordinates.</p>
-     *
-     * @param enabled true if the action mode should always be positioned in screen coordinates
-     */
     public void setLayoutInScreenEnabled(boolean enabled) {
-        mWindow.setLayoutInScreenEnabled(enabled);
+        mImpl.setLayoutInScreenEnabled(enabled);
     }
 
-    /**
-     * Sets this action mode to light theme.
-     */
-    public void setLightTheme(boolean light, boolean useTheme) {
-        mWindow.setLightTheme(light, useTheme);
+    public void start() {
+        mImpl.start();
     }
 
-    /**
-     * Returns {@code true} if this action mode is light theme. {@code false} otherwise.
-     */
-    public boolean isLightTheme() {
-        return mWindow.isLightTheme();
-    }
-
-    /**
-     * Invalidate the action mode and refresh menu content. The mode's
-     * {@link Callback} will have its
-     * {@link Callback#onPrepareActionMode(FloatingActionMode, FloatingMenu)} method called.
-     * If it returns true the menu will be scanned for updated content and any relevant changes
-     * will be reflected to the user.
-     */
     public void invalidate() {
-        mWindow.invalidate(this);
+        mImpl.invalidate();
     }
 
-    /**
-     * Invalidate the content rect associated to this FloatingActionMode. This only makes sense for
-     * action modes that support dynamic positioning on the screen, and provides a more efficient
-     * way to reposition it without invalidating the whole action mode.
-     *
-     * @see Callback#onGetContentRect(FloatingActionMode, View, Rect) .
-     */
     public void invalidateContentRect() {
-        mWindow.invalidateContentRect(this);
+        mImpl.invalidateContentRect();
     }
 
-    /**
-     * Finish and close this action mode. The action mode's {@link Callback} will
-     * have its {@link Callback#onDestroyActionMode(FloatingActionMode)} method called.
-     */
     public void finish() {
-        mWindow.finish(this, false);
+        mImpl.finish();
     }
 
-    /**
-     * Hides this action mode.
-     * Use {@link #isHidden()} to distinguish between a hidden and a dismissed menu.
-     */
     public void hide() {
-        mWindow.hide();
+        mImpl.hide();
     }
 
-    /**
-     * Shows this action mode.
-     */
     public void show() {
-        mWindow.show();
+        mImpl.show();
     }
 
-    /**
-     * Returns {@code true} if this action mode is currently hidden. {@code false} otherwise.
-     */
     public boolean isHidden() {
-        return mWindow.isHidden();
+        return mImpl.isHidden();
     }
 
-    /**
-     * Returns {@code true} if this action mode is currently finished. {@code false} otherwise.
-     */
     public boolean isFinished() {
-        return mWindow.isFinished();
+        return mImpl.isFinished();
     }
 
     public void performActionItemClicked(FloatingMenuItem item) {
-        mWindow.performActionItemClicked(this, item);
+        mImpl.performActionItemClicked(item);
+    }
+
+    public void backToMain(boolean animate) {
+        mImpl.backToMain(animate);
+    }
+
+    public void openOverflow(boolean animate) {
+        mImpl.openOverflow(animate);
     }
 
     public FloatingMenu getMenu() {
-        return mWindow.getMenu();
+        return mImpl.getMenu();
     }
 
     public interface Callback {
-        /**
-         * Called when action mode is first created. The menu supplied will be used to
-         * generate action buttons for the action mode.
-         *
-         * @param mode FloatingActionMode being created
-         * @param menu FloatingMenu used to populate action buttons
-         * @return true if the action mode should be created, false if entering this
-         * mode should be aborted.
-         */
-        boolean onCreateActionMode(FloatingActionMode mode, FloatingMenu menu);
 
         /**
          * Called to refresh an action mode's action menu whenever it is invalidated.
