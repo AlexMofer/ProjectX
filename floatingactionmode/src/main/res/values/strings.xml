@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fam_cd_more">More options</string>
+    <string name="fam_cd_close">Close overflow</string>
+</resources>

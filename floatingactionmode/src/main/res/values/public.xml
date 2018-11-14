@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <public name="floatingActionModeBackgroundColor" type="attr" />
-    <public name="floatingActionModeBackgroundRadius" type="attr" />
+    <public name="floatingActionModeBackgroundCornerRadius" type="attr" />
     <public name="floatingActionModeElevation" type="attr" />
-    <public name="FloatingActionMode" type="style" />
+    <public name="floatingActionModeItemSize" type="attr" />
+    <public name="floatingActionModeOverflowButtonBackground" type="attr" />
+    <public name="floatingActionModeOverflowButtonColor" type="attr" />
+    <public name="floatingActionModeMargin" type="attr" />
+    <public name="floatingActionModeItemBackground" type="attr" />
+    <public name="floatingActionModeItemPadding" type="attr" />
+    <public name="floatingActionModeItemPaddingEdge" type="attr" />
+    <public name="floatingActionModeItemPaddingIcon" type="attr" />
+    <public name="floatingActionModeItemIconWidth" type="attr" />
+    <public name="floatingActionModeItemTextPaddingIcon" type="attr" />
+    <public name="floatingActionModeItemTextAppearance" type="attr" />
+    <public name="floatingActionModeItemTextColor" type="attr" />
+    <public name="floatingActionModeItemTextSize" type="attr" />
 </resources>

@@ -2,7 +2,20 @@
 <resources>
     <declare-styleable name="FloatingActionMode">
         <attr name="floatingActionModeBackgroundColor" format="color" />
-        <attr name="floatingActionModeBackgroundRadius" format="dimension" />
+        <attr name="floatingActionModeBackgroundCornerRadius" format="dimension" />
         <attr name="floatingActionModeElevation" format="dimension" />
+        <attr name="floatingActionModeItemSize" format="dimension" />
+        <attr name="floatingActionModeOverflowButtonBackground" format="reference|color" />
+        <attr name="floatingActionModeOverflowButtonColor" format="color" />
+        <attr name="floatingActionModeMargin" format="dimension" />
+        <attr name="floatingActionModeItemBackground" format="reference|color" />
+        <attr name="floatingActionModeItemPadding" format="dimension" />
+        <attr name="floatingActionModeItemPaddingEdge" format="dimension" />
+        <attr name="floatingActionModeItemPaddingIcon" format="dimension" />
+        <attr name="floatingActionModeItemIconWidth" format="dimension" />
+        <attr name="floatingActionModeItemTextPaddingIcon" format="dimension" />
+        <attr name="floatingActionModeItemTextAppearance" format="reference" />
+        <attr name="floatingActionModeItemTextColor" format="color" />
+        <attr name="floatingActionModeItemTextSize" format="dimension" />
     </declare-styleable>
 </resources>

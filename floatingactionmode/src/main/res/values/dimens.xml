@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="floatingActionModeBackgroundCornerRadius">2dp</dimen>
+    <dimen name="floatingActionModeElevation">2dp</dimen>
+    <dimen name="switchButtonPaddingHorizontal">12dp</dimen>
+    <dimen name="switchButtonPaddingVertical">11dp</dimen>
+    <dimen name="floatingActionModeItemSize">48dp</dimen>
+    <dimen name="floatingActionModeMargin">22dp</dimen>
+    <dimen name="floatingActionModeItemPadding">11dp</dimen>
+    <dimen name="floatingActionModeItemPaddingEdge">16.5dp</dimen>
+    <dimen name="floatingActionModeItemPaddingIcon">12dp</dimen>
+    <dimen name="floatingActionModeItemIconWidth">24dp</dimen>
+    <dimen name="floatingActionModeItemTextPaddingIcon">11dp</dimen>
+    <dimen name="floatingActionModeItemTextSize">14sp</dimen>
+</resources>
