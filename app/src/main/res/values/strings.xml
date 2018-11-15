@@ -320,6 +320,10 @@
     <string name="floating_menu_12">样式</string>
     <string name="floating_menu_13">对齐方式</string>
     <string name="floating_menu_14">网页搜索</string>
+    <string name="floating_menu_15">左对齐</string>
+    <string name="floating_menu_16">右对齐</string>
+    <string name="floating_menu_17">居中</string>
+    <string name="floating_menu_18">两端对齐</string>
     <!--多功能RecyclerView-->
     <string name="mrv_label">多功能RecyclerView</string>
 </resources>

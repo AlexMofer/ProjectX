@@ -27,6 +27,7 @@ import am.project.x.base.BaseActivity;
 import am.widget.floatingactionmode.FloatingActionMode;
 import am.widget.floatingactionmode.FloatingMenu;
 import am.widget.floatingactionmode.FloatingMenuItem;
+import am.widget.floatingactionmode.FloatingSubMenu;
 
 /**
  * 悬浮菜单
@@ -74,11 +75,17 @@ public class FloatingActionModeActivity extends BaseActivity implements PressVie
         menu.add(R.string.floating_menu_6);
         menu.add(R.string.floating_menu_7);
         menu.add(R.string.floating_menu_8);
-        menu.add(R.string.floating_menu_9);
+        final View custom = View.inflate(this,
+                R.layout.layout_menu_floatingactionmode, null);
+        menu.add(R.string.floating_menu_9).setSubMenu(custom);
         menu.add(R.string.floating_menu_10);
         menu.add(R.string.floating_menu_11);
         menu.add(R.string.floating_menu_12);
-        menu.add(R.string.floating_menu_13);
+        final FloatingSubMenu sub = menu.add(R.string.floating_menu_13).setSubMenu();
+        sub.add(R.string.floating_menu_15);
+        sub.add(R.string.floating_menu_16);
+        sub.add(R.string.floating_menu_17);
+        sub.add(R.string.floating_menu_18);
         menu.add(R.string.floating_menu_14);
         return false;
     }
