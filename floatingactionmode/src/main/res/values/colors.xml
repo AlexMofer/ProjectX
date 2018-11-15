@@ -2,4 +2,5 @@
 <resources>
     <color name="floatingActionModeBackgroundColor">#FFFFFFFF</color>
     <color name="floatingActionModeItemTextColor">#FF000000</color>
+    <color name="floatingActionModeSubTitleTextColor">#FF000000</color>
 </resources>

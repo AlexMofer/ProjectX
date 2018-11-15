@@ -39,6 +39,7 @@ class MenuListView extends ListView {
 
     final Adapter mAdapter = new Adapter();
     final MenuItemView mCalculator;
+    private int mItemMinimumWidth = 0;
 
     MenuListView(Context context) {
         super(context);
@@ -67,10 +68,16 @@ class MenuListView extends ListView {
         mCalculator.setLast(true);
     }
 
+    void setItemMinimumWidth(int minWidth) {
+        if (minWidth <= 0)
+            return;
+        mItemMinimumWidth = minWidth;
+        mCalculator.setMinimumWidth(minWidth);
+    }
+
     void awakenScrollBar() {
         awakenScrollBars(ViewConfiguration.getScrollDefaultDelay() * 3, true);
     }
-
     class Adapter extends BaseAdapter {
 
         private final ArrayList<FloatingMenuItem> mItems = new ArrayList<>();
@@ -98,6 +105,8 @@ class MenuListView extends ListView {
             final MenuItemView button = (MenuItemView) convertView;
             button.setFirst(true);
             button.setLast(true);
+            if (mItemMinimumWidth > 0)
+                button.setMinimumWidth(mItemMinimumWidth);
             final FloatingMenuItem item = getItem(position);
             button.setData(item);
             convertView.setTag(item);

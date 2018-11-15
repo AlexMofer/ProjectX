@@ -22,49 +22,43 @@ import android.content.res.TypedArray;
 import android.util.TypedValue;
 
 import am.widget.floatingactionmode.FloatingMenuItem;
+import am.widget.floatingactionmode.FloatingSubMenu;
 import am.widget.floatingactionmode.R;
 
 /**
- * 更多面板列表
+ * 次级菜单列表
  * Created by Alex on 2018/10/19.
  */
-final class OverflowListView extends MenuListView {
+final class SubListView extends MenuListView {
 
     private final int mMaxHeight;
-    private int mTopSpace;
 
-    OverflowListView(Context context) {
+    SubListView(Context context) {
         super(context);
         final Resources resources = context.getResources();
         final TypedValue outValue = new TypedValue();
-        resources.getValue(R.dimen.floatingActionModeOverflowItemMaxShowCount, outValue, true);
+        resources.getValue(R.dimen.floatingActionModeSubItemMaxShowCount, outValue, true);
         float count = outValue.getFloat();
-        int overflowMinimumWidth = resources.getDimensionPixelOffset(
-                R.dimen.floatingActionModeOverflowItemMinimumWidth);
+        int subMinimumWidth = resources.getDimensionPixelOffset(
+                R.dimen.floatingActionModeSubItemMinimumWidth);
         @SuppressLint("CustomViewStyleable") final TypedArray custom =
                 context.obtainStyledAttributes(R.styleable.FloatingActionMode);
         count = custom.getFloat(
-                R.styleable.FloatingActionMode_floatingActionModeOverflowItemMaxShowCount, count);
-        overflowMinimumWidth = custom.getDimensionPixelOffset(
-                R.styleable.FloatingActionMode_floatingActionModeOverflowItemMinimumWidth,
-                overflowMinimumWidth);
+                R.styleable.FloatingActionMode_floatingActionModeSubItemMaxShowCount, count);
+        subMinimumWidth = custom.getDimensionPixelOffset(
+                R.styleable.FloatingActionMode_floatingActionModeSubItemMinimumWidth,
+                subMinimumWidth);
         custom.recycle();
-        setItemMinimumWidth(overflowMinimumWidth);
+        setItemMinimumWidth(subMinimumWidth);
         mMaxHeight = (int) (mCalculator.getSize() * count);
-
-        setBackgroundColor(0xff00ff00);
     }
 
-    void setTopSpace(int space) {
-        mTopSpace = space;
-        setPadding(0, space, 0, 0);
-    }
-
-    int setData(FloatingMenuImpl menu) {
+    int setData(FloatingSubMenu menu) {
         mAdapter.clear();
         int itemMaxWidth = Integer.MIN_VALUE;
-        while (menu.hasMoreMenu()) {
-            final FloatingMenuItem item = menu.pullItemOut();
+        final int count = menu.size();
+        for (int i = 0; i < count; i++) {
+            final FloatingMenuItem item = menu.getItem(i);
             if (item == null)
                 continue;
             mCalculator.setData(item);
@@ -77,7 +71,12 @@ final class OverflowListView extends MenuListView {
         return itemMaxWidth;
     }
 
+    void clear() {
+        mAdapter.clear();
+        mAdapter.notifyDataSetChanged();
+    }
+
     int getMaxHeight() {
-        return mMaxHeight + mTopSpace;
+        return mMaxHeight;
     }
 }

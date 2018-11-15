@@ -21,7 +21,6 @@ public final class FloatingActionModeImpl implements View.OnLayoutChangeListener
     private final Rect tRect = new Rect();
     private final ViewManager mView;
     private View mTarget;
-    private int mLocation = FloatingActionMode.LOCATION_BELOW_PRIORITY;
     private boolean mClippingEnabled;
     private boolean mLayoutInScreen;
     private boolean mStarted;
@@ -43,10 +42,23 @@ public final class FloatingActionModeImpl implements View.OnLayoutChangeListener
     }
 
     public void setLocation(int location) {
-        if (mLocation == location)
-            return;
-        mLocation = location;
-        invalidateContentRect();
+        if (mView.setLocation(location)) {
+            if (!mStarted)
+                return;
+            if (mFinished)
+                return;
+            invalidateContentRect();
+        }
+    }
+
+    public void setForceForward(boolean force) {
+        if (mView.setForceForward(force)) {
+            if (!mStarted)
+                return;
+            if (mFinished)
+                return;
+            invalidateContentRect();
+        }
     }
 
     public boolean isClippingEnabled() {
@@ -57,6 +69,10 @@ public final class FloatingActionModeImpl implements View.OnLayoutChangeListener
         if (mClippingEnabled == enabled)
             return;
         mClippingEnabled = enabled;
+        if (!mStarted)
+            return;
+        if (mFinished)
+            return;
         invalidateContentRect();
     }
 
@@ -68,6 +84,10 @@ public final class FloatingActionModeImpl implements View.OnLayoutChangeListener
         if (mLayoutInScreen == enabled)
             return;
         mLayoutInScreen = enabled;
+        if (!mStarted)
+            return;
+        if (mFinished)
+            return;
         invalidateContentRect();
     }
 

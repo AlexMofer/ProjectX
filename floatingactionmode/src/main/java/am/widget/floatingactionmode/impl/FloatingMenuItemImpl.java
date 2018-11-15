@@ -125,13 +125,13 @@ class FloatingMenuItemImpl implements FloatingMenuItem {
 
     @Override
     public FloatingSubMenu setSubMenu() {
-        mSubMenu = new FloatingSubMenuCommonImpl(mContext);
+        mSubMenu = new FloatingSubMenuCommonImpl(mContext, mTitle);
         return mSubMenu;
     }
 
     @Override
     public FloatingSubMenu setSubMenu(View custom) {
-        mSubMenu = new FloatingSubMenuCustomImpl();
+        mSubMenu = new FloatingSubMenuCustomImpl(mContext, mTitle);
         return mSubMenu.setCustomView(custom);
     }
 }

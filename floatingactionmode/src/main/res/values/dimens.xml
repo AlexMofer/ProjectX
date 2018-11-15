@@ -12,4 +12,9 @@
     <dimen name="floatingActionModeItemIconWidth">24dp</dimen>
     <dimen name="floatingActionModeItemTextPaddingIcon">11dp</dimen>
     <dimen name="floatingActionModeItemTextSize">14sp</dimen>
+    <dimen name="floatingActionModeOverflowItemMinimumWidth">48dp</dimen>
+    <item name="floatingActionModeOverflowItemMaxShowCount" format="float" type="dimen">4.5</item>
+    <dimen name="floatingActionModeSubItemMinimumWidth">120dp</dimen>
+    <item name="floatingActionModeSubItemMaxShowCount" format="float" type="dimen">4.5</item>
+    <dimen name="floatingActionModeSubTitleTextSize">12sp</dimen>
 </resources>

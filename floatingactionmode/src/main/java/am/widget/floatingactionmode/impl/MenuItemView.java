@@ -43,12 +43,12 @@ final class MenuItemView extends LinearLayout {
     private final ImageView mIcon;
     private final TextView mText;
     private final int mPaddingText;
+    private final int mSize;
     private boolean mFirst = false;
     private boolean mLast = false;
 
     MenuItemView(Context context) {
         super(context);
-
         final Resources resources = context.getResources();
         int size = resources.getDimensionPixelOffset(R.dimen.floatingActionModeItemSize);
         int padding = resources.getDimensionPixelOffset(R.dimen.floatingActionModeItemPadding);
@@ -102,6 +102,7 @@ final class MenuItemView extends LinearLayout {
         mPadding = padding;
         mPaddingEdge = paddingEdge;
         mPaddingText = paddingText;
+        mSize = size;
         updatePadding();
 
         mIcon = new ImageView(context);
@@ -198,6 +199,10 @@ final class MenuItemView extends LinearLayout {
             return;
         mLast = last;
         updatePadding();
+    }
+
+    int getSize() {
+        return mSize;
     }
 
     private void updatePadding() {

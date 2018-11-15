@@ -16,4 +16,11 @@
     <public name="floatingActionModeItemTextAppearance" type="attr" />
     <public name="floatingActionModeItemTextColor" type="attr" />
     <public name="floatingActionModeItemTextSize" type="attr" />
+    <public name="floatingActionModeOverflowItemMinimumWidth" type="attr" />
+    <public name="floatingActionModeOverflowItemMaxShowCount" type="attr" />
+    <public name="floatingActionModeSubItemMinimumWidth" type="attr" />
+    <public name="floatingActionModeSubItemMaxShowCount" type="attr" />
+    <public name="floatingActionModeSubTitleTextAppearance" type="attr" />
+    <public name="floatingActionModeSubTitleTextColor" type="attr" />
+    <public name="floatingActionModeSubTitleTextSize" type="attr" />
 </resources>

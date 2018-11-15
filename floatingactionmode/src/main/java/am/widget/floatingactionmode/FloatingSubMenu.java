@@ -23,9 +23,22 @@ import android.view.View;
  */
 public interface FloatingSubMenu extends FloatingMenu {
 
+    FloatingSubMenu setTitle(CharSequence title);
+
+    CharSequence getTitle();
+
+    FloatingSubMenu setTitle(int title);
+
     boolean isCustomMenu();
 
     View getCustomView();
 
     FloatingSubMenu setCustomView(View view);
+
+    interface OnAttachStateChangeListener {
+
+        void onViewAttachedToFloatingActionMode(FloatingActionMode mode);
+
+        void onViewDetachedFromFloatingActionMode(FloatingActionMode mode);
+    }
 }

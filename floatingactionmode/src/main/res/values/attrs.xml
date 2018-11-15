@@ -17,5 +17,12 @@
         <attr name="floatingActionModeItemTextAppearance" format="reference" />
         <attr name="floatingActionModeItemTextColor" format="color" />
         <attr name="floatingActionModeItemTextSize" format="dimension" />
+        <attr name="floatingActionModeOverflowItemMinimumWidth" format="dimension" />
+        <attr name="floatingActionModeOverflowItemMaxShowCount" format="float" />
+        <attr name="floatingActionModeSubItemMinimumWidth" format="dimension" />
+        <attr name="floatingActionModeSubItemMaxShowCount" format="float" />
+        <attr name="floatingActionModeSubTitleTextAppearance" format="reference" />
+        <attr name="floatingActionModeSubTitleTextColor" format="color" />
+        <attr name="floatingActionModeSubTitleTextSize" format="dimension" />
     </declare-styleable>
 </resources>

@@ -14,10 +14,29 @@ import am.widget.floatingactionmode.FloatingSubMenu;
 final class FloatingSubMenuCommonImpl implements FloatingSubMenu {
 
     private final Context mContext;
+    private CharSequence mTitle;
     private final ArrayList<FloatingMenuItem> mItems = new ArrayList<>();
 
-    FloatingSubMenuCommonImpl(Context context) {
+    FloatingSubMenuCommonImpl(Context context, CharSequence title) {
         mContext = context;
+        mTitle = title;
+    }
+
+    @Override
+    public FloatingSubMenu setTitle(CharSequence title) {
+        mTitle = title;
+        return this;
+    }
+
+    @Override
+    public FloatingSubMenu setTitle(int title) {
+        mTitle = mContext.getString(title);
+        return this;
+    }
+
+    @Override
+    public CharSequence getTitle() {
+        return mTitle;
     }
 
     @Override

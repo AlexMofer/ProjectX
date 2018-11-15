@@ -1,5 +1,6 @@
 package am.widget.floatingactionmode.impl;
 
+import android.content.Context;
 import android.view.View;
 
 import am.widget.floatingactionmode.FloatingMenuItem;
@@ -10,7 +11,31 @@ import am.widget.floatingactionmode.FloatingSubMenu;
  */
 final class FloatingSubMenuCustomImpl implements FloatingSubMenu {
 
+    private final Context mContext;
+    private CharSequence mTitle;
     private View mView;
+
+    FloatingSubMenuCustomImpl(Context context, CharSequence title) {
+        mContext = context;
+        mTitle = title;
+    }
+
+    @Override
+    public FloatingSubMenu setTitle(CharSequence title) {
+        mTitle = title;
+        return this;
+    }
+
+    @Override
+    public FloatingSubMenu setTitle(int title) {
+        mTitle = mContext.getString(title);
+        return this;
+    }
+
+    @Override
+    public CharSequence getTitle() {
+        return mTitle;
+    }
 
     @Override
     public FloatingMenuItem add(CharSequence title) {

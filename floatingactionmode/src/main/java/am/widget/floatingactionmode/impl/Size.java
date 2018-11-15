@@ -8,6 +8,9 @@ import android.os.Parcelable;
  * Created by Xiang Zhicheng on 2018/11/14.
  */
 final class Size implements Parcelable {
+    public int width;
+    public int height;
+
     public static final Parcelable.Creator<Point> CREATOR = new Parcelable.Creator<Point>() {
         /**
          * Return a new point from the data in the specified parcel.
@@ -25,11 +28,6 @@ final class Size implements Parcelable {
             return new Point[size];
         }
     };
-    public int width;
-    public int height;
-
-    public Size() {
-    }
 
     public Size(int width, int height) {
         this.width = width;
@@ -104,6 +102,9 @@ final class Size implements Parcelable {
     public void writeToParcel(Parcel out, int flags) {
         out.writeInt(width);
         out.writeInt(height);
+    }
+
+    public Size() {
     }
 
     public void readFromParcel(Parcel in) {

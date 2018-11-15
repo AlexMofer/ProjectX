@@ -76,8 +76,8 @@ final class OverflowButton extends FrameLayout {
         mArrow = resources.getDrawable(R.drawable.fam_avd_tooverflow);
         mOverflow = resources.getDrawable(R.drawable.fam_avd_toarrow);
         if (Build.VERSION.SDK_INT >= 21) {
-            mToArrow = resources.getDrawable(R.drawable.fam_avd_toarrow_animation);
-            mToOverflow = resources.getDrawable(R.drawable.fam_avd_tooverflow_animation);
+            mToArrow = context.getDrawable(R.drawable.fam_avd_toarrow_animation);
+            mToOverflow = context.getDrawable(R.drawable.fam_avd_tooverflow_animation);
         } else {
             mToArrow = null;
             mToOverflow = null;

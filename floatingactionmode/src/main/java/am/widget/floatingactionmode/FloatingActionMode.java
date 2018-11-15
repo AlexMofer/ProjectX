@@ -58,6 +58,10 @@ public class FloatingActionMode {
         mImpl.setLocation(location);
     }
 
+    public void setForceForward(boolean force) {
+        mImpl.setForceForward(force);
+    }
+
     public boolean isClippingEnabled() {
         return mImpl.isClippingEnabled();
     }
