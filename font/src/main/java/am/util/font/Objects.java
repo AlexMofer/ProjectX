@@ -15,6 +15,8 @@
  */
 package am.util.font;
 
+import android.os.Build;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,6 +38,9 @@ final class Objects {
      * @see Object#equals(Object)
      */
     static boolean equals(Object a, Object b) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            return java.util.Objects.equals(a, b);
+        }
         return (a == b) || (a != null && a.equals(b));
     }
 
@@ -57,16 +62,17 @@ final class Objects {
      * </pre></blockquote>
      *
      * <b>Warning: When a single object reference is supplied, the returned
-     * value does not equal the hash code of that object reference.</b> This
-     * value can be computed by calling {@link #hashCode(Object)}.
+     * value does not equal the hash code of that object reference.</b>
      *
      * @param values the values to be hashed
      * @return a hash value of the sequence of input values
      * @see Arrays#hashCode(Object[])
      * @see List#hashCode
      */
-    @SuppressWarnings("JavadocReference")
     static int hash(Object... values) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            return java.util.Objects.hash(values);
+        }
         return Arrays.hashCode(values);
     }
 }
