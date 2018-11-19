@@ -1,6 +1,7 @@
 package am.widget.floatingactionmode.impl;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 
@@ -99,5 +100,21 @@ final class FloatingMenuImpl implements FloatingMenu {
 
     void pushItemBack(FloatingMenuItem item) {
         mNeedShow.add(0, item);
+    }
+
+    FloatingMenuItem getSubItem(FloatingMenuItem saved) {
+        if (saved == null)
+            return null;
+        final int id = saved.getItemId();
+        final int order = saved.getOrder();
+        final CharSequence title = saved.getTitle();
+        for (FloatingMenuItem item : mItems) {
+            if (item == null)
+                continue;
+            if (id == item.getItemId() && order == item.getOrder() &&
+                    TextUtils.equals(title, item.getTitle()))
+                return item;
+        }
+        return null;
     }
 }

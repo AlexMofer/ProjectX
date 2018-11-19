@@ -21,8 +21,9 @@ public final class FloatingActionModeImpl implements View.OnLayoutChangeListener
     private final Rect tRect = new Rect();
     private final ViewManager mView;
     private View mTarget;
-    private boolean mClippingEnabled;
+    private boolean mLayoutNoLimits;
     private boolean mLayoutInScreen;
+    private boolean mLayoutInsetDecor;
     private boolean mStarted;
     private boolean mFinished;
     private boolean mHidden;
@@ -34,7 +35,7 @@ public final class FloatingActionModeImpl implements View.OnLayoutChangeListener
         mCallback = callback;
         final Context context = target.getContext();
         mMenu = new FloatingMenuImpl(target.getContext());
-        mView = new ViewManager(context, themeResId, mode, callback);
+        mView = new ViewManager(context, themeResId, mode, mMenu, callback);
         final View root = mTarget.getRootView();
         root.addOnLayoutChangeListener(this);
         root.addOnAttachStateChangeListener(this);
@@ -51,24 +52,14 @@ public final class FloatingActionModeImpl implements View.OnLayoutChangeListener
         }
     }
 
-    public void setForceForward(boolean force) {
-        if (mView.setForceForward(force)) {
-            if (!mStarted)
-                return;
-            if (mFinished)
-                return;
-            invalidateContentRect();
-        }
+    public boolean isLayoutNoLimitsEnabled() {
+        return mLayoutNoLimits;
     }
 
-    public boolean isClippingEnabled() {
-        return mClippingEnabled;
-    }
-
-    public void setClippingEnabled(boolean enabled) {
-        if (mClippingEnabled == enabled)
+    public void setLayoutNoLimitsEnabled(boolean enabled) {
+        if (mLayoutNoLimits == enabled)
             return;
-        mClippingEnabled = enabled;
+        mLayoutNoLimits = enabled;
         if (!mStarted)
             return;
         if (mFinished)
@@ -84,6 +75,21 @@ public final class FloatingActionModeImpl implements View.OnLayoutChangeListener
         if (mLayoutInScreen == enabled)
             return;
         mLayoutInScreen = enabled;
+        if (!mStarted)
+            return;
+        if (mFinished)
+            return;
+        invalidateContentRect();
+    }
+
+    public boolean isLayoutInsetDecorEnabled() {
+        return mLayoutInsetDecor;
+    }
+
+    public void setLayoutInsetDecorEnabled(boolean enabled) {
+        if (mLayoutInsetDecor == enabled)
+            return;
+        mLayoutInsetDecor = enabled;
         if (!mStarted)
             return;
         if (mFinished)

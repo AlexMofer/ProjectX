@@ -47,6 +47,7 @@ final class SubLayout extends LinearLayout {
     private final int mListMaxHeight;
     private final LayoutParams mParams;
     private View mCustom;
+    private boolean mBind = false;
 
     SubLayout(Context context) {
         super(context);
@@ -84,83 +85,47 @@ final class SubLayout extends LinearLayout {
         mTitle.setSingleLine();
         mTitle.setTextColor(textColor);
         mTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+        mTitle.setMinimumHeight(size);
         mTitle.setPadding(size, 0, size, 0);
         if (Build.VERSION.SDK_INT >= 16)
             mTitle.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
-        mTitle.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, size));
+        mTitle.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
         mList = new SubListView(context);
         mListMaxHeight = mList.getMaxHeight();
         mParams = new LayoutParams(LayoutParams.MATCH_PARENT, 0);
         mParams.weight = 1;
     }
 
-    boolean calculateMaxSize(FloatingMenuImpl menu, Size size, int maxWidth, int maxHeight) {
-        size.width = size.height = 0;
-        int maxItemWidth = 0;
-        int maxItemHeight = 0;
+    boolean hasSubMenu(FloatingMenuImpl menu) {
         final int count = menu.size();
-        boolean hasSubMenu = false;
         for (int i = 0; i < count; i++) {
             final FloatingMenuItem item = menu.getItem(i);
             if (!item.hasSubMenu())
                 continue;
-            hasSubMenu = true;
-            final FloatingSubMenu sub = item.getSubMenu();
-            mTitle.setText(sub.getTitle());
-            mTitle.measure(View.MeasureSpec.makeMeasureSpec(maxWidth, View.MeasureSpec.AT_MOST),
-                    View.MeasureSpec.makeMeasureSpec(maxHeight, View.MeasureSpec.AT_MOST));
-            maxItemWidth = Math.max(maxItemWidth, mTitle.getMeasuredWidth());
-            maxItemHeight = Math.max(maxItemHeight, mTitle.getMeasuredHeight());
-            if (sub.isCustomMenu()) {
-                // 自定义
-                final View custom = sub.getCustomView();
-                custom.measure(
-                        View.MeasureSpec.makeMeasureSpec(maxWidth, View.MeasureSpec.AT_MOST),
-                        View.MeasureSpec.makeMeasureSpec(maxHeight, View.MeasureSpec.AT_MOST));
-                maxItemWidth = Math.max(maxItemWidth, custom.getMeasuredWidth());
-                maxItemHeight = Math.max(maxItemHeight, custom.getMeasuredHeight());
-            } else {
-                final int listMaxWidth = mList.setData(sub);
-                mList.measure(
-                        View.MeasureSpec.makeMeasureSpec(listMaxWidth, View.MeasureSpec.AT_MOST),
-                        View.MeasureSpec.makeMeasureSpec(mListMaxHeight, View.MeasureSpec.AT_MOST));
-                maxItemWidth = Math.max(maxItemWidth, mList.getMeasuredWidth());
-                maxItemHeight = Math.max(maxItemHeight, mList.getMeasuredHeight());
-                mList.clear();
-            }
+            return true;
         }
-        size.set(maxItemWidth, maxItemHeight);
-        return hasSubMenu;
+        return false;
     }
 
     void setData(FloatingMenuItem item, int maxWidth, int maxHeight, Size size,
-                 FloatingActionMode mode, boolean reverse) {
+                 FloatingActionMode mode) {
         removeAllViews();
-        int width = 0;
+        int width;
         int height;
         final FloatingSubMenu sub = item.getSubMenu();
         mTitle.setText(sub.getTitle());
         mTitle.measure(View.MeasureSpec.makeMeasureSpec(maxWidth, View.MeasureSpec.AT_MOST),
                 View.MeasureSpec.makeMeasureSpec(maxHeight, View.MeasureSpec.AT_MOST));
-        width = Math.max(width, mTitle.getMeasuredWidth());
-        height = mTitle.getMeasuredHeight();
+        final int titleWidth = mTitle.getMeasuredWidth();
+        final int titleHeight = mTitle.getMeasuredHeight();
         if (sub.isCustomMenu()) {
             final View custom = sub.getCustomView();
-            final ViewParent parent = custom.getParent();
-            if (parent instanceof ViewGroup)
-                ((ViewGroup) parent).removeView(custom);
             custom.measure(
                     View.MeasureSpec.makeMeasureSpec(maxWidth, View.MeasureSpec.AT_MOST),
                     View.MeasureSpec.makeMeasureSpec(maxHeight, View.MeasureSpec.AT_MOST));
-            width = Math.max(width, custom.getMeasuredWidth());
-            height = height + custom.getMeasuredHeight();
-            if (reverse) {
-                addView(custom, mParams);
-                addView(mTitle);
-            } else {
-                addView(mTitle);
-                addView(custom, mParams);
-            }
+            width = Math.max(titleWidth, custom.getMeasuredWidth());
+            height = titleHeight + custom.getMeasuredHeight();
             mCustom = custom;
             if (custom instanceof FloatingSubMenu.OnAttachStateChangeListener)
                 ((FloatingSubMenu.OnAttachStateChangeListener) custom)
@@ -170,8 +135,29 @@ final class SubLayout extends LinearLayout {
             mList.measure(
                     View.MeasureSpec.makeMeasureSpec(listMaxWidth, View.MeasureSpec.AT_MOST),
                     View.MeasureSpec.makeMeasureSpec(mListMaxHeight, View.MeasureSpec.AT_MOST));
-            width = Math.max(width, mList.getMeasuredWidth());
-            height = height + mList.getMeasuredHeight();
+            width = Math.max(titleWidth, mList.getMeasuredWidth());
+            height = titleHeight + mList.getMeasuredHeight();
+            mCustom = null;
+        }
+        size.set(width, height);
+        mBind = true;
+    }
+
+    void clear(FloatingActionMode mode) {
+        mBind = false;
+        removeAllViews();
+        mTitle.setText(null);
+        mList.clear();
+        if (mCustom instanceof FloatingSubMenu.OnAttachStateChangeListener)
+            ((FloatingSubMenu.OnAttachStateChangeListener) mCustom)
+                    .onViewDetachedFromFloatingActionMode(mode);
+        mCustom = null;
+    }
+
+    void setReverse(boolean reverse) {
+        if (!mBind)
+            return;
+        if (mCustom == null) {
             if (reverse) {
                 addView(mList, mParams);
                 addView(mTitle);
@@ -179,18 +165,22 @@ final class SubLayout extends LinearLayout {
                 addView(mTitle);
                 addView(mList, mParams);
             }
-            mCustom = null;
+        } else {
+            final ViewParent parent = mCustom.getParent();
+            if (parent instanceof ViewGroup)
+                ((ViewGroup) parent).removeView(mCustom);
+            if (reverse) {
+                addView(mCustom, mParams);
+                addView(mTitle);
+            } else {
+                addView(mTitle);
+                addView(mCustom, mParams);
+            }
         }
-        size.set(width, height);
     }
 
-    void clear(FloatingActionMode mode) {
-        removeAllViews();
-        mTitle.setText(null);
-        if (mCustom instanceof FloatingSubMenu.OnAttachStateChangeListener)
-            ((FloatingSubMenu.OnAttachStateChangeListener) mCustom)
-                    .onViewDetachedFromFloatingActionMode(mode);
-        mCustom = null;
+    boolean isBind() {
+        return mBind;
     }
 
     void awakenScrollBar() {

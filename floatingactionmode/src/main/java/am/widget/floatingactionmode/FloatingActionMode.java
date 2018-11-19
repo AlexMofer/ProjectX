@@ -58,16 +58,12 @@ public class FloatingActionMode {
         mImpl.setLocation(location);
     }
 
-    public void setForceForward(boolean force) {
-        mImpl.setForceForward(force);
+    public boolean isLayoutNoLimitsEnabled() {
+        return mImpl.isLayoutNoLimitsEnabled();
     }
 
-    public boolean isClippingEnabled() {
-        return mImpl.isClippingEnabled();
-    }
-
-    public void setClippingEnabled(boolean enabled) {
-        mImpl.setClippingEnabled(enabled);
+    public void setLayoutNoLimitsEnabled(boolean enabled) {
+        mImpl.setLayoutNoLimitsEnabled(enabled);
     }
 
     public boolean isLayoutInScreenEnabled() {
@@ -76,6 +72,14 @@ public class FloatingActionMode {
 
     public void setLayoutInScreenEnabled(boolean enabled) {
         mImpl.setLayoutInScreenEnabled(enabled);
+    }
+
+    public boolean isLayoutInsetDecorEnabled() {
+        return mImpl.isLayoutInsetDecorEnabled();
+    }
+
+    public void setLayoutInsetDecorEnabled(boolean enabled) {
+        mImpl.setLayoutInsetDecorEnabled(enabled);
     }
 
     public void start() {

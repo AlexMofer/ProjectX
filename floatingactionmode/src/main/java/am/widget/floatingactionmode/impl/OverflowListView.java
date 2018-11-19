@@ -31,7 +31,8 @@ import am.widget.floatingactionmode.R;
 final class OverflowListView extends MenuListView {
 
     private final int mMaxHeight;
-    private int mTopSpace;
+    private int mPaddingSpace;
+    private boolean mReverse;
 
     OverflowListView(Context context) {
         super(context);
@@ -51,13 +52,14 @@ final class OverflowListView extends MenuListView {
         custom.recycle();
         setItemMinimumWidth(overflowMinimumWidth);
         mMaxHeight = (int) (mCalculator.getSize() * count);
-
-        setBackgroundColor(0xff00ff00);
     }
 
-    void setTopSpace(int space) {
-        mTopSpace = space;
-        setPadding(0, space, 0, 0);
+    void setPaddingSpace(int space) {
+        mPaddingSpace = space;
+        if (mReverse)
+            setPadding(0, 0, 0, mPaddingSpace);
+        else
+            setPadding(0, mPaddingSpace, 0, 0);
     }
 
     int setData(FloatingMenuImpl menu) {
@@ -78,6 +80,25 @@ final class OverflowListView extends MenuListView {
     }
 
     int getMaxHeight() {
-        return mMaxHeight + mTopSpace;
+        return mMaxHeight + mPaddingSpace;
+    }
+
+    boolean isReverse() {
+        return mReverse;
+    }
+
+    void setReverse(boolean reverse) {
+        if (mReverse == reverse)
+            return;
+        mReverse = reverse;
+        if (mReverse)
+            setPadding(0, 0, 0, mPaddingSpace);
+        else
+            setPadding(0, mPaddingSpace, 0, 0);
+    }
+
+    void clear() {
+        mAdapter.clear();
+        mAdapter.notifyDataSetChanged();
     }
 }

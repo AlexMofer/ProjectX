@@ -23,4 +23,5 @@
     <public name="floatingActionModeSubTitleTextAppearance" type="attr" />
     <public name="floatingActionModeSubTitleTextColor" type="attr" />
     <public name="floatingActionModeSubTitleTextSize" type="attr" />
+    <public name="floatingActionModeAnimationInterpolator" type="attr" />
 </resources>
