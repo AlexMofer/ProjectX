@@ -2,11 +2,13 @@ package am.widget.floatingactionmode.impl;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
@@ -19,7 +21,8 @@ import am.widget.floatingactionmode.R;
 /**
  * Created by Xiang Zhicheng on 2018/11/13.
  */
-final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnimationListener {
+final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnimationListener,
+        MainLayout.OnMainListener, OverflowListView.OnOverflowListener, SubLayout.OnSubListener {
     private static final int TYPE_MAIN = 0;
     private static final int TYPE_OVERFLOW = 1;
     private static final int TYPE_SUB = 2;
@@ -29,17 +32,17 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
     private final WindowManager mManager;
     private final int mMargin;
     private final WindowParam mWindowParam = new WindowParam();
-    private final Size mContentMaxSize = new Size();
     private final Point mMainButtonLocation = new Point();
+    private final Size mContentMaxSize = new Size();
 
     private final AnimationLayout mAnimation;
     private final WindowManager.LayoutParams mAnimationParams = new WindowManager.LayoutParams();
 
     private final OverflowButton mButton;
     private final WindowManager.LayoutParams mButtonParams = new WindowManager.LayoutParams();
+    private final Size mMainSize = new Size();
     private final Point mOverflowButtonLocation = new Point();
     private final Point mSubButtonLocation = new Point();
-    private final Size mMainSize = new Size();
 
     private final MainLayout mMain;
     private final WindowManager.LayoutParams mMainParams = new WindowManager.LayoutParams();
@@ -48,8 +51,8 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
 
     private final OverflowListView mOverflow;
     private final WindowManager.LayoutParams mOverflowParams = new WindowManager.LayoutParams();
-    private final Point mOverflowLocation = new Point();
     private final Point mSubLocation = new Point();
+    private final Point mOverflowLocation = new Point();
     private int mLocation = FloatingActionMode.LOCATION_BELOW_PRIORITY;
 
     private final SubLayout mSub;
@@ -57,12 +60,15 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
     private final Size mSubSize = new Size();
     private boolean mHasOverflow;
     private boolean mHasSub;
+
     private float mBaseLineX;
     private int mBaseLineY;
     private boolean mBelow;
 
     private int mType = TYPE_MAIN;
     private FloatingMenuItem mSubMenuItem;
+    private int mPreviousType = TYPE_MAIN;
+    private int mWindowAnimations;
 
     ViewManager(Context context, int themeResId, FloatingActionMode mode, FloatingMenuImpl menu,
                 FloatingActionMode.Callback callback) {
@@ -72,12 +78,20 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
         context = new ContextThemeWrapper(context, themeResId);
         mManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 
-        int margin = context.getResources().getDimensionPixelOffset(
+        final Resources resources = context.getResources();
+        int margin = resources.getDimensionPixelOffset(
                 R.dimen.floatingActionModeMargin);
+        final TypedValue value = new TypedValue();
+        resources.getValue(R.style.floatingActionModeWindowAnimations, value,
+                true);
+        mWindowAnimations = value.resourceId;
         @SuppressLint("CustomViewStyleable") final TypedArray custom =
                 context.obtainStyledAttributes(R.styleable.FloatingActionMode);
         margin = custom.getDimensionPixelOffset(
                 R.styleable.FloatingActionMode_floatingActionModeMargin, margin);
+        mWindowAnimations = custom.getResourceId(
+                R.styleable.FloatingActionMode_floatingActionModeWindowAnimations,
+                mWindowAnimations);
         custom.recycle();
         mMargin = margin;
 
@@ -89,24 +103,33 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
         mAnimationParams.flags = computeFlags(mAnimationParams.flags, false,
                 true, false, false);
 
+        final float radius = mAnimation.getCornerRadius();
+
         mButton = new OverflowButton(context);
+        mButton.setCornerRadius(radius);
         mButton.setOnClickListener(this);
         mButtonParams.format = PixelFormat.TRANSPARENT;
         mButtonParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_SUB_PANEL;
         mButtonParams.gravity = Gravity.START | Gravity.TOP;
 
         mMain = new MainLayout(context);
+        mMain.setCornerRadius(radius);
+        mMain.setOnMainListener(this);
         mMainParams.format = PixelFormat.TRANSPARENT;
         mMainParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_SUB_PANEL;
         mMainParams.gravity = Gravity.START | Gravity.TOP;
 
         mOverflow = new OverflowListView(context);
         mOverflow.setPaddingSpace(mButton.getSize());
+        mOverflow.setCornerRadius(radius);
+        mOverflow.setOnOverflowListener(this);
         mOverflowParams.format = PixelFormat.TRANSPARENT;
         mOverflowParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_SUB_PANEL;
         mOverflowParams.gravity = Gravity.START | Gravity.TOP;
 
         mSub = new SubLayout(context);
+        mSub.setCornerRadius(radius);
+        mSub.setOnSubListener(this);
         mSubParams.format = PixelFormat.TRANSPARENT;
         mSubParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_SUB_PANEL;
         mSubParams.gravity = Gravity.START | Gravity.TOP;
@@ -162,15 +185,21 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
         FloatingMenuItem item = null;
         if (mType == TYPE_SUB) {
             item = mMenu.getSubItem(mSubMenuItem);
-            if (item == null)
+            if (item == null) {
+                mPreviousType = TYPE_SUB;
                 mType = TYPE_MAIN;
+            }
         }
         if (mType == TYPE_MAIN) {
             setMain(layoutNoLimits, layoutInScreen, layoutInsetDecor);
         } else if (mType == TYPE_OVERFLOW) {
             setOverflow(layoutNoLimits, layoutInScreen, layoutInsetDecor);
         } else if (mType == TYPE_SUB) {
-            setSub(item, layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            mSub.setData(item, mContentMaxSize.width, mContentMaxSize.height,
+                    mSubSize, mMode);
+            getSubLayoutParams(layoutNoLimits);
+            setSub(layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            mSubMenuItem = item;
         }
         if (mMode.isHidden())
             hide();
@@ -267,6 +296,7 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
         mMainLocation.y = Math.max(Math.min(mMainLocation.y, maxY), minY);
         mMainParams.x = mMainLocation.x;
         mMainParams.y = mMainLocation.y;
+        mMain.setCorner(!mHasOverflow);
     }
 
     private void getOverflowLayoutParams(boolean layoutNoLimits) {
@@ -393,7 +423,7 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
     }
 
     private void stopAllAnimation() {
-        // TODO
+        mAnimation.cancel();
     }
 
     private int computeFlags(int curFlags, boolean touchable, boolean layoutNoLimits,
@@ -428,7 +458,7 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
         final int right = mMainLocation.x + mMainSize.width + mButton.getSize()
                 - mAnimationParams.x;
         final int bottom = mMainLocation.y + mMainSize.height - mAnimationParams.y;
-        mAnimation.setBound(left, top, right, bottom);
+        mAnimation.setBound(left, top, right, bottom, false);
         mOverflowParams.flags = computeFlags(mOverflowParams.flags, false,
                 layoutNoLimits, layoutInScreen, layoutInsetDecor);
         mOverflow.setVisibility(View.INVISIBLE);
@@ -441,7 +471,9 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
             mButtonParams.flags = computeFlags(mButtonParams.flags, true,
                     layoutNoLimits, layoutInScreen, layoutInsetDecor);
             mButton.setOverflow(false);
+            mButton.setCorner(OverflowButton.TYPE_END);
             mButton.setVisibility(View.VISIBLE);
+            mButton.setAlpha(1);
         } else {
             mButtonParams.x = 0;
             mButtonParams.y = 0;
@@ -453,7 +485,7 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
         mMainParams.flags = computeFlags(mMainParams.flags, true,
                 layoutNoLimits, layoutInScreen, layoutInsetDecor);
         mMain.setVisibility(View.VISIBLE);
-        mType = TYPE_MAIN;
+        mMain.setAlpha(1);
     }
 
     private void setOverflow(boolean layoutNoLimits, boolean layoutInScreen, boolean
@@ -462,10 +494,11 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
         final int top = mOverflowLocation.y - mAnimationParams.y;
         final int right = mOverflowLocation.x + mOverflowSize.width - mAnimationParams.x;
         final int bottom = mOverflowLocation.y + mOverflowSize.height - mAnimationParams.y;
-        mAnimation.setBound(left, top, right, bottom);
+        mAnimation.setBound(left, top, right, bottom, false);
         mOverflowParams.flags = computeFlags(mOverflowParams.flags, true,
                 layoutNoLimits, layoutInScreen, layoutInsetDecor);
         mOverflow.setVisibility(View.VISIBLE);
+        mOverflow.setAlpha(1);
         mOverflow.awakenScrollBar();
         mSubParams.flags = computeFlags(mSubParams.flags, false,
                 layoutNoLimits, layoutInScreen, layoutInsetDecor);
@@ -475,41 +508,39 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
         mButtonParams.flags = computeFlags(mButtonParams.flags, true,
                 layoutNoLimits, layoutInScreen, layoutInsetDecor);
         mButton.setArrow(false);
+        mButton.setCorner(OverflowButton.TYPE_START);
         mButton.setVisibility(View.VISIBLE);
+        mButton.setAlpha(1);
         mMainParams.flags = computeFlags(mMainParams.flags, false,
                 layoutNoLimits, layoutInScreen, layoutInsetDecor);
         mMain.setVisibility(View.INVISIBLE);
-        mType = TYPE_OVERFLOW;
     }
 
-    private void setSub(FloatingMenuItem item,
-                        boolean layoutNoLimits, boolean layoutInScreen, boolean layoutInsetDecor) {
-        mSub.setData(mSubMenuItem, mContentMaxSize.width, mContentMaxSize.height,
-                mSubSize, mMode);
-        getSubLayoutParams(layoutNoLimits);
+    private void setSub(boolean layoutNoLimits, boolean layoutInScreen, boolean layoutInsetDecor) {
         final int left = mSubLocation.x - mAnimationParams.x;
         final int top = mSubLocation.y - mAnimationParams.y;
         final int right = mSubLocation.x + mSubSize.width - mAnimationParams.x;
         final int bottom = mSubLocation.y + mSubSize.height - mAnimationParams.y;
-        mAnimation.setBound(left, top, right, bottom);
+        mAnimation.setBound(left, top, right, bottom, false);
         mOverflowParams.flags = computeFlags(mOverflowParams.flags, false,
                 layoutNoLimits, layoutInScreen, layoutInsetDecor);
         mOverflow.setVisibility(View.INVISIBLE);
         mSubParams.flags = computeFlags(mSubParams.flags, true,
                 layoutNoLimits, layoutInScreen, layoutInsetDecor);
         mSub.setVisibility(View.VISIBLE);
+        mSub.setAlpha(1);
         mSub.awakenScrollBar();
         mButtonParams.x = mSubButtonLocation.x;
         mButtonParams.y = mSubButtonLocation.y;
         mButtonParams.flags = computeFlags(mButtonParams.flags, true,
                 layoutNoLimits, layoutInScreen, layoutInsetDecor);
         mButton.setArrow(false);
+        mButton.setCorner(OverflowButton.TYPE_START);
         mButton.setVisibility(View.VISIBLE);
+        mButton.setAlpha(1);
         mMainParams.flags = computeFlags(mMainParams.flags, false,
                 layoutNoLimits, layoutInScreen, layoutInsetDecor);
         mMain.setVisibility(View.INVISIBLE);
-        mType = TYPE_SUB;
-        mSubMenuItem = item;
     }
 
     void updateViewLayout() {
@@ -521,6 +552,9 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
     }
 
     void addView() {
+        mAnimationParams.windowAnimations = mButtonParams.windowAnimations =
+                mMainParams.windowAnimations = mOverflowParams.windowAnimations =
+                        mSubParams.windowAnimations = mWindowAnimations;
         mManager.addView(mAnimation, mAnimationParams);
         mManager.addView(mOverflow, mOverflowParams);
         mManager.addView(mSub, mSubParams);
@@ -538,6 +572,11 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
             mOverflow.clear();
             mSub.clear(mMode);
         } else {
+            stopAllAnimation();
+            mAnimationParams.windowAnimations = mButtonParams.windowAnimations =
+                    mMainParams.windowAnimations = mOverflowParams.windowAnimations =
+                            mSubParams.windowAnimations = mWindowAnimations;
+            updateViewLayout();
             mManager.removeView(mAnimation);
             mManager.removeView(mOverflow);
             mManager.removeView(mSub);
@@ -577,6 +616,8 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
             item = mMenu.getSubItem(mSubMenuItem);
             if (item == null) {
                 setMain(layoutNoLimits, layoutInScreen, layoutInsetDecor);
+                mPreviousType = TYPE_SUB;
+                mType = TYPE_MAIN;
                 updateViewLayout();
                 return;
             }
@@ -586,14 +627,33 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
         } else if (mType == TYPE_OVERFLOW) {
             setOverflow(layoutNoLimits, layoutInScreen, layoutInsetDecor);
         } else if (mType == TYPE_SUB) {
-            setSub(item, layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            mSub.setData(item, mContentMaxSize.width, mContentMaxSize.height,
+                    mSubSize, mMode);
+            getSubLayoutParams(layoutNoLimits);
+            setSub(layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            mSubMenuItem = item;
         }
         updateViewLayout();
     }
 
 
     void performActionItemClicked(FloatingMenuItem item) {
-        // TODO
+        if (item == null)
+            return;
+        if (mCallback.onActionItemClicked(mMode, item))
+            return;
+        if (item.hasSubMenu()) {
+            mSub.setData(item, mContentMaxSize.width, mContentMaxSize.height, mSubSize, mMode);
+            getSubLayoutParams(mMode.isLayoutNoLimitsEnabled());
+            final int left = mSubLocation.x - mAnimationParams.x;
+            final int top = mSubLocation.y - mAnimationParams.y;
+            final int right = mSubLocation.x + mSubSize.width - mAnimationParams.x;
+            final int bottom = mSubLocation.y + mSubSize.height - mAnimationParams.y;
+            mAnimation.setBound(left, top, right, bottom, true);
+            mPreviousType = mType;
+            mType = TYPE_SUB;
+            mSubMenuItem = item;
+        }
     }
 
     void backToMain(boolean animate) {
@@ -602,19 +662,19 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
         if (!animate) {
             setMain(mMode.isLayoutNoLimitsEnabled(), mMode.isLayoutInScreenEnabled(),
                     mMode.isLayoutInsetDecorEnabled());
+            mPreviousType = mType;
+            mType = TYPE_MAIN;
             updateViewLayout();
             return;
         }
-        if (mHasOverflow) {
-
-
-            mButton.setOverflow(true);
-
-
-            return;
-        }
-
-        // TODO
+        final int left = mMainLocation.x - mAnimationParams.x;
+        final int top = mMainLocation.y - mAnimationParams.y;
+        final int width = mHasOverflow ? mMainSize.width + mButton.getSize() : mMainSize.width;
+        final int right = mMainLocation.x + width - mAnimationParams.x;
+        final int bottom = mMainLocation.y + mMainSize.height - mAnimationParams.y;
+        mAnimation.setBound(left, top, right, bottom, true);
+        mPreviousType = mType;
+        mType = TYPE_MAIN;
     }
 
     void openOverflow(boolean animate) {
@@ -623,22 +683,18 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
         if (!animate) {
             setOverflow(mMode.isLayoutNoLimitsEnabled(), mMode.isLayoutInScreenEnabled(),
                     mMode.isLayoutInsetDecorEnabled());
+            mPreviousType = mType;
+            mType = TYPE_OVERFLOW;
             updateViewLayout();
             return;
         }
-
         final int left = mOverflowLocation.x - mAnimationParams.x;
         final int top = mOverflowLocation.y - mAnimationParams.y;
         final int right = mOverflowLocation.x + mOverflowSize.width - mAnimationParams.x;
         final int bottom = mOverflowLocation.y + mOverflowSize.height - mAnimationParams.y;
-        mAnimation.setBound(left, top, right, bottom, 4000);// TODO
-
-
-        mButton.setArrow(true);
-
-
-
-        // TODO
+        mAnimation.setBound(left, top, right, bottom, true);
+        mPreviousType = mType;
+        mType = TYPE_OVERFLOW;
     }
 
     // Listener
@@ -648,21 +704,380 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
             openOverflow(true);
         } else if (mType == TYPE_OVERFLOW) {
             backToMain(true);
+        } else if (mType == TYPE_SUB) {
+            if (mPreviousType == TYPE_MAIN)
+                backToMain(true);
+            else if (mPreviousType == TYPE_OVERFLOW)
+                openOverflow(true);
         }
     }
 
     @Override
     public void onAnimationStart() {
-        // TODO
+        mAnimationParams.windowAnimations = mButtonParams.windowAnimations =
+                mMainParams.windowAnimations = mOverflowParams.windowAnimations =
+                        mSubParams.windowAnimations = 0;
+        final boolean layoutNoLimits = mMode.isLayoutNoLimitsEnabled();
+        final boolean layoutInScreen = mMode.isLayoutInScreenEnabled();
+        final boolean layoutInsetDecor = mMode.isLayoutInsetDecorEnabled();
+        if (mPreviousType == TYPE_MAIN && mType == TYPE_OVERFLOW) {
+            mOverflowParams.flags = computeFlags(mOverflowParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            final int width = mMainSize.width + mButton.getSize();
+            int left = mMainLocation.x - mOverflowLocation.x;
+            int top = mMainLocation.y - mOverflowLocation.y;
+            mOverflow.setSwitchAnimate(left, top, left + width,
+                    top + mMainSize.height, true);
+
+            mOverflow.start();
+            mOverflow.setSwitchAnimateValue(0);
+            mOverflow.setVisibility(View.VISIBLE);
+            mButtonParams.x = mMainButtonLocation.x;
+            mButtonParams.y = mMainButtonLocation.y;
+            mButtonParams.flags = computeFlags(mButtonParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            mButton.setArrow(true);
+            mButton.setAlpha(1);
+            mButton.setCorner(OverflowButton.TYPE_END);
+            mButton.setVisibility(View.VISIBLE);
+            mMainParams.flags = computeFlags(mMainParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            left = mOverflowLocation.x - mMainLocation.x;
+            top = mOverflowLocation.y - mMainLocation.y;
+            mMain.setSwitchAnimate(left, top, left + mOverflowSize.width,
+                    top + mOverflowSize.height, false);
+            mMain.start();
+            mMain.setSwitchAnimateValue(0);
+            mMain.setVisibility(View.VISIBLE);
+            updateViewLayout();
+            return;
+        }
+        if (mPreviousType == TYPE_OVERFLOW && mType == TYPE_MAIN) {
+            mOverflowParams.flags = computeFlags(mOverflowParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            final int width = mMainSize.width + mButton.getSize();
+            int left = mMainLocation.x - mOverflowLocation.x;
+            int top = mMainLocation.y - mOverflowLocation.y;
+            mOverflow.setSwitchAnimate(left, top, left + width,
+                    top + mMainSize.height, false);
+            mOverflow.start();
+            mOverflow.setSwitchAnimateValue(0);
+            mOverflow.setVisibility(View.VISIBLE);
+            mButtonParams.x = mOverflowButtonLocation.x;
+            mButtonParams.y = mOverflowButtonLocation.y;
+            mButtonParams.flags = computeFlags(mButtonParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            mButton.setOverflow(true);
+            mButton.setAlpha(1);
+            mButton.setCorner(OverflowButton.TYPE_START);
+            mButton.setVisibility(View.VISIBLE);
+            mMainParams.flags = computeFlags(mMainParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            left = mOverflowLocation.x - mMainLocation.x;
+            top = mOverflowLocation.y - mMainLocation.y;
+            mMain.setSwitchAnimate(left, top, left + mOverflowSize.width,
+                    top + mOverflowSize.height, true);
+            mMain.start();
+            mMain.setSwitchAnimateValue(0);
+            mMain.setVisibility(View.VISIBLE);
+            updateViewLayout();
+            return;
+        }
+        if (mPreviousType == TYPE_MAIN && mType == TYPE_SUB) {
+            mSubParams.flags = computeFlags(mSubParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            final int width = mHasOverflow ? mMainSize.width + mButton.getSize() : mMainSize.width;
+            int left = mMainLocation.x - mSubLocation.x;
+            int top = mMainLocation.y - mSubLocation.y;
+            mSub.setSwitchAnimate(left, top, left + width,
+                    top + mMainSize.height, true);
+            mSub.start();
+            mSub.setSwitchAnimateValue(0);
+            mSub.setVisibility(View.VISIBLE);
+            if (mHasOverflow) {
+                mButtonParams.x = mMainButtonLocation.x;
+                mButtonParams.y = mMainButtonLocation.y;
+                mButtonParams.flags = computeFlags(mButtonParams.flags, false,
+                        layoutNoLimits, layoutInScreen, layoutInsetDecor);
+                mButton.setArrow(true);
+                mButton.setAlpha(1);
+                mButton.setCorner(OverflowButton.TYPE_END);
+                mButton.setVisibility(View.VISIBLE);
+            } else {
+                mButtonParams.x = mMainLocation.x;
+                mButtonParams.y = mMainLocation.y;
+                mButtonParams.flags = computeFlags(mButtonParams.flags, false,
+                        layoutNoLimits, layoutInScreen, layoutInsetDecor);
+                mButton.setArrow(false);
+                mButton.setAlpha(0);
+                mButton.setCorner(OverflowButton.TYPE_START);
+                mButton.setVisibility(View.VISIBLE);
+            }
+            mMainParams.flags = computeFlags(mMainParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            left = mSubLocation.x - mMainLocation.x;
+            top = mSubLocation.y - mMainLocation.y;
+            mMain.setSwitchAnimate(left, top, left + mSubSize.width,
+                    top + mSubSize.height, false);
+            mMain.start();
+            mMain.setSwitchAnimateValue(0);
+            mMain.setVisibility(View.VISIBLE);
+            updateViewLayout();
+            return;
+        }
+        if (mPreviousType == TYPE_SUB && mType == TYPE_MAIN) {
+            mSubParams.flags = computeFlags(mSubParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            final int width = mHasOverflow ? mMainSize.width + mButton.getSize() : mMainSize.width;
+            int left = mMainLocation.x - mSubLocation.x;
+            int top = mMainLocation.y - mSubLocation.y;
+            mSub.setSwitchAnimate(left, top, left + width,
+                    top + mMainSize.height, false);
+            mSub.start();
+            mSub.setSwitchAnimateValue(0);
+            mSub.setVisibility(View.VISIBLE);
+            mButtonParams.x = mSubButtonLocation.x;
+            mButtonParams.y = mSubButtonLocation.y;
+            mButtonParams.flags = computeFlags(mButtonParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            mButton.setOverflow(true);
+            mButton.setAlpha(1);
+            mButton.setCorner(OverflowButton.TYPE_START);
+            mButton.setVisibility(View.VISIBLE);
+            mMainParams.flags = computeFlags(mMainParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            left = mSubLocation.x - mMainLocation.x;
+            top = mSubLocation.y - mMainLocation.y;
+            mMain.setSwitchAnimate(left, top, left + mSubSize.width,
+                    top + mSubSize.height, true);
+            mMain.start();
+            mMain.setSwitchAnimateValue(0);
+            mMain.setVisibility(View.VISIBLE);
+            updateViewLayout();
+            return;
+        }
+        if (mPreviousType == TYPE_OVERFLOW && mType == TYPE_SUB) {
+            mOverflowParams.flags = computeFlags(mOverflowParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            int left = mSubLocation.x - mOverflowLocation.x;
+            int top = mSubLocation.y - mOverflowLocation.y;
+            mOverflow.setSwitchAnimate(left, top, left + mSubSize.width,
+                    top + mSubSize.height, false);
+            mOverflow.start();
+            mOverflow.setSwitchAnimateValue(0);
+            mOverflow.setVisibility(View.VISIBLE);
+            mSubParams.flags = computeFlags(mSubParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            left = mOverflowLocation.x - mSubLocation.x;
+            top = mOverflowLocation.y - mSubLocation.y;
+            mSub.setSwitchAnimate(left, top, left + mOverflowSize.width,
+                    top + mOverflowSize.height, true);
+            mSub.start();
+            mSub.setSwitchAnimateValue(0);
+            mSub.setVisibility(View.VISIBLE);
+            mButtonParams.x = mOverflowButtonLocation.x;
+            mButtonParams.y = mOverflowButtonLocation.y;
+            mButtonParams.flags = computeFlags(mButtonParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            mButton.setArrow(false);
+            mButton.setAlpha(1);
+            mButton.setCorner(OverflowButton.TYPE_START);
+            mButton.setVisibility(View.VISIBLE);
+            updateViewLayout();
+            return;
+        }
+        if (mPreviousType == TYPE_SUB && mType == TYPE_OVERFLOW) {
+            mOverflowParams.flags = computeFlags(mOverflowParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            int left = mSubLocation.x - mOverflowLocation.x;
+            int top = mSubLocation.y - mOverflowLocation.y;
+            mOverflow.setSwitchAnimate(left, top, left + mSubSize.width,
+                    top + mSubSize.height, true);
+            mOverflow.start();
+            mOverflow.setSwitchAnimateValue(0);
+            mOverflow.setVisibility(View.VISIBLE);
+            mSubParams.flags = computeFlags(mSubParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            left = mOverflowLocation.x - mSubLocation.x;
+            top = mOverflowLocation.y - mSubLocation.y;
+            mSub.setSwitchAnimate(left, top, left + mOverflowSize.width,
+                    top + mOverflowSize.height, false);
+            mSub.start();
+            mSub.setSwitchAnimateValue(0);
+            mSub.setVisibility(View.VISIBLE);
+            mButtonParams.x = mSubButtonLocation.x;
+            mButtonParams.y = mSubButtonLocation.y;
+            mButtonParams.flags = computeFlags(mButtonParams.flags, false,
+                    layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            mButton.setArrow(false);
+            mButton.setAlpha(1);
+            mButton.setCorner(OverflowButton.TYPE_START);
+            mButton.setVisibility(View.VISIBLE);
+            updateViewLayout();
+        }
     }
 
     @Override
     public void onAnimationChange(float interpolatedTime) {
-        // TODO
+        if (mPreviousType == TYPE_MAIN && mType == TYPE_OVERFLOW) {
+            mOverflow.setSwitchAnimateValue(interpolatedTime);
+            final int buttonX = Math.round(mMainButtonLocation.x +
+                    (mOverflowButtonLocation.x - mMainButtonLocation.x) * interpolatedTime);
+            final int buttonY = Math.round(mMainButtonLocation.y +
+                    (mOverflowButtonLocation.y - mMainButtonLocation.y) * interpolatedTime);
+            mButtonParams.x = buttonX;
+            mButtonParams.y = buttonY;
+            mButton.setCorner(OverflowButton.TYPE_ALL);
+            mManager.updateViewLayout(mButton, mButtonParams);
+            mMain.setSwitchAnimateValue(interpolatedTime);
+            return;
+        }
+        if (mPreviousType == TYPE_OVERFLOW && mType == TYPE_MAIN) {
+            mOverflow.setSwitchAnimateValue(interpolatedTime);
+            final int buttonX = Math.round(mOverflowButtonLocation.x +
+                    (mMainButtonLocation.x - mOverflowButtonLocation.x) * interpolatedTime);
+            final int buttonY = Math.round(mOverflowButtonLocation.y +
+                    (mMainButtonLocation.y - mOverflowButtonLocation.y) * interpolatedTime);
+            mButtonParams.x = buttonX;
+            mButtonParams.y = buttonY;
+            mButton.setCorner(OverflowButton.TYPE_ALL);
+            mManager.updateViewLayout(mButton, mButtonParams);
+            mMain.setSwitchAnimateValue(interpolatedTime);
+            return;
+        }
+        if (mPreviousType == TYPE_MAIN && mType == TYPE_SUB) {
+            mSub.setSwitchAnimateValue(interpolatedTime);
+            if (mHasOverflow) {
+                final int buttonX = Math.round(mMainButtonLocation.x +
+                        (mSubButtonLocation.x - mMainButtonLocation.x) * interpolatedTime);
+                final int buttonY = Math.round(mMainButtonLocation.y +
+                        (mSubButtonLocation.y - mMainButtonLocation.y) * interpolatedTime);
+                mButtonParams.x = buttonX;
+                mButtonParams.y = buttonY;
+                mButton.setCorner(OverflowButton.TYPE_ALL);
+            } else {
+                final int buttonX = Math.round(mMainLocation.x +
+                        (mSubButtonLocation.x - mMainLocation.x) * interpolatedTime);
+                final int buttonY = Math.round(mMainLocation.y +
+                        (mSubButtonLocation.y - mMainLocation.y) * interpolatedTime);
+                mButtonParams.x = buttonX;
+                mButtonParams.y = buttonY;
+                mButton.setAlpha(interpolatedTime);
+            }
+            mManager.updateViewLayout(mButton, mButtonParams);
+            mMain.setSwitchAnimateValue(interpolatedTime);
+            return;
+        }
+        if (mPreviousType == TYPE_SUB && mType == TYPE_MAIN) {
+            mSub.setSwitchAnimateValue(interpolatedTime);
+            if (mHasOverflow) {
+                final int buttonX = Math.round(mSubButtonLocation.x +
+                        (mMainButtonLocation.x - mSubButtonLocation.x) * interpolatedTime);
+                final int buttonY = Math.round(mSubButtonLocation.y +
+                        (mMainButtonLocation.y - mSubButtonLocation.y) * interpolatedTime);
+                mButtonParams.x = buttonX;
+                mButtonParams.y = buttonY;
+                mButton.setCorner(OverflowButton.TYPE_ALL);
+            } else {
+                final int buttonX = Math.round(mSubButtonLocation.x +
+                        (mMainLocation.x - mSubButtonLocation.x) * interpolatedTime);
+                final int buttonY = Math.round(mSubButtonLocation.y +
+                        (mMainLocation.y - mSubButtonLocation.y) * interpolatedTime);
+                mButtonParams.x = buttonX;
+                mButtonParams.y = buttonY;
+                mButton.setAlpha(1 - interpolatedTime);
+            }
+            mManager.updateViewLayout(mButton, mButtonParams);
+            mMain.setSwitchAnimateValue(interpolatedTime);
+            return;
+        }
+        if (mPreviousType == TYPE_OVERFLOW && mType == TYPE_SUB) {
+            mOverflow.setSwitchAnimateValue(interpolatedTime);
+            mSub.setSwitchAnimateValue(interpolatedTime);
+            final int buttonX = Math.round(mOverflowButtonLocation.x +
+                    (mSubButtonLocation.x - mOverflowButtonLocation.x) * interpolatedTime);
+            final int buttonY = Math.round(mOverflowButtonLocation.y +
+                    (mSubButtonLocation.y - mOverflowButtonLocation.y) * interpolatedTime);
+            mButtonParams.x = buttonX;
+            mButtonParams.y = buttonY;
+            mButton.setCorner(OverflowButton.TYPE_START);
+            mManager.updateViewLayout(mButton, mButtonParams);
+            return;
+        }
+        if (mPreviousType == TYPE_SUB && mType == TYPE_OVERFLOW) {
+            mOverflow.setSwitchAnimateValue(interpolatedTime);
+            mSub.setSwitchAnimateValue(interpolatedTime);
+            final int buttonX = Math.round(mSubButtonLocation.x +
+                    (mOverflowButtonLocation.x - mSubButtonLocation.x) * interpolatedTime);
+            final int buttonY = Math.round(mSubButtonLocation.y +
+                    (mOverflowButtonLocation.y - mSubButtonLocation.y) * interpolatedTime);
+            mButtonParams.x = buttonX;
+            mButtonParams.y = buttonY;
+            mButton.setCorner(OverflowButton.TYPE_START);
+            mManager.updateViewLayout(mButton, mButtonParams);
+        }
     }
 
     @Override
     public void onAnimationEnd() {
-        // TODO
+        final boolean layoutNoLimits = mMode.isLayoutNoLimitsEnabled();
+        final boolean layoutInScreen = mMode.isLayoutInScreenEnabled();
+        final boolean layoutInsetDecor = mMode.isLayoutInsetDecorEnabled();
+        if (mPreviousType == TYPE_MAIN && mType == TYPE_OVERFLOW) {
+            mOverflow.stop();
+            mMain.stop();
+            setOverflow(layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            updateViewLayout();
+            return;
+        }
+        if (mPreviousType == TYPE_OVERFLOW && mType == TYPE_MAIN) {
+            mOverflow.stop();
+            mMain.stop();
+            setMain(layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            updateViewLayout();
+            return;
+        }
+        if (mPreviousType == TYPE_MAIN && mType == TYPE_SUB) {
+            mSub.stop();
+            mMain.stop();
+            setSub(layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            updateViewLayout();
+            return;
+        }
+        if (mPreviousType == TYPE_SUB && mType == TYPE_MAIN) {
+            mSub.stop();
+            mMain.stop();
+            setMain(layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            updateViewLayout();
+            return;
+        }
+        if (mPreviousType == TYPE_OVERFLOW && mType == TYPE_SUB) {
+            mOverflow.stop();
+            mSub.stop();
+            setSub(layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            updateViewLayout();
+            return;
+        }
+        if (mPreviousType == TYPE_SUB && mType == TYPE_OVERFLOW) {
+            mOverflow.stop();
+            mSub.stop();
+            setOverflow(layoutNoLimits, layoutInScreen, layoutInsetDecor);
+            updateViewLayout();
+        }
+    }
+
+    @Override
+    public void onMainItemClick(FloatingMenuItem item) {
+        performActionItemClicked(item);
+    }
+
+    @Override
+    public void onOverflowItemClick(FloatingMenuItem item) {
+        performActionItemClicked(item);
+    }
+
+    @Override
+    public void onSubItemClick(FloatingMenuItem item) {
+        performActionItemClicked(item);
     }
 }

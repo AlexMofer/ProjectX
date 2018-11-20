@@ -25,5 +25,8 @@
         <attr name="floatingActionModeSubTitleTextColor" format="color" />
         <attr name="floatingActionModeSubTitleTextSize" format="dimension" />
         <attr name="floatingActionModeAnimationInterpolator" format="reference" />
+        <attr name="floatingActionModeAnimationDuration" format="integer" />
+        <attr name="floatingActionModeAnimationDurationAdjustmentUnit" format="integer" />
+        <attr name="floatingActionModeWindowAnimations" format="reference" />
     </declare-styleable>
 </resources>

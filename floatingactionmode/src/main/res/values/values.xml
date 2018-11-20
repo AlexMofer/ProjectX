@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="floatingActionModeAnimationInterpolator" format="reference" type="interpolator">
+        @android:interpolator/accelerate_decelerate
+    </item>
+    <integer name="floatingActionModeAnimationDuration">@android:integer/config_longAnimTime
+    </integer>
+    <integer name="floatingActionModeAnimationDurationAdjustmentUnit">50</integer>
+    <item name="floatingActionModeWindowAnimations" format="reference" type="style">
+        @style/AnimationFloatingActionMode
+    </item>
+</resources>

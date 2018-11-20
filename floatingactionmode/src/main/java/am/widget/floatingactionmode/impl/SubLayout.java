@@ -19,6 +19,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.text.TextUtils;
@@ -27,6 +34,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -40,7 +48,7 @@ import am.widget.floatingactionmode.R;
  * 次级菜单面板
  * Created by Alex on 2018/10/23.
  */
-final class SubLayout extends LinearLayout {
+final class SubLayout extends LinearLayout implements AdapterView.OnItemClickListener {
 
     private final TextView mTitle;
     private final SubListView mList;
@@ -49,8 +57,20 @@ final class SubLayout extends LinearLayout {
     private View mCustom;
     private boolean mBind = false;
 
+    private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Path mCornerCrop = new Path();
+    private final RectF mCornerCropBound = new RectF();
+    private final Rect mCropBound = new Rect();
+    private final Path mCropPath = new Path();
+    private final RectF mCropAnimateBound = new RectF();
+    private float mCornerRadius;
+    private boolean mCropReverse;
+    private boolean mCropStart;
+    private OnSubListener mListener;
+
     SubLayout(Context context) {
         super(context);
+        setWillNotDraw(false);
         final Resources resources = context.getResources();
         int size = resources.getDimensionPixelOffset(R.dimen.floatingActionModeItemSize);
         int textColor = resources.getColor(R.color.floatingActionModeSubTitleTextColor);
@@ -95,6 +115,50 @@ final class SubLayout extends LinearLayout {
         mListMaxHeight = mList.getMaxHeight();
         mParams = new LayoutParams(LayoutParams.MATCH_PARENT, 0);
         mParams.weight = 1;
+        mCornerCrop.setFillType(Path.FillType.EVEN_ODD);
+        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        mCropPath.setFillType(Path.FillType.EVEN_ODD);
+        mList.setOnItemClickListener(this);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        updateCornerCropPath();
+    }
+
+    private void updateCornerCropPath() {
+        final int width = getWidth();
+        final int height = getHeight();
+        mCornerCropBound.set(0, 0, width, height);
+        mCornerCrop.reset();
+        mCornerCrop.moveTo(0, 0);
+        mCornerCrop.lineTo(width, 0);
+        mCornerCrop.lineTo(width, height);
+        mCornerCrop.lineTo(0, height);
+        mCornerCrop.close();
+        mCornerCrop.addRoundRect(mCornerCropBound, mCornerRadius, mCornerRadius, Path.Direction.CW);
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        if (mCornerRadius <= 0 && !mCropStart) {
+            super.draw(canvas);
+            return;
+        }
+        final int layer = CanvasCompat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
+                null);
+        cropCorner(canvas);
+        canvas.drawPath(mCropPath, mPaint);
+        canvas.restoreToCount(layer);
+    }
+
+    private void cropCorner(Canvas canvas) {
+        final int layer = CanvasCompat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
+                null);
+        super.draw(canvas);
+        canvas.drawPath(mCornerCrop, mPaint);
+        canvas.restoreToCount(layer);
     }
 
     boolean hasSubMenu(FloatingMenuImpl menu) {
@@ -185,6 +249,59 @@ final class SubLayout extends LinearLayout {
 
     void awakenScrollBar() {
         mList.awakenScrollBar();
+    }
+
+    void setCornerRadius(float radius) {
+        mCornerRadius = radius;
+        updateCornerCropPath();
+    }
+
+    void setSwitchAnimate(int left, int top, int right, int bottom, boolean reverse) {
+        mCropBound.set(left, top, right, bottom);
+        mCropReverse = reverse;
+    }
+
+    void setSwitchAnimateValue(float value) {
+        if (!mCropStart)
+            return;
+        if (mCropReverse)
+            value = 1 - value;
+        final int width = getWidth();
+        final int height = getHeight();
+        mCropPath.reset();
+        mCropPath.moveTo(0, 0);
+        mCropPath.lineTo(width, 0);
+        mCropPath.lineTo(width, height);
+        mCropPath.lineTo(0, height);
+        mCropPath.close();
+
+        mCropAnimateBound.set(Math.round(mCropBound.left * value),
+                Math.round(mCropBound.top * value),
+                Math.round(width + (mCropBound.right - width) * value),
+                Math.round(height + (mCropBound.bottom - height) * value));
+        mCropPath.addRoundRect(mCropAnimateBound, mCornerRadius, mCornerRadius, Path.Direction.CW);
+        setAlpha(1 - value);
+        invalidate();
+    }
+
+    void start() {
+        mCropStart = true;
+    }
+
+    void stop() {
+        mCropStart = false;
+        invalidate();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (mListener == null)
+            return;
+        mListener.onSubItemClick(mList.mAdapter.getItem(position));
+    }
+
+    void setOnSubListener(OnSubListener listener) {
+        mListener = listener;
     }
 
     public interface OnSubListener {

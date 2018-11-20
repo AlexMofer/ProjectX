@@ -22,7 +22,6 @@ import am.widget.floatingactionmode.impl.FloatingActionModeImpl;
 
 /**
  * 浮动ActionMode
- * TODO 面板切换动画Drawable，各面板的视图裁剪
  * Created by Alex on 2018/10/24.
  */
 @SuppressWarnings({"WeakerAccess", "unused"})

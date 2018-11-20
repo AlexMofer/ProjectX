@@ -19,6 +19,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.RectF;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -35,15 +41,24 @@ import am.widget.floatingactionmode.R;
  */
 final class OverflowButton extends FrameLayout {
 
+    static final int TYPE_ALL = 0;
+    static final int TYPE_START = 1;
+    static final int TYPE_END = 2;
     private final ImageButton mButton;
     private final int mSize;
     private final Drawable mArrow;
     private final Drawable mOverflow;
     private final Drawable mToArrow;
     private final Drawable mToOverflow;
+    private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Path mCornerCrop = new Path();
+    private final RectF mCornerCropBound = new RectF();
+    private final float[] mRadii = new float[8];
+    private float mCornerRadius;
 
     OverflowButton(Context context) {
         super(context);
+        setWillNotDraw(false);
         mButton = new ImageButton(context);
         final Resources resources = context.getResources();
         final int paddingVertical = resources.getDimensionPixelOffset(
@@ -86,6 +101,41 @@ final class OverflowButton extends FrameLayout {
         addView(mButton, new LayoutParams(size, size));
 
         mSize = size;
+
+        mCornerCrop.setFillType(Path.FillType.EVEN_ODD);
+        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        updateCornerCropPath();
+    }
+
+    private void updateCornerCropPath() {
+        final int width = getWidth();
+        final int height = getHeight();
+        mCornerCropBound.set(0, 0, width, height);
+        mCornerCrop.reset();
+        mCornerCrop.moveTo(0, 0);
+        mCornerCrop.lineTo(width, 0);
+        mCornerCrop.lineTo(width, height);
+        mCornerCrop.lineTo(0, height);
+        mCornerCrop.close();
+        mCornerCrop.addRoundRect(mCornerCropBound, mRadii, Path.Direction.CW);
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        if (mCornerRadius <= 0) {
+            super.draw(canvas);
+            return;
+        }
+        final int layer = CanvasCompat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
+                null);
+        super.draw(canvas);
+        canvas.drawPath(mCornerCrop, mPaint);
+        canvas.restoreToCount(layer);
     }
 
     void setOverflow(boolean animate) {
@@ -112,6 +162,30 @@ final class OverflowButton extends FrameLayout {
 
     int getSize() {
         return mSize;
+    }
+
+    void setCornerRadius(float radius) {
+        mCornerRadius = radius;
+    }
+
+    void setCorner(int type) {
+        switch (type) {
+            default:
+            case TYPE_ALL:
+                mRadii[0] = mRadii[1] = mRadii[2] = mRadii[3] =
+                        mRadii[4] = mRadii[5] = mRadii[6] = mRadii[7] = mCornerRadius;
+                break;
+            case TYPE_START:
+                mRadii[0] = mRadii[1] = mRadii[6] = mRadii[7] = mCornerRadius;
+                mRadii[2] = mRadii[3] = mRadii[4] = mRadii[5] = 0;
+                break;
+            case TYPE_END:
+                mRadii[0] = mRadii[1] = mRadii[6] = mRadii[7] = 0;
+                mRadii[2] = mRadii[3] = mRadii[4] = mRadii[5] = mCornerRadius;
+                break;
+        }
+        updateCornerCropPath();
+        invalidate();
     }
 
     @Override
