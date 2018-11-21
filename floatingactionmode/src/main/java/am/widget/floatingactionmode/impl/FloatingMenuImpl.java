@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2018 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package am.widget.floatingactionmode.impl;
 
 import android.content.Context;
@@ -9,7 +24,8 @@ import am.widget.floatingactionmode.FloatingMenu;
 import am.widget.floatingactionmode.FloatingMenuItem;
 
 /**
- * Created by Xiang Zhicheng on 2018/11/13.
+ * 菜单实现
+ * Created by Alex on 2018/11/21.
  */
 final class FloatingMenuImpl implements FloatingMenu {
 
@@ -29,23 +45,23 @@ final class FloatingMenuImpl implements FloatingMenu {
     }
 
     @Override
-    public FloatingMenuItem add(int titleRes) {
-        final FloatingMenuItem item = new FloatingMenuItemImpl(mContext).setTitle(titleRes);
+    public FloatingMenuItem add(int title) {
+        final FloatingMenuItem item = new FloatingMenuItemImpl(mContext).setTitle(title);
         mItems.add(item);
         return item;
     }
 
     @Override
-    public FloatingMenuItem add(int itemId, int order, CharSequence title) {
-        final FloatingMenuItem item = new FloatingMenuItemImpl(mContext, itemId, order);
+    public FloatingMenuItem add(int id, int order, CharSequence title) {
+        final FloatingMenuItem item = new FloatingMenuItemImpl(mContext, id, order);
         mItems.add(item.setTitle(title));
         return item;
     }
 
     @Override
-    public FloatingMenuItem add(int itemId, int order, int titleRes) {
-        final FloatingMenuItem item = new FloatingMenuItemImpl(mContext, itemId, order);
-        mItems.add(item.setTitle(titleRes));
+    public FloatingMenuItem add(int id, int order, int title) {
+        final FloatingMenuItem item = new FloatingMenuItemImpl(mContext, id, order);
+        mItems.add(item.setTitle(title));
         return item;
     }
 
@@ -54,7 +70,7 @@ final class FloatingMenuImpl implements FloatingMenu {
         int count = mItems.size();
         for (int i = 0; i < count; i++) {
             final FloatingMenuItem item = mItems.get(i);
-            if (item.getItemId() == id)
+            if (item.getId() == id)
                 mItems.remove(i);
             i--;
             count = mItems.size();
@@ -69,7 +85,7 @@ final class FloatingMenuImpl implements FloatingMenu {
     @Override
     public FloatingMenuItem findItem(int id) {
         for (FloatingMenuItem item : mItems) {
-            if (item.getItemId() == id)
+            if (item.getId() == id)
                 return item;
         }
         return null;
@@ -105,13 +121,13 @@ final class FloatingMenuImpl implements FloatingMenu {
     FloatingMenuItem getSubItem(FloatingMenuItem saved) {
         if (saved == null)
             return null;
-        final int id = saved.getItemId();
+        final int id = saved.getId();
         final int order = saved.getOrder();
         final CharSequence title = saved.getTitle();
         for (FloatingMenuItem item : mItems) {
             if (item == null)
                 continue;
-            if (id == item.getItemId() && order == item.getOrder() &&
+            if (id == item.getId() && order == item.getOrder() &&
                     TextUtils.equals(title, item.getTitle()))
                 return item;
         }

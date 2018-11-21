@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2018 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package am.widget.floatingactionmode.impl;
 
 import android.content.Context;
@@ -10,7 +25,8 @@ import am.widget.floatingactionmode.FloatingMenuItem;
 import am.widget.floatingactionmode.FloatingSubMenu;
 
 /**
- * Created by Xiang Zhicheng on 2018/11/13.
+ * 菜单子项实现
+ * Created by Alex on 2018/11/21.
  */
 class FloatingMenuItemImpl implements FloatingMenuItem {
     private final Context mContext;
@@ -20,6 +36,7 @@ class FloatingMenuItemImpl implements FloatingMenuItem {
     private Drawable mIcon;
     private int mShowType = SHOW_TYPE_AUTO;
     private CharSequence mContentDescription;
+    private Object mTag;
     private FloatingSubMenu mSubMenu;
 
     FloatingMenuItemImpl(Context context) {
@@ -33,7 +50,7 @@ class FloatingMenuItemImpl implements FloatingMenuItem {
     }
 
     @Override
-    public int getItemId() {
+    public int getId() {
         return mId;
     }
 
@@ -66,11 +83,11 @@ class FloatingMenuItemImpl implements FloatingMenuItem {
     }
 
     @Override
-    public FloatingMenuItem setIcon(int iconRes) {
+    public FloatingMenuItem setIcon(int icon) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            mIcon = mContext.getDrawable(iconRes);
+            mIcon = mContext.getDrawable(icon);
         else
-            mIcon = mContext.getResources().getDrawable(iconRes);
+            mIcon = mContext.getResources().getDrawable(icon);
         return this;
     }
 
@@ -105,6 +122,16 @@ class FloatingMenuItemImpl implements FloatingMenuItem {
     @Override
     public CharSequence getContentDescription() {
         return mContentDescription;
+    }
+
+    @Override
+    public Object getTag() {
+        return mTag;
+    }
+
+    @Override
+    public void setTag(Object tag) {
+        mTag = tag;
     }
 
     @Override

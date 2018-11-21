@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2018 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package am.widget.floatingactionmode.impl;
 
 import android.annotation.SuppressLint;
@@ -5,9 +20,14 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.util.TypedValue;
@@ -19,28 +39,33 @@ import android.view.animation.Transformation;
 import am.widget.floatingactionmode.R;
 
 /**
- * TODO 低版本Elevation效果
- * Created by Xiang Zhicheng on 2018/11/13.
+ * 动画布局
+ * Created by Alex on 2018/11/21.
  */
 final class AnimationLayout extends ViewGroup implements Animation.AnimationListener {
 
     private final View mBackground;
     private final float mCornerRadius;
     private final Rect mBound = new Rect();
+    private final boolean mDrawElevation;
+    private final float mElevation;
+    private final RectF mElevationBound;
+    private final LinearGradient mElevationShader;
+    private final Path mElevationCorner;
+    private final RadialGradient mElevationCornerShader;
+    private final int mElevationColor;
     private final Animation mAnimation;
     private final Rect mBoundStart = new Rect();
     private final Rect mBoundEnd = new Rect();
     private final int mDuration;
     private final int mDurationAdjustmentUnit;
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private float mElevation;
-    private RectF mElevationBound = new RectF();
+
     private boolean mStart = false;
     private OnAnimationListener mListener;
 
     public AnimationLayout(Context context) {
         super(context);
-        setWillNotDraw(false);
         final Resources resources = context.getResources();
         int color = resources.getColor(R.color.floatingActionModeBackgroundColor);
         float radius = resources.getDimension(R.dimen.floatingActionModeBackgroundCornerRadius);
@@ -71,6 +96,8 @@ final class AnimationLayout extends ViewGroup implements Animation.AnimationList
                 durationAdjustmentUnit);
         custom.recycle();
 
+        mCornerRadius = radius;
+
         final GradientDrawable background = new GradientDrawable();
         background.setColor(color);
         background.setCornerRadius(radius);
@@ -79,11 +106,40 @@ final class AnimationLayout extends ViewGroup implements Animation.AnimationList
         mBackground.setBackgroundDrawable(background);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mBackground.setElevation(elevation);
+            mDrawElevation = false;
+            mElevation = 0;
+            mElevationBound = null;
+            mElevationShader = null;
+            mElevationCorner = null;
+            mElevationCornerShader = null;
+            mElevationColor = 0;
+        } else {
+            setWillNotDraw(false);
+            mDrawElevation = true;
+            mElevation = elevation * 0.75f;
+            mElevationBound = new RectF();
+            mElevationColor = 0x30000000;
+            mElevationShader = new LinearGradient(0, 0, mElevation, 0,
+                    new int[]{mElevationColor, Color.TRANSPARENT},
+                    new float[]{0, 1f}, Shader.TileMode.CLAMP);
+            final float size = mCornerRadius + mElevation;
+            mElevationCorner = new Path();
+            mElevationCorner.setFillType(Path.FillType.EVEN_ODD);
+            mElevationCorner.reset();
+            mElevationCorner.moveTo(0, 0);
+            mElevationCorner.lineTo(size, 0);
+            mElevationCorner.lineTo(size, size);
+            mElevationCorner.lineTo(0, size);
+            mElevationCorner.close();
+            mElevationCorner.moveTo(0, 0);
+            mElevationBound.set(-mCornerRadius, -mCornerRadius, mCornerRadius, mCornerRadius);
+            mElevationCorner.arcTo(mElevationBound, 0, 90);
+            mElevationCorner.close();
+            mElevationCornerShader = new RadialGradient(0, 0, size,
+                    new int[]{mElevationColor, mElevationColor, Color.TRANSPARENT},
+                    new float[]{0, mCornerRadius / size, 1f}, Shader.TileMode.CLAMP);
         }
         addView(mBackground);
-
-        mCornerRadius = radius;
-        mElevation = elevation;
 
         mAnimation = new Animation() {
 
@@ -97,7 +153,6 @@ final class AnimationLayout extends ViewGroup implements Animation.AnimationList
         mAnimation.setAnimationListener(this);
         mDuration = duration;
         mDurationAdjustmentUnit = durationAdjustmentUnit;
-
     }
 
     @Override
@@ -115,12 +170,109 @@ final class AnimationLayout extends ViewGroup implements Animation.AnimationList
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mElevationBound.set(mBound);
-        mElevationBound.set(mElevationBound.left - mElevation,
-                mElevationBound.top - mElevation, mElevationBound.right + mElevation,
-                mElevationBound.bottom + mElevation);
-        canvas.drawRect(mElevationBound, mPaint);
+        if (mDrawElevation)
+            drawElevation(canvas);
+    }
 
+    private void drawElevation(Canvas canvas) {
+        canvas.save();
+        canvas.translate(0, mElevation * 0.5f);
+        mPaint.setColor(Color.BLACK);
+        drawLeftElevation(canvas);
+        drawLeftTopElevation(canvas);
+        drawTopElevation(canvas);
+        drawRightTopElevation(canvas);
+        drawRightElevation(canvas);
+        drawRightBottomElevation(canvas);
+        drawBottomElevation(canvas);
+        drawLeftBottomElevation(canvas);
+        mPaint.setShader(null);
+        mPaint.setColor(mElevationColor);
+        mElevationBound.set(mBound);
+        canvas.drawRoundRect(mElevationBound, mCornerRadius, mCornerRadius, mPaint);
+        canvas.restore();
+    }
+
+    private void drawLeftElevation(Canvas canvas) {
+        canvas.save();
+        canvas.translate(mBound.left, mBound.exactCenterY());
+        canvas.rotate(180);
+        final float halfHeight = mBound.height() * 0.5f;
+        mElevationBound.set(0, -halfHeight + mCornerRadius,
+                mElevation, halfHeight - mCornerRadius);
+        mPaint.setShader(mElevationShader);
+        canvas.drawRect(mElevationBound, mPaint);
+        canvas.restore();
+    }
+
+    private void drawLeftTopElevation(Canvas canvas) {
+        canvas.save();
+        canvas.translate(mBound.left + mCornerRadius, mBound.top + mCornerRadius);
+        canvas.rotate(180);
+        mPaint.setShader(mElevationCornerShader);
+        canvas.drawPath(mElevationCorner, mPaint);
+        canvas.restore();
+    }
+
+    private void drawTopElevation(Canvas canvas) {
+        canvas.save();
+        canvas.translate(mBound.exactCenterX(), mBound.top);
+        canvas.rotate(-90);
+        final float halfHeight = mBound.width() * 0.5f;
+        mElevationBound.set(0, -halfHeight + mCornerRadius,
+                mElevation, halfHeight - mCornerRadius);
+        mPaint.setShader(mElevationShader);
+        canvas.drawRect(mElevationBound, mPaint);
+        canvas.restore();
+    }
+
+    private void drawRightTopElevation(Canvas canvas) {
+        canvas.save();
+        canvas.translate(mBound.right - mCornerRadius, mBound.top + mCornerRadius);
+        canvas.rotate(-90);
+        mPaint.setShader(mElevationCornerShader);
+        canvas.drawPath(mElevationCorner, mPaint);
+        canvas.restore();
+    }
+
+    private void drawRightElevation(Canvas canvas) {
+        canvas.save();
+        canvas.translate(mBound.right, mBound.exactCenterY());
+        final float halfHeight = mBound.height() * 0.5f;
+        mElevationBound.set(0, -halfHeight + mCornerRadius,
+                mElevation, halfHeight - mCornerRadius);
+        mPaint.setShader(mElevationShader);
+        canvas.drawRect(mElevationBound, mPaint);
+        canvas.restore();
+    }
+
+    private void drawRightBottomElevation(Canvas canvas) {
+        canvas.save();
+        canvas.translate(mBound.right - mCornerRadius, mBound.bottom - mCornerRadius);
+        mPaint.setShader(mElevationCornerShader);
+        canvas.drawPath(mElevationCorner, mPaint);
+        canvas.restore();
+    }
+
+    private void drawBottomElevation(Canvas canvas) {
+        canvas.save();
+        canvas.translate(mBound.exactCenterX(), mBound.bottom);
+        canvas.rotate(90);
+        final float halfHeight = mBound.width() * 0.5f;
+        mElevationBound.set(0, -halfHeight + mCornerRadius,
+                mElevation, halfHeight - mCornerRadius);
+        mPaint.setShader(mElevationShader);
+        canvas.drawRect(mElevationBound, mPaint);
+        canvas.restore();
+    }
+
+    private void drawLeftBottomElevation(Canvas canvas) {
+        canvas.save();
+        canvas.translate(mBound.left + mCornerRadius, mBound.bottom - mCornerRadius);
+        canvas.rotate(90);
+        mPaint.setShader(mElevationCornerShader);
+        canvas.drawPath(mElevationCorner, mPaint);
+        canvas.restore();
     }
 
     float getCornerRadius() {
@@ -140,6 +292,8 @@ final class AnimationLayout extends ViewGroup implements Animation.AnimationList
         if (!animate) {
             mBound.set(left, top, right, bottom);
             requestLayout();
+            if (mDrawElevation)
+                invalidate();
             return;
         }
         mBoundStart.set(mBound);
@@ -183,6 +337,8 @@ final class AnimationLayout extends ViewGroup implements Animation.AnimationList
                 Math.round(mBoundStart.bottom +
                         (mBoundEnd.bottom - mBoundStart.bottom) * interpolatedTime));
         requestLayout();
+        if (mDrawElevation)
+            invalidate();
         if (mListener == null)
             return;
         mListener.onAnimationChange(interpolatedTime);
@@ -193,6 +349,8 @@ final class AnimationLayout extends ViewGroup implements Animation.AnimationList
         mStart = false;
         mBound.set(mBoundEnd);
         requestLayout();
+        if (mDrawElevation)
+            invalidate();
         if (mListener == null)
             return;
         mListener.onAnimationEnd();

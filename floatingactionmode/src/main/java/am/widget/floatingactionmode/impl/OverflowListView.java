@@ -34,8 +34,8 @@ import am.widget.floatingactionmode.FloatingMenuItem;
 import am.widget.floatingactionmode.R;
 
 /**
- * 更多面板列表
- * Created by Alex on 2018/10/19.
+ * 更多面板
+ * Created by Alex on 2018/11/21.
  */
 final class OverflowListView extends MenuListView implements AdapterView.OnItemClickListener {
 
@@ -43,15 +43,18 @@ final class OverflowListView extends MenuListView implements AdapterView.OnItemC
     private int mPaddingSpace;
     private boolean mReverse;
 
+    private final Path mCropPath = new Path();
+
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path mCornerCrop = new Path();
     private final RectF mCornerCropBound = new RectF();
+
     private final Rect mCropBound = new Rect();
-    private final Path mCropPath = new Path();
-    private final RectF mCropAnimateBound = new RectF();
-    private float mCornerRadius;
     private boolean mCropReverse;
     private boolean mCropStart;
+    private final RectF mCropAnimateBound = new RectF();
+    private float mCornerRadius;
+
     private OnOverflowListener mListener;
 
     OverflowListView(Context context) {
@@ -104,7 +107,7 @@ final class OverflowListView extends MenuListView implements AdapterView.OnItemC
             super.draw(canvas);
             return;
         }
-        final int layer = CanvasCompat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
+        final int layer = Compat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
                 null);
         cropCorner(canvas);
         canvas.drawPath(mCropPath, mPaint);
@@ -112,7 +115,7 @@ final class OverflowListView extends MenuListView implements AdapterView.OnItemC
     }
 
     private void cropCorner(Canvas canvas) {
-        final int layer = CanvasCompat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
+        final int layer = Compat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
                 null);
         super.draw(canvas);
         canvas.drawPath(mCornerCrop, mPaint);

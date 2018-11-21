@@ -32,8 +32,8 @@ import am.widget.floatingactionmode.FloatingMenuItem;
 import am.widget.floatingactionmode.R;
 
 /**
- * 菜单列表
- * Created by Alex on 2018/10/19.
+ * 列表型面板
+ * Created by Alex on 2018/11/21.
  */
 class MenuListView extends ListView {
 

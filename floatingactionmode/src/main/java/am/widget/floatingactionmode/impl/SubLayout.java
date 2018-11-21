@@ -46,7 +46,7 @@ import am.widget.floatingactionmode.R;
 
 /**
  * 次级菜单面板
- * Created by Alex on 2018/10/23.
+ * Created by Alex on 2018/11/21.
  */
 final class SubLayout extends LinearLayout implements AdapterView.OnItemClickListener {
 
@@ -57,15 +57,18 @@ final class SubLayout extends LinearLayout implements AdapterView.OnItemClickLis
     private View mCustom;
     private boolean mBind = false;
 
+    private final Path mCropPath = new Path();
+
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path mCornerCrop = new Path();
     private final RectF mCornerCropBound = new RectF();
+
     private final Rect mCropBound = new Rect();
-    private final Path mCropPath = new Path();
-    private final RectF mCropAnimateBound = new RectF();
-    private float mCornerRadius;
     private boolean mCropReverse;
     private boolean mCropStart;
+    private final RectF mCropAnimateBound = new RectF();
+    private float mCornerRadius;
+
     private OnSubListener mListener;
 
     SubLayout(Context context) {
@@ -146,7 +149,7 @@ final class SubLayout extends LinearLayout implements AdapterView.OnItemClickLis
             super.draw(canvas);
             return;
         }
-        final int layer = CanvasCompat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
+        final int layer = Compat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
                 null);
         cropCorner(canvas);
         canvas.drawPath(mCropPath, mPaint);
@@ -154,7 +157,7 @@ final class SubLayout extends LinearLayout implements AdapterView.OnItemClickLis
     }
 
     private void cropCorner(Canvas canvas) {
-        final int layer = CanvasCompat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
+        final int layer = Compat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
                 null);
         super.draw(canvas);
         canvas.drawPath(mCornerCrop, mPaint);
@@ -183,7 +186,7 @@ final class SubLayout extends LinearLayout implements AdapterView.OnItemClickLis
                 View.MeasureSpec.makeMeasureSpec(maxHeight, View.MeasureSpec.AT_MOST));
         final int titleWidth = mTitle.getMeasuredWidth();
         final int titleHeight = mTitle.getMeasuredHeight();
-        if (sub.isCustomMenu()) {
+        if (sub.isCustom()) {
             final View custom = sub.getCustomView();
             custom.measure(
                     View.MeasureSpec.makeMeasureSpec(maxWidth, View.MeasureSpec.AT_MOST),

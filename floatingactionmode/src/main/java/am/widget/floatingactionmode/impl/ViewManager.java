@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2018 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package am.widget.floatingactionmode.impl;
 
 import android.annotation.SuppressLint;
@@ -19,7 +34,8 @@ import am.widget.floatingactionmode.FloatingMenuItem;
 import am.widget.floatingactionmode.R;
 
 /**
- * Created by Xiang Zhicheng on 2018/11/13.
+ * 视图管理器
+ * Created by Alex on 2018/11/21.
  */
 final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnimationListener,
         MainLayout.OnMainListener, OverflowListView.OnOverflowListener, SubLayout.OnSubListener {
@@ -507,7 +523,7 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
         mButtonParams.y = mOverflowButtonLocation.y;
         mButtonParams.flags = computeFlags(mButtonParams.flags, true,
                 layoutNoLimits, layoutInScreen, layoutInsetDecor);
-        mButton.setArrow(false);
+        mButton.setBack(false);
         mButton.setCorner(OverflowButton.TYPE_START);
         mButton.setVisibility(View.VISIBLE);
         mButton.setAlpha(1);
@@ -534,7 +550,7 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
         mButtonParams.y = mSubButtonLocation.y;
         mButtonParams.flags = computeFlags(mButtonParams.flags, true,
                 layoutNoLimits, layoutInScreen, layoutInsetDecor);
-        mButton.setArrow(false);
+        mButton.setBack(false);
         mButton.setCorner(OverflowButton.TYPE_START);
         mButton.setVisibility(View.VISIBLE);
         mButton.setAlpha(1);
@@ -637,10 +653,12 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
     }
 
 
-    void performActionItemClicked(FloatingMenuItem item) {
+    void performItemClicked(FloatingMenuItem item) {
         if (item == null)
             return;
         if (mCallback.onActionItemClicked(mMode, item))
+            return;
+        if (mMode.isFinished())
             return;
         if (item.hasSubMenu()) {
             mSub.setData(item, mContentMaxSize.width, mContentMaxSize.height, mSubSize, mMode);
@@ -736,7 +754,7 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
             mButtonParams.y = mMainButtonLocation.y;
             mButtonParams.flags = computeFlags(mButtonParams.flags, false,
                     layoutNoLimits, layoutInScreen, layoutInsetDecor);
-            mButton.setArrow(true);
+            mButton.setBack(true);
             mButton.setAlpha(1);
             mButton.setCorner(OverflowButton.TYPE_END);
             mButton.setVisibility(View.VISIBLE);
@@ -799,7 +817,7 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
                 mButtonParams.y = mMainButtonLocation.y;
                 mButtonParams.flags = computeFlags(mButtonParams.flags, false,
                         layoutNoLimits, layoutInScreen, layoutInsetDecor);
-                mButton.setArrow(true);
+                mButton.setBack(true);
                 mButton.setAlpha(1);
                 mButton.setCorner(OverflowButton.TYPE_END);
                 mButton.setVisibility(View.VISIBLE);
@@ -808,7 +826,7 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
                 mButtonParams.y = mMainLocation.y;
                 mButtonParams.flags = computeFlags(mButtonParams.flags, false,
                         layoutNoLimits, layoutInScreen, layoutInsetDecor);
-                mButton.setArrow(false);
+                mButton.setBack(false);
                 mButton.setAlpha(0);
                 mButton.setCorner(OverflowButton.TYPE_START);
                 mButton.setVisibility(View.VISIBLE);
@@ -879,7 +897,7 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
             mButtonParams.y = mOverflowButtonLocation.y;
             mButtonParams.flags = computeFlags(mButtonParams.flags, false,
                     layoutNoLimits, layoutInScreen, layoutInsetDecor);
-            mButton.setArrow(false);
+            mButton.setBack(false);
             mButton.setAlpha(1);
             mButton.setCorner(OverflowButton.TYPE_START);
             mButton.setVisibility(View.VISIBLE);
@@ -909,7 +927,7 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
             mButtonParams.y = mSubButtonLocation.y;
             mButtonParams.flags = computeFlags(mButtonParams.flags, false,
                     layoutNoLimits, layoutInScreen, layoutInsetDecor);
-            mButton.setArrow(false);
+            mButton.setBack(false);
             mButton.setAlpha(1);
             mButton.setCorner(OverflowButton.TYPE_START);
             mButton.setVisibility(View.VISIBLE);
@@ -1068,16 +1086,16 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
 
     @Override
     public void onMainItemClick(FloatingMenuItem item) {
-        performActionItemClicked(item);
+        performItemClicked(item);
     }
 
     @Override
     public void onOverflowItemClick(FloatingMenuItem item) {
-        performActionItemClicked(item);
+        performItemClicked(item);
     }
 
     @Override
     public void onSubItemClick(FloatingMenuItem item) {
-        performActionItemClicked(item);
+        performItemClicked(item);
     }
 }

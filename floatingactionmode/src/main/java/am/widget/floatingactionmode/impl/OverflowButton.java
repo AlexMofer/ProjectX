@@ -17,6 +17,7 @@ package am.widget.floatingactionmode.impl;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -36,8 +37,8 @@ import am.widget.floatingactionmode.R;
 
 
 /**
- * 开关布局 TODO 按钮资源颜色
- * Created by Alex on 2018/10/23.
+ * 切换按钮
+ * Created by Alex on 2018/11/21.
  */
 final class OverflowButton extends FrameLayout {
 
@@ -46,15 +47,20 @@ final class OverflowButton extends FrameLayout {
     static final int TYPE_END = 2;
     private final ImageButton mButton;
     private final int mSize;
-    private final Drawable mArrow;
-    private final Drawable mOverflow;
-    private final Drawable mToArrow;
-    private final Drawable mToOverflow;
+    private Drawable mOverflow;
+    private Drawable mBack;
+    private Drawable mOverflowToBack;
+    private Drawable mBackToOverflow;
+
+    private String mOverflowContentDescription;
+    private String mBackContentDescription;
+
+    private float mCornerRadius;
+
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path mCornerCrop = new Path();
     private final RectF mCornerCropBound = new RectF();
     private final float[] mRadii = new float[8];
-    private float mCornerRadius;
 
     OverflowButton(Context context) {
         super(context);
@@ -66,6 +72,8 @@ final class OverflowButton extends FrameLayout {
         final int paddingHorizontal = resources.getDimensionPixelOffset(
                 R.dimen.switchButtonPaddingHorizontal);
         int size = resources.getDimensionPixelOffset(R.dimen.floatingActionModeItemSize);
+        mOverflowContentDescription = resources.getString(R.string.fam_cd_overflow);
+        mBackContentDescription = resources.getString(R.string.fam_cd_back);
 
         @SuppressLint("CustomViewStyleable") final TypedArray custom =
                 context.obtainStyledAttributes(R.styleable.FloatingActionMode);
@@ -81,22 +89,121 @@ final class OverflowButton extends FrameLayout {
         } else {
             mButton.setBackgroundDrawable(background);
         }
-
+        final Resources.Theme theme = context.getTheme();
+        if (custom.hasValue(
+                R.styleable.FloatingActionMode_floatingActionModeOverflowButtonOverflowIcon))
+            mOverflow = custom.getDrawable(
+                    R.styleable.FloatingActionMode_floatingActionModeOverflowButtonOverflowIcon);
+        else
+            mOverflow = Compat.getDrawable(resources,
+                    R.drawable.floatingActionModeOverflowButtonOverflowIcon, theme);
+        if (custom.hasValue(
+                R.styleable.FloatingActionMode_floatingActionModeOverflowButtonBackIcon))
+            mBack = custom.getDrawable(
+                    R.styleable.FloatingActionMode_floatingActionModeOverflowButtonBackIcon);
+        else
+            mBack = Compat.getDrawable(resources,
+                    R.drawable.floatingActionModeOverflowButtonBackIcon, theme);
+        if (custom.hasValue(
+                R.styleable.FloatingActionMode_floatingActionModeOverflowButtonOverflowToBackIcon))
+            mOverflowToBack = custom.getDrawable(
+                    R.styleable.FloatingActionMode_floatingActionModeOverflowButtonOverflowToBackIcon);
+        else
+            mOverflowToBack = Compat.getDrawable(resources,
+                    R.drawable.floatingActionModeOverflowButtonOverflowToBackIcon, theme);
+        if (custom.hasValue(
+                R.styleable.FloatingActionMode_floatingActionModeOverflowButtonBackToOverflowIcon))
+            mBackToOverflow = custom.getDrawable(
+                    R.styleable.FloatingActionMode_floatingActionModeOverflowButtonBackToOverflowIcon);
+        else
+            mBackToOverflow = Compat.getDrawable(resources,
+                    R.drawable.floatingActionModeOverflowButtonBackToOverflowIcon, theme);
+        if (custom.hasValue(
+                R.styleable.FloatingActionMode_floatingActionModeOverflowButtonIconTint)) {
+            final ColorStateList tint = custom.getColorStateList(
+                    R.styleable.FloatingActionMode_floatingActionModeOverflowButtonIconTint);
+            final int mode = custom.getInt(
+                    R.styleable.FloatingActionMode_floatingActionModeOverflowButtonIconTintMode,
+                    0);
+            PorterDuff.Mode tintMode;
+            switch (mode) {
+                default:
+                case 5:
+                    tintMode = PorterDuff.Mode.SRC_IN;
+                    break;
+                case 3:
+                    tintMode = PorterDuff.Mode.SRC_OVER;
+                    break;
+                case 9:
+                    tintMode = PorterDuff.Mode.SRC_ATOP;
+                    break;
+                case 14:
+                    tintMode = PorterDuff.Mode.MULTIPLY;
+                    break;
+                case 15:
+                    tintMode = PorterDuff.Mode.SCREEN;
+                    break;
+                case 16:
+                    tintMode = PorterDuff.Mode.ADD;
+                    break;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (mOverflow != null) {
+                    mOverflow.setTintList(tint);
+                    mOverflow.setTintMode(tintMode);
+                }
+                if (mBack != null) {
+                    mBack.setTintList(tint);
+                    mBack.setTintMode(tintMode);
+                }
+                if (mOverflowToBack != null) {
+                    mOverflowToBack.setTintList(tint);
+                    mOverflowToBack.setTintMode(tintMode);
+                }
+                if (mBackToOverflow != null) {
+                    mBackToOverflow.setTintList(tint);
+                    mBackToOverflow.setTintMode(tintMode);
+                }
+            } else {
+                if (mOverflow != null) {
+                    final TintAwareDrawable overflow = new TintAwareDrawable(mOverflow);
+                    overflow.setTintList(tint);
+                    overflow.setTintMode(tintMode);
+                    mOverflow = overflow;
+                }
+                if (mBack != null) {
+                    final TintAwareDrawable back = new TintAwareDrawable(mBack);
+                    back.setTintList(tint);
+                    back.setTintMode(tintMode);
+                    mBack = back;
+                }
+                if (mOverflowToBack != null) {
+                    final TintAwareDrawable overflowToBack = new TintAwareDrawable(mOverflowToBack);
+                    overflowToBack.setTintList(tint);
+                    overflowToBack.setTintMode(tintMode);
+                    mOverflowToBack = overflowToBack;
+                }
+                if (mBackToOverflow != null) {
+                    final TintAwareDrawable backToOverflow = new TintAwareDrawable(mBackToOverflow);
+                    backToOverflow.setTintList(tint);
+                    backToOverflow.setTintMode(tintMode);
+                    mBackToOverflow = backToOverflow;
+                }
+            }
+        }
+        if (Compat.hasValueOrEmpty(custom,
+                R.styleable.FloatingActionMode_floatingActionModeOverflowButtonOverflowContentDescription))
+            mOverflowContentDescription = custom.getString(
+                    R.styleable.FloatingActionMode_floatingActionModeOverflowButtonOverflowContentDescription);
+        if (Compat.hasValueOrEmpty(custom,
+                R.styleable.FloatingActionMode_floatingActionModeOverflowButtonBackContentDescription))
+            mBackContentDescription = custom.getString(
+                    R.styleable.FloatingActionMode_floatingActionModeOverflowButtonBackContentDescription);
         custom.recycle();
 
         mButton.setPadding(paddingVertical, paddingHorizontal, paddingVertical, paddingHorizontal);
         mButton.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 
-
-        mArrow = resources.getDrawable(R.drawable.fam_avd_tooverflow);
-        mOverflow = resources.getDrawable(R.drawable.fam_avd_toarrow);
-        if (Build.VERSION.SDK_INT >= 21) {
-            mToArrow = context.getDrawable(R.drawable.fam_avd_toarrow_animation);
-            mToOverflow = context.getDrawable(R.drawable.fam_avd_tooverflow_animation);
-        } else {
-            mToArrow = null;
-            mToOverflow = null;
-        }
 
         addView(mButton, new LayoutParams(size, size));
 
@@ -131,7 +238,7 @@ final class OverflowButton extends FrameLayout {
             super.draw(canvas);
             return;
         }
-        final int layer = CanvasCompat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
+        final int layer = Compat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
                 null);
         super.draw(canvas);
         canvas.drawPath(mCornerCrop, mPaint);
@@ -139,25 +246,25 @@ final class OverflowButton extends FrameLayout {
     }
 
     void setOverflow(boolean animate) {
-        if (animate && mToOverflow != null) {
-            mButton.setImageDrawable(mToOverflow);
-            if (mToOverflow instanceof Animatable)
-                ((Animatable) mToOverflow).start();
+        if (animate && mBackToOverflow != null) {
+            mButton.setImageDrawable(mBackToOverflow);
+            if (mBackToOverflow instanceof Animatable)
+                ((Animatable) mBackToOverflow).start();
         } else {
             mButton.setImageDrawable(mOverflow);
         }
-        mButton.setContentDescription(getResources().getString(R.string.fam_cd_more));
+        mButton.setContentDescription(mOverflowContentDescription);
     }
 
-    void setArrow(boolean animate) {
-        if (animate && mToArrow != null) {
-            mButton.setImageDrawable(mToArrow);
-            if (mToArrow instanceof Animatable)
-                ((Animatable) mToArrow).start();
+    void setBack(boolean animate) {
+        if (animate && mOverflowToBack != null) {
+            mButton.setImageDrawable(mOverflowToBack);
+            if (mOverflowToBack instanceof Animatable)
+                ((Animatable) mOverflowToBack).start();
         } else {
-            mButton.setImageDrawable(mArrow);
+            mButton.setImageDrawable(mBack);
         }
-        mButton.setContentDescription(getResources().getString(R.string.fam_cd_close));
+        mButton.setContentDescription(mBackContentDescription);
     }
 
     int getSize() {

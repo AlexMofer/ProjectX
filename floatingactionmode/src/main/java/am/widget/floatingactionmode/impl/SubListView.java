@@ -26,8 +26,8 @@ import am.widget.floatingactionmode.FloatingSubMenu;
 import am.widget.floatingactionmode.R;
 
 /**
- * 次级菜单列表
- * Created by Alex on 2018/10/19.
+ * 常规次级列表
+ * Created by Alex on 2018/11/21.
  */
 final class SubListView extends MenuListView {
 

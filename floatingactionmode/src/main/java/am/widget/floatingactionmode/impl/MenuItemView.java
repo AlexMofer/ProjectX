@@ -33,8 +33,8 @@ import am.widget.floatingactionmode.FloatingMenuItem;
 import am.widget.floatingactionmode.R;
 
 /**
- * 菜单子项布局
- * Created by Alex on 2018/10/18.
+ * 面板子项视图
+ * Created by Alex on 2018/11/21.
  */
 final class MenuItemView extends LinearLayout {
 

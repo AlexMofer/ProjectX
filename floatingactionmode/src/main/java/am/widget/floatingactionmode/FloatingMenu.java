@@ -17,98 +17,84 @@ package am.widget.floatingactionmode;
 
 /**
  * 菜单
- * Created by Alex on 2018/10/24.
+ * Created by Alex on 2018/11/21.
  */
 @SuppressWarnings("unused")
 public interface FloatingMenu {
 
     /**
-     * Value to use for group and item identifier integers when you don't care
-     * about them.
+     * 作为默认ID与命令
      */
     int NONE = 0;
 
     /**
-     * Add a new item to the menu. This item displays the given title for its
-     * label.
+     * 添加子项
      *
-     * @param title The text to display for the item.
-     * @return The newly added menu item.
+     * @param title 标题
+     * @return 子项
      */
     FloatingMenuItem add(CharSequence title);
 
     /**
-     * Add a new item to the menu. This item displays the given title for its
-     * label.
+     * 添加子项
      *
-     * @param titleRes Resource identifier of title string.
-     * @return The newly added menu item.
+     * @param title 标题资源
+     * @return 子项
      */
-    FloatingMenuItem add(int titleRes);
+    FloatingMenuItem add(int title);
 
     /**
-     * Add a new item to the menu. This item displays the given title for its
-     * label.
+     * 添加子项
      *
-     * @param itemId Unique item ID. Use {@link #NONE} if you do not need a
-     *               unique ID.
-     * @param order  The order for the item. Use {@link #NONE} if you do not care
-     *               about the order. See {@link FloatingMenuItem#getOrder()}.
-     * @param title  The text to display for the item.
-     * @return The newly added menu item.
+     * @param id    ID
+     * @param order 命令
+     * @param title 标题
+     * @return 子项
      */
-    FloatingMenuItem add(int itemId, int order, CharSequence title);
+    FloatingMenuItem add(int id, int order, CharSequence title);
 
     /**
-     * Variation on {@link #add(int, int, CharSequence)} that takes a
-     * string resource identifier instead of the string itself.
+     * 添加子项
      *
-     * @param itemId   Unique item ID. Use {@link #NONE} if you do not need a
-     *                 unique ID.
-     * @param order    The order for the item. Use {@link #NONE} if you do not care
-     *                 about the order. See {@link FloatingMenuItem#getOrder()}.
-     * @param titleRes Resource identifier of title string.
-     * @return The newly added menu item.
+     * @param id    ID
+     * @param order 命令
+     * @param title 标题资源
+     * @return 子项
      */
-    FloatingMenuItem add(int itemId, int order, int titleRes);
+    FloatingMenuItem add(int id, int order, int title);
 
     /**
-     * Remove the item with the given identifier.
+     * 移除子项
      *
-     * @param id The item to be removed.  If there is no item with this
-     *           identifier, nothing happens.
+     * @param id ID
      */
     void removeItem(int id);
 
     /**
-     * Remove all existing items from the menu, leaving it empty as if it had
-     * just been created.
+     * 清空所有子项
      */
     void clear();
 
     /**
-     * Return the menu item with a particular identifier.
+     * 通过ID查找子项
      *
-     * @param id The identifier to find.
-     * @return The menu item object, or null if there is no item with
-     * this identifier.
+     * @param id ID
+     * @return 子项，默认查询第一个匹配的子项，查询不到时返回null
      */
     FloatingMenuItem findItem(int id);
 
     /**
-     * Get the number of items in the menu.  Note that this will change any
-     * times items are added or removed from the menu.
+     * 获取子项总数
      *
-     * @return The item count.
+     * @return 子项总数
      */
     int size();
 
     /**
-     * Gets the menu item at the given index.
+     * 通过下标获取子项
      *
-     * @param index The index of the menu item to return.
-     * @return The menu item.
-     * @throws IndexOutOfBoundsException when {@code index < 0 || >= size()}
+     * @param index 下标
+     * @return 子项
      */
     FloatingMenuItem getItem(int index);
 }

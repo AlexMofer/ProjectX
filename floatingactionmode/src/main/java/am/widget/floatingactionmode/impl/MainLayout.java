@@ -32,20 +32,23 @@ import am.widget.floatingactionmode.FloatingMenuItem;
 
 /**
  * 主面板
- * Created by Alex on 2018/10/23.
+ * Created by Alex on 2018/11/21.
  */
 final class MainLayout extends LinearLayout implements View.OnClickListener {
+
+    private final Path mCropPath = new Path();
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path mCornerCrop = new Path();
     private final RectF mCornerCropBound = new RectF();
     private final float[] mRadii = new float[8];
+
     private final Rect mCropBound = new Rect();
-    private final Path mCropPath = new Path();
-    private final RectF mCropAnimateBound = new RectF();
-    private float mCornerRadius;
     private boolean mCropReverse;
     private boolean mCropStart;
+    private final RectF mCropAnimateBound = new RectF();
+    private float mCornerRadius;
+
     private OnMainListener mListener;
 
     MainLayout(Context context) {
@@ -83,7 +86,7 @@ final class MainLayout extends LinearLayout implements View.OnClickListener {
             super.draw(canvas);
             return;
         }
-        final int layer = CanvasCompat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
+        final int layer = Compat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
                 null);
         cropCorner(canvas);
         canvas.drawPath(mCropPath, mPaint);
@@ -91,7 +94,7 @@ final class MainLayout extends LinearLayout implements View.OnClickListener {
     }
 
     private void cropCorner(Canvas canvas) {
-        final int layer = CanvasCompat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
+        final int layer = Compat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
                 null);
         super.draw(canvas);
         canvas.drawPath(mCornerCrop, mPaint);
