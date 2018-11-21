@@ -53,4 +53,15 @@
     <style name="CompletelyTransparentDialog" parent="TransparentDialog">
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+
+    <style name="FloatingActionMode" parent="Theme.AppCompat.Light">
+        <item name="floatingActionModeBackgroundColor">?colorBackgroundFloating</item>
+        <item name="floatingActionModeBackgroundCornerRadius">?dialogCornerRadius</item>
+        <item name="floatingActionModeElevation">2dp</item>
+        <item name="floatingActionModeOverflowButtonBackground">?actionBarItemBackground</item>
+        <item name="floatingActionModeItemBackground">?selectableItemBackground</item>
+        <item name="floatingActionModeItemTextAppearance">?textAppearanceListItemSmall</item>
+        <item name="floatingActionModeItemTextColor">#FF000000</item>
+        <item name="floatingActionModeItemTextSize">14sp</item>
+    </style>
 </resources>

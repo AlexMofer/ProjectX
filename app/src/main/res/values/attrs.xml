@@ -4,8 +4,4 @@
         <attr name="pwvProgressColor" format="color" />
         <attr name="pwvProgressHeight" format="dimension" />
     </declare-styleable>
-    <declare-styleable name="PressView">
-        <attr name="pvColor" format="color" />
-        <attr name="pvSlop" format="dimension" />
-    </declare-styleable>
 </resources>

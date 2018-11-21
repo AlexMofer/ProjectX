@@ -17,17 +17,17 @@ package am.project.x.business.others.floatingactionmode;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.Path;
+import android.graphics.PointF;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import am.project.x.R;
+import java.util.ArrayList;
 
 /**
  * 触摸绘图
@@ -35,9 +35,10 @@ import am.project.x.R;
 public class PressView extends View {
 
     private OnPressListener mListener;
-    private final Rect mPress = new Rect();
+    private final RectF mPress = new RectF();
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final RectF mOval = new RectF();
+    private final ArrayList<PointF> mPoints = new ArrayList<>();
+    private final Path mPath = new Path();
     private int mSlop;
 
     public PressView(Context context) {
@@ -56,13 +57,15 @@ public class PressView extends View {
     }
 
     private void initView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        final TypedArray custom = context.obtainStyledAttributes(attrs, R.styleable.PressView,
-                defStyleAttr, 0);
-        final int color = custom.getColor(R.styleable.PressView_pvColor, 0x80fe439b);
-        final int slop = custom.getDimensionPixelOffset(R.styleable.PressView_pvSlop, (int) (10 *
-                context.getResources().getDisplayMetrics().density));
-        custom.recycle();
+        final int color = 0x80fe439b;
+        final int slop = (int) (10 *
+                context.getResources().getDisplayMetrics().density);
         mPaint.setColor(color);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStrokeJoin(Paint.Join.ROUND);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
+        mPaint.setDither(true);
+        mPaint.setStrokeWidth(slop);
         mSlop = slop;
         setClickable(true);
     }
@@ -70,33 +73,76 @@ public class PressView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (mPress.isEmpty())
+        final ArrayList<PointF> points = mPoints;
+        final int count = points.size();
+        if (count <= 0)
             return;
-        mOval.set(mPress);
-        canvas.drawOval(mOval, mPaint);
+        if (count == 1) {
+            final PointF p = points.get(0);
+            canvas.drawPoint(p.x, p.y, mPaint);
+            return;
+        }
+        canvas.drawPath(mPath, mPaint);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
-        final int x = Math.round(event.getX());
-        final int y = Math.round(event.getY());
-        mPress.set(x - mSlop, y - mSlop, x + mSlop, y + mSlop);
-        invalidate();
-        if (event.getAction() == MotionEvent.ACTION_UP && mListener != null) {
-            mListener.onPressed(this, mPress.left, mPress.top, mPress.right, mPress.bottom);
+        final int action = event.getAction();
+        final float x = event.getX();
+        final float y = event.getY();
+        if (action == MotionEvent.ACTION_DOWN) {
+            mPress.setEmpty();
+            mPoints.clear();
+            mPress.set(x, y, x, y);
+            mPoints.add(new PointF(x, y));
+            mPress.union(x, y);
+            updatePath();
+            invalidate();
+        } else if (action == MotionEvent.ACTION_UP) {
+            if (mListener != null) {
+                final int left = Math.round(mPress.left - mSlop);
+                final int top = Math.round(mPress.top - mSlop);
+                final int right = Math.round(mPress.right + mSlop);
+                final int bottom = Math.round(mPress.bottom + mSlop);
+                mListener.onPressed(this, left, top, right, bottom);
+            }
+        } else {
+            mPoints.add(new PointF(x, y));
+            mPress.union(x, y);
+            updatePath();
+            invalidate();
         }
         return true;
     }
 
-    public void setOnPressListener(OnPressListener listener) {
-        mListener = listener;
+    private void updatePath() {
+        final Path path = mPath;
+        path.rewind();
+        final ArrayList<PointF> points = mPoints;
+        final int count = points.size();
+        if (count <= 1)
+            return;
+        float preX = 0;
+        float preY = 0;
+        for (int i = 0; i < count; i++) {
+            final float x = points.get(i).x;
+            final float y = points.get(i).y;
+            if (i == 0) {
+                path.moveTo(x, y);
+                preX = x;
+                preY = y;
+            } else {
+                path.quadTo(preX, preY, (x + preX) / 2, (y + preY) / 2);
+                preX = x;
+                preY = y;
+            }
+        }
     }
 
-    public void clear() {
-        mPress.setEmpty();
-        invalidate();
+    public void setOnPressListener(OnPressListener listener) {
+        mListener = listener;
     }
 
     public interface OnPressListener {

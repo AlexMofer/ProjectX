@@ -21,6 +21,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Toast;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
@@ -60,7 +61,7 @@ public class FloatingActionModeActivity extends BaseActivity implements PressVie
         if (mMode != null)
             mMode.finish();
         mBound.set(left, top, right, bottom);
-        mMode = new FloatingActionMode(view, this);
+        mMode = new FloatingActionMode(view, this, R.style.FloatingActionMode);
         mMode.start();
     }
 
@@ -97,6 +98,7 @@ public class FloatingActionModeActivity extends BaseActivity implements PressVie
 
     @Override
     public boolean onActionItemClicked(FloatingActionMode mode, FloatingMenuItem item) {
+        Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
         return false;
     }
 
