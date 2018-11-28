@@ -469,10 +469,10 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
 
     private void setMain(boolean layoutNoLimits, boolean layoutInScreen,
                          boolean layoutInsetDecor) {
+        final int width = mHasOverflow ? mMainSize.width + mButton.getSize() : mMainSize.width;
         final int left = mMainLocation.x - mAnimationParams.x;
         final int top = mMainLocation.y - mAnimationParams.y;
-        final int right = mMainLocation.x + mMainSize.width + mButton.getSize()
-                - mAnimationParams.x;
+        final int right = mMainLocation.x + width - mAnimationParams.x;
         final int bottom = mMainLocation.y + mMainSize.height - mAnimationParams.y;
         mAnimation.setBound(left, top, right, bottom, false);
         mOverflowParams.flags = computeFlags(mOverflowParams.flags, false,
@@ -604,11 +604,11 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
     }
 
     void hide() {
-        mAnimation.setVisibility(View.GONE);
-        mOverflow.setVisibility(View.GONE);
-        mSub.setVisibility(View.GONE);
-        mButton.setVisibility(View.GONE);
-        mMain.setVisibility(View.GONE);
+        mAnimation.hide();
+        mOverflow.hide();
+        mSub.hide();
+        mButton.hide();
+        mMain.hide();
         final boolean layoutNoLimits = mMode.isLayoutNoLimitsEnabled();
         final boolean layoutInScreen = mMode.isLayoutInScreenEnabled();
         final boolean layoutInsetDecor = mMode.isLayoutInsetDecorEnabled();
@@ -624,6 +624,11 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
     }
 
     void show() {
+        mAnimation.show();
+        mOverflow.show();
+        mSub.show();
+        mButton.show();
+        mMain.show();
         final boolean layoutNoLimits = mMode.isLayoutNoLimitsEnabled();
         final boolean layoutInScreen = mMode.isLayoutInScreenEnabled();
         final boolean layoutInsetDecor = mMode.isLayoutInsetDecorEnabled();

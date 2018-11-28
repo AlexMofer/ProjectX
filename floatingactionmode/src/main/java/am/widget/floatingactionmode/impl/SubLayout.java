@@ -69,6 +69,8 @@ final class SubLayout extends LinearLayout implements AdapterView.OnItemClickLis
     private final RectF mCropAnimateBound = new RectF();
     private float mCornerRadius;
 
+    private boolean mHidden;
+
     private OnSubListener mListener;
 
     SubLayout(Context context) {
@@ -145,6 +147,8 @@ final class SubLayout extends LinearLayout implements AdapterView.OnItemClickLis
 
     @Override
     public void draw(Canvas canvas) {
+        if (mHidden)
+            return;
         if (mCornerRadius <= 0 && !mCropStart) {
             super.draw(canvas);
             return;
@@ -293,6 +297,18 @@ final class SubLayout extends LinearLayout implements AdapterView.OnItemClickLis
 
     void stop() {
         mCropStart = false;
+        invalidate();
+    }
+
+    void hide() {
+        setEnabled(false);
+        mHidden = true;
+        invalidate();
+    }
+
+    void show() {
+        setEnabled(true);
+        mHidden = false;
         invalidate();
     }
 

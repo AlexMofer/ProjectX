@@ -62,6 +62,8 @@ final class OverflowButton extends FrameLayout {
     private final RectF mCornerCropBound = new RectF();
     private final float[] mRadii = new float[8];
 
+    private boolean mHidden;
+
     OverflowButton(Context context) {
         super(context);
         setWillNotDraw(false);
@@ -234,6 +236,8 @@ final class OverflowButton extends FrameLayout {
 
     @Override
     public void draw(Canvas canvas) {
+        if (mHidden)
+            return;
         if (mCornerRadius <= 0) {
             super.draw(canvas);
             return;
@@ -292,6 +296,18 @@ final class OverflowButton extends FrameLayout {
                 break;
         }
         updateCornerCropPath();
+        invalidate();
+    }
+
+    void hide() {
+        setEnabled(false);
+        mHidden = true;
+        invalidate();
+    }
+
+    void show() {
+        setEnabled(true);
+        mHidden = false;
         invalidate();
     }
 

@@ -279,11 +279,6 @@ final class AnimationLayout extends ViewGroup implements Animation.AnimationList
         return mCornerRadius;
     }
 
-    @Override
-    public void setVisibility(int visibility) {
-        mBackground.setVisibility(visibility);
-    }
-
     void setOnAnimationListener(OnAnimationListener listener) {
         mListener = listener;
     }
@@ -363,6 +358,14 @@ final class AnimationLayout extends ViewGroup implements Animation.AnimationList
     void cancel() {
         if (mStart)
             mAnimation.cancel();
+    }
+
+    void hide() {
+        mBackground.setVisibility(GONE);
+    }
+
+    void show() {
+        mBackground.setVisibility(VISIBLE);
     }
 
     public interface OnAnimationListener {

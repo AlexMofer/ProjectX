@@ -48,6 +48,7 @@ final class MainLayout extends LinearLayout implements View.OnClickListener {
     private boolean mCropStart;
     private final RectF mCropAnimateBound = new RectF();
     private float mCornerRadius;
+    private boolean mHidden;
 
     private OnMainListener mListener;
 
@@ -82,6 +83,8 @@ final class MainLayout extends LinearLayout implements View.OnClickListener {
 
     @Override
     public void draw(Canvas canvas) {
+        if (mHidden)
+            return;
         if (mCornerRadius <= 0 && !mCropStart) {
             super.draw(canvas);
             return;
@@ -147,6 +150,7 @@ final class MainLayout extends LinearLayout implements View.OnClickListener {
                 }
             }
         }
+        removeChild(index + 1);
         requestLayout();
         invalidate();
     }
@@ -225,6 +229,18 @@ final class MainLayout extends LinearLayout implements View.OnClickListener {
 
     void stop() {
         mCropStart = false;
+        invalidate();
+    }
+
+    void hide() {
+        setEnabled(false);
+        mHidden = true;
+        invalidate();
+    }
+
+    void show() {
+        setEnabled(true);
+        mHidden = false;
         invalidate();
     }
 
