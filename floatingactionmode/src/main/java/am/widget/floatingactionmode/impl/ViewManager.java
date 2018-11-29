@@ -385,7 +385,7 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
             mSubButtonLocation.y = mMainLocation.y;
             return;
         }
-        mSubLocation.x = mMainLocation.x + mMainSize.width + mButton.getSize()
+        mSubLocation.x = mMainLocation.x + mMainSize.width + (mHasOverflow ? mButton.getSize() : 0)
                 - mSubSize.width;
         if (layoutNoLimits) {
             mSubLocation.y = mMainLocation.y;
