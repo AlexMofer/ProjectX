@@ -260,6 +260,34 @@ public class HeaderTable extends BaseTable {
         return mMacStyle;
     }
 
+    public boolean isBold() {
+        return (mMacStyle & 1) == 1;
+    }
+
+    public boolean isItalic() {
+        return (mMacStyle & 2) == 2;
+    }
+
+    public boolean isUnderline() {
+        return (mMacStyle & 4) == 4;
+    }
+
+    public boolean isOutline() {
+        return (mMacStyle & 8) == 8;
+    }
+
+    public boolean isShadow() {
+        return (mMacStyle & 16) == 16;
+    }
+
+    public boolean isCondensed() {
+        return (mMacStyle & 32) == 32;
+    }
+
+    public boolean isExtended() {
+        return (mMacStyle & 64) == 64;
+    }
+
     /**
      * Smallest readable size in pixels.
      *

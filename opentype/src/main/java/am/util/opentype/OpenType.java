@@ -318,7 +318,7 @@ public class OpenType {
     /**
      * 获取搜索范围
      *
-     * @return 搜索范围(Maximum power of 2 & lt ; = numTables) x 16.
+     * @return 搜索范围(Maximum power of 2 &lt;= numTables) x 16.
      */
     public int getSearchRange() {
         return mSearchRange;
