@@ -3,6 +3,7 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 28
     defaultConfig {
+        //noinspection MinSdkTooLow
         minSdkVersion 1
         targetSdkVersion 28
         versionCode 3
