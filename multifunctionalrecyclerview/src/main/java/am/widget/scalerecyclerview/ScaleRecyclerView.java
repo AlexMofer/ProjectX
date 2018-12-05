@@ -16,11 +16,13 @@
 
 package am.widget.scalerecyclerview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.GestureDetectorCompat;
@@ -39,10 +41,11 @@ import am.widget.scrollbarrecyclerview.ScrollbarRecyclerView;
  * 可缩放的RecyclerView
  * Created by Alex on 2017/11/8.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public class ScaleRecyclerView extends ScrollbarRecyclerView {
 
     public static final int SCROLL_STATE_SCALING = 3;
+    @SuppressWarnings("unused")
     private static final String KEY_SCALE = "am.widget.scalerecyclerview.ScaleRecyclerView.KEY_SCALE";
     private final ScaleHelper mScaleHelper = new ScaleHelper(this);
     private final Rect tRect = new Rect();
@@ -140,8 +143,8 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
         super.requestDisallowInterceptTouchEvent(disallowIntercept);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
-    @SuppressWarnings("all")
     public boolean onTouchEvent(MotionEvent e) {
         if (!mScaleEnable)
             return super.onTouchEvent(e);
@@ -552,7 +555,7 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
         private ScaleRecyclerView mView;
 
         @Override
-        public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
             if (recyclerView instanceof ScaleRecyclerView) {
                 mView = (ScaleRecyclerView) recyclerView;
             }
@@ -560,7 +563,7 @@ public class ScaleRecyclerView extends ScrollbarRecyclerView {
         }
 
         @Override
-        public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
             mView = null;
             super.onDetachedFromRecyclerView(recyclerView);
         }

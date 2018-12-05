@@ -2,6 +2,7 @@ package am.project.x.business.developing.display;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import am.widget.multifunctionalrecyclerview.MultifunctionalRecyclerView;
  * Created by Xiang Zhicheng on 2017/11/3.
  */
 
+@SuppressWarnings("unused")
 public class DisplayRecyclerView extends MultifunctionalRecyclerView {
 
     private DisplayItemDecoration mItemDecoration;
@@ -65,7 +67,6 @@ public class DisplayRecyclerView extends MultifunctionalRecyclerView {
 //    }
 
 //    @Override
-//    @SuppressWarnings("all")
 //    public boolean onTouchEvent(MotionEvent e) {
 //        if (isHorizontal())
 //            return super.onTouchEvent(e);
@@ -132,7 +133,7 @@ public class DisplayRecyclerView extends MultifunctionalRecyclerView {
         private DisplayRecyclerView mView;
 
         @Override
-        public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
             if (recyclerView instanceof DisplayRecyclerView) {
                 mView = (DisplayRecyclerView) recyclerView;
             }
@@ -140,7 +141,7 @@ public class DisplayRecyclerView extends MultifunctionalRecyclerView {
         }
 
         @Override
-        public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
             super.onDetachedFromRecyclerView(recyclerView);
             mView = null;
         }

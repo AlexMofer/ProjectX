@@ -39,7 +39,7 @@ import javax.crypto.NoSuchPaddingException;
  * 一般用于加密对称加密的密钥
  * Created by Alex on 2016/4/28.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class RSAUtil {
 
     private final static String ALGORITHM = "RSA";

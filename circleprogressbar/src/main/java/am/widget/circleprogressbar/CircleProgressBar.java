@@ -18,6 +18,7 @@ package am.widget.circleprogressbar;
 
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -438,7 +439,7 @@ public class CircleProgressBar extends View {
      *
      * @param canvas 画布
      */
-    @SuppressWarnings("all")
+    @SuppressLint("RtlHardcoded")
     protected void editCanvas(Canvas canvas) {
         float scale = 1;
         final int paddingStart = Compat.getPaddingStart(this);

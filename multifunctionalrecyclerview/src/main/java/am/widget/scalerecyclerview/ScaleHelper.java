@@ -104,8 +104,8 @@ class ScaleHelper implements Runnable {
         private float mStartScale;
         private float mScale;
 
-        @SuppressWarnings("all")
-        void scale(float startScale, float targetScale, long duration) {
+        void scale(float startScale, float targetScale,
+                   @SuppressWarnings("SameParameterValue") long duration) {
             mFinished = false;
             mStartTime = AnimationUtils.currentAnimationTimeMillis();
             mDuration = duration;

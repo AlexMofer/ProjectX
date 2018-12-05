@@ -16,6 +16,7 @@
 
 package am.widget.headerfootergridview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Build;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
  *
  * @author Alex
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public class HeaderFooterGridView extends GridView {
 
     private final ArrayList<View> mHeaderItems = new ArrayList<>();
@@ -82,6 +83,7 @@ public class HeaderFooterGridView extends GridView {
         super.setOnItemSelectedListener(listener);
     }
 
+    @SuppressLint("SwitchIntDef")
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int availableSpace = MeasureSpec.getSize(widthMeasureSpec)
@@ -494,12 +496,10 @@ public class HeaderFooterGridView extends GridView {
      *
      * @param v The view to add.
      */
-    @SuppressWarnings("unused")
     public void addHeaderItem(View v) {
         addHeaderItem(v, null, false);
     }
 
-    @SuppressWarnings("unused")
     public int getHeaderItemsCount() {
         return mHeaderItems.size();
     }
@@ -511,7 +511,6 @@ public class HeaderFooterGridView extends GridView {
      * @return true if the view was removed, false if the view was not a
      * header view
      */
-    @SuppressWarnings("unused")
     public boolean removeHeaderItem(View v) {
         return mHeaderItems.remove(v) && mAdapter != null && mAdapter.removeHeaderItem(v);
     }
@@ -556,12 +555,10 @@ public class HeaderFooterGridView extends GridView {
      *
      * @param v The view to add.
      */
-    @SuppressWarnings("unused")
     public void addFooterItem(View v) {
         addFooterItem(v, null, false);
     }
 
-    @SuppressWarnings("unused")
     public int getFooterItemsCount() {
         return mFooterItems.size();
     }
@@ -573,7 +570,6 @@ public class HeaderFooterGridView extends GridView {
      * @return true if the view was removed, false if the view was not a
      * footer view
      */
-    @SuppressWarnings("unused")
     public boolean removeFooterItem(View v) {
         return mFooterItems.remove(v) && mAdapter != null && mAdapter.removeFooterItem(v);
     }
@@ -585,7 +581,6 @@ public class HeaderFooterGridView extends GridView {
      *
      * @param v 待添加的View
      */
-    @SuppressWarnings("unused")
     public void addHeaderView(View v) {
         if (mHeaderViews.contains(v))
             return;
@@ -599,7 +594,6 @@ public class HeaderFooterGridView extends GridView {
      *
      * @return 网格顶部添加的View数目
      */
-    @SuppressWarnings("unused")
     public int getHeaderViewsCount() {
         return mHeaderViews.size();
     }
@@ -610,7 +604,6 @@ public class HeaderFooterGridView extends GridView {
      *
      * @return 不可见的空白View数目
      */
-    @SuppressWarnings("unused")
     public int getHeaderEmptyViewsCount() {
         return mAdapter == null ? 0 : mAdapter.getHeaderViewsCount();
     }
@@ -621,7 +614,6 @@ public class HeaderFooterGridView extends GridView {
      * @param v 待移除的View
      * @return 是否成功移除
      */
-    @SuppressWarnings("unused")
     public boolean removeHeaderView(View v) {
         boolean finished = mHeaderViews.remove(v);
         if (finished && mAdapter != null) {
@@ -638,7 +630,6 @@ public class HeaderFooterGridView extends GridView {
      *
      * @param v 待添加的View
      */
-    @SuppressWarnings("unused")
     public void addFooterView(View v) {
         if (mFooterViews.contains(v))
             return;
@@ -652,7 +643,6 @@ public class HeaderFooterGridView extends GridView {
      *
      * @return 网格底部添加的View数目
      */
-    @SuppressWarnings("unused")
     public int getFooterViewsCount() {
         return mFooterViews.size();
     }
@@ -663,7 +653,6 @@ public class HeaderFooterGridView extends GridView {
      *
      * @return 不可见的空白View数目
      */
-    @SuppressWarnings("unused")
     public int getFooterEmptyViewsCount() {
         return mAdapter == null ? 0 : mAdapter.getFooterViewsCount();
     }
@@ -674,7 +663,6 @@ public class HeaderFooterGridView extends GridView {
      * @param v 待移除的View
      * @return 是否成功移除
      */
-    @SuppressWarnings("unused")
     public boolean removeFooterView(View v) {
         boolean finished = mFooterViews.remove(v);
         if (finished && mAdapter != null) {
@@ -688,7 +676,6 @@ public class HeaderFooterGridView extends GridView {
      *
      * @return 第一项position
      */
-    @SuppressWarnings("unused")
     public int getFirstWrappedAdapterItemPosition() {
         if (mAdapter != null)
             return mAdapter.getFirstWrappedAdapterItemPosition();
@@ -701,7 +688,6 @@ public class HeaderFooterGridView extends GridView {
      *
      * @return 最后一项position
      */
-    @SuppressWarnings("unused")
     public int getLastWrappedAdapterItemPosition() {
         if (mAdapter != null)
             return mAdapter.getFirstWrappedAdapterItemPosition()
@@ -716,7 +702,6 @@ public class HeaderFooterGridView extends GridView {
      * @param position 子项位置
      * @return 子项类型，不在范围之内或Adapter为空返回 null
      */
-    @SuppressWarnings("unused")
     public HeaderFooterViewListAdapter.PositionType getPositionType(int position) {
         if (mAdapter != null && position >= 0 && position < getCount()) {
             return mAdapter.getPositionType(position);
@@ -741,6 +726,7 @@ public class HeaderFooterGridView extends GridView {
         /**
          * <code>true</code> if the fixed view should be selectable in the grid
          */
+        @SuppressWarnings("WeakerAccess")
         public boolean isSelectable;
     }
 

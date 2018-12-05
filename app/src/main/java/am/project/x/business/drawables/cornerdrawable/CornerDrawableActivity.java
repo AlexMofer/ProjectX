@@ -15,6 +15,7 @@
  */
 package am.project.x.business.drawables.cornerdrawable;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -76,8 +77,8 @@ public class CornerDrawableActivity extends BaseActivity implements
     }
 
     // Listener
+    @SuppressLint("RtlHardcoded")
     @Override
-    @SuppressWarnings("all")
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.cnd_sp_direction:

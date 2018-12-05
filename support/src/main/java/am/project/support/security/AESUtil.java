@@ -32,7 +32,7 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * @author Alex
  */
-@SuppressWarnings("all")
+@SuppressWarnings("WeakerAccess")
 public class AESUtil {
 
     private final static String ALGORITHM = "AES";

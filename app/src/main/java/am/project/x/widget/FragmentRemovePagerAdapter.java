@@ -16,8 +16,10 @@
 
 package am.project.x.widget;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -51,21 +53,21 @@ import java.util.ArrayList;
  * <p>Here is an example implementation of a pager containing fragments of
  * lists:
  * <p>
- * {@sample frameworks/support/samples/Support4Demos/src/com/example/android/supportv4/app/FragmentPagerSupport.java
+ * {@see frameworks/support/samples/Support4Demos/src/com/example/android/supportv4/app/FragmentPagerSupport.java
  * complete}
  * <p>
  * <p>The <code>R.layout.fragment_pager</code> resource of the top-level fragment is:
  * <p>
- * {@sample frameworks/support/samples/Support4Demos/res/layout/fragment_pager.xml
+ * {@see frameworks/support/samples/Support4Demos/res/layout/fragment_pager.xml
  * complete}
  * <p>
  * <p>The <code>R.layout.fragment_pager_list</code> resource containing each
  * individual fragment's layout is:
  * <p>
- * {@sample frameworks/support/samples/Support4Demos/res/layout/fragment_pager_list.xml
+ * {@see frameworks/support/samples/Support4Demos/res/layout/fragment_pager_list.xml
  * complete}
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public abstract class FragmentRemovePagerAdapter extends PagerAdapter {
     private static final String TAG = FragmentRemovePagerAdapter.class.getSimpleName();
     private static final boolean DEBUG = false;
@@ -91,7 +93,7 @@ public abstract class FragmentRemovePagerAdapter extends PagerAdapter {
     public abstract Fragment getItem(int position);
 
     @Override
-    public void startUpdate(ViewGroup container) {
+    public void startUpdate(@NonNull ViewGroup container) {
         mViewGroupId = container.getId();
         if (mViewGroupId == View.NO_ID) {
             throw new IllegalStateException("ViewPager with adapter " + this
@@ -99,8 +101,10 @@ public abstract class FragmentRemovePagerAdapter extends PagerAdapter {
         }
     }
 
+    @SuppressLint("CommitTransaction")
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
@@ -133,8 +137,9 @@ public abstract class FragmentRemovePagerAdapter extends PagerAdapter {
         return fragment;
     }
 
+    @SuppressLint("CommitTransaction")
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
@@ -144,23 +149,21 @@ public abstract class FragmentRemovePagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+    public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         Fragment fragment = (Fragment) object;
         if (fragment != mCurrentPrimaryItem) {
             if (mCurrentPrimaryItem != null) {
                 mCurrentPrimaryItem.setMenuVisibility(false);
                 mCurrentPrimaryItem.setUserVisibleHint(false);
             }
-            if (fragment != null) {
-                fragment.setMenuVisibility(true);
-                fragment.setUserVisibleHint(true);
-            }
+            fragment.setMenuVisibility(true);
+            fragment.setUserVisibleHint(true);
             mCurrentPrimaryItem = fragment;
         }
     }
 
     @Override
-    public void finishUpdate(ViewGroup container) {
+    public void finishUpdate(@NonNull ViewGroup container) {
         if (mCurTransaction != null) {
             mCurTransaction.commitNowAllowingStateLoss();
             mCurTransaction = null;
@@ -168,7 +171,7 @@ public abstract class FragmentRemovePagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return ((Fragment) object).getView() == view;
     }
 
@@ -205,8 +208,8 @@ public abstract class FragmentRemovePagerAdapter extends PagerAdapter {
             Parcelable[] fss = bundle.getParcelableArray("states");
             mSavedState.clear();
             if (fss != null) {
-                for (int i = 0; i < fss.length; i++) {
-                    mSavedState.add((Fragment.SavedState) fss[i]);
+                for (Parcelable fs : fss) {
+                    mSavedState.add((Fragment.SavedState) fs);
                 }
             }
             Iterable<String> keys = bundle.keySet();

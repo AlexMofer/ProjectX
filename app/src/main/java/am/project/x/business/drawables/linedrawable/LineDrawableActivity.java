@@ -15,6 +15,7 @@
  */
 package am.project.x.business.drawables.linedrawable;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -63,7 +64,7 @@ public class LineDrawableActivity extends BaseActivity implements
     }
 
     // Listener
-    @SuppressWarnings("all")
+    @SuppressLint("RtlHardcoded")
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {

@@ -38,7 +38,7 @@ import am.widget.multifunctionalrecyclerview.R;
  * 默认的滚动条
  * Created by Alex on 2017/11/1.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class DefaultScrollbar extends ScrollbarRecyclerView.Scrollbar {
 
     public static final int GRAVITY_CENTER = 0;

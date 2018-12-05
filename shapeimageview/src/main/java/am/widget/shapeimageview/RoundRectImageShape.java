@@ -27,7 +27,6 @@ import android.graphics.RectF;
 /**
  * 圆角矩形
  */
-@SuppressWarnings("all")
 public class RoundRectImageShape extends ImageShape {
 
     private static final RectF tRectF = new RectF();

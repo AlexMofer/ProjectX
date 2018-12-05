@@ -34,7 +34,7 @@ import java.util.Collections;
  * FTP用户管理器
  * Created by Alex on 2017/12/19.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "RedundantThrows"})
 public class FTPUserManager implements UserManager {
 
     private final ArrayList<FTPUser> mUsers = new ArrayList<>();
@@ -107,7 +107,7 @@ public class FTPUserManager implements UserManager {
             }
             throw new AuthenticationFailedException();
         }
-        if (mUsers == null || mUsers.isEmpty())
+        if (mUsers.isEmpty())
             throw new AuthenticationFailedException();
         if (authentication instanceof UsernamePasswordAuthentication) {
             UsernamePasswordAuthentication auth = (UsernamePasswordAuthentication) authentication;

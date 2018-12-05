@@ -17,6 +17,7 @@
 package com.google.zxing.client.android.manager;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -34,7 +35,6 @@ import com.google.zxing.client.android.compat.Compat;
  * 扫描反馈管理器
  * Created by Alex on 2016/11/28.
  */
-@SuppressWarnings("all")
 public class ScanFeedbackManager implements MediaPlayer.OnCompletionListener {
 
     public static final int MODE_AUTO = 0;//自动模式
@@ -176,6 +176,7 @@ public class ScanFeedbackManager implements MediaPlayer.OnCompletionListener {
         }
     }
 
+    @SuppressLint("MissingPermission")
     private void playVibrateEffect() {
         if (Compat.checkSelfPermission(context, Manifest.permission.VIBRATE)
                 == PackageManager.PERMISSION_DENIED)
@@ -202,7 +203,7 @@ public class ScanFeedbackManager implements MediaPlayer.OnCompletionListener {
         return null;
     }
 
-    private float getVolume(int streamType) {
+    private float getVolume(@SuppressWarnings("SameParameterValue") int streamType) {
         int maxVolume = audioManager.getStreamMaxVolume(streamType);
         int curVolume = audioManager.getStreamVolume(streamType);
         return curVolume * 1f / maxVolume;

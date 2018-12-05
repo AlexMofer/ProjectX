@@ -28,6 +28,7 @@ import java.util.ArrayList;
 /**
  * 自动换行布局
  */
+@SuppressWarnings("unused")
 public class WrapLayout extends ViewGroup {
 
     public static final int GRAVITY_PARENT = -1;// 使用全局对齐方案
@@ -276,7 +277,6 @@ public class WrapLayout extends ViewGroup {
      *
      * @return 水平间距
      */
-    @SuppressWarnings("unused")
     public int getHorizontalSpacing() {
         return mHorizontalSpacing;
     }
@@ -286,7 +286,6 @@ public class WrapLayout extends ViewGroup {
      *
      * @param pixelSize 水平间距
      */
-    @SuppressWarnings("unused")
     public void setHorizontalSpacing(int pixelSize) {
         mHorizontalSpacing = pixelSize;
         requestLayout();
@@ -297,7 +296,6 @@ public class WrapLayout extends ViewGroup {
      *
      * @return 垂直间距
      */
-    @SuppressWarnings("unused")
     public int getVerticalSpacing() {
         return mVerticalSpacing;
     }
@@ -307,7 +305,6 @@ public class WrapLayout extends ViewGroup {
      *
      * @param pixelSize 垂直间距
      */
-    @SuppressWarnings("unused")
     public void setVerticalSpacing(int pixelSize) {
         mVerticalSpacing = pixelSize;
         requestLayout();
@@ -318,7 +315,6 @@ public class WrapLayout extends ViewGroup {
      *
      * @return 行数目
      */
-    @SuppressWarnings("unused")
     public int getNumRows() {
         return mNumRows;
     }
@@ -329,7 +325,6 @@ public class WrapLayout extends ViewGroup {
      * @param index 行号
      * @return 列数目
      */
-    @SuppressWarnings("unused")
     public int getNumColumns(int index) {
         int numColumns = -1;
         if (index < 0 || index >= mNumColumns.size()) {
@@ -343,7 +338,6 @@ public class WrapLayout extends ViewGroup {
      *
      * @return 对齐模式
      */
-    @SuppressWarnings("unused")
     public int getGravity() {
         return mGravity;
     }
@@ -353,7 +347,6 @@ public class WrapLayout extends ViewGroup {
      *
      * @param gravity 对齐模式
      */
-    @SuppressWarnings("unused")
     public void setGravity(int gravity) {
         if (gravity != GRAVITY_TOP && gravity != GRAVITY_CENTER && gravity != GRAVITY_BOTTOM)
             return;
@@ -364,7 +357,7 @@ public class WrapLayout extends ViewGroup {
     /**
      * Per-child layout information associated with WrapLayout.
      */
-    @SuppressWarnings("all")
+    @SuppressWarnings("WeakerAccess")
     public static class LayoutParams extends ViewGroup.LayoutParams {
 
         private int mGravity = WrapLayout.GRAVITY_PARENT;

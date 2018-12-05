@@ -100,10 +100,9 @@ class CryptoJob extends Job<CryptoJob.Callback> {
         buffer.append("\n");
     }
 
-    @SuppressWarnings("all")
     private void getSHA224(StringBuffer buffer, String text) {
         buffer.append("SHA-224：");
-        if (Build.VERSION.SDK_INT > 8 && Build.VERSION.SDK_INT < 22) {
+        if (Build.VERSION.SDK_INT < 22) {
             buffer.append("SHA-224 Supported API Levels 1-8,22+");
         } else {
             buffer.append(MessageDigestUtils.getSHA224String(text.getBytes()));

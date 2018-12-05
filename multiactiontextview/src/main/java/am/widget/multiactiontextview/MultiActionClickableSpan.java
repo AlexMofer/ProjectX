@@ -24,7 +24,7 @@ import android.view.View;
  * 点击事件
  * Created by Alex on 2016/7/27.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"NullableProblems", "WeakerAccess", "unused"})
 public class MultiActionClickableSpan extends ClickableSpan {
     private int mStart;
     private int mEnd;

@@ -16,6 +16,7 @@
 
 package am.drawable;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.DashPathEffect;
@@ -33,6 +34,7 @@ import android.view.Gravity;
  * 注意：使用该Drawable时，会改变View的Padding值。
  */
 @SuppressWarnings("unused")
+@SuppressLint("RtlHardcoded")
 public class CornerDrawable extends Drawable {
 
     private final Paint mFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -63,6 +65,7 @@ public class CornerDrawable extends Drawable {
         this(color, cornerWidth, cornerHeight, 0, Gravity.TOP, Gravity.CENTER, 0);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public CornerDrawable(int color, int cornerWidth, int cornerHeight, float cornerBezier,
                           int direction, int location, float contentRadius) {
         setColor(color);
@@ -75,8 +78,7 @@ public class CornerDrawable extends Drawable {
     }
 
     @Override
-    @SuppressWarnings("all")
-    public void draw(Canvas canvas) {
+    public void draw(@SuppressWarnings("NullableProblems") Canvas canvas) {
         // remember the alpha values, in case we temporarily overwrite them
         // when we modulate them with mAlpha
         final int prevFillAlpha = mFillPaint.getAlpha();
@@ -169,7 +171,6 @@ public class CornerDrawable extends Drawable {
     /**
      * 三角形
      */
-    @SuppressWarnings("all")
     private void makeTrianglePath() {
         final int width = getBounds().width();
         final int height = getBounds().height();
@@ -293,7 +294,7 @@ public class CornerDrawable extends Drawable {
         }
     }
 
-    @SuppressWarnings("all")
+
     private void makeTriangleCornerPath() {
         final int width = getBounds().width();
         final int height = getBounds().height();
@@ -338,7 +339,6 @@ public class CornerDrawable extends Drawable {
     /**
      * 矩形（三角形宽度小于等于矩形连接边）
      */
-    @SuppressWarnings("all")
     private void makeTriangleRectPath() {
         final int width = getBounds().width();
         final int height = getBounds().height();
@@ -366,8 +366,10 @@ public class CornerDrawable extends Drawable {
                 break;
             case Gravity.LEFT:
                 mPath.moveTo(mCornerHeight + halfStokeSize, height - halfStokeSize);
+                //noinspection SuspiciousNameCombination
                 mCornerLeft.set(mCornerHeight, height);
                 mCornerCenter.set(0, height * 0.5f);
+                //noinspection SuspiciousNameCombination
                 mCornerRight.set(mCornerHeight, 0);
                 makeTriangleRectCornerPath();
                 mPath.lineTo(width - halfStokeSize, halfStokeSize);
@@ -387,7 +389,6 @@ public class CornerDrawable extends Drawable {
         }
     }
 
-    @SuppressWarnings("all")
     private void makeTriangleRectCornerPath() {
         final int width = getBounds().width();
         final int height = getBounds().height();
@@ -396,6 +397,7 @@ public class CornerDrawable extends Drawable {
         final float mCornerWidth = (mDirection == Gravity.TOP || mDirection == Gravity.BOTTOM) ? width : height;
         final float halfCornerWidth = mCornerWidth * 0.5f;
         final float cornerStokeVertical = (float) (Math.sqrt(halfCornerWidth * halfCornerWidth + mCornerHeight * mCornerHeight) * halfStokeSize / halfCornerWidth);
+        //noinspection UnnecessaryLocalVariable
         final float cornerXOffset = halfStokeSize;
         final float cornerYOffset = mCornerHeight * (halfCornerWidth - halfCornerWidth * (mCornerHeight - cornerStokeVertical) / mCornerHeight - halfStokeSize) / halfCornerWidth;
         switch (mDirection) {
@@ -425,7 +427,6 @@ public class CornerDrawable extends Drawable {
     /**
      * 矩形
      */
-    @SuppressWarnings("all")
     private void makeRectPath() {
         final int width = getBounds().width();
         final int height = getBounds().height();
@@ -516,8 +517,10 @@ public class CornerDrawable extends Drawable {
                 mPath.lineTo(width - halfStokeSize, halfStokeSize);
                 mPath.lineTo(width - halfStokeSize, height - halfStokeSize);
                 mPath.lineTo(mCornerHeight + halfStokeSize, height - halfStokeSize);
+                //noinspection SuspiciousNameCombination
                 mCornerLeft.set(mCornerHeight, (height + mCornerWidth) * 0.5f);
                 mCornerCenter.set(0, height * 0.5f);
+                //noinspection SuspiciousNameCombination
                 mCornerRight.set(mCornerHeight, (height - mCornerWidth) * 0.5f);
                 makeRectCornerPath(offset);
                 mPath.close();
@@ -525,7 +528,6 @@ public class CornerDrawable extends Drawable {
         }
     }
 
-    @SuppressWarnings("all")
     private void makeRectCornerPath(float offset) {
         final float strokeSize = mStrokePaint != null ? mStrokePaint.getStrokeWidth() : 0;
         final float halfStokeSize = strokeSize * 0.5f;
@@ -533,6 +535,7 @@ public class CornerDrawable extends Drawable {
         final float cornerStokeVertical = (float) (Math.sqrt(halfCornerWidth * halfCornerWidth + mCornerHeight * mCornerHeight) * halfStokeSize / halfCornerWidth);
         final float cornerStokeHorizontal = halfCornerWidth - halfCornerWidth * (mCornerHeight - cornerStokeVertical) / mCornerHeight;
         final float cornerXOffset = cornerStokeHorizontal - halfCornerWidth * halfStokeSize / mCornerHeight;
+        //noinspection UnnecessaryLocalVariable
         final float cornerYOffset = halfStokeSize;
         switch (mDirection) {
             case Gravity.TOP:
@@ -561,7 +564,6 @@ public class CornerDrawable extends Drawable {
     /**
      * 圆角矩形
      */
-    @SuppressWarnings("all")
     private void makeRoundRect() {
         final int width = getBounds().width();
         final int height = getBounds().height();
@@ -733,8 +735,10 @@ public class CornerDrawable extends Drawable {
                 mCornerMove = height - mContentRadius - mContentRadius - mCornerWidth;
                 mPath.moveTo(mCornerHeight + halfStokeSize, height - mContentRadius);
                 if (mCornerMove <= 0) {
+                    //noinspection SuspiciousNameCombination
                     mCornerLeft.set(mCornerHeight, height - mContentRadius);
                     mCornerCenter.set(0, height * 0.5f);
+                    //noinspection SuspiciousNameCombination
                     mCornerRight.set(mCornerHeight, mContentRadius);
                 } else {
                     margin = mCornerMargin <= 0 ? 0 : (mCornerMargin > mCornerMove ? mCornerMove : mCornerMargin);
@@ -748,8 +752,10 @@ public class CornerDrawable extends Drawable {
                             offset = -mCornerMove * 0.5f + margin;
                             break;
                     }
+                    //noinspection SuspiciousNameCombination
                     mCornerLeft.set(mCornerHeight, (height + mCornerWidth) * 0.5f + offset);
                     mCornerCenter.set(0, height * 0.5f + offset);
+                    //noinspection SuspiciousNameCombination
                     mCornerRight.set(mCornerHeight, (height - mCornerWidth) * 0.5f + offset);
                 }
                 makeRoundRectCornerPath();
@@ -782,7 +788,6 @@ public class CornerDrawable extends Drawable {
         }
     }
 
-    @SuppressWarnings("all")
     private void makeRoundRectCornerPath() {
         final float strokeSize = mStrokePaint != null ? mStrokePaint.getStrokeWidth() : 0;
         final float halfStokeSize = strokeSize * 0.5f;
@@ -795,6 +800,7 @@ public class CornerDrawable extends Drawable {
         final float cornerStokeVertical = (float) (Math.sqrt(halfCornerWidth * halfCornerWidth + mCornerHeight * mCornerHeight) * halfStokeSize / halfCornerWidth);
         final float cornerStokeHorizontal = halfCornerWidth - halfCornerWidth * (mCornerHeight - cornerStokeVertical) / mCornerHeight;
         final float cornerXOffset = cornerStokeHorizontal - halfCornerWidth * halfStokeSize / mCornerHeight;
+        //noinspection UnnecessaryLocalVariable
         final float cornerYOffset = halfStokeSize;
         switch (mDirection) {
             case Gravity.TOP:
@@ -820,7 +826,7 @@ public class CornerDrawable extends Drawable {
         }
     }
 
-    @SuppressWarnings("all")
+    @SuppressWarnings("WeakerAccess")
     protected void makeCornerPath(float leftX, float leftY,
                                   float centerX, float centerY,
                                   float rightX, float rightY) {
@@ -904,8 +910,7 @@ public class CornerDrawable extends Drawable {
     }
 
     @Override
-    @SuppressWarnings("all")
-    public boolean getPadding(Rect padding) {
+    public boolean getPadding(@SuppressWarnings("NullableProblems") Rect padding) {
         padding.set(mPaddingRect);
         return true;
     }
@@ -913,7 +918,6 @@ public class CornerDrawable extends Drawable {
     /**
      * 计算必要的数据
      */
-    @SuppressWarnings("all")
     private void calculateValue() {
         if (mCornerHeight <= 0) {
             mPaddingRect.set(mContentPaddingRect.left,
@@ -929,7 +933,9 @@ public class CornerDrawable extends Drawable {
                             mContentPaddingRect.top,
                             mContentPaddingRect.right,
                             mContentPaddingRect.bottom);
+                    //noinspection SuspiciousNameCombination
                     mIntrinsicWidth = mCornerHeight;
+                    //noinspection SuspiciousNameCombination
                     mIntrinsicHeight = mCornerWidth;
                     break;
                 case Gravity.RIGHT:
@@ -937,7 +943,9 @@ public class CornerDrawable extends Drawable {
                             mContentPaddingRect.top,
                             mContentPaddingRect.right + mCornerHeight,
                             mContentPaddingRect.bottom);
+                    //noinspection SuspiciousNameCombination
                     mIntrinsicWidth = mCornerHeight;
+                    //noinspection SuspiciousNameCombination
                     mIntrinsicHeight = mCornerWidth;
                     break;
                 case Gravity.BOTTOM:
@@ -1022,7 +1030,6 @@ public class CornerDrawable extends Drawable {
      *
      * @param direction 朝向
      */
-    @SuppressWarnings("all")
     public void setDirection(int direction) {
         if (direction != Gravity.LEFT &&
                 direction != Gravity.TOP &&
@@ -1043,7 +1050,6 @@ public class CornerDrawable extends Drawable {
      *
      * @param location 位置
      */
-    @SuppressWarnings("all")
     public void setLocation(int location) {
         if (location != Gravity.LEFT &&
                 location != Gravity.CENTER &&

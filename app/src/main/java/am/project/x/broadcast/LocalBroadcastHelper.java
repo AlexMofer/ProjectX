@@ -25,7 +25,6 @@ import am.project.x.ProjectXApplication;
  * 应用内广播辅助器
  * Created by Xiang Zhicheng on 2018/7/23.
  */
-@SuppressWarnings("all")
 public class LocalBroadcastHelper {
 
     public static final String ACTION_FTP_STARTED = "am.project.x.action.ACTION_FTP_STARTED";
@@ -49,6 +48,7 @@ public class LocalBroadcastHelper {
      *
      * @param intent Intent
      */
+    @SuppressWarnings("WeakerAccess")
     public static void sendBroadcast(@NonNull Intent intent) {
         final ProjectXApplication application = ProjectXApplication.getInstance();
         if (application == null)

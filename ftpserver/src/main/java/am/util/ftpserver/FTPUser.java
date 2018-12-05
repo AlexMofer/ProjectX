@@ -34,7 +34,7 @@ import java.util.List;
  * FTP用户
  * Created by Alex on 2017/12/20.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("WeakerAccess")
 public class FTPUser implements Parcelable {
 
     public static final Parcelable.Creator<FTPUser> CREATOR = new Parcelable.Creator<FTPUser>() {

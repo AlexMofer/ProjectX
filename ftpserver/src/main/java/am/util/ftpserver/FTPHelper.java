@@ -28,7 +28,7 @@ import java.util.Collection;
  * FTP辅助器
  * Created by Alex on 2017/12/21.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public class FTPHelper {
 
     private FTPHelper() {

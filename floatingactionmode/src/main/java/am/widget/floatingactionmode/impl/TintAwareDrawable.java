@@ -29,7 +29,7 @@ import android.os.Build;
  * 兼容型着色Drawable
  * Created by Alex on 2018/11/21.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "NullableProblems", "RedundantCast", "unused"})
 class TintAwareDrawable extends Drawable implements Drawable.Callback {
     static final PorterDuff.Mode DEFAULT_TINT_MODE;
 

@@ -33,9 +33,10 @@ import android.view.animation.LinearInterpolator;
 /**
  * Fancy progress indicator for Material theme.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class MaterialProgressDrawable extends Drawable implements Animatable {
     // Maps to ProgressBar.Large style
+    @SuppressWarnings("WeakerAccess")
     public static final int LARGE = 0;
     // Maps to ProgressBar default style
     public static final int DEFAULT = 1;
@@ -301,6 +302,7 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
         return mWidth;
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public void draw(Canvas c) {
         final Rect bounds = getBounds();

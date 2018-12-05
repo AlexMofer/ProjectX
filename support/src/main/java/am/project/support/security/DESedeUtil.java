@@ -16,6 +16,8 @@
 
 package am.project.support.security;
 
+import android.annotation.SuppressLint;
+
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -35,7 +37,7 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * @author Alex
  */
-@SuppressWarnings("all")
+@SuppressWarnings("WeakerAccess")
 public class DESedeUtil {
 
     private final static String ALGORITHM = "DESede";
@@ -70,7 +72,7 @@ public class DESedeUtil {
             secureKey = SecretKeyFactory.getInstance(ALGORITHM)
                     .generateSecret(new DESedeKeySpec(key));// 128 长度的Key不支持
         }
-        final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+        @SuppressLint("GetInstance") final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.ENCRYPT_MODE, secureKey);
         return cipher.doFinal(clear);
     }
@@ -126,7 +128,7 @@ public class DESedeUtil {
             secureKey = SecretKeyFactory.getInstance(ALGORITHM)
                     .generateSecret(new DESedeKeySpec(key));// 128 长度的Key不支持
         }
-        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+        @SuppressLint("GetInstance") final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.DECRYPT_MODE, secureKey);
         return cipher.doFinal(encrypted);
     }

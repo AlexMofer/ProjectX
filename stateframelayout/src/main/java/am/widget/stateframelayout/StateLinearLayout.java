@@ -40,7 +40,7 @@ import android.widget.LinearLayout;
  *
  * @author Alex
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class StateLinearLayout extends LinearLayout {
 
     public static final int STATE_NORMAL = 0;// 普通
@@ -390,7 +390,7 @@ public class StateLinearLayout extends LinearLayout {
     }
 
     @Override
-    protected boolean verifyDrawable(Drawable who) {
+    protected boolean verifyDrawable(@SuppressWarnings("NullableProblems") Drawable who) {
         boolean shouldVerify = false;
         switch (mState) {
             case STATE_LOADING:
@@ -716,7 +716,6 @@ public class StateLinearLayout extends LinearLayout {
      * @param error   错误
      * @param empty   空内容
      */
-    @SuppressWarnings("unused")
     public void setStateDrawables(int loading, int error, int empty) {
         setLoadingDrawable(loading);
         setErrorDrawable(error);
@@ -727,44 +726,35 @@ public class StateLinearLayout extends LinearLayout {
         switch (mState) {
             default:
             case STATE_NORMAL:
-                if (mLoadingDrawable != null
-                        && mLoadingDrawable instanceof Animatable) {
+                if (mLoadingDrawable instanceof Animatable) {
                     ((Animatable) mLoadingDrawable).stop();
                 }
-                if (mErrorDrawable != null
-                        && mErrorDrawable instanceof Animatable) {
+                if (mErrorDrawable instanceof Animatable) {
                     ((Animatable) mErrorDrawable).stop();
                 }
-                if (mEmptyDrawable != null
-                        && mEmptyDrawable instanceof Animatable) {
+                if (mEmptyDrawable instanceof Animatable) {
                     ((Animatable) mEmptyDrawable).stop();
                 }
                 break;
             case STATE_ERROR:
-                if (mLoadingDrawable != null
-                        && mLoadingDrawable instanceof Animatable) {
+                if (mLoadingDrawable instanceof Animatable) {
                     ((Animatable) mLoadingDrawable).stop();
                 }
-                if (mErrorDrawable != null
-                        && mErrorDrawable instanceof Animatable) {
+                if (mErrorDrawable instanceof Animatable) {
                     ((Animatable) mErrorDrawable).start();
                 }
-                if (mEmptyDrawable != null
-                        && mEmptyDrawable instanceof Animatable) {
+                if (mEmptyDrawable instanceof Animatable) {
                     ((Animatable) mEmptyDrawable).stop();
                 }
                 break;
             case STATE_LOADING:
-                if (mLoadingDrawable != null
-                        && mLoadingDrawable instanceof Animatable) {
+                if (mLoadingDrawable instanceof Animatable) {
                     ((Animatable) mLoadingDrawable).start();
                 }
-                if (mErrorDrawable != null
-                        && mErrorDrawable instanceof Animatable) {
+                if (mErrorDrawable instanceof Animatable) {
                     ((Animatable) mErrorDrawable).stop();
                 }
-                if (mEmptyDrawable != null
-                        && mEmptyDrawable instanceof Animatable) {
+                if (mEmptyDrawable instanceof Animatable) {
                     ((Animatable) mEmptyDrawable).stop();
                 }
                 break;
@@ -804,7 +794,6 @@ public class StateLinearLayout extends LinearLayout {
     /**
      * 修改状态为普通
      */
-    @SuppressWarnings("unused")
     public void normal() {
         setState(STATE_NORMAL);
     }
@@ -812,7 +801,6 @@ public class StateLinearLayout extends LinearLayout {
     /**
      * 修改状态为载入
      */
-    @SuppressWarnings("unused")
     public void loading() {
         setState(STATE_LOADING);
     }
@@ -820,7 +808,6 @@ public class StateLinearLayout extends LinearLayout {
     /**
      * 修改状态为错误
      */
-    @SuppressWarnings("unused")
     public void error() {
         setState(STATE_ERROR);
     }
@@ -828,7 +815,6 @@ public class StateLinearLayout extends LinearLayout {
     /**
      * 修改状态为空白
      */
-    @SuppressWarnings("unused")
     public void empty() {
         setState(STATE_EMPTY);
     }
@@ -857,7 +843,6 @@ public class StateLinearLayout extends LinearLayout {
      *
      * @param listener 状态点击监听
      */
-    @SuppressWarnings("unused")
     public void setOnStateClickListener(OnStateClickListener listener) {
         mClickListener = listener;
     }

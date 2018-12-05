@@ -25,7 +25,6 @@ import am.project.x.notification.NotificationChannelHelper;
  */
 public class ProjectXApplication extends BroadcastApplication {
 
-    @SuppressWarnings("all")
     private static ProjectXApplication mInstance;
 
     @Override

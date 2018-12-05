@@ -20,6 +20,5 @@ package am.util.mvp;
  * View
  * Created by Alex on 2017/10/25.
  */
-@SuppressWarnings("all")
 public interface AMView {
 }

@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * FTP文件系统视图
  * Created by Alex on 2017/12/20.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "RedundantThrows"})
 public class FTPFileSystemView implements FileSystemView {
 
     private final ArrayList<FTPFile> mChildren = new ArrayList<>();

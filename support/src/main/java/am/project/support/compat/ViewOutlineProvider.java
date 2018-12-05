@@ -23,7 +23,6 @@ import android.view.View;
 /**
  * Interface by which a View builds its {@link Outline}, used for shadow casting and clipping.
  */
-@SuppressWarnings("all")
 public interface ViewOutlineProvider {
 
     /**

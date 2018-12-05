@@ -16,6 +16,7 @@
 package am.project.x.business.widgets.circleprogressbar;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -104,7 +105,7 @@ public class CircleProgressBarActivity extends BaseActivity implements
     }
 
     // Listener
-    @SuppressWarnings("all")
+    @SuppressLint("RtlHardcoded")
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {

@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * 任务
  * Created by Alex on 2017/9/11.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public abstract class Job<T> {
 
     public static final int LEVEL_LOW = -1;
@@ -131,6 +131,7 @@ public abstract class Job<T> {
             throw new IllegalArgumentException("There is no param with key" + key + ".");
         final Params result;
         try {
+            //noinspection unchecked
             result = (Params) param;
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -291,6 +292,7 @@ public abstract class Job<T> {
             return null;
         final Params result;
         try {
+            //noinspection unchecked
             result = (Params) param;
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -342,6 +344,7 @@ public abstract class Job<T> {
             throw new IllegalArgumentException("There is no result with key" + key + ".");
         final Result r;
         try {
+            //noinspection unchecked
             r = (Result) result;
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -559,6 +562,7 @@ public abstract class Job<T> {
             if (progress == null)
                 throw new IllegalArgumentException("There is no progress with key" + key + ".");
             try {
+                //noinspection unchecked
                 return (T) progress;
             } catch (ClassCastException e) {
                 throw new IllegalArgumentException(e.getMessage());

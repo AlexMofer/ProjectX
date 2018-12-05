@@ -22,7 +22,7 @@ import android.os.Bundle;
  * Model
  * Created by Alex on 2017/3/13.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class AMModel<P extends AMPresenter> {
 
     private P mPresenter;

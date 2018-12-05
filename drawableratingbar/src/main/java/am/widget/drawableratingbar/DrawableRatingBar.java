@@ -16,6 +16,7 @@
 
 package am.widget.drawableratingbar;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -85,7 +86,7 @@ public class DrawableRatingBar extends View {
         a.recycle();
         Drawable selected = null;
         Drawable normal = null;
-        if (drawable != null && drawable instanceof LayerDrawable) {
+        if (drawable instanceof LayerDrawable) {
             LayerDrawable layerDrawable = (LayerDrawable) drawable;
             selected = layerDrawable.findDrawableByLayerId(android.R.id.progress);
             normal = layerDrawable.findDrawableByLayerId(android.R.id.secondaryProgress);
@@ -181,7 +182,7 @@ public class DrawableRatingBar extends View {
         }
     }
 
-    @SuppressWarnings("all")
+    @SuppressLint("RtlHardcoded")
     private void getOffset() {
         if (!tReGetOffset)
             return;
@@ -248,6 +249,7 @@ public class DrawableRatingBar extends View {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         final boolean superResult = super.onTouchEvent(event);

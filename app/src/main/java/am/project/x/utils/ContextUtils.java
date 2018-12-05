@@ -75,7 +75,7 @@ public class ContextUtils {
      * @param context Context
      * @return 是否拥有权限
      */
-    @SuppressWarnings("all")
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean hasWriteExternalStoragePermission(Context context) {
         return Build.VERSION.SDK_INT < 23 || ActivityCompat.checkSelfPermission(context,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -88,7 +88,7 @@ public class ContextUtils {
      * @param context Context
      * @return true:连接， false:未连接
      */
-    @SuppressWarnings("all")
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isWifiConnected(Context context) {
         final WifiManager manager = (WifiManager) context.getApplicationContext()
                 .getSystemService(Context.WIFI_SERVICE);
@@ -123,8 +123,9 @@ public class ContextUtils {
      * @param context Context
      * @return 启动Intent
      */
-    @SuppressWarnings("all")
+    @SuppressWarnings("unused")
     public static Intent getLaunchIntent(Context context) {
+        //noinspection ConstantConditions
         return context.getPackageManager().getLaunchIntentForPackage(
                 context.getPackageName()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     }

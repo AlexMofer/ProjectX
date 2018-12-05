@@ -842,7 +842,7 @@ public class OS2Table extends BaseTable {
      *
      * @return Unicode Character Range(Bits 0–31)
      */
-    @SuppressWarnings("all")
+    @SuppressWarnings("WeakerAccess")
     public int getUnicodeRange1() {
         return mUnicodeRange1;
     }
@@ -1253,7 +1253,7 @@ public class OS2Table extends BaseTable {
      *
      * @return Code Page Character Range (Bits 0–31)
      */
-    @SuppressWarnings("all")
+    @SuppressWarnings("WeakerAccess")
     public int getCodePageRange1() {
         return mCodePageRange1;
     }

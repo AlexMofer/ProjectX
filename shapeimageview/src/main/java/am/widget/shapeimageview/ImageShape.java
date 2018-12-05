@@ -26,7 +26,7 @@ import android.graphics.Path;
  * 形状
  * Created by Alex on 2015/12/9.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("WeakerAccess")
 public abstract class ImageShape {
 
     /**

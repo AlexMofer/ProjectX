@@ -445,7 +445,7 @@ public abstract class HorizontalLinearTabStripLayout<V extends View> extends Tab
         }
     }
 
-    @SuppressWarnings("all")
+    @SuppressWarnings("WeakerAccess")
     @IntDef(flag = true,
             value = {
                     SHOW_DIVIDER_NONE,

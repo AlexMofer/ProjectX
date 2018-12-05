@@ -38,7 +38,7 @@ import java.util.ArrayList;
  * Activity
  * Created by Alex on 2017/10/28.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public abstract class AMActivity extends Activity {
 
     private final ArrayList<Dialog> mShowDialogs = new ArrayList<>();

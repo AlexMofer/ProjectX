@@ -50,8 +50,7 @@ class JobExecutor extends ThreadPoolExecutor
         private final AtomicInteger mCount = new AtomicInteger(1);
 
         @Override
-        @SuppressWarnings("all")
-        public Thread newThread(Runnable r) {
+        public Thread newThread(@SuppressWarnings("NullableProblems") Runnable r) {
             return new Thread(r, "Job #" + mCount.getAndIncrement());
         }
     };

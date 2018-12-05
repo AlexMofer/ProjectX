@@ -33,7 +33,7 @@ import java.util.ArrayList;
  * 打印机写入器
  * Created by Alex on 2016/4/18.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public abstract class PrinterWriter {
 
     public static final int HEIGHT_PARTING_DEFAULT = 255;
@@ -222,6 +222,7 @@ public abstract class PrinterWriter {
      *
      * @throws IOException 异常
      */
+    @SuppressWarnings("StringConcatenationInLoop")
     public void printLine() throws IOException {
         int length = getLineWidth();
         String line = "";
@@ -260,6 +261,7 @@ public abstract class PrinterWriter {
      * @param charsetName 编码方式
      * @throws IOException 异常
      */
+    @SuppressWarnings("StringConcatenationInLoop")
     public void printInOneLine(String str1, String str2, int textSize, String charsetName) throws IOException {
         int lineLength = getLineStringWidth(textSize);
         int needEmpty = lineLength - (getStringWidth(str1) + getStringWidth(str2)) % lineLength;

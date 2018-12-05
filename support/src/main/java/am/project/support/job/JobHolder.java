@@ -71,11 +71,11 @@ class JobHolder implements Runnable, Comparable<JobHolder> {
     }
 
     @Override
-    @SuppressWarnings("all")
-    public int compareTo(JobHolder o) {
+    public int compareTo(@SuppressWarnings("NullableProblems") JobHolder o) {
         final int level = mJob.getLevel();
         final int levelOther = o.mJob.getLevel();
         if (level == levelOther) {
+            //noinspection UseCompareMethod
             if (mTime == o.mTime) {
                 return 0;
             } else if (mTime > o.mTime) {

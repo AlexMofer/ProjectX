@@ -22,7 +22,7 @@ import android.view.View;
  * 菜单子项
  * Created by Alex on 2018/11/21.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public interface FloatingMenuItem {
 
     /**
@@ -174,6 +174,7 @@ public interface FloatingMenuItem {
      * @param custom 视图
      * @return 自定义次级菜单
      */
+    @SuppressWarnings("UnusedReturnValue")
     FloatingSubMenu setSubMenu(View custom);
 
     /**

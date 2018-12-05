@@ -16,6 +16,7 @@
 
 package am.drawable;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
@@ -27,7 +28,7 @@ import android.view.Gravity;
  * 一般用于ImageView的src，保证缩放后，中心的Drawable不变形。
  * 用于一般background属性的话，无需使用本控件，直接使用layer-list来定义即可。
  */
-@SuppressWarnings("all")
+@SuppressWarnings("WeakerAccess")
 public class CombinationDrawable extends Drawable {
 
     private Drawable mBackground;
@@ -80,7 +81,7 @@ public class CombinationDrawable extends Drawable {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(@SuppressWarnings("NullableProblems") Canvas canvas) {
         canvas.save();
         drawBackground(canvas);
         drawForeground(canvas);
@@ -106,6 +107,7 @@ public class CombinationDrawable extends Drawable {
      *
      * @param canvas 画布
      */
+    @SuppressLint("RtlHardcoded")
     protected void drawForeground(Canvas canvas) {
         if (mForeground != null) {
             final int width = mForeground.getIntrinsicWidth();

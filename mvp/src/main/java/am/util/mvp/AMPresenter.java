@@ -22,7 +22,7 @@ import android.os.Bundle;
  * Presenter
  * Created by Alex on 2017/3/13.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("WeakerAccess")
 public abstract class AMPresenter<V extends AMView, M extends AMModel> {
     private V mView;
 

@@ -73,7 +73,6 @@ public abstract class TabStripView extends View {
         mHelper.onDetachedFromWindow();
     }
 
-    @SuppressWarnings("all")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         final boolean touch = mHelper.onTouchEvent(event);

@@ -20,7 +20,7 @@ package am.util.printer;
  * ESC-POS Commands
  * Created by Alex on 2017/11/1.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class PrintCommands {
 
     private static final byte DLE = 16;

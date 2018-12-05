@@ -16,6 +16,7 @@
 
 package am.widget.tagtabstrip;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -161,7 +162,7 @@ public class TagTabStrip extends TabStripView {
         applyGravity(itemWidth, itemHeight);
     }
 
-    @SuppressWarnings("all")
+    @SuppressLint("RtlHardcoded")
     private void applyGravity(int itemWidth, int itemHeight) {
         final int count = mCount;
         if (count == 0) {

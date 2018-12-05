@@ -39,7 +39,7 @@ import android.widget.RelativeLayout;
  *
  * @author Alex
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class StateRelativeLayout extends RelativeLayout {
 
     public static final int STATE_NORMAL = 0;// 普通
@@ -389,7 +389,7 @@ public class StateRelativeLayout extends RelativeLayout {
     }
 
     @Override
-    protected boolean verifyDrawable(Drawable who) {
+    protected boolean verifyDrawable(@SuppressWarnings("NullableProblems") Drawable who) {
         boolean shouldVerify = false;
         switch (mState) {
             case STATE_LOADING:
@@ -726,44 +726,35 @@ public class StateRelativeLayout extends RelativeLayout {
         switch (mState) {
             default:
             case STATE_NORMAL:
-                if (mLoadingDrawable != null
-                        && mLoadingDrawable instanceof Animatable) {
+                if (mLoadingDrawable instanceof Animatable) {
                     ((Animatable) mLoadingDrawable).stop();
                 }
-                if (mErrorDrawable != null
-                        && mErrorDrawable instanceof Animatable) {
+                if (mErrorDrawable instanceof Animatable) {
                     ((Animatable) mErrorDrawable).stop();
                 }
-                if (mEmptyDrawable != null
-                        && mEmptyDrawable instanceof Animatable) {
+                if (mEmptyDrawable instanceof Animatable) {
                     ((Animatable) mEmptyDrawable).stop();
                 }
                 break;
             case STATE_ERROR:
-                if (mLoadingDrawable != null
-                        && mLoadingDrawable instanceof Animatable) {
+                if (mLoadingDrawable instanceof Animatable) {
                     ((Animatable) mLoadingDrawable).stop();
                 }
-                if (mErrorDrawable != null
-                        && mErrorDrawable instanceof Animatable) {
+                if (mErrorDrawable instanceof Animatable) {
                     ((Animatable) mErrorDrawable).start();
                 }
-                if (mEmptyDrawable != null
-                        && mEmptyDrawable instanceof Animatable) {
+                if (mEmptyDrawable instanceof Animatable) {
                     ((Animatable) mEmptyDrawable).stop();
                 }
                 break;
             case STATE_LOADING:
-                if (mLoadingDrawable != null
-                        && mLoadingDrawable instanceof Animatable) {
+                if (mLoadingDrawable instanceof Animatable) {
                     ((Animatable) mLoadingDrawable).start();
                 }
-                if (mErrorDrawable != null
-                        && mErrorDrawable instanceof Animatable) {
+                if (mErrorDrawable instanceof Animatable) {
                     ((Animatable) mErrorDrawable).stop();
                 }
-                if (mEmptyDrawable != null
-                        && mEmptyDrawable instanceof Animatable) {
+                if (mEmptyDrawable instanceof Animatable) {
                     ((Animatable) mEmptyDrawable).stop();
                 }
                 break;

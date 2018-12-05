@@ -209,9 +209,9 @@ public abstract class TabStripLayout<V extends View> extends TabStripViewGroup {
      * @param index 位置
      * @return 子项
      */
-    @SuppressWarnings("unchecked")
     protected V getItemAt(int index) {
         final View child = getChildAt(index);
+        //noinspection unchecked
         return child == null ? null : (V) child;
     }
 
@@ -220,7 +220,7 @@ public abstract class TabStripLayout<V extends View> extends TabStripViewGroup {
      *
      * @return 是否平滑滚动
      */
-    @SuppressWarnings("all")
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     protected boolean isItemClickSmoothScroll() {
         return mSmoothScroll;
     }
@@ -236,9 +236,9 @@ public abstract class TabStripLayout<V extends View> extends TabStripViewGroup {
 
     private class OnClickListener implements View.OnClickListener {
 
-        @SuppressWarnings("unchecked")
         @Override
         public void onClick(View v) {
+            //noinspection unchecked
             onViewClicked((V) v, v.getId());
         }
     }

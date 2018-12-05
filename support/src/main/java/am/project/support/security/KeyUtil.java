@@ -32,7 +32,7 @@ import javax.crypto.spec.PBEKeySpec;
  * 密钥工具类
  * Created by Alex on 2016/4/29.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("WeakerAccess")
 public class KeyUtil {
 
     private final static String RAW_ALGORITHM = "SHA1PRNG";
@@ -65,6 +65,7 @@ public class KeyUtil {
      * @throws NoSuchAlgorithmException 异常
      * @throws NoSuchProviderException  异常
      */
+    @SuppressWarnings("RedundantThrows")
     public static byte[] getRandomKey(String keyAlgorithm, String rawAlgorithm,
                                       byte[] seed, int size) throws
             NoSuchAlgorithmException,

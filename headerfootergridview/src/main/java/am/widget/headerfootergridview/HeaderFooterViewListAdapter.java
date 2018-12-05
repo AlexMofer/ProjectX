@@ -38,7 +38,7 @@ import java.util.ArrayList;
  * This is intended as a base class; you will probably not need to use this
  * class directly in your own code.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("WeakerAccess")
 public class HeaderFooterViewListAdapter implements WrapperListAdapter,
         Filterable {
 
@@ -295,6 +295,7 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
                 simple = mHeaderItemInfo.get(mHeaderItemInfo.size() - 1).view;
             else if (mHeaderViews.size() > 0)
                 simple = mHeaderViews.get(mHeaderViews.size() - 1);
+            //noinspection ConstantConditions
             return getHideView(simple);
         } else {
             // FooterView
@@ -627,7 +628,7 @@ public class HeaderFooterViewListAdapter implements WrapperListAdapter,
         int height = simple.getMeasuredHeight();
         if (height == 0) {
             ViewGroup.LayoutParams p = simple.getLayoutParams();
-            if (p == null || !(p instanceof AbsListView.LayoutParams)) {
+            if (!(p instanceof AbsListView.LayoutParams)) {
                 p = new AbsListView.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT, 0);

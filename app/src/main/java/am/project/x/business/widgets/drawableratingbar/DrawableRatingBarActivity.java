@@ -15,6 +15,7 @@
  */
 package am.project.x.business.widgets.drawableratingbar;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -66,8 +67,8 @@ public class DrawableRatingBarActivity extends BaseActivity implements
     }
 
     // Listener
+    @SuppressLint("RtlHardcoded")
     @Override
-    @SuppressWarnings("all")
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             default:

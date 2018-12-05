@@ -16,6 +16,7 @@
 
 package am.drawable;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
@@ -30,7 +31,7 @@ import android.view.Gravity;
  * 支持上下左右
  * Created by Alex on 2015/9/26.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("WeakerAccess")
 public class LineDrawable extends Drawable {
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Rect mRect = new Rect();
@@ -63,6 +64,7 @@ public class LineDrawable extends Drawable {
      * @param lineSize        线条粗细
      * @return StateListDrawable
      */
+    @SuppressWarnings("unused")
     public static StateListDrawable getLineStateListDrawable(int backgroundColor, int normalColor, int focusColor, int lineSize) {
         return getLineStateListDrawable(backgroundColor, normalColor, focusColor, lineSize, Gravity.BOTTOM);
     }
@@ -87,12 +89,10 @@ public class LineDrawable extends Drawable {
         return drawable;
     }
 
+    @SuppressLint("RtlHardcoded")
     @Override
-    @SuppressWarnings("all")
-    public void draw(Canvas canvas) {
+    public void draw(@SuppressWarnings("NullableProblems") Canvas canvas) {
         final Rect bounds = getBounds();
-        if (bounds == null)
-            return;
         switch (mGravity) {
             default:
             case Gravity.BOTTOM:

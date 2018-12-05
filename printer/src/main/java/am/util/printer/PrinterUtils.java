@@ -28,7 +28,7 @@ import java.util.List;
  * 未经过测试的指令集已全部放在了 {@link PrintCommands}
  * Created by Alex on 2015/9/22.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class PrinterUtils {
 
     private static String hexStr = "0123456789ABCDEF";
@@ -124,6 +124,7 @@ public class PrinterUtils {
         byte realSize = 0;
         switch (num) {
             case 0:
+                //noinspection ConstantConditions
                 realSize = 0;
                 break;
             case 1:
@@ -220,6 +221,7 @@ public class PrinterUtils {
         int zeroCount = width % 8;
         if (zeroCount > 0) {
             for (int i = 0; i < (8 - zeroCount); i++) {
+                //noinspection StringConcatenationInLoop
                 zeroStr += "0";
             }
         }
@@ -317,6 +319,7 @@ public class PrinterUtils {
     public static byte[] decodeBitmap(Bitmap image, int parting) {
         ArrayList<byte[]> data = decodeBitmapToDataList(image, parting);
         int len = 0;
+        //noinspection ConstantConditions
         for (byte[] srcArray : data) {
             len += srcArray.length;
         }
@@ -373,10 +376,12 @@ public class PrinterUtils {
         String b4 = binaryStr.substring(4, 8);
         for (int i = 0; i < binaryArray.length; i++) {
             if (f4.equals(binaryArray[i]))
+                //noinspection StringConcatenationInLoop
                 hex += hexStr.substring(i, i + 1);
         }
         for (int i = 0; i < binaryArray.length; i++) {
             if (b4.equals(binaryArray[i]))
+                //noinspection StringConcatenationInLoop
                 hex += hexStr.substring(i, i + 1);
         }
         return hex;

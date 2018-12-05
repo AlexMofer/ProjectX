@@ -26,7 +26,6 @@ import android.graphics.Path;
 /**
  * 圆形
  */
-@SuppressWarnings("all")
 public class CircleImageShape extends ImageShape {
 
     @Override

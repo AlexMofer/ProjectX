@@ -19,6 +19,7 @@ package am.widget.multifunctionalrecyclerview.layoutmanager;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.view.AbsSavedState;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -28,7 +29,7 @@ import android.view.View;
  * 双向滚动布局管理器
  * Created by Alex on 2017/11/3.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager {
 
     public static final float INVALID_PERCENTAGE = -1;
@@ -69,7 +70,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     @Override
-    public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state,
+    public void onMeasure(@NonNull RecyclerView.Recycler recycler, @NonNull RecyclerView.State state,
                           int widthSpec, int heightSpec) {
         mWidthSize = View.MeasureSpec.getSize(widthSpec);
         mHeightSize = View.MeasureSpec.getSize(heightSpec);
@@ -173,7 +174,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     @Override
-    public void layoutDecorated(View child, int left, int top, int right, int bottom) {
+    public void layoutDecorated(@NonNull View child, int left, int top, int right, int bottom) {
         super.layoutDecorated(child, left, top, right, bottom);
         final int offset = computeAnotherDirectionDefaultScrollOffset();
         final int move = offset - mOffset;
@@ -187,7 +188,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     }
 
     @Override
-    public void layoutDecoratedWithMargins(View child, int left, int top, int right, int bottom) {
+    public void layoutDecoratedWithMargins(@NonNull View child, int left, int top, int right, int bottom) {
         super.layoutDecoratedWithMargins(child, left, top, right, bottom);
         final int offset = computeAnotherDirectionDefaultScrollOffset();
         final int move = offset - mOffset;

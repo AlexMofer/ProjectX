@@ -84,7 +84,6 @@ class Compat {
         }
 
         @Override
-        @SuppressWarnings("all")
         public Drawable getDrawable(Context context, int id) {
             return context.getResources().getDrawable(id);
         }

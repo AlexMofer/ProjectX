@@ -159,8 +159,8 @@ public class ShapeImageView extends ImageView {
         mShapeHelper.updateSize(this, w, h);
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
-    @SuppressWarnings("all")
     public void draw(Canvas canvas) {
         mShapeHelper.draw(this, canvas);
     }
@@ -201,8 +201,7 @@ public class ShapeImageView extends ImageView {
     }
 
     @Override
-    @SuppressWarnings("all")
-    protected boolean verifyDrawable(Drawable who) {
+    protected boolean verifyDrawable(@SuppressWarnings("NullableProblems") Drawable who) {
         boolean isPress = false;
         if (hasForeground() && who == mForeground) {
             isPress = true;

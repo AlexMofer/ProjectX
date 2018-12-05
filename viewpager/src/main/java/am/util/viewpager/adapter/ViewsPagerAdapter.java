@@ -17,6 +17,7 @@
 package am.util.viewpager.adapter;
 
 import android.content.res.Configuration;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.ConfigurationHelper;
@@ -30,7 +31,7 @@ import java.util.List;
 /**
  * ViewsPagerAdapter
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class ViewsPagerAdapter extends PagerAdapter {
     private List<View> mListViews;
 
@@ -48,12 +49,12 @@ public class ViewsPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView(mListViews.get(position));
     }
-
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         container.addView(mListViews.get(position), 0);
         return mListViews.get(position);
     }
@@ -64,26 +65,30 @@ public class ViewsPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
 
     @Override
-    public final int getItemPosition(Object object) {
+    public final int getItemPosition(@NonNull Object object) {
         if (mListViews == null || mListViews.size() <= 0)
             return POSITION_NONE;
+        //noinspection SuspiciousMethodCalls
         return mListViews.contains(object) ? POSITION_UNCHANGED : POSITION_NONE;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     @Deprecated
-    public void destroyItem(View container, int position, Object object) {
+    public void destroyItem(@NonNull View container, int position, @NonNull Object object) {
         destroyItem((ViewPager) container, position, object);
     }
 
+    @SuppressWarnings("deprecation")
+    @NonNull
     @Override
     @Deprecated
-    public Object instantiateItem(View container, int position) {
+    public Object instantiateItem(@NonNull View container, int position) {
         return instantiateItem((ViewPager) container, position);
     }
 

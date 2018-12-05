@@ -33,7 +33,7 @@ import java.util.List;
  * FTP文件
  * Created by Alex on 2017/12/20.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("WeakerAccess")
 public class FTPFile implements FtpFile {
 
     public static final int DEFAULT_SIZE = 1024 * 1024;
@@ -200,6 +200,7 @@ public class FTPFile implements FtpFile {
     @Override
     public InputStream createInputStream(long offset) throws IOException {
         final FileInputStream input = new FileInputStream(mFile);
+        //noinspection ResultOfMethodCallIgnored
         input.skip(offset);
         return new BufferedInputStream(input, mStreamSize);
     }

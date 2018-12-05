@@ -17,6 +17,7 @@
 package am.util.viewpager.adapter;
 
 import android.content.res.Configuration;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
  * RecyclePagerAdapter
  * Created by Alex on 2016/3/16.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerViewHolder>
         extends PagerAdapter {
 
@@ -43,11 +44,13 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
     }
 
     @Override
-    public final boolean isViewFromObject(View view, Object object) {
+    public final boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+        //noinspection unchecked
         return view == ((VH) object).itemView;
     }
 
-    public final Object instantiateItem(ViewGroup container, int position) {
+    @NonNull
+    public final Object instantiateItem(@NonNull ViewGroup container, int position) {
         VH holder;
         int viewType = getItemViewType(position);
         ArrayList<VH> recycleHolders = holderSparse.get(viewType);
@@ -62,7 +65,8 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
         return holder;
     }
 
-    public final void destroyItem(ViewGroup container, int position, Object object) {
+    public final void destroyItem(ViewGroup container, int position, @NonNull Object object) {
+        //noinspection unchecked
         VH holder = (VH) object;
         container.removeView(holder.itemView);
         holder.isRecycled = true;
@@ -74,28 +78,30 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
         onViewRecycled(holder);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     @Deprecated
-    public final Object instantiateItem(View container, int position) {
+    public final Object instantiateItem(@NonNull View container, int position) {
         return instantiateItem((ViewPager) container, position);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     @Deprecated
-    public final void destroyItem(View container, int position, Object object) {
+    public final void destroyItem(@NonNull View container, int position, @NonNull Object object) {
         destroyItem((ViewPager) container, position, object);
     }
 
     @Override
-    public final int getItemPosition(Object object) {
+    public final int getItemPosition(@NonNull Object object) {
         int position = POSITION_UNCHANGED;
-        if (object != null) {
-            VH holder = (VH) object;
-            if (holderList.contains(holder)) {
-                position = holder.mPosition;
-                position = position >= getItemCount() ? POSITION_NONE : position;
-            }
+        //noinspection unchecked
+        VH holder = (VH) object;
+        if (holderList.contains(holder)) {
+            position = holder.mPosition;
+            position = position >= getItemCount() ? POSITION_NONE : position;
         }
+
         return position;
     }
 

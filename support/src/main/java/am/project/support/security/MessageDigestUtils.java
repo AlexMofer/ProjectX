@@ -16,6 +16,7 @@
 
 package am.project.support.security;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 
 import java.math.BigInteger;
@@ -26,7 +27,7 @@ import java.security.NoSuchAlgorithmException;
  * 信息摘要工具类
  * Created by Mofer on 2016/4/28.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("WeakerAccess")
 public class MessageDigestUtils {
     /**
      * 获取信息摘要
@@ -72,6 +73,7 @@ public class MessageDigestUtils {
      * @param src 数据源
      * @return SHA-224
      */
+    @SuppressLint("ObsoleteSdkInt")
     public static byte[] getSHA224(byte[] src) {
         if (Build.VERSION.SDK_INT > 8 && Build.VERSION.SDK_INT < 22) {
             throw new UnsupportedOperationException("SHA-224 Supported API Levels 1-8,22+");

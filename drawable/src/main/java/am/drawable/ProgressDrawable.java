@@ -32,7 +32,7 @@ import android.graphics.drawable.Drawable;
  * 进展图
  * Created by Alex on 2016/12/29.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class ProgressDrawable extends Drawable {
 
     public static final int TYPE_LEFT_TO_RIGHT = 1;
@@ -105,7 +105,7 @@ public class ProgressDrawable extends Drawable {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(@SuppressWarnings("NullableProblems") Canvas canvas) {
         if (mBackgroundDrawable != null) {
             mBackgroundDrawable.setBounds(getBounds());
             mBackgroundDrawable.draw(canvas);

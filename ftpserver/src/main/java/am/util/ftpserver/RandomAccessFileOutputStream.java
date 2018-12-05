@@ -25,7 +25,6 @@ import java.io.RandomAccessFile;
  * 随机访问文件流
  * Created by Alex on 2017/12/20.
  */
-@SuppressWarnings("all")
 class RandomAccessFileOutputStream extends OutputStream {
 
     private final RandomAccessFile mRandomAccessFile;
@@ -41,12 +40,13 @@ class RandomAccessFileOutputStream extends OutputStream {
     }
 
     @Override
-    public void write(byte b[]) throws IOException {
+    public void write(@SuppressWarnings("NullableProblems") byte b[]) throws IOException {
         mRandomAccessFile.write(b);
     }
 
     @Override
-    public void write(byte b[], int off, int len) throws IOException {
+    public void write(@SuppressWarnings("NullableProblems") byte b[], int off, int len)
+            throws IOException {
         mRandomAccessFile.write(b, off, len);
     }
 

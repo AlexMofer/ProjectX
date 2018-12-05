@@ -23,7 +23,7 @@ import android.widget.AbsListView.OnScrollListener;
  * TODO 可以优化
  * 滚动边缘监听
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public abstract class EdgeScrollListener implements OnScrollListener {
 
     private ScrollLocation mScrollLocation = ScrollLocation.NULL;

@@ -30,7 +30,7 @@ import android.widget.LinearLayout;
  * 顺滑的输入面板
  * Created by Alex on 2016/12/4.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 public class SmoothInputLayout extends LinearLayout {
     public static final int DEFAULT_KEYBOARD_HEIGHT = 387;
     public static final int MIN_KEYBOARD_HEIGHT = 20;
@@ -68,7 +68,6 @@ public class SmoothInputLayout extends LinearLayout {
     }
 
     @TargetApi(21)
-    @SuppressWarnings("unused")
     public SmoothInputLayout(Context context, AttributeSet attrs, int defStyleAttr,
                              int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -243,7 +242,6 @@ public class SmoothInputLayout extends LinearLayout {
      *
      * @param listener 面板可见改变监听
      */
-    @SuppressWarnings("unused")
     public void setOnVisibilityChangeListener(OnVisibilityChangeListener listener) {
         mListener = listener;
     }
@@ -253,7 +251,6 @@ public class SmoothInputLayout extends LinearLayout {
      *
      * @param listener 键盘改变监听
      */
-    @SuppressWarnings("unused")
     public void setOnKeyboardChangeListener(OnKeyboardChangeListener listener) {
         keyboardChangeListener = listener;
     }
@@ -273,7 +270,6 @@ public class SmoothInputLayout extends LinearLayout {
      *
      * @param processor 处理器
      */
-    @SuppressWarnings("unused")
     public void setKeyboardProcessor(KeyboardProcessor processor) {
         mKeyboardProcessor = processor;
     }
@@ -283,7 +279,6 @@ public class SmoothInputLayout extends LinearLayout {
      *
      * @return 是否输入法已打开
      */
-    @SuppressWarnings("unused")
     public boolean isKeyBoardOpen() {
         return mKeyboardOpen;
     }
@@ -300,7 +295,6 @@ public class SmoothInputLayout extends LinearLayout {
     /**
      * 关闭特殊输入面板
      */
-    @SuppressWarnings("unused")
     public void closeInputPane() {
         if (isInputPaneOpen()) {
             mInputPane.setVisibility(GONE);
@@ -314,14 +308,15 @@ public class SmoothInputLayout extends LinearLayout {
      *
      * @param focus 是否让输入框拥有焦点
      */
-    @SuppressWarnings("unused")
     public void showInputPane(boolean focus) {
         if (isKeyBoardOpen()) {
             tShowInputPane = true;
             InputMethodManager imm = ((InputMethodManager) (getContext()
                     .getSystemService(Context.INPUT_METHOD_SERVICE)));
-            imm.hideSoftInputFromWindow(getWindowToken(),
-                    InputMethodManager.HIDE_NOT_ALWAYS);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+            }
 
         } else {
             if (mInputPane != null && mInputPane.getVisibility() == GONE) {
@@ -350,12 +345,13 @@ public class SmoothInputLayout extends LinearLayout {
      *
      * @param clearFocus 是否清除输入框焦点
      */
-    @SuppressWarnings("unused")
     public void closeKeyboard(boolean clearFocus) {
         InputMethodManager imm = ((InputMethodManager) (getContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE)));
-        imm.hideSoftInputFromWindow(getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
         if (clearFocus && mInputView != null) {
             setFocusable(true);
             setFocusableInTouchMode(true);
@@ -366,7 +362,6 @@ public class SmoothInputLayout extends LinearLayout {
     /**
      * 打开键盘
      */
-    @SuppressWarnings("unused")
     public void showKeyboard() {
         if (mInputView == null) {
             return;
@@ -375,7 +370,9 @@ public class SmoothInputLayout extends LinearLayout {
         mInputView.requestFocusFromTouch();
         InputMethodManager imm = ((InputMethodManager) (getContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE)));
-        imm.showSoftInput(mInputView, InputMethodManager.SHOW_IMPLICIT);
+        if (imm != null) {
+            imm.showSoftInput(mInputView, InputMethodManager.SHOW_IMPLICIT);
+        }
     }
 
     /**

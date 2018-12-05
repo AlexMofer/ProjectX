@@ -35,7 +35,7 @@ import java.security.Security;
  * Cryptography Architecture primitives. A good place to invoke them is in the
  * application's {@code onCreate}.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("WeakerAccess")
 final class PRNGFixes {
 
     private static final int VERSION_CODE_JELLY_BEAN = 16;
@@ -73,6 +73,7 @@ final class PRNGFixes {
 
         try {
             // Mix in the device- and invocation-specific seed.
+            //noinspection PrimitiveArrayArgumentToVarargsMethod
             Class.forName("org.apache.harmony.xnet.provider.jsse.NativeCrypto")
                     .getMethod("RAND_seed", byte[].class)
                     .invoke(null, generateSeed());
@@ -235,10 +236,6 @@ final class PRNGFixes {
          * serialized (on sLock) to ensure that multiple threads do not get
          * duplicated PRNG output.
          */
-
-        /**
-         *
-         */
         private static final long serialVersionUID = -354548079877176774L;
 
         private static final File URANDOM_FILE = new File("/dev/urandom");
@@ -248,16 +245,12 @@ final class PRNGFixes {
         /**
          * Input stream for reading from Linux PRNG or {@code null} if not yet
          * opened.
-         *
-         * @GuardedBy("sLock")
          */
         private static DataInputStream sUrandomIn;
 
         /**
          * Output stream for writing to Linux PRNG or {@code null} if not yet
          * opened.
-         *
-         * @GuardedBy("sLock")
          */
         private static OutputStream sUrandomOut;
 
@@ -299,6 +292,7 @@ final class PRNGFixes {
                 synchronized (sLock) {
                     in = getUrandomInputStream();
                 }
+                //noinspection SynchronizationOnLocalVariableOrMethodParameter
                 synchronized (in) {
                     in.readFully(bytes);
                 }

@@ -10,7 +10,7 @@ import android.view.animation.Interpolator;
  * 基础View动画
  * Created by Alex on 2017/11/9.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public abstract class ViewAnimation implements Runnable {
     private static final int DEFAULT_DURATION = 250;
     private final Animation mAnimation = new Animation();
@@ -50,7 +50,7 @@ public abstract class ViewAnimation implements Runnable {
 
     protected abstract void onAnimate(float interpolation);
 
-    protected void onStop(float interpolation) {
+    protected void onStop(@SuppressWarnings("SameParameterValue") float interpolation) {
 
     }
 

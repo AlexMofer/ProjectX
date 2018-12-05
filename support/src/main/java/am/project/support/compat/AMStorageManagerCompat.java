@@ -31,7 +31,7 @@ import java.util.List;
  * StorageManager兼容器
  * Created by Alex on 2017/9/3.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("WeakerAccess")
 public class AMStorageManagerCompat {
     private static final StorageManagerCompatImpl IMPL;
 
@@ -238,6 +238,7 @@ public class AMStorageManagerCompat {
             for (StorageVolume volume : volumes) {
                 String path;
                 try {
+                    //noinspection JavaReflectionMemberAccess
                     path = (String) volume.getClass().getMethod("getPath").invoke(volume);
                 } catch (Exception e) {
                     path = null;

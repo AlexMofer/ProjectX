@@ -52,7 +52,7 @@ public class ScaleLinearLayoutManager extends PagingLayoutManager {
     }
 
     @Override
-    public void measureChildWithMargins(View child, int widthUsed, int heightUsed) {
+    public void measureChildWithMargins(@NonNull View child, int widthUsed, int heightUsed) {
         ScaleRecyclerView.setScale(child);
         super.measureChildWithMargins(child, widthUsed, heightUsed);
     }

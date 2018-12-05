@@ -11,7 +11,7 @@ import android.view.animation.Interpolator;
  * 基础View动画
  * Created by Alex on 2017/11/9.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public abstract class ViewAnimation implements Runnable {
     private static final int DEFAULT_DURATION = 250;
     private final Animation mAnimation = new Animation();

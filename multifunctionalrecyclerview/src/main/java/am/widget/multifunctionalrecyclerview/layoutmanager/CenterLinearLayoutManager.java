@@ -17,6 +17,7 @@
 package am.widget.multifunctionalrecyclerview.layoutmanager;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.PublicLinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -27,7 +28,7 @@ import android.view.ViewGroup;
  * 剧中线性布局
  * Created by Alex on 2017/11/3.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("WeakerAccess")
 public class CenterLinearLayoutManager extends PublicLinearLayoutManager {
 
     private boolean mCenter = false;
@@ -46,7 +47,7 @@ public class CenterLinearLayoutManager extends PublicLinearLayoutManager {
     }
 
     @Override
-    public void layoutDecorated(View child, int left, int top, int right, int bottom) {
+    public void layoutDecorated(@NonNull View child, int left, int top, int right, int bottom) {
         if (!mCenter) {
             super.layoutDecorated(child, left, top, right, bottom);
             return;
@@ -73,7 +74,7 @@ public class CenterLinearLayoutManager extends PublicLinearLayoutManager {
     }
 
     @Override
-    public void layoutDecoratedWithMargins(View child, int left, int top, int right, int bottom) {
+    public void layoutDecoratedWithMargins(@NonNull View child, int left, int top, int right, int bottom) {
         if (!mCenter) {
             super.layoutDecoratedWithMargins(child, left, top, right, bottom);
             return;

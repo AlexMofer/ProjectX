@@ -16,6 +16,7 @@
 
 package am.widget.drawableratingbar;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.view.Gravity;
 import android.view.View;
@@ -23,7 +24,6 @@ import android.view.View;
 /**
  * 版本兼容控制器
  */
-@SuppressWarnings("all")
 class Compat {
 
     /**
@@ -35,11 +35,13 @@ class Compat {
     /**
      * Push object to x-axis position at the start of its container, not changing its size.
      */
+    @SuppressLint("RtlHardcoded")
     static final int START = RELATIVE_LAYOUT_DIRECTION | Gravity.LEFT;
 
     /**
      * Push object to x-axis position at the end of its container, not changing its size.
      */
+    @SuppressLint("RtlHardcoded")
     static final int END = RELATIVE_LAYOUT_DIRECTION | Gravity.RIGHT;
     private static final CompatPlusImpl IMPL;
 

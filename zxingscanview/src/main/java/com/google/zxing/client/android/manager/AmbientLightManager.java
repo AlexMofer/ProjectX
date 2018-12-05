@@ -26,7 +26,7 @@ import android.hardware.SensorManager;
  * 背光管理器
  * Created by Alex on 2016/11/28.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class AmbientLightManager implements SensorEventListener {
     public static final int MODE_AUTO = 0;
     public static final int MODE_OPEN = 1;

@@ -125,7 +125,6 @@ public class MaterialProgressImageView extends ImageView implements Animatable {
      *
      * @param color 背景颜色
      */
-    @SuppressWarnings("all")
     public void setShadowsCircleBackground(int color) {
         if (background == null) {
             if (elevationSupported()) {
@@ -199,9 +198,8 @@ public class MaterialProgressImageView extends ImageView implements Animatable {
         super.setBackgroundResource(resId);
     }
 
-    @Override
     @Deprecated
-    @SuppressWarnings("all")
+    @Override
     public void setBackgroundDrawable(Drawable background) {
         showShadowsCircle = false;
         super.setBackgroundDrawable(background);

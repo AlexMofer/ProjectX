@@ -16,6 +16,7 @@
 
 package am.util.printer;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
@@ -30,7 +31,7 @@ import java.util.UUID;
  * 打印Socket
  * Created by Alex on 2016/11/10.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class PrintSocketHolder {
     public static final int STATE_0 = 0;// 生成测试页面数据
     public static final int STATE_1 = 1;// 创建Socket连接
@@ -62,6 +63,7 @@ public class PrintSocketHolder {
         setIp(ip, port);
     }
 
+    @SuppressLint("MissingPermission")
     public int createSocket() {
         onPrinterStateChanged(STATE_1);
         if (mDevice == null && ip == null)

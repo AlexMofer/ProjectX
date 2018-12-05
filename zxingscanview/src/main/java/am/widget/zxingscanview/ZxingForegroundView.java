@@ -17,6 +17,7 @@
 package am.widget.zxingscanview;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -177,10 +178,10 @@ public class ZxingForegroundView extends View {
         if (mScanViewId == 0)
             return;
         ViewParent parent = getParent();
-        if (parent != null && parent instanceof View) {
+        if (parent instanceof View) {
             View vParent = (View) parent;
             View child = vParent.findViewById(mScanViewId);
-            if (child != null && child instanceof ZxingScanView) {
+            if (child instanceof ZxingScanView) {
                 bindScanView((ZxingScanView) child);
             }
         }
@@ -289,7 +290,6 @@ public class ZxingForegroundView extends View {
         drawScanFlag(canvas, mScanFlagDrawable, scanWidth, scanHeight, mOffset);
     }
 
-    @SuppressWarnings("all")
     private void drawScanPoint(Canvas canvas, int scanWidth, int scanHeight) {
         if (!mShowResultPoints)
             return;
@@ -298,6 +298,7 @@ public class ZxingForegroundView extends View {
         final int coverX = (getWidth() - scanWidth) / 2;
         final int coverY = (getHeight() - scanHeight) / 2;
         ListIterator iterator = mResultPoints.listIterator();
+        //noinspection WhileLoopReplaceableByForEach
         while (iterator.hasNext()) {
             ResultPointItem point = (ResultPointItem) iterator.next();
             final float offset = mInterpolator.getInterpolation(1 - point.getValue());
@@ -317,9 +318,9 @@ public class ZxingForegroundView extends View {
         return Color.argb(alpha, red, green, blue);
     }
 
-    @SuppressWarnings("all")
     private void editResultPoints() {
         ListIterator<ResultPointItem> iterator = mResultPoints.listIterator();
+        //noinspection WhileLoopReplaceableByForEach
         while (iterator.hasNext()) {
             ResultPointItem point = iterator.next();
             if (!point.cutDuration(DEFAULT_FRAME_DELAY))
@@ -349,6 +350,7 @@ public class ZxingForegroundView extends View {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
@@ -393,8 +395,7 @@ public class ZxingForegroundView extends View {
     }
 
     @Override
-    @SuppressWarnings("all")
-    protected boolean verifyDrawable(Drawable who) {
+    protected boolean verifyDrawable(@SuppressWarnings("NullableProblems") Drawable who) {
         if (mOpenDrawable == null && mErrorDrawable == null)
             return super.verifyDrawable(who);
         return who == mOpenDrawable || who == mErrorDrawable || super.verifyDrawable(who);
@@ -652,7 +653,7 @@ public class ZxingForegroundView extends View {
             this.duration = duration;
         }
 
-        boolean cutDuration(long value) {
+        boolean cutDuration(@SuppressWarnings("SameParameterValue") long value) {
             duration -= value;
             return duration >= 0;
         }

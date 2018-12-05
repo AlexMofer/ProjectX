@@ -16,6 +16,7 @@
 package am.project.x.base;
 
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +28,8 @@ import android.support.v4.content.LocalBroadcastManager;
  * 广播Application
  * Created by Alex on 2018/7/23.
  */
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
+@SuppressLint("Registered")
 public class BroadcastApplication extends MultiDexApplication {
 
     private final BroadcastReceiver mBroadcastReceiver = new InnerBroadcastReceiver();

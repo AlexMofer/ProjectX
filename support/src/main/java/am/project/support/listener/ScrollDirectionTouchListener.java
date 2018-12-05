@@ -24,7 +24,7 @@ import android.view.ViewConfiguration;
 /**
  * 滑动方向触摸监听
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public abstract class ScrollDirectionTouchListener implements OnTouchListener {
 
     public static final int STATE_TOP = 0;

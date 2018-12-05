@@ -26,7 +26,7 @@ import android.view.inputmethod.InputMethodManager;
  * 输入法工具类
  * Created by Alex on 2016/11/10.
  */
-@SuppressWarnings("all")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class InputMethodUtils {
 
     /**
@@ -54,7 +54,9 @@ public class InputMethodUtils {
         view.requestFocusFromTouch();
         InputMethodManager imm = ((InputMethodManager) (view.getContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE)));
-        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        if (imm != null) {
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        }
     }
 
     /**
@@ -78,8 +80,10 @@ public class InputMethodUtils {
         }
         InputMethodManager imm = ((InputMethodManager) (view.getContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE)));
-        imm.hideSoftInputFromWindow(view.getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
         if (clearFocus)
             view.clearFocus();
     }

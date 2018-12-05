@@ -303,7 +303,7 @@ public class ScrollbarRecyclerView extends ItemAnimatorControllableRecyclerView 
     /**
      * 滚动条
      */
-    @SuppressWarnings("all")
+    @SuppressWarnings("WeakerAccess")
     public static abstract class Scrollbar {
 
         public static final int SHOW_NONE = 0;// 不显示

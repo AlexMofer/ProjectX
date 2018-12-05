@@ -33,6 +33,7 @@ import java.util.HashMap;
  * 二维码生成工具类
  * Created by Alex on 2018/9/1.
  */
+@SuppressWarnings("WeakerAccess")
 public class QRCodeUtil {
 
     private static final Canvas CANVAS = new Canvas();
@@ -53,7 +54,6 @@ public class QRCodeUtil {
      * @param logoHeight 商标高（建议不超过图像高度的五分之一）
      * @return 是否成功
      */
-    @SuppressWarnings("all")
     public static boolean createQRCode(String content, Bitmap bitmap, int color, int background,
                                        Drawable logo, int logoWidth, int logoHeight) {
         if (TextUtils.isEmpty(content) || bitmap == null || bitmap.isRecycled())
