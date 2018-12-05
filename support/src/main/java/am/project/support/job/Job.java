@@ -517,7 +517,8 @@ public abstract class Job<T> {
     }
 
     protected void onPostExecute() {
-        final T callback = mCallback == null ? mWeakReference.get() : mCallback;
+        final T callback = mCallback != null ? mCallback :
+                (mWeakReference != null ? mWeakReference.get() : null);
         dispatchResult(callback);
         mCallback = null;
         mWeakReference = null;
