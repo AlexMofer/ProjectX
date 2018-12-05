@@ -260,30 +260,65 @@ public class HeaderTable extends BaseTable {
         return mMacStyle;
     }
 
+    /**
+     * Returns the style for this view.
+     *
+     * @return True if this view is bold, false otherwise.
+     */
     public boolean isBold() {
         return (mMacStyle & 1) == 1;
     }
 
+    /**
+     * Returns the style for this view.
+     *
+     * @return True if this view is italic, false otherwise.
+     */
     public boolean isItalic() {
         return (mMacStyle & 2) == 2;
     }
 
+    /**
+     * Returns the style for this view.
+     *
+     * @return True if this view is underline, false otherwise.
+     */
     public boolean isUnderline() {
         return (mMacStyle & 4) == 4;
     }
 
+    /**
+     * Returns the style for this view.
+     *
+     * @return True if this view is outline, false otherwise.
+     */
     public boolean isOutline() {
         return (mMacStyle & 8) == 8;
     }
 
+    /**
+     * Returns the style for this view.
+     *
+     * @return True if this view is shadow, false otherwise.
+     */
     public boolean isShadow() {
         return (mMacStyle & 16) == 16;
     }
 
+    /**
+     * Returns the style for this view.
+     *
+     * @return True if this view is condensed, false otherwise.
+     */
     public boolean isCondensed() {
         return (mMacStyle & 32) == 32;
     }
 
+    /**
+     * Returns the style for this view.
+     *
+     * @return True if this view is extended, false otherwise.
+     */
     public boolean isExtended() {
         return (mMacStyle & 64) == 64;
     }
