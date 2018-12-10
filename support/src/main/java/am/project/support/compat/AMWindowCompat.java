@@ -26,7 +26,7 @@ import android.view.WindowManager;
  * Created by Alex on 2016/11/22.
  */
 @SuppressWarnings("unused")
-public class AMWindowCompat {
+public final class AMWindowCompat {
     private static final AMWindowCompatImpl IMPL;
 
     static {
@@ -41,6 +41,7 @@ public class AMWindowCompat {
     }
 
     private AMWindowCompat() {
+        //no instance
     }
 
     /**

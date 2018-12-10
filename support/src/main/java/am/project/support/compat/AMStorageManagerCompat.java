@@ -32,7 +32,7 @@ import java.util.List;
  * Created by Alex on 2017/9/3.
  */
 @SuppressWarnings("WeakerAccess")
-public class AMStorageManagerCompat {
+public final class AMStorageManagerCompat {
     private static final StorageManagerCompatImpl IMPL;
 
     static {

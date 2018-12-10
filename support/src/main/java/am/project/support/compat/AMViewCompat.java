@@ -31,7 +31,7 @@ import java.lang.ref.WeakReference;
  * Created by Alex on 2016/11/21.
  */
 @SuppressWarnings("unused")
-public class AMViewCompat {
+public final class AMViewCompat {
 
     private static final AMViewCompatImpl IMPL;
 
@@ -44,6 +44,10 @@ public class AMViewCompat {
         } else {
             IMPL = new AMViewCompatBase();
         }
+    }
+
+    private AMViewCompat() {
+        //no instance
     }
 
     /**

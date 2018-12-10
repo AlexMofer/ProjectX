@@ -24,7 +24,7 @@ import android.app.ActivityManager;
  * Created by Alex on 2016/11/22.
  */
 @SuppressWarnings("unused")
-public class AMActivityManagerCompat {
+public final class AMActivityManagerCompat {
 
     private static final AMActivityManagerCompatImpl IMPL;
 
@@ -35,6 +35,10 @@ public class AMActivityManagerCompat {
         } else {
             IMPL = new AMActivityManagerCompatBase();
         }
+    }
+
+    private AMActivityManagerCompat() {
+        //no instance
     }
 
     /**

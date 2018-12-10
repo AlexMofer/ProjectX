@@ -24,7 +24,7 @@ import android.content.pm.ApplicationInfo;
  * Created by Alex on 2016/11/22.
  */
 @SuppressWarnings("unused")
-public class AMApplicationInfoCompat {
+public final class AMApplicationInfoCompat {
 
     private static final AMApplicationInfoCompatImpl IMPL;
 
@@ -35,6 +35,10 @@ public class AMApplicationInfoCompat {
         } else {
             IMPL = new AMApplicationInfoCompatBase();
         }
+    }
+
+    private AMApplicationInfoCompat() {
+        //no instance
     }
 
     /**

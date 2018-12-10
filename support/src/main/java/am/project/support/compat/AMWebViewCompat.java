@@ -26,7 +26,7 @@ import java.lang.ref.WeakReference;
  * Created by Alex on 2016/11/22.
  */
 @SuppressWarnings("unused")
-public class AMWebViewCompat {
+public final class AMWebViewCompat {
 
     private static final AMWebViewCompatImpl IMPL;
 
@@ -40,6 +40,7 @@ public class AMWebViewCompat {
     }
 
     private AMWebViewCompat() {
+        //no instance
     }
 
     /**
