@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ClipImageView">
+        <attr name="civClipType" format="enum">
+            <enum name="Circle" value="1" />
+            <enum name="Oval" value="2" />
+            <enum name="FullRoundRect" value="3" />
+            <enum name="RoundRect" value="4" />
+        </attr>
+        <attr name="civRoundRectRadius" format="dimension" />
+    </declare-styleable>
+</resources>
