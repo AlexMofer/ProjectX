@@ -20,10 +20,15 @@ import android.annotation.TargetApi;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
+import android.view.Gravity;
+import android.view.View;
 
 import java.util.ArrayList;
+
+import static android.os.Build.VERSION.SDK_INT;
 
 /**
  * 版本兼容器
@@ -32,6 +37,7 @@ import java.util.ArrayList;
 @SuppressWarnings("SameParameterValue")
 final class Compat {
 
+    private static final int LAYOUT_DIRECTION_LTR = 0;
     private static final CompatImpl IMPL;
 
     static {
@@ -55,6 +61,22 @@ final class Compat {
     static void addRoundRect(Path path, float left, float top, float right, float bottom,
                                     float rx, float ry, Path.Direction dir) {
         IMPL.addRoundRect(path, left, top, right, bottom, rx, ry, dir);
+    }
+
+    static void apply(int gravity, int w, int h, Rect container,
+                             Rect outRect, int layoutDirection) {
+        if (SDK_INT >= 17) {
+            Gravity.apply(gravity, w, h, container, outRect, layoutDirection);
+        } else {
+            Gravity.apply(gravity, w, h, container, outRect);
+        }
+    }
+
+    static int getLayoutDirection(View view) {
+        if (Build.VERSION.SDK_INT >= 17) {
+            return view.getLayoutDirection();
+        }
+        return LAYOUT_DIRECTION_LTR;
     }
 
     private Compat() {

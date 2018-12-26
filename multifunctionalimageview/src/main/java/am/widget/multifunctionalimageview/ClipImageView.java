@@ -19,12 +19,16 @@ package am.widget.multifunctionalimageview;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Xfermode;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -39,8 +43,11 @@ public class ClipImageView extends ImageView {
 
     private final Path mClipPath = new Path();
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Xfermode mXfermode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
     private final Path mOutlinePath = new Path();
     private ClipOutlineProvider mProvider;
+    private float mBorderWidth;
+    private ColorStateList mBorderColor;
 
     public ClipImageView(Context context) {
         super(context);
@@ -70,9 +77,11 @@ public class ClipImageView extends ImageView {
         final int type = custom.getInt(R.styleable.ClipImageView_civClipType, 0);
         final float radius = custom.getDimension(R.styleable.ClipImageView_civRoundRectRadius,
                 0);
+        final float width = custom.getDimension(R.styleable.ClipImageView_civBorderWidth,
+                0);
+        final ColorStateList color = custom.getColorStateList(R.styleable.ClipImageView_civBorderColor);
         custom.recycle();
         mClipPath.setFillType(Path.FillType.EVEN_ODD);
-        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         mOutlinePath.setFillType(Path.FillType.EVEN_ODD);
         switch (type) {
             default:
@@ -90,6 +99,8 @@ public class ClipImageView extends ImageView {
                 mProvider = new RoundRectClipOutlineProvider(radius);
                 break;
         }
+        mBorderWidth = width;
+        mBorderColor = color;
     }
 
     @Override
@@ -111,15 +122,6 @@ public class ClipImageView extends ImageView {
             invalidate();
     }
 
-    public void setClipOutlineProvider(ClipOutlineProvider provider) {
-        mProvider = provider;
-        invalidateClipOutline();
-    }
-
-    public void invalidateClipOutline() {
-        invalidateClipOutline(true);
-    }
-
     @Override
     public void draw(Canvas canvas) {
         if (mProvider == null) {
@@ -129,7 +131,74 @@ public class ClipImageView extends ImageView {
         final int layer = Compat.saveLayer(canvas, 0, 0, getWidth(), getHeight(),
                 null);
         super.draw(canvas);
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setXfermode(mXfermode);
+        final ColorFilter filter = mPaint.getColorFilter();
         canvas.drawPath(mClipPath, mPaint);
         canvas.restoreToCount(layer);
+        mPaint.setColorFilter(filter);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M && mBorderWidth > 0) {
+            mPaint.setColor(Color.BLACK);
+            mPaint.setXfermode(null);
+            if (mBorderColor != null)
+                mPaint.setColor(mBorderColor.getColorForState(getDrawableState(),
+                        mBorderColor.getDefaultColor()));
+            mPaint.setStyle(Paint.Style.STROKE);
+            mPaint.setStrokeMiter(10);
+            mPaint.setStrokeWidth(mBorderWidth * 2);
+            canvas.drawPath(mOutlinePath, mPaint);
+        }
+    }
+
+    @Override
+    public void onDrawForeground(Canvas canvas) {
+        if (mBorderWidth > 0) {
+            mPaint.setColor(Color.BLACK);
+            mPaint.setXfermode(null);
+            if (mBorderColor != null)
+                mPaint.setColor(mBorderColor.getColorForState(getDrawableState(),
+                        mBorderColor.getDefaultColor()));
+            mPaint.setStyle(Paint.Style.STROKE);
+            mPaint.setStrokeMiter(10);
+            mPaint.setStrokeWidth(mBorderWidth * 2);
+            canvas.drawPath(mOutlinePath, mPaint);
+        }
+        super.onDrawForeground(canvas);
+    }
+
+    @Override
+    public void setColorFilter(ColorFilter cf) {
+        mPaint.setColorFilter(cf);
+        super.setColorFilter(cf);
+    }
+
+    public void setClipOutlineProvider(ClipOutlineProvider provider) {
+        mProvider = provider;
+        invalidateClipOutline();
+    }
+
+    public void invalidateClipOutline() {
+        invalidateClipOutline(true);
+    }
+
+    public void setBorderWidth(float width) {
+        mBorderWidth = width;
+        if (mProvider != null)
+            invalidate();
+    }
+
+    public void setBorderColor(ColorStateList color) {
+        mBorderColor = color;
+        if (mProvider != null)
+            invalidate();
+    }
+
+    public void setBorderColor(int color) {
+        setBorderColor(ColorStateList.valueOf(color));
     }
 }
