@@ -79,7 +79,9 @@ public class ClipImageView extends ImageView {
                 0);
         final float width = custom.getDimension(R.styleable.ClipImageView_civBorderWidth,
                 0);
-        final ColorStateList color = custom.getColorStateList(R.styleable.ClipImageView_civBorderColor);
+        final ColorStateList color = custom.getColorStateList(
+                R.styleable.ClipImageView_civBorderColor);
+        final String name = custom.getString(R.styleable.ClipImageView_civClipOutlineProvider);
         custom.recycle();
         mClipPath.setFillType(Path.FillType.EVEN_ODD);
         mOutlinePath.setFillType(Path.FillType.EVEN_ODD);
@@ -99,6 +101,11 @@ public class ClipImageView extends ImageView {
                 mProvider = new RoundRectClipOutlineProvider(radius);
                 break;
         }
+        final ClipOutlineProvider provider = ConstructorHelper.newInstance(context, name,
+                isInEditMode(), this, ClipOutlineProvider.class,
+                attrs, defStyleAttr, defStyleRes);
+        if (provider != null)
+            mProvider = provider;
         mBorderWidth = width;
         mBorderColor = color;
     }

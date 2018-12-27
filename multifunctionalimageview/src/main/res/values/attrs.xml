@@ -10,6 +10,7 @@
         <attr name="civRoundRectRadius" format="dimension" />
         <attr name="civBorderWidth" format="dimension" />
         <attr name="civBorderColor" format="color" />
+        <attr name="civClipOutlineProvider" format="string"/>
     </declare-styleable>
     <declare-styleable name="ForegroundImageView">
         <attr name="fivForeground" format="reference" />
