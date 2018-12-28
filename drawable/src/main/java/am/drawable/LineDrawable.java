@@ -17,6 +17,7 @@
 package am.drawable;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -28,6 +29,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.Gravity;
@@ -44,7 +46,7 @@ import am.widget.R;
  * 支持上下左右
  * Created by Alex on 2015/9/26.
  */
-@SuppressWarnings({"unused", "WeakerAccess", "NullableProblems"})
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class LineDrawable extends Drawable {
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -79,6 +81,7 @@ public class LineDrawable extends Drawable {
         mGravity = gravity;
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public void inflate(Resources resources, XmlPullParser parser, AttributeSet attrs,
                         Resources.Theme theme)
@@ -87,11 +90,11 @@ public class LineDrawable extends Drawable {
         final TypedArray custom = resources.obtainAttributes(Xml.asAttributeSet(parser),
                 R.styleable.LineDrawable);
         final ColorStateList backgroundColor =
-                custom.getColorStateList(R.styleable.LineDrawable_ldBackgroundColor);
+                custom.getColorStateList(R.styleable.LineDrawable_android_background);
         final ColorStateList lineColor =
-                custom.getColorStateList(R.styleable.LineDrawable_ldLineColor);
-        mLineSize = custom.getDimension(R.styleable.LineDrawable_ldLineSize, 0);
-        mGravity = custom.getInt(R.styleable.LineDrawable_ldGravity, Gravity.NO_GRAVITY);
+                custom.getColorStateList(R.styleable.LineDrawable_android_color);
+        mLineSize = custom.getDimension(R.styleable.LineDrawable_android_width, 0);
+        mGravity = custom.getInt(R.styleable.LineDrawable_android_gravity, Gravity.NO_GRAVITY);
         custom.recycle();
         if (backgroundColor != null)
             mBackgroundColor = backgroundColor;
@@ -99,11 +102,17 @@ public class LineDrawable extends Drawable {
             mLineColor = lineColor;
     }
 
-    @SuppressLint("RtlHardcoded")
     @Override
     protected void onBoundsChange(Rect bounds) {
         super.onBoundsChange(bounds);
+        updateLocation(bounds);
+    }
+
+    @SuppressLint("RtlHardcoded")
+    private void updateLocation(Rect bounds) {
         mLine.setEmpty();
+        if (bounds == null)
+            return;
         if (mLineSize <= 0)
             return;
         final float half = mLineSize * 0.5f;
@@ -132,8 +141,16 @@ public class LineDrawable extends Drawable {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
-    public void draw(Canvas canvas) {
+    public boolean onLayoutDirectionChanged(int layoutDirection) {
+        super.onLayoutDirectionChanged(layoutDirection);
+        updateLocation(getBounds());
+        return true;
+    }
+
+    @Override
+    public void draw(@SuppressWarnings("NullableProblems") Canvas canvas) {
         final Rect bounds = getBounds();
         if (bounds.isEmpty())
             return;
@@ -166,6 +183,12 @@ public class LineDrawable extends Drawable {
     @Override
     public void setColorFilter(ColorFilter cf) {
         mPaint.setColorFilter(cf);
+    }
+
+    @Override
+    public boolean isStateful() {
+        return (mBackgroundColor != null && mBackgroundColor.isStateful()) ||
+                (mLineColor != null && mLineColor.isStateful());
     }
 
     /**

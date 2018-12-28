@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="LineDrawable">
-        <attr name="ldBackgroundColor" format="color" />
-        <attr name="ldLineColor" format="color" />
-        <attr name="ldLineSize" format="dimension" />
-        <attr name="ldGravity">
-            <flag name="top" value="0x30" />
-            <flag name="bottom" value="0x50" />
-            <flag name="left" value="0x03" />
-            <flag name="right" value="0x05" />
-            <flag name="center_vertical" value="0x10" />
-            <flag name="center_horizontal" value="0x01" />
-        </attr>
+        <attr name="android:gravity" />
+        <attr name="android:background" />
+        <attr name="android:color" />
+        <attr name="android:width" />
     </declare-styleable>
-    <declare-styleable name="MaterialProgressImageView">
-        <attr name="mpiAutoStart" format="boolean" />
-        <attr name="mpiShadowsCircleColor" format="color" />
-        <attr name="mpiShadowsCircleRadius" format="dimension" />
-        <attr name="mpiElevation" format="dimension" />
-        <attr name="mpiSchemeColor1" format="color" />
-        <attr name="mpiSchemeColor2" format="color" />
-        <attr name="mpiSchemeColor3" format="color" />
-        <attr name="mpiSchemeColor4" format="color" />
-        <attr name="mpiSchemeColor5" format="color" />
+    <declare-styleable name="PathDrawable">
+        <attr name="android:width" />
+        <attr name="android:height" />
+        <attr name="pdFillType" format="enum">
+            <enum name="winding" value="0" />
+            <enum name="evenOdd" value="1" />
+            <enum name="inverseWinding" value="2" />
+            <enum name="inverseEvenOdd" value="3" />
+        </attr>
+        <attr name="pdStyle" format="enum">
+            <enum name="fill" value="0" />
+            <enum name="stroke" value="1" />
+            <enum name="fillAndStroke" value="2" />
+        </attr>
+        <attr name="android:color" />
+        <attr name="pdStrokeWidth" format="dimension" />
+        <attr name="android:strokeLineCap" />
+        <attr name="android:strokeLineJoin" />
+        <attr name="android:strokeMiterLimit" />
+
+        <attr name="android:pathData" />
     </declare-styleable>
 </resources>
