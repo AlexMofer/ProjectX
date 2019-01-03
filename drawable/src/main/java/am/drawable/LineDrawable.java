@@ -24,6 +24,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
@@ -51,6 +52,7 @@ public class LineDrawable extends Drawable {
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final RectF mLine = new RectF();
+    private int mAlpha = 0xFF;
     private ColorStateList mBackgroundColor;
     private ColorStateList mLineColor;
     private float mLineSize;
@@ -154,13 +156,18 @@ public class LineDrawable extends Drawable {
         final Rect bounds = getBounds();
         if (bounds.isEmpty())
             return;
+        final int[] state = getState();
         if (mBackgroundColor != null) {
-            mPaint.setColor(mBackgroundColor.getColorForState(getState(),
-                    mBackgroundColor.getDefaultColor()));
+            final int backgroundColor = mBackgroundColor.getColorForState(state,
+                    mBackgroundColor.getDefaultColor());
+            mPaint.setColor(backgroundColor);
+            mPaint.setAlpha(DrawableHelper.modulateAlpha(backgroundColor, mAlpha));
             canvas.drawRect(bounds, mPaint);
         }
         if (mLineColor != null) {
-            mPaint.setColor(mLineColor.getColorForState(getState(), mLineColor.getDefaultColor()));
+            final int lineColor = mLineColor.getColorForState(state, mLineColor.getDefaultColor());
+            mPaint.setColor(lineColor);
+            mPaint.setAlpha(DrawableHelper.modulateAlpha(lineColor, mAlpha));
             canvas.drawRect(mLine, mPaint);
         }
     }
@@ -172,12 +179,15 @@ public class LineDrawable extends Drawable {
 
     @Override
     public void setAlpha(int alpha) {
-        mPaint.setAlpha(alpha);
+        if (mAlpha == alpha)
+            return;
+        mAlpha = alpha;
+        invalidateSelf();
     }
 
     @Override
     public int getAlpha() {
-        return mPaint.getAlpha();
+        return mAlpha;
     }
 
     @Override
@@ -189,6 +199,24 @@ public class LineDrawable extends Drawable {
     public boolean isStateful() {
         return (mBackgroundColor != null && mBackgroundColor.isStateful()) ||
                 (mLineColor != null && mLineColor.isStateful());
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void getOutline(@SuppressWarnings("NullableProblems") Outline outline) {
+        final int[] state = getState();
+        if (mBackgroundColor != null) {
+            outline.setRect(getBounds());
+            outline.setAlpha(DrawableHelper.getAlpha(mBackgroundColor, state));
+            return;
+        }
+        if (mLineColor != null) {
+            outline.setRect(Math.round(mLine.left - 0.5f), Math.round(mLine.top - 0.5f),
+                    Math.round(mLine.right + 0.5f), Math.round(mLine.bottom + 0.5f));
+            outline.setAlpha(DrawableHelper.getAlpha(mLineColor, state));
+            return;
+        }
+        super.getOutline(outline);
     }
 
     /**
@@ -206,6 +234,8 @@ public class LineDrawable extends Drawable {
      * @param background 背景色
      */
     public void setBackgroundColor(ColorStateList background) {
+        if (mBackgroundColor == background)
+            return;
         mBackgroundColor = background;
         invalidateSelf();
     }
@@ -225,6 +255,8 @@ public class LineDrawable extends Drawable {
      * @param line 线条色
      */
     public void setLineColor(ColorStateList line) {
+        if (mLineColor == line)
+            return;
         mLineColor = line;
         invalidateSelf();
     }
@@ -244,7 +276,10 @@ public class LineDrawable extends Drawable {
      * @param size 线宽
      */
     public void setLineSize(float size) {
+        if (mLineSize == size)
+            return;
         mLineSize = size;
+        updateLocation(getBounds());
         invalidateSelf();
     }
 
@@ -263,6 +298,8 @@ public class LineDrawable extends Drawable {
      * @param gravity 位置
      */
     public void setGravity(int gravity) {
+        if (mGravity == gravity)
+            return;
         mGravity = gravity;
         invalidateSelf();
     }

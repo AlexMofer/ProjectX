@@ -18,6 +18,7 @@ package am.project.x.business.drawables.linedrawable;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -52,8 +53,9 @@ public class LineDrawableActivity extends BaseActivity implements
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.lid_toolbar);
-        drawable = new LineDrawable(ContextCompat.getColor(this, R.color.colorPrimary),
-                1);
+        drawable = new LineDrawable(Color.TRANSPARENT,
+                ContextCompat.getColor(this, R.color.colorPrimary), 1,
+                Gravity.BOTTOM);
         if (Build.VERSION.SDK_INT >= 16) {
             findViewById(R.id.lid_tv_content).setBackground(drawable);
         } else {

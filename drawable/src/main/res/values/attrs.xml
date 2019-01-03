@@ -7,25 +7,32 @@
         <attr name="android:width" />
     </declare-styleable>
     <declare-styleable name="PathDrawable">
+        <attr name="android:background" />
         <attr name="android:width" />
         <attr name="android:height" />
+        <attr name="android:viewportWidth" />
+        <attr name="android:viewportHeight" />
+        <attr name="android:pathData" />
         <attr name="pdFillType" format="enum">
             <enum name="winding" value="0" />
             <enum name="evenOdd" value="1" />
             <enum name="inverseWinding" value="2" />
             <enum name="inverseEvenOdd" value="3" />
         </attr>
-        <attr name="pdStyle" format="enum">
-            <enum name="fill" value="0" />
-            <enum name="stroke" value="1" />
-            <enum name="fillAndStroke" value="2" />
+        <attr name="android:fillColor" />
+        <attr name="android:strokeColor" />
+        <attr name="android:strokeWidth" />
+        <attr name="pdStrokeWidthScaleType">
+            <enum name="average" value="0" />
+            <enum name="min" value="1" />
+            <enum name="max" value="2" />
+            <enum name="width" value="3" />
+            <enum name="height" value="4" />
+            <enum name="none" value="5" />
         </attr>
-        <attr name="android:color" />
-        <attr name="pdStrokeWidth" format="dimension" />
         <attr name="android:strokeLineCap" />
         <attr name="android:strokeLineJoin" />
         <attr name="android:strokeMiterLimit" />
-
-        <attr name="android:pathData" />
+        <attr name="pdClipStroke" format="boolean" />
     </declare-styleable>
 </resources>

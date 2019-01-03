@@ -16,6 +16,8 @@
 
 package am.drawable;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -25,6 +27,16 @@ import android.view.View;
  * 帮助类
  */
 class DrawableHelper {
+
+    static int getAlpha(ColorStateList color, int[] state) {
+        if (color == null)
+            return 0;
+        return Color.alpha(color.getColorForState(state, color.getDefaultColor()));
+    }
+
+    static int modulateAlpha(int color, int alpha) {
+        return Color.alpha(color) * (alpha + (alpha >> 7)) >> 8;
+    }
 
     static Rect PADDING = new Rect();
 

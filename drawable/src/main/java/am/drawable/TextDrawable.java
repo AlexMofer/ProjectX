@@ -44,7 +44,7 @@ public class TextDrawable extends Drawable {
 
     public TextDrawable(Context context, int dimen, int colorId, int strId) {
         this(context, context.getResources().getDimension(dimen),
-                Compat.getColor(context, colorId), context.getString(strId));
+                context.getResources().getColor(colorId), context.getString(strId));
     }
 
     public TextDrawable(Context context, float textSize, int textColor, String text) {

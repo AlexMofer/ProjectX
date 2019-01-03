@@ -18,12 +18,16 @@ package am.drawable;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.Gravity;
+
+import java.util.ArrayList;
 
 /**
  * 版本兼容控制器
@@ -49,40 +53,47 @@ class Compat {
     @SuppressLint("RtlHardcoded")
     static final int END = RELATIVE_LAYOUT_DIRECTION | Gravity.RIGHT;
 
-    private static final CompatPlusImpl IMPL;
+    private static final int LAYOUT_DIRECTION_LTR = 0;
+    private static final CompatImpl IMPL;
 
     static {
-        final int version = android.os.Build.VERSION.SDK_INT;
-        if (version >= 23) {
-            IMPL = new MarshmallowCompatPlusImpl();
+        if (Build.VERSION.SDK_INT >= 21) {
+            IMPL = new Api21CompatImpl();
         } else {
-            IMPL = new BaseCompatPlusImpl();
+            IMPL = new BaseCompatImpl();
         }
     }
 
-    static int getColor(Context context, int id) {
-        return IMPL.getColor(context, id);
+    @SuppressWarnings("SameParameterValue")
+    static int saveLayer(Canvas canvas, float left, float top, float right, float bottom,
+                         Paint paint) {
+        return IMPL.saveLayer(canvas, left, top, right, bottom, paint);
     }
 
-    private interface CompatPlusImpl {
-        int getColor(Context context, int id);
+    static void arcTo(Path path, float left, float top, float right, float bottom,
+                      float startAngle, float sweepAngle, boolean forceMoveTo) {
+        IMPL.arcTo(path, left, top, right, bottom, startAngle, sweepAngle, forceMoveTo);
     }
 
-    private static class BaseCompatPlusImpl implements CompatPlusImpl {
-        @Override
-        public int getColor(Context context, int id) {
-            return context.getResources().getColor(id);
-        }
+    static void addOval(Path path, float left, float top, float right, float bottom,
+                        Path.Direction dir) {
+        IMPL.addOval(path, left, top, right, bottom, dir);
     }
 
-    @TargetApi(23)
-    private static class MarshmallowCompatPlusImpl extends BaseCompatPlusImpl {
-        @Override
-        public int getColor(Context context, int id) {
-            return context.getColor(id);
-        }
+    static void addArc(Path path, float left, float top, float right, float bottom,
+                       float startAngle, float sweepAngle) {
+        IMPL.addArc(path, left, top, right, bottom, startAngle, sweepAngle);
     }
 
+    static void addRoundRect(Path path, float left, float top, float right, float bottom,
+                             float rx, float ry, Path.Direction dir) {
+        IMPL.addRoundRect(path, left, top, right, bottom, rx, ry, dir);
+    }
+
+    static void addRoundRect(Path path, float left, float top, float right, float bottom,
+                             float[] radii, Path.Direction dir) {
+        IMPL.addRoundRect(path, left, top, right, bottom, radii, dir);
+    }
 
     static void apply(Drawable drawable, int gravity, int w, int h, Rect container, Rect outRect) {
         if (drawable == null)
@@ -288,6 +299,141 @@ class Compat {
                 outRect.top = container.top + yAdj;
                 outRect.bottom = container.bottom + yAdj;
                 break;
+        }
+    }
+
+    private Compat() {
+        //no instance
+    }
+
+    public interface CompatImpl {
+
+        int saveLayer(Canvas canvas, float left, float top, float right, float bottom, Paint paint);
+
+        void arcTo(Path path, float left, float top, float right, float bottom,
+                   float startAngle, float sweepAngle, boolean forceMoveTo);
+
+        void addOval(Path path, float left, float top, float right, float bottom,
+                     Path.Direction dir);
+
+        void addArc(Path path, float left, float top, float right, float bottom,
+                    float startAngle, float sweepAngle);
+
+        void addRoundRect(Path path, float left, float top, float right, float bottom,
+                          float rx, float ry, Path.Direction dir);
+
+        void addRoundRect(Path path, float left, float top, float right, float bottom,
+                          float[] radii, Path.Direction dir);
+    }
+
+    private static class BaseCompatImpl implements CompatImpl {
+
+        private static final ArrayList<RectF> RECT_FS = new ArrayList<>();
+
+        private static RectF get() {
+            synchronized (RECT_FS) {
+                if (RECT_FS.isEmpty())
+                    return new RectF();
+                else
+                    return RECT_FS.remove(RECT_FS.size() - 1);
+            }
+        }
+
+        private static void put(RectF rect) {
+            synchronized (RECT_FS) {
+                RECT_FS.add(rect);
+            }
+        }
+
+        @Override
+        public int saveLayer(Canvas canvas, float left, float top, float right, float bottom,
+                             Paint paint) {
+            return canvas.saveLayer(left, top, right, bottom, paint, Canvas.ALL_SAVE_FLAG);
+        }
+
+        @Override
+        public void arcTo(Path path, float left, float top, float right, float bottom,
+                          float startAngle, float sweepAngle, boolean forceMoveTo) {
+            final RectF oval = get();
+            oval.set(left, top, right, bottom);
+            path.arcTo(oval,startAngle, sweepAngle, forceMoveTo);
+            put(oval);
+        }
+
+        @Override
+        public void addOval(Path path, float left, float top, float right, float bottom,
+                            Path.Direction dir) {
+            final RectF oval = get();
+            oval.set(left, top, right, bottom);
+            path.addOval(oval, dir);
+            put(oval);
+        }
+
+        @Override
+        public void addArc(Path path, float left, float top, float right, float bottom,
+                           float startAngle, float sweepAngle) {
+            final RectF oval = get();
+            oval.set(left, top, right, bottom);
+            path.addArc(oval, startAngle, sweepAngle);
+            put(oval);
+        }
+
+        @Override
+        public void addRoundRect(Path path, float left, float top, float right, float bottom,
+                                 float rx, float ry, Path.Direction dir) {
+            final RectF rect = get();
+            rect.set(left, top, right, bottom);
+            path.addRoundRect(rect, rx, ry, dir);
+            put(rect);
+        }
+
+        @Override
+        public void addRoundRect(Path path, float left, float top, float right, float bottom,
+                                 float[] radii, Path.Direction dir) {
+            final RectF rect = get();
+            rect.set(left, top, right, bottom);
+            path.addRoundRect(rect, radii, dir);
+            put(rect);
+        }
+    }
+
+    @TargetApi(21)
+    private static class Api21CompatImpl implements CompatImpl {
+
+        @Override
+        public int saveLayer(Canvas canvas, float left, float top, float right, float bottom,
+                             Paint paint) {
+            return canvas.saveLayer(left, top, right, bottom, paint);
+        }
+
+        @Override
+        public void arcTo(Path path, float left, float top, float right, float bottom,
+                          float startAngle, float sweepAngle, boolean forceMoveTo) {
+            path.arcTo(left, top, right, bottom, startAngle, sweepAngle, forceMoveTo);
+        }
+
+        @Override
+        public void addOval(Path path, float left, float top, float right, float bottom,
+                            Path.Direction dir) {
+            path.addOval(left, top, right, bottom, dir);
+        }
+
+        @Override
+        public void addArc(Path path, float left, float top, float right, float bottom,
+                           float startAngle, float sweepAngle) {
+            path.addArc(left, top, right, bottom, startAngle, sweepAngle);
+        }
+
+        @Override
+        public void addRoundRect(Path path, float left, float top, float right, float bottom,
+                                 float rx, float ry, Path.Direction dir) {
+            path.addRoundRect(left, top, right, bottom, rx, ry, dir);
+        }
+
+        @Override
+        public void addRoundRect(Path path, float left, float top, float right, float bottom,
+                                 float[] radii, Path.Direction dir) {
+            path.addRoundRect(left, top, right, bottom, radii, dir);
         }
     }
 }
