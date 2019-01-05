@@ -17,6 +17,7 @@
 package am.drawable;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -24,6 +25,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Matrix;
+import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathEffect;
@@ -503,6 +505,8 @@ public class PathDrawable extends Drawable {
 
     @Override
     public void draw(@SuppressWarnings("NullableProblems") Canvas canvas) {
+        if (!isVisible())
+            return;
         final int[] state = getState();
         if (mBackgroundColor != null) {
             mPaint.setStyle(Paint.Style.FILL);
@@ -557,7 +561,8 @@ public class PathDrawable extends Drawable {
                         canvas.drawPath(mDrawPath, mPaint);
                         if (mXfermode == null)
                             mXfermode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
-                        final Xfermode old = mPaint.setXfermode(mXfermode);
+                        final Xfermode old = mPaint.getXfermode();
+                        mPaint.setXfermode(mXfermode);
                         mPaint.setColor(Color.BLACK);
                         mPaint.setStyle(Paint.Style.STROKE);
                         mPaint.setStrokeWidth(strokeWidth);
@@ -655,6 +660,26 @@ public class PathDrawable extends Drawable {
         return (mBackgroundColor != null && mBackgroundColor.isStateful()) ||
                 (mFillColor != null && mFillColor.isStateful()) ||
                 (mStrokeColor != null && mStrokeColor.isStateful());
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void getOutline(@SuppressWarnings("NullableProblems") Outline outline) {
+        if (mDrawPath.isEmpty()) {
+            super.getOutline(outline);
+            return;
+        }
+        outline.setConvexPath(mDrawPath);
+        final int[] state = getState();
+        if (mBackgroundColor != null) {
+            outline.setAlpha(DrawableHelper.getAlpha(mBackgroundColor, state));
+            return;
+        }
+        if (mFillColor != null) {
+            outline.setAlpha(DrawableHelper.getAlpha(mFillColor, state));
+            return;
+        }
+        outline.setAlpha(0);
     }
 
     /**

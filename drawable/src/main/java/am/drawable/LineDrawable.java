@@ -153,6 +153,8 @@ public class LineDrawable extends Drawable {
 
     @Override
     public void draw(@SuppressWarnings("NullableProblems") Canvas canvas) {
+        if (!isVisible())
+            return;
         final Rect bounds = getBounds();
         if (bounds.isEmpty())
             return;
