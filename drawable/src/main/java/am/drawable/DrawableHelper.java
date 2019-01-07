@@ -17,16 +17,27 @@
 package am.drawable;
 
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.AttributeSet;
 import android.view.View;
 
 /**
  * 帮助类
  */
 class DrawableHelper {
+
+    static TypedArray obtainAttributes(Resources res, Resources.Theme theme,
+                                       AttributeSet set, int[] attrs) {
+        if (theme == null) {
+            return res.obtainAttributes(set, attrs);
+        }
+        return theme.obtainStyledAttributes(set, attrs, 0, 0);
+    }
 
     static int getAlpha(ColorStateList color, int[] state) {
         if (color == null)

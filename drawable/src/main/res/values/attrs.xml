@@ -36,11 +36,32 @@
         <attr name="pdClipStroke" format="boolean" />
     </declare-styleable>
     <declare-styleable name="GridDrawable">
-        <attr name="android:src"/>
-        <attr name="android:rowCount"/>
-        <attr name="android:columnCount"/>
-        <attr name="android:horizontalSpacing"/>
-        <attr name="android:verticalSpacing"/>
-        <attr name="android:constantSize"/>
+        <attr name="android:src" />
+        <attr name="android:rowCount" />
+        <attr name="android:columnCount" />
+        <attr name="android:horizontalSpacing" />
+        <attr name="android:verticalSpacing" />
+        <attr name="android:constantSize" />
+    </declare-styleable>
+    <declare-styleable name="FrameDrawable">
+        <attr name="android:layout_width" />
+        <attr name="android:layout_height" />
+        <attr name="android:padding" />
+        <attr name="android:paddingStart" />
+        <attr name="android:paddingTop" />
+        <attr name="android:paddingEnd" />
+        <attr name="android:paddingBottom" />
+    </declare-styleable>
+    <declare-styleable name="FrameDrawableItem">
+        <attr name="android:layout_width" />
+        <attr name="android:layout_height" />
+        <attr name="android:layout_margin" />
+        <attr name="android:layout_marginStart" />
+        <attr name="android:layout_marginTop" />
+        <attr name="android:layout_marginEnd" />
+        <attr name="android:layout_marginBottom" />
+        <attr name="android:gravity" />
+        <attr name="android:id" />
+        <attr name="android:drawable" />
     </declare-styleable>
 </resources>
