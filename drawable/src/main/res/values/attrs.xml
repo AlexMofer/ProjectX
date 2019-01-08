@@ -64,4 +64,8 @@
         <attr name="android:id" />
         <attr name="android:drawable" />
     </declare-styleable>
+    <declare-styleable name="RadialRippleAnimationDrawable">
+        <attr name="android:startColor"/>
+        <attr name="android:endColor"/>
+    </declare-styleable>
 </resources>
