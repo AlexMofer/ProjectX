@@ -26,6 +26,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.Gravity;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -93,6 +94,12 @@ class Compat {
     static void addRoundRect(Path path, float left, float top, float right, float bottom,
                              float[] radii, Path.Direction dir) {
         IMPL.addRoundRect(path, left, top, right, bottom, radii, dir);
+    }
+
+    static boolean isLayoutDirectionLTR(Drawable drawable) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            return drawable.getLayoutDirection() == View.LAYOUT_DIRECTION_LTR;
+        return true;
     }
 
     static void apply(Drawable drawable, int gravity, int w, int h, Rect container, Rect outRect) {
@@ -356,7 +363,7 @@ class Compat {
                           float startAngle, float sweepAngle, boolean forceMoveTo) {
             final RectF oval = get();
             oval.set(left, top, right, bottom);
-            path.arcTo(oval,startAngle, sweepAngle, forceMoveTo);
+            path.arcTo(oval, startAngle, sweepAngle, forceMoveTo);
             put(oval);
         }
 

@@ -45,14 +45,13 @@ import am.widget.R;
  * 帧Drawable
  * Created by Alex on 2019/1/7.
  */
-@SuppressWarnings("NullableProblems")
+@SuppressWarnings({"NullableProblems", "unused", "WeakerAccess"})
 public class FrameDrawable extends Drawable implements Drawable.Callback {
 
     private final ArrayList<ChildDrawable> mItems = new ArrayList<>();
     private int mWidth;
     private int mHeight;
     private final Rect mPadding = new Rect();
-
 
     public FrameDrawable() {
     }
@@ -361,9 +360,7 @@ public class FrameDrawable extends Drawable implements Drawable.Callback {
             super.onBoundsChange(bounds);
             return;
         }
-        for (ChildDrawable child : mItems) {
-            child.setBounds(bounds, mPadding);
-        }
+        refreshChildBounds();
     }
 
     @Override
@@ -427,11 +424,15 @@ public class FrameDrawable extends Drawable implements Drawable.Callback {
         for (ChildDrawable child : mItems) {
             changed |= child.getDrawable().setLayoutDirection(layoutDirection);
         }
+        refreshChildBounds();
+        return changed;
+    }
+
+    private void refreshChildBounds() {
         final Rect bounds = getBounds();
         for (ChildDrawable child : mItems) {
-            child.getDrawable().setBounds(bounds);
+            child.setBounds(bounds, mPadding);
         }
-        return changed;
     }
 
     // Callback
@@ -450,438 +451,347 @@ public class FrameDrawable extends Drawable implements Drawable.Callback {
         unscheduleSelf(what);
     }
 
-//    /**
-//     * Adds a new layer containing the specified {@code drawable} to the end of
-//     * the layer list and returns its index.
-//     *
-//     * @param dr The drawable to add as a new layer.
-//     * @return The index of the new layer.
-//     */
-//    public int addLayer(Drawable dr) {
-//        final ChildDrawable layer = createLayer(dr);
-//        final int index = addLayer(layer);
-//        ensurePadding();
-//        refreshChildPadding(index, layer);
-//        return index;
-//    }
-//
-//    /**
-//     * Looks for a layer with the given ID and returns its {@link Drawable}.
-//     * <p>
-//     * If multiple layers are found for the given ID, returns the
-//     * {@link Drawable} for the matching layer at the highest index.
-//     *
-//     * @param id The layer ID to search for.
-//     * @return The {@link Drawable} for the highest-indexed layer that has the
-//     *         given ID, or null if not found.
-//     */
-//    public Drawable findDrawableByLayerId(int id) {
-//        final ChildDrawable[] layers = mLayerState.mChildren;
-//        for (int i = mLayerState.mNumChildren - 1; i >= 0; i--) {
-//            if (layers[i].mId == id) {
-//                return layers[i].mDrawable;
-//            }
-//        }
-//
-//        return null;
-//    }
-//
-//    /**
-//     * Sets the ID of a layer.
-//     *
-//     * @param index The index of the layer to modify, must be in the range
-//     *              {@code 0...getNumberOfLayers()-1}.
-//     * @param id The id to assign to the layer.
-//     *
-//     * @see #getId(int)
-//     * @attr ref android.R.styleable#LayerDrawableItem_id
-//     */
-//    public void setId(int index, int id) {
-//        mLayerState.mChildren[index].mId = id;
-//    }
-//
-//    /**
-//     * Returns the ID of the specified layer.
-//     *
-//     * @param index The index of the layer, must be in the range
-//     *              {@code 0...getNumberOfLayers()-1}.
-//     * @return The id of the layer or {@link android.view.View#NO_ID} if the
-//     *         layer has no id.
-//     *
-//     * @see #setId(int, int)
-//     * @attr ref android.R.styleable#LayerDrawableItem_id
-//     */
-//    public int getId(int index) {
-//        if (index >= mLayerState.mNumChildren) {
-//            throw new IndexOutOfBoundsException();
-//        }
-//        return mLayerState.mChildren[index].mId;
-//    }
-//
-//    /**
-//     * Returns the number of layers contained within this layer drawable.
-//     *
-//     * @return The number of layers.
-//     */
-//    public int getNumberOfLayers() {
-//        return mLayerState.mNumChildren;
-//    }
-//
-//    /**
-//     * Replaces the {@link Drawable} for the layer with the given id.
-//     *
-//     * @param id The layer ID to search for.
-//     * @param drawable The replacement {@link Drawable}.
-//     * @return Whether the {@link Drawable} was replaced (could return false if
-//     *         the id was not found).
-//     */
-//    public boolean setDrawableByLayerId(int id, Drawable drawable) {
-//        final int index = findIndexByLayerId(id);
-//        if (index < 0) {
-//            return false;
-//        }
-//
-//        setDrawable(index, drawable);
-//        return true;
-//    }
-//
-//    /**
-//     * Returns the layer with the specified {@code id}.
-//     * <p>
-//     * If multiple layers have the same ID, returns the layer with the lowest
-//     * index.
-//     *
-//     * @param id The ID of the layer to return.
-//     * @return The index of the layer with the specified ID.
-//     */
-//    public int findIndexByLayerId(int id) {
-//        final ChildDrawable[] layers = mLayerState.mChildren;
-//        final int N = mLayerState.mNumChildren;
-//        for (int i = 0; i < N; i++) {
-//            final ChildDrawable childDrawable = layers[i];
-//            if (childDrawable.mId == id) {
-//                return i;
-//            }
-//        }
-//
-//        return -1;
-//    }
-//
-//    /**
-//     * Sets the drawable for the layer at the specified index.
-//     *
-//     * @param index The index of the layer to modify, must be in the range
-//     *              {@code 0...getNumberOfLayers()-1}.
-//     * @param drawable The drawable to set for the layer.
-//     *
-//     * @see #getDrawable(int)
-//     * @attr ref android.R.styleable#LayerDrawableItem_drawable
-//     */
-//    public void setDrawable(int index, Drawable drawable) {
-//        if (index >= mLayerState.mNumChildren) {
-//            throw new IndexOutOfBoundsException();
-//        }
-//
-//        final ChildDrawable[] layers = mLayerState.mChildren;
-//        final ChildDrawable childDrawable = layers[index];
-//        if (childDrawable.mDrawable != null) {
-//            if (drawable != null) {
-//                final Rect bounds = childDrawable.mDrawable.getBounds();
-//                drawable.setBounds(bounds);
-//            }
-//
-//            childDrawable.mDrawable.setCallback(null);
-//        }
-//
-//        if (drawable != null) {
-//            drawable.setCallback(this);
-//        }
-//
-//        childDrawable.mDrawable = drawable;
-//        mLayerState.invalidateCache();
-//
-//        refreshChildPadding(index, childDrawable);
-//    }
-//
-//    /**
-//     * Returns the drawable for the layer at the specified index.
-//     *
-//     * @param index The index of the layer, must be in the range
-//     *              {@code 0...getNumberOfLayers()-1}.
-//     * @return The {@link Drawable} at the specified layer index.
-//     *
-//     * @see #setDrawable(int, Drawable)
-//     * @attr ref android.R.styleable#LayerDrawableItem_drawable
-//     */
-//    public Drawable getDrawable(int index) {
-//        if (index >= mLayerState.mNumChildren) {
-//            throw new IndexOutOfBoundsException();
-//        }
-//        return mLayerState.mChildren[index].mDrawable;
-//    }
-//
-//    /**
-//     * Sets an explicit size for the specified layer.
-//     * <p>
-//     * <strong>Note:</strong> Setting an explicit layer size changes the
-//     * default layer gravity behavior. See {@link #setLayerGravity(int, int)}
-//     * for more information.
-//     *
-//     * @param index the index of the layer to adjust
-//     * @param w width in pixels, or -1 to use the intrinsic width
-//     * @param h height in pixels, or -1 to use the intrinsic height
-//     * @see #getLayerWidth(int)
-//     * @see #getLayerHeight(int)
-//     * @attr ref android.R.styleable#LayerDrawableItem_width
-//     * @attr ref android.R.styleable#LayerDrawableItem_height
-//     */
-//    public void setLayerSize(int index, int w, int h) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        childDrawable.mWidth = w;
-//        childDrawable.mHeight = h;
-//    }
-//
-//    /**
-//     * @param index the index of the layer to adjust
-//     * @param w width in pixels, or -1 to use the intrinsic width
-//     * @attr ref android.R.styleable#LayerDrawableItem_width
-//     */
-//    public void setLayerWidth(int index, int w) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        childDrawable.mWidth = w;
-//    }
-//
-//    /**
-//     * @param index the index of the drawable to adjust
-//     * @return the explicit width of the layer, or -1 if not specified
-//     * @see #setLayerSize(int, int, int)
-//     * @attr ref android.R.styleable#LayerDrawableItem_width
-//     */
-//    public int getLayerWidth(int index) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        return childDrawable.mWidth;
-//    }
-//
-//    /**
-//     * @param index the index of the layer to adjust
-//     * @param h height in pixels, or -1 to use the intrinsic height
-//     * @attr ref android.R.styleable#LayerDrawableItem_height
-//     */
-//    public void setLayerHeight(int index, int h) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        childDrawable.mHeight = h;
-//    }
-//
-//    /**
-//     * @param index the index of the drawable to adjust
-//     * @return the explicit height of the layer, or -1 if not specified
-//     * @see #setLayerSize(int, int, int)
-//     * @attr ref android.R.styleable#LayerDrawableItem_height
-//     */
-//    public int getLayerHeight(int index) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        return childDrawable.mHeight;
-//    }
-//
-//    /**
-//     * Sets the gravity used to position or stretch the specified layer within
-//     * its container. Gravity is applied after any layer insets (see
-//     * {@link #setLayerInset(int, int, int, int, int)}) or padding (see
-//     * {@link #setPaddingMode(int)}).
-//     * <p>
-//     * If gravity is specified as {@link Gravity#NO_GRAVITY}, the default
-//     * behavior depends on whether an explicit width or height has been set
-//     * (see {@link #setLayerSize(int, int, int)}), If a dimension is not set,
-//     * gravity in that direction defaults to {@link Gravity#FILL_HORIZONTAL} or
-//     * {@link Gravity#FILL_VERTICAL}; otherwise, gravity in that direction
-//     * defaults to {@link Gravity#LEFT} or {@link Gravity#TOP}.
-//     *
-//     * @param index the index of the drawable to adjust
-//     * @param gravity the gravity to set for the layer
-//     *
-//     * @see #getLayerGravity(int)
-//     * @attr ref android.R.styleable#LayerDrawableItem_gravity
-//     */
-//    public void setLayerGravity(int index, int gravity) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        childDrawable.mGravity = gravity;
-//    }
-//
-//    /**
-//     * @param index the index of the layer
-//     * @return the gravity used to position or stretch the specified layer
-//     *         within its container
-//     *
-//     * @see #setLayerGravity(int, int)
-//     * @attr ref android.R.styleable#LayerDrawableItem_gravity
-//     */
-//    public int getLayerGravity(int index) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        return childDrawable.mGravity;
-//    }
-//
-//    /**
-//     * Specifies the insets in pixels for the drawable at the specified index.
-//     *
-//     * @param index the index of the drawable to adjust
-//     * @param l number of pixels to add to the left bound
-//     * @param t number of pixels to add to the top bound
-//     * @param r number of pixels to subtract from the right bound
-//     * @param b number of pixels to subtract from the bottom bound
-//     *
-//     * @attr ref android.R.styleable#LayerDrawableItem_left
-//     * @attr ref android.R.styleable#LayerDrawableItem_top
-//     * @attr ref android.R.styleable#LayerDrawableItem_right
-//     * @attr ref android.R.styleable#LayerDrawableItem_bottom
-//     */
-//    public void setLayerInset(int index, int l, int t, int r, int b) {
-//        setLayerInsetInternal(index, l, t, r, b, INSET_UNDEFINED, INSET_UNDEFINED);
-//    }
-//
-//    /**
-//     * Specifies the relative insets in pixels for the drawable at the
-//     * specified index.
-//     *
-//     * @param index the index of the layer to adjust
-//     * @param s number of pixels to inset from the start bound
-//     * @param t number of pixels to inset from the top bound
-//     * @param e number of pixels to inset from the end bound
-//     * @param b number of pixels to inset from the bottom bound
-//     *
-//     * @attr ref android.R.styleable#LayerDrawableItem_start
-//     * @attr ref android.R.styleable#LayerDrawableItem_top
-//     * @attr ref android.R.styleable#LayerDrawableItem_end
-//     * @attr ref android.R.styleable#LayerDrawableItem_bottom
-//     */
-//    public void setLayerInsetRelative(int index, int s, int t, int e, int b) {
-//        setLayerInsetInternal(index, 0, t, 0, b, s, e);
-//    }
-//
-//    /**
-//     * @param index the index of the layer to adjust
-//     * @param l number of pixels to inset from the left bound
-//     * @attr ref android.R.styleable#LayerDrawableItem_left
-//     */
-//    public void setLayerInsetLeft(int index, int l) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        childDrawable.mInsetL = l;
-//    }
-//
-//    /**
-//     * @param index the index of the layer
-//     * @return number of pixels to inset from the left bound
-//     * @attr ref android.R.styleable#LayerDrawableItem_left
-//     */
-//    public int getLayerInsetLeft(int index) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        return childDrawable.mInsetL;
-//    }
-//
-//    /**
-//     * @param index the index of the layer to adjust
-//     * @param r number of pixels to inset from the right bound
-//     * @attr ref android.R.styleable#LayerDrawableItem_right
-//     */
-//    public void setLayerInsetRight(int index, int r) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        childDrawable.mInsetR = r;
-//    }
-//
-//    /**
-//     * @param index the index of the layer
-//     * @return number of pixels to inset from the right bound
-//     * @attr ref android.R.styleable#LayerDrawableItem_right
-//     */
-//    public int getLayerInsetRight(int index) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        return childDrawable.mInsetR;
-//    }
-//
-//    /**
-//     * @param index the index of the layer to adjust
-//     * @param t number of pixels to inset from the top bound
-//     * @attr ref android.R.styleable#LayerDrawableItem_top
-//     */
-//    public void setLayerInsetTop(int index, int t) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        childDrawable.mInsetT = t;
-//    }
-//
-//    /**
-//     * @param index the index of the layer
-//     * @return number of pixels to inset from the top bound
-//     * @attr ref android.R.styleable#LayerDrawableItem_top
-//     */
-//    public int getLayerInsetTop(int index) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        return childDrawable.mInsetT;
-//    }
-//
-//    /**
-//     * @param index the index of the layer to adjust
-//     * @param b number of pixels to inset from the bottom bound
-//     * @attr ref android.R.styleable#LayerDrawableItem_bottom
-//     */
-//    public void setLayerInsetBottom(int index, int b) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        childDrawable.mInsetB = b;
-//    }
-//
-//    /**
-//     * @param index the index of the layer
-//     * @return number of pixels to inset from the bottom bound
-//     * @attr ref android.R.styleable#LayerDrawableItem_bottom
-//     */
-//    public int getLayerInsetBottom(int index) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        return childDrawable.mInsetB;
-//    }
-//
-//    /**
-//     * @param index the index of the layer to adjust
-//     * @param s number of pixels to inset from the start bound
-//     * @attr ref android.R.styleable#LayerDrawableItem_start
-//     */
-//    public void setLayerInsetStart(int index, int s) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        childDrawable.mInsetS = s;
-//    }
-//
-//    /**
-//     * @param index the index of the layer
-//     * @return the number of pixels to inset from the start bound, or
-//     *         {@link #INSET_UNDEFINED} if not specified
-//     * @attr ref android.R.styleable#LayerDrawableItem_start
-//     */
-//    public int getLayerInsetStart(int index) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        return childDrawable.mInsetS;
-//    }
-//
-//    /**
-//     * @param index the index of the layer to adjust
-//     * @param e number of pixels to inset from the end bound, or
-//     *         {@link #INSET_UNDEFINED} if not specified
-//     * @attr ref android.R.styleable#LayerDrawableItem_end
-//     */
-//    public void setLayerInsetEnd(int index, int e) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        childDrawable.mInsetE = e;
-//    }
-//
-//    /**
-//     * @param index the index of the layer
-//     * @return number of pixels to inset from the end bound
-//     * @attr ref android.R.styleable#LayerDrawableItem_end
-//     */
-//    public int getLayerInsetEnd(int index) {
-//        final ChildDrawable childDrawable = mLayerState.mChildren[index];
-//        return childDrawable.mInsetE;
-//    }
+    /**
+     * 添加帧
+     *
+     * @param drawable     图片
+     * @param width        宽
+     * @param height       高
+     * @param gravity      引力
+     * @param id           ID
+     * @param marginStart  起始边距
+     * @param marginTop    顶部边距
+     * @param marginEnd    结束边距
+     * @param marginBottom 底部边距
+     */
+    public void addFrame(Drawable drawable, int width, int height, int gravity, int id,
+                         int marginStart, int marginTop, int marginEnd, int marginBottom) {
+        if (drawable == null)
+            return;
+        drawable.setCallback(this);
+        mItems.add(new ChildDrawable(drawable, width, height, gravity, id,
+                marginStart, marginTop, marginEnd, marginBottom));
+        refreshChildBounds();
+        invalidateSelf();
+    }
+
+    /**
+     * 添加帧
+     *
+     * @param drawable 图片
+     * @param width    宽
+     * @param height   高
+     * @param gravity  引力
+     * @param id       ID
+     */
+    public void addFrame(Drawable drawable, int width, int height, int gravity, int id) {
+        addFrame(drawable, width, height, gravity, id, 0, 0, 0,
+                0);
+    }
+
+    /**
+     * 添加帧
+     *
+     * @param drawable 图片
+     * @param width    宽
+     * @param height   高
+     * @param gravity  引力
+     */
+    public void addFrame(Drawable drawable, int width, int height, int gravity) {
+        addFrame(drawable, width, height, gravity, View.NO_ID);
+    }
+
+    /**
+     * 添加帧
+     *
+     * @param drawable 图片
+     * @param width    宽
+     * @param height   高
+     */
+    public void addFrame(Drawable drawable, int width, int height) {
+        addFrame(drawable, width, height, Gravity.NO_GRAVITY);
+    }
+
+    /**
+     * 添加帧
+     *
+     * @param drawable 图片
+     */
+    public void addFrame(Drawable drawable) {
+        addFrame(drawable, ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+
+    /**
+     * 通过帧ID移除帧
+     *
+     * @param id 帧ID
+     * @return 是否成功移除
+     */
+    public boolean removeFrameByFrameId(int id) {
+        if (mItems.isEmpty())
+            return false;
+        for (ChildDrawable child : mItems) {
+            if (child.getId() == id) {
+                child.getDrawable().setCallback(null);
+                mItems.remove(child);
+                refreshChildBounds();
+                invalidateSelf();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 移除帧
+     *
+     * @param index 下标
+     * @return 是否成功移除
+     */
+    public boolean removeFrame(int index) {
+        if (mItems.isEmpty())
+            return false;
+        if (index >= mItems.size())
+            return false;
+        final ChildDrawable child = mItems.remove(index);
+        child.getDrawable().setCallback(null);
+        refreshChildBounds();
+        invalidateSelf();
+        return true;
+    }
+
+
+    /**
+     * 通过帧ID查找Drawable
+     *
+     * @param id 帧ID
+     * @return Drawable
+     */
+    public Drawable findDrawableByFrameId(int id) {
+        if (mItems.isEmpty())
+            return null;
+        for (ChildDrawable child : mItems) {
+            if (child.getId() == id)
+                return child.getDrawable();
+        }
+        return null;
+    }
+
+    /**
+     * 获取帧图片
+     *
+     * @param index 下标
+     * @return 图片
+     */
+    public Drawable getDrawable(int index) {
+        return mItems.get(index).getDrawable();
+    }
+
+    /**
+     * 设置帧ID
+     *
+     * @param index 下标
+     * @param id    ID
+     */
+    public void setId(int index, int id) {
+        if (index >= mItems.size())
+            return;
+        mItems.get(index).setId(id);
+    }
+
+    /**
+     * 获取帧ID
+     *
+     * @param index 下标
+     * @return 帧ID
+     */
+    public int getId(int index) {
+        return mItems.get(index).getId();
+    }
+
+    /**
+     * 获取帧数目
+     *
+     * @return 帧数目
+     */
+    public int getNumberOfFrames() {
+        return mItems.size();
+    }
+
+    /**
+     * 通过帧ID设置图片
+     *
+     * @param id       ID
+     * @param drawable 图片
+     * @return 是否设置成功
+     */
+    public boolean setDrawableByFrameId(int id, Drawable drawable) {
+        if (drawable == null)
+            return false;
+        for (ChildDrawable child : mItems) {
+            if (child.getId() == id) {
+                drawable.setCallback(this);
+                child.setDrawable(drawable);
+                refreshChildBounds();
+                invalidateSelf();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 设置帧图片
+     *
+     * @param index    下标
+     * @param drawable 图片
+     */
+    public void setDrawable(int index, Drawable drawable) {
+        drawable.setCallback(this);
+        mItems.get(index).setDrawable(drawable);
+        refreshChildBounds();
+        invalidateSelf();
+    }
+
+    /**
+     * 通过帧ID获取下标
+     *
+     * @param id ID
+     * @return 下标
+     */
+    public int findIndexByFrameId(int id) {
+        int index = 0;
+        for (ChildDrawable child : mItems) {
+            if (child.getId() == id)
+                return index;
+            index++;
+        }
+        return -1;
+    }
+
+    /**
+     * 设置帧尺寸
+     *
+     * @param index 下标
+     * @param w     宽
+     * @param h     高
+     */
+    public void setFrameSize(int index, int w, int h) {
+        final ChildDrawable child = mItems.get(index);
+        if (child.getWidth() == w && child.getHeight() == h)
+            return;
+        child.setSize(w, h);
+        refreshChildBounds();
+        invalidateSelf();
+    }
+
+    /**
+     * 设置帧宽度
+     *
+     * @param index 下标
+     * @param w     宽度
+     */
+    public void setFrameWidth(int index, int w) {
+        final ChildDrawable child = mItems.get(index);
+        if (child.getWidth() == w)
+            return;
+        child.setSize(w, child.getHeight());
+        refreshChildBounds();
+        invalidateSelf();
+    }
+
+    /**
+     * 获取帧宽度
+     *
+     * @param index 下标
+     * @return 宽度
+     */
+    public int getFrameWidth(int index) {
+        return mItems.get(index).getWidth();
+    }
+
+    /**
+     * 设置帧高度
+     *
+     * @param index 下标
+     * @param h     高度
+     */
+    public void setFrameHeight(int index, int h) {
+        final ChildDrawable child = mItems.get(index);
+        if (child.getHeight() == h)
+            return;
+        child.setSize(child.getWidth(), h);
+        refreshChildBounds();
+        invalidateSelf();
+    }
+
+    /**
+     * 获取帧高度
+     *
+     * @param index 下标
+     * @return 高度
+     */
+    public int getFrameHeight(int index) {
+        return mItems.get(index).getHeight();
+    }
+
+    /**
+     * 设置帧引力
+     *
+     * @param index   下标
+     * @param gravity 引力
+     */
+    public void setFrameGravity(int index, int gravity) {
+        final ChildDrawable child = mItems.get(index);
+        if (child.getGravity() == gravity)
+            return;
+        child.setGravity(gravity);
+        refreshChildBounds();
+        invalidateSelf();
+    }
+
+    /**
+     * 获取帧引力
+     *
+     * @param index 下标
+     * @return 引力
+     */
+    public int getFrameGravity(int index) {
+        return mItems.get(index).getGravity();
+    }
+
+    /**
+     * 设置在帧边距
+     *
+     * @param index  下标
+     * @param start  起始位
+     * @param top    顶部
+     * @param end    结束位
+     * @param bottom 底部
+     */
+    public void setFrameMarginRelative(int index, int start, int top, int end, int bottom) {
+        final ChildDrawable child = mItems.get(index);
+        if (!child.setMargin(start, top, end, bottom))
+            return;
+        refreshChildBounds();
+        invalidateSelf();
+    }
+
+    /**
+     * 获取帧边距
+     *
+     * @param index  下标
+     * @param margin 边距
+     */
+    public void getFrameMarginRelative(int index, Rect margin) {
+        mItems.get(index).getMargin(margin);
+    }
 
     static class ChildDrawable {
 
-        private final Drawable mDrawable;
+        private Drawable mDrawable;
         private int mWidth;
         private int mHeight;
         private int mGravity;
@@ -905,41 +815,55 @@ public class FrameDrawable extends Drawable implements Drawable.Callback {
             mMargin.set(start, top, end, bottom);
         }
 
-        public Drawable getDrawable() {
+        Drawable getDrawable() {
             return mDrawable;
         }
 
-        public int getWidth() {
+        void setDrawable(Drawable drawable) {
+            if (mDrawable != null)
+                mDrawable.setCallback(null);
+            mDrawable = drawable;
+        }
+
+        int getWidth() {
             return mWidth;
         }
 
-        public int getHeight() {
+        int getHeight() {
             return mHeight;
         }
 
-        public void setSize(int width, int height) {
+        void setSize(int width, int height) {
             mWidth = width;
             mHeight = height;
         }
 
-        public int getGravity() {
+        int getGravity() {
             return mGravity;
         }
 
-        public void setGravity(int gravity) {
+        void setGravity(int gravity) {
             mGravity = gravity;
         }
 
-        public int getId() {
+        int getId() {
             return mId;
         }
 
-        public Rect getMargin() {
-            return mMargin;
+        void setId(int id) {
+            mId = id;
         }
 
-        public void setMargin(int start, int top, int end, int bottom) {
+        boolean setMargin(int start, int top, int end, int bottom) {
+            if (mMargin.left == start && mMargin.top == top && mMargin.right == end
+                    && mMargin.bottom == bottom)
+                return false;
             mMargin.set(start, top, end, bottom);
+            return true;
+        }
+
+        void getMargin(Rect margin) {
+            margin.set(mMargin);
         }
 
         void setBounds(Rect bounds, Rect padding) {
@@ -948,6 +872,14 @@ public class FrameDrawable extends Drawable implements Drawable.Callback {
             container.set(container.left + padding.left, container.top + padding.top,
                     container.right - padding.right,
                     container.bottom - padding.bottom);
+            if (Compat.isLayoutDirectionLTR(mDrawable))
+                container.set(container.left + mMargin.left, container.top + mMargin.top,
+                        container.right - mMargin.right,
+                        container.bottom - mMargin.bottom);
+            else
+                container.set(container.left + mMargin.right, container.top + mMargin.top,
+                        container.right - mMargin.left,
+                        container.bottom - mMargin.bottom);
             final int minWidth = mDrawable.getMinimumWidth();
             final int minHeight = mDrawable.getMinimumHeight();
             final int width;
@@ -973,8 +905,14 @@ public class FrameDrawable extends Drawable implements Drawable.Callback {
 
         void getPadding(Rect padding) {
             mDrawable.getPadding(padding);
-            padding.set(mMargin.left + padding.left, mMargin.top + padding.top,
-                    mMargin.right + padding.right, mMargin.bottom + padding.bottom);
+            if (Compat.isLayoutDirectionLTR(mDrawable))
+                padding.set(mMargin.left + padding.left, mMargin.top + padding.top,
+                        mMargin.right + padding.right,
+                        mMargin.bottom + padding.bottom);
+            else
+                padding.set(mMargin.right + padding.left, mMargin.top + padding.top,
+                        mMargin.left + padding.right,
+                        mMargin.bottom + padding.bottom);
         }
 
         int getIntrinsicWidth() {
