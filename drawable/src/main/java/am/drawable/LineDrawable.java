@@ -195,6 +195,7 @@ public class LineDrawable extends Drawable {
     @Override
     public void setColorFilter(ColorFilter cf) {
         mPaint.setColorFilter(cf);
+        invalidateSelf();
     }
 
     @Override

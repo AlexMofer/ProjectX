@@ -643,6 +643,7 @@ public class PathDrawable extends Drawable {
     @Override
     public void setColorFilter(ColorFilter cf) {
         mPaint.setColorFilter(cf);
+        invalidateSelf();
     }
 
     @Override
