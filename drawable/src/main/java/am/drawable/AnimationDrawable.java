@@ -19,7 +19,8 @@ package am.drawable;
 import android.animation.ValueAnimator;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.SystemClock;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
 
 /**
  * 动画图片
@@ -28,6 +29,10 @@ import android.os.SystemClock;
 @SuppressWarnings({"WeakerAccess", "unused", "SameParameterValue"})
 abstract class AnimationDrawable extends Drawable {
 
+    public static final int RESTART = 1;
+    public static final int REVERSE = 2;
+    public static final int INFINITE = -1;
+
     private static final long FRAME_DELAY = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
             ValueAnimator.getFrameDelay() : 10;
     private static final int DEFAULT_DURATION = 250;
@@ -35,10 +40,15 @@ abstract class AnimationDrawable extends Drawable {
     private boolean mRunning = false;
     private long mDuration = DEFAULT_DURATION;
     private long mFrameDelay = FRAME_DELAY;
-    private boolean mRepeat = false;
+    private int mRepeatMode = 0;
     private int mRepeatCount = 0;
+    private long mRepeatCompletedCount = 0;
     private final Animation mAnimation = new Animation();
     private float mInterpolation = 0;
+    private Interpolator mInterpolator;
+    private boolean mPaused = false;
+    private long mPausedTime;
+    private long mTimeOffset = 0;
 
     /**
      * 获取时长
@@ -77,32 +87,48 @@ abstract class AnimationDrawable extends Drawable {
     }
 
     /**
-     * 判断是否为重复动画
+     * 获取重复模式
      *
-     * @return 是否为重复动画
+     * @return 重复模式
      */
-    protected boolean isRepeat() {
-        return mRepeat;
+    protected int getRepeatMode() {
+        return mRepeatMode;
+    }
+
+    /**
+     * 设置重复模式
+     *
+     * @param mode 重复模式 {@link #RESTART} 或 {@link #REVERSE}
+     */
+    protected void setRepeatMode(int mode) {
+        mRepeatMode = mode;
     }
 
     /**
      * 设置是否为重复动画
      *
-     * @param repeat 是否为重复动画
+     * @param count 重复次数 大于0或{@link #INFINITE}
      */
-    protected void setRepeat(boolean repeat) {
-        setRepeat(repeat, 0);
-    }
-
-    /**
-     * 设置是否为重复动画
-     *
-     * @param repeat 是否为重复动画
-     * @param count  重复次数（小于等于0时表示无限重复）
-     */
-    protected void setRepeat(boolean repeat, int count) {
-        mRepeat = repeat;
+    protected void setRepeatCount(int count) {
         mRepeatCount = count;
+    }
+
+    /**
+     * 设置补帧器
+     *
+     * @param interpolator 补帧器
+     */
+    protected void setInterpolator(Interpolator interpolator) {
+        mInterpolator = interpolator;
+    }
+
+    /**
+     * 获取补帧器
+     *
+     * @return 补帧器
+     */
+    protected Interpolator getInterpolator() {
+        return mInterpolator;
     }
 
     /**
@@ -112,38 +138,88 @@ abstract class AnimationDrawable extends Drawable {
         if (mRunning)
             return;
         mRunning = true;
-        mStartTime = SystemClock.currentThreadTimeMillis();
+        mStartTime = -1;
+        mRepeatCompletedCount = 0;
+        mTimeOffset = 0;
         onAnimationStart();
-        scheduleSelf(mAnimation, mStartTime + mFrameDelay);
+        scheduleSelf(mAnimation, AnimationUtils.currentAnimationTimeMillis());
+    }
+
+    /**
+     * 取消动画
+     */
+    protected void cancel() {
+        if (!mRunning)
+            return;
+        mRunning = false;
+        unscheduleSelf(mAnimation);
+        onAnimationCancel();
+        onAnimationEnd();
     }
 
     /**
      * 结束动画
      */
-    protected void stop() {
+    protected void end() {
         if (!mRunning)
             return;
         mRunning = false;
-        onAnimationStop();
         unscheduleSelf(mAnimation);
+        mInterpolation = 1;
+        onAnimationEnd();
     }
 
     /**
-     * 获取动画插值
-     *
-     * @return 插值
+     * 暂停动画
      */
-    protected float getInterpolation() {
-        return mInterpolation;
+    protected void pause() {
+        if (!mRunning)
+            return;
+        if (mPaused)
+            return;
+        mPaused = true;
+        mPausedTime = AnimationUtils.currentAnimationTimeMillis();
+        unscheduleSelf(mAnimation);
+        onAnimationPause();
     }
 
     /**
-     * 设置动画插值
-     *
-     * @param interpolation 插值
+     * 恢复动画
      */
-    protected void setInterpolation(float interpolation) {
-        mInterpolation = interpolation;
+    protected void resume() {
+        if (!mRunning)
+            return;
+        if (!mPaused)
+            return;
+        mPaused = false;
+        final long time = AnimationUtils.currentAnimationTimeMillis();
+        mTimeOffset += time - mPausedTime;
+        onAnimationResume();
+        scheduleSelf(mAnimation, time);
+    }
+
+    /**
+     * 判断动画是否正在运行
+     *
+     * @return 动画是否正在运行
+     */
+    protected boolean isRunning() {
+        return mRunning;
+    }
+
+    /**
+     * 判断动画是否已暂停
+     *
+     * @return 动画是否已暂停
+     */
+    protected boolean isPaused() {
+        return mPaused;
+    }
+
+    private boolean isRepeat() {
+        if (mRepeatMode == RESTART || mRepeatMode == REVERSE)
+            return mRepeatCount == INFINITE || mRepeatCount > 0;
+        return false;
     }
 
     /**
@@ -152,20 +228,77 @@ abstract class AnimationDrawable extends Drawable {
     protected void runAnimate() {
         if (!mRunning)
             return;
-        final long time = SystemClock.currentThreadTimeMillis();
-        if (!mRepeat) {
+        if (mPaused)
+            return;
+        final long time = AnimationUtils.currentAnimationTimeMillis();
+        if (mStartTime == -1)
+            mStartTime = time;
+        if (isRepeat()) {
+            final long dt = time - mStartTime - mTimeOffset;
+            final float interpolation = (float) (dt % mDuration) / mDuration;
+            final long completedCount = dt / mDuration;
+            if (mRepeatCompletedCount != completedCount) {
+                mRepeatCompletedCount = completedCount;
+                if (mRepeatCount <= INFINITE) {
+                    onAnimationRepeat();
+                } else {
+                    if (completedCount <= mRepeatCount)
+                        onAnimationRepeat();
+                    else {
+                        mInterpolation = 1;
+                        onAnimationUpdate();
+                        mRunning = false;
+                        onAnimationEnd();
+                        return;
+                    }
+                }
+            }
+            mInterpolation = interpolation;
+            onAnimationUpdate();
+            scheduleSelf(mAnimation, time + mFrameDelay);
+        } else {
             if (time >= mStartTime + mDuration) {
-                setInterpolation(1);
-                onAnimate(1);
-                stop();
+                mInterpolation = 1;
+                onAnimationUpdate();
+                mRunning = false;
+                onAnimationEnd();
                 return;
             }
+            final long dt = time - mStartTime;
+            mInterpolation = (float) (dt % mDuration) / mDuration;
+            onAnimationUpdate();
+            scheduleSelf(mAnimation, time + mFrameDelay);
         }
-        final long dt = time - mStartTime;
-        final float interpolation = (float) (dt % mDuration) / mDuration;
-        setInterpolation(interpolation);
-        onAnimate(interpolation);
-        scheduleSelf(mAnimation, time + mFrameDelay);
+    }
+
+    /**
+     * 获取动画值
+     *
+     * @return 动画值
+     */
+    protected float getAnimatedValue() {
+        float value = mInterpolation;
+        if (mRepeatMode == REVERSE) {
+            if (mRepeatCompletedCount % 2 == 1) {
+                value = 1 - value;
+            }
+        }
+        return mInterpolator == null ? value : mInterpolator.getInterpolation(value);
+    }
+
+    /**
+     * 获取重复已完成次数
+     *
+     * @return 已完成次数
+     */
+    protected long getRepeatCompletedCount() {
+        return mRepeatCompletedCount;
+    }
+
+    /**
+     * 动画进行中
+     */
+    protected void onAnimationUpdate() {
     }
 
     /**
@@ -175,25 +308,33 @@ abstract class AnimationDrawable extends Drawable {
     }
 
     /**
-     * 动画进行中
-     *
-     * @param interpolation 插值
-     */
-    protected void onAnimate(float interpolation) {
-    }
-
-    /**
      * 动画结束
      */
-    protected void onAnimationStop() {
+    protected void onAnimationEnd() {
     }
 
     /**
      * 动画重复
-     *
-     * @param time 次数，从0开始
      */
-    protected void onAnimationRepeat(int time) {
+    protected void onAnimationRepeat() {
+    }
+
+    /**
+     * 动画取消
+     */
+    protected void onAnimationCancel() {
+    }
+
+    /**
+     * 动画暂停
+     */
+    protected void onAnimationPause() {
+    }
+
+    /**
+     * 动画恢复
+     */
+    protected void onAnimationResume() {
     }
 
     private class Animation implements Runnable {
