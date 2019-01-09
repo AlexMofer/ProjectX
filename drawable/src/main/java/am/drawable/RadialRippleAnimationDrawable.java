@@ -35,6 +35,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import am.widget.R;
 
@@ -50,14 +51,21 @@ public class RadialRippleAnimationDrawable extends AnimationDrawable {
     private float mRadius = 0;
     private ColorStateList mStartColor;
     private ColorStateList mEndColor;
-    private int mNumber = 1;
+    private float mRippleSize;
+    private float mStartSize;
+    private final ArrayList<Float> tStops = new ArrayList<>();
+    private final ArrayList<Integer> tColors = new ArrayList<>();
 
     public RadialRippleAnimationDrawable() {
-        setRepeat(true);
+        setDuration(3000);
+        setRepeatMode(RESTART);
+        setRepeatCount(INFINITE);
     }
 
     public RadialRippleAnimationDrawable(int startColor, int endColor) {
-        setRepeat(true);
+        setDuration(3000);
+        setRepeatMode(RESTART);
+        setRepeatCount(INFINITE);
         mStartColor = ColorStateList.valueOf(startColor);
         mEndColor = ColorStateList.valueOf(endColor);
     }
@@ -84,22 +92,83 @@ public class RadialRippleAnimationDrawable extends AnimationDrawable {
     public void draw(Canvas canvas) {
         if (!isVisible())
             return;
-        if (mNumber <= 0)
+        if (mRippleSize <= 0)
+            return;
+        if (mRadius <= 0)
             return;
         final int[] state = getState();
-        final int start = DrawableHelper.getColor(mStartColor, state, mAlpha);
-        final int end = DrawableHelper.getColor(mEndColor, state, mAlpha);
+        final int rippleShowColor = DrawableHelper.getColor(mStartColor, state, mAlpha);
+        final int rippleHideColor = DrawableHelper.getColor(mEndColor, state, mAlpha);
         final Rect bounds = getBounds();
         final float x = bounds.exactCenterX();
         final float y = bounds.exactCenterY();
-
-        final RadialGradient gradient = new RadialGradient(x, y, mRadius, new int[]{end, start, end, start},
-                new float[]{0.0f, 0.2f, 0.201f, 0.4f}, Shader.TileMode.CLAMP);
-        mPaint.setShader(gradient);
-        canvas.drawCircle(x, y, mRadius, mPaint);
-
-
-        // TODO
+        final float animate = getAnimatedValue();
+        final int[] colors;
+        final float[] stops;
+        final float radius = mRadius;
+        final float p = mRippleSize / radius;
+        final float edge = 0.001f;
+        final ArrayList<Float> ass = tStops;
+        final ArrayList<Integer> acs = tColors;
+        ass.clear();
+        acs.clear();
+        final float base = p * animate;
+        float value = base;
+        ass.add(value);
+        acs.add(rippleHideColor);
+        value = base - p;
+        while (value > 0) {
+            ass.add(0, value + p - edge);
+            acs.add(0, rippleShowColor);
+            ass.add(0, value);
+            acs.add(0, rippleHideColor);
+            value -= p;
+        }
+        if (value + p - edge <= 0) {
+            ass.add(0, 0f);
+            acs.add(0, rippleHideColor);
+        } else {
+            ass.add(0, value + p - edge);
+            acs.add(0, rippleShowColor);
+            ass.add(0, 0f);
+            acs.add(0, DrawableHelper.evaluateColor(-value / p, rippleHideColor,
+                    rippleShowColor));
+        }
+        value = base + p;
+        while (value < 1) {
+            ass.add(value - edge);
+            acs.add(rippleShowColor);
+            ass.add(value);
+            acs.add(rippleHideColor);
+            value += p;
+        }
+        if (value == 1) {
+            ass.add(1f);
+            acs.add(rippleShowColor);
+        } else {
+            ass.add(1f);
+            acs.add(DrawableHelper.evaluateColor((p - (value - 1)) / p, rippleHideColor,
+                    rippleShowColor));
+        }
+        final int size = ass.size();
+        if (size <= 1)
+            return;
+        stops = new float[size];
+        colors = new int[size];
+        for (int i = 0; i < size; i++) {
+            stops[i] = ass.get(i);
+            colors[i] = acs.get(i);
+        }
+        mPaint.setShader(new RadialGradient(x, y, radius, colors, stops, Shader.TileMode.CLAMP));
+        if (mStartSize < radius) {
+            mStartSize = (getRepeatCompletedCount() + animate) * mRippleSize;
+            if (mStartSize < radius)
+                canvas.drawCircle(x, y, mStartSize, mPaint);
+            else
+                canvas.drawCircle(x, y, radius, mPaint);
+        } else {
+            canvas.drawCircle(x, y, radius, mPaint);
+        }
     }
 
     @Override
@@ -134,9 +203,14 @@ public class RadialRippleAnimationDrawable extends AnimationDrawable {
 
     private void update() {
         final Rect bounds = getBounds();
+        if (bounds.isEmpty()) {
+            mRadius = 0;
+            return;
+        }
         final float x = bounds.exactCenterX();
         final float y = bounds.exactCenterY();
         mRadius = (float) Math.sqrt(x * x + y * y);
+        mRippleSize = mRadius * 0.3f;// TODO
     }
 
     @Override
@@ -159,8 +233,14 @@ public class RadialRippleAnimationDrawable extends AnimationDrawable {
     }
 
     @Override
-    protected void onAnimate(float interpolation) {
-        super.onAnimate(interpolation);
-        System.out.println("lalalalla--------------------------interpolation:" + interpolation);
+    protected void onAnimationUpdate() {
+        super.onAnimationUpdate();
+        invalidateSelf();
+    }
+
+    @Override
+    protected void start() {
+        mStartSize = 0;
+        super.start();
     }
 }
