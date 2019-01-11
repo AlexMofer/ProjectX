@@ -18,6 +18,8 @@ package am.drawable;
 
 import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Outline;
@@ -27,7 +29,15 @@ import android.graphics.Rect;
 import android.graphics.Region;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.AttributeSet;
 import android.view.View;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+
+import am.widget.R;
 
 /**
  * Drawable which delegates all calls to its wrapped {@link Drawable}.
@@ -45,6 +55,37 @@ class DrawableWrapper extends Drawable implements Drawable.Callback {
         if (drawable != null) {
             drawable.setCallback(this);
         }
+    }
+
+    @Override
+    public void inflate(Resources resources, XmlPullParser parser, AttributeSet attrs,
+                        Resources.Theme theme)
+            throws XmlPullParserException, IOException {
+        super.inflate(resources, parser, attrs, theme);
+        final TypedArray custom = DrawableHelper.obtainAttributes(resources, theme, attrs,
+                R.styleable.DrawableWrapper);
+        final Drawable drawable = custom.getDrawable(R.styleable.DrawableWrapper_android_drawable);
+        custom.recycle();
+        if (drawable != null) {
+            mDrawable = drawable;
+            drawable.setCallback(this);
+        }
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    protected boolean setWrappedDrawableFormText(Resources resources, XmlPullParser parser,
+                                              AttributeSet attrs, Resources.Theme theme)
+            throws XmlPullParserException, IOException {
+        int type;
+        //noinspection StatementWithEmptyBody
+        while ((type = parser.next()) == XmlPullParser.TEXT) {
+        }
+        if (type != XmlPullParser.START_TAG)
+            return false;
+        mDrawable = Drawable.createFromXmlInner(resources, parser, attrs, theme);
+        mDrawable.setCallback(this);
+        return true;
     }
 
     @Override
@@ -293,7 +334,7 @@ class DrawableWrapper extends Drawable implements Drawable.Callback {
      *
      * @return 包装的Drawable
      */
-    public Drawable getWrappedDrawable() {
+    protected Drawable getWrappedDrawable() {
         return mDrawable;
     }
 
@@ -302,7 +343,7 @@ class DrawableWrapper extends Drawable implements Drawable.Callback {
      *
      * @param drawable 待包装的Drawable
      */
-    public void setWrappedDrawable(Drawable drawable) {
+    protected void setWrappedDrawable(Drawable drawable) {
         if (mDrawable != null) {
             mDrawable.setCallback(null);
         }

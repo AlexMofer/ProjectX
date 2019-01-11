@@ -32,7 +32,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Xml;
 import android.view.Gravity;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -47,7 +46,7 @@ import am.widget.R;
  * 支持上下左右
  * Created by Alex on 2015/9/26.
  */
-@SuppressWarnings({"unused", "WeakerAccess"})
+@SuppressWarnings({"NullableProblems", "unused", "WeakerAccess"})
 public class LineDrawable extends Drawable {
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -83,13 +82,12 @@ public class LineDrawable extends Drawable {
         mGravity = gravity;
     }
 
-    @SuppressWarnings("NullableProblems")
     @Override
     public void inflate(Resources resources, XmlPullParser parser, AttributeSet attrs,
                         Resources.Theme theme)
             throws XmlPullParserException, IOException {
         super.inflate(resources, parser, attrs, theme);
-        final TypedArray custom = resources.obtainAttributes(Xml.asAttributeSet(parser),
+        final TypedArray custom = DrawableHelper.obtainAttributes(resources, theme, attrs,
                 R.styleable.LineDrawable);
         final ColorStateList backgroundColor =
                 custom.getColorStateList(R.styleable.LineDrawable_android_background);
@@ -160,16 +158,13 @@ public class LineDrawable extends Drawable {
             return;
         final int[] state = getState();
         if (mBackgroundColor != null) {
-            final int backgroundColor = mBackgroundColor.getColorForState(state,
-                    mBackgroundColor.getDefaultColor());
+            final int backgroundColor = DrawableHelper.getColor(mBackgroundColor, state, mAlpha);
             mPaint.setColor(backgroundColor);
-            mPaint.setAlpha(DrawableHelper.modulateAlpha(backgroundColor, mAlpha));
             canvas.drawRect(bounds, mPaint);
         }
         if (mLineColor != null) {
-            final int lineColor = mLineColor.getColorForState(state, mLineColor.getDefaultColor());
+            final int lineColor = DrawableHelper.getColor(mLineColor, state, mAlpha);
             mPaint.setColor(lineColor);
-            mPaint.setAlpha(DrawableHelper.modulateAlpha(lineColor, mAlpha));
             canvas.drawRect(mLine, mPaint);
         }
     }

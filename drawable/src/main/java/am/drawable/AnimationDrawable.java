@@ -17,16 +17,26 @@
 package am.drawable;
 
 import android.animation.ValueAnimator;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.AttributeSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+
+import am.widget.R;
 
 /**
  * 动画图片
  * Created by Alex on 2019/1/8.
  */
-@SuppressWarnings({"WeakerAccess", "unused", "SameParameterValue"})
+@SuppressWarnings({"WeakerAccess", "unused", "SameParameterValue", "NullableProblems", "BooleanMethodIsAlwaysInverted"})
 abstract class AnimationDrawable extends Drawable {
 
     public static final int RESTART = 1;
@@ -49,6 +59,31 @@ abstract class AnimationDrawable extends Drawable {
     private boolean mPaused = false;
     private long mPausedTime;
     private long mTimeOffset = 0;
+    private boolean mAutoStart = false;
+
+    @Override
+    public void inflate(Resources resources, XmlPullParser parser, AttributeSet attrs,
+                        Resources.Theme theme)
+            throws XmlPullParserException, IOException {
+        super.inflate(resources, parser, attrs, theme);
+        final TypedArray custom = DrawableHelper.obtainAttributes(resources, theme, attrs,
+                R.styleable.AnimationDrawable);
+        mRepeatMode = custom.getInt(R.styleable.AnimationDrawable_android_repeatMode, RESTART);
+        mRepeatCount = custom.getInt(R.styleable.AnimationDrawable_android_repeatCount, INFINITE);
+        mDuration = custom.getInteger(R.styleable.AnimationDrawable_android_duration,
+                DEFAULT_DURATION);
+        mAutoStart = custom.getBoolean(R.styleable.AnimationDrawable_android_autoStart,
+                false);
+        custom.recycle();
+    }
+
+    @Override
+    public void setBounds(int left, int top, int right, int bottom) {
+        super.setBounds(left, top, right, bottom);
+        if (mAutoStart)
+            if (!mRunning)
+                start();
+    }
 
     /**
      * 获取时长
@@ -129,6 +164,24 @@ abstract class AnimationDrawable extends Drawable {
      */
     protected Interpolator getInterpolator() {
         return mInterpolator;
+    }
+
+    /**
+     * 判断是否为自动运行动画
+     *
+     * @return 是否为自动运行动画
+     */
+    protected boolean isAutoStart() {
+        return mAutoStart;
+    }
+
+    /**
+     * 设置是否为自动运行动画
+     *
+     * @param auto 是否为自动运行动画
+     */
+    protected void setAutoStart(boolean auto) {
+        mAutoStart = auto;
     }
 
     /**
@@ -299,6 +352,7 @@ abstract class AnimationDrawable extends Drawable {
      * 动画进行中
      */
     protected void onAnimationUpdate() {
+        invalidateSelf();
     }
 
     /**

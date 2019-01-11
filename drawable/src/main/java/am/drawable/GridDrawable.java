@@ -16,6 +16,7 @@
 
 package am.drawable;
 
+import android.annotation.TargetApi;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -23,8 +24,8 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -37,7 +38,7 @@ import am.widget.R;
  * 网格Drawable
  * Created by Alex on 2019/1/4.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "NullableProblems"})
 public class GridDrawable extends DrawableWrapper {
 
     private int mRowCount = 1;
@@ -47,29 +48,21 @@ public class GridDrawable extends DrawableWrapper {
     private boolean mConstantSize;
 
     public GridDrawable() {
-        super(null);
+        this(null);
     }
 
     public GridDrawable(Drawable drawable) {
         super(drawable);
     }
 
-    @Override
-    public void setWrappedDrawable(Drawable drawable) {
-        super.setWrappedDrawable(drawable);
-        updateSize();
-        invalidateSelf();
-    }
-
-    @SuppressWarnings("NullableProblems")
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void inflate(Resources resources, XmlPullParser parser, AttributeSet attrs,
                         Resources.Theme theme)
             throws XmlPullParserException, IOException {
         super.inflate(resources, parser, attrs, theme);
-        final TypedArray custom = resources.obtainAttributes(Xml.asAttributeSet(parser),
+        final TypedArray custom = DrawableHelper.obtainAttributes(resources, theme, attrs,
                 R.styleable.GridDrawable);
-        final Drawable drawable = custom.getDrawable(R.styleable.GridDrawable_android_src);
         mRowCount = custom.getInt(R.styleable.GridDrawable_android_rowCount, 1);
         mColumnCount = custom.getInt(R.styleable.GridDrawable_android_columnCount, 1);
         mHorizontalSpacing = custom.getDimension(R.styleable.GridDrawable_android_horizontalSpacing,
@@ -79,7 +72,7 @@ public class GridDrawable extends DrawableWrapper {
         mConstantSize = custom.getBoolean(R.styleable.GridDrawable_android_constantSize,
                 false);
         custom.recycle();
-        setWrappedDrawable(drawable);
+        setWrappedDrawableFormText(resources, parser, attrs, theme);
     }
 
     @Override
@@ -328,6 +321,17 @@ public class GridDrawable extends DrawableWrapper {
      */
     public void setConstantSize(boolean constantSize) {
         mConstantSize = constantSize;
+        updateSize();
+        invalidateSelf();
+    }
+
+    /**
+     * 设置子项图片
+     *
+     * @param drawable 子项图片
+     */
+    public void setItem(Drawable drawable) {
+        setWrappedDrawable(drawable);
         updateSize();
         invalidateSelf();
     }

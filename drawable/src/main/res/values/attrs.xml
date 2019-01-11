@@ -35,8 +35,10 @@
         <attr name="android:strokeMiterLimit" />
         <attr name="pdClipStroke" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="DrawableWrapper">
+        <attr name="android:drawable" />
+    </declare-styleable>
     <declare-styleable name="GridDrawable">
-        <attr name="android:src" />
         <attr name="android:rowCount" />
         <attr name="android:columnCount" />
         <attr name="android:horizontalSpacing" />
@@ -64,8 +66,42 @@
         <attr name="android:id" />
         <attr name="android:drawable" />
     </declare-styleable>
-    <declare-styleable name="RadialRippleAnimationDrawable">
-        <attr name="android:startColor"/>
-        <attr name="android:endColor"/>
+    <declare-styleable name="AnimationDrawable">
+        <attr name="android:repeatMode" />
+        <attr name="android:repeatCount" />
+        <attr name="android:duration" />
+        <attr name="android:autoStart" />
+    </declare-styleable>
+    <declare-styleable name="RadialGradientRippleAnimationDrawable">
+        <attr name="android:startColor" />
+        <attr name="android:endColor" />
+        <attr name="android:radius" />
+        <attr name="android:max" />
+        <attr name="rrClipStart" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="AnimationDrawableWrapper">
+        <attr name="android:drawable" />
+    </declare-styleable>
+    <declare-styleable name="DotSurroundingDrawable">
+        <attr name="android:width" />
+        <attr name="android:color" />
+    </declare-styleable>
+    <declare-styleable name="ClipDrawable">
+        <attr name="cdClipType" format="enum">
+            <enum name="Circle" value="1" />
+            <enum name="Oval" value="2" />
+            <enum name="FullRoundRect" value="3" />
+            <enum name="RoundRect" value="4" />
+        </attr>
+        <attr name="cdRoundRectRadius" format="dimension" />
+        <attr name="cdStrokeWidth" format="dimension" />
+        <attr name="android:strokeWidth" />
+        <attr name="android:strokeColor" />
+        <attr name="android:strokeLineCap" />
+        <attr name="android:strokeLineJoin" />
+        <attr name="android:strokeMiterLimit" />
+    </declare-styleable>
+    <declare-styleable name="DoubleCircleAnimationDrawable">
+
     </declare-styleable>
 </resources>

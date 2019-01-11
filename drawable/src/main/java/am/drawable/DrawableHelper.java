@@ -45,7 +45,7 @@ class DrawableHelper {
         return Color.alpha(color.getColorForState(state, color.getDefaultColor()));
     }
 
-    static int modulateAlpha(int color, int alpha) {
+    private static int modulateAlpha(int color, int alpha) {
         return Color.alpha(color) * (alpha + (alpha >> 7)) >> 8;
     }
 

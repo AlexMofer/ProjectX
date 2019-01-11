@@ -39,7 +39,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -52,7 +51,7 @@ import am.widget.R;
  * 路径图片
  * Created by Alex on 2018/12/28.
  */
-@SuppressWarnings({"unused", "WeakerAccess"})
+@SuppressWarnings({"NullableProblems", "unused", "WeakerAccess"})
 public class PathDrawable extends Drawable {
 
     public final static int SCALE_TYPE_AVERAGE = 0;// 以缩放的均值
@@ -79,13 +78,12 @@ public class PathDrawable extends Drawable {
     private int mStrokeWidthScaleType;
     private boolean mClipStroke;
 
-    @SuppressWarnings("NullableProblems")
     @Override
     public void inflate(Resources resources, XmlPullParser parser, AttributeSet attrs,
                         Resources.Theme theme)
             throws XmlPullParserException, IOException {
         super.inflate(resources, parser, attrs, theme);
-        final TypedArray custom = resources.obtainAttributes(Xml.asAttributeSet(parser),
+        final TypedArray custom = DrawableHelper.obtainAttributes(resources, theme, attrs,
                 R.styleable.PathDrawable);
         mBackgroundColor = custom.getColorStateList(R.styleable.PathDrawable_android_background);
         mWidth = custom.getDimensionPixelSize(R.styleable.PathDrawable_android_width, 0);
@@ -519,19 +517,15 @@ public class PathDrawable extends Drawable {
         switch (mStyle) {
             default:
             case FILL: {
-                final int fillColor = mFillColor == null ? Color.TRANSPARENT :
-                        mFillColor.getColorForState(state, mFillColor.getDefaultColor());
-                mPaint.setColor(fillColor);
-                mPaint.setAlpha(DrawableHelper.modulateAlpha(fillColor, mAlpha));
+                mPaint.setColor(mFillColor == null ? Color.TRANSPARENT :
+                        DrawableHelper.getColor(mFillColor, state, mAlpha));
                 mPaint.setStyle(Paint.Style.FILL);
                 canvas.drawPath(mDrawPath, mPaint);
             }
             break;
             case STROKE: {
-                final int strokeColor = mStrokeColor == null ? Color.TRANSPARENT :
-                        mStrokeColor.getColorForState(state, mStrokeColor.getDefaultColor());
-                mPaint.setColor(strokeColor);
-                mPaint.setAlpha(DrawableHelper.modulateAlpha(strokeColor, mAlpha));
+                mPaint.setColor(mStrokeColor == null ? Color.TRANSPARENT :
+                        DrawableHelper.getColor(mStrokeColor, state, mAlpha));
                 mPaint.setStyle(Paint.Style.STROKE);
                 mPaint.setStrokeWidth(computeStrokeWidth());
                 canvas.drawPath(mDrawPath, mPaint);
@@ -539,12 +533,11 @@ public class PathDrawable extends Drawable {
             break;
             case FILL_AND_STROKE: {
                 final int fillColor = mFillColor == null ? Color.TRANSPARENT :
-                        mFillColor.getColorForState(state, mFillColor.getDefaultColor());
+                        DrawableHelper.getColor(mFillColor, state, mAlpha);
                 final int strokeColor = mStrokeColor == null ? Color.TRANSPARENT :
-                        mStrokeColor.getColorForState(state, mStrokeColor.getDefaultColor());
+                        DrawableHelper.getColor(mStrokeColor, state, mAlpha);
                 if (fillColor == strokeColor) {
                     mPaint.setColor(fillColor);
-                    mPaint.setAlpha(DrawableHelper.modulateAlpha(fillColor, mAlpha));
                     mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
                     mPaint.setStrokeWidth(computeStrokeWidth());
                     canvas.drawPath(mDrawPath, mPaint);
@@ -556,7 +549,6 @@ public class PathDrawable extends Drawable {
                         final int layer = Compat.saveLayer(canvas, 0, 0, right, bottom,
                                 null);
                         mPaint.setColor(fillColor);
-                        mPaint.setAlpha(DrawableHelper.modulateAlpha(fillColor, mAlpha));
                         mPaint.setStyle(Paint.Style.FILL);
                         canvas.drawPath(mDrawPath, mPaint);
                         if (mXfermode == null)
@@ -570,17 +562,14 @@ public class PathDrawable extends Drawable {
                         mPaint.setXfermode(old);
                         canvas.restoreToCount(layer);
                         mPaint.setColor(strokeColor);
-                        mPaint.setAlpha(DrawableHelper.modulateAlpha(strokeColor, mAlpha));
                         mPaint.setStyle(Paint.Style.STROKE);
                         mPaint.setStrokeWidth(strokeWidth);
                         canvas.drawPath(mDrawPath, mPaint);
                     } else {
                         mPaint.setColor(fillColor);
-                        mPaint.setAlpha(DrawableHelper.modulateAlpha(fillColor, mAlpha));
                         mPaint.setStyle(Paint.Style.FILL);
                         canvas.drawPath(mDrawPath, mPaint);
                         mPaint.setColor(strokeColor);
-                        mPaint.setAlpha(DrawableHelper.modulateAlpha(strokeColor, mAlpha));
                         mPaint.setStyle(Paint.Style.STROKE);
                         mPaint.setStrokeWidth(strokeWidth);
                         canvas.drawPath(mDrawPath, mPaint);
