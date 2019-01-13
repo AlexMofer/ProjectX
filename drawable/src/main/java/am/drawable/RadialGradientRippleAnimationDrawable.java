@@ -30,6 +30,7 @@ import android.graphics.Rect;
 import android.graphics.Shader;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.animation.Interpolator;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -40,30 +41,30 @@ import java.util.ArrayList;
 import am.widget.R;
 
 /**
- * 镜像波纹动画Drawable
+ * 径向渐变波纹动画Drawable
  * Created by Alex on 2019/1/8.
  */
-@SuppressWarnings("NullableProblems")
-public class RadialRippleAnimationDrawable extends AnimationDrawable {
+@SuppressWarnings({"NullableProblems", "unused"})
+public class RadialGradientRippleAnimationDrawable extends AnimationDrawable {
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final ArrayList<Float> tStops = new ArrayList<>();
+    private final ArrayList<Integer> tColors = new ArrayList<>();
     private int mAlpha = 0xFF;
     private float mRadius = 0;
     private ColorStateList mStartColor;
     private ColorStateList mEndColor;
-    private float mRippleSize;
-    private float mStartSize;
-    private final ArrayList<Float> tStops = new ArrayList<>();
-    private final ArrayList<Integer> tColors = new ArrayList<>();
+    private float mRippleRadius;
+    private float mStartClipSize;
+    private int mMaxCount;
+    private boolean mClipStart = true;
 
-    public RadialRippleAnimationDrawable() {
-        setDuration(3000);
+    public RadialGradientRippleAnimationDrawable() {
         setRepeatMode(RESTART);
         setRepeatCount(INFINITE);
     }
 
-    public RadialRippleAnimationDrawable(int startColor, int endColor) {
-        setDuration(3000);
+    public RadialGradientRippleAnimationDrawable(int startColor, int endColor) {
         setRepeatMode(RESTART);
         setRepeatCount(INFINITE);
         mStartColor = ColorStateList.valueOf(startColor);
@@ -76,13 +77,17 @@ public class RadialRippleAnimationDrawable extends AnimationDrawable {
             throws XmlPullParserException, IOException {
         super.inflate(resources, parser, attrs, theme);
         final TypedArray custom = DrawableHelper.obtainAttributes(resources, theme, attrs,
-                R.styleable.RadialRippleAnimationDrawable);
+                R.styleable.RadialGradientRippleAnimationDrawable);
         final ColorStateList start = custom.getColorStateList(
-                R.styleable.RadialRippleAnimationDrawable_android_startColor);
+                R.styleable.RadialGradientRippleAnimationDrawable_android_startColor);
         final ColorStateList end = custom.getColorStateList(
-                R.styleable.RadialRippleAnimationDrawable_android_endColor);
-
-        // TODO
+                R.styleable.RadialGradientRippleAnimationDrawable_android_endColor);
+        mRippleRadius = custom.getDimension(
+                R.styleable.RadialGradientRippleAnimationDrawable_android_radius, 0);
+        mMaxCount = custom.getInteger(
+                R.styleable.RadialGradientRippleAnimationDrawable_android_max, 0);
+        mClipStart = custom.getBoolean(
+                R.styleable.RadialGradientRippleAnimationDrawable_rrClipStart, true);
         custom.recycle();
         mStartColor = start != null ? start : ColorStateList.valueOf(0x80000000);
         mEndColor = end != null ? end : ColorStateList.valueOf(0x10000000);
@@ -92,7 +97,7 @@ public class RadialRippleAnimationDrawable extends AnimationDrawable {
     public void draw(Canvas canvas) {
         if (!isVisible())
             return;
-        if (mRippleSize <= 0)
+        if (mRippleRadius <= 0)
             return;
         if (mRadius <= 0)
             return;
@@ -106,7 +111,7 @@ public class RadialRippleAnimationDrawable extends AnimationDrawable {
         final int[] colors;
         final float[] stops;
         final float radius = mRadius;
-        final float p = mRippleSize / radius;
+        final float p = mRippleRadius / radius;
         final float edge = 0.001f;
         final ArrayList<Float> ass = tStops;
         final ArrayList<Integer> acs = tColors;
@@ -160,15 +165,24 @@ public class RadialRippleAnimationDrawable extends AnimationDrawable {
             colors[i] = acs.get(i);
         }
         mPaint.setShader(new RadialGradient(x, y, radius, colors, stops, Shader.TileMode.CLAMP));
-        if (mStartSize < radius) {
-            mStartSize = (getRepeatCompletedCount() + animate) * mRippleSize;
-            if (mStartSize < radius)
-                canvas.drawCircle(x, y, mStartSize, mPaint);
-            else
+        if (mClipStart) {
+            if (mStartClipSize < radius) {
+                mStartClipSize = (getRepeatCompletedCount() + animate) * mRippleRadius;
+                if (mStartClipSize < radius)
+                    canvas.drawCircle(x, y, mStartClipSize, mPaint);
+                else
+                    canvas.drawCircle(x, y, radius, mPaint);
+            } else {
                 canvas.drawCircle(x, y, radius, mPaint);
+            }
         } else {
             canvas.drawCircle(x, y, radius, mPaint);
         }
+    }
+
+    @Override
+    public int getAlpha() {
+        return mAlpha;
     }
 
     @Override
@@ -177,11 +191,6 @@ public class RadialRippleAnimationDrawable extends AnimationDrawable {
             return;
         mAlpha = alpha;
         invalidateSelf();
-    }
-
-    @Override
-    public int getAlpha() {
-        return mAlpha;
     }
 
     @Override
@@ -210,7 +219,8 @@ public class RadialRippleAnimationDrawable extends AnimationDrawable {
         final float x = bounds.exactCenterX();
         final float y = bounds.exactCenterY();
         mRadius = (float) Math.sqrt(x * x + y * y);
-        mRippleSize = mRadius * 0.3f;// TODO
+        if (mRippleRadius <= 0)
+            mRippleRadius = mMaxCount <= 0 ? mRadius : mRadius / mMaxCount;
     }
 
     @Override
@@ -226,21 +236,207 @@ public class RadialRippleAnimationDrawable extends AnimationDrawable {
     }
 
     @Override
-    public void setBounds(int left, int top, int right, int bottom) {
-        super.setBounds(left, top, right, bottom);
-        // TODO
-        start();
+    public long getDuration() {
+        return super.getDuration();
     }
 
     @Override
-    protected void onAnimationUpdate() {
-        super.onAnimationUpdate();
-        invalidateSelf();
+    public void setDuration(long duration) {
+        super.setDuration(duration);
     }
 
     @Override
-    protected void start() {
-        mStartSize = 0;
+    public long getFrameDelay() {
+        return super.getFrameDelay();
+    }
+
+    @Override
+    public void setFrameDelay(long frameDelay) {
+        super.setFrameDelay(frameDelay);
+    }
+
+    @Override
+    public int getRepeatMode() {
+        return super.getRepeatMode();
+    }
+
+    @Override
+    public void setRepeatMode(int mode) {
+        super.setRepeatMode(mode);
+    }
+
+    @Override
+    public void setRepeatCount(int count) {
+        super.setRepeatCount(count);
+    }
+
+    @Override
+    public Interpolator getInterpolator() {
+        return super.getInterpolator();
+    }
+
+    @Override
+    public void setInterpolator(Interpolator interpolator) {
+        super.setInterpolator(interpolator);
+    }
+
+    @Override
+    public boolean isAutoStart() {
+        return super.isAutoStart();
+    }
+
+    @Override
+    public void setAutoStart(boolean auto) {
+        super.setAutoStart(auto);
+    }
+
+    @Override
+    public void start() {
+        mStartClipSize = 0;
         super.start();
+    }
+
+    @Override
+    public void cancel() {
+        super.cancel();
+    }
+
+    @Override
+    public void end() {
+        super.end();
+    }
+
+    @Override
+    public void pause() {
+        super.pause();
+    }
+
+    @Override
+    public void resume() {
+        super.resume();
+    }
+
+    @Override
+    public boolean isRunning() {
+        return super.isRunning();
+    }
+
+    @Override
+    public boolean isPaused() {
+        return super.isPaused();
+    }
+
+    @Override
+    public long getRepeatCompletedCount() {
+        return super.getRepeatCompletedCount();
+    }
+
+    /**
+     * 设置颜色
+     *
+     * @param start 开始颜色
+     * @param end   结束颜色
+     */
+    public void setColor(ColorStateList start, ColorStateList end) {
+        if (start == null || end == null)
+            return;
+        mStartColor = start;
+        mEndColor = end;
+        if (isRunning()) {
+            end();
+            update();
+            invalidateSelf();
+            start();
+        } else {
+            update();
+            invalidateSelf();
+        }
+    }
+
+    /**
+     * 获取开始颜色
+     *
+     * @return 开始颜色
+     */
+    public ColorStateList getStartColor() {
+        return mStartColor;
+    }
+
+    /**
+     * 获取结束颜色
+     *
+     * @return 结束颜色
+     */
+    public ColorStateList getEndColor() {
+        return mEndColor;
+    }
+
+    /**
+     * 获取水纹半径
+     *
+     * @return 水纹半径
+     */
+    public float getRippleRadius() {
+        return mRippleRadius;
+    }
+
+    /**
+     * 设置水纹半径
+     *
+     * @param radius 水纹半径
+     */
+    public void setRippleRadius(float radius) {
+        if (mRippleRadius == radius)
+            return;
+        mRippleRadius = radius;
+        if (isRunning()) {
+            end();
+            update();
+            invalidateSelf();
+            start();
+        } else {
+            update();
+            invalidateSelf();
+        }
+    }
+
+    /**
+     * 设置在图片Drawable尺寸中水纹个数
+     *
+     * @param count 个数
+     */
+    public void setMaxRippleCountInBounds(int count) {
+        if (mMaxCount == count)
+            return;
+        mRippleRadius = 0;
+        mMaxCount = count;
+        if (isRunning()) {
+            end();
+            update();
+            invalidateSelf();
+            start();
+        } else {
+            update();
+            invalidateSelf();
+        }
+    }
+
+    /**
+     * 判断起始水纹是否裁剪
+     *
+     * @return 起始水纹是否裁剪
+     */
+    public boolean isClipStart() {
+        return mClipStart;
+    }
+
+    /**
+     * 设置起始水纹是否裁剪
+     *
+     * @param clip 起始水纹是否裁剪
+     */
+    public void setClipStart(boolean clip) {
+        mClipStart = clip;
+        invalidateSelf();
     }
 }
