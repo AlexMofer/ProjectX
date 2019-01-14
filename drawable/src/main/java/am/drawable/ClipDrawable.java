@@ -48,40 +48,6 @@ import am.widget.R;
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class ClipDrawable extends DrawableWrapper {
 
-    /**
-     * 圆形
-     */
-    public static final ClipOutlineProvider CIRCLE = new ClipOutlineProvider() {
-
-        @Override
-        public void getOutline(Rect bounds, Path outline) {
-            outline.addCircle(bounds.exactCenterX(), bounds.exactCenterY(),
-                    Math.min(bounds.width(), bounds.height()) * 0.5f, Path.Direction.CW);
-        }
-    };
-    /**
-     * 椭圆
-     */
-    public static final ClipOutlineProvider OVAL = new ClipOutlineProvider() {
-
-        @Override
-        public void getOutline(Rect bounds, Path outline) {
-            Compat.addOval(outline, bounds.left, bounds.top, bounds.right, bounds.bottom,
-                    Path.Direction.CW);
-        }
-    };
-    /**
-     * 圆角矩形（短边为半圆）
-     */
-    public static final ClipOutlineProvider FULL_ROUND_RECT = new ClipOutlineProvider() {
-
-        @Override
-        public void getOutline(Rect bounds, Path outline) {
-            final float radius = Math.min(bounds.width(), bounds.height()) * 0.5f;
-            Compat.addRoundRect(outline, bounds.left, bounds.top, bounds.right, bounds.bottom,
-                    radius, radius, Path.Direction.CW);
-        }
-    };
     private final Path mClipPath = new Path();
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Xfermode mXfermode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
@@ -230,16 +196,23 @@ public class ClipDrawable extends DrawableWrapper {
     }
 
     @Override
-    public int getAlpha() {
-        return mAlpha;
-    }
-
-    @Override
     public void setAlpha(int alpha) {
         mAlpha = alpha;
         super.setAlpha(alpha);
         invalidateSelf();
     }
+
+    /**
+     * 圆形
+     */
+    public static final ClipOutlineProvider CIRCLE = new ClipOutlineProvider() {
+
+        @Override
+        public void getOutline(Rect bounds, Path outline) {
+            outline.addCircle(bounds.exactCenterX(), bounds.exactCenterY(),
+                    Math.min(bounds.width(), bounds.height()) * 0.5f, Path.Direction.CW);
+        }
+    };
 
     @Override
     public void setColorFilter(ColorFilter cf) {
@@ -298,15 +271,6 @@ public class ClipDrawable extends DrawableWrapper {
      *
      * @param color 描边色
      */
-    public void setStrokeColor(int color) {
-        setStrokeColor(ColorStateList.valueOf(color));
-    }
-
-    /**
-     * 设置描边色
-     *
-     * @param color 描边色
-     */
     public void setStrokeColor(ColorStateList color) {
         if (mStrokeColor == color)
             return;
@@ -314,6 +278,18 @@ public class ClipDrawable extends DrawableWrapper {
         if (mProvider != null)
             invalidateSelf();
     }
+
+    /**
+     * 椭圆
+     */
+    public static final ClipOutlineProvider OVAL = new ClipOutlineProvider() {
+
+        @Override
+        public void getOutline(Rect bounds, Path outline) {
+            Compat.addOval(outline, bounds.left, bounds.top, bounds.right, bounds.bottom,
+                    Path.Direction.CW);
+        }
+    };
 
     /**
      * Return the width for stroking.
@@ -430,6 +406,33 @@ public class ClipDrawable extends DrawableWrapper {
          * @param outline 路径
          */
         public abstract void getOutline(Rect bounds, Path outline);
+    }
+
+    /**
+     * 圆角矩形（短边为半圆）
+     */
+    public static final ClipOutlineProvider FULL_ROUND_RECT = new ClipOutlineProvider() {
+
+        @Override
+        public void getOutline(Rect bounds, Path outline) {
+            final float radius = Math.min(bounds.width(), bounds.height()) * 0.5f;
+            Compat.addRoundRect(outline, bounds.left, bounds.top, bounds.right, bounds.bottom,
+                    radius, radius, Path.Direction.CW);
+        }
+    };
+
+    @Override
+    public int getAlpha() {
+        return mAlpha;
+    }
+
+    /**
+     * 设置描边色
+     *
+     * @param color 描边色
+     */
+    public void setStrokeColor(int color) {
+        setStrokeColor(ColorStateList.valueOf(color));
     }
 
     /**

@@ -102,6 +102,23 @@
         <attr name="android:strokeMiterLimit" />
     </declare-styleable>
     <declare-styleable name="DoubleCircleAnimationDrawable">
-
+        <attr name="android:width" />
+        <attr name="android:height" />
+        <attr name="android:startColor" />
+        <attr name="android:endColor" />
+        <attr name="android:constantSize" />
+        <attr name="android:spacing" />
+        <attr name="dcRadiusScale" format="float" />
+    </declare-styleable>
+    <declare-styleable name="TextDrawable">
+        <attr name="android:width" />
+        <attr name="android:height" />
+        <attr name="android:text" />
+        <attr name="android:textSize" />
+        <attr name="android:textColor" />
+        <attr name="android:typeface" />
+        <attr name="android:fontFamily" />
+        <attr name="android:textStyle" />
+        <attr name="tdAutoScale" format="boolean" />
     </declare-styleable>
 </resources>

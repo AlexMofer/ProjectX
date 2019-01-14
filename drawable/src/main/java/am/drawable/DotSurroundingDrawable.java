@@ -58,6 +58,8 @@ public class DotSurroundingDrawable extends AnimationDrawableWrapper {
         super(drawable);
         mSize = size;
         mColor = ColorStateList.valueOf(color);
+        setRepeatCount(INFINITE);
+        setAutoStart(true);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -102,15 +104,15 @@ public class DotSurroundingDrawable extends AnimationDrawableWrapper {
     }
 
     @Override
-    public int getAlpha() {
-        return mAlpha;
-    }
-
-    @Override
     public void setAlpha(int alpha) {
         mAlpha = alpha;
         super.setAlpha(alpha);
         invalidateSelf();
+    }
+
+    @Override
+    public int getAlpha() {
+        return mAlpha;
     }
 
     @Override
@@ -142,22 +144,6 @@ public class DotSurroundingDrawable extends AnimationDrawableWrapper {
         final int result = super.getIntrinsicHeight();
         if (result == -1)
             return -1;
-        return result + mSize * 2;
-    }
-
-    @Override
-    public int getMinimumWidth() {
-        final int result = super.getMinimumWidth();
-        if (result == 0)
-            return 0;
-        return result + mSize * 2;
-    }
-
-    @Override
-    public int getMinimumHeight() {
-        final int result = super.getMinimumHeight();
-        if (result == 0)
-            return 0;
         return result + mSize * 2;
     }
 
@@ -197,13 +183,13 @@ public class DotSurroundingDrawable extends AnimationDrawableWrapper {
     }
 
     @Override
-    public Interpolator getInterpolator() {
-        return super.getInterpolator();
+    public void setInterpolator(Interpolator interpolator) {
+        super.setInterpolator(interpolator);
     }
 
     @Override
-    public void setInterpolator(Interpolator interpolator) {
-        super.setInterpolator(interpolator);
+    public Interpolator getInterpolator() {
+        return super.getInterpolator();
     }
 
     @Override
@@ -257,15 +243,6 @@ public class DotSurroundingDrawable extends AnimationDrawableWrapper {
     }
 
     /**
-     * 获取圆点直径
-     *
-     * @return 圆点直径
-     */
-    public int getDotSize() {
-        return mSize;
-    }
-
-    /**
      * 设置圆点直径
      *
      * @param size 圆点直径
@@ -275,6 +252,15 @@ public class DotSurroundingDrawable extends AnimationDrawableWrapper {
             return;
         mSize = size;
         invalidateSelf();
+    }
+
+    /**
+     * 获取圆点直径
+     *
+     * @return 圆点直径
+     */
+    public int getDotSize() {
+        return mSize;
     }
 
     /**
