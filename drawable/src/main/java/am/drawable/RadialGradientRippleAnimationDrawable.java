@@ -48,8 +48,6 @@ import am.widget.R;
 public class RadialGradientRippleAnimationDrawable extends AnimationDrawable {
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final ArrayList<Float> tStops = new ArrayList<>();
-    private final ArrayList<Integer> tColors = new ArrayList<>();
     private int mAlpha = 0xFF;
     private float mRadius = 0;
     private ColorStateList mStartColor;
@@ -58,17 +56,19 @@ public class RadialGradientRippleAnimationDrawable extends AnimationDrawable {
     private float mStartClipSize;
     private int mMaxCount;
     private boolean mClipStart = true;
+    private final ArrayList<Float> tStops = new ArrayList<>();
+    private final ArrayList<Integer> tColors = new ArrayList<>();
 
     public RadialGradientRippleAnimationDrawable() {
-        setRepeatMode(RESTART);
-        setRepeatCount(INFINITE);
+        this(0xff800000, 0xff100000);
     }
 
     public RadialGradientRippleAnimationDrawable(int startColor, int endColor) {
-        setRepeatMode(RESTART);
-        setRepeatCount(INFINITE);
         mStartColor = ColorStateList.valueOf(startColor);
         mEndColor = ColorStateList.valueOf(endColor);
+        setRepeatMode(RESTART);
+        setRepeatCount(INFINITE);
+        setAutoStart(true);
     }
 
     @Override
@@ -181,16 +181,16 @@ public class RadialGradientRippleAnimationDrawable extends AnimationDrawable {
     }
 
     @Override
-    public int getAlpha() {
-        return mAlpha;
-    }
-
-    @Override
     public void setAlpha(int alpha) {
         if (mAlpha == alpha)
             return;
         mAlpha = alpha;
         invalidateSelf();
+    }
+
+    @Override
+    public int getAlpha() {
+        return mAlpha;
     }
 
     @Override
@@ -271,13 +271,13 @@ public class RadialGradientRippleAnimationDrawable extends AnimationDrawable {
     }
 
     @Override
-    public Interpolator getInterpolator() {
-        return super.getInterpolator();
+    public void setInterpolator(Interpolator interpolator) {
+        super.setInterpolator(interpolator);
     }
 
     @Override
-    public void setInterpolator(Interpolator interpolator) {
-        super.setInterpolator(interpolator);
+    public Interpolator getInterpolator() {
+        return super.getInterpolator();
     }
 
     @Override
