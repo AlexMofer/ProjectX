@@ -49,9 +49,9 @@ public class TextDrawableActivity extends BaseActivity implements
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.td_toolbar);
         final float size = 86 * getResources().getDisplayMetrics().density;
-        drawable = new TextDrawable(getApplicationContext(), size,
-                ContextCompat.getColor(this, R.color.colorPrimary),
-                getString(R.string.td_content));
+        drawable = new TextDrawable(getString(R.string.td_content), size,
+                ContextCompat.getColor(this, R.color.colorPrimary));
+        drawable.setDensity(getResources().getDisplayMetrics().density);
         if (Build.VERSION.SDK_INT >= 16) {
             findViewById(R.id.td_v_content).setBackground(drawable);
         } else {
