@@ -101,17 +101,17 @@ abstract class AnimationDrawableWrapper extends AnimationDrawable implements Dra
     }
 
     @Override
-    public int getChangingConfigurations() {
-        if (mDrawable == null)
-            return super.getChangingConfigurations();
-        return mDrawable.getChangingConfigurations();
-    }
-
-    @Override
     public void setChangingConfigurations(int configs) {
         if (mDrawable == null)
             return;
         mDrawable.setChangingConfigurations(configs);
+    }
+
+    @Override
+    public int getChangingConfigurations() {
+        if (mDrawable == null)
+            return super.getChangingConfigurations();
+        return mDrawable.getChangingConfigurations();
     }
 
     @Override
@@ -128,19 +128,19 @@ abstract class AnimationDrawableWrapper extends AnimationDrawable implements Dra
         mDrawable.setFilterBitmap(filter);
     }
 
+    @Override
+    public void setAlpha(int alpha) {
+        if (mDrawable == null)
+            return;
+        mDrawable.setAlpha(alpha);
+    }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public int getAlpha() {
         if (mDrawable == null)
             return super.getAlpha();
         return mDrawable.getAlpha();
-    }
-
-    @Override
-    public void setAlpha(int alpha) {
-        if (mDrawable == null)
-            return;
-        mDrawable.setAlpha(alpha);
     }
 
     @Override
@@ -265,20 +265,20 @@ abstract class AnimationDrawableWrapper extends AnimationDrawable implements Dra
     }
 
     @Override
+    public void setAutoMirrored(boolean mirrored) {
+        if (mDrawable == null)
+            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            mDrawable.setAutoMirrored(mirrored);
+    }
+
+    @Override
     public boolean isAutoMirrored() {
         if (mDrawable == null)
             return false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
             return mDrawable.isAutoMirrored();
         return false;
-    }
-
-    @Override
-    public void setAutoMirrored(boolean mirrored) {
-        if (mDrawable == null)
-            return;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-            mDrawable.setAutoMirrored(mirrored);
     }
 
     @Override

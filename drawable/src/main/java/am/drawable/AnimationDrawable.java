@@ -68,12 +68,17 @@ abstract class AnimationDrawable extends Drawable {
         super.inflate(resources, parser, attrs, theme);
         final TypedArray custom = DrawableHelper.obtainAttributes(resources, theme, attrs,
                 R.styleable.AnimationDrawable);
-        mRepeatMode = custom.getInt(R.styleable.AnimationDrawable_android_repeatMode, RESTART);
-        mRepeatCount = custom.getInt(R.styleable.AnimationDrawable_android_repeatCount, INFINITE);
-        mDuration = custom.getInteger(R.styleable.AnimationDrawable_android_duration,
-                DEFAULT_DURATION);
-        mAutoStart = custom.getBoolean(R.styleable.AnimationDrawable_android_autoStart,
-                false);
+        if (custom.hasValue(R.styleable.AnimationDrawable_android_repeatMode))
+            mRepeatMode = custom.getInt(R.styleable.AnimationDrawable_android_repeatMode, RESTART);
+        if (custom.hasValue(R.styleable.AnimationDrawable_android_repeatCount))
+            mRepeatCount = custom.getInt(R.styleable.AnimationDrawable_android_repeatCount,
+                    INFINITE);
+        if (custom.hasValue(R.styleable.AnimationDrawable_android_duration))
+            mDuration = custom.getInteger(R.styleable.AnimationDrawable_android_duration,
+                    DEFAULT_DURATION);
+        if (custom.hasValue(R.styleable.AnimationDrawable_android_autoStart))
+            mAutoStart = custom.getBoolean(R.styleable.AnimationDrawable_android_autoStart,
+                    false);
         custom.recycle();
     }
 
