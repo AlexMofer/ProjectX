@@ -278,7 +278,6 @@ public class ClipDrawable extends DrawableWrapper {
         if (mProvider != null)
             invalidateSelf();
     }
-
     /**
      * 椭圆
      */
@@ -408,19 +407,6 @@ public class ClipDrawable extends DrawableWrapper {
         public abstract void getOutline(Rect bounds, Path outline);
     }
 
-    /**
-     * 圆角矩形（短边为半圆）
-     */
-    public static final ClipOutlineProvider FULL_ROUND_RECT = new ClipOutlineProvider() {
-
-        @Override
-        public void getOutline(Rect bounds, Path outline) {
-            final float radius = Math.min(bounds.width(), bounds.height()) * 0.5f;
-            Compat.addRoundRect(outline, bounds.left, bounds.top, bounds.right, bounds.bottom,
-                    radius, radius, Path.Direction.CW);
-        }
-    };
-
     @Override
     public int getAlpha() {
         return mAlpha;
@@ -434,6 +420,19 @@ public class ClipDrawable extends DrawableWrapper {
     public void setStrokeColor(int color) {
         setStrokeColor(ColorStateList.valueOf(color));
     }
+
+    /**
+     * 圆角矩形（短边为半圆）
+     */
+    public static final ClipOutlineProvider FULL_ROUND_RECT = new ClipOutlineProvider() {
+
+        @Override
+        public void getOutline(Rect bounds, Path outline) {
+            final float radius = Math.min(bounds.width(), bounds.height()) * 0.5f;
+            Compat.addRoundRect(outline, bounds.left, bounds.top, bounds.right, bounds.bottom,
+                    radius, radius, Path.Direction.CW);
+        }
+    };
 
     /**
      * 圆角矩形

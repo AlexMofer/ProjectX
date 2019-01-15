@@ -52,10 +52,10 @@ public class TextDrawable extends Drawable {
     private float mTextSize;
     private int mAlpha = 0xFF;
     private String mText;
-    private ColorStateList mTextColor;
     private int mWidth;
     private int mHeight;
     private boolean mAutoScale;
+    private ColorStateList mTextColor;
 
     public TextDrawable() {
         this(null, 0, Color.BLACK);
@@ -154,6 +154,14 @@ public class TextDrawable extends Drawable {
     }
 
     @Override
+    public void setAlpha(int alpha) {
+        if (mAlpha == alpha)
+            return;
+        mAlpha = alpha;
+        invalidateSelf();
+    }
+
+    @Override
     public void setColorFilter(ColorFilter colorFilter) {
         mPaint.setColorFilter(colorFilter);
         invalidateSelf();
@@ -167,14 +175,6 @@ public class TextDrawable extends Drawable {
     @Override
     public int getAlpha() {
         return mAlpha;
-    }
-
-    @Override
-    public void setAlpha(int alpha) {
-        if (mAlpha == alpha)
-            return;
-        mAlpha = alpha;
-        invalidateSelf();
     }
 
     @Override
@@ -225,15 +225,6 @@ public class TextDrawable extends Drawable {
     }
 
     /**
-     * 获取文字大小
-     *
-     * @return 文字大小
-     */
-    public float getTextSize() {
-        return mTextSize;
-    }
-
-    /**
      * 设置文字大小
      *
      * @param size 文字大小
@@ -244,6 +235,15 @@ public class TextDrawable extends Drawable {
         mTextSize = size;
         update();
         invalidateSelf();
+    }
+
+    /**
+     * 获取文字大小
+     *
+     * @return 文字大小
+     */
+    public float getTextSize() {
+        return mTextSize;
     }
 
     /**
@@ -259,15 +259,6 @@ public class TextDrawable extends Drawable {
     }
 
     /**
-     * 获取文字颜色
-     *
-     * @return 文字颜色
-     */
-    public ColorStateList getTextColor() {
-        return mTextColor;
-    }
-
-    /**
      * 设置文字颜色
      *
      * @param color 文字颜色
@@ -277,12 +268,12 @@ public class TextDrawable extends Drawable {
     }
 
     /**
-     * 获取文字
+     * 获取文字颜色
      *
-     * @return 文字
+     * @return 文字颜色
      */
-    public String getText() {
-        return mText;
+    public ColorStateList getTextColor() {
+        return mTextColor;
     }
 
     /**
@@ -299,12 +290,12 @@ public class TextDrawable extends Drawable {
     }
 
     /**
-     * 判断是否自动缩放
+     * 获取文字
      *
-     * @return 是否自动缩放
+     * @return 文字
      */
-    public boolean isAutoScale() {
-        return mAutoScale;
+    public String getText() {
+        return mText;
     }
 
     /**
@@ -321,12 +312,12 @@ public class TextDrawable extends Drawable {
     }
 
     /**
-     * 获取字体
+     * 判断是否自动缩放
      *
-     * @return 字体
+     * @return 是否自动缩放
      */
-    public Typeface getTypeface() {
-        return mPaint.getTypeface();
+    public boolean isAutoScale() {
+        return mAutoScale;
     }
 
     /**
@@ -340,6 +331,15 @@ public class TextDrawable extends Drawable {
         mPaint.setTypeface(typeface);
         update();
         invalidateSelf();
+    }
+
+    /**
+     * 获取字体
+     *
+     * @return 字体
+     */
+    public Typeface getTypeface() {
+        return mPaint.getTypeface();
     }
 
     /**

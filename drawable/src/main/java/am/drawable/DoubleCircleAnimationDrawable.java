@@ -164,6 +164,14 @@ public class DoubleCircleAnimationDrawable extends AnimationDrawable {
     }
 
     @Override
+    public void setAlpha(int alpha) {
+        if (mAlpha == alpha)
+            return;
+        mAlpha = alpha;
+        invalidateSelf();
+    }
+
+    @Override
     public void setColorFilter(ColorFilter colorFilter) {
         mPaint.setColorFilter(colorFilter);
         invalidateSelf();
@@ -177,14 +185,6 @@ public class DoubleCircleAnimationDrawable extends AnimationDrawable {
     @Override
     public int getAlpha() {
         return mAlpha;
-    }
-
-    @Override
-    public void setAlpha(int alpha) {
-        if (mAlpha == alpha)
-            return;
-        mAlpha = alpha;
-        invalidateSelf();
     }
 
     @Override
@@ -239,13 +239,13 @@ public class DoubleCircleAnimationDrawable extends AnimationDrawable {
     }
 
     @Override
-    public Interpolator getInterpolator() {
-        return super.getInterpolator();
+    public void setInterpolator(Interpolator interpolator) {
+        super.setInterpolator(interpolator);
     }
 
     @Override
-    public void setInterpolator(Interpolator interpolator) {
-        super.setInterpolator(interpolator);
+    public Interpolator getInterpolator() {
+        return super.getInterpolator();
     }
 
     @Override
@@ -356,15 +356,6 @@ public class DoubleCircleAnimationDrawable extends AnimationDrawable {
     }
 
     /**
-     * 获取间隔
-     *
-     * @return 间隔
-     */
-    public float getSpacing() {
-        return mSpacing;
-    }
-
-    /**
      * 设置间隔
      *
      * @param spacing 间隔
@@ -378,12 +369,12 @@ public class DoubleCircleAnimationDrawable extends AnimationDrawable {
     }
 
     /**
-     * 判断是否固定尺寸
+     * 获取间隔
      *
-     * @return 是否固定尺寸
+     * @return 间隔
      */
-    public boolean isConstantSize() {
-        return mConstantSize;
+    public float getSpacing() {
+        return mSpacing;
     }
 
     /**
@@ -400,12 +391,12 @@ public class DoubleCircleAnimationDrawable extends AnimationDrawable {
     }
 
     /**
-     * 获取半径缩放比
+     * 判断是否固定尺寸
      *
-     * @return 半径缩放比
+     * @return 是否固定尺寸
      */
-    public float getRadiusScale() {
-        return mRadiusScale;
+    public boolean isConstantSize() {
+        return mConstantSize;
     }
 
     /**
@@ -419,5 +410,14 @@ public class DoubleCircleAnimationDrawable extends AnimationDrawable {
         mRadiusScale = scale;
         updateLocation();
         invalidateSelf();
+    }
+
+    /**
+     * 获取半径缩放比
+     *
+     * @return 半径缩放比
+     */
+    public float getRadiusScale() {
+        return mRadiusScale;
     }
 }

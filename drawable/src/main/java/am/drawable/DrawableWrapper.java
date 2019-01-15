@@ -75,7 +75,7 @@ class DrawableWrapper extends Drawable implements Drawable.Callback {
     @SuppressWarnings("UnusedReturnValue")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     protected boolean setWrappedDrawableFormText(Resources resources, XmlPullParser parser,
-                                              AttributeSet attrs, Resources.Theme theme)
+                                                 AttributeSet attrs, Resources.Theme theme)
             throws XmlPullParserException, IOException {
         int type;
         //noinspection StatementWithEmptyBody
@@ -192,7 +192,8 @@ class DrawableWrapper extends Drawable implements Drawable.Callback {
     public boolean setVisible(boolean visible, boolean restart) {
         if (mDrawable == null)
             return super.setVisible(visible, restart);
-        return super.setVisible(visible, restart) || mDrawable.setVisible(visible, restart);
+        final boolean result = mDrawable.setVisible(visible, restart);
+        return super.setVisible(visible, restart) || result;
     }
 
     @Override
@@ -263,7 +264,8 @@ class DrawableWrapper extends Drawable implements Drawable.Callback {
     protected boolean onLevelChange(int level) {
         if (mDrawable == null)
             return super.onLevelChange(level);
-        return mDrawable.setLevel(level);
+        final boolean result = mDrawable.setLevel(level);
+        return super.onLevelChange(level) || result;
     }
 
     @Override
@@ -293,6 +295,8 @@ class DrawableWrapper extends Drawable implements Drawable.Callback {
 
     @Override
     public void setTintList(ColorStateList tint) {
+        if (mDrawable == null)
+            return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             mDrawable.setTintList(tint);
     }
