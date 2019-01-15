@@ -121,4 +121,13 @@
         <attr name="android:textStyle" />
         <attr name="tdAutoScale" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="ProgressDrawable">
+        <attr name="android:background" />
+        <attr name="android:max" />
+        <attr name="android:progress" />
+        <attr name="android:progressDrawable" />
+    </declare-styleable>
+    <declare-styleable name="CornerDrawable">
+
+    </declare-styleable>
 </resources>

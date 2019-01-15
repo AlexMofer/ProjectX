@@ -16,258 +16,279 @@
 
 package am.drawable;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
+import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.util.AttributeSet;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+
+import am.widget.R;
 
 /**
- * 进展图
- * Created by Alex on 2016/12/29.
+ * 进度Drawable
+ * Created by Alex on 2019/1/15.
  */
-@SuppressWarnings({"WeakerAccess", "unused"})
-public class ProgressDrawable extends Drawable {
+@SuppressWarnings({"NullableProblems", "unused"})
+public class ProgressDrawable extends DrawableWrapper {
 
-    public static final int TYPE_LEFT_TO_RIGHT = 1;
-    public static final int TYPE_RIGHT_TO_LEFT = 2;
-    public static final int TYPE_CENTER_HORIZONTAL = 3;
-    public static final int TYPE_TOP_TO_BOTTOM = 4;
-    public static final int TYPE_BOTTOM_TO_TOP = 8;
-    public static final int TYPE_CENTER_VERTICAL = 12;
-    public static final int TYPE_CENTER = TYPE_CENTER_HORIZONTAL | TYPE_CENTER_VERTICAL;
-    public static final int SHAPE_RECT = 0;
-    public static final int SHAPE_OVAL = 1;
-    private static final int TYPE_NULL = 0;
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Drawable mBackgroundDrawable;
     private Drawable mProgressDrawable;
     private int mMax = 100;
-    private int mProgress = 0;
-    private int mType = TYPE_LEFT_TO_RIGHT;
-    private int mShape = SHAPE_RECT;
-    private RectF mProgressBounds = new RectF();
+    private final Path mClear = new Path();
+    private int mProgress;
 
-    public ProgressDrawable(Drawable progress) {
+    public ProgressDrawable() {
+        this(null, null);
+    }
+
+    public ProgressDrawable(Drawable progress, Drawable background) {
+        super(background);
         mProgressDrawable = progress;
-        initProgressPaint();
-    }
-
-    public ProgressDrawable(Drawable background, Drawable progress) {
-        this(progress);
-        mBackgroundDrawable = background;
-    }
-
-    private void initProgressPaint() {
-        mPaint.setShader(null);
-        if (mProgressDrawable == null)
-            return;
-        Bitmap bitmap;
-        if (mProgressDrawable instanceof BitmapDrawable) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) mProgressDrawable;
-            bitmap = bitmapDrawable.getBitmap();
-        } else {
-            try {
-                bitmap = Bitmap.createBitmap(mProgressDrawable.getIntrinsicWidth(),
-                        mProgressDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(bitmap);
-                mProgressDrawable.setBounds(0, 0,
-                        mProgressDrawable.getIntrinsicWidth(),
-                        mProgressDrawable.getIntrinsicHeight());
-                mProgressDrawable.draw(canvas);
-            } catch (OutOfMemoryError error) {
-                bitmap = null;
-            }
+        if (progress != null) {
+            progress.setCallback(this);
+            progress.setBounds(0, 0, Math.max(1, progress.getMinimumWidth()),
+                    Math.max(1, progress.getMinimumHeight()));
         }
-        if (bitmap == null)
-            return;
-        BitmapShader mBitmapShader = new BitmapShader(bitmap,
-                Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-        mPaint.setShader(mBitmapShader);
+        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        mClear.setFillType(Path.FillType.EVEN_ODD);
     }
 
     @Override
-    public int getIntrinsicWidth() {
-        return mProgressDrawable == null ?
-                super.getIntrinsicWidth() : mProgressDrawable.getIntrinsicWidth();
-    }
-
-    @Override
-    public int getIntrinsicHeight() {
-        return mProgressDrawable == null ?
-                super.getIntrinsicHeight() : mProgressDrawable.getIntrinsicHeight();
-    }
-
-    @Override
-    public void draw(@SuppressWarnings("NullableProblems") Canvas canvas) {
-        if (mBackgroundDrawable != null) {
-            mBackgroundDrawable.setBounds(getBounds());
-            mBackgroundDrawable.draw(canvas);
+    public void inflate(Resources resources, XmlPullParser parser, AttributeSet attrs,
+                        Resources.Theme theme)
+            throws XmlPullParserException, IOException {
+        super.inflate(resources, parser, attrs, theme);
+        final TypedArray custom = DrawableHelper.obtainAttributes(resources, theme, attrs,
+                R.styleable.ProgressDrawable);
+        final Drawable background = custom.getDrawable(
+                R.styleable.ProgressDrawable_android_background);
+        if (custom.hasValue(R.styleable.ProgressDrawable_android_max))
+            mMax = custom.getInteger(R.styleable.ProgressDrawable_android_max, mMax);
+        mProgress = custom.getInteger(R.styleable.ProgressDrawable_android_progress, mProgress);
+        final Drawable progress = custom.getDrawable(
+                R.styleable.ProgressDrawable_android_progressDrawable);
+        custom.recycle();
+        if (background != null) {
+            setWrappedDrawable(background);
         }
+        if (progress != null) {
+            mProgressDrawable = progress;
+            progress.setCallback(this);
+            progress.setBounds(0, 0, Math.max(1, progress.getMinimumWidth()),
+                    Math.max(1, progress.getMinimumHeight()));
+        }
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
         if (mProgressDrawable == null)
             return;
         final Rect bounds = getBounds();
-
-        final int width = bounds.width();
-        final int height = bounds.height();
-        final int progressWidth = mProgressDrawable.getIntrinsicWidth();
-        final int progressHeight = mProgressDrawable.getIntrinsicHeight();
+        final int layer = Compat.saveLayer(canvas, bounds.left, bounds.top, bounds.right,
+                bounds.bottom, null);
+        final Drawable progress = mProgressDrawable;
+        final int progressWidth = Math.max(1, progress.getMinimumWidth());
+        final int progressHeight = Math.max(1, progress.getMinimumHeight());
         canvas.save();
-        if (width != progressWidth || height != progressHeight) {
-            float scaleX = (float) width / progressWidth;
-            float scaleY = (float) height / progressHeight;
-            canvas.scale(scaleX, scaleY);
+        canvas.translate(0, bounds.exactCenterY() - progressHeight * 0.5f);
+        final int total = bounds.width();
+        int width = 0;
+        while (width <= total) {
+            canvas.save();
+            canvas.translate(width, 0);
+            progress.draw(canvas);
+            canvas.restore();
+            width += progressWidth;
         }
-        getProgressBounds(mProgressBounds, mProgressDrawable, mType);
-        onDrawProgress(canvas, mProgressBounds, mPaint, mShape);
         canvas.restore();
+        canvas.drawPath(mClear, mPaint);
+        canvas.restoreToCount(layer);
     }
 
-    /**
-     * 获取进度绘制区域
-     * 不要使用getBounds()获取的Rect的right与bottom，因为存在缩放问题
-     *
-     * @param progressBounds 区域
-     * @param progress       进度图
-     * @param type           类型
-     */
-    protected void getProgressBounds(RectF progressBounds, Drawable progress, int type) {
-        final Rect bounds = getBounds();
-        final int left = bounds.left;
-        final int top = bounds.top;
-        final int progressWidth = progress.getIntrinsicWidth();
-        final int progressHeight = progress.getIntrinsicHeight();
-        float progressLeft;
-        float progressTop;
-        float progressRight;
-        float progressBottom;
-        float offset;
-        switch (type & TYPE_CENTER_HORIZONTAL) {
-            case TYPE_LEFT_TO_RIGHT:
-                progressLeft = left;
-                progressRight = left + (float) progressWidth * mProgress / mMax;
-                break;
-            case TYPE_RIGHT_TO_LEFT:
-                progressRight = left + progressWidth;
-                progressLeft = progressRight - (float) progressWidth * mProgress / mMax;
-                break;
-            case TYPE_CENTER_HORIZONTAL:
-                offset = (progressWidth - (float) progressWidth * mProgress / mMax) * 0.5f;
-                progressLeft = left + offset;
-                progressRight = left + progressWidth - offset;
-                break;
-            default:
-            case TYPE_NULL:
-                progressLeft = left;
-                progressRight = left + progressWidth;
-                break;
-        }
-        switch (type & TYPE_CENTER_VERTICAL) {
-            case TYPE_TOP_TO_BOTTOM:
-                progressTop = top;
-                progressBottom = top + (float) progressHeight * mProgress / mMax;
-                break;
-            case TYPE_BOTTOM_TO_TOP:
-                progressBottom = top + progressHeight;
-                progressTop = progressBottom - (float) progressHeight * mProgress / mMax;
-                break;
-            case TYPE_CENTER_VERTICAL:
-                offset = (progressHeight - (float) progressHeight * mProgress / mMax) * 0.5f;
-                progressTop = top + offset;
-                progressBottom = top + progressHeight - offset;
-                break;
-            default:
-            case TYPE_NULL:
-                progressTop = top;
-                progressBottom = top + progressHeight;
-                break;
-        }
-        progressBounds.set(progressLeft, progressTop, progressRight, progressBottom);
+    @Override
+    public void setChangingConfigurations(int configs) {
+        super.setChangingConfigurations(configs);
+        if (mProgressDrawable == null)
+            return;
+        mProgressDrawable.setChangingConfigurations(configs);
     }
 
-    /**
-     * 绘制进度
-     *
-     * @param canvas         画布
-     * @param progressBounds 区域
-     * @param paint          画笔
-     * @param shape          形状
-     */
-    protected void onDrawProgress(Canvas canvas, RectF progressBounds, Paint paint, int shape) {
-        switch (shape) {
-            case SHAPE_RECT:
-                canvas.drawRect(progressBounds.left, progressBounds.top,
-                        progressBounds.right, progressBounds.bottom, paint);
-                break;
-            case SHAPE_OVAL:
-                canvas.drawOval(progressBounds, paint);
-                break;
-        }
+    @Override
+    public void setDither(boolean dither) {
+        super.setDither(dither);
+        if (mProgressDrawable == null)
+            return;
+        mProgressDrawable.setDither(dither);
+    }
 
+    @Override
+    public void setFilterBitmap(boolean filter) {
+        super.setFilterBitmap(filter);
+        if (mProgressDrawable == null)
+            return;
+        mProgressDrawable.setFilterBitmap(filter);
     }
 
     @Override
     public void setAlpha(int alpha) {
-        if (mBackgroundDrawable != null)
-            mBackgroundDrawable.setAlpha(alpha);
-        if (mProgressDrawable != null)
-            mProgressDrawable.setAlpha(alpha);
-        initProgressPaint();
-        invalidateSelf();
+        super.setAlpha(alpha);
+        if (mProgressDrawable == null)
+            return;
+        mProgressDrawable.setAlpha(alpha);
     }
 
     @Override
-    public void setColorFilter(ColorFilter colorFilter) {
-        if (mBackgroundDrawable != null)
-            mBackgroundDrawable.setColorFilter(colorFilter);
-        if (mProgressDrawable != null)
-            mProgressDrawable.setColorFilter(colorFilter);
-        initProgressPaint();
-        invalidateSelf();
+    public void setColorFilter(ColorFilter cf) {
+        super.setColorFilter(cf);
+        if (mProgressDrawable == null)
+            return;
+        mProgressDrawable.setColorFilter(cf);
     }
 
     @Override
-    public int getOpacity() {
-        if (mBackgroundDrawable != null)
-            return mBackgroundDrawable.getOpacity();
-        if (mProgressDrawable != null)
-            return mProgressDrawable.getOpacity();
-        return PixelFormat.TRANSLUCENT;
+    public boolean isStateful() {
+        return super.isStateful() || (mProgressDrawable != null && mProgressDrawable.isStateful());
+    }
+
+    @Override
+    public boolean setState(int[] stateSet) {
+        if (mProgressDrawable == null)
+            return super.setState(stateSet);
+        final boolean result = mProgressDrawable.setState(stateSet);
+        return super.setState(stateSet) || result;
+    }
+
+    @Override
+    public void jumpToCurrentState() {
+        super.jumpToCurrentState();
+        if (mProgressDrawable == null)
+            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            mProgressDrawable.jumpToCurrentState();
+    }
+
+    @Override
+    public Drawable getCurrent() {
+        return this;
+    }
+
+    @Override
+    public boolean setVisible(boolean visible, boolean restart) {
+        if (mProgressDrawable == null)
+            return super.setVisible(visible, restart);
+        final boolean result = mProgressDrawable.setVisible(visible, restart);
+        return super.setVisible(visible, restart) || result;
+    }
+
+    @Override
+    protected boolean onLevelChange(int level) {
+        if (mProgressDrawable == null)
+            return super.onLevelChange(level);
+        final boolean result = mProgressDrawable.setLevel(level);
+        return super.onLevelChange(level) || result;
+    }
+
+    @Override
+    public void setTint(int tint) {
+        super.setTint(tint);
+        if (mProgressDrawable == null)
+            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            mProgressDrawable.setTint(tint);
+    }
+
+    @Override
+    public void setTintList(ColorStateList tint) {
+        super.setTintList(tint);
+        if (mProgressDrawable == null)
+            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            mProgressDrawable.setTintList(tint);
+    }
+
+    @Override
+    public void setTintMode(PorterDuff.Mode tintMode) {
+        super.setTintMode(tintMode);
+        if (mProgressDrawable == null)
+            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            mProgressDrawable.setTintMode(tintMode);
+    }
+
+    @Override
+    public void setHotspot(float x, float y) {
+        super.setHotspot(x, y);
+        if (mProgressDrawable == null)
+            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            mProgressDrawable.setHotspot(x, y);
+    }
+
+    @Override
+    public void setHotspotBounds(int left, int top, int right, int bottom) {
+        super.setHotspotBounds(left, top, right, bottom);
+        if (mProgressDrawable == null)
+            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            mProgressDrawable.setHotspotBounds(left, top, right, bottom);
+    }
+
+    @Override
+    protected void onBoundsChange(Rect bounds) {
+        super.onBoundsChange(bounds);
+        update();
+    }
+
+    private void update() {
+        mClear.reset();
+        final Rect bounds = getBounds();
+        final float width = (float) bounds.width() * mProgress / mMax;
+        if (Compat.isLayoutDirectionLTR(this))
+            mClear.addRect(bounds.left + width, bounds.top, bounds.right,
+                    bounds.bottom, Path.Direction.CW);
+        else
+            mClear.addRect(bounds.left, bounds.top, bounds.right - width,
+                    bounds.bottom, Path.Direction.CW);
+    }
+
+    @Override
+    public boolean onLayoutDirectionChanged(int layoutDirection) {
+        return true;
     }
 
     /**
-     * 设置最大值
+     * 获取背景图
      *
-     * @param max 最大值
+     * @return 背景图
      */
-    public void setMax(int max) {
-        mMax = max;
-        invalidateSelf();
+    public Drawable getBackground() {
+        return getWrappedDrawable();
     }
 
     /**
-     * 设置进度
+     * 设置背景图
      *
-     * @param progress 进度
-     */
-    public void setProgress(int progress) {
-        mProgress = progress;
-        invalidateSelf();
-    }
-
-    /**
-     * 设置背景
-     *
-     * @param background 背景
+     * @param background 背景图
      */
     public void setBackground(Drawable background) {
-        mBackgroundDrawable = background;
+        if (getWrappedDrawable() == background)
+            return;
+        setWrappedDrawable(background);
+        update();
         invalidateSelf();
     }
 
@@ -276,29 +297,72 @@ public class ProgressDrawable extends Drawable {
      *
      * @param progress 进度图片
      */
-    public void setProgressDrawable(Drawable progress) {
+    public void getProgressDrawable(Drawable progress) {
+        if (mProgressDrawable == progress)
+            return;
+        if (mProgressDrawable != null) {
+            mProgressDrawable.setCallback(null);
+            mProgressDrawable = null;
+        }
         mProgressDrawable = progress;
-        initProgressPaint();
+        if (progress != null) {
+            progress.setCallback(this);
+            progress.setBounds(0, 0, Math.max(1, progress.getMinimumWidth()),
+                    Math.max(1, progress.getMinimumHeight()));
+        }
         invalidateSelf();
     }
 
     /**
-     * 修改绘图模式
+     * 获取进度图片
      *
-     * @param type 模式
+     * @return 进度图片
      */
-    public void setType(int type) {
-        mType = type;
+    public Drawable getProgressDrawable() {
+        return mProgressDrawable;
+    }
+
+    /**
+     * 获取最大值
+     *
+     * @return 最大值
+     */
+    public int getMax() {
+        return mMax;
+    }
+
+    /**
+     * 设置最大值
+     *
+     * @param max 最大值
+     */
+    public void setMax(int max) {
+        if (mMax == max)
+            return;
+        mMax = max;
+        update();
         invalidateSelf();
     }
 
     /**
-     * 设置形状
+     * 获取进度值
      *
-     * @param shape 形状
+     * @return 进度值
      */
-    public void setShape(int shape) {
-        mShape = shape;
+    public int getProgress() {
+        return mProgress;
+    }
+
+    /**
+     * 设置进度值
+     *
+     * @param progress 进度值
+     */
+    public void setProgress(int progress) {
+        if (mProgress == progress)
+            return;
+        mProgress = progress;
+        update();
         invalidateSelf();
     }
 }
