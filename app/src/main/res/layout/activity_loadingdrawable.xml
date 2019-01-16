@@ -32,15 +32,11 @@
             app:wlyHorizontalSpacing="30dp"
             app:wlyVerticalSpacing="30dp">
 
-            <am.widget.MaterialProgressImageView
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/ld_iv_00"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:mpiElevation="2dp"
-                app:mpiSchemeColor1="#ff33b5e5"
-                app:mpiSchemeColor2="#ff99cc00"
-                app:mpiSchemeColor3="#ffff4444"
-                app:mpiSchemeColor4="#ffffbb33" />
+                android:layout_gravity="center" />
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/ld_iv_01"

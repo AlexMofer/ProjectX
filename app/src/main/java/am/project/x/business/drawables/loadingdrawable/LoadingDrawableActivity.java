@@ -19,12 +19,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
-import am.drawable.CirclingDrawable;
-import am.drawable.DoubleCircleDrawable;
-import am.drawable.MaterialProgressDrawable;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
 
@@ -55,26 +51,16 @@ public class LoadingDrawableActivity extends BaseActivity {
 
     private void setDoubleCircleDrawable() {
         final ImageView loading = findViewById(R.id.ld_iv_01);
-        final DoubleCircleDrawable drawable = new DoubleCircleDrawable(density);
-        loading.setImageDrawable(drawable);
-        drawable.start();
+        // TODO
     }
 
     private void setCirclingDrawable() {
         final ImageView loading = findViewById(R.id.ld_iv_02);
-        final CirclingDrawable drawable = new CirclingDrawable((int) (4 * density),
-                ContextCompat.getColor(this, R.color.colorAccent),
-                ContextCompat.getDrawable(this, R.drawable.ic_drawables_drawable));
-        loading.setImageDrawable(drawable);
-        drawable.start();
+        // TODO
     }
 
     private void setMaterialProgressDrawable() {
         final ImageView loading = findViewById(R.id.ld_iv_03);
-        final MaterialProgressDrawable drawable = new MaterialProgressDrawable(density,
-                MaterialProgressDrawable.DEFAULT, 0x00000000, 255,
-                0xff33b5e5, 0xff99cc00, 0xffff4444, 0xffffbb33);
-        loading.setImageDrawable(drawable);
-        drawable.start();
+        // TODO
     }
 }

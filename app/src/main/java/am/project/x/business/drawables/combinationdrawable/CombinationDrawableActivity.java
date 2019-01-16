@@ -20,15 +20,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 
-import am.drawable.CombinationDrawable;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
 
@@ -37,8 +32,6 @@ import am.project.x.base.BaseActivity;
  */
 public class CombinationDrawableActivity extends BaseActivity implements
         AdapterView.OnItemSelectedListener, SeekBar.OnSeekBarChangeListener {
-
-    private CombinationDrawable drawable;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, CombinationDrawableActivity.class));
@@ -52,48 +45,46 @@ public class CombinationDrawableActivity extends BaseActivity implements
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.cod_toolbar);
-        drawable = new CombinationDrawable(
-                ContextCompat.getDrawable(this, R.drawable.bg_combinationdrawable_item),
-                ContextCompat.getDrawable(this, R.drawable.ic_drawables_drawable));
-        this.<ImageView>findViewById(R.id.cod_iv_image).setImageDrawable(drawable);
-        this.<Spinner>findViewById(R.id.cod_sp_gravity).setOnItemSelectedListener(this);
-        this.<SeekBar>findViewById(R.id.cod_sb_width).setOnSeekBarChangeListener(this);
+        // TODO
+//        this.<ImageView>findViewById(R.id.cod_iv_image).setImageDrawable(drawable);
+//        this.<Spinner>findViewById(R.id.cod_sp_gravity).setOnItemSelectedListener(this);
+//        this.<SeekBar>findViewById(R.id.cod_sb_width).setOnSeekBarChangeListener(this);
     }
 
     // Listener
     @SuppressLint("RtlHardcoded")
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (position) {
-            default:
-            case 0:
-                drawable.setGravity(Gravity.CENTER);
-                break;
-            case 1:
-                drawable.setGravity(Gravity.LEFT);
-                break;
-            case 2:
-                drawable.setGravity(Gravity.CENTER_HORIZONTAL);
-                break;
-            case 3:
-                drawable.setGravity(Gravity.RIGHT);
-                break;
-            case 4:
-                drawable.setGravity(Gravity.CENTER_VERTICAL);
-                break;
-            case 5:
-                drawable.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
-                break;
-            case 6:
-                drawable.setGravity(Gravity.BOTTOM);
-                break;
-            case 7:
-                drawable.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
-                break;
-            case 8:
-                drawable.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
-                break;
-        }
+//        switch (position) {
+//            default:
+//            case 0:
+//                drawable.setGravity(Gravity.CENTER);
+//                break;
+//            case 1:
+//                drawable.setGravity(Gravity.LEFT);
+//                break;
+//            case 2:
+//                drawable.setGravity(Gravity.CENTER_HORIZONTAL);
+//                break;
+//            case 3:
+//                drawable.setGravity(Gravity.RIGHT);
+//                break;
+//            case 4:
+//                drawable.setGravity(Gravity.CENTER_VERTICAL);
+//                break;
+//            case 5:
+//                drawable.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+//                break;
+//            case 6:
+//                drawable.setGravity(Gravity.BOTTOM);
+//                break;
+//            case 7:
+//                drawable.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
+//                break;
+//            case 8:
+//                drawable.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
+//                break;
+//        }
     }
 
     @Override
@@ -103,8 +94,8 @@ public class CombinationDrawableActivity extends BaseActivity implements
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        final int padding = (int) (getResources().getDisplayMetrics().density * progress);
-        drawable.setReservedSide(padding, padding, padding, padding);
+//        final int padding = (int) (getResources().getDisplayMetrics().density * progress);
+//        drawable.setReservedSide(padding, padding, padding, padding);
     }
 
     @Override
