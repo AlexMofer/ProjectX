@@ -41,7 +41,7 @@ import am.widget.R;
  * 进度Drawable
  * Created by Alex on 2019/1/15.
  */
-@SuppressWarnings({"NullableProblems", "unused"})
+@SuppressWarnings({"NullableProblems", "unused", "WeakerAccess"})
 public class ProgressDrawable extends DrawableWrapper {
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

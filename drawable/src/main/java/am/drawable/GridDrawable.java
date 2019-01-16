@@ -38,7 +38,7 @@ import am.widget.R;
  * 网格Drawable
  * Created by Alex on 2019/1/4.
  */
-@SuppressWarnings({"unused", "NullableProblems"})
+@SuppressWarnings({"unused", "NullableProblems", "WeakerAccess"})
 public class GridDrawable extends DrawableWrapper {
 
     private int mRowCount = 1;

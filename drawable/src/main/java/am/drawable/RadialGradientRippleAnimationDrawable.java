@@ -44,7 +44,7 @@ import am.widget.R;
  * 径向渐变波纹动画Drawable
  * Created by Alex on 2019/1/8.
  */
-@SuppressWarnings({"NullableProblems", "unused"})
+@SuppressWarnings({"NullableProblems", "unused", "WeakerAccess"})
 public class RadialGradientRippleAnimationDrawable extends AnimationDrawable {
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

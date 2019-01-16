@@ -62,8 +62,8 @@ public class CornerDrawable extends Drawable {
     private int mCornerWidth;// 尖角宽
     private int mCornerHeight;// 尖角高
     private float mCornerBezier;// 贝塞尔尖角
-    private int mDirection = Gravity.TOP;//朝向
-    private int mLocation = Gravity.CENTER;// 位置
+    private int mDirection;//朝向
+    private int mLocation;// 位置
     private int mCornerMargin;//尖角边距
     private float mContentRadius;// 内容圆角半径
     private ColorStateList mFillColor;// 充填颜色
