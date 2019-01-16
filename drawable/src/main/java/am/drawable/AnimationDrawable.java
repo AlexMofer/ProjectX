@@ -19,6 +19,7 @@ package am.drawable;
 import android.animation.ValueAnimator;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -37,7 +38,7 @@ import am.widget.R;
  * Created by Alex on 2019/1/8.
  */
 @SuppressWarnings({"WeakerAccess", "unused", "SameParameterValue", "NullableProblems", "BooleanMethodIsAlwaysInverted"})
-abstract class AnimationDrawable extends Drawable {
+abstract class AnimationDrawable extends Drawable implements Animatable {
 
     public static final int RESTART = 1;
     public static final int REVERSE = 2;
@@ -192,7 +193,8 @@ abstract class AnimationDrawable extends Drawable {
     /**
      * 开始动画
      */
-    protected void start() {
+    @Override
+    public void start() {
         if (mRunning)
             return;
         mRunning = true;
@@ -201,6 +203,14 @@ abstract class AnimationDrawable extends Drawable {
         mTimeOffset = 0;
         onAnimationStart();
         scheduleSelf(mAnimation, AnimationUtils.currentAnimationTimeMillis());
+    }
+
+    /**
+     * 结束动画
+     */
+    @Override
+    public void stop() {
+        end();
     }
 
     /**
@@ -261,7 +271,7 @@ abstract class AnimationDrawable extends Drawable {
      *
      * @return 动画是否正在运行
      */
-    protected boolean isRunning() {
+    public boolean isRunning() {
         return mRunning;
     }
 

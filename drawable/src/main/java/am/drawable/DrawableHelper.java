@@ -20,11 +20,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.AttributeSet;
-import android.view.View;
 
 /**
  * 帮助类
@@ -39,19 +35,13 @@ class DrawableHelper {
         return theme.obtainStyledAttributes(set, attrs, 0, 0);
     }
 
-    static int getAlpha(ColorStateList color, int[] state) {
-        if (color == null)
-            return 0;
-        return Color.alpha(color.getColorForState(state, color.getDefaultColor()));
-    }
-
     private static int modulateAlpha(int color, int alpha) {
         return Color.alpha(color) * (alpha + (alpha >> 7)) >> 8;
     }
 
     static int getColor(ColorStateList color, int[] state, int alpha) {
         if (color == null)
-            return 0;
+            return Color.TRANSPARENT;
         final int c = color.getColorForState(state, color.getDefaultColor());
         return Color.argb(modulateAlpha(c, alpha), Color.red(c), Color.green(c), Color.blue(c));
     }
@@ -89,36 +79,5 @@ class DrawableHelper {
         b = (float) Math.pow(b, 1.0 / 2.2) * 255.0f;
 
         return Math.round(a) << 24 | Math.round(r) << 16 | Math.round(g) << 8 | Math.round(b);
-    }
-
-    static Rect PADDING = new Rect();
-
-    /**
-     * 刷新回调布局
-     *
-     * @param drawable Drawable
-     */
-    static void requestCallbackLayout(Drawable drawable) {
-        if (Build.VERSION.SDK_INT >= 11) {
-            if (drawable.getCallback() != null && drawable.getCallback() instanceof View) {
-                View view = (View) drawable.getCallback();
-                view.requestLayout();
-            }
-        }
-    }
-
-    /**
-     * 刷新Padding
-     *
-     * @param drawable Drawable
-     */
-    static void invalidateCallbackPadding(Drawable drawable) {
-        if (Build.VERSION.SDK_INT >= 11) {
-            if (drawable.getCallback() != null && drawable.getCallback() instanceof View) {
-                View view = (View) drawable.getCallback();
-                drawable.getPadding(PADDING);
-                view.setPadding(PADDING.left, PADDING.top, PADDING.right, PADDING.bottom);
-            }
-        }
     }
 }

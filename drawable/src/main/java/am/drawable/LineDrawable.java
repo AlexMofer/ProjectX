@@ -199,22 +199,27 @@ public class LineDrawable extends Drawable {
                 (mLineColor != null && mLineColor.isStateful());
     }
 
+    @Override
+    protected boolean onStateChange(int[] state) {
+        return isStateful();
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void getOutline(@SuppressWarnings("NullableProblems") Outline outline) {
+    public void getOutline(Outline outline) {
         final int[] state = getState();
-        if (mBackgroundColor != null) {
+        final int backgroundColor = DrawableHelper.getColor(mBackgroundColor, state, mAlpha);
+        final int backgroundAlpha = Color.alpha(backgroundColor);
+        if (backgroundAlpha != 0) {
             outline.setRect(getBounds());
-            outline.setAlpha(DrawableHelper.getAlpha(mBackgroundColor, state));
+            outline.setAlpha(backgroundAlpha / 255f);
             return;
         }
-        if (mLineColor != null) {
-            outline.setRect(Math.round(mLine.left - 0.5f), Math.round(mLine.top - 0.5f),
-                    Math.round(mLine.right + 0.5f), Math.round(mLine.bottom + 0.5f));
-            outline.setAlpha(DrawableHelper.getAlpha(mLineColor, state));
-            return;
-        }
-        super.getOutline(outline);
+        final int lineColor = DrawableHelper.getColor(mLineColor, state, mAlpha);
+        final int lineAlpha = Color.alpha(lineColor);
+        outline.setRect(Math.round(mLine.left - 0.5f), Math.round(mLine.top - 0.5f),
+                Math.round(mLine.right + 0.5f), Math.round(mLine.bottom + 0.5f));
+        outline.setAlpha(lineAlpha / 255f);
     }
 
     /**

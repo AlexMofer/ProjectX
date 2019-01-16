@@ -48,14 +48,14 @@ import am.widget.R;
 public class TextDrawable extends Drawable {
 
     private final TextPaint mPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-    private final Rect mMeasureRect = new Rect();
-    private float mTextSize;
     private int mAlpha = 0xFF;
+    private float mTextSize;
+    private ColorStateList mTextColor;
     private String mText;
     private int mWidth;
     private int mHeight;
     private boolean mAutoScale;
-    private ColorStateList mTextColor;
+    private final Rect mMeasureRect = new Rect();
 
     public TextDrawable() {
         this(null, 0, Color.BLACK);
@@ -207,6 +207,11 @@ public class TextDrawable extends Drawable {
     @Override
     public boolean isStateful() {
         return mTextColor != null && mTextColor.isStateful();
+    }
+
+    @Override
+    protected boolean onStateChange(int[] state) {
+        return isStateful();
     }
 
     /**

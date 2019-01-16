@@ -148,6 +148,11 @@ public class DotSurroundingDrawable extends AnimationDrawableWrapper {
     }
 
     @Override
+    protected boolean onStateChange(int[] state) {
+        return isStateful();
+    }
+
+    @Override
     public long getDuration() {
         return super.getDuration();
     }
@@ -203,11 +208,6 @@ public class DotSurroundingDrawable extends AnimationDrawableWrapper {
     }
 
     @Override
-    public void start() {
-        super.start();
-    }
-
-    @Override
     public void cancel() {
         super.cancel();
     }
@@ -225,11 +225,6 @@ public class DotSurroundingDrawable extends AnimationDrawableWrapper {
     @Override
     public void resume() {
         super.resume();
-    }
-
-    @Override
-    public boolean isRunning() {
-        return super.isRunning();
     }
 
     @Override

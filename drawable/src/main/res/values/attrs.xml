@@ -33,7 +33,9 @@
         <attr name="android:strokeLineCap" />
         <attr name="android:strokeLineJoin" />
         <attr name="android:strokeMiterLimit" />
-        <attr name="pdClipStroke" format="boolean" />
+        <attr name="android:dashWidth"/>
+        <attr name="android:dashGap"/>
+        <attr name="pdClipFill" format="boolean" />
     </declare-styleable>
     <declare-styleable name="DrawableWrapper">
         <attr name="android:drawable" />
@@ -100,6 +102,8 @@
         <attr name="android:strokeLineCap" />
         <attr name="android:strokeLineJoin" />
         <attr name="android:strokeMiterLimit" />
+        <attr name="android:dashWidth"/>
+        <attr name="android:dashGap"/>
     </declare-styleable>
     <declare-styleable name="DoubleCircleAnimationDrawable">
         <attr name="android:width" />
@@ -128,6 +132,36 @@
         <attr name="android:progressDrawable" />
     </declare-styleable>
     <declare-styleable name="CornerDrawable">
-
+        <attr name="cdCornerWidth" format="dimension" />
+        <attr name="cdCornerHeight" format="dimension" />
+        <attr name="cdCornerBezier" format="float" />
+        <attr name="cdDirection" format="enum">
+            <enum name="top" value="0x30" />
+            <enum name="bottom" value="0x50" />
+            <enum name="start" value="0x00800003" />
+            <enum name="end" value="0x00800005" />
+        </attr>
+        <attr name="cdLocation" format="enum">
+            <enum name="center" value="0x11" />
+            <enum name="start" value="0x00800003" />
+            <enum name="end" value="0x00800005" />
+        </attr>
+        <attr name="cdCornerMargin" format="dimension" />
+        <attr name="cdContentRadius" format="dimension" />
+        <attr name="android:fillColor" />
+        <attr name="cdStrokeWidth" />
+        <attr name="android:strokeWidth" />
+        <attr name="android:strokeColor" />
+        <attr name="android:strokeLineCap" />
+        <attr name="android:strokeLineJoin" />
+        <attr name="android:strokeMiterLimit" />
+        <attr name="android:dashWidth"/>
+        <attr name="android:dashGap"/>
+        <attr name="cdClipFill" format="boolean" />
+        <attr name="android:padding" />
+        <attr name="android:paddingStart" />
+        <attr name="android:paddingTop" />
+        <attr name="android:paddingEnd" />
+        <attr name="android:paddingBottom" />
     </declare-styleable>
 </resources>

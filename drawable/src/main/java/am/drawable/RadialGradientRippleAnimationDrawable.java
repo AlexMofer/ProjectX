@@ -228,6 +228,11 @@ public class RadialGradientRippleAnimationDrawable extends AnimationDrawable {
         return mStartColor.isStateful() || mEndColor.isStateful();
     }
 
+    @Override
+    protected boolean onStateChange(int[] state) {
+        return isStateful();
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void getOutline(Outline outline) {
@@ -314,11 +319,6 @@ public class RadialGradientRippleAnimationDrawable extends AnimationDrawable {
     @Override
     public void resume() {
         super.resume();
-    }
-
-    @Override
-    public boolean isRunning() {
-        return super.isRunning();
     }
 
     @Override

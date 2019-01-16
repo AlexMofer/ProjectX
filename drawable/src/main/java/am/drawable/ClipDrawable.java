@@ -22,6 +22,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
+import android.graphics.DashPathEffect;
 import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -101,6 +102,10 @@ public class ClipDrawable extends DrawableWrapper {
                 0);
         final float strokeMiterLimit = custom.getFloat(
                 R.styleable.ClipDrawable_android_strokeMiterLimit, 0);
+        final float dashWidth = custom.getDimension(R.styleable.ClipDrawable_android_dashWidth,
+                0);
+        final float dashGap = custom.getDimension(R.styleable.ClipDrawable_android_dashGap,
+                0);
         custom.recycle();
         setWrappedDrawableFormText(resources, parser, attrs, theme);
         switch (type) {
@@ -142,6 +147,8 @@ public class ClipDrawable extends DrawableWrapper {
                 break;
         }
         mPaint.setStrokeMiter(strokeMiterLimit);
+        if (dashWidth > 0 && dashGap > 0)
+            mPaint.setPathEffect(new DashPathEffect(new float[]{dashWidth, dashGap}, 0));
     }
 
     @Override
@@ -202,17 +209,10 @@ public class ClipDrawable extends DrawableWrapper {
         invalidateSelf();
     }
 
-    /**
-     * 圆形
-     */
-    public static final ClipOutlineProvider CIRCLE = new ClipOutlineProvider() {
-
-        @Override
-        public void getOutline(Rect bounds, Path outline) {
-            outline.addCircle(bounds.exactCenterX(), bounds.exactCenterY(),
-                    Math.min(bounds.width(), bounds.height()) * 0.5f, Path.Direction.CW);
-        }
-    };
+    @Override
+    public int getAlpha() {
+        return mAlpha;
+    }
 
     @Override
     public void setColorFilter(ColorFilter cf) {
@@ -228,12 +228,17 @@ public class ClipDrawable extends DrawableWrapper {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void getOutline(@SuppressWarnings("NullableProblems") Outline outline) {
-        if (mProvider == null) {
+        if (mProvider == null || mOutlinePath.isEmpty() || !mOutlinePath.isConvex()) {
             super.getOutline(outline);
             return;
         }
         outline.setConvexPath(mOutlinePath);
         outline.setAlpha(1);
+    }
+
+    @Override
+    protected boolean onStateChange(int[] state) {
+        return super.onStateChange(state) || isStateful();
     }
 
     /**
@@ -278,17 +283,15 @@ public class ClipDrawable extends DrawableWrapper {
         if (mProvider != null)
             invalidateSelf();
     }
-    /**
-     * 椭圆
-     */
-    public static final ClipOutlineProvider OVAL = new ClipOutlineProvider() {
 
-        @Override
-        public void getOutline(Rect bounds, Path outline) {
-            Compat.addOval(outline, bounds.left, bounds.top, bounds.right, bounds.bottom,
-                    Path.Direction.CW);
-        }
-    };
+    /**
+     * 设置描边色
+     *
+     * @param color 描边色
+     */
+    public void setStrokeColor(int color) {
+        setStrokeColor(ColorStateList.valueOf(color));
+    }
 
     /**
      * Return the width for stroking.
@@ -394,6 +397,20 @@ public class ClipDrawable extends DrawableWrapper {
     }
 
     /**
+     * Set stroke dash
+     *
+     * @param dashWidth Length of a dash in the stroke.
+     * @param dashGap   Gap between dashes in the stroke.
+     * @param phase     offset form start
+     */
+    public void setStrokeDash(float dashWidth, float dashGap, float phase) {
+        if (dashWidth <= 0 || dashGap <= 0)
+            return;
+        mPaint.setPathEffect(new DashPathEffect(new float[]{dashWidth, dashGap}, phase));
+        invalidateSelf();
+    }
+
+    /**
      * 裁剪轮廓提供器
      */
     public static abstract class ClipOutlineProvider {
@@ -407,19 +424,29 @@ public class ClipDrawable extends DrawableWrapper {
         public abstract void getOutline(Rect bounds, Path outline);
     }
 
-    @Override
-    public int getAlpha() {
-        return mAlpha;
-    }
+    /**
+     * 圆形
+     */
+    public static final ClipOutlineProvider CIRCLE = new ClipOutlineProvider() {
+
+        @Override
+        public void getOutline(Rect bounds, Path outline) {
+            outline.addCircle(bounds.exactCenterX(), bounds.exactCenterY(),
+                    Math.min(bounds.width(), bounds.height()) * 0.5f, Path.Direction.CW);
+        }
+    };
 
     /**
-     * 设置描边色
-     *
-     * @param color 描边色
+     * 椭圆
      */
-    public void setStrokeColor(int color) {
-        setStrokeColor(ColorStateList.valueOf(color));
-    }
+    public static final ClipOutlineProvider OVAL = new ClipOutlineProvider() {
+
+        @Override
+        public void getOutline(Rect bounds, Path outline) {
+            Compat.addOval(outline, bounds.left, bounds.top, bounds.right, bounds.bottom,
+                    Path.Direction.CW);
+        }
+    };
 
     /**
      * 圆角矩形（短边为半圆）

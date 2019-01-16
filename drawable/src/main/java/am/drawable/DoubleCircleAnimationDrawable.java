@@ -38,7 +38,7 @@ import am.widget.R;
  * 双圈动图
  * Created by Alex on 2019/1/11.
  */
-@SuppressWarnings({"NullableProblems", "unused"})
+@SuppressWarnings({"NullableProblems", "unused", "WeakerAccess"})
 public class DoubleCircleAnimationDrawable extends AnimationDrawable {
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -204,6 +204,11 @@ public class DoubleCircleAnimationDrawable extends AnimationDrawable {
     }
 
     @Override
+    protected boolean onStateChange(int[] state) {
+        return isStateful();
+    }
+
+    @Override
     public long getDuration() {
         return super.getDuration();
     }
@@ -259,11 +264,6 @@ public class DoubleCircleAnimationDrawable extends AnimationDrawable {
     }
 
     @Override
-    public void start() {
-        super.start();
-    }
-
-    @Override
     public void cancel() {
         super.cancel();
     }
@@ -281,11 +281,6 @@ public class DoubleCircleAnimationDrawable extends AnimationDrawable {
     @Override
     public void resume() {
         super.resume();
-    }
-
-    @Override
-    public boolean isRunning() {
-        return super.isRunning();
     }
 
     @Override

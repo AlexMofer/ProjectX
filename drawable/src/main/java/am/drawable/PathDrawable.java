@@ -16,7 +16,6 @@
 
 package am.drawable;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -24,6 +23,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.DashPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Outline;
 import android.graphics.Paint;
@@ -76,7 +76,7 @@ public class PathDrawable extends Drawable {
     private ColorStateList mStrokeColor;
     private float mStrokeWidth;
     private int mStrokeWidthScaleType;
-    private boolean mClipStroke;
+    private boolean mClipFill;
 
     @Override
     public void inflate(Resources resources, XmlPullParser parser, AttributeSet attrs,
@@ -105,7 +105,10 @@ public class PathDrawable extends Drawable {
                 0);
         final float strokeMiterLimit = custom.getFloat(
                 R.styleable.PathDrawable_android_strokeMiterLimit, 0);
-        mClipStroke = custom.getBoolean(R.styleable.PathDrawable_pdClipStroke, false);
+        final float dashWidth = custom.getDimension(R.styleable.PathDrawable_android_dashWidth,
+                0);
+        final float dashGap = custom.getDimension(R.styleable.PathDrawable_android_dashGap,
+                0);
         custom.recycle();
         updateStyle();
         switch (fillType) {
@@ -148,6 +151,8 @@ public class PathDrawable extends Drawable {
                 break;
         }
         mPaint.setStrokeMiter(strokeMiterLimit);
+        if (dashWidth > 0 && dashGap > 0)
+            mPaint.setPathEffect(new DashPathEffect(new float[]{dashWidth, dashGap}, 0));
         if (!TextUtils.isEmpty(data))
             setPathData(data);
     }
@@ -517,25 +522,21 @@ public class PathDrawable extends Drawable {
         switch (mStyle) {
             default:
             case FILL: {
-                mPaint.setColor(mFillColor == null ? Color.TRANSPARENT :
-                        DrawableHelper.getColor(mFillColor, state, mAlpha));
+                mPaint.setColor(DrawableHelper.getColor(mFillColor, state, mAlpha));
                 mPaint.setStyle(Paint.Style.FILL);
                 canvas.drawPath(mDrawPath, mPaint);
             }
             break;
             case STROKE: {
-                mPaint.setColor(mStrokeColor == null ? Color.TRANSPARENT :
-                        DrawableHelper.getColor(mStrokeColor, state, mAlpha));
+                mPaint.setColor(DrawableHelper.getColor(mStrokeColor, state, mAlpha));
                 mPaint.setStyle(Paint.Style.STROKE);
                 mPaint.setStrokeWidth(computeStrokeWidth());
                 canvas.drawPath(mDrawPath, mPaint);
             }
             break;
             case FILL_AND_STROKE: {
-                final int fillColor = mFillColor == null ? Color.TRANSPARENT :
-                        DrawableHelper.getColor(mFillColor, state, mAlpha);
-                final int strokeColor = mStrokeColor == null ? Color.TRANSPARENT :
-                        DrawableHelper.getColor(mStrokeColor, state, mAlpha);
+                final int fillColor = DrawableHelper.getColor(mFillColor, state, mAlpha);
+                final int strokeColor = DrawableHelper.getColor(mStrokeColor, state, mAlpha);
                 if (fillColor == strokeColor) {
                     mPaint.setColor(fillColor);
                     mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -543,11 +544,10 @@ public class PathDrawable extends Drawable {
                     canvas.drawPath(mDrawPath, mPaint);
                 } else {
                     final float strokeWidth = computeStrokeWidth();
-                    if (mClipStroke) {
-                        @SuppressLint("CanvasSize") final float right = canvas.getWidth();
-                        @SuppressLint("CanvasSize") final float bottom = canvas.getHeight();
-                        final int layer = Compat.saveLayer(canvas, 0, 0, right, bottom,
-                                null);
+                    if (mClipFill) {
+                        final Rect bounds = getBounds();
+                        final int layer = Compat.saveLayer(canvas,
+                                bounds.left, bounds.top, bounds.right, bounds.bottom, null);
                         mPaint.setColor(fillColor);
                         mPaint.setStyle(Paint.Style.FILL);
                         canvas.drawPath(mDrawPath, mPaint);
@@ -652,24 +652,31 @@ public class PathDrawable extends Drawable {
                 (mStrokeColor != null && mStrokeColor.isStateful());
     }
 
+    @Override
+    protected boolean onStateChange(int[] state) {
+        return isStateful();
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void getOutline(@SuppressWarnings("NullableProblems") Outline outline) {
-        if (mDrawPath.isEmpty()) {
+    public void getOutline(Outline outline) {
+        if (mDrawPath.isEmpty() || !mDrawPath.isConvex()) {
             super.getOutline(outline);
             return;
         }
-        outline.setConvexPath(mDrawPath);
         final int[] state = getState();
-        if (mBackgroundColor != null) {
-            outline.setAlpha(DrawableHelper.getAlpha(mBackgroundColor, state));
+        final int backgroundColor = DrawableHelper.getColor(mBackgroundColor, state, mAlpha);
+        final int backgroundAlpha = Color.alpha(backgroundColor);
+        if (backgroundAlpha != 0) {
+            outline.setRect(getBounds());
+            outline.setAlpha(backgroundAlpha / 255f);
             return;
         }
-        if (mFillColor != null) {
-            outline.setAlpha(DrawableHelper.getAlpha(mFillColor, state));
-            return;
-        }
-        outline.setAlpha(0);
+        final int fillColor = DrawableHelper.getColor(mFillColor, state, mAlpha);
+        final int strokeColor = DrawableHelper.getColor(mStrokeColor, state, mAlpha);
+        final int alpha = Math.max(Color.alpha(fillColor), Color.alpha(strokeColor));
+        outline.setConvexPath(mDrawPath);
+        outline.setAlpha(alpha / 255f);
     }
 
     /**
@@ -979,6 +986,20 @@ public class PathDrawable extends Drawable {
     }
 
     /**
+     * Set stroke dash
+     *
+     * @param dashWidth Length of a dash in the stroke.
+     * @param dashGap   Gap between dashes in the stroke.
+     * @param phase     offset form start
+     */
+    public void setStrokeDash(float dashWidth, float dashGap, float phase) {
+        if (dashWidth <= 0 || dashGap <= 0)
+            return;
+        mPaint.setPathEffect(new DashPathEffect(new float[]{dashWidth, dashGap}, phase));
+        invalidateSelf();
+    }
+
+    /**
      * 设置背景颜色
      *
      * @param color 颜色
@@ -1174,6 +1195,27 @@ public class PathDrawable extends Drawable {
      */
     public int getStrokeWidthScaleType() {
         return mStrokeWidthScaleType;
+    }
+
+    /**
+     * 判断是否裁剪充填（描边与充填不覆盖）
+     *
+     * @return 是否裁剪充填
+     */
+    public boolean isClipFill() {
+        return mClipFill;
+    }
+
+    /**
+     * 设置是否裁剪充填
+     *
+     * @param clip 是否裁剪充填
+     */
+    public void setClipFill(boolean clip) {
+        if (mClipFill == clip)
+            return;
+        mClipFill = clip;
+        invalidateSelf();
     }
 
     /**

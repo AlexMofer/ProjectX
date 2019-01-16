@@ -47,8 +47,8 @@ public class ProgressDrawable extends DrawableWrapper {
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Drawable mProgressDrawable;
     private int mMax = 100;
-    private final Path mClear = new Path();
     private int mProgress;
+    private final Path mClear = new Path();
 
     public ProgressDrawable() {
         this(null, null);
@@ -271,15 +271,6 @@ public class ProgressDrawable extends DrawableWrapper {
     }
 
     /**
-     * 获取背景图
-     *
-     * @return 背景图
-     */
-    public Drawable getBackground() {
-        return getWrappedDrawable();
-    }
-
-    /**
      * 设置背景图
      *
      * @param background 背景图
@@ -290,6 +281,15 @@ public class ProgressDrawable extends DrawableWrapper {
         setWrappedDrawable(background);
         update();
         invalidateSelf();
+    }
+
+    /**
+     * 获取背景图
+     *
+     * @return 背景图
+     */
+    public Drawable getBackground() {
+        return getWrappedDrawable();
     }
 
     /**
@@ -323,15 +323,6 @@ public class ProgressDrawable extends DrawableWrapper {
     }
 
     /**
-     * 获取最大值
-     *
-     * @return 最大值
-     */
-    public int getMax() {
-        return mMax;
-    }
-
-    /**
      * 设置最大值
      *
      * @param max 最大值
@@ -345,12 +336,12 @@ public class ProgressDrawable extends DrawableWrapper {
     }
 
     /**
-     * 获取进度值
+     * 获取最大值
      *
-     * @return 进度值
+     * @return 最大值
      */
-    public int getProgress() {
-        return mProgress;
+    public int getMax() {
+        return mMax;
     }
 
     /**
@@ -364,5 +355,14 @@ public class ProgressDrawable extends DrawableWrapper {
         mProgress = progress;
         update();
         invalidateSelf();
+    }
+
+    /**
+     * 获取进度值
+     *
+     * @return 进度值
+     */
+    public int getProgress() {
+        return mProgress;
     }
 }
