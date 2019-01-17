@@ -49,8 +49,8 @@ import am.widget.R;
 public class FrameDrawable extends Drawable implements Drawable.Callback {
 
     private final ArrayList<ChildDrawable> mItems = new ArrayList<>();
-    private int mWidth;
-    private int mHeight;
+    private int mWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
+    private int mHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
     private final Rect mPadding = new Rect();
 
     public FrameDrawable() {
@@ -369,6 +369,15 @@ public class FrameDrawable extends Drawable implements Drawable.Callback {
             return super.getIntrinsicWidth();
         if (mWidth >= 0)
             return mWidth;
+        if (mWidth == ViewGroup.LayoutParams.MATCH_PARENT &&
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            final Callback callback = getCallback();
+            if (callback instanceof View) {
+                return ((View) callback).getMeasuredWidth();
+            } else if (callback instanceof Drawable) {
+                return ((Drawable) callback).getIntrinsicWidth();
+            }
+        }
         int width = -1;
         for (ChildDrawable child : mItems) {
             width = Math.max(width, child.getIntrinsicWidth());
@@ -382,6 +391,15 @@ public class FrameDrawable extends Drawable implements Drawable.Callback {
             return super.getIntrinsicHeight();
         if (mHeight >= 0)
             return mHeight;
+        if (mHeight == ViewGroup.LayoutParams.MATCH_PARENT &&
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            final Callback callback = getCallback();
+            if (callback instanceof View) {
+                return ((View) callback).getMeasuredHeight();
+            } else if (callback instanceof Drawable) {
+                return ((Drawable) callback).getIntrinsicHeight();
+            }
+        }
         int height = -1;
         for (ChildDrawable child : mItems) {
             height = Math.max(height, child.getIntrinsicHeight());
@@ -395,6 +413,15 @@ public class FrameDrawable extends Drawable implements Drawable.Callback {
             return super.getMinimumWidth();
         if (mWidth >= 0)
             return mWidth;
+        if (mWidth == ViewGroup.LayoutParams.MATCH_PARENT &&
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            final Callback callback = getCallback();
+            if (callback instanceof View) {
+                return ((View) callback).getMeasuredWidth();
+            } else if (callback instanceof Drawable) {
+                return ((Drawable) callback).getMinimumWidth();
+            }
+        }
         int width = -1;
         for (ChildDrawable child : mItems) {
             width = Math.max(width, child.getMinimumWidth());
@@ -408,6 +435,15 @@ public class FrameDrawable extends Drawable implements Drawable.Callback {
             return super.getMinimumHeight();
         if (mHeight >= 0)
             return mHeight;
+        if (mHeight == ViewGroup.LayoutParams.MATCH_PARENT &&
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            final Callback callback = getCallback();
+            if (callback instanceof View) {
+                return ((View) callback).getMeasuredHeight();
+            } else if (callback instanceof Drawable) {
+                return ((Drawable) callback).getMinimumHeight();
+            }
+        }
         int height = -1;
         for (ChildDrawable child : mItems) {
             height = Math.max(height, child.getMinimumHeight());
@@ -449,6 +485,21 @@ public class FrameDrawable extends Drawable implements Drawable.Callback {
     @Override
     public void unscheduleDrawable(Drawable who, Runnable what) {
         unscheduleSelf(what);
+    }
+
+    /**
+     * 设置尺寸
+     *
+     * @param width  宽度
+     * @param height 高度
+     */
+    public void setSize(int width, int height) {
+        if (mWidth == width && mHeight == height)
+            return;
+        mWidth = width;
+        mHeight = height;
+        refreshChildBounds();
+        invalidateSelf();
     }
 
     /**
