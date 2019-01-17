@@ -16,10 +16,13 @@
 package am.project.x.business.common;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDialog;
+import android.view.Gravity;
 import android.widget.FrameLayout;
 
 import am.project.x.R;
+import am.project.x.widget.CircularProgressImageView;
 
 
 /**
@@ -30,17 +33,19 @@ public class LoadingDialog extends AppCompatDialog {
     public LoadingDialog(Context context) {
         super(context, R.style.TransparentDialog);
         final FrameLayout contentView = new FrameLayout(context);
-        // TODO
-//        final MaterialProgressImageView loading = new MaterialProgressImageView(context);
-//        loading.setColorSchemeColors(
-//                ContextCompat.getColor(context, android.R.color.holo_red_light),
-//                ContextCompat.getColor(context, android.R.color.holo_blue_light),
-//                ContextCompat.getColor(context, android.R.color.holo_green_light),
-//                ContextCompat.getColor(context, android.R.color.holo_orange_light),
-//                ContextCompat.getColor(context, android.R.color.holo_purple));
-//        contentView.addView(loading, new FrameLayout.LayoutParams(
-//                FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT,
-//                Gravity.CENTER));
+        final CircularProgressImageView loading = new CircularProgressImageView(context);
+        loading.setColorSchemeColors(
+                ContextCompat.getColor(context, android.R.color.holo_red_light),
+                ContextCompat.getColor(context, android.R.color.holo_blue_light),
+                ContextCompat.getColor(context, android.R.color.holo_green_light),
+                ContextCompat.getColor(context, android.R.color.holo_orange_light),
+                ContextCompat.getColor(context, android.R.color.holo_purple));
+        final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER);
+        params.leftMargin = params.topMargin = params.rightMargin = params.bottomMargin =
+                context.getResources().getDimensionPixelSize(R.dimen.common_margin_loading);
+        contentView.addView(loading, params);
         setContentView(contentView);
         setCancelable(false);
         setCanceledOnTouchOutside(false);

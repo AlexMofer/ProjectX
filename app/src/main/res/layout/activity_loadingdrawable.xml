@@ -32,11 +32,15 @@
             app:wlyHorizontalSpacing="30dp"
             app:wlyVerticalSpacing="30dp">
 
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/ld_iv_00"
+            <am.project.x.widget.CircularProgressImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                app:cpSchemeColor1="@android:color/holo_red_light"
+                app:cpSchemeColor2="@android:color/holo_blue_light"
+                app:cpSchemeColor3="@android:color/holo_green_light"
+                app:cpSchemeColor4="@android:color/holo_orange_light"
+                app:cpSchemeColor5="@android:color/holo_purple" />
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/ld_iv_01"
