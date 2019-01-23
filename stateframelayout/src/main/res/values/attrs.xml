@@ -18,6 +18,8 @@
             <enum name="gone" value="1" />
             <enum name="invisible" value="2" />
         </attr>
+        <attr name="sflForceIntercept" format="boolean" />
+        <attr name="sflNormalNeverHide" format="boolean" />
     </declare-styleable>
     <declare-styleable name="StateFrameLayout_Layout">
         <attr name="sflLayout_state" format="enum">
