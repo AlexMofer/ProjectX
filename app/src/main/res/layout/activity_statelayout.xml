@@ -58,9 +58,9 @@
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="6dp"
         android:text="@string/sl_change_mode"
         android:textColor="#ff666666"
         android:textSize="14sp"
@@ -108,9 +108,9 @@
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="6dp"
         android:text="@string/sl_change_state"
         android:textColor="#ff666666"
         android:textSize="14sp"
@@ -136,7 +136,8 @@
             android:foreground="?selectableItemBackground"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_welcome"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            tool:ignore="UnusedAttribute" />
 
     </am.widget.stateframelayout.StateFrameLayout>
 
