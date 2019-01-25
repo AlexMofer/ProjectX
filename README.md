@@ -4,7 +4,7 @@ ProjectX
 
 <img src="images/svg/ic_launcher.svg" width="192" height="192" alt="Icon"/>
 
-所有个人开源项目合集，便于管理及维护。
+所有个人开源项目合集，便于管理及维护。目前正在适配AndroidX，项目暂时无法运行。
 
 Widget
 ------
