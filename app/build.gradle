@@ -41,11 +41,8 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     api project(':mvp')
-    api project(':basetabstrip')
+    api project(':tabstrip')
     api project(':viewpager')
-    api project(':gradienttabstrip')
-    api project(':tagtabstrip')
-    api project(':indicatortabstrip')
     api project(':shapeimageview')
     api project(':stateframelayout')
     api project(':wraplayout')

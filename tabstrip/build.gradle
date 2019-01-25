@@ -1,0 +1,17 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 28
+        versionCode 41
+        versionName "1.0.0"
+    }
+}
+
+dependencies {
+    compileOnly 'androidx.viewpager:viewpager:1.0.0'
+}
+
+//apply from: "bintray.gradle"
