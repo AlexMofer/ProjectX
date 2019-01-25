@@ -60,5 +60,4 @@ dependencies {
     api project(':font')
     api project(':opentype')
     api project(':floatingactionmode')
-    api project(':expandappcompat')
 }
