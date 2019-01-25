@@ -22,11 +22,6 @@ import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.view.AbsSavedState;
-import android.support.v4.view.GestureDetectorCompat;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -36,6 +31,11 @@ import android.view.ViewParent;
 
 import am.widget.multifunctionalrecyclerview.R;
 import am.widget.scrollbarrecyclerview.ScrollbarRecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.GestureDetectorCompat;
+import androidx.customview.view.AbsSavedState;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * 可缩放的RecyclerView

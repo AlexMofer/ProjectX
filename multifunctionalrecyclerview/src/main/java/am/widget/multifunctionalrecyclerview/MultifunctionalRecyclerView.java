@@ -17,11 +17,11 @@
 package am.widget.multifunctionalrecyclerview;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
 import am.widget.scalerecyclerview.ScaleRecyclerView;
+import androidx.annotation.Nullable;
 
 /**
  * 多功能RecyclerView

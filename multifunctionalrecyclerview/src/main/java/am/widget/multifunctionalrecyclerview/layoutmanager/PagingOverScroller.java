@@ -17,11 +17,12 @@
 package am.widget.multifunctionalrecyclerview.layoutmanager;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.PublicRecyclerView;
-import android.support.v7.widget.RecyclerView;
 import android.widget.OverScroller;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.PublicRecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * 分页飞行辅助器

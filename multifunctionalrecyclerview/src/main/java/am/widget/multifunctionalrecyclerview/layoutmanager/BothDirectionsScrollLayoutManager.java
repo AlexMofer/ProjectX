@@ -19,11 +19,12 @@ package am.widget.multifunctionalrecyclerview.layoutmanager;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.v4.view.AbsSavedState;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.customview.view.AbsSavedState;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * 双向滚动布局管理器
@@ -233,7 +234,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
 
     @Override
     public int computeVerticalScrollOffset(RecyclerView.State state) {
-        if (getOrientation() == VERTICAL) {
+        if (getOrientation() == RecyclerView.VERTICAL) {
             return super.computeVerticalScrollOffset(state);
         }
         return computeVerticalScrollOffset();
@@ -245,7 +246,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
      * @return 滚动偏移
      */
     public int computeVerticalScrollOffset() {
-        if (getOrientation() == VERTICAL) {
+        if (getOrientation() == RecyclerView.VERTICAL) {
             final RecyclerView view = getRecyclerView();
             return view == null ? 0 : view.computeVerticalScrollOffset();
         }
@@ -254,7 +255,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
 
     @Override
     public int computeHorizontalScrollExtent(RecyclerView.State state) {
-        if (getOrientation() == HORIZONTAL) {
+        if (getOrientation() == RecyclerView.HORIZONTAL) {
             return super.computeHorizontalScrollExtent(state);
         }
         return computeHorizontalScrollExtent();
@@ -266,7 +267,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
      * @return 滚动边界
      */
     protected int computeHorizontalScrollExtent() {
-        if (getOrientation() == HORIZONTAL) {
+        if (getOrientation() == RecyclerView.HORIZONTAL) {
             final RecyclerView view = getRecyclerView();
             return view == null ? 0 : view.computeHorizontalScrollExtent();
         }
@@ -275,7 +276,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
 
     @Override
     public int computeVerticalScrollExtent(RecyclerView.State state) {
-        if (getOrientation() == VERTICAL) {
+        if (getOrientation() == RecyclerView.VERTICAL) {
             return super.computeVerticalScrollExtent(state);
         }
         return computeVerticalScrollExtent();
@@ -287,7 +288,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
      * @return 滚动边界
      */
     protected int computeVerticalScrollExtent() {
-        if (getOrientation() == VERTICAL) {
+        if (getOrientation() == RecyclerView.VERTICAL) {
             final RecyclerView view = getRecyclerView();
             return view == null ? 0 : view.computeVerticalScrollExtent();
         }
@@ -308,7 +309,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
      * @return 滚动范围
      */
     protected int computeHorizontalScrollRange() {
-        if (getOrientation() == HORIZONTAL) {
+        if (getOrientation() == RecyclerView.HORIZONTAL) {
             final RecyclerView view = getRecyclerView();
             return view == null ? 0 : view.computeHorizontalScrollRange();
         }
@@ -328,7 +329,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
 
     @Override
     public int computeVerticalScrollRange(RecyclerView.State state) {
-        if (getOrientation() == VERTICAL) {
+        if (getOrientation() == RecyclerView.VERTICAL) {
             return super.computeVerticalScrollRange(state);
         }
         return computeVerticalScrollRange();
@@ -340,7 +341,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
      * @return 滚动范围
      */
     protected int computeVerticalScrollRange() {
-        if (getOrientation() == VERTICAL) {
+        if (getOrientation() == RecyclerView.VERTICAL) {
             final RecyclerView view = getRecyclerView();
             return view == null ? 0 : view.computeVerticalScrollRange();
         }
@@ -364,7 +365,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
      * @return 是否能够
      */
     public boolean canScrollAnotherDirection() {
-        if (getOrientation() == HORIZONTAL) {
+        if (getOrientation() == RecyclerView.HORIZONTAL) {
             return canScrollVertically();
         } else {
             return canScrollHorizontally();
@@ -386,7 +387,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     @Override
     public int scrollHorizontallyBy(int dx, RecyclerView.Recycler recycler,
                                     RecyclerView.State state) {
-        if (getOrientation() == HORIZONTAL) {
+        if (getOrientation() == RecyclerView.HORIZONTAL) {
             return super.scrollHorizontallyBy(dx, recycler, state);
         }
         return scrollBy(dx);
@@ -395,7 +396,7 @@ public class BothDirectionsScrollLayoutManager extends CenterLinearLayoutManager
     @Override
     public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler,
                                   RecyclerView.State state) {
-        if (getOrientation() == VERTICAL) {
+        if (getOrientation() == RecyclerView.VERTICAL) {
             return super.scrollVerticallyBy(dy, recycler, state);
         }
         return scrollBy(dy);

@@ -18,12 +18,12 @@ package am.widget.itemanimatorcontrollablerecyclerview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.PublicRecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.util.AttributeSet;
 
 import am.widget.multifunctionalrecyclerview.R;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.PublicRecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 /**
  * 子项动画可控的RecyclerView

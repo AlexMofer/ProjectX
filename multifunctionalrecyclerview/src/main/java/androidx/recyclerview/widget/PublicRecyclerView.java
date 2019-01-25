@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package android.support.v7.widget;
+package androidx.recyclerview.widget;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.animation.Interpolator;
+
+import androidx.annotation.Nullable;
 
 /**
  * 公开部分包内私有的方法及变量的RecyclerView

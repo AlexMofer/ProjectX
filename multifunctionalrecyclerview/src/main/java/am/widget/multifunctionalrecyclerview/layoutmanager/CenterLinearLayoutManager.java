@@ -17,12 +17,13 @@
 package am.widget.multifunctionalrecyclerview.layoutmanager;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.PublicLinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.PublicLinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * 剧中线性布局
@@ -86,7 +87,7 @@ public class CenterLinearLayoutManager extends PublicLinearLayoutManager {
         final int bottomDecorationHeight = getBottomDecorationHeight(child);
         final ViewGroup parent = (ViewGroup) child.getParent();
         final int offset;
-        if (getOrientation() == HORIZONTAL) {
+        if (getOrientation() == RecyclerView.HORIZONTAL) {
             final int contentHeight = parent.getMeasuredHeight() -
                     parent.getPaddingTop() - parent.getPaddingBottom();
             offset = (contentHeight - (bottom - top)) / 2;

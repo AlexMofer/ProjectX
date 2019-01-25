@@ -16,9 +16,10 @@
 
 package am.widget.scalerecyclerview;
 
-import android.support.v4.view.ViewCompat;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
+
+import androidx.core.view.ViewCompat;
 
 /**
  * 缩放辅助器

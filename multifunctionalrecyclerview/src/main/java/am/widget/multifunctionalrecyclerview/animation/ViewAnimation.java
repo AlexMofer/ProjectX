@@ -1,10 +1,11 @@
 package am.widget.multifunctionalrecyclerview.animation;
 
-import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
+
+import androidx.core.view.ViewCompat;
 
 
 /**

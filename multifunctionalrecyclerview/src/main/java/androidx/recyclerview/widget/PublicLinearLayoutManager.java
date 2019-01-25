@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package android.support.v7.widget;
+package androidx.recyclerview.widget;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+
+import androidx.annotation.Nullable;
 
 /**
  * 公开部分包内私有的方法及保存状态的线性布局管理器
