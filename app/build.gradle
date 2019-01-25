@@ -43,7 +43,7 @@ dependencies {
     api project(':mvp')
     api project(':tabstrip')
     api project(':viewpager')
-    api project(':shapeimageview')
+    api project(':multifunctionalimageview')
     api project(':stateframelayout')
     api project(':wraplayout')
     api project(':drawableratingbar')
