@@ -2,12 +2,12 @@ package am.util.viewpager;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 
 import am.util.viewpager.adapter.RecyclePagerAdapter;
 import am.util.viewpager.adapter.ViewsPagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * 与RecyclePagerAdapter或ViewsPagerAdapter配合使用的ViewPager

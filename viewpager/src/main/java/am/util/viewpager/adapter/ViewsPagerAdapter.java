@@ -17,9 +17,6 @@
 package am.util.viewpager.adapter;
 
 import android.content.res.Configuration;
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.ConfigurationHelper;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +24,10 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * ViewsPagerAdapter
