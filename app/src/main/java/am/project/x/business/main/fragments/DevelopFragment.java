@@ -17,7 +17,6 @@ package am.project.x.business.main.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,7 @@ import android.view.ViewGroup;
 import am.project.x.R;
 import am.project.x.base.BaseFragment;
 import am.project.x.business.developing.DevelopingActivity;
+import androidx.annotation.Nullable;
 
 public class DevelopFragment extends BaseFragment implements View.OnClickListener {
 

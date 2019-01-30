@@ -16,9 +16,6 @@
 package am.project.x.business.others.printer;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -27,6 +24,9 @@ import java.util.Locale;
 
 import am.project.x.R;
 import am.project.x.utils.AlertDialogUtils;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.core.widget.NestedScrollView;
 
 /**
  * 打印信息对话框

@@ -17,7 +17,6 @@ package am.project.x.business.main.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +37,7 @@ import am.project.x.business.widgets.statelayout.StateLayoutActivity;
 import am.project.x.business.widgets.tagtabstrip.TagTabStripActivity;
 import am.project.x.business.widgets.wraplayout.WrapLayoutActivity;
 import am.project.x.business.widgets.zxingscanview.ZxingScanViewActivity;
+import androidx.annotation.Nullable;
 
 public class WidgetsFragment extends BaseFragment implements View.OnClickListener {
 

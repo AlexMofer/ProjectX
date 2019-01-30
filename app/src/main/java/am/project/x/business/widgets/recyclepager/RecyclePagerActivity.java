@@ -18,9 +18,6 @@ package am.project.x.business.widgets.recyclepager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -31,6 +28,9 @@ import java.util.Locale;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.util.viewpager.adapter.RecyclePagerAdapter;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * 回收页视图
@@ -80,7 +80,7 @@ public class RecyclePagerActivity extends BaseActivity implements View.OnClickLi
             text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 64);
         }
 
-        public void setData(String data) {
+        void setData(String data) {
             ((AppCompatTextView) itemView).setText(data);
         }
     }

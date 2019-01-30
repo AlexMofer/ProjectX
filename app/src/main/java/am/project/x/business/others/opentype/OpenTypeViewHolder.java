@@ -15,13 +15,13 @@
  */
 package am.project.x.business.others.opentype;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import am.project.x.R;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * ViewHolder

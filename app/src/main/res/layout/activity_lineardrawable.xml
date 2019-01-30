@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".business.drawables.lineardrawable.LinearDrawableActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/lrd_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/lrd_iv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         android:textColor="#ff666666"
         android:textSize="14sp" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -48,13 +48,13 @@
         android:textColor="#ff666666"
         android:textSize="14sp" />
 
-    <android.support.v7.widget.AppCompatSeekBar
+    <androidx.appcompat.widget.AppCompatSeekBar
         android:id="@+id/lrd_sb_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="5" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -62,7 +62,7 @@
         android:textColor="#ff666666"
         android:textSize="14sp" />
 
-    <android.support.v7.widget.AppCompatSeekBar
+    <androidx.appcompat.widget.AppCompatSeekBar
         android:id="@+id/lrd_sb_gap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

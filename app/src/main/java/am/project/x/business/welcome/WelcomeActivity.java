@@ -16,11 +16,11 @@
 package am.project.x.business.welcome;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.project.x.business.main.MainActivity;
+import androidx.annotation.Nullable;
 
 /**
  * 欢迎页

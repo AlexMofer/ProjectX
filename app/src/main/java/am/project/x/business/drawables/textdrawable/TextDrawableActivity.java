@@ -19,14 +19,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import am.drawable.TextDrawable;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 /**
  * 文本图片

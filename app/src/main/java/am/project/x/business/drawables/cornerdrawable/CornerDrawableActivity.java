@@ -19,8 +19,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.SeekBar;
@@ -28,6 +26,8 @@ import android.widget.Spinner;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 /**
  * 尖角框

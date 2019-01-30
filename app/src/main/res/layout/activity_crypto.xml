@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".business.others.crypto.CryptoActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/crypto_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/crypto_label" />
 
-    <android.support.v7.widget.AppCompatEditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/crypto_edt_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         android:inputType="text"
         app:layout_constraintTop_toBottomOf="@id/crypto_toolbar" />
 
-    <android.support.v7.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/crypto_btn_message"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="0dp"
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@id/crypto_edt_input"
         app:layout_constraintWidth_percent="0.25" />
 
-    <android.support.v7.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/crypto_btn_des"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="0dp"
@@ -48,7 +48,7 @@
         app:layout_constraintTop_toTopOf="@id/crypto_btn_message"
         app:layout_constraintWidth_percent="0.25" />
 
-    <android.support.v7.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/crypto_btn_aes"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="0dp"
@@ -59,7 +59,7 @@
         app:layout_constraintTop_toTopOf="@id/crypto_btn_des"
         app:layout_constraintWidth_percent="0.25" />
 
-    <android.support.v7.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/crypto_btn_rsa"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="0dp"
@@ -70,7 +70,7 @@
         app:layout_constraintTop_toTopOf="@id/crypto_btn_aes"
         app:layout_constraintWidth_percent="0.25" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -86,11 +86,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/crypto_btn_message">
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/crypto_tv_output"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     </ScrollView>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

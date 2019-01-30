@@ -21,8 +21,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,6 +30,8 @@ import android.widget.Spinner;
 import am.drawable.LineDrawable;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 /**
  * 横线图片

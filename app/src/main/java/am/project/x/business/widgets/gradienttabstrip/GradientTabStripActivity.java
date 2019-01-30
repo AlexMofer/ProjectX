@@ -19,9 +19,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -35,6 +32,9 @@ import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.util.viewpager.adapter.ViewsPagerAdapter;
 import am.widget.gradienttabstrip.GradientTabStrip;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * 渐变底部栏

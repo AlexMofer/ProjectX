@@ -19,9 +19,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -33,6 +30,9 @@ import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.project.x.widget.CircularProgressImageView;
 import am.widget.stateframelayout.StateFrameLayout;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
 
 /**
  * 状态布局

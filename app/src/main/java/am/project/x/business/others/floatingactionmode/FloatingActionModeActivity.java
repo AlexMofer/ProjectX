@@ -19,7 +19,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,6 +28,7 @@ import am.widget.floatingactionmode.FloatingActionMode;
 import am.widget.floatingactionmode.FloatingMenu;
 import am.widget.floatingactionmode.FloatingMenuItem;
 import am.widget.floatingactionmode.FloatingSubMenu;
+import androidx.annotation.Nullable;
 
 /**
  * 悬浮菜单

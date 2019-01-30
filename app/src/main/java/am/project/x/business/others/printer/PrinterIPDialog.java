@@ -16,8 +16,6 @@
 package am.project.x.business.others.printer;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatDialog;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -26,6 +24,8 @@ import am.project.support.utils.InputMethodUtils;
 import am.project.x.R;
 import am.project.x.utils.AlertDialogUtils;
 import am.project.x.utils.StringUtils;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDialog;
 
 /**
  * 固定IP填写对话框

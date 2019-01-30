@@ -18,8 +18,6 @@ package am.project.x.business.widgets.tagtabstrip;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -31,6 +29,8 @@ import java.util.Locale;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.util.viewpager.adapter.ViewsPagerAdapter;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * 图片标记栏

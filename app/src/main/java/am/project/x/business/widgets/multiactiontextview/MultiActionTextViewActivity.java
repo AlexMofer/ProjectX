@@ -18,8 +18,6 @@ package am.project.x.business.widgets.multiactiontextview;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +26,8 @@ import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.widget.multiactiontextview.MultiActionClickableSpan;
 import am.widget.multiactiontextview.MultiActionTextView;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 /**
  * 文本点击

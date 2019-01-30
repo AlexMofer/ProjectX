@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".business.widgets.circleprogressbar.CircleProgressBarActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/cpb_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -89,7 +89,7 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/cpb_sp_gravity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -107,14 +107,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_radius"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="100"
                 android:progress="60" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -124,7 +124,7 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/cpb_sp_scale_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -154,14 +154,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_loading_start_angle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="360"
                 android:progress="135" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -171,14 +171,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_loading_sweep_angle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="360"
                 android:progress="270" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -188,7 +188,7 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_loading_duration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -219,7 +219,7 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -229,14 +229,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_start_angle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="360"
                 android:progress="135" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -246,14 +246,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_sweep_angle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="360"
                 android:progress="270" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -263,14 +263,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_background_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="30"
                 android:progress="2" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -280,14 +280,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_progress_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="30"
                 android:progress="20" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -297,7 +297,7 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -328,7 +328,7 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -338,14 +338,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_progress_value_text_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="50"
                 android:progress="22" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -355,14 +355,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_top_text_gap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="50"
                 android:progress="40" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -372,14 +372,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_top_text_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="30"
                 android:progress="10" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -389,14 +389,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_bottom_text_gap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="50"
                 android:progress="40" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -406,14 +406,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_bottom_text_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="30"
                 android:progress="6" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -423,14 +423,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_progress_duration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="49"
                 android:progress="19" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -440,7 +440,7 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/cpb_sp_dial_visibility"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -448,7 +448,7 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -458,14 +458,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_dial_gap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="10"
                 android:progress="4" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -475,14 +475,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_dial_angle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="10"
                 android:progress="5" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -492,14 +492,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_dial_height"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="20"
                 android:progress="10" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -509,14 +509,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_dial_width"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="5"
                 android:progress="2" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -526,14 +526,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_dial_special_unit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="10"
                 android:progress="3" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -543,14 +543,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_dial_special_height"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="20"
                 android:progress="15" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -560,14 +560,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_dial_special_width"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="5"
                 android:progress="2" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -577,7 +577,7 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/cpb_sp_dial_gravity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -597,7 +597,7 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -607,14 +607,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_special_dial_value_gap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="10"
                 android:progress="2" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -624,14 +624,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/cpb_sb_special_dial_value_text_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="10"
                 android:progress="7" />
 
-            <android.support.v7.widget.AppCompatButton
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/cpb_btn_progress_animator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -642,4 +642,4 @@
 
     </ScrollView>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

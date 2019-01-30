@@ -16,10 +16,10 @@
 package am.project.x.broadcast;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.content.LocalBroadcastManager;
 
 import am.project.x.ProjectXApplication;
+import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 /**
  * 应用内广播辅助器

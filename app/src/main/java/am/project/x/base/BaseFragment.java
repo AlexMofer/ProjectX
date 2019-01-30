@@ -15,9 +15,8 @@
  */
 package am.project.x.base;
 
-import android.support.annotation.RequiresApi;
-
 import am.util.mvp.AMFragment;
+import androidx.annotation.RequiresApi;
 
 /**
  * 基础Fragment

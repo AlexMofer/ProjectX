@@ -18,10 +18,10 @@ package am.project.x.business.drawables.centerdrawable;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
+import androidx.annotation.Nullable;
 
 /**
  * 中心图片

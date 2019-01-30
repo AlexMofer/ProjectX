@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tool:context=".business.widgets.shapeimageview.ShapeImageViewActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/siv_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/siv_label" />
 
-    <am.widget.shapeimageview.ShapeImageView
+    <ImageView
         android:id="@+id/siv_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,15 +29,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/siv_toolbar"
-        app:sivBorderColor="@color/colorAccent"
-        app:sivBorderWidth="2dp"
-        app:sivForeground="?selectableItemBackground"
-        app:sivHeightScale="1"
-        app:sivRoundRectRadius="10dp"
-        app:sivScaleTarget="height"
-        app:sivShape="Circle"
-        app:sivWidthScale="1" />
+        app:layout_constraintTop_toBottomOf="@id/siv_toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -64,14 +56,14 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/siv_height_width_scale"
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/siv_sb_height"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,14 +71,14 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/siv_border_width"
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/siv_sb_border"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,14 +86,14 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/siv_radius"
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/siv_sb_radius"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -109,14 +101,14 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/siv_padding"
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/siv_sb_padding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -124,14 +116,14 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/siv_scaletype"
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/siv_sp_scale_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -144,4 +136,4 @@
     </ScrollView>
 
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

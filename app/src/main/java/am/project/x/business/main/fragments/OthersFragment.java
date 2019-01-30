@@ -17,7 +17,6 @@ package am.project.x.business.main.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ import am.project.x.business.others.font.FontActivity;
 import am.project.x.business.others.ftp.FTPActivity;
 import am.project.x.business.others.opentypelist.OpenTypeListActivity;
 import am.project.x.business.others.printer.PrinterActivity;
+import androidx.annotation.Nullable;
 
 public class OthersFragment extends BaseFragment implements View.OnClickListener {
 

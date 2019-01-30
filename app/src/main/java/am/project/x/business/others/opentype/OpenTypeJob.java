@@ -15,8 +15,6 @@
  */
 package am.project.x.business.others.opentype;
 
-import android.support.annotation.Nullable;
-
 import java.io.File;
 
 import am.project.support.job.Job;
@@ -26,6 +24,7 @@ import am.util.opentype.OpenTypeCollection;
 import am.util.opentype.OpenTypeParser;
 import am.util.opentype.OpenTypeReader;
 import am.util.opentype.TableRecord;
+import androidx.annotation.Nullable;
 
 /**
  * Job

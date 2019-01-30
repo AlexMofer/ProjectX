@@ -12,7 +12,7 @@
     app:silInputView="@+id/sil_edt_input"
     tools:context=".business.widgets.smoothinputlayout.SmoothInputLayoutActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/sil_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:orientation="horizontal"
         android:padding="5dp">
 
-        <android.support.v7.widget.AppCompatImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/sil_ibtn_voice"
             style="@style/Widget.AppCompat.Toolbar.Button.Navigation"
             android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
             android:padding="5dp"
             android:src="@drawable/ic_smoothinputlayout_voice" />
 
-        <android.support.v7.widget.AppCompatEditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@id/sil_edt_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             android:inputType="textMultiLine"
             android:maxLines="4" />
 
-        <android.support.v7.widget.AppCompatImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/sil_ibtn_emoji"
             style="@style/Widget.AppCompat.Toolbar.Button.Navigation"
             android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
             android:padding="5dp"
             android:src="@drawable/ic_smoothinputlayout_emoji" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/sil_btn_send_voice"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -73,7 +73,7 @@
             android:textColor="#ff959595"
             android:visibility="gone" />
 
-        <android.support.v7.widget.AppCompatImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/sil_ibtn_more"
             style="@style/Widget.AppCompat.Toolbar.Button.Navigation"
             android:layout_width="wrap_content"
@@ -84,7 +84,7 @@
             android:padding="5dp"
             android:src="@drawable/ic_smoothinputlayout_more" />
 
-        <android.support.v7.widget.AppCompatImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/sil_ibtn_send"
             style="@style/Widget.AppCompat.Toolbar.Button.Navigation"
             android:layout_width="wrap_content"

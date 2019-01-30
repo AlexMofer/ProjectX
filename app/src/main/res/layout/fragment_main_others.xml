@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".business.main.fragments.OthersFragment">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/other_btn_printer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.25" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/other_btn_crypto"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -43,7 +43,7 @@
             app:layout_constraintTop_toTopOf="@id/other_btn_printer"
             app:layout_constraintWidth_percent="0.25" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/other_btn_ftp"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -60,7 +60,7 @@
             app:layout_constraintTop_toTopOf="@id/other_btn_crypto"
             app:layout_constraintWidth_percent="0.25" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/other_btn_font"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -77,7 +77,7 @@
             app:layout_constraintStart_toEndOf="@id/other_btn_ftp"
             app:layout_constraintTop_toTopOf="@id/other_btn_ftp" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/other_btn_opentype"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
             app:layout_constraintTop_toBottomOf="@id/other_btn_printer"
             app:layout_constraintWidth_percent="0.25" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/other_btn_floating"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -110,6 +110,6 @@
             app:layout_constraintTop_toTopOf="@id/other_btn_opentype"
             app:layout_constraintWidth_percent="0.25" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

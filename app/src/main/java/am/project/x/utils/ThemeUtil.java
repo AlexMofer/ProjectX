@@ -2,8 +2,9 @@ package am.project.x.utils;
 
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 
 /**
  * 主题工具

@@ -16,7 +16,6 @@
 package am.project.x.business.others.font;
 
 import android.content.Context;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import am.project.x.R;
+import androidx.appcompat.app.AlertDialog;
 
 /**
  * 字体家族名选择对话框

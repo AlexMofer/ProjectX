@@ -2,11 +2,12 @@ package am.project.x.business.developing.display;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import am.project.x.utils.ThemeUtil;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 /**
@@ -27,14 +28,14 @@ class DisplayItemDecoration extends RecyclerView.ItemDecoration {
     DisplayItemDecoration(Context context) {
         mGap = 20;
         mToolbarHeight = ThemeUtil.getDimensionPixelSize(context.getTheme(),
-                android.support.v7.appcompat.R.attr.actionBarSize, 0);
+                androidx.appcompat.R.attr.actionBarSize, 0);
     }
 
     @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
-                               RecyclerView.State state) {
+    public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
+                               @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         final int position = parent.getChildAdapterPosition(view);
-        final int itemCount = parent.getAdapter().getItemCount();
+        @SuppressWarnings("ConstantConditions") final int itemCount = parent.getAdapter().getItemCount();
         final int type = position == 0 ? TYPE_FIRST :
                 (position == itemCount - 1 ? TYPE_LAST : TYPE_NORMAL);
         if (mOrientation == LinearLayoutManager.HORIZONTAL) {

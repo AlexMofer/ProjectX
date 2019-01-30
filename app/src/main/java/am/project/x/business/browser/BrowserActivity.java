@@ -19,13 +19,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.webkit.WebSettings;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.project.x.widget.PowerfulWebView;
+import androidx.annotation.Nullable;
 
 public class BrowserActivity extends BaseActivity implements PowerfulWebView.OnTitleListener {
 

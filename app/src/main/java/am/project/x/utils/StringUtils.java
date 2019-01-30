@@ -1,8 +1,8 @@
 package am.project.x.utils;
 
-import android.support.annotation.NonNull;
-
 import java.util.regex.Pattern;
+
+import androidx.annotation.NonNull;
 
 
 /**
@@ -33,8 +33,9 @@ public class StringUtils {
      */
     public static boolean isIp(@NonNull String IP) {
         boolean b = false;
+        IP = IP.trim();
         while (IP.startsWith(" ")) {
-            IP = IP.substring(1, IP.length()).trim();
+            IP = IP.substring(1).trim();
         }
         while (IP.endsWith(" ")) {
             IP = IP.substring(0, IP.length() - 1).trim();

@@ -26,7 +26,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.webkit.JsResult;
@@ -38,12 +37,13 @@ import android.webkit.WebViewClient;
 import java.util.ArrayList;
 
 import am.project.x.R;
+import androidx.annotation.NonNull;
 
 /**
  * 带进度条的WebView
  * Created by Alex on 2017/9/26.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class PowerfulWebView extends WebView {
 
 
@@ -99,7 +99,7 @@ public class PowerfulWebView extends WebView {
         final int paddingTop = getPaddingTop();
         final int paddingRight = getPaddingRight();
         final int maxWidth = getWidth() - paddingLeft - paddingRight;
-        canvas.drawRect(paddingLeft, paddingTop, maxWidth * mProgress / 100,
+        canvas.drawRect(paddingLeft, paddingTop, Math.round(maxWidth * mProgress / 100.0f),
                 paddingTop + mProgressHeight, mPaint);
     }
 
@@ -295,7 +295,6 @@ public class PowerfulWebView extends WebView {
     /**
      * JS接口辅助器
      */
-    @SuppressWarnings("WeakerAccess")
     public abstract static class JavascriptInterfaceHelper {
 
         public static final int SUPPORT_TYPE_IGNORE = 0;// 忽略API 17以下用户

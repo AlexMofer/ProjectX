@@ -18,7 +18,6 @@ package am.project.x.business.about;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -28,6 +27,7 @@ import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.project.x.business.browser.BrowserActivity;
 import am.project.x.utils.ViewUtils;
+import androidx.annotation.Nullable;
 
 /**
  * 关于

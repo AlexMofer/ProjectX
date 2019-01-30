@@ -19,9 +19,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.Nullable;
 
 import am.project.x.R;
+import androidx.annotation.Nullable;
 
 
 /**

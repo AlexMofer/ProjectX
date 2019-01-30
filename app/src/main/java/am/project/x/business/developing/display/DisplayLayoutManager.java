@@ -2,9 +2,9 @@ package am.project.x.business.developing.display;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.v7.widget.RecyclerView;
 
 import am.widget.multifunctionalrecyclerview.MultifunctionalLinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 /**

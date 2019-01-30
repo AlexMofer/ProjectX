@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".business.browser.BrowserActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/browser_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -16,7 +16,6 @@
 package am.project.x.business.others.opentype;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 
 import am.project.x.ProjectXApplication;
 import am.project.x.R;
@@ -26,6 +25,7 @@ import am.util.opentype.OpenTypeCollection;
 import am.util.opentype.TableRecord;
 import am.util.opentype.tables.BaseTable;
 import am.util.opentype.tables.NamingTable;
+import androidx.annotation.Nullable;
 
 /**
  * Model

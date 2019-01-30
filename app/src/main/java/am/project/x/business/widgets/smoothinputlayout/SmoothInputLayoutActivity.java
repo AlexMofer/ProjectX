@@ -15,10 +15,10 @@
  */
 package am.project.x.business.widgets.smoothinputlayout;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
@@ -29,6 +29,7 @@ import android.widget.Toast;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.widget.smoothinputlayout.SmoothInputLayout;
+import androidx.annotation.Nullable;
 
 /**
  * 输入面板
@@ -55,6 +56,7 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
         return R.layout.activity_smoothinputlayout;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.sil_toolbar);

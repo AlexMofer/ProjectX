@@ -16,7 +16,6 @@
 package am.project.x.business.others.printer;
 
 import android.bluetooth.BluetoothDevice;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,7 @@ import android.widget.TextView;
 import java.lang.ref.WeakReference;
 
 import am.project.x.R;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * PrinterDeviceViewHolder

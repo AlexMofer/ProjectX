@@ -35,7 +35,7 @@ public class AlertDialogUtils {
      */
     public static int getAlertDialogTheme(Context context) {
         final TypedValue outValue = new TypedValue();
-        context.getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.alertDialogTheme,
+        context.getTheme().resolveAttribute(androidx.appcompat.R.attr.alertDialogTheme,
                 outValue, true);
         return outValue.resourceId;
     }

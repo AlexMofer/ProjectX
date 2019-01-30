@@ -31,8 +31,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
-import android.support.v4.widget.CircularProgressDrawable;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -40,6 +38,8 @@ import android.util.TypedValue;
 import java.util.ArrayList;
 
 import am.project.x.R;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 /**
  * 载入动画ImageView

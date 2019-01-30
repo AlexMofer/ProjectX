@@ -4,9 +4,9 @@ package am.project.x.business.others.ftp;
 import android.graphics.drawable.Icon;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
-import android.support.annotation.RequiresApi;
 
 import am.project.x.R;
+import androidx.annotation.RequiresApi;
 
 /**
  * 文件传输快捷菜单

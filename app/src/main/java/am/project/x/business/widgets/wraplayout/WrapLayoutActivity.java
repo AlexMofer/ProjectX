@@ -18,13 +18,13 @@ package am.project.x.business.widgets.wraplayout;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.widget.wraplayout.WrapLayout;
+import androidx.annotation.Nullable;
 
 /**
  * 自动换行布局

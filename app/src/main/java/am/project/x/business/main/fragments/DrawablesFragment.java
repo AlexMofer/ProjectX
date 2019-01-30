@@ -18,7 +18,6 @@ package am.project.x.business.main.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +31,7 @@ import am.project.x.business.drawables.lineardrawable.LinearDrawableActivity;
 import am.project.x.business.drawables.linedrawable.LineDrawableActivity;
 import am.project.x.business.drawables.loadingdrawable.LoadingDrawableActivity;
 import am.project.x.business.drawables.textdrawable.TextDrawableActivity;
+import androidx.annotation.Nullable;
 
 public class DrawablesFragment extends BaseFragment implements View.OnClickListener {
 

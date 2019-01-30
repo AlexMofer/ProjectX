@@ -21,9 +21,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
@@ -41,6 +38,9 @@ import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.widget.zxingscanview.ZxingForegroundView;
 import am.widget.zxingscanview.ZxingScanView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 
 /**
  * 条码扫描

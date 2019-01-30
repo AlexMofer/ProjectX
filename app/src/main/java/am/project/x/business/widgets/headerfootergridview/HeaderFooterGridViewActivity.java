@@ -18,8 +18,6 @@ package am.project.x.business.widgets.headerfootergridview;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatTextView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +34,8 @@ import java.util.Locale;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.widget.headerfootergridview.HeaderFooterGridView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 
 /**
  * 头尾网格视图

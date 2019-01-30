@@ -16,13 +16,13 @@
 package am.project.x.business.common;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatDialog;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 
 import am.project.x.R;
 import am.project.x.widget.CircularProgressImageView;
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.core.content.ContextCompat;
 
 
 /**
