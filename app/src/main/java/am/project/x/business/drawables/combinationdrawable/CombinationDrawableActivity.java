@@ -21,8 +21,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 
+import am.drawable.FrameDrawable;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import androidx.annotation.Nullable;
@@ -32,6 +34,9 @@ import androidx.annotation.Nullable;
  */
 public class CombinationDrawableActivity extends BaseActivity implements
         AdapterView.OnItemSelectedListener, SeekBar.OnSeekBarChangeListener {
+
+    private final FrameDrawable mDrawable = new FrameDrawable();
+    private ImageView mVImage;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, CombinationDrawableActivity.class));
@@ -45,6 +50,7 @@ public class CombinationDrawableActivity extends BaseActivity implements
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.cod_toolbar);
+        mVImage = findViewById(R.id.cod_iv_image);
         // TODO
 //        this.<ImageView>findViewById(R.id.cod_iv_image).setImageDrawable(drawable);
 //        this.<Spinner>findViewById(R.id.cod_sp_gravity).setOnItemSelectedListener(this);

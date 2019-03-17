@@ -17,7 +17,7 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/siv_label" />
 
-    <ImageView
+    <am.widget.multifunctionalimageview.MultifunctionalImageView
         android:id="@+id/siv_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,6 +27,8 @@
         android:scaleType="center"
         android:src="@drawable/ic_welcome"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:civBorderColor="@color/colorAccent"
+        app:fivForeground="?selectableItemBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/siv_toolbar" />
@@ -50,41 +52,10 @@
                 android:id="@+id/siv_sw_crop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="true"
                 android:paddingBottom="8dp"
                 android:text="@string/siv_crop_type"
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/siv_height_width_scale"
-                android:textColor="#ff666666"
-                android:textSize="14sp" />
-
-            <androidx.appcompat.widget.AppCompatSeekBar
-                android:id="@+id/siv_sb_height"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:max="50"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/siv_border_width"
-                android:textColor="#ff666666"
-                android:textSize="14sp" />
-
-            <androidx.appcompat.widget.AppCompatSeekBar
-                android:id="@+id/siv_sb_border"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:max="10"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
@@ -98,8 +69,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="30"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/siv_height_width_scale"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/siv_sb_height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="50"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/siv_border_width"
+                android:textColor="#ff666666"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/siv_sb_border"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="10"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
@@ -113,8 +114,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="20"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
@@ -128,8 +129,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/siv_scale_type"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
 
         </LinearLayout>
 

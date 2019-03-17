@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 
 import am.project.x.R;
 import am.project.x.base.BaseFragment;
+import am.project.x.business.others.clipboard.ClipboardActivity;
 import am.project.x.business.others.crypto.CryptoActivity;
 import am.project.x.business.others.floatingactionmode.FloatingActionModeActivity;
 import am.project.x.business.others.font.FontActivity;
@@ -51,6 +52,7 @@ public class OthersFragment extends BaseFragment implements View.OnClickListener
         findViewById(R.id.other_btn_font).setOnClickListener(this);
         findViewById(R.id.other_btn_opentype).setOnClickListener(this);
         findViewById(R.id.other_btn_floating).setOnClickListener(this);
+        findViewById(R.id.other_btn_clipboard).setOnClickListener(this);
     }
 
     @Override
@@ -73,6 +75,9 @@ public class OthersFragment extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.other_btn_floating:
                 FloatingActionModeActivity.start(getActivity());
+                break;
+            case R.id.other_btn_clipboard:
+                ClipboardActivity.start(getActivity());
                 break;
         }
     }

@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -109,8 +110,8 @@
             android:name=".business.drawables.linedrawable.LineDrawableActivity"
             android:label="@string/lid_label" />
         <activity
-            android:name=".business.drawables.lineardrawable.LinearDrawableActivity"
-            android:label="@string/lrd_label" />
+            android:name=".business.drawables.griddrawable.GridDrawableActivity"
+            android:label="@string/grd_label" />
         <activity
             android:name=".business.drawables.textdrawable.TextDrawableActivity"
             android:label="@string/td_label" />
@@ -143,6 +144,9 @@
         <activity
             android:name=".business.widgets.multifunctionalrecyclerview.MultifunctionalRecyclerViewActivity"
             android:label="@string/mrv_label" />
+        <activity
+            android:name=".business.others.clipboard.ClipboardActivity"
+            android:label="@string/clipboard_label" />
 
         <service
             android:name=".business.others.ftp.FTPService"
@@ -156,6 +160,12 @@
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
+
+        <provider
+            android:name=".business.others.clipboard.MyClipboardProvider"
+            android:authorities="${applicationId}.clipboardprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" />
     </application>
 
 </manifest>

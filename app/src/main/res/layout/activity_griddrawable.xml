@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".business.drawables.lineardrawable.LinearDrawableActivity">
+    tools:context=".business.drawables.griddrawable.GridDrawableActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/lrd_toolbar"
+        android:id="@+id/grd_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="@string/lrd_label" />
+        app:title="@string/grd_label" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -24,32 +24,20 @@
             android:id="@+id/lrd_iv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:scaleType="centerInside" />
+            android:layout_gravity="center" />
 
     </FrameLayout>
-
-    <Switch
-        android:id="@+id/lrd_sh_orientation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/lrd_orientation"
-        android:textColor="#ff666666"
-        android:textSize="14sp" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="@string/lrd_number"
+        android:text="@string/grd_number_row"
         android:textColor="#ff666666"
         android:textSize="14sp" />
 
     <androidx.appcompat.widget.AppCompatSeekBar
-        android:id="@+id/lrd_sb_number"
+        android:id="@+id/grd_sb_number_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="5" />
@@ -58,12 +46,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="@string/lrd_gap"
+        android:text="@string/grd_number_column"
         android:textColor="#ff666666"
         android:textSize="14sp" />
 
     <androidx.appcompat.widget.AppCompatSeekBar
-        android:id="@+id/lrd_sb_gap"
+        android:id="@+id/grd_sb_number_column"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="5" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/grd_gap"
+        android:textColor="#ff666666"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/grd_sb_gap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"

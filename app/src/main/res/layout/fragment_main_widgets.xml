@@ -12,6 +12,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/widget_btn_gradienttabstrip"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
@@ -20,7 +21,6 @@
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
             android:text="@string/main_widgets_gradienttabstrip"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -28,6 +28,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/widget_btn_tagtabstrip"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
@@ -36,7 +37,6 @@
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
             android:text="@string/main_widgets_tagtabstrip"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/widget_btn_gradienttabstrip"
             app:layout_constraintStart_toEndOf="@id/widget_btn_gradienttabstrip"
@@ -45,6 +45,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/widget_btn_indicatortabstrip"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
@@ -53,7 +54,6 @@
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
             android:text="@string/main_widgets_indicatortabstrip"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/widget_btn_tagtabstrip"
             app:layout_constraintStart_toEndOf="@id/widget_btn_tagtabstrip"
@@ -62,6 +62,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/widget_btn_shapeimageview"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
@@ -70,7 +71,6 @@
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
             android:text="@string/main_widgets_shapeimageview"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/widget_btn_indicatortabstrip"
             app:layout_constraintEnd_toEndOf="parent"
@@ -79,6 +79,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/widget_btn_statelayout"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
@@ -87,7 +88,6 @@
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
             android:text="@string/main_widgets_statelayout"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/widget_btn_gradienttabstrip"
@@ -95,6 +95,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/widget_btn_wraplayout"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
@@ -103,7 +104,6 @@
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
             android:text="@string/main_widgets_wraplayout"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/widget_btn_statelayout"
             app:layout_constraintStart_toEndOf="@id/widget_btn_statelayout"
@@ -112,6 +112,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/widget_btn_drawableratingbar"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
@@ -120,7 +121,6 @@
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
             android:text="@string/main_widgets_drawableratingbar"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/widget_btn_wraplayout"
             app:layout_constraintStart_toEndOf="@id/widget_btn_wraplayout"
@@ -129,6 +129,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/widget_btn_headerfootergridview"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
@@ -137,7 +138,6 @@
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
             android:text="@string/main_widgets_headerfootergridview"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/widget_btn_drawableratingbar"
             app:layout_constraintEnd_toEndOf="parent"
@@ -146,6 +146,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/widget_btn_multiactiontextview"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
@@ -154,7 +155,6 @@
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
             android:text="@string/main_widgets_multiactiontextview"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/widget_btn_statelayout"
@@ -162,6 +162,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/widget_btn_recyclepager"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
@@ -170,7 +171,6 @@
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
             android:text="@string/main_widgets_recyclepager"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/widget_btn_multiactiontextview"
             app:layout_constraintStart_toEndOf="@id/widget_btn_multiactiontextview"
@@ -179,6 +179,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/widget_btn_circleprogressbar"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
@@ -187,7 +188,6 @@
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
             android:text="@string/main_widgets_circleprogressbar"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/widget_btn_recyclepager"
             app:layout_constraintStart_toEndOf="@id/widget_btn_recyclepager"
@@ -196,6 +196,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/widget_btn_zxingscanview"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
@@ -204,7 +205,6 @@
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
             android:text="@string/main_widgets_zxingscanview"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/widget_btn_circleprogressbar"
             app:layout_constraintEnd_toEndOf="parent"
@@ -213,6 +213,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/widget_btn_smoothinputlayout"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
@@ -221,7 +222,6 @@
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
             android:text="@string/main_widgets_smoothinputlayout"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/widget_btn_multiactiontextview"
@@ -229,6 +229,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/widget_btn_multifunctionalrecyclerview"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
@@ -237,7 +238,6 @@
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
             android:text="@string/main_widgets_multifunctionalrecyclerview"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/widget_btn_smoothinputlayout"
             app:layout_constraintStart_toEndOf="@id/widget_btn_smoothinputlayout"

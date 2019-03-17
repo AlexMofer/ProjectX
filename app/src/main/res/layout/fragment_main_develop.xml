@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".business.main.fragments.DevelopFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,15 +12,15 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/develop_btn_developing"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
-            android:drawablePadding="6dp"
             android:drawableTop="@drawable/ic_develop_developing"
-            android:paddingBottom="18dp"
+            android:drawablePadding="6dp"
             android:paddingTop="18dp"
+            android:paddingBottom="18dp"
             android:text="@string/main_develop_developing"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -28,15 +28,15 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/develop_btn_supergridview"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="?selectableItemBackgroundBorderless"
-            android:drawablePadding="6dp"
             android:drawableTop="@drawable/ic_develop_developing"
-            android:paddingBottom="18dp"
+            android:drawablePadding="6dp"
             android:paddingTop="18dp"
+            android:paddingBottom="18dp"
             android:text="@string/main_develop_supergridview"
-            android:textColor="@color/colorAccent"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@id/develop_btn_developing"
             app:layout_constraintStart_toEndOf="@id/develop_btn_developing"
