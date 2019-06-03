@@ -64,8 +64,8 @@
             android:name=".business.widgets.indicatortabstrip.IndicatorTabStripActivity"
             android:label="@string/its_label" />
         <activity
-            android:name=".business.widgets.shapeimageview.ShapeImageViewActivity"
-            android:label="@string/siv_label" />
+            android:name=".business.widgets.multifunctionalimageview.MultifunctionalImageViewActivity"
+            android:label="@string/miv_label" />
         <activity
             android:name=".business.widgets.statelayout.StateLayoutActivity"
             android:label="@string/sl_label" />
@@ -98,14 +98,11 @@
             android:name=".business.drawables.loadingdrawable.LoadingDrawableActivity"
             android:label="@string/ld_label" />
         <activity
-            android:name=".business.drawables.centerdrawable.CenterDrawableActivity"
-            android:label="@string/cd_label" />
-        <activity
-            android:name=".business.drawables.combinationdrawable.CombinationDrawableActivity"
-            android:label="@string/cod_label" />
-        <activity
             android:name=".business.drawables.cornerdrawable.CornerDrawableActivity"
             android:label="@string/cnd_label" />
+        <activity
+            android:name=".business.drawables.framedrawable.FrameDrawableActivity"
+            android:label="@string/frame_label" />
         <activity
             android:name=".business.drawables.linedrawable.LineDrawableActivity"
             android:label="@string/lid_label" />
@@ -147,6 +144,9 @@
         <activity
             android:name=".business.others.clipboard.ClipboardActivity"
             android:label="@string/clipboard_label" />
+        <activity
+            android:name=".business.others.retrofithelper.RetrofitActivity"
+            android:label="@string/retrofit_label" />
 
         <service
             android:name=".business.others.ftp.FTPService"

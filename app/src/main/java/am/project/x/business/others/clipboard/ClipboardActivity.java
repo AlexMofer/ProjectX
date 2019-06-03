@@ -22,9 +22,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
-import androidx.annotation.Nullable;
 
 /**
  * 剪切板
@@ -32,8 +33,8 @@ import androidx.annotation.Nullable;
  */
 public class ClipboardActivity extends BaseActivity implements View.OnClickListener {
 
-    private final ClipboardBean mData = ClipboardBean.test();
     private TextView mVResult;
+    private final ClipboardBean mData = ClipboardBean.test();
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, ClipboardActivity.class));

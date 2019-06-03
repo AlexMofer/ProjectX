@@ -7,12 +7,11 @@ android {
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
-        versionName "3.3.0"
+        versionName "3.3.3"
     }
 }
 
 dependencies {
-    api 'com.google.zxing:core:3.3.0'
-//    implementation 'com.google.zxing:core:3.3.0'
+    api 'com.google.zxing:core:3.3.3'
 }
 //apply from: "bintray.gradle"

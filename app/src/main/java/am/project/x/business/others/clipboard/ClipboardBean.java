@@ -46,6 +46,21 @@ final class ClipboardBean implements Serializable {
         this.mString = mString;
     }
 
+    @Override
+    public String toString() {
+        return "ClipboardBean{" +
+                "mByte=" + mByte +
+                ", mShort=" + mShort +
+                ", mInt=" + mInt +
+                ", mLong=" + mLong +
+                ", mFloat=" + mFloat +
+                ", mDouble=" + mDouble +
+                ", mBoolean=" + mBoolean +
+                ", mChar=" + mChar +
+                ", mString='" + mString + '\'' +
+                '}';
+    }
+
     static ClipboardBean test() {
         final Random random = new Random();
         final int v = random.nextInt(250);
@@ -53,20 +68,5 @@ final class ClipboardBean implements Serializable {
                 Long.MAX_VALUE / v, Float.MAX_VALUE / v,
                 Double.MAX_VALUE / v, true, Character.MAX_VALUE,
                 "Test:" + v);
-    }
-
-    @Override
-    public String toString() {
-        return "ClipboardBean{" +
-                "mByte=" + Byte.toString(mByte) +
-                ", mShort=" + Short.toString(mShort) +
-                ", mInt=" + Integer.toString(mInt) +
-                ", mLong=" + Long.toString(mLong) +
-                ", mFloat=" + Float.toString(mFloat) +
-                ", mDouble=" + Double.toString(mDouble) +
-                ", mBoolean=" + Boolean.toString(mBoolean) +
-                ", mChar=" + Character.toString(mChar) +
-                ", mString='" + mString + '\'' +
-                '}';
     }
 }

@@ -42,7 +42,7 @@ import am.widget.R;
  * 圆点环绕动图
  * Created by Alex on 2019/1/10.
  */
-@SuppressWarnings({"NullableProblems", "unused", "WeakerAccess"})
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class DotSurroundingDrawable extends AnimationDrawableWrapper {
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

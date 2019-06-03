@@ -193,7 +193,9 @@ public class CornerDrawable extends Drawable {
             mIntrinsicWidth = 0;
             mIntrinsicHeight = 0;
         } else {
-            switch (mDirection) {
+            final int direction = Compat.getAbsoluteGravity(mDirection,
+                    Compat.getLayoutDirection(this));
+            switch (direction) {
                 case Gravity.LEFT:
                     mPaddingRect.set(mContentPaddingRect.left + mCornerHeight,
                             mContentPaddingRect.top,
@@ -258,7 +260,9 @@ public class CornerDrawable extends Drawable {
             final int width = getBounds().width();
             final int height = getBounds().height();
             if (mContentRadius == 0) {
-                switch (mDirection) {
+                final int direction = Compat.getAbsoluteGravity(mDirection,
+                        Compat.getLayoutDirection(this));
+                switch (direction) {
                     case Gravity.TOP:
                     case Gravity.BOTTOM:
                         if (height <= mCornerHeight) {
@@ -281,7 +285,9 @@ public class CornerDrawable extends Drawable {
                         break;
                 }
             } else {
-                switch (mDirection) {
+                final int direction = Compat.getAbsoluteGravity(mDirection,
+                        Compat.getLayoutDirection(this));
+                switch (direction) {
                     case Gravity.TOP:
                     case Gravity.BOTTOM:
                         if (height <= mCornerHeight) {
@@ -309,11 +315,13 @@ public class CornerDrawable extends Drawable {
     private void makeTrianglePath() {
         final int width = getBounds().width();
         final int height = getBounds().height();
-        float mCornerWidth = (mDirection == Gravity.TOP || mDirection == Gravity.BOTTOM) ?
+        final int direction = Compat.getAbsoluteGravity(mDirection,
+                Compat.getLayoutDirection(this));
+        float mCornerWidth = (direction == Gravity.TOP || direction == Gravity.BOTTOM) ?
                 (width > this.mCornerWidth ? this.mCornerWidth : width) :
                 (height > this.mCornerWidth ? this.mCornerWidth : height);
         float margin;
-        switch (mDirection) {
+        switch (direction) {
             case Gravity.TOP:
                 if (width > mCornerWidth) {
                     margin = mCornerMargin <= 0 ? 0 : (mCornerMargin + mCornerWidth > width ? width - mCornerWidth : mCornerMargin);
@@ -323,12 +331,12 @@ public class CornerDrawable extends Drawable {
                             mCornerCenter.set(width * 0.5f, 0);
                             mCornerRight.set((width + mCornerWidth) * 0.5f, height);
                             break;
-                        case Gravity.LEFT:
+                        case Compat.START:
                             mCornerLeft.set(margin, height);
                             mCornerCenter.set(mCornerWidth * 0.5f + margin, 0);
                             mCornerRight.set(mCornerWidth + margin, height);
                             break;
-                        case Gravity.RIGHT:
+                        case Compat.END:
                             mCornerLeft.set(width - mCornerWidth - margin, height);
                             mCornerCenter.set(width - mCornerWidth * 0.5f - margin, 0);
                             mCornerRight.set(width - margin, height);
@@ -351,12 +359,12 @@ public class CornerDrawable extends Drawable {
                             mCornerCenter.set(width * 0.5f, height);
                             mCornerRight.set((width - mCornerWidth) * 0.5f, 0);
                             break;
-                        case Gravity.LEFT:
+                        case Compat.START:
                             mCornerLeft.set(width - margin, 0);
                             mCornerCenter.set(width - mCornerWidth * 0.5f - margin, height);
                             mCornerRight.set(width - mCornerWidth - margin, 0);
                             break;
-                        case Gravity.RIGHT:
+                        case Compat.END:
                             mCornerLeft.set(margin, 0);
                             mCornerCenter.set(mCornerWidth * 0.5f + margin, height);
                             mCornerRight.set(mCornerWidth + margin, 0);
@@ -379,12 +387,12 @@ public class CornerDrawable extends Drawable {
                             mCornerCenter.set(0, height * 0.5f);
                             mCornerRight.set(width, (height - mCornerWidth) * 0.5f);
                             break;
-                        case Gravity.LEFT:
+                        case Compat.START:
                             mCornerLeft.set(width, height - margin);
                             mCornerCenter.set(0, height - mCornerWidth * 0.5f - margin);
                             mCornerRight.set(width, height - mCornerWidth - margin);
                             break;
-                        case Gravity.RIGHT:
+                        case Compat.END:
                             mCornerLeft.set(width, mCornerWidth + margin);
                             mCornerCenter.set(0, mCornerWidth * 0.5f + margin);
                             mCornerRight.set(width, margin);
@@ -407,12 +415,12 @@ public class CornerDrawable extends Drawable {
                             mCornerCenter.set(width, height * 0.5f);
                             mCornerRight.set(0, (height + mCornerWidth) * 0.5f);
                             break;
-                        case Gravity.LEFT:
+                        case Compat.START:
                             mCornerLeft.set(0, margin);
                             mCornerCenter.set(width, mCornerWidth * 0.5f + margin);
                             mCornerRight.set(0, mCornerWidth + margin);
                             break;
-                        case Gravity.RIGHT:
+                        case Compat.END:
                             mCornerLeft.set(0, height - mCornerWidth - margin);
                             mCornerCenter.set(width, height - mCornerWidth * 0.5f - margin);
                             mCornerRight.set(0, height - margin);
@@ -432,16 +440,18 @@ public class CornerDrawable extends Drawable {
     private void makeTriangleCornerPath() {
         final int width = getBounds().width();
         final int height = getBounds().height();
-        float mCornerWidth = (mDirection == Gravity.TOP || mDirection == Gravity.BOTTOM) ?
+        final int direction = Compat.getAbsoluteGravity(mDirection,
+                Compat.getLayoutDirection(this));
+        float mCornerWidth = (direction == Gravity.TOP || direction == Gravity.BOTTOM) ?
                 (width > this.mCornerWidth ? this.mCornerWidth : width) :
                 (height > this.mCornerWidth ? this.mCornerWidth : height);
-        float mCornerHeight = (mDirection == Gravity.TOP || mDirection == Gravity.BOTTOM) ? height : width;
+        float mCornerHeight = (direction == Gravity.TOP || direction == Gravity.BOTTOM) ? height : width;
         final float halfStokeSize = mStrokeWidth * 0.5f;
         final float halfCornerWidth = mCornerWidth * 0.5f;
         final double temp = 2d * mCornerHeight * halfStokeSize / mCornerWidth;
         final float cornerStokeVertical = (float) (Math.sqrt(halfStokeSize * halfStokeSize + temp * temp));
         final float cornerStokeHorizontal = halfCornerWidth - mCornerWidth * (mCornerHeight - cornerStokeVertical - halfStokeSize) * 0.5f / mCornerHeight;
-        switch (mDirection) {
+        switch (direction) {
             case Gravity.TOP:
                 mPath.moveTo(mCornerLeft.x + cornerStokeHorizontal, mCornerLeft.y - halfStokeSize);
                 makeCornerPath(mCornerLeft.x + cornerStokeHorizontal, mCornerLeft.y - halfStokeSize,
@@ -475,8 +485,10 @@ public class CornerDrawable extends Drawable {
     private void makeTriangleRectPath() {
         final int width = getBounds().width();
         final int height = getBounds().height();
+        final int direction = Compat.getAbsoluteGravity(mDirection,
+                Compat.getLayoutDirection(this));
         final float halfStokeSize = mStrokeWidth * 0.5f;
-        switch (mDirection) {
+        switch (direction) {
             case Gravity.TOP:
                 mPath.moveTo(halfStokeSize, mCornerHeight + halfStokeSize);
                 mCornerLeft.set(0, mCornerHeight);
@@ -525,14 +537,16 @@ public class CornerDrawable extends Drawable {
     private void makeTriangleRectCornerPath() {
         final int width = getBounds().width();
         final int height = getBounds().height();
+        final int direction = Compat.getAbsoluteGravity(mDirection,
+                Compat.getLayoutDirection(this));
         final float halfStokeSize = mStrokeWidth * 0.5f;
-        final float mCornerWidth = (mDirection == Gravity.TOP || mDirection == Gravity.BOTTOM) ? width : height;
+        final float mCornerWidth = (direction == Gravity.TOP || direction == Gravity.BOTTOM) ? width : height;
         final float halfCornerWidth = mCornerWidth * 0.5f;
         final float cornerStokeVertical = (float) (Math.sqrt(halfCornerWidth * halfCornerWidth + mCornerHeight * mCornerHeight) * halfStokeSize / halfCornerWidth);
         //noinspection UnnecessaryLocalVariable
         final float cornerXOffset = halfStokeSize;
         final float cornerYOffset = mCornerHeight * (halfCornerWidth - halfCornerWidth * (mCornerHeight - cornerStokeVertical) / mCornerHeight - halfStokeSize) / halfCornerWidth;
-        switch (mDirection) {
+        switch (direction) {
             case Gravity.TOP:
                 makeCornerPath(mCornerLeft.x + cornerXOffset, mCornerLeft.y + cornerYOffset,
                         mCornerCenter.x, mCornerCenter.y + cornerStokeVertical,
@@ -562,19 +576,21 @@ public class CornerDrawable extends Drawable {
     private void makeRectPath() {
         final int width = getBounds().width();
         final int height = getBounds().height();
+        final int direction = Compat.getAbsoluteGravity(mDirection,
+                Compat.getLayoutDirection(this));
         final float halfStokeSize = mStrokeWidth * 0.5f;
         float margin;
         float offset = 0;
-        switch (mDirection) {
+        switch (direction) {
             case Gravity.TOP:
                 margin = mCornerMargin <= 0 ? 0 : (mCornerMargin + mCornerWidth > width ? width - mCornerWidth : mCornerMargin);
                 switch (mLocation) {
                     case Gravity.CENTER:
                         break;
-                    case Gravity.LEFT:
+                    case Compat.START:
                         offset = -(width - mCornerWidth) * 0.5f + margin;
                         break;
-                    case Gravity.RIGHT:
+                    case Compat.END:
                         offset = (width - mCornerWidth) * 0.5f - margin;
                         break;
                 }
@@ -593,10 +609,10 @@ public class CornerDrawable extends Drawable {
                 switch (mLocation) {
                     case Gravity.CENTER:
                         break;
-                    case Gravity.LEFT:
+                    case Compat.START:
                         offset = -(height - mCornerWidth) * 0.5f + margin;
                         break;
-                    case Gravity.RIGHT:
+                    case Compat.END:
                         offset = (height - mCornerWidth) * 0.5f - margin;
                         break;
                 }
@@ -615,10 +631,10 @@ public class CornerDrawable extends Drawable {
                 switch (mLocation) {
                     case Gravity.CENTER:
                         break;
-                    case Gravity.LEFT:
+                    case Compat.START:
                         offset = -(width - mCornerWidth) * 0.5f + margin;
                         break;
-                    case Gravity.RIGHT:
+                    case Compat.END:
                         offset = (width - mCornerWidth) * 0.5f - margin;
                         break;
                 }
@@ -637,10 +653,10 @@ public class CornerDrawable extends Drawable {
                 switch (mLocation) {
                     case Gravity.CENTER:
                         break;
-                    case Gravity.LEFT:
+                    case Compat.START:
                         offset = -(height - mCornerWidth) * 0.5f + margin;
                         break;
-                    case Gravity.RIGHT:
+                    case Compat.END:
                         offset = (height - mCornerWidth) * 0.5f - margin;
                         break;
                 }
@@ -660,6 +676,8 @@ public class CornerDrawable extends Drawable {
     }
 
     private void makeRectCornerPath(float offset) {
+        final int direction = Compat.getAbsoluteGravity(mDirection,
+                Compat.getLayoutDirection(this));
         final float halfStokeSize = mStrokeWidth * 0.5f;
         final float halfCornerWidth = mCornerWidth * 0.5f;
         final float cornerStokeVertical = (float) (Math.sqrt(halfCornerWidth * halfCornerWidth + mCornerHeight * mCornerHeight) * halfStokeSize / halfCornerWidth);
@@ -667,7 +685,7 @@ public class CornerDrawable extends Drawable {
         final float cornerXOffset = cornerStokeHorizontal - halfCornerWidth * halfStokeSize / mCornerHeight;
         //noinspection UnnecessaryLocalVariable
         final float cornerYOffset = halfStokeSize;
-        switch (mDirection) {
+        switch (direction) {
             case Gravity.TOP:
                 makeCornerPath(mCornerLeft.x + cornerXOffset + offset, mCornerLeft.y + cornerYOffset,
                         mCornerCenter.x + offset, mCornerCenter.y + cornerStokeVertical,
@@ -697,13 +715,15 @@ public class CornerDrawable extends Drawable {
     private void makeRoundRect() {
         final int width = getBounds().width();
         final int height = getBounds().height();
+        final int direction = Compat.getAbsoluteGravity(mDirection,
+                Compat.getLayoutDirection(this));
         final float halfStokeSize = mStrokeWidth * 0.5f;
         float maxContentRadius;
         float mContentRadius;
         float mCornerMove;
         float margin;
         float offset = 0;
-        switch (mDirection) {
+        switch (direction) {
             case Gravity.TOP:
                 maxContentRadius = (width < height - mCornerHeight ? width : height - mCornerHeight) * 0.5f;
                 mContentRadius = this.mContentRadius > maxContentRadius ? maxContentRadius : this.mContentRadius;
@@ -718,10 +738,10 @@ public class CornerDrawable extends Drawable {
                     switch (mLocation) {
                         case Gravity.CENTER:
                             break;
-                        case Gravity.LEFT:
+                        case Compat.START:
                             offset = -mCornerMove * 0.5f + margin;
                             break;
-                        case Gravity.RIGHT:
+                        case Compat.END:
                             offset = mCornerMove * 0.5f - margin;
                             break;
                     }
@@ -770,10 +790,10 @@ public class CornerDrawable extends Drawable {
                     switch (mLocation) {
                         case Gravity.CENTER:
                             break;
-                        case Gravity.LEFT:
+                        case Compat.START:
                             offset = -mCornerMove * 0.5f + margin;
                             break;
-                        case Gravity.RIGHT:
+                        case Compat.END:
                             offset = mCornerMove * 0.5f - margin;
                             break;
                     }
@@ -822,10 +842,10 @@ public class CornerDrawable extends Drawable {
                     switch (mLocation) {
                         case Gravity.CENTER:
                             break;
-                        case Gravity.LEFT:
+                        case Compat.START:
                             offset = mCornerMove * 0.5f - margin;
                             break;
-                        case Gravity.RIGHT:
+                        case Compat.END:
                             offset = -mCornerMove * 0.5f + margin;
                             break;
                     }
@@ -875,10 +895,10 @@ public class CornerDrawable extends Drawable {
                     switch (mLocation) {
                         case Gravity.CENTER:
                             break;
-                        case Gravity.LEFT:
+                        case Compat.START:
                             offset = mCornerMove * 0.5f - margin;
                             break;
-                        case Gravity.RIGHT:
+                        case Compat.END:
                             offset = -mCornerMove * 0.5f + margin;
                             break;
                     }
@@ -919,8 +939,10 @@ public class CornerDrawable extends Drawable {
     }
 
     private void makeRoundRectCornerPath() {
+        final int direction = Compat.getAbsoluteGravity(mDirection,
+                Compat.getLayoutDirection(this));
         final float halfStokeSize = mStrokeWidth * 0.5f;
-        final float mCornerWidth = (mDirection == Gravity.TOP || mDirection == Gravity.BOTTOM) ?
+        final float mCornerWidth = (direction == Gravity.TOP || direction == Gravity.BOTTOM) ?
                 mCornerRight.x - mCornerLeft.x < 0 ? mCornerLeft.x - mCornerRight.x : mCornerRight.x - mCornerLeft.x :
                 mCornerRight.y - mCornerLeft.y < 0 ? mCornerLeft.y - mCornerRight.y : mCornerRight.y - mCornerLeft.y;
         if (mCornerWidth == 0 || mCornerWidth < mStrokeWidth)
@@ -931,7 +953,7 @@ public class CornerDrawable extends Drawable {
         final float cornerXOffset = cornerStokeHorizontal - halfCornerWidth * halfStokeSize / mCornerHeight;
         //noinspection UnnecessaryLocalVariable
         final float cornerYOffset = halfStokeSize;
-        switch (mDirection) {
+        switch (direction) {
             case Gravity.TOP:
                 makeCornerPath(mCornerLeft.x + cornerXOffset, mCornerLeft.y + cornerYOffset,
                         mCornerCenter.x, mCornerCenter.y + cornerStokeVertical,
@@ -958,6 +980,8 @@ public class CornerDrawable extends Drawable {
     private void makeCornerPath(float leftX, float leftY,
                                 float centerX, float centerY,
                                 float rightX, float rightY) {
+        final int direction = Compat.getAbsoluteGravity(mDirection,
+                Compat.getLayoutDirection(this));
         mPath.lineTo(leftX, leftY);
         if (mCornerBezier <= 0) {
             mPath.lineTo(centerX, centerY);
@@ -976,7 +1000,7 @@ public class CornerDrawable extends Drawable {
         final float height = leftX == rightX ? (centerX > leftX ? centerX - leftX : leftX - centerX) : (centerY > leftY ? centerY - leftY : leftY - centerY);
         final float heightBezier = height * mCornerBezier;
         final float widthBezier = width * heightBezier / height;
-        switch (mDirection) {
+        switch (direction) {
             case Gravity.TOP:
                 mPath.lineTo(centerX - widthBezier * 0.5f, centerY + heightBezier);
                 mPath.quadTo(centerX, centerY, centerX + widthBezier * 0.5f, centerY + heightBezier);
@@ -1208,9 +1232,11 @@ public class CornerDrawable extends Drawable {
      * @param direction 朝向
      */
     public void setDirection(int direction) {
-        if (direction != Gravity.START &&
+        if (direction != Compat.START &&
+                direction != Gravity.LEFT &&
                 direction != Gravity.TOP &&
-                direction != Gravity.END &&
+                direction != Compat.END &&
+                direction != Gravity.RIGHT &&
                 direction != Gravity.BOTTOM)
             return;
         if (mDirection == direction)
@@ -1246,9 +1272,9 @@ public class CornerDrawable extends Drawable {
      * @param cornerMargin 尖角边缘间隔
      */
     public void setLocation(int location, int cornerMargin) {
-        if (location != Gravity.START &&
+        if (location != Compat.START &&
                 location != Gravity.CENTER &&
-                location != Gravity.END)
+                location != Compat.END)
             return;
         if (mLocation == location && mCornerMargin == cornerMargin)
             return;

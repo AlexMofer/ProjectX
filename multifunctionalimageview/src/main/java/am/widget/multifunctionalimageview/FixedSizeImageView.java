@@ -22,7 +22,7 @@ import android.util.AttributeSet;
 
 /**
  * 定比缩放ImageView
- * Created by Xiang Zhicheng on 2018/12/26.
+ * Created by Alex on 2018/12/26.
  */
 @SuppressWarnings("unused")
 public class FixedSizeImageView extends ForegroundImageView {

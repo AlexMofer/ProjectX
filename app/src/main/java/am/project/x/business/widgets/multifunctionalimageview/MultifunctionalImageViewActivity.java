@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package am.project.x.business.widgets.shapeimageview;
+package am.project.x.business.widgets.multifunctionalimageview;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,17 +26,18 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import androidx.annotation.Nullable;
+
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.widget.multifunctionalimageview.ClipOutlineProvider;
 import am.widget.multifunctionalimageview.MultifunctionalImageView;
 import am.widget.multifunctionalimageview.RoundRectClipOutlineProvider;
-import androidx.annotation.Nullable;
 
 /**
  * 裁剪图片视图
  */
-public class ShapeImageViewActivity extends BaseActivity implements
+public class MultifunctionalImageViewActivity extends BaseActivity implements
         CompoundButton.OnCheckedChangeListener, SeekBar.OnSeekBarChangeListener,
         AdapterView.OnItemSelectedListener {
 
@@ -45,23 +46,23 @@ public class ShapeImageViewActivity extends BaseActivity implements
     private MultifunctionalImageView mVImage;
 
     public static void start(Context context) {
-        context.startActivity(new Intent(context, ShapeImageViewActivity.class));
+        context.startActivity(new Intent(context, MultifunctionalImageViewActivity.class));
     }
 
     @Override
     protected int getContentViewLayout() {
-        return R.layout.activity_shapeimageview;
+        return R.layout.activity_multifunctionalimageview;
     }
 
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
-        setSupportActionBar(R.id.siv_toolbar);
-        mVImage = findViewById(R.id.siv_image);
-        final Switch crop = findViewById(R.id.siv_sw_crop);
-        final SeekBar radius = findViewById(R.id.siv_sb_radius);
-        final SeekBar height = findViewById(R.id.siv_sb_height);
-        final SeekBar border = findViewById(R.id.siv_sb_border);
-        final SeekBar padding = findViewById(R.id.siv_sb_padding);
+        setSupportActionBar(R.id.miv_toolbar);
+        mVImage = findViewById(R.id.miv_image);
+        final Switch crop = findViewById(R.id.miv_sw_crop);
+        final SeekBar radius = findViewById(R.id.miv_sb_radius);
+        final SeekBar height = findViewById(R.id.miv_sb_height);
+        final SeekBar border = findViewById(R.id.miv_sb_border);
+        final SeekBar padding = findViewById(R.id.miv_sb_padding);
 
         crop.setOnCheckedChangeListener(this);
         crop.setChecked(true);
@@ -73,7 +74,7 @@ public class ShapeImageViewActivity extends BaseActivity implements
         border.setProgress(2);
         padding.setOnSeekBarChangeListener(this);
         padding.setProgress(0);
-        this.<Spinner>findViewById(R.id.siv_sp_scale_type).setOnItemSelectedListener(this);
+        this.<Spinner>findViewById(R.id.miv_sp_scale_type).setOnItemSelectedListener(this);
     }
 
     // Listener
@@ -89,18 +90,18 @@ public class ShapeImageViewActivity extends BaseActivity implements
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         switch (seekBar.getId()) {
-            case R.id.siv_sb_height:
+            case R.id.miv_sb_height:
                 mVImage.setFixedSize(100, 100 - progress);
                 break;
-            case R.id.siv_sb_border:
+            case R.id.miv_sb_border:
                 mVImage.setBorderWidth((int) (progress *
                         getResources().getDisplayMetrics().density));
                 break;
-            case R.id.siv_sb_radius:
+            case R.id.miv_sb_radius:
                 mRoundRect.setRadius(progress * getResources().getDisplayMetrics().density);
                 mVImage.invalidateClipOutline();
                 break;
-            case R.id.siv_sb_padding:
+            case R.id.miv_sb_padding:
                 final int padding = (int) (progress * getResources().getDisplayMetrics().density);
                 mVImage.setPadding(padding, padding, padding, padding);
                 break;

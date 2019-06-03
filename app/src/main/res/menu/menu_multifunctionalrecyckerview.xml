@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/mrv_vertical_continuity"
+        android:title="@string/mrv_menu_mode_vertical_continuity"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/mrv_vertical_singular"
+        android:title="@string/mrv_menu_mode_vertical_singular"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/mrv_horizontal_continuity"
+        android:title="@string/mrv_menu_mode_horizontal_continuity"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/mrv_horizontal_singular"
+        android:title="@string/mrv_menu_mode_horizontal_singular"
+        app:showAsAction="never" />
+</menu>

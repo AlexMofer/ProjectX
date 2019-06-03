@@ -23,14 +23,14 @@ final class MyClipboardHelper extends FileClipboardHelper {
     private static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".clipboardprovider";
     private static MyClipboardHelper mInstance;
 
-    private MyClipboardHelper() {
-        //no instance
-    }
-
     static MyClipboardHelper getInstance() {
         if (mInstance == null)
             mInstance = new MyClipboardHelper();
         return mInstance;
+    }
+
+    private MyClipboardHelper() {
+        //no instance
     }
 
     @Override

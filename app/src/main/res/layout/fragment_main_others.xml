@@ -127,6 +127,23 @@
             app:layout_constraintTop_toTopOf="@id/other_btn_floating"
             app:layout_constraintWidth_percent="0.25" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/other_btn_retrofit"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawableTop="@drawable/ic_develop_developing"
+            android:drawablePadding="6dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp"
+            android:text="@string/main_others_retrofit"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/other_btn_clipboard"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/other_btn_clipboard"
+            app:layout_constraintTop_toTopOf="@id/other_btn_clipboard" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

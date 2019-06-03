@@ -30,6 +30,8 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import static android.os.Build.VERSION.SDK_INT;
+
 /**
  * 版本兼容控制器
  */
@@ -100,6 +102,23 @@ class Compat {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             return drawable.getLayoutDirection() == View.LAYOUT_DIRECTION_LTR;
         return true;
+    }
+
+    static int getLayoutDirection(Drawable drawable) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            return drawable.getLayoutDirection();
+        else if (SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            return View.LAYOUT_DIRECTION_LTR;
+        else
+            return 0;
+    }
+
+    static int getAbsoluteGravity(int gravity, int layoutDirection) {
+        if (SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return Gravity.getAbsoluteGravity(gravity, layoutDirection);
+        } else {
+            return gravity & ~RELATIVE_LAYOUT_DIRECTION;
+        }
     }
 
     static void apply(Drawable drawable, int gravity, int w, int h, Rect container, Rect outRect) {

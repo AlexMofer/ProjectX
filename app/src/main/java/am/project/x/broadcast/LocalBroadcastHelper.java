@@ -17,13 +17,14 @@ package am.project.x.broadcast;
 
 import android.content.Intent;
 
-import am.project.x.ProjectXApplication;
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import am.project.x.ProjectXApplication;
+
 /**
  * 应用内广播辅助器
- * Created by Xiang Zhicheng on 2018/7/23.
+ * Created by Alex on 2018/7/23.
  */
 public class LocalBroadcastHelper {
 

@@ -53,10 +53,11 @@ public final class IntentExtraUtils {
     private static final int TYPE_LIST_STRING = 21;
     private static final int TYPE_LIST_CHARS = 22;
     private static final int TYPE_LIST_PARCELABLE = 23;
-    private static final String KEY_DATA = "key_data_index_";
-    private static final String KEY_DATA_TYPE = "key_data_type_index_";
-    private static final String KEY_LARGE_MODE = "key_large_mode_index_";
-    private static final String KEY_LARGE_MODE_FILE_NAME = "key_large_mode_file_name_index_";
+    private static final String KEY_DATA = "_key_data_index_";
+    private static final String KEY_DATA_TYPE = "_key_data_type_index_";
+    private static final String KEY_LARGE_MODE = "_key_large_mode_index_";
+    private static final String KEY_LARGE_MODE_FILE_NAME = "_key_large_mode_file_name_index_";
+    private static final String TAG = "IntentExtraUtils";
 
     private IntentExtraUtils() {
         //no instance
@@ -328,17 +329,33 @@ public final class IntentExtraUtils {
      * @param context Context
      * @param intent  Intent
      * @param data    附件
+     * @param tag     标签
+     * @param index   第几个附件
+     * @return 是否成功
+     */
+    public static boolean putExtra(Context context, Intent intent,
+                                   Object data, String tag, int index) {
+        final String keyData = tag + KEY_DATA + index;
+        final String keyDataType = tag + KEY_DATA_TYPE + index;
+        final String keyLargeMode = tag + KEY_LARGE_MODE + index;
+        final String keyLargeModeFileName = tag + KEY_LARGE_MODE_FILE_NAME + index;
+        return putExtra(context, intent, data, keyData, keyDataType, keyLargeMode,
+                keyLargeModeFileName);
+    }
+
+    /**
+     * 存放附件
+     * 基础类型不支持，Bundle数据大小超限时不支持写入文件
+     *
+     * @param context Context
+     * @param intent  Intent
+     * @param data    附件
      * @param index   第几个附件
      * @return 是否成功
      */
     public static boolean putExtra(Context context, Intent intent,
                                    Object data, int index) {
-        final String keyData = KEY_DATA + index;
-        final String keyDataType = KEY_DATA_TYPE + index;
-        final String keyLargeMode = KEY_LARGE_MODE + index;
-        final String keyLargeModeFileName = KEY_LARGE_MODE_FILE_NAME + index;
-        return putExtra(context, intent, data, keyData, keyDataType, keyLargeMode,
-                keyLargeModeFileName);
+        return putExtra(context, intent, data, TAG, index);
     }
 
     /**
@@ -495,15 +512,28 @@ public final class IntentExtraUtils {
      *
      * @param context Context
      * @param intent  Intent
+     * @param tag     标签
+     * @param index   第几个附件
+     * @return 附件
+     */
+    public static <T> T getExtra(Context context, Intent intent, String tag, int index) {
+        final String keyData = tag + KEY_DATA + index;
+        final String keyDataType = tag + KEY_DATA_TYPE + index;
+        final String keyLargeMode = tag + KEY_LARGE_MODE + index;
+        final String keyLargeModeFileName = tag + KEY_LARGE_MODE_FILE_NAME + index;
+        return getExtra(context, intent, keyData, keyDataType, keyLargeMode, keyLargeModeFileName);
+    }
+
+    /**
+     * 获取附件
+     *
+     * @param context Context
+     * @param intent  Intent
      * @param index   第几个附件
      * @return 附件
      */
     public static <T> T getExtra(Context context, Intent intent, int index) {
-        final String keyData = KEY_DATA + index;
-        final String keyDataType = KEY_DATA_TYPE + index;
-        final String keyLargeMode = KEY_LARGE_MODE + index;
-        final String keyLargeModeFileName = KEY_LARGE_MODE_FILE_NAME + index;
-        return getExtra(context, intent, keyData, keyDataType, keyLargeMode, keyLargeModeFileName);
+        return getExtra(context, intent, TAG, index);
     }
 
     private static class Primitives implements Serializable {

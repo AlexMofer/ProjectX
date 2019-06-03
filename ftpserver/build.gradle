@@ -6,16 +6,13 @@ android {
         //noinspection MinSdkTooLow
         minSdkVersion 1
         targetSdkVersion 28
-        versionCode 4
-        versionName "1.1.1.4"
+        versionCode 5
+        versionName "1.1.1.5"
         consumerProguardFiles 'proguard-rules.pro'
     }
 }
 
 dependencies {
-//    implementation ('org.apache.ftpserver:ftpserver-core:1.1.1') {
-//        exclude group: 'org.slf4j', module: 'slf4j-api'
-//    }
     api('org.apache.ftpserver:ftpserver-core:1.1.1') {
         exclude group: 'org.slf4j', module: 'slf4j-api'
     }

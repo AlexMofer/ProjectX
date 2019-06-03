@@ -30,9 +30,8 @@
     <string name="main_widgets_smoothinputlayout" translatable="false">输入面板</string>
     <string name="main_widgets_multifunctionalrecyclerview" translatable="false">多功能回收视图</string>
     <string name="main_drawables_loading" translatable="false">载入图片</string>
-    <string name="main_drawables_center" translatable="false">中心图片</string>
-    <string name="main_drawables_combination" translatable="false">双层图片</string>
     <string name="main_drawables_cornerdrawable" translatable="false">尖角框</string>
+    <string name="main_drawables_frame" translatable="false">帧图片</string>
     <string name="main_drawables_linedrawable" translatable="false">横线图片</string>
     <string name="main_drawables_griddrawable" translatable="false">网格图片</string>
     <string name="main_drawables_textdrawable" translatable="false">文本图片</string>
@@ -45,6 +44,7 @@
     <string name="main_develop_developing" translatable="false">开发中</string>
     <string name="main_develop_supergridview" translatable="false">拖拽网格</string>
     <string name="main_others_clipboard" translatable="false">剪切板</string>
+    <string name="main_others_retrofit" translatable="false">Retrofit辅助</string>
     <!--开发中-->
     <string name="developing_label" translatable="false">开发中</string>
     <!--渐变底部栏-->
@@ -54,13 +54,13 @@
     <!--游标顶部栏-->
     <string name="its_label" translatable="false">游标顶部栏</string>
     <!--裁剪图片视图-->
-    <string name="siv_label" translatable="false">裁剪图片视图</string>
-    <string name="siv_crop_type" translatable="false">裁剪为圆形：</string>
-    <string name="siv_height_width_scale" translatable="false">宽高比(100/100~100/50)：</string>
-    <string name="siv_border_width" translatable="false">边线宽(0dp~10dp)：</string>
-    <string name="siv_radius" translatable="false">圆角(0dp~30dp)：</string>
-    <string name="siv_padding" translatable="false">Padding(0dp~20dp)：</string>
-    <string name="siv_scaletype" translatable="false">ScaleType：</string>
+    <string name="miv_label" translatable="false">裁剪图片视图</string>
+    <string name="miv_crop_type" translatable="false">裁剪为圆形：</string>
+    <string name="miv_height_width_scale" translatable="false">宽高比(100/100~100/50)：</string>
+    <string name="miv_border_width" translatable="false">边线宽(0dp~10dp)：</string>
+    <string name="miv_radius" translatable="false">圆角(0dp~30dp)：</string>
+    <string name="miv_padding" translatable="false">Padding(0dp~20dp)：</string>
+    <string name="miv_scaletype" translatable="false">ScaleType：</string>
     <!--状态布局-->
     <string name="sl_label" translatable="false">状态布局</string>
     <string name="sl_change_state" translatable="false">状态修改：</string>
@@ -157,12 +157,6 @@
     <string name="sil_camera" translatable="false">拍照</string>
     <!--载入图片-->
     <string name="ld_label" translatable="false">载入图片</string>
-    <!--中心图片-->
-    <string name="cd_label" translatable="false">中心图片</string>
-    <!--双层图片-->
-    <string name="cod_label" translatable="false">双层图片</string>
-    <string name="cod_gravity" translatable="false">布局：</string>
-    <string name="cod_reserved_width" translatable="false">留边宽度（0dp～20dp）：</string>
     <!--尖角框-->
     <string name="cnd_label" translatable="false">尖角框</string>
     <string name="cnd_text" translatable="false">尖角对话框图片，主要用于聊天对话框背景。支持各个方向，同时支持箭头剧中与靠边、内容圆角、箭头圆角、及绘制边线。</string>
@@ -176,6 +170,8 @@
     <string name="cnd_stoke" translatable="false">描边线宽（0px～20px）：</string>
     <string name="cnd_radius" translatable="false">内容圆角（0dp～10dp）：</string>
     <string name="cnd_padding" translatable="false">内容间隔（0dp～10dp）：</string>
+    <!--帧图片-->
+    <string name="frame_label" translatable="false">帧图片</string>
     <!--横线图片-->
     <string name="lid_label" translatable="false">横线图片</string>
     <string name="lid_line_size" translatable="false">线条粗细（1px～10px）：</string>
@@ -327,9 +323,19 @@
     <string name="floating_menu_18" translatable="false">两端对齐</string>
     <!--多功能RecyclerView-->
     <string name="mrv_label" translatable="false">多功能RecyclerView</string>
+    <string name="mrv_menu_mode_vertical_continuity" translatable="false">垂直连续</string>
+    <string name="mrv_menu_mode_vertical_singular" translatable="false">垂直单页</string>
+    <string name="mrv_menu_mode_horizontal_continuity" translatable="false">水平连续</string>
+    <string name="mrv_menu_mode_horizontal_singular" translatable="false">水平单页</string>
     <!--剪切板-->
     <string name="clipboard_label" translatable="false">剪切板</string>
     <string name="clipboard_copy" translatable="false">复制</string>
     <string name="clipboard_paste" translatable="false">粘贴</string>
     <string name="clipboard_info" translatable="false">已复制到剪切板</string>
+    <!--Retrofit-->
+    <string name="retrofit_label" translatable="false">Retrofit辅助</string>
+    <string name="retrofit_test" translatable="false">测试</string>
+    <string name="retrofit_input_hint" translatable="false">北京</string>
+    <string name="retrofit_output_null" translatable="false">空结果</string>
+    <string name="retrofit_output_error" translatable="false">出现错误:\ncode:%1$d\nmessage:%2$s\nresult:%3$s</string>
 </resources>

@@ -20,7 +20,7 @@
         android:layout_height="0dp"
         android:layout_margin="16dp"
         android:layout_weight="1"
-        android:background="@drawable/bg_centerdrawable_item"
+        android:background="@drawable/bg_common_item"
         android:fillViewport="true">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -57,7 +57,7 @@
         android:layout_height="0dp"
         android:layout_margin="16dp"
         android:layout_weight="1"
-        android:background="@drawable/bg_centerdrawable_item"
+        android:background="@drawable/bg_common_item"
         android:fillViewport="true">
 
         <androidx.appcompat.widget.AppCompatTextView

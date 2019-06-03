@@ -31,14 +31,14 @@ final class MyTestClipboardAdapter extends FileClipboardHelper.Adapter<Clipboard
     private static final String TYPE = MIME_ITEM + "/vnd.am." + SUBTYPE;
     private static MyTestClipboardAdapter mInstance;
 
-    private MyTestClipboardAdapter() {
-        //no instance
-    }
-
     static MyTestClipboardAdapter getInstance() {
         if (mInstance == null)
             mInstance = new MyTestClipboardAdapter();
         return mInstance;
+    }
+
+    private MyTestClipboardAdapter() {
+        //no instance
     }
 
     @Override

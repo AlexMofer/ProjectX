@@ -15,4 +15,10 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/mrv_label" />
 
+    <am.widget.multifunctionalrecyclerview.MultifunctionalRecyclerView
+        android:id="@+id/mrv_rv_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:iacChangeAnimationsEnable="false" />
+
 </LinearLayout>

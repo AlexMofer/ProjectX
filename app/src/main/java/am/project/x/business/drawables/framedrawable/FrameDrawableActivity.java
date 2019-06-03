@@ -13,33 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package am.project.x.business.drawables.centerdrawable;
+package am.project.x.business.drawables.framedrawable;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import androidx.annotation.Nullable;
 
+import am.drawable.FrameDrawable;
+import am.project.x.R;
+import am.project.x.base.BaseActivity;
+
 /**
- * 中心图片
+ * 帧图片
  */
-public class CenterDrawableActivity extends BaseActivity {
+public class FrameDrawableActivity extends BaseActivity {
+
+    private FrameDrawable mDrawable;
 
     public static void start(Context context) {
-        context.startActivity(new Intent(context, CenterDrawableActivity.class));
+        context.startActivity(new Intent(context, FrameDrawableActivity.class));
     }
 
     @Override
     protected int getContentViewLayout() {
-        return R.layout.activity_centerdrawable;
+        return R.layout.activity_framedrawable;
     }
 
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
-        setSupportActionBar(R.id.cd_toolbar);
+        setSupportActionBar(R.id.frame_toolbar);
         // TODO
+        mDrawable = new FrameDrawable();
     }
 }

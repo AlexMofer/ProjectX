@@ -27,40 +27,6 @@
             app:layout_constraintWidth_percent="0.25" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/drawable_btn_center"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="?selectableItemBackgroundBorderless"
-            android:drawableTop="@drawable/ic_drawables_drawable"
-            android:drawablePadding="6dp"
-            android:paddingTop="18dp"
-            android:paddingBottom="18dp"
-            android:text="@string/main_drawables_center"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/drawable_btn_loading"
-            app:layout_constraintStart_toEndOf="@id/drawable_btn_loading"
-            app:layout_constraintTop_toTopOf="@id/drawable_btn_loading"
-            app:layout_constraintWidth_percent="0.25" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/drawable_btn_combination"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="?selectableItemBackgroundBorderless"
-            android:drawableTop="@drawable/ic_drawables_drawable"
-            android:drawablePadding="6dp"
-            android:paddingTop="18dp"
-            android:paddingBottom="18dp"
-            android:text="@string/main_drawables_combination"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/drawable_btn_center"
-            app:layout_constraintStart_toEndOf="@id/drawable_btn_center"
-            app:layout_constraintTop_toTopOf="@id/drawable_btn_center"
-            app:layout_constraintWidth_percent="0.25" />
-
-        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/drawable_btn_cornerdrawable"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
@@ -72,10 +38,27 @@
             android:paddingBottom="18dp"
             android:text="@string/main_drawables_cornerdrawable"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/drawable_btn_combination"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/drawable_btn_combination"
-            app:layout_constraintTop_toTopOf="@id/drawable_btn_combination" />
+            app:layout_constraintBottom_toBottomOf="@id/drawable_btn_loading"
+            app:layout_constraintStart_toEndOf="@id/drawable_btn_loading"
+            app:layout_constraintTop_toTopOf="@id/drawable_btn_loading"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/drawable_btn_framedrawable"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawableTop="@drawable/ic_drawables_drawable"
+            android:drawablePadding="6dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp"
+            android:text="@string/main_drawables_frame"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/drawable_btn_cornerdrawable"
+            app:layout_constraintStart_toEndOf="@id/drawable_btn_cornerdrawable"
+            app:layout_constraintTop_toTopOf="@id/drawable_btn_cornerdrawable"
+            app:layout_constraintWidth_percent="0.25" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/drawable_btn_linedrawable"
@@ -89,15 +72,16 @@
             android:paddingBottom="18dp"
             android:text="@string/main_drawables_linedrawable"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/drawable_btn_loading"
-            app:layout_constraintWidth_percent="0.25" />
+            app:layout_constraintBottom_toBottomOf="@id/drawable_btn_framedrawable"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/drawable_btn_framedrawable"
+            app:layout_constraintTop_toTopOf="@id/drawable_btn_framedrawable" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/drawable_btn_griddrawable"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
             android:drawableTop="@drawable/ic_drawables_drawable"
             android:drawablePadding="6dp"
@@ -105,9 +89,8 @@
             android:paddingBottom="18dp"
             android:text="@string/main_drawables_griddrawable"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/drawable_btn_linedrawable"
-            app:layout_constraintStart_toEndOf="@id/drawable_btn_linedrawable"
-            app:layout_constraintTop_toTopOf="@id/drawable_btn_linedrawable"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/drawable_btn_loading"
             app:layout_constraintWidth_percent="0.25" />
 
         <androidx.appcompat.widget.AppCompatButton

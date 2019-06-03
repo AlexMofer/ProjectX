@@ -37,8 +37,8 @@ public abstract class ClipboardHelper {
 
     private static final String PATH_CLIPBOARD = "clipboard";
     private static final int CODE_CLIPBOARD = 0;
-    private final SparseArray<String> mTypes = new SparseArray<>();
     private UriMatcher mMatcher;
+    private final SparseArray<String> mTypes = new SparseArray<>();
 
     public ClipboardHelper() {
         onCreate();
