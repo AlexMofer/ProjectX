@@ -24,7 +24,7 @@ import am.widget.floatingactionmode.impl.FloatingActionModeHelper;
  * 悬浮菜单
  * Created by Alex on 2018/11/21.
  */
-@SuppressWarnings({"WeakerAccess", "unused"})
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public class FloatingActionMode {
 
     /**
@@ -156,6 +156,16 @@ public class FloatingActionMode {
      */
     public FloatingActionMode setLayoutInsetDecorEnabled(boolean enabled) {
         mHelper.setLayoutInsetDecorEnabled(enabled);
+        return this;
+    }
+
+    /**
+     * 设置是否在分屏模式
+     *
+     * @param multiWindowMode 是否在分屏模式
+     */
+    public FloatingActionMode setInMultiWindowMode(boolean multiWindowMode) {
+        mHelper.setInMultiWindowMode(multiWindowMode);
         return this;
     }
 

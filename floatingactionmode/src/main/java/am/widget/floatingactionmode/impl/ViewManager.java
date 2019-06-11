@@ -47,6 +47,7 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
     private final FloatingActionMode.Callback mCallback;
     private final WindowManager mManager;
     private final int mMargin;
+    private boolean mInMultiWindowMode = false;
     private final WindowParam mWindowParam = new WindowParam();
     private final Point mMainButtonLocation = new Point();
     private final Size mContentMaxSize = new Size();
@@ -158,11 +159,16 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
         return true;
     }
 
+    void setInMultiWindowMode(boolean multiWindowMode) {
+        mInMultiWindowMode = multiWindowMode;
+    }
+
     void invalidateViewData(View target, FloatingMenuImpl menu, Rect bound) {
         final boolean layoutNoLimits = mMode.isLayoutNoLimitsEnabled();
         final boolean layoutInScreen = mMode.isLayoutInScreenEnabled();
         final boolean layoutInsetDecor = mMode.isLayoutInsetDecorEnabled();
-        mWindowParam.getParam(target, bound, layoutNoLimits, layoutInScreen, layoutInsetDecor);
+        mWindowParam.getParam(target, bound, layoutNoLimits, layoutInScreen, layoutInsetDecor,
+                mInMultiWindowMode);
         getAnimationLayoutParams();
         final int maxWidth = mWindowParam.width - mMargin - mMargin;
         final int maxMainHeight = Math.max(mWindowParam.above - mMargin - mMargin,
@@ -381,6 +387,7 @@ final class ViewManager implements View.OnClickListener, AnimationLayout.OnAnima
             mSubLocation.y = 0;
             mSubParams.x = mSubLocation.x;
             mSubParams.y = mSubLocation.y;
+            //noinspection ConstantConditions
             mSubButtonLocation.x = mSubLocation.x;
             mSubButtonLocation.y = mMainLocation.y;
             return;

@@ -22,13 +22,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
+import am.project.support.compat.AMActivityCompat;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.widget.floatingactionmode.FloatingActionMode;
 import am.widget.floatingactionmode.FloatingMenu;
 import am.widget.floatingactionmode.FloatingMenuItem;
 import am.widget.floatingactionmode.FloatingSubMenu;
-import androidx.annotation.Nullable;
 
 /**
  * 悬浮菜单
@@ -94,6 +96,7 @@ public class FloatingActionModeActivity extends BaseActivity implements PressVie
     @Override
     public void onGetContentRect(FloatingActionMode mode, View view, Rect outRect) {
         outRect.set(mBound);
+        mode.setInMultiWindowMode(AMActivityCompat.isInMultiWindowMode(this));
     }
 
     @Override

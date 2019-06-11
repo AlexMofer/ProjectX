@@ -113,6 +113,10 @@ public final class FloatingActionModeHelper implements View.OnLayoutChangeListen
         invalidateContentRect();
     }
 
+    public void setInMultiWindowMode(boolean multiWindowMode) {
+        mView.setInMultiWindowMode(multiWindowMode);
+    }
+
     public void start() {
         if (mStarted)
             return;

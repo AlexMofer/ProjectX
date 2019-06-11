@@ -35,18 +35,33 @@ final class WindowParam {
     private final int[] tLocation = new int[2];
 
     void getParam(View target, Rect bound, boolean layoutNoLimits, boolean layoutInScreen,
-                  boolean layoutInsetDecor) {
+                  boolean layoutInsetDecor, boolean inMultiWindowMode) {
         final Rect rect = tRect;
         final int[] location = tLocation;
         final View root = target.getRootView();
         root.getLocationOnScreen(location);
+        final int mwx;
+        final int mwy;
+        if (inMultiWindowMode) {
+            mwx = location[0];
+            mwy = location[1];
+            location[0] = 0;
+            location[1] = 0;
+        } else {
+            mwx = mwy = 0;
+        }
         final int appScreenLocationLeft = location[0];
         final int appScreenLocationTop = location[1];
         target.getLocationOnScreen(location);
+        if (inMultiWindowMode) {
+            location[0] -= mwx;
+            location[1] -= mwy;
+        }
         final int viewScreenLocationLeft = location[0];
         final int viewScreenLocationTop = location[1];
         final int offsetX = viewScreenLocationLeft - appScreenLocationLeft;
         final int offsetY = viewScreenLocationTop - appScreenLocationTop;
+
         if (layoutNoLimits) {
             x = 0;
             y = 0;
@@ -60,6 +75,12 @@ final class WindowParam {
         }
         if (!layoutInScreen) {
             target.getWindowVisibleDisplayFrame(rect);
+            if (inMultiWindowMode) {
+                rect.left -= mwx;
+                rect.right -= mwx;
+                rect.top -= mwy;
+                rect.bottom -= mwy;
+            }
             x = rect.left;
             y = rect.top;
             width = rect.right - rect.left;
@@ -82,6 +103,12 @@ final class WindowParam {
             below = height - focus.bottom;
         } else {
             target.getWindowVisibleDisplayFrame(rect);
+            if (inMultiWindowMode) {
+                rect.left -= mwx;
+                rect.right -= mwx;
+                rect.top -= mwy;
+                rect.bottom -= mwy;
+            }
             width = rect.left + rect.width();
             height = rect.top + rect.height();
             focus.set(bound);
