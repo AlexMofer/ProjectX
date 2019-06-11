@@ -17,17 +17,22 @@ package am.project.x.business.developing;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
+import android.graphics.Region;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
+import am.project.x.privateapi.InternalInsetsInfo;
+import am.project.x.privateapi.OnComputeInternalInsetsListener;
+import am.project.x.privateapi.ViewTreeObserverPrivateApis;
 
 /**
  * 正在开发
  */
-public class DevelopingActivity extends BaseActivity {
+public class DevelopingActivity extends BaseActivity implements OnComputeInternalInsetsListener {
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, DevelopingActivity.class));
@@ -41,6 +46,26 @@ public class DevelopingActivity extends BaseActivity {
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.developing_toolbar);
-        finish();
+        final Object listener =
+                ViewTreeObserverPrivateApis.newInnerOnComputeInternalInsetsListener(this);
+        ViewTreeObserverPrivateApis.addOnComputeInternalInsetsListener(
+                getWindow().getDecorView().getRootView().getViewTreeObserver(), listener);
+    }
+
+    @Override
+    public void onComputeInternalInsets(InternalInsetsInfo inoutInfo) {
+        final Rect contentInsets = inoutInfo.getContentInsets();
+        if (contentInsets != null)
+            contentInsets.setEmpty();
+        final Rect visibleInsets = inoutInfo.getVisibleInsets();
+        if (visibleInsets != null)
+            visibleInsets.setEmpty();
+        final Region touchableRegion = inoutInfo.getTouchableRegion();
+        if (touchableRegion != null) {
+//            touchableRegion.set(mTouchableRegion); TODO
+        }
+        inoutInfo.setTouchableInsets(InternalInsetsInfo.TOUCHABLE_INSETS_REGION);
+
+        System.out.println("lalalalaal-------------------------------------args:" + inoutInfo.toString());
     }
 }
