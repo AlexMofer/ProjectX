@@ -1,4 +1,4 @@
-package am.project.x.privateapi;
+package am.project.x.privateapi.viewtreeobserver;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -25,6 +25,8 @@ final class OnComputeInternalInsetsListenerHandler implements InvocationHandler 
     }
 
     private void onComputeInternalInsets(Object info) {
+        if (info == null || mListener == null)
+            return;
         mListener.onComputeInternalInsets(new InternalInsetsInfo(info));
     }
 }

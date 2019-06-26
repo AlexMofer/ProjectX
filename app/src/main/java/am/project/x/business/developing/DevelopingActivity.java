@@ -25,9 +25,9 @@ import androidx.annotation.Nullable;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
-import am.project.x.privateapi.InternalInsetsInfo;
-import am.project.x.privateapi.OnComputeInternalInsetsListener;
-import am.project.x.privateapi.ViewTreeObserverPrivateApis;
+import am.project.x.privateapi.viewtreeobserver.InternalInsetsInfo;
+import am.project.x.privateapi.viewtreeobserver.OnComputeInternalInsetsListener;
+import am.project.x.privateapi.viewtreeobserver.ViewTreeObserverPrivateApis;
 
 /**
  * 正在开发
@@ -46,26 +46,25 @@ public class DevelopingActivity extends BaseActivity implements OnComputeInterna
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.developing_toolbar);
-        final Object listener =
-                ViewTreeObserverPrivateApis.newInnerOnComputeInternalInsetsListener(this);
+
         ViewTreeObserverPrivateApis.addOnComputeInternalInsetsListener(
-                getWindow().getDecorView().getRootView().getViewTreeObserver(), listener);
+                getWindow().getDecorView().getRootView().getViewTreeObserver(),
+                ViewTreeObserverPrivateApis.newInnerOnComputeInternalInsetsListener(this));
     }
 
     @Override
     public void onComputeInternalInsets(InternalInsetsInfo inoutInfo) {
-        final Rect contentInsets = inoutInfo.getContentInsets();
-        if (contentInsets != null)
+        try {
+            final Rect contentInsets = inoutInfo.getContentInsets();
             contentInsets.setEmpty();
-        final Rect visibleInsets = inoutInfo.getVisibleInsets();
-        if (visibleInsets != null)
+            final Rect visibleInsets = inoutInfo.getVisibleInsets();
             visibleInsets.setEmpty();
-        final Region touchableRegion = inoutInfo.getTouchableRegion();
-        if (touchableRegion != null) {
-//            touchableRegion.set(mTouchableRegion); TODO
+            final Region touchableRegion = inoutInfo.getTouchableRegion();
+            touchableRegion.set(0, 0, 1080, 100);
+        } catch (Exception e) {
+            // ignore
         }
-        inoutInfo.setTouchableInsets(InternalInsetsInfo.TOUCHABLE_INSETS_REGION);
-
-        System.out.println("lalalalaal-------------------------------------args:" + inoutInfo.toString());
+        final boolean result = inoutInfo.setTouchableInsets(InternalInsetsInfo.TOUCHABLE_INSETS_REGION);
+        System.out.println("lalalalaal-------------------------------------setTouchableInsets:" + result);
     }
 }

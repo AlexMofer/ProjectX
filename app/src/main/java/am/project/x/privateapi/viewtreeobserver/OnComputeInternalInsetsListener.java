@@ -1,4 +1,4 @@
-package am.project.x.privateapi;
+package am.project.x.privateapi.viewtreeobserver;
 
 /**
  * Interface definition for a callback to be invoked when layout has

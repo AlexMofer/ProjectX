@@ -1,4 +1,4 @@
-package am.project.x.privateapi;
+package am.project.x.privateapi.viewtreeobserver;
 
 import android.annotation.SuppressLint;
 import android.view.ViewTreeObserver;
