@@ -20,9 +20,11 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 
 import java.io.InputStream;
-import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import am.project.support.utils.ByteUtils;
 
 /**
  * 信息摘要工具类
@@ -33,18 +35,61 @@ public class MessageDigestUtils {
     /**
      * 获取信息摘要
      *
-     * @param src       数据源
+     * @param input     数据源
      * @param algorithm 算法
      * @return 信息摘要
      */
-    public static byte[] getMessageDigest(byte[] src, String algorithm) {
-        if (src == null)
+    public static byte[] getMessageDigest(byte[] input, String algorithm) {
+        if (input == null)
             return null;
         try {
-            return MessageDigest.getInstance(algorithm).digest(src);
+            return MessageDigest.getInstance(algorithm).digest(input);
         } catch (NoSuchAlgorithmException e) {
             return null;
         }
+    }
+
+    /**
+     * 获取信息摘要
+     *
+     * @param input     数据源
+     * @param algorithm 算法
+     * @param minLength 16进制字节最小长度
+     * @return 信息摘要
+     */
+    public static String getMessageDigest(byte[] input, String algorithm, int minLength) {
+        return ByteUtils.toHexString(getMessageDigest(input, algorithm), minLength);
+    }
+
+    /**
+     * 获取信息摘要
+     *
+     * @param input     数据源
+     * @param algorithm 算法
+     * @return 信息摘要
+     */
+    public static byte[] getMessageDigest(ByteBuffer input, String algorithm) {
+        if (input == null)
+            return null;
+        try {
+            final MessageDigest md = MessageDigest.getInstance(algorithm);
+            md.update(input);
+            return md.digest();
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        }
+    }
+
+    /**
+     * 获取信息摘要
+     *
+     * @param input     数据源
+     * @param algorithm 算法
+     * @param minLength 16进制字节最小长度
+     * @return 信息摘要
+     */
+    public static String getMessageDigest(ByteBuffer input, String algorithm, int minLength) {
+        return ByteUtils.toHexString(getMessageDigest(input, algorithm), minLength);
     }
 
     /**
@@ -75,13 +120,35 @@ public class MessageDigestUtils {
     }
 
     /**
+     * 获取信息摘要
+     *
+     * @param input     数据源
+     * @param algorithm 算法
+     * @param minLength 16进制字节最小长度
+     * @return 信息摘要
+     */
+    public static String getMessageDigest(InputStream input, String algorithm, int minLength) {
+        return ByteUtils.toHexString(getMessageDigest(input, algorithm), minLength);
+    }
+
+    /**
      * 获取MD5
      *
-     * @param src 数据源
+     * @param input 数据源
      * @return MD5
      */
-    public static byte[] getMD5(byte[] src) {
-        return getMessageDigest(src, "MD5");
+    public static byte[] getMD5(byte[] input) {
+        return getMessageDigest(input, "MD5");
+    }
+
+    /**
+     * 获取MD5
+     *
+     * @param input 数据源
+     * @return MD5
+     */
+    public static byte[] getMD5(ByteBuffer input) {
+        return getMessageDigest(input, "MD5");
     }
 
     /**
@@ -95,13 +162,73 @@ public class MessageDigestUtils {
     }
 
     /**
+     * 获取字符MD5
+     *
+     * @param input 字符串
+     * @return MD5
+     */
+    public static byte[] getMD5(String input) {
+        return getMD5(input.getBytes());
+    }
+
+    /**
+     * 获取MD5
+     *
+     * @param input 数据源
+     * @return MD5
+     */
+    public static String getMD5String(byte[] input) {
+        return getMessageDigest(input, "MD5", 0);
+    }
+
+    /**
+     * 获取MD5
+     *
+     * @param input 数据源
+     * @return MD5
+     */
+    public static String getMD5String(ByteBuffer input) {
+        return getMessageDigest(input, "MD5", 0);
+    }
+
+    /**
+     * 获取MD5
+     *
+     * @param input 数据源
+     * @return MD5
+     */
+    public static String getMD5String(InputStream input) {
+        return getMessageDigest(input, "MD5", 0);
+    }
+
+    /**
+     * 获取字符MD5
+     *
+     * @param input 字符串
+     * @return MD5
+     */
+    public static String getMD5String(String input) {
+        return getMD5String(input.getBytes());
+    }
+
+    /**
      * 获取SHA-1
      *
-     * @param src 数据源
+     * @param input 数据源
      * @return SHA-1
      */
-    public static byte[] getSHA1(byte[] src) {
-        return getMessageDigest(src, "SHA-1");
+    public static byte[] getSHA1(byte[] input) {
+        return getMessageDigest(input, "SHA-1");
+    }
+
+    /**
+     * 获取SHA-1
+     *
+     * @param input 数据源
+     * @return SHA-1
+     */
+    public static byte[] getSHA1(ByteBuffer input) {
+        return getMessageDigest(input, "SHA-1");
     }
 
     /**
@@ -115,18 +242,84 @@ public class MessageDigestUtils {
     }
 
     /**
+     * 获取SHA-1
+     *
+     * @param input 字符串
+     * @return SHA-1
+     */
+    public static byte[] getSHA1(String input) {
+        return getSHA1(input.getBytes());
+    }
+
+    /**
+     * 获取SHA-1
+     *
+     * @param input 数据源
+     * @return SHA-1
+     */
+    public static String getSHA1String(byte[] input) {
+        return getMessageDigest(input, "SHA-1", 0);
+    }
+
+
+    /**
+     * 获取SHA-1
+     *
+     * @param input 数据源
+     * @return SHA-1
+     */
+    public static String getSHA1String(ByteBuffer input) {
+        return getMessageDigest(input, "SHA-1", 0);
+    }
+
+    /**
+     * 获取SHA-1
+     *
+     * @param input 数据源
+     * @return SHA-1
+     */
+    public static String getSHA1String(InputStream input) {
+        return getMessageDigest(input, "SHA-1", 0);
+    }
+
+    /**
+     * 获取SHA-1
+     *
+     * @param input 字符串
+     * @return SHA-1
+     */
+    public static String getSHA1String(String input) {
+        return getSHA1String(input.getBytes());
+    }
+
+    /**
      * 获取SHA-224
      * 仅支持API 1-8,22+
      *
-     * @param src 数据源
+     * @param input 数据源
      * @return SHA-224
      */
     @SuppressLint("ObsoleteSdkInt")
-    public static byte[] getSHA224(byte[] src) {
+    public static byte[] getSHA224(byte[] input) {
         if (Build.VERSION.SDK_INT > 8 && Build.VERSION.SDK_INT < 22) {
             throw new UnsupportedOperationException("SHA-224 Supported API Levels 1-8,22+");
         }
-        return getMessageDigest(src, "SHA-224");
+        return getMessageDigest(input, "SHA-224");
+    }
+
+    /**
+     * 获取SHA-224
+     * 仅支持API 1-8,22+
+     *
+     * @param input 数据源
+     * @return SHA-224
+     */
+    @SuppressLint("ObsoleteSdkInt")
+    public static byte[] getSHA224(ByteBuffer input) {
+        if (Build.VERSION.SDK_INT > 8 && Build.VERSION.SDK_INT < 22) {
+            throw new UnsupportedOperationException("SHA-224 Supported API Levels 1-8,22+");
+        }
+        return getMessageDigest(input, "SHA-224");
     }
 
     /**
@@ -145,13 +338,90 @@ public class MessageDigestUtils {
     }
 
     /**
+     * 获取SHA-224
+     * 仅支持API 1-8,22+
+     *
+     * @param input 字符串
+     * @return SHA-224
+     */
+    public static byte[] getSHA224(String input) {
+        return getSHA224(input.getBytes());
+    }
+
+    /**
+     * 获取SHA-224
+     * 仅支持API 1-8,22+
+     *
+     * @param input 数据源
+     * @return SHA-224
+     */
+    @SuppressLint("ObsoleteSdkInt")
+    public static String getSHA224String(byte[] input) {
+        if (Build.VERSION.SDK_INT > 8 && Build.VERSION.SDK_INT < 22) {
+            throw new UnsupportedOperationException("SHA-224 Supported API Levels 1-8,22+");
+        }
+        return getMessageDigest(input, "SHA-224", 0);
+    }
+
+    /**
+     * 获取SHA-224
+     * 仅支持API 1-8,22+
+     *
+     * @param input 数据源
+     * @return SHA-224
+     */
+    @SuppressLint("ObsoleteSdkInt")
+    public static String getSHA224String(ByteBuffer input) {
+        if (Build.VERSION.SDK_INT > 8 && Build.VERSION.SDK_INT < 22) {
+            throw new UnsupportedOperationException("SHA-224 Supported API Levels 1-8,22+");
+        }
+        return getMessageDigest(input, "SHA-224", 0);
+    }
+
+    /**
+     * 获取SHA-224
+     * 仅支持API 1-8,22+
+     *
+     * @param input 数据源
+     * @return SHA-224
+     */
+    @SuppressLint("ObsoleteSdkInt")
+    public static String getSHA224String(InputStream input) {
+        if (Build.VERSION.SDK_INT > 8 && Build.VERSION.SDK_INT < 22) {
+            throw new UnsupportedOperationException("SHA-224 Supported API Levels 1-8,22+");
+        }
+        return getMessageDigest(input, "SHA-224", 0);
+    }
+
+    /**
+     * 获取SHA-224
+     * 仅支持API 1-8,22+
+     *
+     * @param input 字符串
+     * @return SHA-224
+     */
+    public static String getSHA224String(String input) {
+        return getSHA224String(input.getBytes());
+    }
+
+    /**
      * 获取SHA-256
      *
-     * @param src 数据源
+     * @param input 数据源
      * @return SHA-256
      */
-    public static byte[] getSHA256(byte[] src) {
-        return getMessageDigest(src, "SHA-256");
+    public static byte[] getSHA256(byte[] input) {
+        return getMessageDigest(input, "SHA-256");
+    }
+
+    /**
+     * 获取SHA-256
+     *
+     * @param input 数据源
+     * @return SHA-256
+     */
+    public static byte[] getSHA256(ByteBuffer input) {
+        return getMessageDigest(input, "SHA-256");
     }
 
     /**
@@ -165,13 +435,73 @@ public class MessageDigestUtils {
     }
 
     /**
+     * 获取SHA-256
+     *
+     * @param input 字符串
+     * @return SHA-256
+     */
+    public static byte[] getSHA256(String input) {
+        return getSHA256(input.getBytes());
+    }
+
+    /**
+     * 获取SHA-256
+     *
+     * @param input 数据源
+     * @return SHA-256
+     */
+    public static String getSHA256String(byte[] input) {
+        return getMessageDigest(input, "SHA-256", 0);
+    }
+
+    /**
+     * 获取SHA-256
+     *
+     * @param input 数据源
+     * @return SHA-256
+     */
+    public static String getSHA256String(ByteBuffer input) {
+        return getMessageDigest(input, "SHA-256", 0);
+    }
+
+    /**
+     * 获取SHA-256
+     *
+     * @param input 数据源
+     * @return SHA-256
+     */
+    public static String getSHA256String(InputStream input) {
+        return getMessageDigest(input, "SHA-256", 0);
+    }
+
+    /**
+     * 获取SHA-256
+     *
+     * @param input 字符串
+     * @return SHA-256
+     */
+    public static String getSHA256String(String input) {
+        return getSHA256String(input.getBytes());
+    }
+
+    /**
      * 获取SHA-384
      *
-     * @param src 数据源
+     * @param input 数据源
      * @return SHA-384
      */
-    public static byte[] getSHA384(byte[] src) {
-        return getMessageDigest(src, "SHA-384");
+    public static byte[] getSHA384(byte[] input) {
+        return getMessageDigest(input, "SHA-384");
+    }
+
+    /**
+     * 获取SHA-384
+     *
+     * @param input 数据源
+     * @return SHA-384
+     */
+    public static byte[] getSHA384(ByteBuffer input) {
+        return getMessageDigest(input, "SHA-384");
     }
 
     /**
@@ -185,13 +515,73 @@ public class MessageDigestUtils {
     }
 
     /**
+     * 获取SHA-384
+     *
+     * @param input 字符串
+     * @return SHA-384
+     */
+    public static byte[] getSHA384(String input) {
+        return getSHA384(input.getBytes());
+    }
+
+    /**
+     * 获取SHA-384
+     *
+     * @param input 数据源
+     * @return SHA-384
+     */
+    public static String getSHA384String(byte[] input) {
+        return getMessageDigest(input, "SHA-384", 0);
+    }
+
+    /**
+     * 获取SHA-384
+     *
+     * @param input 数据源
+     * @return SHA-384
+     */
+    public static String getSHA384String(ByteBuffer input) {
+        return getMessageDigest(input, "SHA-384", 0);
+    }
+
+    /**
+     * 获取SHA-384
+     *
+     * @param input 数据源
+     * @return SHA-384
+     */
+    public static String getSHA384String(InputStream input) {
+        return getMessageDigest(input, "SHA-384", 0);
+    }
+
+    /**
+     * 获取SHA-384
+     *
+     * @param input 字符串
+     * @return SHA-384
+     */
+    public static String getSHA384String(String input) {
+        return getSHA384String(input.getBytes());
+    }
+
+    /**
      * 获取SHA-512
      *
-     * @param src 数据源
+     * @param input 数据源
      * @return SHA-512
      */
-    public static byte[] getSHA512(byte[] src) {
-        return getMessageDigest(src, "SHA-512");
+    public static byte[] getSHA512(byte[] input) {
+        return getMessageDigest(input, "SHA-512");
+    }
+
+    /**
+     * 获取SHA-512
+     *
+     * @param input 数据源
+     * @return SHA-512
+     */
+    public static byte[] getSHA512(ByteBuffer input) {
+        return getMessageDigest(input, "SHA-512");
     }
 
     /**
@@ -204,169 +594,34 @@ public class MessageDigestUtils {
         return getMessageDigest(input, "SHA-512");
     }
 
-    private static String toHexString(byte[] output, int length) {
-        final String str = new BigInteger(1, output).toString(16);
-        final StringBuilder builder = new StringBuilder();
-        if (str.length() < length) {
-            final int number = length - str.length();
-            for (int i = 0; i < number; i++) {
-                builder.append("0");
-            }
-        }
-        builder.append(str);
-        return builder.toString();
-    }
-
-    private static String getMD5(byte[] output, int length) {
-        final String md5 = toHexString(output, 32);
-        if (length == 16) {
-            return md5.substring(8, 24);
-        }
-        return md5;
-    }
-
     /**
-     * 获取MD5
+     * 获取SHA-512
      *
-     * @param src    数据源
-     * @param length 位数（16位或32位）
-     * @return MD5
+     * @param input 字符串
+     * @return SHA-512
      */
-    public static String getMD5String(byte[] src, int length) {
-        return getMD5(getMD5(src), length);
-    }
-
-    /**
-     * 获取MD5
-     *
-     * @param src 数据源
-     * @return MD5
-     */
-    public static String getMD5String(byte[] src) {
-        return getMD5(getMD5(src), 32);
-    }
-
-    /**
-     * 获取MD5
-     *
-     * @param input  数据源
-     * @param length 位数（16位或32位）
-     * @return MD5
-     */
-    public static String getMD5String(InputStream input, int length) {
-        return getMD5(getMD5(input), length);
-    }
-
-    /**
-     * 获取MD5
-     *
-     * @param input 数据源
-     * @return MD5
-     */
-    public static String getMD5String(InputStream input) {
-        return getMD5(getMD5(input), 32);
-    }
-
-    /**
-     * 获取字符MD5
-     *
-     * @param str 字符串
-     * @return MD5
-     */
-    public static String getMD5String(String str) {
-        return getMD5String(str.getBytes(), 32);
-    }
-
-    /**
-     * 获取SHA-1
-     *
-     * @param src 数据源
-     * @return SHA-1
-     */
-    public static String getSHA1String(byte[] src) {
-        return toHexString(getSHA1(src), 40);
-    }
-
-    /**
-     * 获取SHA-1
-     *
-     * @param input 数据源
-     * @return SHA-1
-     */
-    public static String getSHA1String(InputStream input) {
-        return toHexString(getSHA1(input), 40);
-    }
-
-    /**
-     * 获取SHA-224
-     * 仅支持API 1-8,22+
-     *
-     * @param src 数据源
-     * @return SHA-224
-     */
-    public static String getSHA224String(byte[] src) {
-        return toHexString(getSHA224(src), 56);
-    }
-
-    /**
-     * 获取SHA-224
-     * 仅支持API 1-8,22+
-     *
-     * @param input 数据源
-     * @return SHA-224
-     */
-    public static String getSHA224String(InputStream input) {
-        return toHexString(getSHA224(input), 56);
-    }
-
-    /**
-     * 获取SHA-256
-     *
-     * @param src 数据源
-     * @return SHA-256
-     */
-    public static String getSHA256String(byte[] src) {
-        return toHexString(getSHA256(src), 64);
-    }
-
-    /**
-     * 获取SHA-256
-     *
-     * @param input 数据源
-     * @return SHA-256
-     */
-    public static String getSHA256String(InputStream input) {
-        return toHexString(getSHA256(input), 64);
-    }
-
-    /**
-     * 获取SHA-384
-     *
-     * @param src 数据源
-     * @return SHA-384
-     */
-    public static String getSHA384String(byte[] src) {
-        return toHexString(getSHA384(src), 96);
-    }
-
-    /**
-     * 获取SHA-384
-     *
-     * @param input 数据源
-     * @return SHA-384
-     */
-    public static String getSHA384String(InputStream input) {
-        return toHexString(getSHA384(input), 96);
+    public static byte[] getSHA512(String input) {
+        return getSHA512(input.getBytes());
     }
 
     /**
      * 获取SHA-512
      *
-     * @param src 数据源
+     * @param input 数据源
      * @return SHA-512
      */
-    public static String getSHA512String(byte[] src) {
-        return toHexString(getSHA512(src), 128);
+    public static String getSHA512String(byte[] input) {
+        return getMessageDigest(input, "SHA-512", 0);
+    }
+
+    /**
+     * 获取SHA-512
+     *
+     * @param input 数据源
+     * @return SHA-512
+     */
+    public static String getSHA512String(ByteBuffer input) {
+        return getMessageDigest(input, "SHA-512", 0);
     }
 
     /**
@@ -376,6 +631,16 @@ public class MessageDigestUtils {
      * @return SHA-512
      */
     public static String getSHA512String(InputStream input) {
-        return toHexString(getSHA512(input), 128);
+        return getMessageDigest(input, "SHA-512", 0);
+    }
+
+    /**
+     * 获取SHA-512
+     *
+     * @param input 字符串
+     * @return SHA-512
+     */
+    public static String getSHA512String(String input) {
+        return getSHA512String(input.getBytes());
     }
 }

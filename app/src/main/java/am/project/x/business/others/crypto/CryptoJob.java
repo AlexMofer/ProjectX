@@ -95,7 +95,7 @@ class CryptoJob extends Job<CryptoJob.Callback> {
 
     private void getSHA1(StringBuffer buffer, String text) {
         buffer.append("SHA-1：");
-        buffer.append(MessageDigestUtils.getSHA1String(text.getBytes()));
+        buffer.append(MessageDigestUtils.getSHA1String(text));
         buffer.append("\n");
         buffer.append("\n");
     }
@@ -105,7 +105,7 @@ class CryptoJob extends Job<CryptoJob.Callback> {
         if (Build.VERSION.SDK_INT < 22) {
             buffer.append("SHA-224 Supported API Levels 1-8,22+");
         } else {
-            buffer.append(MessageDigestUtils.getSHA224String(text.getBytes()));
+            buffer.append(MessageDigestUtils.getSHA224String(text));
         }
         buffer.append("\n");
         buffer.append("\n");
@@ -113,21 +113,21 @@ class CryptoJob extends Job<CryptoJob.Callback> {
 
     private void getSHA256(StringBuffer buffer, String text) {
         buffer.append("SHA-256：");
-        buffer.append(MessageDigestUtils.getSHA256String(text.getBytes()));
+        buffer.append(MessageDigestUtils.getSHA256String(text));
         buffer.append("\n");
         buffer.append("\n");
     }
 
     private void getSHA384(StringBuffer buffer, String text) {
         buffer.append("SHA-384：");
-        buffer.append(MessageDigestUtils.getSHA384String(text.getBytes()));
+        buffer.append(MessageDigestUtils.getSHA384String(text));
         buffer.append("\n");
         buffer.append("\n");
     }
 
     private void getSHA512(StringBuffer buffer, String text) {
         buffer.append("SHA-512：");
-        buffer.append(MessageDigestUtils.getSHA512String(text.getBytes()));
+        buffer.append(MessageDigestUtils.getSHA512String(text));
         buffer.append("\n");
     }
 
