@@ -371,12 +371,9 @@ public class FrameDrawable extends Drawable implements Drawable.Callback {
             return mWidth;
         if (mWidth == ViewGroup.LayoutParams.MATCH_PARENT &&
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            final Callback callback = getCallback();
-            if (callback instanceof View) {
-                return ((View) callback).getMeasuredWidth();
-            } else if (callback instanceof Drawable) {
-                return ((Drawable) callback).getIntrinsicWidth();
-            }
+            final View view = DrawableHelper.getViewCallback(this);
+            if (view != null)
+                return view.getMeasuredWidth();
         }
         int width = -1;
         for (ChildDrawable child : mItems) {
@@ -393,12 +390,9 @@ public class FrameDrawable extends Drawable implements Drawable.Callback {
             return mHeight;
         if (mHeight == ViewGroup.LayoutParams.MATCH_PARENT &&
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            final Callback callback = getCallback();
-            if (callback instanceof View) {
-                return ((View) callback).getMeasuredHeight();
-            } else if (callback instanceof Drawable) {
-                return ((Drawable) callback).getIntrinsicHeight();
-            }
+            final View view = DrawableHelper.getViewCallback(this);
+            if (view != null)
+                return view.getMeasuredHeight();
         }
         int height = -1;
         for (ChildDrawable child : mItems) {
@@ -415,12 +409,9 @@ public class FrameDrawable extends Drawable implements Drawable.Callback {
             return mWidth;
         if (mWidth == ViewGroup.LayoutParams.MATCH_PARENT &&
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            final Callback callback = getCallback();
-            if (callback instanceof View) {
-                return ((View) callback).getMeasuredWidth();
-            } else if (callback instanceof Drawable) {
-                return ((Drawable) callback).getMinimumWidth();
-            }
+            final View view = DrawableHelper.getViewCallback(this);
+            if (view != null)
+                return view.getMeasuredWidth();
         }
         int width = -1;
         for (ChildDrawable child : mItems) {
@@ -437,12 +428,9 @@ public class FrameDrawable extends Drawable implements Drawable.Callback {
             return mHeight;
         if (mHeight == ViewGroup.LayoutParams.MATCH_PARENT &&
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            final Callback callback = getCallback();
-            if (callback instanceof View) {
-                return ((View) callback).getMeasuredHeight();
-            } else if (callback instanceof Drawable) {
-                return ((Drawable) callback).getMinimumHeight();
-            }
+            final View view = DrawableHelper.getViewCallback(this);
+            if (view != null)
+                return view.getMeasuredHeight();
         }
         int height = -1;
         for (ChildDrawable child : mItems) {

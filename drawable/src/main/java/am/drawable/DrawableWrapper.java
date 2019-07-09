@@ -43,10 +43,10 @@ import am.widget.R;
  * Drawable which delegates all calls to its wrapped {@link Drawable}.
  * <p>
  * The wrapped {@link Drawable} <em>must</em> be fully released from any {@link View}
- * before wrapping, otherwise internal {@link Drawable.Callback} may be dropped.
+ * before wrapping, otherwise internal {@link Callback} may be dropped.
  */
 @SuppressWarnings({"NullableProblems", "unused", "WeakerAccess"})
-class DrawableWrapper extends Drawable implements Drawable.Callback {
+public class DrawableWrapper extends Drawable implements Drawable.Callback {
 
     private Drawable mDrawable;
 

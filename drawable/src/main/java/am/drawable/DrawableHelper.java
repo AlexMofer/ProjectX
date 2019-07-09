@@ -20,7 +20,10 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
+import android.view.View;
 
 /**
  * 帮助类
@@ -79,5 +82,23 @@ class DrawableHelper {
         b = (float) Math.pow(b, 1.0 / 2.2) * 255.0f;
 
         return Math.round(a) << 24 | Math.round(r) << 16 | Math.round(g) << 8 | Math.round(b);
+    }
+
+    /**
+     * 获取View类型的回调
+     *
+     * @param drawable Drawable
+     * @return View
+     */
+    static View getViewCallback(Drawable drawable) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
+            return null;
+        final Drawable.Callback callback = drawable.getCallback();
+        if (callback instanceof View)
+            return (View) callback;
+        else if (callback instanceof Drawable)
+            return getViewCallback((Drawable) callback);
+        else
+            return null;
     }
 }

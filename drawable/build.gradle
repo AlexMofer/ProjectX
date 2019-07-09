@@ -1,14 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         //noinspection MinSdkTooLow
         minSdkVersion 4
-        targetSdkVersion 28
-        versionCode 23
-        versionName "2.0.2"
+        targetSdkVersion 29
+        versionCode 24
+        versionName "2.0.3"
     }
 }
 
