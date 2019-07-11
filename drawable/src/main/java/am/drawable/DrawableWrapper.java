@@ -338,7 +338,7 @@ public class DrawableWrapper extends Drawable implements Drawable.Callback {
      *
      * @return 包装的Drawable
      */
-    protected Drawable getWrappedDrawable() {
+    public Drawable getWrappedDrawable() {
         return mDrawable;
     }
 
@@ -347,7 +347,7 @@ public class DrawableWrapper extends Drawable implements Drawable.Callback {
      *
      * @param drawable 待包装的Drawable
      */
-    protected void setWrappedDrawable(Drawable drawable) {
+    public void setWrappedDrawable(Drawable drawable) {
         if (mDrawable != null) {
             mDrawable.setCallback(null);
         }
@@ -355,5 +355,6 @@ public class DrawableWrapper extends Drawable implements Drawable.Callback {
         if (drawable != null) {
             drawable.setCallback(this);
         }
+        invalidateSelf();
     }
 }
