@@ -49,6 +49,7 @@ import am.widget.R;
 public class DrawableWrapper extends Drawable implements Drawable.Callback {
 
     private Drawable mDrawable;
+    private boolean mBoundsChanged = false;
 
     public DrawableWrapper(Drawable drawable) {
         mDrawable = drawable;
@@ -97,6 +98,7 @@ public class DrawableWrapper extends Drawable implements Drawable.Callback {
 
     @Override
     protected void onBoundsChange(Rect bounds) {
+        mBoundsChanged = true;
         if (mDrawable == null)
             return;
         mDrawable.setBounds(bounds);
@@ -354,6 +356,8 @@ public class DrawableWrapper extends Drawable implements Drawable.Callback {
         mDrawable = drawable;
         if (drawable != null) {
             drawable.setCallback(this);
+            if (mBoundsChanged)
+                drawable.setBounds(getBounds());
         }
         invalidateSelf();
     }
