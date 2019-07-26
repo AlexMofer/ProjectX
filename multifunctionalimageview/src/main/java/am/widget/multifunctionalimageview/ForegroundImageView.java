@@ -113,10 +113,9 @@ public class ForegroundImageView extends ClipImageView {
 
     @Override
     protected void drawableStateChanged() {
-        if (isForegroundEnable()) {
-            super.drawableStateChanged();
+        super.drawableStateChanged();
+        if (isForegroundEnable())
             return;
-        }
         final Drawable drawable = getForeground();
         if (drawable != null && drawable.isStateful()
                 && drawable.setState(getDrawableState())) {
