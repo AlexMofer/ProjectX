@@ -89,6 +89,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/crypto_tv_output"
             android:layout_width="match_parent"
+            android:textIsSelectable="true"
             android:layout_height="wrap_content" />
 
     </ScrollView>

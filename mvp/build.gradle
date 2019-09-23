@@ -1,18 +1,19 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 6
         versionName "1.0.2"
     }
 }
 
 dependencies {
-    compileOnly 'androidx.appcompat:appcompat:1.0.2'
+    compileOnly 'androidx.appcompat:appcompat:1.1.0'
+    compileOnly 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
 }
 
 //apply from: "bintray.gradle"
