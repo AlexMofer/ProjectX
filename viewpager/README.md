@@ -29,7 +29,7 @@ ViewPager辅助库
 ----
 
 - minSdkVersion 14
-- 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7）
+- 保持跟```androidx.viewpager:viewpager```版本一致
 
 入门
 ---
@@ -39,7 +39,7 @@ ViewPager辅助库
 ```java
 dependencies {
     ...
-    compile 'am.util:viewpager:27.0.2'
+    compile 'am.util:viewpager:1.0.1'
     ...
 }
 ```
@@ -104,7 +104,7 @@ public class MyRecyclePagerAdapter extends RecyclePagerAdapter<MyPagerViewHolder
 注意
 ---
 
-- 保持跟其他官方支持库版本一致（如：com.android.support:appcompat-v7），否则可能出现错误。
+- 保持跟```androidx.viewpager:viewpager```支持库版本一致，否则可能出现错误。
 - 若使用原生的ViewPager，则注意在Activity的onConfigurationChanged方法中调用Adapter的onConfigurationChanged方法。
 
 支持
