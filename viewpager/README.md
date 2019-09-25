@@ -36,10 +36,10 @@ ViewPager辅助库
 
 **引用:**
 
-```java
+```gradle
 dependencies {
     ...
-    compile 'am.util:viewpager:1.0.1'
+    implementation 'am.util:viewpager:1.0.1'
     ...
 }
 ```
