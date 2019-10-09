@@ -17,33 +17,129 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/rp_label" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/rp_btn_remove"
-        style="?buttonBarButtonStyle"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="@string/rp_remove"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.5" />
+        app:layout_constraintWidth_percent="0.35">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/rp_tv_page_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rp_title_page"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/rp_btn_reduce_page"
+            style="@style/Widget.AppCompat.Toolbar.Button.Navigation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="32dp"
+            android:src="@drawable/ic_rp_reduce"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rp_tv_page_title"
+            app:layout_constraintWidth_percent="0.35" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/rp_tv_page_value"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/rp_btn_reduce_page"
+            app:layout_constraintStart_toEndOf="@id/rp_btn_reduce_page"
+            app:layout_constraintTop_toTopOf="@id/rp_btn_reduce_page"
+            app:layout_constraintWidth_percent="0.3" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/rp_btn_add_page"
+            style="@style/Widget.AppCompat.Toolbar.Button.Navigation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="32dp"
+            android:src="@drawable/ic_rp_add"
+            app:layout_constraintStart_toEndOf="@id/rp_tv_page_value"
+            app:layout_constraintTop_toBottomOf="@id/rp_tv_page_title"
+            app:layout_constraintWidth_percent="0.35" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/rp_btn_add"
+        android:id="@+id/rp_btn_exchange"
         style="?buttonBarButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="@string/rp_add"
+        android:text="@string/rp_add_exchange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.5" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.3" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.35">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/rp_tv_offset_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rp_title_offset"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/rp_btn_reduce_offset"
+            style="@style/Widget.AppCompat.Toolbar.Button.Navigation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="32dp"
+            android:src="@drawable/ic_rp_reduce"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rp_tv_offset_title"
+            app:layout_constraintWidth_percent="0.35" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/rp_tv_offset_value"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/rp_btn_reduce_offset"
+            app:layout_constraintStart_toEndOf="@id/rp_btn_reduce_offset"
+            app:layout_constraintTop_toTopOf="@id/rp_btn_reduce_offset"
+            app:layout_constraintWidth_percent="0.3" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/rp_btn_add_offset"
+            style="@style/Widget.AppCompat.Toolbar.Button.Navigation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="32dp"
+            android:src="@drawable/ic_rp_add"
+            app:layout_constraintStart_toEndOf="@id/rp_tv_offset_value"
+            app:layout_constraintTop_toBottomOf="@id/rp_tv_offset_title"
+            app:layout_constraintWidth_percent="0.35" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/rp_vp_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/rp_btn_remove"
+        app:layout_constraintBottom_toTopOf="@id/rp_btn_exchange"
         app:layout_constraintTop_toBottomOf="@id/rp_toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
