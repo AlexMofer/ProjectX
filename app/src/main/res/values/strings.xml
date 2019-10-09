@@ -105,8 +105,9 @@
     <string name="mat_toast" translatable="false">点击整个文本</string>
     <!--回收页视图-->
     <string name="rp_label" translatable="false">回收页视图</string>
-    <string name="rp_remove" translatable="false">减少页面</string>
-    <string name="rp_add" translatable="false">增加页面</string>
+    <string name="rp_title_page" translatable="false">页面数目</string>
+    <string name="rp_title_offset" translatable="false">计数偏移</string>
+    <string name="rp_add_exchange" translatable="false">奇偶互换</string>
     <!--环形进度条-->
     <string name="cpb_label" translatable="false">环形进度条</string>
     <string name="cpb_bar_top" translatable="false">速度</string>
