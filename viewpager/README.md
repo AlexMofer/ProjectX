@@ -39,7 +39,7 @@ ViewPager辅助库
 ```gradle
 dependencies {
     ...
-    implementation 'am.util:viewpager:1.0.1'
+    implementation 'am.util:viewpager:1.1.0'
     ...
 }
 ```
