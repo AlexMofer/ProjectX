@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 
@@ -36,12 +35,113 @@ import java.util.ArrayList;
 public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerViewHolder>
         extends PagerAdapter {
 
-    private ArrayList<VH> mRunningItems = new ArrayList<>();
-    private SparseArray<ArrayList<VH>> mRecycledItems = new SparseArray<>();
+    private ArrayList<VH> mCreatedItems = new ArrayList<>();
+    private final SparseArray<ArrayList<VH>> mRecycledItems = new SparseArray<>();
+    private boolean mRebindAll = false;
+    private int mRebindPositionStart = -1;
+    private int mRebindItemCount = 0;
 
     @Override
     public final int getCount() {
         return getItemCount();
+    }
+
+    /**
+     * 获取子项个数
+     *
+     * @return 子项个数
+     */
+    public abstract int getItemCount();
+
+    @NonNull
+    @Override
+    public final Object instantiateItem(@NonNull ViewGroup container, int position) {
+        VH holder;
+        final int viewType = getItemViewType(position);
+        final ArrayList<VH> holders = mRecycledItems.get(viewType);
+        if (holders == null || holders.isEmpty())
+            holder = createViewHolder(container, viewType);
+        else
+            holder = holders.remove(holders.size() - 1);
+        bindViewHolder(holder, position, viewType);
+        container.addView(holder.itemView, 0);
+        return holder;
+    }
+
+    /**
+     * 获取视图类型
+     *
+     * @param position 位置
+     * @return 视图类型
+     */
+    public int getItemViewType(int position) {
+        return 0;
+    }
+
+    /**
+     * 创建ViewHolder
+     *
+     * @param parent   父视图
+     * @param viewType 子视图类型
+     * @return ViewHolder
+     */
+    public final VH createViewHolder(ViewGroup parent, int viewType) {
+        final VH holder = onCreateViewHolder(parent, viewType);
+        mCreatedItems.add(holder);
+        return holder;
+    }
+
+    /**
+     * 创建ViewHolder
+     *
+     * @param parent   父视图
+     * @param viewType 子视图类型
+     * @return ViewHolder
+     */
+    public abstract VH onCreateViewHolder(ViewGroup parent, int viewType);
+
+    /**
+     * 绑定ViewHolder
+     *
+     * @param holder   ViewHolder
+     * @param position 位置
+     * @param viewType 视图类型
+     */
+    public final void bindViewHolder(VH holder, int position, int viewType) {
+        holder.mPosition = position;
+        holder.mViewType = viewType;
+        holder.isRecycled = false;
+        onBindViewHolder(holder, position);
+    }
+
+    /**
+     * 绑定ViewHolder
+     *
+     * @param holder   ViewHolder
+     * @param position 位置
+     */
+    public abstract void onBindViewHolder(VH holder, int position);
+
+    @Override
+    public final void destroyItem(ViewGroup container, int position, @NonNull Object object) {
+        //noinspection unchecked
+        final VH holder = (VH) object;
+        container.removeView(holder.itemView);
+        holder.isRecycled = true;
+        holder.mPosition = POSITION_NONE;
+        final int viewType = holder.mViewType;
+        final ArrayList<VH> holders = mRecycledItems.get(viewType, new ArrayList<VH>());
+        holders.add(holder);
+        mRecycledItems.put(viewType, holders);
+        onViewRecycled(holder);
+    }
+
+    /**
+     * 销毁ViewHolder
+     *
+     * @param holder ViewHolder
+     */
+    public void onViewRecycled(VH holder) {
     }
 
     @Override
@@ -50,125 +150,59 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.PagerVi
         return view == ((VH) object).itemView;
     }
 
-    @NonNull
-    @Override
-    public final Object instantiateItem(@NonNull ViewGroup container, int position) {
-        VH holder;
-        int viewType = getItemViewType(position);
-        ArrayList<VH> recycleHolders = mRecycledItems.get(viewType);
-        if (recycleHolders != null && recycleHolders.size() > 0) {
-            holder = recycleHolders.remove(0);
-            holder.mPosition = POSITION_UNCHANGED;
-            holder.mViewType = viewType;
-        } else {
-            holder = createViewHolder(container, viewType);
-        }
-        bindViewHolder(holder, position, viewType);
-        container.addView(holder.itemView, 0);
-        return holder;
-    }
-
-    @Override
-    public final void destroyItem(ViewGroup container, int position, @NonNull Object object) {
-        //noinspection unchecked
-        VH holder = (VH) object;
-        container.removeView(holder.itemView);
-        holder.isRecycled = true;
-        holder.mPosition = POSITION_NONE;
-        ArrayList<VH> recycleHolders = mRecycledItems.get(holder.mViewType, new ArrayList<VH>());
-        recycleHolders.add(holder);
-        mRecycledItems.put(holder.mViewType, recycleHolders);
-        onViewRecycled(holder);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    @Deprecated
-    public final Object instantiateItem(@NonNull View container, int position) {
-        return instantiateItem((ViewPager) container, position);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    @Deprecated
-    public final void destroyItem(@NonNull View container, int position, @NonNull Object object) {
-        destroyItem((ViewPager) container, position, object);
-    }
 
     @Override
     public final int getItemPosition(@NonNull Object object) {
-        int position = POSITION_UNCHANGED;
+        if (mRebindAll)
+            return POSITION_NONE;
         //noinspection unchecked
-        VH holder = (VH) object;
-        if (mRunningItems.contains(holder)) {
-            position = holder.mPosition;
-            position = position >= getItemCount() ? POSITION_NONE : position;
-        }
-
-        return position;
+        final int position = (((VH) object)).mPosition;
+        return (position >= mRebindPositionStart &&
+                position < mRebindPositionStart + mRebindItemCount) ?
+                POSITION_NONE : POSITION_UNCHANGED;
     }
 
-    public abstract int getItemCount();
-
-    public abstract VH onCreateViewHolder(ViewGroup parent, int viewType);
-
-    public abstract void onBindViewHolder(VH holder, int position);
-
-    public final VH createViewHolder(ViewGroup parent, int viewType) {
-        final VH holder = onCreateViewHolder(parent, viewType);
-        mRunningItems.add(holder);
-        return holder;
-    }
-
-    @Deprecated
-    public final void bindViewHolder(VH holder, int position) {
-        bindViewHolder(holder, position, getItemViewType(position));
-    }
-
-    public final void bindViewHolder(VH holder, int position, int viewType) {
-        holder.mPosition = position;
-        holder.mViewType = viewType;
-        holder.isRecycled = false;
-        onBindViewHolder(holder, position);
-    }
-
-    public int getItemViewType(int position) {
-        return 0;
-    }
-
-    public void onViewRecycled(VH holder) {
-    }
 
     @Override
     public final void notifyDataSetChanged() {
+        mRebindAll = true;
+        mRebindPositionStart = -1;
+        mRebindItemCount = 0;
         super.notifyDataSetChanged();
-        for (VH holder : mRunningItems) {
-            if (!holder.isRecycled && holder.mPosition < getItemCount()) {
-                onBindViewHolder(holder, holder.mPosition);
-            }
-        }
     }
 
+    /**
+     * 通知子项改变
+     *
+     * @param position 位置
+     */
     public final void notifyItemChanged(int position) {
-        for (VH holder : mRunningItems) {
-            if (!holder.isRecycled && holder.mPosition == position) {
-                onBindViewHolder(holder, holder.mPosition);
-                break;
-            }
-        }
+        notifyItemRangeChanged(position, 1);
     }
 
+    /**
+     * 通知子项改变
+     *
+     * @param positionStart 起始子项
+     * @param itemCount     子项数目
+     * @see #notifyItemChanged(int)
+     */
+    public final void notifyItemRangeChanged(int positionStart, int itemCount) {
+        mRebindAll = false;
+        mRebindPositionStart = positionStart;
+        mRebindItemCount = itemCount;
+        super.notifyDataSetChanged();
+    }
+
+    /**
+     * 配置变更
+     *
+     * @param newConfig 新配置
+     */
     public void onConfigurationChanged(Configuration newConfig) {
-        final int count = mRecycledItems.size();
-        for (int i = 0; i < count; i++) {
-            final ArrayList<VH> holders = mRecycledItems.valueAt(i);
-            if (holders == null || holders.isEmpty())
-                continue;
-            for (VH holder : holders) {
-                if (holder == null || holder.itemView == null)
-                    continue;
+        for (VH holder : mCreatedItems) {
+            if (holder.isRecycled)
                 ConfigurationHelper.onConfigurationChanged(holder.itemView, newConfig);
-            }
         }
     }
 
