@@ -22,14 +22,17 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.Locale;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.util.viewpager.adapter.RecyclePagerAdapter;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 /**
@@ -38,7 +41,8 @@ import androidx.viewpager.widget.ViewPager;
 public class RecyclePagerActivity extends BaseActivity implements View.OnClickListener {
 
     private final Adapter mAdapter = new Adapter();
-
+    private TextView mVPage;
+    private TextView mVTitle;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, RecyclePagerActivity.class));
@@ -53,31 +57,51 @@ public class RecyclePagerActivity extends BaseActivity implements View.OnClickLi
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.rp_toolbar);
         final ViewPager pager = findViewById(R.id.rp_vp_content);
+        mVPage = findViewById(R.id.rp_tv_page_value);
+        mVTitle = findViewById(R.id.rp_tv_offset_value);
         pager.setAdapter(mAdapter);
-        findViewById(R.id.rp_btn_remove).setOnClickListener(this);
-        findViewById(R.id.rp_btn_add).setOnClickListener(this);
+        findViewById(R.id.rp_btn_reduce_page).setOnClickListener(this);
+        findViewById(R.id.rp_btn_add_page).setOnClickListener(this);
+        findViewById(R.id.rp_btn_reduce_offset).setOnClickListener(this);
+        findViewById(R.id.rp_btn_add_offset).setOnClickListener(this);
+        findViewById(R.id.rp_btn_exchange).setOnClickListener(this);
+        mVPage.setText(String.format(Locale.getDefault(), "%d", mAdapter.mCount));
+        mVTitle.setText(String.format(Locale.getDefault(), "%d", mAdapter.mOffset));
     }
 
     // Listener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.rp_btn_remove:
-                mAdapter.remove();
+            case R.id.rp_btn_reduce_page:
+                mAdapter.reducePage();
+                mVPage.setText(String.format(Locale.getDefault(), "%d", mAdapter.mCount));
                 break;
-            case R.id.rp_btn_add:
-                mAdapter.add();
+            case R.id.rp_btn_add_page:
+                mAdapter.addPage();
+                mVPage.setText(String.format(Locale.getDefault(), "%d", mAdapter.mCount));
+                break;
+            case R.id.rp_btn_reduce_offset:
+                mAdapter.reduceOffset();
+                mVTitle.setText(String.format(Locale.getDefault(), "%d", mAdapter.mOffset));
+                break;
+            case R.id.rp_btn_add_offset:
+                mAdapter.addOffset();
+                mVTitle.setText(String.format(Locale.getDefault(), "%d", mAdapter.mOffset));
+                break;
+            case R.id.rp_btn_exchange:
+                mAdapter.exchange();
                 break;
         }
     }
 
-    class Holder extends RecyclePagerAdapter.PagerViewHolder {
+    private class Holder extends RecyclePagerAdapter.PagerViewHolder {
 
         Holder(Context context) {
             super(new AppCompatTextView(context));
             final AppCompatTextView text = (AppCompatTextView) itemView;
             text.setGravity(Gravity.CENTER);
-            text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 64);
+            text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 128);
         }
 
         void setData(String data) {
@@ -85,33 +109,79 @@ public class RecyclePagerActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-    class Adapter extends RecyclePagerAdapter<Holder> {
+    private class RedHolder extends Holder {
+        RedHolder(Context context) {
+            super(context);
+            ((AppCompatTextView) itemView).setTextColor(
+                    ContextCompat.getColor(context, R.color.colorAccent));
+        }
+    }
 
-        private int itemCount = 5;
+    private class BlueHolder extends Holder {
+
+        BlueHolder(Context context) {
+            super(context);
+            ((AppCompatTextView) itemView).setTextColor(
+                    ContextCompat.getColor(context, R.color.colorPrimary));
+        }
+    }
+
+    private class Adapter extends RecyclePagerAdapter<Holder> {
+
+        private static final int TYPE_RED = 1;
+        private static final int TYPE_BLUE = 2;
+        private int mCount = 5;
+        private int mOffset = 1;
+        private boolean mExchanged = false;
 
         @Override
         public int getItemCount() {
-            return itemCount;
+            return mCount;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (mExchanged)
+                return position % 2 == 0 ? TYPE_RED : TYPE_BLUE;
+            return position % 2 == 0 ? TYPE_BLUE : TYPE_RED;
         }
 
         @Override
         public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new Holder(parent.getContext());
+            if (viewType == TYPE_RED)
+                return new RedHolder(parent.getContext());
+            return new BlueHolder(parent.getContext());
         }
 
         @Override
         public void onBindViewHolder(Holder holder, int position) {
-            holder.setData(String.format(Locale.getDefault(), "%d", position + 1));
+            holder.setData(String.format(Locale.getDefault(), "%d",
+                    position + mOffset));
         }
 
-        void add() {
-            itemCount++;
+        void addPage() {
+            mCount++;
             notifyDataSetChanged();
         }
 
-        void remove() {
-            itemCount--;
-            itemCount = itemCount < 0 ? 0 : itemCount;
+        void reducePage() {
+            mCount--;
+            mCount = mCount < 0 ? 0 : mCount;
+            notifyDataSetChanged();
+        }
+
+        void addOffset() {
+            mOffset++;
+            notifyDataSetChanged();
+        }
+
+        void reduceOffset() {
+            mOffset--;
+            notifyDataSetChanged();
+        }
+
+        void exchange() {
+            mExchanged = !mExchanged;
             notifyDataSetChanged();
         }
     }
