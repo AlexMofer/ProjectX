@@ -6,13 +6,13 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 29
-        versionCode 5
-        versionName "1.0.1"
+        versionCode 6
+        versionName "1.1.0"
     }
 }
 
 dependencies {
-    compileOnly 'androidx.viewpager:viewpager:1.0.0'
+    implementation 'androidx.viewpager:viewpager:1.0.0'
 }
 
 //apply from: "bintray.gradle"
