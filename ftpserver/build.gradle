@@ -1,18 +1,19 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
-        //noinspection MinSdkTooLow
-        minSdkVersion 1
-        targetSdkVersion 28
+        minSdkVersion 19
+        targetSdkVersion 29
         versionCode 5
-        versionName "1.1.1.5"
+        versionName "2.0.0"
         consumerProguardFiles 'proguard-rules.pro'
     }
 }
 
 dependencies {
+//    implementation 'androidx.collection:collection:1.1.0'
+    implementation 'androidx.documentfile:documentfile:1.0.1'
     api('org.apache.ftpserver:ftpserver-core:1.1.1') {
         exclude group: 'org.slf4j', module: 'slf4j-api'
     }

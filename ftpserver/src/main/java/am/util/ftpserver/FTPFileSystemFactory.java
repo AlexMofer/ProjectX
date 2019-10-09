@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 AlexMofer
+ * Copyright (C) 2019 AlexMofer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,48 +18,23 @@ package am.util.ftpserver;
 
 import org.apache.ftpserver.ftplet.FileSystemFactory;
 import org.apache.ftpserver.ftplet.FileSystemView;
+import org.apache.ftpserver.ftplet.FtpException;
 import org.apache.ftpserver.ftplet.User;
 
-import java.util.ArrayList;
-
 /**
- * FTP文件系统视图工厂
- * Created by Alex on 2017/12/19.
+ * FTP 文件系统工厂
+ * Created by Alex on 2019/10/7.
  */
-public class FTPFileSystemFactory implements FileSystemFactory {
-
-    private static volatile FTPFileSystemFactory FACTORY;
-
-    private final ArrayList<FTPFileSystemView> mViews = new ArrayList<>();
-
-    public static FTPFileSystemFactory getInstance() {
-        if (FACTORY == null) {
-            FACTORY = new FTPFileSystemFactory();
-        }
-        return FACTORY;
-    }
+public class FtpFileSystemFactory implements FileSystemFactory {
 
     @Override
-    public FileSystemView createFileSystemView(User user) {
-        final String home = user.getHomeDirectory();
-        final String owner = user.getName();
-        final String group = user.getName();
-        final int streamSize = FTPFile.DEFAULT_SIZE;
-
-        synchronized (this) {
-            if (mViews.isEmpty()) {
-                return new FTPFileSystemView(home, owner, group, streamSize);
-            } else {
-                final FTPFileSystemView view = mViews.remove(0);
-                view.init(home, owner, group, streamSize);
-                return view;
-            }
-        }
-    }
-
-    void saveFileSystemView(FTPFileSystemView view) {
-        synchronized (this) {
-            mViews.add(view);
-        }
+    public FileSystemView createFileSystemView(User user) throws FtpException {
+        if (!(user instanceof FtpUser))
+            throw new FtpException("Unsupported user type.");
+        final FileSystemView view =
+                ((FtpUser) user).getFileSystemViewAdapter().createFileSystemView();
+        if (view == null)
+            throw new FtpException("Cannot create file system view.");
+        return view;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 AlexMofer
+ * Copyright (C) 2019 AlexMofer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import android.text.TextUtils;
 
 import org.apache.ftpserver.ftplet.Authentication;
 import org.apache.ftpserver.ftplet.AuthenticationFailedException;
-import org.apache.ftpserver.ftplet.FtpException;
 import org.apache.ftpserver.ftplet.User;
 import org.apache.ftpserver.ftplet.UserManager;
 import org.apache.ftpserver.usermanager.AnonymousAuthentication;
@@ -29,110 +28,180 @@ import org.apache.ftpserver.usermanager.UsernamePasswordAuthentication;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 
 /**
- * FTP用户管理器
- * Created by Alex on 2017/12/19.
+ * FTP 用户管理器
+ * Created by Alex on 2019/10/8.
  */
-@SuppressWarnings({"WeakerAccess", "RedundantThrows"})
-public class FTPUserManager implements UserManager {
+public class FtpUserManager implements UserManager {
 
-    private final ArrayList<FTPUser> mUsers = new ArrayList<>();
+    private final String mAdminName;
+    private final HashMap<String, FtpUser> mUsers = new HashMap<>();
+    private String[] mUserNames = null;
+    private OnUserChangedListener mListener;
 
-    public FTPUserManager(boolean anonymousEnable, String anonymousHomeDirectory,
-                          FTPUser... users) {
-        if (anonymousEnable) {
-            mUsers.add(FTPUser.getAnonymous(anonymousHomeDirectory));
+    @SuppressWarnings("WeakerAccess")
+    public FtpUserManager(String adminName, FtpUser... users) {
+        mAdminName = adminName;
+        for (FtpUser user : users) {
+            final String name = user.getName();
+            if (mUsers.containsKey(name))
+                continue;
+            mUsers.put(name, user);
         }
-        Collections.addAll(mUsers, users);
     }
 
-    public FTPUserManager(boolean anonymousEnable, String anonymousHomeDirectory,
-                          Collection<? extends FTPUser> users) {
-        this(anonymousEnable, anonymousHomeDirectory);
+    @SuppressWarnings("WeakerAccess")
+    public FtpUserManager(String adminName, Collection<? extends FtpUser> users) {
+        mAdminName = adminName;
         if (users != null)
-            mUsers.addAll(users);
-    }
-
-    @Override
-    public User getUserByName(String username) throws FtpException {
-        for (FTPUser user : mUsers) {
-            if (username.equals(user.getName()))
-                return user.create();
-        }
-        return null;
-    }
-
-    @Override
-    public String[] getAllUserNames() throws FtpException {
-        final String[] users = new String[mUsers.size()];
-        int index = 0;
-        for (FTPUser user : mUsers) {
-            users[index] = user.getName();
-            index++;
-        }
-        return users;
-    }
-
-    @Override
-    public void delete(String username) throws FtpException {
-        for (FTPUser user : mUsers) {
-            if (username.equals(user.getName())) {
-                mUsers.remove(user);
-                return;
+            for (FtpUser user : users) {
+                final String name = user.getName();
+                if (mUsers.containsKey(name))
+                    continue;
+                mUsers.put(name, user);
             }
-        }
+    }
+
+    /**
+     * 添加用户
+     *
+     * @param user 用户
+     */
+    @SuppressWarnings("WeakerAccess")
+    public void addUser(FtpUser user) {
+        if (user == null)
+            return;
+        if (TextUtils.isEmpty(user.getName()))
+            return;
+        final String name = user.getName();
+        if (mUsers.containsKey(name))
+            return;
+        mUsers.put(name, user);
     }
 
     @Override
-    public void save(User user) throws FtpException {
-        mUsers.add(FTPUser.from(user));
+    public User getUserByName(String username) {
+        return mUsers.get(username);
     }
 
     @Override
-    public boolean doesExist(String username) throws FtpException {
-        for (FTPUser user : mUsers) {
-            if (username.equals(user.getName()))
-                return true;
+    public String[] getAllUserNames() {
+        if (mUserNames != null)
+            return mUserNames;
+        final ArrayList<String> names = new ArrayList<>();
+        if (!mUsers.isEmpty()) {
+            final Collection<FtpUser> users = mUsers.values();
+            for (User user : users) {
+                names.add(user.getName());
+            }
+            Collections.sort(names);
         }
-        return false;
+        mUserNames = names.toArray(new String[0]);
+        return mUserNames;
+    }
+
+    @Override
+    public void delete(String username) {
+        if (mUsers.isEmpty())
+            return;
+        final User deleted = mUsers.remove(username);
+        if (deleted == null)
+            return;
+        mUserNames = null;
+        if (mListener != null)
+            mListener.onUserDeleted(deleted);
+    }
+
+    @Override
+    public void save(User user) {
+        final String name = user.getName();
+        if (name == null)
+            throw new UnsupportedOperationException("User name can not be empty!");
+        final FtpUser u = user instanceof FtpUser ? (FtpUser) user : new FtpUser(user);
+        if (!u.isEditable())
+            throw new UnsupportedOperationException("User info can not edit!");
+        mUsers.put(name, u);
+        mUserNames = null;
+        if (mListener != null)
+            mListener.onUserSaved(u);
+    }
+
+    @Override
+    public boolean doesExist(String username) {
+        return mUsers.containsKey(username);
     }
 
     @Override
     public User authenticate(Authentication authentication) throws AuthenticationFailedException {
-        if (authentication instanceof AnonymousAuthentication) {
-            for (FTPUser user : mUsers) {
-                if (user.isAnonymous())
-                    return user.create();
-            }
-            throw new AuthenticationFailedException();
-        }
-        if (mUsers.isEmpty())
-            throw new AuthenticationFailedException();
         if (authentication instanceof UsernamePasswordAuthentication) {
-            UsernamePasswordAuthentication auth = (UsernamePasswordAuthentication) authentication;
+            if (mUsers.isEmpty())
+                throw new AuthenticationFailedException("Authentication failed");
+            final UsernamePasswordAuthentication auth =
+                    (UsernamePasswordAuthentication) authentication;
             final String username = auth.getUsername();
             final String password = auth.getPassword();
-            for (FTPUser user : mUsers) {
+            final Collection<FtpUser> users = mUsers.values();
+            for (FtpUser user : users) {
                 if (username.equals(user.getName()) &&
                         TextUtils.equals(password, user.getPassword()))
-                    return user.create();
+                    return user;
+            }
+            throw new AuthenticationFailedException("Authentication failed");
+        } else if (authentication instanceof AnonymousAuthentication) {
+            if (isAnonymousLoginEnabled()) {
+                return getUserByName(FtpUser.NAME_ANONYMOUS);
+            } else {
+                throw new AuthenticationFailedException("Authentication failed");
             }
         }
-        throw new AuthenticationFailedException();
+        throw new AuthenticationFailedException("Authentication failed");
     }
 
     @Override
-    public String getAdminName() throws FtpException {
-        for (FTPUser user : mUsers) {
-            if (user.isAdmin())
-                return user.getName();
-        }
-        return null;
+    public String getAdminName() {
+        return mAdminName;
     }
 
     @Override
-    public boolean isAdmin(String username) throws FtpException {
-        return username.equals(getAdminName());
+    public boolean isAdmin(String username) {
+        return TextUtils.equals(mAdminName, username);
+    }
+
+    /**
+     * 判断是否允许匿名登录
+     *
+     * @return 如果允许匿名登录则返回true
+     */
+    public boolean isAnonymousLoginEnabled() {
+        return doesExist(FtpUser.NAME_ANONYMOUS);
+    }
+
+    /**
+     * 设置用户变更监听
+     *
+     * @param listener 用户变更监听
+     */
+    @SuppressWarnings("WeakerAccess")
+    public void setOnUserChangedListener(OnUserChangedListener listener) {
+        mListener = listener;
+    }
+
+    public interface OnUserChangedListener {
+
+        /**
+         * 用户删除
+         *
+         * @param user 删除的用户
+         */
+        void onUserDeleted(User user);
+
+        /**
+         * 用户保存（创建或修改）
+         *
+         * @param user 保存的用户
+         */
+        void onUserSaved(User user);
     }
 }

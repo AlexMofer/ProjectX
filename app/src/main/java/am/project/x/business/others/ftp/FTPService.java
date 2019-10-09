@@ -26,17 +26,12 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.widget.Toast;
 
-import org.apache.ftpserver.FtpServer;
-
-import java.util.ArrayList;
-
 import am.project.x.R;
 import am.project.x.broadcast.LocalBroadcastHelper;
 import am.project.x.notification.NotificationMaker;
 import am.project.x.utils.ContextUtils;
 import am.project.x.utils.Utils;
-import am.util.ftpserver.FTPHelper;
-import am.util.ftpserver.FTPUser;
+import am.util.ftpserver.FtpServer;
 
 /**
  * 文件传输服务
@@ -92,13 +87,9 @@ public class FTPService extends Service {
                 break;
             }
         }
-        final int maxLoginFailures = 5;
-        final int loginFailureDelay = 60000;
-        final boolean anonymousEnable = true;
-        final String directory = Environment.getExternalStorageDirectory().getAbsolutePath();
-        final ArrayList<FTPUser> users = null;
-        mFTP = FTPHelper.createServer(port, maxLoginFailures, loginFailureDelay, anonymousEnable,
-                directory, users);
+        //noinspection deprecation
+        mFTP = FtpServer.createServer(port,
+                Environment.getExternalStorageDirectory().getAbsolutePath());
         try {
             mFTP.start();
         } catch (Exception e) {

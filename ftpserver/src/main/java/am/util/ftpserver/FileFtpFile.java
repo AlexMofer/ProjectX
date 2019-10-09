@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 AlexMofer
+ * Copyright (C) 2019 AlexMofer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,31 +26,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * FTP文件
- * Created by Alex on 2017/12/20.
+ * 文件形式的FTP文件
+ * Created by Alex on 2019/10/9.
  */
-@SuppressWarnings("WeakerAccess")
-public class FTPFile implements FtpFile {
+final class FileFtpFile extends BaseFtpFile {
 
-    public static final int DEFAULT_SIZE = 1024 * 1024;
-    private final String mOwner;
-    private final String mGroup;
+    private static final int DEFAULT_SIZE = 1024 * 1024;
     private File mFile;
-    private int mStreamSize;
+    private int mBufferSize = DEFAULT_SIZE;
 
-    public FTPFile(String path, String owner, String group, int streamSize) {
-        mFile = new File(path);
-        mOwner = owner;
-        mGroup = group;
-        if (streamSize <= 0) {
-            mStreamSize = DEFAULT_SIZE;
-        } else {
-            mStreamSize = streamSize;
-        }
+    FileFtpFile(FtpUser user, File file) {
+        super(user);
+        mFile = file;
     }
 
     @Override
@@ -78,23 +69,9 @@ public class FTPFile implements FtpFile {
         return mFile.isFile();
     }
 
-    public void setFile(String path) {
-        mFile = new File(path);
-    }
-
     @Override
     public boolean doesExist() {
-        if (mFile.exists())
-            return true;
-        final File parent = mFile.getParentFile();
-        final File[] children = parent.listFiles();
-        if (children != null) {
-            for (File child : children) {
-                if (mFile.equals(child))
-                    return true;
-            }
-        }
-        return false;
+        return mFile.exists();
     }
 
     @Override
@@ -106,7 +83,6 @@ public class FTPFile implements FtpFile {
     public boolean isWritable() {
         if (mFile.exists())
             return mFile.canWrite();
-        // 此处可能死循环
         File parent = mFile.getParentFile();
         while (parent != null) {
             if (parent.exists())
@@ -119,16 +95,6 @@ public class FTPFile implements FtpFile {
     @Override
     public boolean isRemovable() {
         return mFile.canWrite();
-    }
-
-    @Override
-    public String getOwnerName() {
-        return mOwner;
-    }
-
-    @Override
-    public String getGroupName() {
-        return mGroup;
     }
 
     @Override
@@ -172,29 +138,29 @@ public class FTPFile implements FtpFile {
     }
 
     @Override
-    public List<? extends FtpFile> listFiles() {
+    public ArrayList<FileFtpFile> listFiles() {
+        if (!mFile.exists() || !mFile.isDirectory())
+            return null;
         final File[] children = mFile.listFiles();
-        if (children != null) {
-            final ArrayList<FTPFile> files = new ArrayList<>(children.length);
-            for (File child : children) {
-                files.add(new FTPFile(child.getPath(), mOwner, mGroup, mStreamSize));
-            }
-            return files;
+        if (children == null || children.length <= 0)
+            return new ArrayList<>(0);
+        final ArrayList<FileFtpFile> files = new ArrayList<>(children.length);
+        for (File child : children) {
+            files.add(new FileFtpFile(getUser(), child));
         }
-        return new ArrayList<>(0);
+        return files;
     }
 
     @Override
     public OutputStream createOutputStream(long offset) throws IOException {
         final OutputStream output;
-        if (offset == 0) {
+        if (offset == 0)
             output = new FileOutputStream(mFile);
-        } else if (offset == mFile.length()) {
+        else if (offset == mFile.length())
             output = new FileOutputStream(mFile, true);
-        } else {
+        else
             output = new RandomAccessFileOutputStream(mFile, "rw", offset);
-        }
-        return new BufferedOutputStream(output, mStreamSize);
+        return new BufferedOutputStream(output, mBufferSize);
     }
 
     @Override
@@ -202,6 +168,68 @@ public class FTPFile implements FtpFile {
         final FileInputStream input = new FileInputStream(mFile);
         //noinspection ResultOfMethodCallIgnored
         input.skip(offset);
-        return new BufferedInputStream(input, mStreamSize);
+        return new BufferedInputStream(input, mBufferSize);
+    }
+
+    /**
+     * 获取路径
+     *
+     * @return 路径
+     */
+    String getPath() {
+        return mFile.getPath();
+    }
+
+    /**
+     * 设置文件
+     *
+     * @param file 文件
+     */
+    void setFile(File file) {
+        mFile = file;
+    }
+
+    /**
+     * 设置缓冲大小
+     *
+     * @param size 缓冲大小
+     */
+    @SuppressWarnings("unused")
+    void setBufferSize(int size) {
+        if (size <= 0)
+            return;
+        mBufferSize = size;
+    }
+
+    private class RandomAccessFileOutputStream extends OutputStream {
+
+        private final RandomAccessFile mFile;
+
+        RandomAccessFileOutputStream(File file, String mode, long offset) throws IOException {
+            mFile = new RandomAccessFile(file, mode);
+            mFile.seek(offset);
+        }
+
+        @Override
+        public void write(int b) throws IOException {
+            mFile.write(b);
+        }
+
+        @Override
+        public void write(@SuppressWarnings("NullableProblems") byte[] b) throws IOException {
+            mFile.write(b);
+        }
+
+        @Override
+        public void write(@SuppressWarnings("NullableProblems") byte[] b, int off, int len)
+                throws IOException {
+            mFile.write(b, off, len);
+        }
+
+        @Override
+        public void close() throws IOException {
+            super.close();
+            mFile.close();
+        }
     }
 }

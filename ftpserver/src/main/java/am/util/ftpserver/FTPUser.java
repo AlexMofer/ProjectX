@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 AlexMofer
+ * Copyright (C) 2019 AlexMofer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,172 +16,186 @@
 
 package am.util.ftpserver;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.text.TextUtils;
 
 import org.apache.ftpserver.ftplet.Authority;
+import org.apache.ftpserver.ftplet.AuthorizationRequest;
 import org.apache.ftpserver.ftplet.User;
-import org.apache.ftpserver.usermanager.impl.BaseUser;
 import org.apache.ftpserver.usermanager.impl.ConcurrentLoginPermission;
 import org.apache.ftpserver.usermanager.impl.TransferRatePermission;
 import org.apache.ftpserver.usermanager.impl.WritePermission;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * FTP用户
- * Created by Alex on 2017/12/20.
+ * FTP 用户
+ * Created by Alex on 2019/10/8.
  */
-@SuppressWarnings("WeakerAccess")
-public class FTPUser implements Parcelable {
+public class FtpUser implements User {
 
-    public static final Parcelable.Creator<FTPUser> CREATOR = new Parcelable.Creator<FTPUser>() {
-        @Override
-        public FTPUser createFromParcel(Parcel source) {
-            return new FTPUser(source);
-        }
+    static final String NAME_ANONYMOUS = "anonymous";
 
-        @Override
-        public FTPUser[] newArray(int size) {
-            return new FTPUser[size];
-        }
-    };
-    private static final String USER_NAME_ANONYMOUS = "anonymous";
     private final String mName;
     private final String mPassword;
-    private final String mHomeDirectory;
-    private final boolean mAdmin;
-    private final boolean mEnable;
-    private final int mIdleSec;
-    private final boolean mHasWritePermission;
-    private final int mMaxDownloadRate;
-    private final int mMaxUploadRate;
-    private final int mMaxConcurrentLogin;
-    private final int mMaxConcurrentLoginPerIP;
-    private boolean mAnonymous = false;
+    private FtpFileSystemViewAdapter mAdapter;
+    private int mMaxIdleTime = 0; // no limit
+    private boolean mEnabled = true;
+    private boolean mEditable = true;
+    private boolean mCanWrite = true;
 
-    private FTPUser(String name, String password, String homeDirectory, boolean admin) {
-        this(name, password, homeDirectory, admin, true, 60,
-                true, 0, 0,
-                10, 10);
-    }
+    private final ArrayList<Authority> mAuthorities = new ArrayList<>();
 
-    public FTPUser(String name, String password, String homeDirectory, boolean admin,
-                   boolean enable, int idleSec,
-                   boolean hasWritePermission, int maxDownloadRate, int maxUploadRate,
-                   int maxConcurrentLogin, int maxConcurrentLoginPerIP) {
+    private FtpUser(String name, String password, FtpFileSystemViewAdapter adapter) {
+        if (TextUtils.isEmpty(name))
+            throw new RuntimeException("User name can not be empty!");
         mName = name;
         mPassword = password;
-        mHomeDirectory = homeDirectory;
-        mAdmin = admin;
-        mEnable = enable;
-        mIdleSec = idleSec;
-        mHasWritePermission = hasWritePermission;
-        mMaxDownloadRate = maxDownloadRate;
-        mMaxUploadRate = maxUploadRate;
-        mMaxConcurrentLogin = maxConcurrentLogin;
-        mMaxConcurrentLoginPerIP = maxConcurrentLoginPerIP;
+        mAdapter = adapter;
+        mAdapter.onAttached(this);
+
+        // 写入权限
+        mAuthorities.add(new WritePermission());
+        // 上传下载数目权限
+        mAuthorities.add(new TransferRatePermission(0, 0));
+        // 登录权限
+        mAuthorities.add(new ConcurrentLoginPermission(10,
+                10));
     }
 
-    protected FTPUser(Parcel in) {
-        this.mName = in.readString();
-        this.mPassword = in.readString();
-        this.mHomeDirectory = in.readString();
-        this.mAdmin = in.readByte() != 0;
-        this.mEnable = in.readByte() != 0;
-        this.mIdleSec = in.readInt();
-        this.mHasWritePermission = in.readByte() != 0;
-        this.mMaxDownloadRate = in.readInt();
-        this.mMaxUploadRate = in.readInt();
-        this.mMaxConcurrentLogin = in.readInt();
-        this.mMaxConcurrentLoginPerIP = in.readInt();
-        this.mAnonymous = in.readByte() != 0;
+    FtpUser(User user) {
+        this(user.getName(), user.getPassword(),
+                new FileFtpFileSystemViewAdapter(user.getHomeDirectory()));
+        mMaxIdleTime = user.getMaxIdleTime();
+        mEnabled = user.getEnabled();
     }
 
-    static FTPUser from(User user) {
-        final String name = user.getName();
-        final String password = user.getPassword();
-        final String homeDirectory = user.getHomeDirectory();
-        final boolean enable = user.getEnabled();
-        final int idleSec = user.getMaxIdleTime();
-        boolean hasWritePermission = false;
-        List<? extends Authority> authorities = user.getAuthorities();
-        if (authorities != null) {
-            for (Authority authority : authorities) {
-                if (authority instanceof WritePermission) {
-                    hasWritePermission = true;
-                    break;
-                }
-            }
-        }
-        return new FTPUser(name, password, homeDirectory, false,
-                enable, idleSec, hasWritePermission,
-                0, 0, 10, 10);
+    public static FtpUser getAnonymous(FtpFileSystemViewAdapter adapter) {
+        if (adapter == null)
+            return null;
+        final FtpUser anonymous = new FtpUser(NAME_ANONYMOUS, null, adapter);
+        anonymous.setEditable(false);
+        return anonymous;
     }
 
-    static FTPUser getAnonymous(String homeDirectory) {
-        final FTPUser user = new FTPUser(USER_NAME_ANONYMOUS, null, homeDirectory,
-                false);
-        user.mAnonymous = true;
-        return user;
-    }
-
+    @Override
     public String getName() {
         return mName;
     }
 
+    @Override
     public String getPassword() {
         return mPassword;
     }
 
-    public boolean isAdmin() {
-        return mAdmin;
+    @Override
+    public int getMaxIdleTime() {
+        return mMaxIdleTime;
     }
 
-    public boolean isAnonymous() {
-        return mAnonymous;
-    }
-
-    public User create() {
-        BaseUser user = new BaseUser();
-        user.setEnabled(mEnable);
-        user.setHomeDirectory(mHomeDirectory);
-        user.setMaxIdleTime(mIdleSec);
-        user.setName(mName);
-        if (!TextUtils.isEmpty(mPassword))
-            user.setPassword(mPassword);
-        final ArrayList<Authority> authorities = new ArrayList<>();
-        if (mHasWritePermission)
-            authorities.add(new WritePermission());
-        authorities.add(new TransferRatePermission(mMaxDownloadRate, mMaxUploadRate));
-        authorities.add(new ConcurrentLoginPermission(mMaxConcurrentLogin,
-                mMaxConcurrentLoginPerIP));
-        user.setAuthorities(authorities);
-        return user;
+    /**
+     * 设置最大空闲时间
+     *
+     * @param maxIdleTime 最大空闲时间（以秒为单位，小于等于0表示不受限）
+     */
+    public void setMaxIdleTime(int maxIdleTime) {
+        mMaxIdleTime = maxIdleTime;
     }
 
     @Override
-    public int describeContents() {
-        return 0;
+    public boolean getEnabled() {
+        return mEnabled;
+    }
+
+    /**
+     * 设置账户是否启用
+     *
+     * @param enabled 是否启用
+     */
+    public void setEnabled(boolean enabled) {
+        mEnabled = enabled;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.mName);
-        dest.writeString(this.mPassword);
-        dest.writeString(this.mHomeDirectory);
-        dest.writeByte(this.mAdmin ? (byte) 1 : (byte) 0);
-        dest.writeByte(this.mEnable ? (byte) 1 : (byte) 0);
-        dest.writeInt(this.mIdleSec);
-        dest.writeByte(this.mHasWritePermission ? (byte) 1 : (byte) 0);
-        dest.writeInt(this.mMaxDownloadRate);
-        dest.writeInt(this.mMaxUploadRate);
-        dest.writeInt(this.mMaxConcurrentLogin);
-        dest.writeInt(this.mMaxConcurrentLoginPerIP);
-        dest.writeByte(this.mAnonymous ? (byte) 1 : (byte) 0);
+    public String getHomeDirectory() {
+        try {
+            return mAdapter.createFileSystemView().getHomeDirectory().getAbsolutePath();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
+    /**
+     * 判断账户是否可编辑
+     *
+     * @return 账户可以编辑时返回true
+     */
+    @SuppressWarnings("WeakerAccess")
+    public boolean isEditable() {
+        return mEditable;
+    }
+
+    /**
+     * 设置是否可编辑
+     *
+     * @param editable 是否可编辑
+     */
+    public void setEditable(boolean editable) {
+        mEditable = editable;
+    }
+
+    /**
+     * 判断账户是否可以写入
+     *
+     * @return 账户可以写入时返回true
+     */
+    public boolean canWrite() {
+        return mCanWrite;
+    }
+
+    /**
+     * 设置是否可写入
+     *
+     * @param canWrite 是否可写入
+     */
+    public void setCanWrite(boolean canWrite) {
+        mCanWrite = canWrite;
+    }
+
+    /**
+     * 获取文件系统视图提供者
+     *
+     * @return 文件系统视图提供者
+     */
+    public FtpFileSystemViewAdapter getFileSystemViewAdapter() {
+        return mAdapter;
+    }
+
+    @Override
+    public ArrayList<Authority> getAuthorities() {
+        return mAuthorities;
+    }
+
+    @Override
+    public ArrayList<Authority> getAuthorities(Class<? extends Authority> clazz) {
+        final ArrayList<Authority> selected = new ArrayList<>();
+        for (Authority authority : mAuthorities) {
+            if (authority.getClass().equals(clazz)) {
+                selected.add(authority);
+            }
+        }
+        return selected;
+    }
+
+    @Override
+    public AuthorizationRequest authorize(AuthorizationRequest request) {
+        for (Authority authority : mAuthorities) {
+            if (authority.canAuthorize(request)) {
+                final AuthorizationRequest result = authority.authorize(request);
+                if (result != null)
+                    return request;
+            }
+        }
+        return null;
+    }
 
 }
