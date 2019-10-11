@@ -13,22 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package am.project.x.utils;
 
-package am.util.ftpserver;
+import java.io.File;
+import java.io.FileFilter;
 
 /**
- * Uri形式的FTP文件
- * Created by Alex on 2019/10/7.
+ * 文件夹筛选器
+ * Created by Alex on 2019/10/10.
  */
-class UriFtpFile extends CreateUriFtpFile {
 
-    UriFtpFile(FtpUser user) {
-        super(user);
-    }
+public class FolderFilter implements FileFilter {
 
     @Override
-    protected UriFtpFile onCreateChild() {
-        // TODO 回收复用
-        return new UriFtpFile(getUser());
+    public boolean accept(File pathname) {
+        if (pathname.exists()) {
+            if (pathname.isDirectory() && pathname.canRead() && pathname.canWrite()) {
+                return !pathname.getName().startsWith(".");
+            }
+        }
+        return false;
     }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package am.project.x.business.others.ftp;
+package am.project.x.business.others.ftp.advanced;
 
 import android.app.PendingIntent;
 import android.app.Service;
@@ -21,13 +21,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
-import android.os.Environment;
+import android.net.Uri;
+import android.os.Binder;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import am.project.x.R;
 import am.project.x.broadcast.LocalBroadcastHelper;
+import am.project.x.business.others.ftp.FtpActivity;
 import am.project.x.notification.NotificationMaker;
 import am.project.x.utils.ContextUtils;
 import am.project.x.utils.Utils;
@@ -36,8 +40,7 @@ import am.util.ftpserver.FtpServer;
 /**
  * 文件传输服务
  */
-public class FTPService extends Service {
-    private static final String EXTRA_PORT = "port";
+public class AdvancedFtpService extends Service {
     private static boolean STARTED = false;
     private FtpServer mFTP;
     private boolean mAutoClose = false;
@@ -51,15 +54,15 @@ public class FTPService extends Service {
                 }
             };
 
-    public FTPService() {
+    public AdvancedFtpService() {
     }
 
-    public static void start(Context context, int port) {
-        context.startService(new Intent(context, FTPService.class).putExtra(EXTRA_PORT, port));
+    public static void start(Context context) {
+        context.startService(new Intent(context, AdvancedFtpService.class));
     }
 
     public static void stop(Context context) {
-        context.stopService(new Intent(context, FTPService.class));
+        context.stopService(new Intent(context, AdvancedFtpService.class));
     }
 
     public static boolean isStarted() {
@@ -73,23 +76,49 @@ public class FTPService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mAutoClose = true;
-        if (STARTED || !ContextUtils.hasWriteExternalStoragePermission(this)) {
+        if (STARTED)
+            return super.onStartCommand(intent, flags, startId);
+        if (!ContextUtils.isWifiConnected(this)) {
+            Toast.makeText(this, R.string.ftp_toast_no_wifi, Toast.LENGTH_SHORT).show();
             return super.onStartCommand(intent, flags, startId);
         }
-        int port = intent.getIntExtra(EXTRA_PORT, 2020);
-        if (port <= 0 || port > 65535)
-            port = 2020;
-        while (!Utils.isPortAvailable(port)) {
-            port++;
-            if (port > 65535) {
-                port = 2020;
-                break;
+        mAutoClose = true;
+        final AdvancedFtpConfig config = new AdvancedFtpConfig(this);
+        int port = config.getPort();
+        if (config.isAutoChangePort()) {
+            boolean check = false;
+            while (!Utils.isPortAvailable(port)) {
+                port++;
+                if (port > 65535) {
+                    if (check) {
+                        port = 65535;
+                        break;
+                    } else {
+                        port = 1;
+                        check = true;
+                    }
+                }
             }
         }
-        //noinspection deprecation
-        mFTP = FtpServer.createServer(port,
-                Environment.getExternalStorageDirectory().getAbsolutePath());
+        if (!Utils.isPortAvailable(port)) {
+            Toast.makeText(this, R.string.ftp_toast_port, Toast.LENGTH_SHORT).show();
+            return super.onStartCommand(intent, flags, startId);
+        }
+        if (TextUtils.isEmpty(config.getUri())) {
+            Toast.makeText(this, R.string.ftp_toast_no_root, Toast.LENGTH_SHORT).show();
+            return super.onStartCommand(intent, flags, startId);
+        }
+        final Uri uri = Uri.parse(config.getUri());
+        final int state = checkUriPermission(uri,
+                Binder.getCallingPid(), Binder.getCallingUid(),
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        if (state != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, R.string.ftp_toast_permission,
+                    Toast.LENGTH_SHORT).show();
+            return super.onStartCommand(intent, flags, startId);
+        }
+        mFTP = FtpServer.createServer(port, this, uri);
         try {
             mFTP.start();
         } catch (Exception e) {
@@ -103,7 +132,7 @@ public class FTPService extends Service {
         startForeground(NotificationMaker.ID_FTP,
                 NotificationMaker.getFTPRunning(this, title, text,
                         PendingIntent.getActivity(this, NotificationMaker.ID_FTP,
-                                FTPActivity.getStarter(this),
+                                FtpActivity.getStarter(this),
                                 PendingIntent.FLAG_UPDATE_CURRENT)));
         STARTED = true;
         LocalBroadcastHelper.sendBroadcast(LocalBroadcastHelper.ACTION_FTP_STARTED);

@@ -15,34 +15,36 @@
  */
 package am.project.x.business.others.ftp;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
-import am.project.support.utils.InputMethodUtils;
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
-import am.project.x.utils.ContextUtils;
-import androidx.annotation.NonNull;
+import am.project.x.business.others.ftp.advanced.AdvancedFragment;
+import am.project.x.business.others.ftp.legacy.LegacyFragment;
+
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
+
+import java.util.List;
 
 /**
- * 文件传输
+ * FTP 文件传输
  */
-public class FTPActivity extends BaseActivity implements View.OnClickListener {
+public class FtpActivity extends BaseActivity implements FtpFragmentCallback {
 
-    private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 100;
-    private EditText mVPort;
+    private static final String TAG_ADVANCED = "advanced";
+    private static final String TAG_LEGACY = "legacy";
+    private ViewGroup mVContent;
 
     public static Intent getStarter(Context context) {
-        return new Intent(context, FTPActivity.class);
+        return new Intent(context, FtpActivity.class);
     }
 
     public static void start(Context context) {
@@ -57,67 +59,60 @@ public class FTPActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         setSupportActionBar(R.id.ftp_toolbar);
-        mVPort = findViewById(R.id.ftp_edt_port);
-        findViewById(R.id.ftp_btn_open).setOnClickListener(this);
-        findViewById(R.id.ftp_btn_close).setOnClickListener(this);
+        mVContent = findViewById(R.id.ftp_content);
+        setFragment(false);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    open();
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ftp_btn_open:
-                open();
-                break;
-            case R.id.ftp_btn_close:
-                FTPService.stop(this);
-                break;
-        }
-    }
-
-    private void open() {
-        if (FTPService.isStarted()) {
-            Toast.makeText(this, R.string.ftp_toast_running, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        int port = 0;
-        final String input = mVPort.getText().toString().trim();
-        if (!TextUtils.isEmpty(input) && TextUtils.isDigitsOnly(input)) {
-            try {
-                port = Integer.parseInt(input);
-            } catch (Exception e) {
-                // ignore
-            }
-            if (port <= 0 || port > 65535) {
-                mVPort.setText(null);
-                InputMethodUtils.openInputMethod(mVPort);
-                Toast.makeText(this, R.string.ftp_toast_bad_port,
-                        Toast.LENGTH_SHORT).show();
+    private void setFragment(boolean legacy) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            FragmentManager manager = getSupportFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            Fragment fragment = manager.findFragmentByTag(TAG_LEGACY);
+            if (fragment != null && fragment.isVisible())
                 return;
+            if (fragment == null) {
+                fragment = LegacyFragment.newInstance();
+                transaction.add(mVContent.getId(), fragment, TAG_LEGACY);
+            }
+            transaction.commitNowAllowingStateLoss();
+            return;
+        }
+        final String tag = legacy ? TAG_LEGACY : TAG_ADVANCED;
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        Fragment fragment = manager.findFragmentByTag(tag);
+        if (fragment != null && fragment.isVisible())
+            return;
+        if (fragment == null) {
+            switch (tag) {
+                default:
+                case TAG_ADVANCED:
+                    fragment = AdvancedFragment.newInstance();
+                    break;
+                case TAG_LEGACY:
+                    fragment = LegacyFragment.newInstance();
+                    break;
+            }
+            transaction.add(mVContent.getId(), fragment, tag);
+        }
+        List<Fragment> fragments = manager.getFragments();
+        for (Fragment f : fragments) {
+            if (f == fragment) {
+                transaction.show(f);
+                f.setMenuVisibility(true);
+                transaction.setMaxLifecycle(f, Lifecycle.State.STARTED);
+            } else {
+                f.setMenuVisibility(false);
+                transaction.setMaxLifecycle(f, Lifecycle.State.RESUMED);
+                transaction.hide(f);
             }
         }
-        if (!ContextUtils.isWifiConnected(this)) {
-            Toast.makeText(this, R.string.ftp_toast_no_wifi, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= 23 &&
-                !ContextUtils.hasWriteExternalStoragePermission(this)) {
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-            return;
-        }
-        InputMethodUtils.closeInputMethod(mVPort);
-        FTPService.start(this, port);
+        transaction.commitNowAllowingStateLoss();
+    }
+
+    // Callback
+    @Override
+    public void onSwitch(boolean legacy) {
+        setFragment(legacy);
     }
 }

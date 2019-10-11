@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".business.others.ftp.advanced.AdvancedFragment">
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/advanced_edt_port"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:imeOptions="actionDone"
+        android:inputType="numberSigned"
+        android:maxLength="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/advanced_cb_auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/ftp_auto_change_port"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/advanced_edt_port" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/advanced_tv_uri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:text="@string/ftp_path"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/advanced_cb_auto" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/advanced_btn_uri"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:singleLine="true"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/advanced_tv_uri"
+        app:layout_constraintTop_toTopOf="@id/advanced_tv_uri" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/advanced_btn_open"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/ftp_open"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/advanced_btn_close"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/ftp_close"
+        app:layout_constraintBottom_toBottomOf="@id/advanced_btn_open"
+        app:layout_constraintStart_toEndOf="@id/advanced_btn_open"
+        app:layout_constraintTop_toTopOf="@id/advanced_btn_open"
+        app:layout_constraintWidth_percent="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

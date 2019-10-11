@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:clickable="true"
+    android:drawableStart="@drawable/ic_lps_folder"
+    android:drawablePadding="6dp"
+    android:ellipsize="end"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:minHeight="48dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:singleLine="true"
+    android:textColor="#FF333333"
+    android:textSize="16sp" />

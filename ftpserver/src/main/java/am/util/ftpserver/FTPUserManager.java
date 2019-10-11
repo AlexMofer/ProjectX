@@ -174,6 +174,7 @@ public class FtpUserManager implements UserManager {
      *
      * @return 如果允许匿名登录则返回true
      */
+    @SuppressWarnings("WeakerAccess")
     public boolean isAnonymousLoginEnabled() {
         return doesExist(FtpUser.NAME_ANONYMOUS);
     }

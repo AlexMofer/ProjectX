@@ -166,8 +166,10 @@ final class FileFtpFile extends BaseFtpFile {
     @Override
     public InputStream createInputStream(long offset) throws IOException {
         final FileInputStream input = new FileInputStream(mFile);
-        //noinspection ResultOfMethodCallIgnored
-        input.skip(offset);
+        if (offset == 0)
+            return new BufferedInputStream(input, mBufferSize);
+        if (input.skip(offset) == offset)
+            return new BufferedInputStream(input, mBufferSize);
         return new BufferedInputStream(input, mBufferSize);
     }
 

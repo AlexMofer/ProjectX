@@ -115,7 +115,7 @@ public class FtpUserManagerFactory implements UserManagerFactory {
      */
     @SuppressWarnings("WeakerAccess")
     public void setAnonymousEnable(FtpFileSystemViewAdapter adapter) {
-        mAnonymous = FtpUser.getAnonymous(adapter);
+        mAnonymous = FtpUser.createAnonymous(adapter);
     }
 
     /**

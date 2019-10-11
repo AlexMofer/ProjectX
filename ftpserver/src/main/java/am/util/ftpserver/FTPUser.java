@@ -41,7 +41,6 @@ public class FtpUser implements User {
     private int mMaxIdleTime = 0; // no limit
     private boolean mEnabled = true;
     private boolean mEditable = true;
-    private boolean mCanWrite = true;
 
     private final ArrayList<Authority> mAuthorities = new ArrayList<>();
 
@@ -69,7 +68,13 @@ public class FtpUser implements User {
         mEnabled = user.getEnabled();
     }
 
-    public static FtpUser getAnonymous(FtpFileSystemViewAdapter adapter) {
+    /**
+     * 创建匿名用户
+     * @param adapter 文件系统内容提供者
+     * @return 匿名用户
+     */
+    @SuppressWarnings("WeakerAccess")
+    public static FtpUser createAnonymous(FtpFileSystemViewAdapter adapter) {
         if (adapter == null)
             return null;
         final FtpUser anonymous = new FtpUser(NAME_ANONYMOUS, null, adapter);
@@ -97,6 +102,7 @@ public class FtpUser implements User {
      *
      * @param maxIdleTime 最大空闲时间（以秒为单位，小于等于0表示不受限）
      */
+    @SuppressWarnings("unused")
     public void setMaxIdleTime(int maxIdleTime) {
         mMaxIdleTime = maxIdleTime;
     }
@@ -111,6 +117,7 @@ public class FtpUser implements User {
      *
      * @param enabled 是否启用
      */
+    @SuppressWarnings("unused")
     public void setEnabled(boolean enabled) {
         mEnabled = enabled;
     }
@@ -139,26 +146,9 @@ public class FtpUser implements User {
      *
      * @param editable 是否可编辑
      */
+    @SuppressWarnings("WeakerAccess")
     public void setEditable(boolean editable) {
         mEditable = editable;
-    }
-
-    /**
-     * 判断账户是否可以写入
-     *
-     * @return 账户可以写入时返回true
-     */
-    public boolean canWrite() {
-        return mCanWrite;
-    }
-
-    /**
-     * 设置是否可写入
-     *
-     * @param canWrite 是否可写入
-     */
-    public void setCanWrite(boolean canWrite) {
-        mCanWrite = canWrite;
     }
 
     /**
@@ -166,6 +156,7 @@ public class FtpUser implements User {
      *
      * @return 文件系统视图提供者
      */
+    @SuppressWarnings("WeakerAccess")
     public FtpFileSystemViewAdapter getFileSystemViewAdapter() {
         return mAdapter;
     }

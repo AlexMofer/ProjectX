@@ -1,342 +1,362 @@
-<resources>
-    <string name="notification_name_low" translatable="false">服务通知</string>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="notification_name_low">服务通知</string>
     <!--主页面-->
-    <string name="main_nav_title" translatable="false">自由、开放、平等、分享</string>
-    <string name="main_nav_widgets" translatable="false">控件</string>
-    <string name="main_nav_drawables" translatable="false">图形</string>
-    <string name="main_nav_others" translatable="false">其他</string>
-    <string name="main_nav_develop" translatable="false">开发</string>
-    <string name="main_nav_report" translatable="false">报告错误</string>
-    <string name="main_nav_contact" translatable="false">联系作者</string>
-    <string name="main_nav_about" translatable="false">关于</string>
+    <string name="main_nav_title">自由、开放、平等、分享</string>
+    <string name="main_nav_widgets">控件</string>
+    <string name="main_nav_drawables">图形</string>
+    <string name="main_nav_others">其他</string>
+    <string name="main_nav_develop">开发</string>
+    <string name="main_nav_report">报告错误</string>
+    <string name="main_nav_contact">联系作者</string>
+    <string name="main_nav_about">关于</string>
     <!--关于-->
-    <string name="about_label" translatable="false">关于</string>
-    <string name="about_info" translatable="false">ProjectX为个人开源控件合集，旨在辅助开发、维护、更新个人所有开源控件，同时也可以用于展示所有开源控件的功能及属性。（部分不便于展示的内容则不会出现在应用中，如开发中的不稳定控件等。）</string>
-    <string name="about_more" translatable="false">更多信息，请参考Github项目主页：</string>
-    <string name="about_privacy" translatable="false">隐私权政策</string>
+    <string name="about_label">关于</string>
+    <string name="about_info">ProjectX为个人开源控件合集，旨在辅助开发、维护、更新个人所有开源控件，同时也可以用于展示所有开源控件的功能及属性。（部分不便于展示的内容则不会出现在应用中，如开发中的不稳定控件等。）</string>
+    <string name="about_more">更多信息，请参考Github项目主页：</string>
+    <string name="about_privacy">隐私权政策</string>
     <!--主页-->
-    <string name="main_widgets_gradienttabstrip" translatable="false">渐变底部栏</string>
-    <string name="main_widgets_tagtabstrip" translatable="false">图片标记栏</string>
-    <string name="main_widgets_indicatortabstrip" translatable="false">游标顶部栏</string>
-    <string name="main_widgets_shapeimageview" translatable="false">裁剪图片视图</string>
-    <string name="main_widgets_statelayout" translatable="false">状态布局</string>
-    <string name="main_widgets_wraplayout" translatable="false">自换行布局</string>
-    <string name="main_widgets_drawableratingbar" translatable="false">图片评级</string>
-    <string name="main_widgets_headerfootergridview" translatable="false">头尾网格视图</string>
-    <string name="main_widgets_multiactiontextview" translatable="false">文本点击</string>
-    <string name="main_widgets_recyclepager" translatable="false">回收页视图</string>
-    <string name="main_widgets_circleprogressbar" translatable="false">环形进度条</string>
-    <string name="main_widgets_zxingscanview" translatable="false">条码扫描</string>
-    <string name="main_widgets_smoothinputlayout" translatable="false">输入面板</string>
-    <string name="main_widgets_multifunctionalrecyclerview" translatable="false">多功能回收视图</string>
-    <string name="main_drawables_loading" translatable="false">载入图片</string>
-    <string name="main_drawables_cornerdrawable" translatable="false">尖角框</string>
-    <string name="main_drawables_frame" translatable="false">帧图片</string>
-    <string name="main_drawables_linedrawable" translatable="false">横线图片</string>
-    <string name="main_drawables_griddrawable" translatable="false">网格图片</string>
-    <string name="main_drawables_textdrawable" translatable="false">文本图片</string>
-    <string name="main_others_printer" translatable="false">小票打印</string>
-    <string name="main_others_crypto" translatable="false">加密解密</string>
-    <string name="main_others_ftp" translatable="false">文件传输</string>
-    <string name="main_others_font" translatable="false">字体</string>
-    <string name="main_others_opentype" translatable="false">字体文件</string>
-    <string name="main_others_floating" translatable="false">悬浮菜单</string>
-    <string name="main_develop_developing" translatable="false">开发中</string>
-    <string name="main_develop_supergridview" translatable="false">拖拽网格</string>
-    <string name="main_others_clipboard" translatable="false">剪切板</string>
-    <string name="main_others_retrofit" translatable="false">Retrofit辅助</string>
+    <string name="main_widgets_gradienttabstrip">渐变底部栏</string>
+    <string name="main_widgets_tagtabstrip">图片标记栏</string>
+    <string name="main_widgets_indicatortabstrip">游标顶部栏</string>
+    <string name="main_widgets_shapeimageview">裁剪图片视图</string>
+    <string name="main_widgets_statelayout">状态布局</string>
+    <string name="main_widgets_wraplayout">自换行布局</string>
+    <string name="main_widgets_drawableratingbar">图片评级</string>
+    <string name="main_widgets_headerfootergridview">头尾网格视图</string>
+    <string name="main_widgets_multiactiontextview">文本点击</string>
+    <string name="main_widgets_recyclepager">回收页视图</string>
+    <string name="main_widgets_circleprogressbar">环形进度条</string>
+    <string name="main_widgets_zxingscanview">条码扫描</string>
+    <string name="main_widgets_smoothinputlayout">输入面板</string>
+    <string name="main_widgets_multifunctionalrecyclerview">多功能回收视图</string>
+    <string name="main_drawables_loading">载入图片</string>
+    <string name="main_drawables_cornerdrawable">尖角框</string>
+    <string name="main_drawables_frame">帧图片</string>
+    <string name="main_drawables_linedrawable">横线图片</string>
+    <string name="main_drawables_griddrawable">网格图片</string>
+    <string name="main_drawables_textdrawable">文本图片</string>
+    <string name="main_others_printer">小票打印</string>
+    <string name="main_others_crypto">加密解密</string>
+    <string name="main_others_ftp">文件传输</string>
+    <string name="main_others_font">字体</string>
+    <string name="main_others_opentype">字体文件</string>
+    <string name="main_others_floating">悬浮菜单</string>
+    <string name="main_develop_developing">开发中</string>
+    <string name="main_develop_supergridview">拖拽网格</string>
+    <string name="main_others_clipboard">剪切板</string>
+    <string name="main_others_retrofit">Retrofit辅助</string>
     <!--开发中-->
-    <string name="developing_label" translatable="false">开发中</string>
+    <string name="developing_label">开发中</string>
     <!--渐变底部栏-->
-    <string name="gts_label" translatable="false">渐变底部栏</string>
+    <string name="gts_label">渐变底部栏</string>
     <!--图片标记栏-->
-    <string name="tts_label" translatable="false">图片标记栏</string>
+    <string name="tts_label">图片标记栏</string>
     <!--游标顶部栏-->
-    <string name="its_label" translatable="false">游标顶部栏</string>
+    <string name="its_label">游标顶部栏</string>
     <!--裁剪图片视图-->
-    <string name="miv_label" translatable="false">裁剪图片视图</string>
-    <string name="miv_crop_type" translatable="false">裁剪为圆形：</string>
-    <string name="miv_height_width_scale" translatable="false">宽高比(100/100~100/50)：</string>
-    <string name="miv_border_width" translatable="false">边线宽(0dp~10dp)：</string>
-    <string name="miv_radius" translatable="false">圆角(0dp~30dp)：</string>
-    <string name="miv_padding" translatable="false">Padding(0dp~20dp)：</string>
-    <string name="miv_scaletype" translatable="false">ScaleType：</string>
+    <string name="miv_label">裁剪图片视图</string>
+    <string name="miv_crop_type">裁剪为圆形：</string>
+    <string name="miv_height_width_scale">宽高比(100/100~100/50)：</string>
+    <string name="miv_border_width">边线宽(0dp~10dp)：</string>
+    <string name="miv_radius">圆角(0dp~30dp)：</string>
+    <string name="miv_padding">Padding(0dp~20dp)：</string>
+    <string name="miv_scaletype">ScaleType：</string>
     <!--状态布局-->
-    <string name="sl_label" translatable="false">状态布局</string>
-    <string name="sl_change_state" translatable="false">状态修改：</string>
-    <string name="sl_change_state_normal" translatable="false">普通</string>
-    <string name="sl_change_state_loading" translatable="false">载入</string>
-    <string name="sl_change_state_error" translatable="false">错误</string>
-    <string name="sl_change_state_empty" translatable="false">空白</string>
-    <string name="sl_change_mode" translatable="false">模式修改：</string>
-    <string name="sl_change_mode_drawable" translatable="false">图片</string>
-    <string name="sl_change_mode_view" translatable="false">视图</string>
+    <string name="sl_label">状态布局</string>
+    <string name="sl_change_state">状态修改：</string>
+    <string name="sl_change_state_normal">普通</string>
+    <string name="sl_change_state_loading">载入</string>
+    <string name="sl_change_state_error">错误</string>
+    <string name="sl_change_state_empty">空白</string>
+    <string name="sl_change_mode">模式修改：</string>
+    <string name="sl_change_mode_drawable">图片</string>
+    <string name="sl_change_mode_view">视图</string>
     <!--自换行布局-->
-    <string name="wl_label" translatable="false">自换行布局</string>
-    <string name="wl_text" translatable="false">文本框</string>
-    <string name="wl_text_gravity" translatable="false">布局：</string>
-    <string name="wl_gravity_top" translatable="false">上</string>
-    <string name="wl_gravity_center" translatable="false">中</string>
-    <string name="wl_gravity_bottom" translatable="false">下</string>
-    <string name="wl_text_horizontal" translatable="false">水平间距（0dp～30dp）：</string>
-    <string name="wl_text_vertical" translatable="false">垂直间距（0dp～30dp）：</string>
+    <string name="wl_label">自换行布局</string>
+    <string name="wl_text">文本框</string>
+    <string name="wl_text_gravity">布局：</string>
+    <string name="wl_gravity_top">上</string>
+    <string name="wl_gravity_center">中</string>
+    <string name="wl_gravity_bottom">下</string>
+    <string name="wl_text_horizontal">水平间距（0dp～30dp）：</string>
+    <string name="wl_text_vertical">垂直间距（0dp～30dp）：</string>
     <!--图片评级-->
-    <string name="drb_label" translatable="false">图片评级</string>
-    <string name="drb_gravity" translatable="false">布局：</string>
-    <string name="drb_manually" translatable="false">可手动控制：</string>
-    <string name="drb_only_item_touchable" translatable="false">仅子项内部响应触摸事件：</string>
-    <string name="drb_max" translatable="false">最大值(6~10)：</string>
-    <string name="drb_min" translatable="false">子项不得少于个数(0~6)：</string>
+    <string name="drb_label">图片评级</string>
+    <string name="drb_gravity">布局：</string>
+    <string name="drb_manually">可手动控制：</string>
+    <string name="drb_only_item_touchable">仅子项内部响应触摸事件：</string>
+    <string name="drb_max">最大值(6~10)：</string>
+    <string name="drb_min">子项不得少于个数(0~6)：</string>
     <!--头尾网格视图-->
-    <string name="hfg_label" translatable="false">头尾网格视图</string>
-    <string name="hfg_header_view" translatable="false">头View</string>
-    <string name="hfg_header_item" translatable="false">头Item</string>
-    <string name="hfg_footer_view" translatable="false">尾View</string>
-    <string name="hfg_footer_item" translatable="false">尾Item</string>
-    <string name="hfg_item_number" translatable="false">子项数目：</string>
-    <string name="hfg_item" translatable="false">Item %1$d</string>
-    <string name="hfg_header" translatable="false">Header %1$d</string>
-    <string name="hfg_footer" translatable="false">Footer %1$d</string>
-    <string name="hfg_hv" translatable="false">Header View %1$d</string>
-    <string name="hfg_fv" translatable="false">Footer View %1$d</string>
+    <string name="hfg_label">头尾网格视图</string>
+    <string name="hfg_header_view">头View</string>
+    <string name="hfg_header_item">头Item</string>
+    <string name="hfg_footer_view">尾View</string>
+    <string name="hfg_footer_item">尾Item</string>
+    <string name="hfg_item_number">子项数目：</string>
+    <string name="hfg_item">Item %1$d</string>
+    <string name="hfg_header">Header %1$d</string>
+    <string name="hfg_footer">Footer %1$d</string>
+    <string name="hfg_hv">Header View %1$d</string>
+    <string name="hfg_fv">Footer View %1$d</string>
     <!--文本点击-->
-    <string name="mat_label" translatable="false">文本点击</string>
-    <string name="mat_content" translatable="false">Android最初由安迪·鲁宾（Andy Rubin）等人开发制作，最初开发这个系统的目的是创建一个数码相机的先进操作系统；但是后来发现市场需求不够大，加上智能手机市场快速成长，于是Android被改造为一款面向智能手机的操作系统。于2005年7月11日被美国科技企业Google收购。2007年11月，Google与84家硬件制造商、软件开发商及电信营运商成立开放手持设备联盟来共同研发改良Android，随后，Google以Apache免费开放源代码许可证的授权方式，发布了Android的源代码，让生产商推出搭载Android的智能手机，Android后来更逐渐拓展到平板电脑及其他领域上。\n2010年末数据显示，仅正式推出两年的Android操作系统在市场占有率上已经超越称霸逾十年的诺基亚Symbian系统，成为全球第一大智能手机操作系统。\n在2014年Google I/O开发者大会上Google宣布过去30天里有10亿台活跃的安卓设备，相较于2013年6月则是5.38亿。</string>
-    <string name="mat_toast" translatable="false">点击整个文本</string>
+    <string name="mat_label">文本点击</string>
+    <string name="mat_content">Android最初由安迪·鲁宾（Andy Rubin）等人开发制作，最初开发这个系统的目的是创建一个数码相机的先进操作系统；但是后来发现市场需求不够大，加上智能手机市场快速成长，于是Android被改造为一款面向智能手机的操作系统。于2005年7月11日被美国科技企业Google收购。2007年11月，Google与84家硬件制造商、软件开发商及电信营运商成立开放手持设备联盟来共同研发改良Android，随后，Google以Apache免费开放源代码许可证的授权方式，发布了Android的源代码，让生产商推出搭载Android的智能手机，Android后来更逐渐拓展到平板电脑及其他领域上。\n2010年末数据显示，仅正式推出两年的Android操作系统在市场占有率上已经超越称霸逾十年的诺基亚Symbian系统，成为全球第一大智能手机操作系统。\n在2014年Google I/O开发者大会上Google宣布过去30天里有10亿台活跃的安卓设备，相较于2013年6月则是5.38亿。</string>
+    <string name="mat_toast">点击整个文本</string>
     <!--回收页视图-->
-    <string name="rp_label" translatable="false">回收页视图</string>
-    <string name="rp_title_page" translatable="false">页面数目</string>
-    <string name="rp_title_offset" translatable="false">计数偏移</string>
-    <string name="rp_add_exchange" translatable="false">奇偶互换</string>
+    <string name="rp_label">回收页视图</string>
+    <string name="rp_title_page">页面数目</string>
+    <string name="rp_title_offset">计数偏移</string>
+    <string name="rp_add_exchange">奇偶互换</string>
     <!--环形进度条-->
-    <string name="cpb_label" translatable="false">环形进度条</string>
-    <string name="cpb_bar_top" translatable="false">速度</string>
-    <string name="cpb_bar_bottom" translatable="false">km/s</string>
-    <string name="cpb_bar_loading" translatable="false">载入</string>
-    <string name="cpb_gravity" translatable="false">布局：</string>
-    <string name="cpb_radius" translatable="false">进度条半径：（100dp～200dp）</string>
-    <string name="cpb_start_angle" translatable="false">进度起始角度：</string>
-    <string name="cpb_sweep_angle" translatable="false">进度扫描角度：</string>
-    <string name="cpb_background_size" translatable="false">背景尺寸大小：（0dp～30dp）</string>
-    <string name="cpb_progress_size" translatable="false">进度尺寸大小：（0dp～30dp）</string>
-    <string name="cpb_progress_progress" translatable="false">进度值：(0～810)</string>
-    <string name="cpb_gradient" translatable="false">进度渐变色：</string>
-    <string name="cpb_visibility" translatable="false">进度刻度可见状态：</string>
-    <string name="cpb_dial_gap" translatable="false">刻度表盘间距：（0dp～10dp）</string>
-    <string name="cpb_dial_angle" translatable="false">刻度角度：(0～10)</string>
-    <string name="cpb_dial_height" translatable="false">刻度高度：(0dp～20dp)</string>
-    <string name="cpb_dial_width" translatable="false">刻度宽度：(0dp～5dp)</string>
-    <string name="cpb_dial_special_unit" translatable="false">特殊刻度单位：(0～10)</string>
-    <string name="cpb_dial_special_height" translatable="false">特殊刻度高度：(0dp～20dp)</string>
-    <string name="cpb_dial_special_width" translatable="false">特殊刻度宽度：(0dp～5dp)</string>
-    <string name="cpb_dial_gravity" translatable="false">刻度布局：</string>
-    <string name="cpb_special_dial_value" translatable="false">显示特殊刻度值：</string>
-    <string name="cpb_special_dial_value_gap" translatable="false">特殊刻度值与特殊刻度间距：（0dp～10dp）</string>
-    <string name="cpb_special_dial_value_text_size" translatable="false">特殊刻度值文字大小：（5sp～15sp）</string>
-    <string name="cpb_progress_value" translatable="false">显示进度值：</string>
-    <string name="cpb_progress_value_text_size" translatable="false">进度值文字大小：（5sp～15sp）</string>
-    <string name="cpb_top_text_gap" translatable="false">顶部文字与进度值间距：（0dp～50dp）</string>
-    <string name="cpb_top_text_size" translatable="false">顶部文字大小：（10sp～40sp）</string>
-    <string name="cpb_bottom_text_gap" translatable="false">底部文字与进度值间距：（0dp～50dp）</string>
-    <string name="cpb_bottom_text_size" translatable="false">底部文字大小：（10sp～40sp）</string>
-    <string name="cpb_scale_type" translatable="false">缩放模式：</string>
-    <string name="cpb_progress_duration" translatable="false">进度动画时长：（100～5000）</string>
-    <string name="cpb_progress_mode" translatable="false">载入模式开关：</string>
-    <string name="cpb_loading_start_angle" translatable="false">载入起始角度：</string>
-    <string name="cpb_loading_sweep_angle" translatable="false">载入扫描角度：</string>
-    <string name="cpb_loading_duration" translatable="false">载入动画时长：（100～5000）</string>
-    <string name="cpb_repeat_mode" translatable="false">载入动画是否逆转：</string>
-    <string name="cpb_loading_draw_other" translatable="false">载入模式下绘制其他内容：</string>
-    <string name="cpb_progress_animator" translatable="false">进度条动画</string>
+    <string name="cpb_label">环形进度条</string>
+    <string name="cpb_bar_top">速度</string>
+    <string name="cpb_bar_bottom">km/s</string>
+    <string name="cpb_bar_loading">载入</string>
+    <string name="cpb_gravity">布局：</string>
+    <string name="cpb_radius">进度条半径：（100dp～200dp）</string>
+    <string name="cpb_start_angle">进度起始角度：</string>
+    <string name="cpb_sweep_angle">进度扫描角度：</string>
+    <string name="cpb_background_size">背景尺寸大小：（0dp～30dp）</string>
+    <string name="cpb_progress_size">进度尺寸大小：（0dp～30dp）</string>
+    <string name="cpb_progress_progress">进度值：(0～810)</string>
+    <string name="cpb_gradient">进度渐变色：</string>
+    <string name="cpb_visibility">进度刻度可见状态：</string>
+    <string name="cpb_dial_gap">刻度表盘间距：（0dp～10dp）</string>
+    <string name="cpb_dial_angle">刻度角度：(0～10)</string>
+    <string name="cpb_dial_height">刻度高度：(0dp～20dp)</string>
+    <string name="cpb_dial_width">刻度宽度：(0dp～5dp)</string>
+    <string name="cpb_dial_special_unit">特殊刻度单位：(0～10)</string>
+    <string name="cpb_dial_special_height">特殊刻度高度：(0dp～20dp)</string>
+    <string name="cpb_dial_special_width">特殊刻度宽度：(0dp～5dp)</string>
+    <string name="cpb_dial_gravity">刻度布局：</string>
+    <string name="cpb_special_dial_value">显示特殊刻度值：</string>
+    <string name="cpb_special_dial_value_gap">特殊刻度值与特殊刻度间距：（0dp～10dp）</string>
+    <string name="cpb_special_dial_value_text_size">特殊刻度值文字大小：（5sp～15sp）</string>
+    <string name="cpb_progress_value">显示进度值：</string>
+    <string name="cpb_progress_value_text_size">进度值文字大小：（5sp～15sp）</string>
+    <string name="cpb_top_text_gap">顶部文字与进度值间距：（0dp～50dp）</string>
+    <string name="cpb_top_text_size">顶部文字大小：（10sp～40sp）</string>
+    <string name="cpb_bottom_text_gap">底部文字与进度值间距：（0dp～50dp）</string>
+    <string name="cpb_bottom_text_size">底部文字大小：（10sp～40sp）</string>
+    <string name="cpb_scale_type">缩放模式：</string>
+    <string name="cpb_progress_duration">进度动画时长：（100～5000）</string>
+    <string name="cpb_progress_mode">载入模式开关：</string>
+    <string name="cpb_loading_start_angle">载入起始角度：</string>
+    <string name="cpb_loading_sweep_angle">载入扫描角度：</string>
+    <string name="cpb_loading_duration">载入动画时长：（100～5000）</string>
+    <string name="cpb_repeat_mode">载入动画是否逆转：</string>
+    <string name="cpb_loading_draw_other">载入模式下绘制其他内容：</string>
+    <string name="cpb_progress_animator">进度条动画</string>
     <!--条码扫描-->
-    <string name="zsv_label" translatable="false">条码扫描</string>
-    <string name="zsv_error" translatable="false">很遗憾，相机出现问题。你可能需要重启设备。</string>
+    <string name="zsv_label">条码扫描</string>
+    <string name="zsv_error">很遗憾，相机出现问题。你可能需要重启设备。</string>
     <!--输入面板-->
-    <string name="sil_label" translatable="false">输入面板</string>
-    <string name="sil_voice" translatable="false">按住 说话</string>
-    <string name="sil_picture" translatable="false">图片</string>
-    <string name="sil_camera" translatable="false">拍照</string>
+    <string name="sil_label">输入面板</string>
+    <string name="sil_voice">按住 说话</string>
+    <string name="sil_picture">图片</string>
+    <string name="sil_camera">拍照</string>
     <!--载入图片-->
-    <string name="ld_label" translatable="false">载入图片</string>
+    <string name="ld_label">载入图片</string>
     <!--尖角框-->
-    <string name="cnd_label" translatable="false">尖角框</string>
-    <string name="cnd_text" translatable="false">尖角对话框图片，主要用于聊天对话框背景。支持各个方向，同时支持箭头剧中与靠边、内容圆角、箭头圆角、及绘制边线。</string>
-    <string name="cnd_direction" translatable="false">朝向：</string>
-    <string name="cnd_location" translatable="false">位置：</string>
-    <string name="cnd_corner_width" translatable="false">尖角宽度（20dp～30dp）：</string>
-    <string name="cnd_corner_height" translatable="false">尖角高度（10dp～20dp）：</string>
-    <string name="cnd_corner_radius" translatable="false">尖角圆角（0px～5px）：</string>
-    <string name="cnd_corner_margin" translatable="false">尖角边距（0dp～15dp）：</string>
-    <string name="cnd_bezier" translatable="false">贝塞尔尖角（0～1）：</string>
-    <string name="cnd_stoke" translatable="false">描边线宽（0px～20px）：</string>
-    <string name="cnd_radius" translatable="false">内容圆角（0dp～10dp）：</string>
-    <string name="cnd_padding" translatable="false">内容间隔（0dp～10dp）：</string>
+    <string name="cnd_label">尖角框</string>
+    <string name="cnd_text">尖角对话框图片，主要用于聊天对话框背景。支持各个方向，同时支持箭头剧中与靠边、内容圆角、箭头圆角、及绘制边线。</string>
+    <string name="cnd_direction">朝向：</string>
+    <string name="cnd_location">位置：</string>
+    <string name="cnd_corner_width">尖角宽度（20dp～30dp）：</string>
+    <string name="cnd_corner_height">尖角高度（10dp～20dp）：</string>
+    <string name="cnd_corner_radius">尖角圆角（0px～5px）：</string>
+    <string name="cnd_corner_margin">尖角边距（0dp～15dp）：</string>
+    <string name="cnd_bezier">贝塞尔尖角（0～1）：</string>
+    <string name="cnd_stoke">描边线宽（0px～20px）：</string>
+    <string name="cnd_radius">内容圆角（0dp～10dp）：</string>
+    <string name="cnd_padding">内容间隔（0dp～10dp）：</string>
     <!--帧图片-->
-    <string name="frame_label" translatable="false">帧图片</string>
+    <string name="frame_label">帧图片</string>
     <!--横线图片-->
-    <string name="lid_label" translatable="false">横线图片</string>
-    <string name="lid_line_size" translatable="false">线条粗细（1px～10px）：</string>
+    <string name="lid_label">横线图片</string>
+    <string name="lid_line_size">线条粗细（1px～10px）：</string>
     <!--网格图片-->
-    <string name="grd_label" translatable="false">网格图片</string>
-    <string name="grd_number_row" translatable="false">行数目（1～6）：</string>
-    <string name="grd_number_column" translatable="false">列数目（1～6）：</string>
-    <string name="grd_gap" translatable="false">行列间隔（1dp～10dp）：</string>
+    <string name="grd_label">网格图片</string>
+    <string name="grd_number_row">行数目（1～6）：</string>
+    <string name="grd_number_column">列数目（1～6）：</string>
+    <string name="grd_gap">行列间隔（1dp～10dp）：</string>
     <!--文本图片-->
-    <string name="td_label" translatable="false">文本图片</string>
-    <string name="td_scale" translatable="false">文字大小自动缩放：</string>
-    <string name="td_content" translatable="false">图</string>
+    <string name="td_label">文本图片</string>
+    <string name="td_scale">文字大小自动缩放：</string>
+    <string name="td_content">图</string>
     <!--小票打印-->
-    <string name="printer_label" translatable="false">小票打印</string>
-    <string name="printer_type" translatable="false">打印机类型：</string>
-    <string name="printer_ip" translatable="false">填写IP信息</string>
-    <string name="printer_bluetooth" translatable="false">选择蓝牙设备</string>
-    <string name="printer_qr" translatable="false">二维码内容：</string>
-    <string name="printer_qr_hint" translatable="false">输入内容以生成特定二维码</string>
-    <string name="printer_ip_hint" translatable="false">IP地址</string>
-    <string name="printer_port_hint" translatable="false">端口</string>
-    <string name="printer_port_text" translatable="false">9100</string>
-    <string name="printer_type_80" translatable="false">80mm</string>
-    <string name="printer_type_58" translatable="false">58mm</string>
-    <string name="printer_image_enable" translatable="false">图片开关：</string>
-    <string name="printer_image_width" translatable="false">图片宽度：</string>
-    <string name="printer_image_width_default" translatable="false">300</string>
-    <string name="printer_image_height_parting" translatable="false">图片高度分段像素值：</string>
-    <string name="printer_image_height_parting_default" translatable="false">255</string>
-    <string name="printer_image_height_parting_error" translatable="false">图片高度分段像素值最大不能超过255</string>
-    <string name="printer_test_ip" translatable="false">测试固定IP打印机</string>
-    <string name="printer_test_bluetooth" translatable="false">测试蓝牙打印机</string>
-    <string name="printer_cancel" translatable="false">取消</string>
-    <string name="printer_edit_toast_1" translatable="false">请填写打印机IP地址</string>
-    <string name="printer_edit_toast_2" translatable="false">请正确填写打印机IP地址</string>
-    <string name="printer_edit_toast_3" translatable="false">请填写打印机端口号</string>
-    <string name="printer_edit_toast_4" translatable="false">请正确填写打印机端口号，0～65535</string>
-    <string name="printer_bluetooth_not_support" translatable="false">不支持蓝牙</string>
-    <string name="printer_bluetooth_dlg_open" translatable="false">打开蓝牙，以便连接蓝牙打印设备。</string>
-    <string name="printer_bluetooth_dlg_close" translatable="false">是否需要关闭蓝牙？</string>
-    <string name="printer_allow" translatable="false">"允许"</string>
-    <string name="printer_deny" translatable="false">"拒绝"</string>
-    <string name="printer_yes" translatable="false">"是"</string>
-    <string name="printer_no" translatable="false">"否"</string>
-    <string name="printer_bluetooth_dlg_close_error" translatable="false">由于某些原因导致应用关闭蓝牙失败，请到系统设置中自行关闭</string>
-    <string name="printer_test_start" translatable="false">开始执行打印&#8230;</string>
-    <string name="printer_test_message_0" translatable="false">开始测试&#8230;</string>
-    <string name="printer_test_message_1" translatable="false">生成测试页面数据&#8230;</string>
-    <string name="printer_test_message_2" translatable="false">生成数据成功，开始创建Socket连接&#8230;</string>
-    <string name="printer_test_message_3" translatable="false">创建Socket成功，开始发送测试数据&#8230;</string>
-    <string name="printer_test_message_4" translatable="false">获取输出流成功，开始写入测试页面数据&#8230;</string>
-    <string name="printer_test_message_5" translatable="false">写入测试页面数据成功，正在完成测试&#8230;</string>
-    <string name="printer_result_message_1" translatable="false">测试成功完成！</string>
-    <string name="printer_result_message_2" translatable="false">生成测试页面数据失败！</string>
-    <string name="printer_result_message_3" translatable="false">创建Socket失败！</string>
-    <string name="printer_result_message_4" translatable="false">获取输出流失败！</string>
-    <string name="printer_result_message_5" translatable="false">写入测试页面数据失败！</string>
-    <string name="printer_result_message_6" translatable="false">必要的参数不能为空！</string>
-    <string name="printer_result_message_7" translatable="false">关闭Socket出错！</string>
-    <string name="printer_result_message_8" translatable="false">打印失败！</string>
-    <string name="printer_state" translatable="false">打印机状态</string>
-    <string name="printer_print" translatable="false">打印</string>
-    <string name="printer_data_1" translatable="false">我的餐厅</string>
-    <string name="printer_data_2" translatable="false">最时尚的明星餐厅</string>
-    <string name="printer_data_3" translatable="false">客服电话：400&#8211;8008800</string>
-    <string name="printer_data_4" translatable="false">订单号：88888888888888888</string>
-    <string name="printer_data_5" translatable="false">"预计送达："</string>
-    <string name="printer_data_6" translatable="false">#8（已付款）</string>
-    <string name="printer_data_7" translatable="false">××区××路×××大厦××楼×××室</string>
-    <string name="printer_data_8" translatable="false">13888888888</string>
-    <string name="printer_data_9" translatable="false">（张某某）</string>
-    <string name="printer_data_10" translatable="false">备注：这是一条测试打印单，用于测试打印机是否正常工作，以及打印排版是否正常。</string>
-    <string name="printer_data_11" translatable="false">星级美食（豪华套餐）×1</string>
-    <string name="printer_data_12" translatable="false">￥88.88</string>
-    <string name="printer_data_13" translatable="false">星级美食（限量套餐）×1</string>
-    <string name="printer_data_14" translatable="false">￥888.88</string>
-    <string name="printer_data_15" translatable="false">餐具×1</string>
-    <string name="printer_data_16" translatable="false">￥0.00</string>
-    <string name="printer_data_17" translatable="false">配送费</string>
-    <string name="printer_data_18" translatable="false">免费</string>
-    <string name="printer_data_19" translatable="false">合计：977.76</string>
-    <string name="printer_data_20" translatable="false">扫一扫，查看详情</string>
+    <string name="printer_label">小票打印</string>
+    <string name="printer_type">打印机类型：</string>
+    <string name="printer_ip">填写IP信息</string>
+    <string name="printer_bluetooth">选择蓝牙设备</string>
+    <string name="printer_qr">二维码内容：</string>
+    <string name="printer_qr_hint">输入内容以生成特定二维码</string>
+    <string name="printer_ip_hint">IP地址</string>
+    <string name="printer_port_hint">端口</string>
+    <string name="printer_port_text">9100</string>
+    <string name="printer_type_80">80mm</string>
+    <string name="printer_type_58">58mm</string>
+    <string name="printer_image_enable">图片开关：</string>
+    <string name="printer_image_width">图片宽度：</string>
+    <string name="printer_image_width_default">300</string>
+    <string name="printer_image_height_parting">图片高度分段像素值：</string>
+    <string name="printer_image_height_parting_default">255</string>
+    <string name="printer_image_height_parting_error">图片高度分段像素值最大不能超过255</string>
+    <string name="printer_test_ip">测试固定IP打印机</string>
+    <string name="printer_test_bluetooth">测试蓝牙打印机</string>
+    <string name="printer_cancel">取消</string>
+    <string name="printer_edit_toast_1">请填写打印机IP地址</string>
+    <string name="printer_edit_toast_2">请正确填写打印机IP地址</string>
+    <string name="printer_edit_toast_3">请填写打印机端口号</string>
+    <string name="printer_edit_toast_4">请正确填写打印机端口号，0～65535</string>
+    <string name="printer_bluetooth_not_support">不支持蓝牙</string>
+    <string name="printer_bluetooth_dlg_open">打开蓝牙，以便连接蓝牙打印设备。</string>
+    <string name="printer_bluetooth_dlg_close">是否需要关闭蓝牙？</string>
+    <string name="printer_allow">"允许"</string>
+    <string name="printer_deny">"拒绝"</string>
+    <string name="printer_yes">"是"</string>
+    <string name="printer_no">"否"</string>
+    <string name="printer_bluetooth_dlg_close_error">由于某些原因导致应用关闭蓝牙失败，请到系统设置中自行关闭</string>
+    <string name="printer_test_start">开始执行打印&#8230;</string>
+    <string name="printer_test_message_0">开始测试&#8230;</string>
+    <string name="printer_test_message_1">生成测试页面数据&#8230;</string>
+    <string name="printer_test_message_2">生成数据成功，开始创建Socket连接&#8230;</string>
+    <string name="printer_test_message_3">创建Socket成功，开始发送测试数据&#8230;</string>
+    <string name="printer_test_message_4">获取输出流成功，开始写入测试页面数据&#8230;</string>
+    <string name="printer_test_message_5">写入测试页面数据成功，正在完成测试&#8230;</string>
+    <string name="printer_result_message_1">测试成功完成！</string>
+    <string name="printer_result_message_2">生成测试页面数据失败！</string>
+    <string name="printer_result_message_3">创建Socket失败！</string>
+    <string name="printer_result_message_4">获取输出流失败！</string>
+    <string name="printer_result_message_5">写入测试页面数据失败！</string>
+    <string name="printer_result_message_6">必要的参数不能为空！</string>
+    <string name="printer_result_message_7">关闭Socket出错！</string>
+    <string name="printer_result_message_8">打印失败！</string>
+    <string name="printer_state">打印机状态</string>
+    <string name="printer_print">打印</string>
+    <string name="printer_data_1">我的餐厅</string>
+    <string name="printer_data_2">最时尚的明星餐厅</string>
+    <string name="printer_data_3">客服电话：400&#8211;8008800</string>
+    <string name="printer_data_4">订单号：88888888888888888</string>
+    <string name="printer_data_5">"预计送达："</string>
+    <string name="printer_data_6">#8（已付款）</string>
+    <string name="printer_data_7">××区××路×××大厦××楼×××室</string>
+    <string name="printer_data_8">13888888888</string>
+    <string name="printer_data_9">（张某某）</string>
+    <string name="printer_data_10">备注：这是一条测试打印单，用于测试打印机是否正常工作，以及打印排版是否正常。</string>
+    <string name="printer_data_11">星级美食（豪华套餐）×1</string>
+    <string name="printer_data_12">￥88.88</string>
+    <string name="printer_data_13">星级美食（限量套餐）×1</string>
+    <string name="printer_data_14">￥888.88</string>
+    <string name="printer_data_15">餐具×1</string>
+    <string name="printer_data_16">￥0.00</string>
+    <string name="printer_data_17">配送费</string>
+    <string name="printer_data_18">免费</string>
+    <string name="printer_data_19">合计：977.76</string>
+    <string name="printer_data_20">扫一扫，查看详情</string>
     <!--加密解密-->
-    <string name="crypto_label" translatable="false">加密解密</string>
-    <string name="crypto_title" translatable="false">加密解密</string>
-    <string name="crypto_input" translatable="false">输入待处理文本</string>
-    <string name="crypto_message_digest" translatable="false">信息摘要</string>
-    <string name="crypto_des" translatable="false">DES</string>
-    <string name="crypto_aes" translatable="false">AES</string>
-    <string name="crypto_rsa" translatable="false">RSA</string>
-    <string name="crypto_output" translatable="false">输出信息：</string>
-    <string name="crypto_dlg_message" translatable="false">正在计算&#8230;</string>
+    <string name="crypto_label">加密解密</string>
+    <string name="crypto_title">加密解密</string>
+    <string name="crypto_input">输入待处理文本</string>
+    <string name="crypto_message_digest">信息摘要</string>
+    <string name="crypto_des">DES</string>
+    <string name="crypto_aes">AES</string>
+    <string name="crypto_rsa">RSA</string>
+    <string name="crypto_output">输出信息：</string>
+    <string name="crypto_dlg_message">正在计算&#8230;</string>
     <!--文件传输-->
-    <string name="ftp_label" translatable="false">文件传输</string>
-    <string name="ftp_notification_title" translatable="false">已启动 FTP 服务器</string>
-    <string name="ftp_notification_text" translatable="false">访问 ftp://%1$s:%2$d/ 进行文件传输。</string>
-    <string name="ftp_toast_no_wifi" translatable="false">未连接到WIFI网络</string>
-    <string name="ftp_tile_label_active" translatable="false">FTP 运行中&#8230;</string>
-    <string name="ftp_tile_label_inactive" translatable="false">FTP 服务</string>
-    <string name="ftp_switcher_shortcuts_long" translatable="false">启动或者关闭 FTP 文件传输服务</string>
-    <string name="ftp_switcher_shortcuts_short" translatable="false">开关 FTP</string>
-    <string name="ftp_switcher_toast_start" translatable="false">正在启动 FTP 服务&#8230;</string>
-    <string name="ftp_switcher_toast_stop" translatable="false">正在停止 FTP 服务&#8230;</string>
-    <string name="ftp_port" translatable="false">2020</string>
-    <string name="ftp_open" translatable="false">打开</string>
-    <string name="ftp_close" translatable="false">关闭</string>
-    <string name="ftp_toast_bad_port" translatable="false">无效的端口号</string>
-    <string name="ftp_toast_running" translatable="false">FTP 服务正在运行</string>
+    <string name="ftp_label">文件传输</string>
+    <string name="ftp_type_legacy">传统方式</string>
+    <string name="ftp_type_advanced">高级方式</string>
+    <string name="ftp_notification_title">已启动 FTP 服务器</string>
+    <string name="ftp_notification_text">访问 ftp://%1$s:%2$d/ 进行文件传输。</string>
+    <string name="ftp_toast_no_wifi">未连接到WIFI网络</string>
+    <string name="ftp_toast_no_permission">尚未授权应用读写存储器</string>
+    <string name="ftp_toast_no_root">尚未选择传输目录</string>
+    <string name="ftp_toast_port">指定的端口不可用</string>
+    <string name="ftp_tile_label_active">FTP 运行中&#8230;</string>
+    <string name="ftp_tile_label_inactive">FTP 服务</string>
+    <string name="ftp_switcher_shortcuts_long">启动或者关闭 FTP 文件传输服务</string>
+    <string name="ftp_switcher_shortcuts_short">开关 FTP</string>
+    <string name="ftp_switcher_toast_start">正在启动 FTP 服务&#8230;</string>
+    <string name="ftp_switcher_toast_stop">正在停止 FTP 服务&#8230;</string>
+    <string name="ftp_auto_change_port">自动修正端口</string>
+    <string name="ftp_path">目录：</string>
+    <string name="ftp_open">打开</string>
+    <string name="ftp_close">关闭</string>
+    <string name="ftp_toast_bad_port">无效的端口号</string>
+    <string name="ftp_toast_bad_path">请选择一个正确的存储器目录</string>
+    <string name="ftp_toast_permission">所选择目录无读写权限，请重新选择</string>
+    <string name="ftp_toast_running">FTP 服务正在运行</string>
+    <!--文件传输路径选择-->
+    <string name="lps_label">文件传输目录选择</string>
+    <string name="lps_folder_create">创建新文件夹</string>
+    <string name="lps_folder_select">选择当前文件夹</string>
+    <string name="lps_path_invalid">无效的存储器目录</string>
+    <string name="lps_path_root">存储器根目录</string>
+    <string name="lps_create_title">新建</string>
+    <string name="lps_create_name">文件夹名称</string>
+    <string name="lps_create_positive">创建</string>
+    <string name="lps_create_negative">取消</string>
+    <string name="lps_create_name_invalid">请输入合法文件名</string>
+    <string name="lps_create_error">创建文件夹失败</string>
     <!--字体-->
-    <string name="font_label" translatable="false">字体</string>
-    <string name="font_error_config" translatable="false">无法载入字体配置文件</string>
-    <string name="font_menu_family" translatable="false">选择字体家族</string>
-    <string name="font_picker_title" translatable="false">选择字体家族</string>
-    <string name="font_picker_message" translatable="false">以下列表为字体家族名及字体家族别名集合，系统中给定的默认字体家族名为“%1$s”。请选择一个进行展示：</string>
-    <string name="font_error_typeface" translatable="false">根据给定的名称或别名无法查询到字体</string>
-    <string name="font_common" translatable="false">常规字体</string>
-    <string name="font_fallback" translatable="false">备用字体</string>
-    <string name="font_fallback_more" translatable="false">备用字体（%1$s）</string>
+    <string name="font_label">字体</string>
+    <string name="font_error_config">无法载入字体配置文件</string>
+    <string name="font_menu_family">选择字体家族</string>
+    <string name="font_picker_title">选择字体家族</string>
+    <string name="font_picker_message">以下列表为字体家族名及字体家族别名集合，系统中给定的默认字体家族名为“%1$s”。请选择一个进行展示：</string>
+    <string name="font_error_typeface">根据给定的名称或别名无法查询到字体</string>
+    <string name="font_common">常规字体</string>
+    <string name="font_fallback">备用字体</string>
+    <string name="font_fallback_more">备用字体（%1$s）</string>
     <!--字体文件-->
-    <string name="otl_label" translatable="false">字体文件</string>
-    <string name="ot_label" translatable="false">字体详情</string>
-    <string name="ot_toast_parse_failure" translatable="false">字体文件解析失败，请确保其为有效字体文件</string>
-    <string name="ot_title_picker" translatable="false">该字体集包含多个字体，请选择：</string>
-    <string name="ot_menu_collection" translatable="false">选择字体</string>
-    <string name="ot_title_collection" translatable="false">字体集合信息</string>
-    <string name="ot_title_font" translatable="false">字体信息</string>
-    <string name="ot_title_unknown_table" translatable="false">未知的表</string>
-    <string name="ot_content_unknown_table" translatable="false">暂不支持解析该表信息。</string>
+    <string name="otl_label">字体文件</string>
+    <string name="ot_label">字体详情</string>
+    <string name="ot_toast_parse_failure">字体文件解析失败，请确保其为有效字体文件</string>
+    <string name="ot_title_picker">该字体集包含多个字体，请选择：</string>
+    <string name="ot_menu_collection">选择字体</string>
+    <string name="ot_title_collection">字体集合信息</string>
+    <string name="ot_title_font">字体信息</string>
+    <string name="ot_title_unknown_table">未知的表</string>
+    <string name="ot_content_unknown_table">暂不支持解析该表信息。</string>
     <!--悬浮菜单-->
-    <string name="floating_label" translatable="false">悬浮菜单</string>
-    <string name="floating_notice" translatable="false">触摸以显示悬浮菜单</string>
-    <string name="floating_menu_1" translatable="false">复制</string>
-    <string name="floating_menu_2" translatable="false">剪切</string>
-    <string name="floating_menu_3" translatable="false">粘贴</string>
-    <string name="floating_menu_4" translatable="false">选择</string>
-    <string name="floating_menu_5" translatable="false">全选</string>
-    <string name="floating_menu_6" translatable="false">分享</string>
-    <string name="floating_menu_7" translatable="false">翻译</string>
-    <string name="floating_menu_8" translatable="false">搜索</string>
-    <string name="floating_menu_9" translatable="false">颜色</string>
-    <string name="floating_menu_10" translatable="false">字体</string>
-    <string name="floating_menu_11" translatable="false">字号</string>
-    <string name="floating_menu_12" translatable="false">样式</string>
-    <string name="floating_menu_13" translatable="false">对齐方式</string>
-    <string name="floating_menu_14" translatable="false">网页搜索</string>
-    <string name="floating_menu_15" translatable="false">左对齐</string>
-    <string name="floating_menu_16" translatable="false">右对齐</string>
-    <string name="floating_menu_17" translatable="false">居中</string>
-    <string name="floating_menu_18" translatable="false">两端对齐</string>
+    <string name="floating_label">悬浮菜单</string>
+    <string name="floating_notice">触摸以显示悬浮菜单</string>
+    <string name="floating_menu_1">复制</string>
+    <string name="floating_menu_2">剪切</string>
+    <string name="floating_menu_3">粘贴</string>
+    <string name="floating_menu_4">选择</string>
+    <string name="floating_menu_5">全选</string>
+    <string name="floating_menu_6">分享</string>
+    <string name="floating_menu_7">翻译</string>
+    <string name="floating_menu_8">搜索</string>
+    <string name="floating_menu_9">颜色</string>
+    <string name="floating_menu_10">字体</string>
+    <string name="floating_menu_11">字号</string>
+    <string name="floating_menu_12">样式</string>
+    <string name="floating_menu_13">对齐方式</string>
+    <string name="floating_menu_14">网页搜索</string>
+    <string name="floating_menu_15">左对齐</string>
+    <string name="floating_menu_16">右对齐</string>
+    <string name="floating_menu_17">居中</string>
+    <string name="floating_menu_18">两端对齐</string>
     <!--多功能RecyclerView-->
-    <string name="mrv_label" translatable="false">多功能RecyclerView</string>
-    <string name="mrv_menu_mode_vertical_continuity" translatable="false">垂直连续</string>
-    <string name="mrv_menu_mode_vertical_singular" translatable="false">垂直单页</string>
-    <string name="mrv_menu_mode_horizontal_continuity" translatable="false">水平连续</string>
-    <string name="mrv_menu_mode_horizontal_singular" translatable="false">水平单页</string>
+    <string name="mrv_label">多功能RecyclerView</string>
+    <string name="mrv_menu_mode_vertical_continuity">垂直连续</string>
+    <string name="mrv_menu_mode_vertical_singular">垂直单页</string>
+    <string name="mrv_menu_mode_horizontal_continuity">水平连续</string>
+    <string name="mrv_menu_mode_horizontal_singular">水平单页</string>
     <!--剪切板-->
-    <string name="clipboard_label" translatable="false">剪切板</string>
-    <string name="clipboard_copy" translatable="false">复制</string>
-    <string name="clipboard_paste" translatable="false">粘贴</string>
-    <string name="clipboard_info" translatable="false">已复制到剪切板</string>
+    <string name="clipboard_label">剪切板</string>
+    <string name="clipboard_copy">复制</string>
+    <string name="clipboard_paste">粘贴</string>
+    <string name="clipboard_info">已复制到剪切板</string>
     <!--Retrofit-->
-    <string name="retrofit_label" translatable="false">Retrofit辅助</string>
-    <string name="retrofit_test" translatable="false">测试</string>
-    <string name="retrofit_input_hint" translatable="false">北京</string>
-    <string name="retrofit_output_null" translatable="false">空结果</string>
-    <string name="retrofit_output_error" translatable="false">出现错误:\ncode:%1$d\nmessage:%2$s\nresult:%3$s</string>
+    <string name="retrofit_label">Retrofit辅助</string>
+    <string name="retrofit_test">测试</string>
+    <string name="retrofit_input_hint">北京</string>
+    <string name="retrofit_output_null">空结果</string>
+    <string name="retrofit_output_error">出现错误:\ncode:%1$d\nmessage:%2$s\nresult:%3$s</string>
 </resources>

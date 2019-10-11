@@ -13,22 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package am.util.ftpserver;
+package am.project.x.business.others.ftp;
 
 /**
- * Uri形式的FTP文件
- * Created by Alex on 2019/10/7.
+ * Fragment回调
+ * Created by Alex on 2019/10/10.
  */
-class UriFtpFile extends CreateUriFtpFile {
+public interface FtpFragmentCallback {
 
-    UriFtpFile(FtpUser user) {
-        super(user);
-    }
-
-    @Override
-    protected UriFtpFile onCreateChild() {
-        // TODO 回收复用
-        return new UriFtpFile(getUser());
-    }
+    /**
+     * 切换
+     *
+     * @param legacy 是否为传统方式
+     */
+    void onSwitch(boolean legacy);
 }

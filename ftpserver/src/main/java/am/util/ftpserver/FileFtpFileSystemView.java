@@ -51,6 +51,8 @@ final class FileFtpFileSystemView implements FileSystemView {
 
     @Override
     public boolean changeWorkingDirectory(String dir) {
+        // 支持库该方法调用有错误，该情况由复制非空文件夹导致，会访问一个不存在的路径，
+        // 因此路径会增加一个错误的前缀，尝试做过容错处理，但是处理效果是主页跟该复制的文件夹无法区分
         File working = new File(dir);
         if (!working.isAbsolute()) {
             working = new File(mWorking.getPath() + File.separator + dir);
