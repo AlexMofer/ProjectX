@@ -56,6 +56,7 @@ packagingOptions {
 
 - 不要忘记修改build.gradle文件
 - 不要忘记增加屏蔽混淆提示
+- 通过File或者File path创建的形式，在Android 10上已不可用，针对Android 10可使用Uri进行。
 
 支持
 ---
