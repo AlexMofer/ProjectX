@@ -22,7 +22,7 @@ FtpServer
 ```
 dependencies {
     ...
-    compile 'am.util:ftpserver:1.1.1.3'
+    compile 'am.util:ftpserver:2.0.0'
     ...
 }
 ```
@@ -33,9 +33,9 @@ dependencies {
 开启FTP服务器：
 
 ```
-    final int port = 8585;
-    final String home = Environment.getExternalStorageDirectory().getAbsolutePath();
-    FtpServer server = FTPHelper.createServer(port, 10, 5000, true, home);
+    FtpServer server = FtpServer.createServer(8585, Environment.getExternalStorageDirectory().getAbsolutePath());
+    // or create by uri from ContentResolver
+    FtpServer server = FtpServer.createServer(8585, uri);
     server.start();
 ```
 
