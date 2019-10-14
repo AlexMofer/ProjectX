@@ -8,7 +8,7 @@ android {
         targetSdkVersion 28
         versionCode 4
         versionName "2.5.0.2"
-        consumerProguardFiles 'proguard-rules.pro'
+        consumerProguardFiles 'consumer-rules.pro'
     }
 }
 

@@ -16,10 +16,15 @@
 
 package am.util.ftpserver;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 /**
  * Uri形式的FTP文件
  * Created by Alex on 2019/10/7.
  */
+@RequiresApi(Build.VERSION_CODES.KITKAT)
 class UriFtpFile extends CreateUriFtpFile {
 
     UriFtpFile(FtpUser user) {
@@ -28,7 +33,6 @@ class UriFtpFile extends CreateUriFtpFile {
 
     @Override
     protected UriFtpFile onCreateChild() {
-        // TODO 回收复用
         return new UriFtpFile(getUser());
     }
 }

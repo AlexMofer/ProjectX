@@ -21,18 +21,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.ViewGroup;
 
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
-import am.project.x.business.others.ftp.advanced.AdvancedFragment;
-import am.project.x.business.others.ftp.legacy.LegacyFragment;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Lifecycle;
 
 import java.util.List;
+
+import am.project.x.R;
+import am.project.x.base.BaseActivity;
+import am.project.x.business.others.ftp.advanced.AdvancedFragment;
+import am.project.x.business.others.ftp.legacy.LegacyFragment;
 
 /**
  * FTP 文件传输
@@ -98,12 +97,10 @@ public class FtpActivity extends BaseActivity implements FtpFragmentCallback {
         List<Fragment> fragments = manager.getFragments();
         for (Fragment f : fragments) {
             if (f == fragment) {
-                transaction.show(f);
                 f.setMenuVisibility(true);
-                transaction.setMaxLifecycle(f, Lifecycle.State.STARTED);
+                transaction.show(f);
             } else {
                 f.setMenuVisibility(false);
-                transaction.setMaxLifecycle(f, Lifecycle.State.RESUMED);
                 transaction.hide(f);
             }
         }

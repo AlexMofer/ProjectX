@@ -22,9 +22,13 @@ import android.net.DhcpInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import java.io.File;
 
 /**
  * Context工具类
@@ -71,16 +75,42 @@ public class ContextUtils {
     }
 
     /**
-     * 判断是否拥有文件读写权限
+     * 判断是否拥有文件写入权限
      *
      * @param context Context
-     * @return 是否拥有权限
+     * @return 是否拥有写入权限
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean hasWriteExternalStoragePermission(Context context) {
         return Build.VERSION.SDK_INT < 23 || ActivityCompat.checkSelfPermission(context,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * 判断对该路径是否拥有写入权限
+     *
+     * @param context Context
+     * @param path    路径
+     * @return 是否拥有写入权限
+     */
+    public static boolean hasWritePermission(Context context, String path) {
+        if (Build.VERSION.SDK_INT < 23 || ActivityCompat.checkSelfPermission(context,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED)
+            return true;
+        if (TextUtils.isEmpty(path))
+            return false;
+        final File[] dirs = ContextCompat.getExternalFilesDirs(context, null);
+        for (File dir : dirs) {
+            if (dir == null)
+                continue;
+            if (path.startsWith(dir.getPath())) {
+                return true;
+            }
+        }
+        final String dir = context.getFilesDir().getParent();
+        return !TextUtils.isEmpty(dir) && path.startsWith(dir);
     }
 
     /**

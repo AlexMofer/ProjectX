@@ -22,7 +22,7 @@ FtpServer
 ```
 dependencies {
     ...
-    compile 'am.util:ftpserver:2.0.0'
+    compile 'am.util:ftpserver:2.0.1'
     ...
 }
 ```

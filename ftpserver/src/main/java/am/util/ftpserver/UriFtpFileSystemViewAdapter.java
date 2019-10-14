@@ -18,6 +18,9 @@ package am.util.ftpserver;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import java.lang.ref.WeakReference;
 
@@ -25,6 +28,7 @@ import java.lang.ref.WeakReference;
  * Uri形式的文件系统视图提供者
  * Created by Alex on 2019/10/8.
  */
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 public class UriFtpFileSystemViewAdapter implements FtpFileSystemViewAdapter {
 
     private final WeakReference<Context> mContext;

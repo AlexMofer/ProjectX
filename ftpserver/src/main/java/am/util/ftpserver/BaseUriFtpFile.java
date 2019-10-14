@@ -18,9 +18,11 @@ package am.util.ftpserver;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.os.Build;
 import android.provider.DocumentsContract;
 import android.text.TextUtils;
 
+import androidx.annotation.RequiresApi;
 import androidx.documentfile.provider.DocumentFile;
 
 import org.apache.ftpserver.ftplet.FtpFile;
@@ -36,6 +38,7 @@ import java.util.List;
  * Uri形式的FTP文件
  * Created by Alex on 2019/10/7.
  */
+@RequiresApi(Build.VERSION_CODES.KITKAT)
 abstract class BaseUriFtpFile extends BaseFtpFile {
 
     private static final int DEFAULT_SIZE = 1024 * 1024;

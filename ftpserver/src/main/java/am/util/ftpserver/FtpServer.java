@@ -18,6 +18,9 @@ package am.util.ftpserver;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import org.apache.ftpserver.ConnectionConfig;
 import org.apache.ftpserver.ConnectionConfigFactory;
@@ -246,6 +249,7 @@ public class FtpServer {
      * @param homeDirectory 根目录路径
      * @return FTP服务器
      */
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     public static FtpServer createServer(int port, Context context, Uri homeDirectory) {
         final FtpServerFactory factory = new FtpServerFactory();
         final ListenerFactory lf = new ListenerFactory();

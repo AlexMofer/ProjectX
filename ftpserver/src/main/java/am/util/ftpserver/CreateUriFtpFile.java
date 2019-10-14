@@ -17,7 +17,9 @@
 package am.util.ftpserver;
 
 import android.content.Context;
+import android.os.Build;
 
+import androidx.annotation.RequiresApi;
 import androidx.documentfile.provider.DocumentFile;
 
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.io.OutputStream;
  * 创建FTP 文件
  * Created by Alex on 2019/10/11.
  */
+@RequiresApi(Build.VERSION_CODES.KITKAT)
 abstract class CreateUriFtpFile extends BaseUriFtpFile {
 
     private boolean mCreate = false;

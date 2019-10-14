@@ -25,9 +25,12 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.text.TextUtils;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import am.project.x.R;
 import am.project.x.broadcast.LocalBroadcastHelper;
@@ -40,6 +43,7 @@ import am.util.ftpserver.FtpServer;
 /**
  * 文件传输服务
  */
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 public class AdvancedFtpService extends Service {
     private static boolean STARTED = false;
     private FtpServer mFTP;

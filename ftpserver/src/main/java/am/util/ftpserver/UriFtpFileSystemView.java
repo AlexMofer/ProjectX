@@ -18,8 +18,10 @@ package am.util.ftpserver;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
 
+import androidx.annotation.RequiresApi;
 import androidx.documentfile.provider.DocumentFile;
 
 import org.apache.ftpserver.ftplet.FileSystemView;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
  * 文件系统视图
  * Created by Alex on 2019/10/8.
  */
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 final class UriFtpFileSystemView implements FileSystemView {
 
     static final String ROOT_PATH = "/content:root";

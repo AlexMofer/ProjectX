@@ -80,11 +80,6 @@ public class LegacyFtpService extends Service {
             Toast.makeText(this, R.string.ftp_toast_no_wifi, Toast.LENGTH_SHORT).show();
             return super.onStartCommand(intent, flags, startId);
         }
-        if (Build.VERSION.SDK_INT >= 23 &&
-                !ContextUtils.hasWriteExternalStoragePermission(this)) {
-            Toast.makeText(this, R.string.ftp_toast_no_permission, Toast.LENGTH_SHORT).show();
-            return super.onStartCommand(intent, flags, startId);
-        }
         mAutoClose = true;
         final LegacyFtpConfig config = new LegacyFtpConfig(this);
         int port = config.getPort();
@@ -110,6 +105,11 @@ public class LegacyFtpService extends Service {
         final String path = config.getPath();
         if (TextUtils.isEmpty(path)) {
             Toast.makeText(this, R.string.ftp_toast_no_root, Toast.LENGTH_SHORT).show();
+            return super.onStartCommand(intent, flags, startId);
+        }
+        if (Build.VERSION.SDK_INT >= 23 &&
+                !ContextUtils.hasWritePermission(this, path)) {
+            Toast.makeText(this, R.string.ftp_toast_no_permission, Toast.LENGTH_SHORT).show();
             return super.onStartCommand(intent, flags, startId);
         }
         mFTP = FtpServer.createServer(port, path);
