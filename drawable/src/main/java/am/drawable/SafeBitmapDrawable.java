@@ -15,6 +15,7 @@
  */
 package am.drawable;
 
+import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -33,15 +34,12 @@ import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 /**
  * 安全的Bitmap Drawable
  * 由BitmapDrawable去除部分代码的来
  * Created by Alex on 2019/10/22.
  */
-@SuppressWarnings({"WeakerAccess", "unused"})
+@SuppressWarnings({"WeakerAccess", "unused", "NullableProblems"})
 public class SafeBitmapDrawable extends Drawable {
 
     private static final int DEFAULT_PAINT_FLAGS =
@@ -187,6 +185,8 @@ public class SafeBitmapDrawable extends Drawable {
      * @see #hasMipMap()
      */
     public void setMipMap(boolean mipMap) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)
+            return;
         if (mBitmapState.mBitmap != null && !mBitmapState.mBitmap.isRecycled()) {
             mBitmapState.mBitmap.setHasMipMap(mipMap);
             invalidateSelf();
@@ -201,6 +201,8 @@ public class SafeBitmapDrawable extends Drawable {
      * @see #setMipMap(boolean)
      */
     public boolean hasMipMap() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)
+            return false;
         return mBitmapState.mBitmap != null && !mBitmapState.mBitmap.isRecycled()
                 && mBitmapState.mBitmap.hasMipMap();
     }
@@ -353,7 +355,7 @@ public class SafeBitmapDrawable extends Drawable {
     }
 
     @Override
-    public void draw(@NonNull Canvas canvas) {
+    public void draw(Canvas canvas) {
         final Bitmap bitmap = mBitmapState.mBitmap;
         if (bitmap == null || bitmap.isRecycled()) {
             return;
@@ -404,8 +406,8 @@ public class SafeBitmapDrawable extends Drawable {
      * @param shader        the shader to set on the paint
      * @param needMirroring whether the bitmap should be mirrored
      */
-    private void updateShaderMatrix(@NonNull Bitmap bitmap, @NonNull Paint paint,
-                                    @NonNull Shader shader, boolean needMirroring) {
+    private void updateShaderMatrix(Bitmap bitmap, Paint paint,
+                                    Shader shader, boolean needMirroring) {
         final int sourceDensity = bitmap.getDensity();
         final int targetDensity = mTargetDensity;
         final boolean needScaling = sourceDensity != 0 && sourceDensity != targetDensity;
@@ -444,15 +446,8 @@ public class SafeBitmapDrawable extends Drawable {
         if (mDstRectAndInsetsDirty) {
             if (mBitmapState.mTileModeX == null && mBitmapState.mTileModeY == null) {
                 final Rect bounds = getBounds();
-                final int layoutDirection;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    layoutDirection = getLayoutDirection();
-                } else {
-                    layoutDirection = View.LAYOUT_DIRECTION_LTR;
-                }
-                Gravity.apply(mBitmapState.mGravity, mBitmapWidth, mBitmapHeight,
-                        bounds, mDstRect, layoutDirection);
-
+                Compat.apply(this, mBitmapState.mGravity, mBitmapWidth, mBitmapHeight,
+                        bounds, mDstRect);
                 final int left = mDstRect.left - bounds.left;
                 final int top = mDstRect.top - bounds.top;
                 final int right = bounds.right - mDstRect.right;
@@ -466,15 +461,15 @@ public class SafeBitmapDrawable extends Drawable {
         mDstRectAndInsetsDirty = false;
     }
 
-    @NonNull
     @Override
     public Insets getOpticalInsets() {
         updateDstRectAndInsetsIfDirty();
         return mOpticalInsets;
     }
 
+    @SuppressLint("NewApi")
     @Override
-    public void getOutline(@NonNull Outline outline) {
+    public void getOutline(Outline outline) {
         updateDstRectAndInsetsIfDirty();
         outline.setRect(mDstRect);
 
@@ -517,7 +512,7 @@ public class SafeBitmapDrawable extends Drawable {
      *
      * @return This drawable.
      */
-    @NonNull
+
     @Override
     public Drawable mutate() {
         if (!mMutated && super.mutate() == this) {
@@ -527,8 +522,9 @@ public class SafeBitmapDrawable extends Drawable {
         return this;
     }
 
+    @SuppressLint("NewApi")
     @Override
-    public void applyTheme(@NonNull Resources.Theme t) {
+    public void applyTheme(Resources.Theme t) {
         super.applyTheme(t);
         final BitmapState state = mBitmapState;
         if (state == null) {
@@ -537,7 +533,7 @@ public class SafeBitmapDrawable extends Drawable {
         updateLocalState(t.getResources());
     }
 
-
+    @SuppressLint("NewApi")
     @Override
     public boolean canApplyTheme() {
         return mBitmapState != null && mBitmapState.canApplyTheme();
@@ -625,7 +621,7 @@ public class SafeBitmapDrawable extends Drawable {
         computeBitmapSize();
     }
 
-    private static int resolveDensity(@Nullable Resources r, int parentDensity) {
+    private static int resolveDensity(Resources r, int parentDensity) {
         final int densityDpi = r == null ? parentDensity : r.getDisplayMetrics().densityDpi;
         return densityDpi == 0 ? DisplayMetrics.DENSITY_DEFAULT : densityDpi;
     }
