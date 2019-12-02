@@ -16,11 +16,11 @@
 
 package am.util.ftpserver;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.ContentResolver;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+import androidx.documentfile.provider.DocumentFile;
 
 import java.lang.ref.WeakReference;
 
@@ -31,22 +31,23 @@ import java.lang.ref.WeakReference;
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 public class UriFtpFileSystemViewAdapter implements FtpFileSystemViewAdapter {
 
-    private final WeakReference<Context> mContext;
-    private final Uri mHomeDirectory;
+    private final WeakReference<ContentResolver> mContentResolver;
+    private final DocumentFile mHomeDirectory;
     private UriFtpFileSystemView mView;
 
     @SuppressWarnings("WeakerAccess")
-    public UriFtpFileSystemViewAdapter(Context context, Uri homeDirectory) {
-        mContext = new WeakReference<>(context);
+    public UriFtpFileSystemViewAdapter(ContentResolver contentResolver,
+                                       DocumentFile homeDirectory) {
+        mContentResolver = new WeakReference<>(contentResolver);
         mHomeDirectory = homeDirectory;
     }
 
     @Override
     public void onAttached(FtpUser user) {
         mView = null;
-        final Context context = mContext.get();
-        if (context != null)
-            mView = new UriFtpFileSystemView(user, context, mHomeDirectory);
+        final ContentResolver contentResolver = mContentResolver.get();
+        if (contentResolver != null)
+            mView = new UriFtpFileSystemView(user, contentResolver, mHomeDirectory);
     }
 
     @Override

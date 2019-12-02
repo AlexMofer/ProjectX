@@ -16,11 +16,13 @@
 
 package am.util.ftpserver;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+import androidx.documentfile.provider.DocumentFile;
 
 import org.apache.ftpserver.ConnectionConfig;
 import org.apache.ftpserver.ConnectionConfigFactory;
@@ -49,54 +51,6 @@ public class FtpServer {
 
     private FtpServer(org.apache.ftpserver.FtpServer server) {
         mServer = server;
-    }
-
-    /**
-     * 开启服务
-     *
-     * @throws Exception 错误
-     */
-    public void start() throws Exception {
-        mServer.start();
-    }
-
-    /**
-     * 停止服务
-     */
-    public void stop() {
-        mServer.stop();
-    }
-
-    /**
-     * 判断服务是否停止
-     *
-     * @return 服务停止时返回true
-     */
-    public boolean isStopped() {
-        return mServer.isStopped();
-    }
-
-    /**
-     * 暂停服务（对阵在执行的操作无效）
-     */
-    public void suspend() {
-        mServer.suspend();
-    }
-
-    /**
-     * 判断服务是否已经暂停
-     *
-     * @return 服务暂停时返回true
-     */
-    public boolean isSuspended() {
-        return mServer.isSuspended();
-    }
-
-    /**
-     * 恢复服务
-     */
-    public void resume() {
-        mServer.resume();
     }
 
     /**
@@ -244,13 +198,15 @@ public class FtpServer {
     /**
      * 创建FTP服务器
      *
-     * @param port          端口
-     * @param context       Context
-     * @param homeDirectory 根目录路径
+     * @param port            端口
+     * @param contentResolver ContentResolver
+     * @param homeDirectory   根目录路径
      * @return FTP服务器
      */
+    @SuppressWarnings("WeakerAccess")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    public static FtpServer createServer(int port, Context context, Uri homeDirectory) {
+    public static FtpServer createServer(int port, ContentResolver contentResolver,
+                                         DocumentFile homeDirectory) {
         final FtpServerFactory factory = new FtpServerFactory();
         final ListenerFactory lf = new ListenerFactory();
         lf.setPort(port);
@@ -258,10 +214,72 @@ public class FtpServer {
                 new DataConnectionConfigurationFactory().createDataConnectionConfiguration());
         factory.addListener("default", lf.createListener());
         final FtpUserManagerFactory umf = FtpUserManagerFactory.getInstance();
-        umf.setAnonymousEnable(new UriFtpFileSystemViewAdapter(context, homeDirectory));
+        umf.setAnonymousEnable(new UriFtpFileSystemViewAdapter(contentResolver, homeDirectory));
         factory.setUserManager(umf.createUserManager());
         factory.setFileSystem(new FtpFileSystemFactory());
         factory.setConnectionConfig(new ConnectionConfigFactory().createConnectionConfig());
         return new FtpServer(factory.createServer());
+    }
+
+    /**
+     * 创建FTP服务器
+     *
+     * @param port          端口
+     * @param context       Context
+     * @param homeDirectory 根目录路径
+     * @return FTP服务器
+     */
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    public static FtpServer createServer(int port, Context context, Uri homeDirectory) {
+        return createServer(port, context.getContentResolver(),
+                DocumentFile.fromTreeUri(context, homeDirectory));
+    }
+
+    /**
+     * 开启服务
+     *
+     * @throws Exception 错误
+     */
+    public void start() throws Exception {
+        mServer.start();
+    }
+
+    /**
+     * 停止服务
+     */
+    public void stop() {
+        mServer.stop();
+    }
+
+    /**
+     * 判断服务是否停止
+     *
+     * @return 服务停止时返回true
+     */
+    public boolean isStopped() {
+        return mServer.isStopped();
+    }
+
+    /**
+     * 暂停服务（对阵在执行的操作无效）
+     */
+    public void suspend() {
+        mServer.suspend();
+    }
+
+    /**
+     * 判断服务是否已经暂停
+     *
+     * @return 服务暂停时返回true
+     */
+    public boolean isSuspended() {
+        return mServer.isSuspended();
+    }
+
+    /**
+     * 恢复服务
+     */
+    public void resume() {
+        mServer.resume();
     }
 }

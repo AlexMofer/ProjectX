@@ -16,8 +16,8 @@
 
 package am.util.ftpserver;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.os.Build;
 import android.provider.DocumentsContract;
 import android.text.TextUtils;
@@ -42,7 +42,8 @@ import java.util.List;
 abstract class BaseUriFtpFile extends BaseFtpFile {
 
     private static final int DEFAULT_SIZE = 1024 * 1024;
-    private Context mContext;
+    static final String ROOT_PATH = "/content:root";
+    private ContentResolver mContentResolver;
     private DocumentFile mDocument;
     private String mAbsolutePath;
     private int mBufferSize = DEFAULT_SIZE;
@@ -51,8 +52,8 @@ abstract class BaseUriFtpFile extends BaseFtpFile {
         super(user);
     }
 
-    void set(Context context, DocumentFile document, String absolutePath) {
-        mContext = context;
+    void set(ContentResolver contentResolver, DocumentFile document, String absolutePath) {
+        mContentResolver = contentResolver;
         mDocument = document;
         mAbsolutePath = absolutePath;
     }
@@ -125,7 +126,7 @@ abstract class BaseUriFtpFile extends BaseFtpFile {
         // 该方法未测试可行性 TODO
         final ContentValues values = new ContentValues();
         values.put(DocumentsContract.Document.COLUMN_LAST_MODIFIED, time);
-        final int updated = mContext.getContentResolver().update(mDocument.getUri(), values,
+        final int updated = mContentResolver.update(mDocument.getUri(), values,
                 null, null);
         return updated == 1;
     }
@@ -153,7 +154,7 @@ abstract class BaseUriFtpFile extends BaseFtpFile {
         if (TextUtils.equals(getParentAbsolutePath(), file.getParentAbsolutePath())) {
             // 重命名文件及文件夹
             if (mDocument.renameTo(file.getName())) {
-                file.set(mContext, mDocument, getAbsolutePath());
+                file.set(mContentResolver, mDocument, getAbsolutePath());
                 return true;
             }
             return false;
@@ -170,8 +171,8 @@ abstract class BaseUriFtpFile extends BaseFtpFile {
             InputStream input = null;
             boolean copied;
             try {
-                output = mContext.getContentResolver().openOutputStream(dest.getUri());
-                input = mContext.getContentResolver().openInputStream(mDocument.getUri());
+                output = mContentResolver.openOutputStream(dest.getUri());
+                input = mContentResolver.openInputStream(mDocument.getUri());
                 copied = Utils.copy(output, input);
             } catch (IOException e) {
                 copied = false;
@@ -195,8 +196,8 @@ abstract class BaseUriFtpFile extends BaseFtpFile {
             }
             mDocument.delete();
             final String absolutePath = file.getAbsolutePath();
-            set(mContext, dest, absolutePath);
-            file.set(mContext, dest, absolutePath);
+            set(mContentResolver, dest, absolutePath);
+            file.set(mContentResolver, dest, absolutePath);
             return true;
         }
         return false;
@@ -213,7 +214,7 @@ abstract class BaseUriFtpFile extends BaseFtpFile {
         for (DocumentFile child : children) {
             final String absolutePath = mAbsolutePath + "/" + child.getName();
             final BaseUriFtpFile item = onCreateChild();
-            item.set(mContext, child, absolutePath);
+            item.set(mContentResolver, child, absolutePath);
             files.add(item);
         }
         return files;
@@ -223,8 +224,7 @@ abstract class BaseUriFtpFile extends BaseFtpFile {
     public OutputStream createOutputStream(long offset) throws IOException {
         if (offset != 0)
             throw new IOException("File is not random accessible.");
-        final OutputStream output =
-                mContext.getContentResolver().openOutputStream(mDocument.getUri());
+        final OutputStream output = mContentResolver.openOutputStream(mDocument.getUri());
         if (output == null)
             throw new IOException("File can not write.");
         return output;
@@ -232,7 +232,7 @@ abstract class BaseUriFtpFile extends BaseFtpFile {
 
     @Override
     public InputStream createInputStream(long offset) throws IOException {
-        final InputStream input = mContext.getContentResolver().openInputStream(mDocument.getUri());
+        final InputStream input = mContentResolver.openInputStream(mDocument.getUri());
         if (input == null)
             throw new IOException("File can not read.");
         if (offset == 0)
@@ -249,8 +249,8 @@ abstract class BaseUriFtpFile extends BaseFtpFile {
      */
     protected abstract BaseUriFtpFile onCreateChild();
 
-    Context getContext() {
-        return mContext;
+    ContentResolver getContentResolver() {
+        return mContentResolver;
     }
 
     DocumentFile getDocument() {
@@ -271,7 +271,7 @@ abstract class BaseUriFtpFile extends BaseFtpFile {
 
     private String getParentAbsolutePath() {
         final String absolutePath = getAbsolutePath();
-        if (TextUtils.equals(UriFtpFileSystemView.ROOT_PATH, absolutePath))
+        if (TextUtils.equals(ROOT_PATH, absolutePath))
             return null;
         return absolutePath.substring(0, absolutePath.length() - getName().length());
     }

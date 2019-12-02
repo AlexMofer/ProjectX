@@ -16,8 +16,7 @@
 
 package am.util.ftpserver;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.ContentResolver;
 import android.os.Build;
 import android.text.TextUtils;
 
@@ -35,7 +34,7 @@ import java.util.ArrayList;
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 final class UriFtpFileSystemView implements FileSystemView {
 
-    static final String ROOT_PATH = "/content:root";
+    private static final String ROOT_PATH = BaseUriFtpFile.ROOT_PATH;
     private final FtpUser mUser;
     private final DocumentFile mRoot;
     private final UriFtpFile mHome;
@@ -43,13 +42,14 @@ final class UriFtpFileSystemView implements FileSystemView {
     private final ArrayList<UriFtpFile> mItems = new ArrayList<>();
     private final ArrayList<UriFtpFile> mSaved = new ArrayList<>();
 
-    UriFtpFileSystemView(FtpUser user, Context context, Uri homeDirectory) {
+    UriFtpFileSystemView(FtpUser user, ContentResolver contentResolver,
+                         DocumentFile homeDirectory) {
         mUser = user;
-        mRoot = DocumentFile.fromTreeUri(context, homeDirectory);
+        mRoot = homeDirectory;
         mHome = new UriFtpFile(user);
-        mHome.set(context, mRoot, ROOT_PATH);
+        mHome.set(contentResolver, mRoot, ROOT_PATH);
         mWorking = new UriFtpFile(user);
-        mWorking.set(context, mRoot, ROOT_PATH);
+        mWorking.set(contentResolver, mRoot, ROOT_PATH);
     }
 
     @Override
@@ -69,7 +69,7 @@ final class UriFtpFileSystemView implements FileSystemView {
         final String working = mWorking.getAbsolutePath();
         if (TextUtils.equals(ROOT_PATH, directory) ||
                 TextUtils.equals(ROOT_PATH + "/", directory)) {
-            mWorking.set(mHome.getContext(), mRoot, ROOT_PATH);
+            mWorking.set(mHome.getContentResolver(), mRoot, ROOT_PATH);
             return true;
         }
         DocumentFile target;
@@ -106,7 +106,7 @@ final class UriFtpFileSystemView implements FileSystemView {
             absolutePath.append("/");
             absolutePath.append(target.getName());
         }
-        mWorking.set(mHome.getContext(), target, absolutePath.toString());
+        mWorking.set(mHome.getContentResolver(), target, absolutePath.toString());
         return true;
     }
 
@@ -119,7 +119,7 @@ final class UriFtpFileSystemView implements FileSystemView {
             item = mSaved.remove(mSaved.size() - 1);
         }
         if ("./".equals(file) || ".".equals(file)) {
-            item.set(mWorking.getContext(), mWorking.getDocument(), mWorking.getAbsolutePath());
+            item.set(mWorking.getContentResolver(), mWorking.getDocument(), mWorking.getAbsolutePath());
             return item;
         }
         if (!file.contains("/")) {
@@ -128,17 +128,17 @@ final class UriFtpFileSystemView implements FileSystemView {
             final DocumentFile target = working.findFile(file);
             if (target != null) {
                 final String absolutePath = mWorking.getAbsolutePath() + "/" + file;
-                item.set(mWorking.getContext(), target, absolutePath);
+                item.set(mWorking.getContentResolver(), target, absolutePath);
                 return item;
             }
             // 创建文件或文件夹
-            item.setCreate(mWorking.getContext(), working, mWorking.getAbsolutePath(), file);
+            item.setCreate(mWorking.getContentResolver(), working, mWorking.getAbsolutePath(), file);
             return item;
         }
         if (TextUtils.equals(ROOT_PATH, file) ||
                 TextUtils.equals(ROOT_PATH + "/", file)) {
             // 为主页
-            item.set(mHome.getContext(), mRoot, ROOT_PATH);
+            item.set(mHome.getContentResolver(), mRoot, ROOT_PATH);
             return item;
         }
         DocumentFile target;
@@ -167,11 +167,11 @@ final class UriFtpFileSystemView implements FileSystemView {
                 if (result != null) {
                     absolutePath.append("/");
                     absolutePath.append(name);
-                    item.set(mWorking.getContext(), result, absolutePath.toString());
+                    item.set(mWorking.getContentResolver(), result, absolutePath.toString());
                     return item;
                 }
                 // 创建文件或文件夹
-                item.setCreate(mHome.getContext(), target, absolutePath.toString(), name);
+                item.setCreate(mHome.getContentResolver(), target, absolutePath.toString(), name);
                 return item;
             } else {
                 target = target.findFile(name);
@@ -194,7 +194,7 @@ final class UriFtpFileSystemView implements FileSystemView {
         int count = mItems.size();
         while (count > 0) {
             final UriFtpFile item = mItems.remove(count - 1);
-            item.set(mHome.getContext(), null, null);
+            item.set(mHome.getContentResolver(), null, null);
             mSaved.add(item);
             count = mItems.size();
         }

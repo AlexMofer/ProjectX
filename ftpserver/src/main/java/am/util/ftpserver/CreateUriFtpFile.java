@@ -16,7 +16,7 @@
 
 package am.util.ftpserver;
 
-import android.content.Context;
+import android.content.ContentResolver;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -34,7 +34,7 @@ import java.io.OutputStream;
 abstract class CreateUriFtpFile extends BaseUriFtpFile {
 
     private boolean mCreate = false;
-    private Context mContext;
+    private ContentResolver mContentResolver;
     private DocumentFile mParent;
     private String mParentAbsolutePath;
     private String mName;
@@ -136,7 +136,7 @@ abstract class CreateUriFtpFile extends BaseUriFtpFile {
         if (dir == null)
             return false;
         final String absolutePath = mParentAbsolutePath + "/" + mName;
-        set(mContext, dir, absolutePath);
+        set(mContentResolver, dir, absolutePath);
         return true;
     }
 
@@ -147,7 +147,7 @@ abstract class CreateUriFtpFile extends BaseUriFtpFile {
         if (file == null)
             throw new IOException("Cannot create new file!");
         final String absolutePath = mParentAbsolutePath + "/" + mName;
-        set(mContext, file, absolutePath);
+        set(mContentResolver, file, absolutePath);
         return super.createOutputStream(offset);
     }
 
@@ -158,29 +158,30 @@ abstract class CreateUriFtpFile extends BaseUriFtpFile {
         return super.createInputStream(offset);
     }
 
-    void setCreate(Context context, DocumentFile dir, String parentAbsolutePath, String name) {
+    void setCreate(ContentResolver contentResolver, DocumentFile dir, String parentAbsolutePath,
+                   String name) {
         mCreate = true;
-        mContext = context;
+        mContentResolver = contentResolver;
         mParent = dir;
         mParentAbsolutePath = parentAbsolutePath;
         mName = name;
     }
 
     @Override
-    void set(Context context, DocumentFile document, String absolutePath) {
+    void set(ContentResolver contentResolver, DocumentFile document, String absolutePath) {
         mCreate = false;
-        mContext = null;
+        mContentResolver = null;
         mParent = null;
         mParentAbsolutePath = null;
         mName = null;
-        super.set(context, document, absolutePath);
+        super.set(contentResolver, document, absolutePath);
     }
 
     @Override
-    Context getContext() {
+    ContentResolver getContentResolver() {
         if (mCreate)
-            return mContext;
-        return super.getContext();
+            return mContentResolver;
+        return super.getContentResolver();
     }
 
     @Override
