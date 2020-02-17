@@ -24,16 +24,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
+
 import java.util.Locale;
 
 import am.project.x.R;
 import am.project.x.base.BaseActivity;
 import am.util.viewpager.adapter.RecyclePagerAdapter;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
 
 /**
  * 回收页视图
@@ -161,28 +161,28 @@ public class RecyclePagerActivity extends BaseActivity implements View.OnClickLi
 
         void addPage() {
             mCount++;
-            notifyDataSetChanged();
+            notifyItemInserted(mCount - 1);
         }
 
         void reducePage() {
             mCount--;
             mCount = mCount < 0 ? 0 : mCount;
-            notifyDataSetChanged();
+            notifyItemRemoved(mCount);
         }
 
         void addOffset() {
             mOffset++;
-            notifyDataSetChanged();
+            notifyItemRangeChanged(0, mCount);
         }
 
         void reduceOffset() {
             mOffset--;
-            notifyDataSetChanged();
+            notifyItemRangeChanged(0, mCount);
         }
 
         void exchange() {
             mExchanged = !mExchanged;
-            notifyDataSetChanged();
+            notifyItemRangeChanged(0, mCount);
         }
     }
 }
