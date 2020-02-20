@@ -23,7 +23,7 @@ import android.graphics.drawable.Drawable;
 
 /**
  * 安全的Bitmap
- * Created by Xiang Zhicheng on 2020/2/13.
+ * Created by Alex on 2020/2/13.
  */
 public class AMBitmapDrawable extends DrawableWrapper {
 

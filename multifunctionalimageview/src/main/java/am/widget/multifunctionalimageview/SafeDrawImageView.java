@@ -25,7 +25,7 @@ import android.util.AttributeSet;
 
 /**
  * 安全绘制的ImageView
- * Created by Xiang Zhicheng on 2020/1/20.
+ * Created by Alex on 2020/1/20.
  */
 @SuppressWarnings("unused")
 public class SafeDrawImageView extends FixedSizeImageView {
