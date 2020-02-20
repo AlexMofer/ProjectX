@@ -26,7 +26,7 @@ import android.util.AttributeSet;
  * Created by Alex on 2018/12/26.
  */
 @SuppressWarnings("unused")
-public class MultifunctionalImageView extends FixedSizeImageView {
+public class MultifunctionalImageView extends SafeDrawImageView {
 
     public MultifunctionalImageView(Context context) {
         super(context);

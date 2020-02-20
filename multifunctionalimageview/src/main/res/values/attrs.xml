@@ -58,4 +58,7 @@
             <enum name="inside" value="3" />
         </attr>
     </declare-styleable>
+    <declare-styleable name="SafeDrawImageView">
+        <attr name="sdiError" format="reference" />
+    </declare-styleable>
 </resources>
