@@ -131,6 +131,9 @@
         <attr name="android:progress" />
         <attr name="android:progressDrawable" />
     </declare-styleable>
+    <declare-styleable name="SafeBitmapDrawable">
+        <attr name="android:drawable" />
+    </declare-styleable>
     <declare-styleable name="CornerDrawable">
         <attr name="cdCornerWidth" format="dimension" />
         <attr name="cdCornerHeight" format="dimension" />
