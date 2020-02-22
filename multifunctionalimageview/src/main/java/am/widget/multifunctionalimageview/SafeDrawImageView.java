@@ -55,7 +55,6 @@ public class SafeDrawImageView extends FixedSizeImageView {
     }
 
     private void initView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        setWillNotDraw(false);
         final Drawable drawableError;
         final TypedArray custom = context.obtainStyledAttributes(attrs,
                 R.styleable.SafeDrawImageView, defStyleAttr, defStyleRes);
