@@ -19,12 +19,13 @@ package am.project.support.security;
 import android.annotation.SuppressLint;
 import android.os.Build;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import am.project.support.utils.ByteUtils;
 
 /**
  * 信息摘要工具类
@@ -32,6 +33,11 @@ import am.project.support.utils.ByteUtils;
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class MessageDigestUtils {
+
+    private MessageDigestUtils() {
+        //no instance
+    }
+
     /**
      * 获取信息摘要
      *
@@ -50,6 +56,28 @@ public class MessageDigestUtils {
     }
 
     /**
+     * 转换为16进制
+     *
+     * @param bytes     数据
+     * @param minLength 16进制字符串长度
+     * @return 16进制字符串
+     */
+    private static String toHexString(byte[] bytes, int minLength) {
+        if (bytes == null)
+            return null;
+        final String str = new BigInteger(1, bytes).toString(16);
+        final StringBuilder builder = new StringBuilder();
+        if (str.length() < minLength) {
+            final int number = minLength - str.length();
+            for (int i = 0; i < number; i++) {
+                builder.append("0");
+            }
+        }
+        builder.append(str);
+        return builder.toString();
+    }
+
+    /**
      * 获取信息摘要
      *
      * @param input     数据源
@@ -58,7 +86,7 @@ public class MessageDigestUtils {
      * @return 信息摘要
      */
     public static String getMessageDigest(byte[] input, String algorithm, int minLength) {
-        return ByteUtils.toHexString(getMessageDigest(input, algorithm), minLength);
+        return toHexString(getMessageDigest(input, algorithm), minLength);
     }
 
     /**
@@ -89,7 +117,7 @@ public class MessageDigestUtils {
      * @return 信息摘要
      */
     public static String getMessageDigest(ByteBuffer input, String algorithm, int minLength) {
-        return ByteUtils.toHexString(getMessageDigest(input, algorithm), minLength);
+        return toHexString(getMessageDigest(input, algorithm), minLength);
     }
 
     /**
@@ -128,7 +156,7 @@ public class MessageDigestUtils {
      * @return 信息摘要
      */
     public static String getMessageDigest(InputStream input, String algorithm, int minLength) {
-        return ByteUtils.toHexString(getMessageDigest(input, algorithm), minLength);
+        return toHexString(getMessageDigest(input, algorithm), minLength);
     }
 
     /**
@@ -178,7 +206,18 @@ public class MessageDigestUtils {
      * @return MD5
      */
     public static String getMD5String(byte[] input) {
-        return getMessageDigest(input, "MD5", 0);
+        return getMD5String(input, 0);
+    }
+
+    /**
+     * 获取MD5
+     *
+     * @param input     数据源
+     * @param minLength 最小长度
+     * @return MD5
+     */
+    public static String getMD5String(byte[] input, int minLength) {
+        return getMessageDigest(input, "MD5", minLength);
     }
 
     /**
@@ -188,7 +227,18 @@ public class MessageDigestUtils {
      * @return MD5
      */
     public static String getMD5String(ByteBuffer input) {
-        return getMessageDigest(input, "MD5", 0);
+        return getMD5String(input, 0);
+    }
+
+    /**
+     * 获取MD5
+     *
+     * @param input     数据源
+     * @param minLength 最小长度
+     * @return MD5
+     */
+    public static String getMD5String(ByteBuffer input, int minLength) {
+        return getMessageDigest(input, "MD5", minLength);
     }
 
     /**
@@ -198,7 +248,29 @@ public class MessageDigestUtils {
      * @return MD5
      */
     public static String getMD5String(InputStream input) {
-        return getMessageDigest(input, "MD5", 0);
+        return getMD5String(input, 0);
+    }
+
+    /**
+     * 获取MD5
+     *
+     * @param input     数据源
+     * @param minLength 最小长度
+     * @return MD5
+     */
+    public static String getMD5String(InputStream input, int minLength) {
+        return getMessageDigest(input, "MD5", minLength);
+    }
+
+    /**
+     * 获取字符MD5
+     *
+     * @param input     字符串
+     * @param minLength 最小长度
+     * @return MD5
+     */
+    public static String getMD5String(String input, int minLength) {
+        return getMD5String(input.getBytes(), minLength);
     }
 
     /**
@@ -642,5 +714,40 @@ public class MessageDigestUtils {
      */
     public static String getSHA512String(String input) {
         return getSHA512String(input.getBytes());
+    }
+
+    /**
+     * 获取文件 MD5
+     *
+     * @param file      文件
+     * @param minLength 最少长度，不足在前面补0
+     * @return MD5
+     */
+    public static String getMD5(File file, int minLength) {
+        if (file == null)
+            return null;
+        final InputStream input;
+        try {
+            input = new FileInputStream(file);
+        } catch (Exception e) {
+            return null;
+        }
+        final String md5 = getMD5String(input, minLength);
+        try {
+            input.close();
+        } catch (Exception e) {
+            // ignore
+        }
+        return md5;
+    }
+
+    /**
+     * 获取文件 MD5
+     *
+     * @param file 文件
+     * @return MD5
+     */
+    public static String getMD5(File file) {
+        return getMD5(file, 0);
     }
 }
