@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package am.util.mvp;
+package am.util.mvp.core;
 
 /**
  * View
  * Created by Alex on 2017/10/25.
  */
-public interface AMView {
+public interface MVPView {
 }
