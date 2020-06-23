@@ -15,31 +15,24 @@
  */
 package am.project.x.business.others.crypto;
 
-import am.util.mvp.AMPresenter;
+import am.util.mvp.core.MVPPresenter;
 
 /**
  * Presenter
  */
-class CryptoPresenter extends AMPresenter<CryptoView, CryptoModel> implements CryptoView,
+class CryptoPresenter extends MVPPresenter<CryptoView, CryptoModel> implements CryptoView,
         CryptoViewModel {
 
-    private final CryptoModel mModel = new CryptoModel(this);
-
-    CryptoPresenter(CryptoView view) {
-        super(view);
-    }
-
-    @Override
-    protected CryptoModel getModel() {
-        return mModel;
+    CryptoPresenter() {
+        setModel(new CryptoModel());
     }
 
     // View
     @Override
     public void onResult(String output) {
-        if (isDetachedFromView())
-            return;
-        getView().onResult(output);
+        final CryptoView view = getView();
+        if (view != null)
+            view.onResult(output);
     }
 
     // ViewModel

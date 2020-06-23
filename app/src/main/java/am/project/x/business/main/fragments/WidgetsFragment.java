@@ -15,16 +15,14 @@
  */
 package am.project.x.business.main.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import am.appcompat.app.BaseFragment;
 import am.project.x.R;
-import am.project.x.base.BaseFragment;
 import am.project.x.business.widgets.circleprogressbar.CircleProgressBarActivity;
 import am.project.x.business.widgets.drawableratingbar.DrawableRatingBarActivity;
 import am.project.x.business.widgets.gradienttabstrip.GradientTabStripActivity;
@@ -40,80 +38,78 @@ import am.project.x.business.widgets.tagtabstrip.TagTabStripActivity;
 import am.project.x.business.widgets.wraplayout.WrapLayoutActivity;
 import am.project.x.business.widgets.zxingscanview.ZxingScanViewActivity;
 
-public class WidgetsFragment extends BaseFragment implements View.OnClickListener {
+public class WidgetsFragment extends BaseFragment {
 
     public static WidgetsFragment newInstance() {
         return new WidgetsFragment();
     }
 
-    @Override
-    protected int getContentViewLayout(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
-        return R.layout.fragment_main_widgets;
+    public WidgetsFragment() {
+        super(R.layout.fragment_main_widgets);
     }
 
     @Override
-    protected void initializeFragment(Activity activity, @Nullable Bundle savedInstanceState) {
-        findViewById(R.id.widget_btn_gradienttabstrip).setOnClickListener(this);
-        findViewById(R.id.widget_btn_tagtabstrip).setOnClickListener(this);
-        findViewById(R.id.widget_btn_indicatortabstrip).setOnClickListener(this);
-        findViewById(R.id.widget_btn_shapeimageview).setOnClickListener(this);
-        findViewById(R.id.widget_btn_statelayout).setOnClickListener(this);
-        findViewById(R.id.widget_btn_wraplayout).setOnClickListener(this);
-        findViewById(R.id.widget_btn_drawableratingbar).setOnClickListener(this);
-        findViewById(R.id.widget_btn_headerfootergridview).setOnClickListener(this);
-        findViewById(R.id.widget_btn_multiactiontextview).setOnClickListener(this);
-        findViewById(R.id.widget_btn_recyclepager).setOnClickListener(this);
-        findViewById(R.id.widget_btn_circleprogressbar).setOnClickListener(this);
-        findViewById(R.id.widget_btn_zxingscanview).setOnClickListener(this);
-        findViewById(R.id.widget_btn_smoothinputlayout).setOnClickListener(this);
-        findViewById(R.id.widget_btn_multifunctionalrecyclerview).setOnClickListener(this);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        findViewById(R.id.widget_btn_gradienttabstrip).setOnClickListener(this::open);
+        findViewById(R.id.widget_btn_tagtabstrip).setOnClickListener(this::open);
+        findViewById(R.id.widget_btn_indicatortabstrip).setOnClickListener(this::open);
+        findViewById(R.id.widget_btn_shapeimageview).setOnClickListener(this::open);
+        findViewById(R.id.widget_btn_statelayout).setOnClickListener(this::open);
+        findViewById(R.id.widget_btn_wraplayout).setOnClickListener(this::open);
+        findViewById(R.id.widget_btn_drawableratingbar).setOnClickListener(this::open);
+        findViewById(R.id.widget_btn_headerfootergridview).setOnClickListener(this::open);
+        findViewById(R.id.widget_btn_multiactiontextview).setOnClickListener(this::open);
+        findViewById(R.id.widget_btn_recyclepager).setOnClickListener(this::open);
+        findViewById(R.id.widget_btn_circleprogressbar).setOnClickListener(this::open);
+        findViewById(R.id.widget_btn_zxingscanview).setOnClickListener(this::open);
+        findViewById(R.id.widget_btn_smoothinputlayout).setOnClickListener(this::open);
+        findViewById(R.id.widget_btn_multifunctionalrecyclerview).setOnClickListener(this::open);
     }
 
-    @Override
-    public void onClick(View v) {
+    private void open(View v) {
         switch (v.getId()) {
             case R.id.widget_btn_gradienttabstrip:
-                GradientTabStripActivity.start(getActivity());
+                GradientTabStripActivity.start(requireContext());
                 break;
             case R.id.widget_btn_tagtabstrip:
-                TagTabStripActivity.start(getActivity());
+                TagTabStripActivity.start(requireContext());
                 break;
             case R.id.widget_btn_indicatortabstrip:
-                IndicatorTabStripActivity.start(getActivity());
+                IndicatorTabStripActivity.start(requireContext());
                 break;
             case R.id.widget_btn_shapeimageview:
-                MultifunctionalImageViewActivity.start(getActivity());
+                MultifunctionalImageViewActivity.start(requireContext());
                 break;
             case R.id.widget_btn_statelayout:
-                StateLayoutActivity.start(getActivity());
+                StateLayoutActivity.start(requireContext());
                 break;
             case R.id.widget_btn_wraplayout:
-                WrapLayoutActivity.start(getActivity());
+                WrapLayoutActivity.start(requireContext());
                 break;
             case R.id.widget_btn_drawableratingbar:
-                DrawableRatingBarActivity.start(getActivity());
+                DrawableRatingBarActivity.start(requireContext());
                 break;
             case R.id.widget_btn_headerfootergridview:
-                HeaderFooterGridViewActivity.start(getActivity());
+                HeaderFooterGridViewActivity.start(requireContext());
                 break;
             case R.id.widget_btn_multiactiontextview:
-                MultiActionTextViewActivity.start(getActivity());
+                MultiActionTextViewActivity.start(requireContext());
                 break;
             case R.id.widget_btn_recyclepager:
-                RecyclePagerActivity.start(getActivity());
+                RecyclePagerActivity.start(requireContext());
                 break;
             case R.id.widget_btn_circleprogressbar:
-                CircleProgressBarActivity.start(getActivity());
+                CircleProgressBarActivity.start(requireContext());
                 break;
             case R.id.widget_btn_zxingscanview:
-                ZxingScanViewActivity.start(getActivity());
+                ZxingScanViewActivity.start(requireContext());
                 break;
             case R.id.widget_btn_smoothinputlayout:
-                SmoothInputLayoutActivity.start(getActivity());
+                SmoothInputLayoutActivity.start(requireContext());
                 break;
             case R.id.widget_btn_multifunctionalrecyclerview:
-                MultifunctionalRecyclerViewActivity.start(getActivity());
+                MultifunctionalRecyclerViewActivity.start(requireContext());
                 break;
         }
     }

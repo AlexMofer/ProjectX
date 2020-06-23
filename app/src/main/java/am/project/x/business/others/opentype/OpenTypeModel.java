@@ -17,29 +17,26 @@ package am.project.x.business.others.opentype;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
+
 import am.project.x.ProjectXApplication;
 import am.project.x.R;
-import am.util.mvp.AMModel;
+import am.util.mvp.core.MVPModel;
 import am.util.opentype.OpenType;
 import am.util.opentype.OpenTypeCollection;
 import am.util.opentype.TableRecord;
 import am.util.opentype.tables.BaseTable;
 import am.util.opentype.tables.NamingTable;
-import androidx.annotation.Nullable;
 
 /**
  * Model
  */
-class OpenTypeModel extends AMModel<OpenTypePresenter> implements OpenTypeViewModel,
+class OpenTypeModel extends MVPModel<OpenTypePresenter> implements OpenTypeViewModel,
         OpenTypeJob.Callback {
 
     private boolean mCollection = false;
     private OpenType mFont;
     private OpenTypeCollection mFonts;
-
-    OpenTypeModel(OpenTypePresenter presenter) {
-        super(presenter);
-    }
 
     // AdapterViewModel
     @Override
@@ -244,9 +241,10 @@ class OpenTypeModel extends AMModel<OpenTypePresenter> implements OpenTypeViewMo
     // Callback
     @Override
     public void onParseFailure() {
-        if (isDetachedFromPresenter())
+        final OpenTypePresenter presenter = getPresenter();
+        if (presenter == null)
             return;
-        getPresenter().onParseFailure();
+        presenter.onParseFailure();
     }
 
     @Override
@@ -255,8 +253,9 @@ class OpenTypeModel extends AMModel<OpenTypePresenter> implements OpenTypeViewMo
         mCollection = isCollection;
         mFont = font;
         mFonts = fonts;
-        if (isDetachedFromPresenter())
+        final OpenTypePresenter presenter = getPresenter();
+        if (presenter == null)
             return;
-        getPresenter().onParseSuccess(isCollection);
+        presenter.onParseSuccess(isCollection);
     }
 }

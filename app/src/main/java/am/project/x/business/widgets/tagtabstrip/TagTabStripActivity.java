@@ -23,14 +23,15 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
+import am.appcompat.app.BaseActivity;
 import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import am.util.viewpager.adapter.ViewsPagerAdapter;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
 
 /**
  * 图片标记栏
@@ -42,12 +43,9 @@ public class TagTabStripActivity extends BaseActivity {
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_tagtabstrip;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_tagtabstrip);
         setSupportActionBar(R.id.tts_toolbar);
         ((ViewPager) findViewById(R.id.tts_vp_pagers))
                 .setAdapter(new ViewsPagerAdapter(getPagers()));

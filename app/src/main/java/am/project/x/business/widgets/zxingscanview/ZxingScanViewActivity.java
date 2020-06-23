@@ -23,6 +23,10 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+
 import com.google.zxing.Result;
 import com.google.zxing.ResultMetadataType;
 import com.google.zxing.client.result.ParsedResult;
@@ -34,13 +38,10 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Map;
 
+import am.appcompat.app.BaseActivity;
 import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import am.widget.zxingscanview.ZxingForegroundView;
 import am.widget.zxingscanview.ZxingScanView;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 
 /**
  * 条码扫描
@@ -61,12 +62,9 @@ public class ZxingScanViewActivity extends BaseActivity implements ZxingScanView
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_zxingscanview;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_zxingscanview);
         setSupportActionBar(R.id.zsv_toolbar);
         mVScan = findViewById(R.id.zsv_zsv_scan);
         mVForeground = findViewById(R.id.zsv_zfv_foreground);

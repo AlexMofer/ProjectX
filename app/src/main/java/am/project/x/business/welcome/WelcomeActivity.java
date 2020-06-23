@@ -17,10 +17,11 @@ package am.project.x.business.welcome;
 
 import android.os.Bundle;
 
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
-import am.project.x.business.main.MainActivity;
 import androidx.annotation.Nullable;
+
+import am.appcompat.app.BaseActivity;
+import am.project.x.R;
+import am.project.x.business.main.MainActivity;
 
 /**
  * 欢迎页
@@ -31,12 +32,9 @@ public class WelcomeActivity extends BaseActivity implements Runnable {
     private boolean mDoNotStart = false;
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_welcome;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_welcome);
         getWindow().getDecorView().postDelayed(this, DELAY_MILLIS);
     }
 

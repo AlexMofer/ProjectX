@@ -17,36 +17,31 @@ package am.project.x.business.others.printer;
 
 import android.bluetooth.BluetoothDevice;
 
-import am.util.mvp.AMPresenter;
+import am.util.mvp.core.MVPPresenter;
 
 /**
  * Presenter
  */
-class PrinterPresenter extends AMPresenter<PrinterView, PrinterModel> implements PrinterView,
+class PrinterPresenter extends MVPPresenter<PrinterView, PrinterModel> implements PrinterView,
         PrinterViewModel {
-    private final PrinterModel mModel = new PrinterModel(this);
-    PrinterPresenter(PrinterView view) {
-        super(view);
-    }
 
-    @Override
-    protected PrinterModel getModel() {
-        return mModel;
+    PrinterPresenter() {
+        setModel(new PrinterModel());
     }
 
     // View
     @Override
     public void onPrinterStateChanged(String state) {
-        if (isDetachedFromView())
-            return;
-        getView().onPrinterStateChanged(state);
+        final PrinterView view = getView();
+        if (view != null)
+            view.onPrinterStateChanged(state);
     }
 
     @Override
     public void onPrinterResult(String result) {
-        if (isDetachedFromView())
-            return;
-        getView().onPrinterResult(result);
+        final PrinterView view = getView();
+        if (view != null)
+            view.onPrinterResult(result);
     }
 
     // ViewModel
@@ -88,5 +83,10 @@ class PrinterPresenter extends AMPresenter<PrinterView, PrinterModel> implements
     @Override
     public void print() {
         getModel().print();
+    }
+
+    @Override
+    public void stop() {
+        getModel().stop();
     }
 }

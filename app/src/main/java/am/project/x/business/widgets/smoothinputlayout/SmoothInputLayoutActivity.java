@@ -26,10 +26,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
-import am.widget.smoothinputlayout.SmoothInputLayout;
 import androidx.annotation.Nullable;
+
+import am.appcompat.app.BaseActivity;
+import am.project.x.R;
+import am.widget.smoothinputlayout.SmoothInputLayout;
 
 /**
  * 输入面板
@@ -51,14 +52,11 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
         context.startActivity(new Intent(context, SmoothInputLayoutActivity.class));
     }
 
-    @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_smoothinputlayout;
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_smoothinputlayout);
         setSupportActionBar(R.id.sil_toolbar);
         lytContent = findViewById(R.id.sil_lyt_content);
         btnVoice = findViewById(R.id.sil_ibtn_voice);

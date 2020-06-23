@@ -20,21 +20,23 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
-import am.project.x.business.others.opentype.OpenTypeActivity;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
+import am.project.x.R;
+import am.project.x.business.others.opentype.OpenTypeActivity;
+import am.util.mvp.ui.MVPActivity;
+
 /**
  * 字体文件列表
  */
-public class OpenTypeListActivity extends BaseActivity implements OpenTypeListView,
+public class OpenTypeListActivity extends MVPActivity implements OpenTypeListView,
         OpenTypeListViewHolder.OnViewHolderListener {
 
-    private final OpenTypeListPresenter mPresenter = new OpenTypeListPresenter(this);
+    private final OpenTypeListPresenter mPresenter =
+            new OpenTypeListPresenter().setViewHolder(getViewHolder());
     private final OpenTypeListAdapter mAdapter = new OpenTypeListAdapter(mPresenter, this);
 
     public static void start(Context context) {
@@ -42,12 +44,9 @@ public class OpenTypeListActivity extends BaseActivity implements OpenTypeListVi
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_opentypelist;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_opentypelist);
         setSupportActionBar(R.id.otl_toolbar);
         final RecyclerView list = findViewById(R.id.otl_content);
         final Drawable divider = ContextCompat.getDrawable(this, R.drawable.divider_common);
@@ -60,11 +59,6 @@ public class OpenTypeListActivity extends BaseActivity implements OpenTypeListVi
 
         list.setAdapter(mAdapter);
         mPresenter.loadOpenType();
-    }
-
-    @Override
-    protected OpenTypeListPresenter getPresenter() {
-        return mPresenter;
     }
 
     // View

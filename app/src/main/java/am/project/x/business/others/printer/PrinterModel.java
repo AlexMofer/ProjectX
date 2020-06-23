@@ -20,7 +20,7 @@ import android.text.TextUtils;
 
 import am.project.x.ProjectXApplication;
 import am.project.x.R;
-import am.util.mvp.AMModel;
+import am.util.mvp.core.MVPModel;
 import am.util.printer.PrintExecutor;
 import am.util.printer.PrintSocketHolder;
 import am.util.printer.PrinterWriter;
@@ -30,7 +30,7 @@ import am.util.printer.PrinterWriter80mm;
 /**
  * Model
  */
-class PrinterModel extends AMModel<PrinterPresenter> implements PrinterViewModel,
+class PrinterModel extends MVPModel<PrinterPresenter> implements PrinterViewModel,
         PrintSocketHolder.OnStateChangedListener, PrintExecutor.OnPrintResultListener {
 
     private int mType = PrinterWriter80mm.TYPE_80;
@@ -41,19 +41,9 @@ class PrinterModel extends AMModel<PrinterPresenter> implements PrinterViewModel
     private PrintExecutor mExecutor;
     private PrinterPrintDataMaker mMaker;
 
-    PrinterModel(PrinterPresenter presenter) {
-        super(presenter);
+    PrinterModel() {
         mMaker = new PrinterPrintDataMaker(ProjectXApplication.getInstance(), mQRCodeData,
                 mImageEnable, mWidth, mHeight);
-    }
-
-    @Override
-    protected void onStopped() {
-        super.onStopped();
-        if (mExecutor != null) {
-            mExecutor.closeSocket();
-            mExecutor = null;
-        }
     }
 
     @Override
@@ -145,16 +135,26 @@ class PrinterModel extends AMModel<PrinterPresenter> implements PrinterViewModel
         notifyPrinterStateChanged(R.string.printer_test_message_0);
     }
 
+    @Override
+    public void stop() {
+        if (mExecutor != null) {
+            mExecutor.closeSocket();
+            mExecutor = null;
+        }
+    }
+
     private void notifyPrinterStateChanged(int strId) {
-        if (isDetachedFromPresenter())
+        final PrinterPresenter presenter = getPresenter();
+        if (presenter == null)
             return;
-        getPresenter().onPrinterStateChanged(ProjectXApplication.getInstance().getString(strId));
+        presenter.onPrinterStateChanged(ProjectXApplication.getInstance().getString(strId));
     }
 
     private void notifyPrinterResult(int strId) {
-        if (isDetachedFromPresenter())
+        final PrinterPresenter presenter = getPresenter();
+        if (presenter == null)
             return;
-        getPresenter().onPrinterResult(ProjectXApplication.getInstance().getString(strId));
+        presenter.onPrinterResult(ProjectXApplication.getInstance().getString(strId));
     }
 
     // Listener

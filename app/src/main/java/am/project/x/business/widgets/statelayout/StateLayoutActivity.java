@@ -26,13 +26,14 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
-import am.project.x.widget.CircularProgressImageView;
-import am.widget.stateframelayout.StateFrameLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
+
+import am.appcompat.app.BaseActivity;
+import am.project.x.R;
+import am.project.x.widget.CircularProgressImageView;
+import am.widget.stateframelayout.StateFrameLayout;
 
 /**
  * 状态布局
@@ -53,12 +54,9 @@ public class StateLayoutActivity extends BaseActivity implements
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_statelayout;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_statelayout);
         setSupportActionBar(R.id.sl_toolbar);
         mVState = findViewById(R.id.sl_lyt_state);
         final RadioGroup state = findViewById(R.id.sl_rg_state);

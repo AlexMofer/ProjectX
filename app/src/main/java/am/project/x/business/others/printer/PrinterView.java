@@ -15,12 +15,12 @@
  */
 package am.project.x.business.others.printer;
 
-import am.util.mvp.AMView;
+import am.util.mvp.core.MVPView;
 
 /**
  * View
  */
-interface PrinterView extends AMView {
+interface PrinterView extends MVPView {
     /**
      * 打印状态变化
      *

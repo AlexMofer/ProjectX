@@ -25,10 +25,11 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-
-import java.util.ArrayList;
+import android.view.ViewConfiguration;
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
 
 /**
  * 触摸绘图
@@ -59,8 +60,7 @@ public class PressView extends View {
 
     private void initView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         final int color = 0x80fe439b;
-        final int slop = (int) (10 *
-                context.getResources().getDisplayMetrics().density);
+        final int slop = ViewConfiguration.get(context).getScaledTouchSlop();
         mPaint.setColor(color);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);

@@ -22,10 +22,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.webkit.WebSettings;
 
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
-import am.project.x.widget.PowerfulWebView;
 import androidx.annotation.Nullable;
+
+import am.appcompat.app.BaseActivity;
+import am.project.x.R;
+import am.project.x.widget.PowerfulWebView;
 
 public class BrowserActivity extends BaseActivity implements PowerfulWebView.OnTitleListener {
 
@@ -39,12 +40,9 @@ public class BrowserActivity extends BaseActivity implements PowerfulWebView.OnT
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_browser;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_browser);
         setSupportActionBar(R.id.browser_toolbar);
         final String url = getIntent().getStringExtra(EXTRA_URL);
         if (TextUtils.isEmpty(url)) {
@@ -73,7 +71,6 @@ public class BrowserActivity extends BaseActivity implements PowerfulWebView.OnT
         mVContent.setOnTitleListener(this);
         mVContent.loadUrl(url);
     }
-
 
     @Override
     protected void onResume() {

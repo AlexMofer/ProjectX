@@ -15,11 +15,11 @@
  */
 package am.project.x.business.others.opentypelist;
 
-import am.util.mvp.AMView;
+import am.util.mvp.core.MVPView;
 
 /**
  * View
  */
-interface OpenTypeListView extends AMView {
+interface OpenTypeListView extends MVPView {
     void onOpenTypeLoaded();
 }

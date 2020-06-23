@@ -21,10 +21,11 @@ import android.os.Bundle;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
-import am.widget.wraplayout.WrapLayout;
 import androidx.annotation.Nullable;
+
+import am.appcompat.app.BaseActivity;
+import am.project.x.R;
+import am.widget.wraplayout.WrapLayout;
 
 /**
  * 自动换行布局
@@ -39,12 +40,9 @@ public class WrapLayoutActivity extends BaseActivity implements RadioGroup.OnChe
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_wraplayout;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_wraplayout);
         setSupportActionBar(R.id.wl_toolbar);
         mVContent = findViewById(R.id.wl_wl_content);
         final RadioGroup gravity = findViewById(R.id.wl_rg_gravity);

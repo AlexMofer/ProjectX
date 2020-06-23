@@ -15,38 +15,31 @@
  */
 package am.project.x.business.others.opentype;
 
-import am.util.mvp.AMPresenter;
+import am.util.mvp.core.MVPPresenter;
 
 /**
  * Presenter
  */
-class OpenTypePresenter extends AMPresenter<OpenTypeView, OpenTypeModel> implements OpenTypeView,
+class OpenTypePresenter extends MVPPresenter<OpenTypeView, OpenTypeModel> implements OpenTypeView,
         OpenTypeViewModel {
 
-    private final OpenTypeModel mModel = new OpenTypeModel(this);
-
-    OpenTypePresenter(OpenTypeView view) {
-        super(view);
-    }
-
-    @Override
-    protected OpenTypeModel getModel() {
-        return mModel;
+    OpenTypePresenter() {
+        setModel(new OpenTypeModel());
     }
 
     // View
     @Override
     public void onParseFailure() {
-        if (isDetachedFromView())
-            return;
-        getView().onParseFailure();
+        final OpenTypeView view = getView();
+        if (view != null)
+            view.onParseFailure();
     }
 
     @Override
     public void onParseSuccess(boolean isCollection) {
-        if (isDetachedFromView())
-            return;
-        getView().onParseSuccess(isCollection);
+        final OpenTypeView view = getView();
+        if (view != null)
+            view.onParseSuccess(isCollection);
     }
 
     // AdapterViewModel

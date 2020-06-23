@@ -24,9 +24,9 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import am.appcompat.app.BaseActivity;
 import am.project.support.compat.AMActivityCompat;
 import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import am.widget.floatingactionmode.FloatingActionMode;
 import am.widget.floatingactionmode.FloatingMenu;
 import am.widget.floatingactionmode.FloatingMenuItem;
@@ -46,12 +46,9 @@ public class FloatingActionModeActivity extends BaseActivity implements PressVie
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_floatingactionmode;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_floatingactionmode);
         setSupportActionBar(R.id.floating_toolbar);
         final PressView bound = findViewById(R.id.floating_dv_bound);
         bound.setOnPressListener(this);

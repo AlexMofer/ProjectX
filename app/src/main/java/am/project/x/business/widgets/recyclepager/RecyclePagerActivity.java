@@ -31,8 +31,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import java.util.Locale;
 
+import am.appcompat.app.BaseActivity;
 import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import am.util.viewpager.adapter.RecyclePagerAdapter;
 
 /**
@@ -49,12 +49,9 @@ public class RecyclePagerActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_recyclepager;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_recyclepager);
         setSupportActionBar(R.id.rp_toolbar);
         final ViewPager pager = findViewById(R.id.rp_vp_content);
         mVPage = findViewById(R.id.rp_tv_page_value);

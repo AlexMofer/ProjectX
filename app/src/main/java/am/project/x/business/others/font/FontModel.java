@@ -26,12 +26,12 @@ import am.util.font.TypefaceCollection;
 import am.util.font.TypefaceConfig;
 import am.util.font.TypefaceFallback;
 import am.util.font.TypefaceItem;
-import am.util.mvp.AMModel;
+import am.util.mvp.core.MVPModel;
 
 /**
  * Model
  */
-class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob.Callback {
+class FontModel extends MVPModel<FontPresenter> implements FontViewModel, FontJob.Callback {
 
     private TypefaceConfig mConfig;
     private String mDefaultName;
@@ -40,10 +40,6 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob
     private TypefaceCollection mTypeface;
     private List<TypefaceItem> mItems;// 常规字体
     private List<TypefaceFallback> mFallbacks;// 备用字体
-
-    FontModel(FontPresenter presenter) {
-        super(presenter);
-    }
 
     // PickerViewModel
     @Override
@@ -203,9 +199,10 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob
     // Callback
     @Override
     public void onLoadConfigFailure() {
-        if (isDetachedFromPresenter())
+        final FontPresenter presenter = getPresenter();
+        if (presenter == null)
             return;
-        getPresenter().onLoadConfigFailure();
+        presenter.onLoadConfigFailure();
     }
 
     @Override
@@ -214,16 +211,18 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob
         mDefaultName = config.getDefaultName();
         mNames = config.getNames();
         mAlias = config.getAliases();
-        if (isDetachedFromPresenter())
+        final FontPresenter presenter = getPresenter();
+        if (presenter == null)
             return;
-        getPresenter().onLoadConfigSuccess();
+        presenter.onLoadConfigSuccess();
     }
 
     @Override
     public void onLoadTypefaceCollectionFailure() {
-        if (isDetachedFromPresenter())
+        final FontPresenter presenter = getPresenter();
+        if (presenter == null)
             return;
-        getPresenter().onLoadTypefaceCollectionFailure();
+        presenter.onLoadTypefaceCollectionFailure();
     }
 
     @Override
@@ -231,8 +230,9 @@ class FontModel extends AMModel<FontPresenter> implements FontViewModel, FontJob
         mTypeface = collection;
         mItems = mTypeface.getItems();
         mFallbacks = mTypeface.getFallbacks();
-        if (isDetachedFromPresenter())
+        final FontPresenter presenter = getPresenter();
+        if (presenter == null)
             return;
-        getPresenter().onLoadTypefaceCollectionSuccess();
+        presenter.onLoadTypefaceCollectionSuccess();
     }
 }

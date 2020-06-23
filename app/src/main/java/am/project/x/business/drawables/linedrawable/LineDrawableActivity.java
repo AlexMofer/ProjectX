@@ -27,11 +27,12 @@ import android.widget.AdapterView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 
-import am.drawable.LineDrawable;
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
+import am.appcompat.app.BaseActivity;
+import am.drawable.LineDrawable;
+import am.project.x.R;
 
 /**
  * 横线图片
@@ -46,12 +47,9 @@ public class LineDrawableActivity extends BaseActivity implements
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_linedrawable;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_linedrawable);
         setSupportActionBar(R.id.lid_toolbar);
         drawable = new LineDrawable(Color.TRANSPARENT,
                 ContextCompat.getColor(this, R.color.colorPrimary), 1,

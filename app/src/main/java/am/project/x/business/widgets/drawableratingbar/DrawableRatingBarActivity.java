@@ -27,10 +27,11 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
-import am.widget.drawableratingbar.DrawableRatingBar;
 import androidx.annotation.Nullable;
+
+import am.appcompat.app.BaseActivity;
+import am.project.x.R;
+import am.widget.drawableratingbar.DrawableRatingBar;
 
 /**
  * 图片评级
@@ -46,12 +47,9 @@ public class DrawableRatingBarActivity extends BaseActivity implements
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_drawableratingbar;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_drawableratingbar);
         setSupportActionBar(R.id.drb_toolbar);
         mVRating = findViewById(R.id.drb_rb_stars);
         final SeekBar max = findViewById(R.id.drb_sb_max);

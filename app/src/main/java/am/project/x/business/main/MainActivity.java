@@ -15,9 +15,6 @@
  */
 package am.project.x.business.main;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,11 +23,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.google.android.material.navigation.NavigationView;
 
+import am.appcompat.app.BaseActivity;
 import am.project.x.BuildConfig;
 import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import am.project.x.business.about.AboutActivity;
 import am.project.x.business.developing.DevelopingActivity;
 import am.project.x.business.main.fragments.DevelopFragment;
@@ -39,12 +46,6 @@ import am.project.x.business.main.fragments.OthersFragment;
 import am.project.x.business.main.fragments.WidgetsFragment;
 import am.project.x.utils.ContextUtils;
 import am.project.x.utils.ViewUtils;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 /**
  * 主页
@@ -68,12 +69,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_main;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         ViewUtils.setLayoutFullscreen(getWindow().getDecorView(), false);
 
         final Toolbar toolbar = findViewById(R.id.main_toolbar);
@@ -127,7 +125,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     private void setFragment(String tag) {
         final String oldTag = mCurrent;
         mCurrent = tag;
-        final FragmentManager manager = getFragmentManager();
+        final FragmentManager manager = getSupportFragmentManager();
         final FragmentTransaction transaction = manager.beginTransaction();
         if (!TextUtils.isEmpty(oldTag)) {
             final Fragment old = manager.findFragmentByTag(oldTag);
@@ -170,7 +168,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(EXTRA_FRAGMENT, mCurrent);
     }

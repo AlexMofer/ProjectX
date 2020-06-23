@@ -21,11 +21,12 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
-import am.drawable.GridDrawable;
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
+import am.appcompat.app.BaseActivity;
+import am.drawable.GridDrawable;
+import am.project.x.R;
 
 /**
  * 网格图片
@@ -42,12 +43,9 @@ public class GridDrawableActivity extends BaseActivity implements
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_griddrawable;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_griddrawable);
         setSupportActionBar(R.id.grd_toolbar);
         mVImage = findViewById(R.id.lrd_iv_content);
         mDrawable = new GridDrawable(ContextCompat.getDrawable(this,

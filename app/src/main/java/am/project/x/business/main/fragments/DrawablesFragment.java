@@ -15,17 +15,14 @@
  */
 package am.project.x.business.main.fragments;
 
-
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import am.appcompat.app.BaseFragment;
 import am.project.x.R;
-import am.project.x.base.BaseFragment;
 import am.project.x.business.drawables.cornerdrawable.CornerDrawableActivity;
 import am.project.x.business.drawables.framedrawable.FrameDrawableActivity;
 import am.project.x.business.drawables.griddrawable.GridDrawableActivity;
@@ -33,48 +30,46 @@ import am.project.x.business.drawables.linedrawable.LineDrawableActivity;
 import am.project.x.business.drawables.loadingdrawable.LoadingDrawableActivity;
 import am.project.x.business.drawables.textdrawable.TextDrawableActivity;
 
-public class DrawablesFragment extends BaseFragment implements View.OnClickListener {
+public class DrawablesFragment extends BaseFragment {
 
     public static DrawablesFragment newInstance() {
         return new DrawablesFragment();
     }
 
-    @Override
-    protected int getContentViewLayout(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
-        return R.layout.fragment_main_drawables;
+    public DrawablesFragment() {
+        super(R.layout.fragment_main_drawables);
     }
 
     @Override
-    protected void initializeFragment(Activity activity, @Nullable Bundle savedInstanceState) {
-        findViewById(R.id.drawable_btn_loading).setOnClickListener(this);
-        findViewById(R.id.drawable_btn_cornerdrawable).setOnClickListener(this);
-        findViewById(R.id.drawable_btn_framedrawable).setOnClickListener(this);
-        findViewById(R.id.drawable_btn_linedrawable).setOnClickListener(this);
-        findViewById(R.id.drawable_btn_griddrawable).setOnClickListener(this);
-        findViewById(R.id.drawable_btn_textdrawable).setOnClickListener(this);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        findViewById(R.id.drawable_btn_loading).setOnClickListener(this::open);
+        findViewById(R.id.drawable_btn_cornerdrawable).setOnClickListener(this::open);
+        findViewById(R.id.drawable_btn_framedrawable).setOnClickListener(this::open);
+        findViewById(R.id.drawable_btn_linedrawable).setOnClickListener(this::open);
+        findViewById(R.id.drawable_btn_griddrawable).setOnClickListener(this::open);
+        findViewById(R.id.drawable_btn_textdrawable).setOnClickListener(this::open);
     }
 
-    @Override
-    public void onClick(View v) {
+    private void open(View v) {
         switch (v.getId()) {
             case R.id.drawable_btn_loading:
-                LoadingDrawableActivity.start(getActivity());
+                LoadingDrawableActivity.start(requireContext());
                 break;
             case R.id.drawable_btn_cornerdrawable:
-                CornerDrawableActivity.start(getActivity());
+                CornerDrawableActivity.start(requireContext());
                 break;
             case R.id.drawable_btn_framedrawable:
-                FrameDrawableActivity.start(getActivity());
+                FrameDrawableActivity.start(requireContext());
                 break;
             case R.id.drawable_btn_linedrawable:
-                LineDrawableActivity.start(getActivity());
+                LineDrawableActivity.start(requireContext());
                 break;
             case R.id.drawable_btn_griddrawable:
-                GridDrawableActivity.start(getActivity());
+                GridDrawableActivity.start(requireContext());
                 break;
             case R.id.drawable_btn_textdrawable:
-                TextDrawableActivity.start(getActivity());
+                TextDrawableActivity.start(requireContext());
                 break;
         }
     }

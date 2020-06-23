@@ -24,12 +24,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -42,9 +40,9 @@ import androidx.annotation.Nullable;
 import java.io.File;
 import java.util.Locale;
 
+import am.appcompat.app.BaseFragment;
 import am.project.support.utils.InputMethodUtils;
 import am.project.x.R;
-import am.project.x.base.BaseSupportFragment;
 import am.project.x.business.others.ftp.FtpFragmentCallback;
 import am.project.x.utils.ContextUtils;
 
@@ -53,7 +51,7 @@ import am.project.x.utils.ContextUtils;
  * Created by Alex on 2017/10/10.
  */
 
-public class LegacyFragment extends BaseSupportFragment implements TextWatcher,
+public class LegacyFragment extends BaseFragment implements TextWatcher,
         CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 101;
@@ -67,21 +65,19 @@ public class LegacyFragment extends BaseSupportFragment implements TextWatcher,
         return new LegacyFragment();
     }
 
-    @Override
-    protected int getContentViewLayout(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
-        setHasOptionsMenu(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
-        return R.layout.fragment_ftp_legacy;
+    public LegacyFragment() {
+        super(R.layout.fragment_ftp_legacy);
     }
 
     @Override
-    protected void initializeFragment(Activity activity,
-                                      @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
         mVPort = findViewById(R.id.legacy_edt_port);
         mVAuto = findViewById(R.id.legacy_cb_auto);
         mVPath = findViewById(R.id.legacy_btn_path);
 
-        mConfig = new LegacyFtpConfig(activity);
+        mConfig = new LegacyFtpConfig(requireContext());
         mVPort.setText(String.format(Locale.getDefault(), "%d", mConfig.getPort()));
         mVAuto.setChecked(mConfig.isAutoChangePort());
         if (Build.VERSION.SDK_INT >= 23 &&
@@ -89,7 +85,6 @@ public class LegacyFragment extends BaseSupportFragment implements TextWatcher,
             mVPath.setText(null);
         else {
             if (mConfig.getPath() == null)
-                //noinspection deprecation
                 mConfig.setPath(Environment.getExternalStorageDirectory().getAbsolutePath());
             mVPath.setText(mConfig.getPath());
         }
@@ -126,7 +121,6 @@ public class LegacyFragment extends BaseSupportFragment implements TextWatcher,
         if (requestCode == PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE &&
                 grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            //noinspection deprecation
             mVPath.setText(Environment.getExternalStorageDirectory().getAbsolutePath());
             open();
         }
@@ -181,7 +175,6 @@ public class LegacyFragment extends BaseSupportFragment implements TextWatcher,
                 LegacyFtpService.stop(requireContext());
                 break;
             case R.id.legacy_btn_path:
-                //noinspection deprecation
                 final String path = Environment.getExternalStorageDirectory().getAbsolutePath();
                 startActivityForResult(LegacyPathSelectActivity.getStarter(requireContext(), path),
                         ACTIVITY_REQUEST_PATH);

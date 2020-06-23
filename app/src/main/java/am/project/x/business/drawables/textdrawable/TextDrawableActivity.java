@@ -22,11 +22,12 @@ import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-import am.drawable.TextDrawable;
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
+import am.appcompat.app.BaseActivity;
+import am.drawable.TextDrawable;
+import am.project.x.R;
 
 /**
  * 文本图片
@@ -41,12 +42,9 @@ public class TextDrawableActivity extends BaseActivity implements
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_textdrawable;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_textdrawable);
         setSupportActionBar(R.id.td_toolbar);
         final float size = 86 * getResources().getDisplayMetrics().density;
         drawable = new TextDrawable(getString(R.string.td_content), size,

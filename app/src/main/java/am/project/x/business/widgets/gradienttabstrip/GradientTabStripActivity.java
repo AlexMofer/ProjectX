@@ -24,17 +24,18 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import am.appcompat.app.BaseActivity;
 import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import am.util.viewpager.adapter.ViewsPagerAdapter;
 import am.widget.gradienttabstrip.GradientTabStrip;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
 
 /**
  * 渐变底部栏
@@ -46,12 +47,9 @@ public class GradientTabStripActivity extends BaseActivity {
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_gradienttabstrip;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_gradienttabstrip);
         setSupportActionBar(R.id.gts_toolbar);
         ((ViewPager) findViewById(R.id.gts_vp_pagers))
                 .setAdapter(new PagerAdapter(getPagers()));

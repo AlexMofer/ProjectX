@@ -28,8 +28,8 @@ import android.widget.Switch;
 
 import androidx.annotation.Nullable;
 
+import am.appcompat.app.BaseActivity;
 import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import am.widget.multifunctionalimageview.ClipOutlineProvider;
 import am.widget.multifunctionalimageview.MultifunctionalImageView;
 import am.widget.multifunctionalimageview.RoundRectClipOutlineProvider;
@@ -50,12 +50,9 @@ public class MultifunctionalImageViewActivity extends BaseActivity implements
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_multifunctionalimageview;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_multifunctionalimageview);
         setSupportActionBar(R.id.miv_toolbar);
         mVImage = findViewById(R.id.miv_image);
         final Switch crop = findViewById(R.id.miv_sw_crop);

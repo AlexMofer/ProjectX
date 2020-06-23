@@ -15,51 +15,44 @@
  */
 package am.project.x.business.others.font;
 
-import am.util.mvp.AMPresenter;
+import am.util.mvp.core.MVPPresenter;
 
 /**
  * Presenter
  */
-class FontPresenter extends AMPresenter<FontView, FontModel> implements FontView, FontViewModel {
+class FontPresenter extends MVPPresenter<FontView, FontModel> implements FontView, FontViewModel {
 
-    private final FontModel mModel = new FontModel(this);
-
-    FontPresenter(FontView view) {
-        super(view);
-    }
-
-    @Override
-    protected FontModel getModel() {
-        return mModel;
+    FontPresenter() {
+        setModel(new FontModel());
     }
 
     // View
     @Override
     public void onLoadConfigFailure() {
-        if (isDetachedFromView())
-            return;
-        getView().onLoadConfigFailure();
+        final FontView view = getView();
+        if (view != null)
+            view.onLoadConfigFailure();
     }
 
     @Override
     public void onLoadConfigSuccess() {
-        if (isDetachedFromView())
-            return;
-        getView().onLoadConfigSuccess();
+        final FontView view = getView();
+        if (view != null)
+            view.onLoadConfigSuccess();
     }
 
     @Override
     public void onLoadTypefaceCollectionFailure() {
-        if (isDetachedFromView())
-            return;
-        getView().onLoadTypefaceCollectionFailure();
+        final FontView view = getView();
+        if (view != null)
+            view.onLoadTypefaceCollectionFailure();
     }
 
     @Override
     public void onLoadTypefaceCollectionSuccess() {
-        if (isDetachedFromView())
-            return;
-        getView().onLoadTypefaceCollectionSuccess();
+        final FontView view = getView();
+        if (view != null)
+            view.onLoadTypefaceCollectionSuccess();
     }
 
     // PickerViewModel

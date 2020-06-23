@@ -23,19 +23,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
+import am.project.x.R;
+import am.project.x.common.CommonActivity;
 
 /**
  * OpenType
  */
-public class OpenTypeActivity extends BaseActivity implements OpenTypeView,
+public class OpenTypeActivity extends CommonActivity implements OpenTypeView,
         OpenTypePickerDialog.OnPickerListener, OpenTypeViewHolder.OnViewHolderListener {
 
     private static final String EXTRA_PATH = "am.project.x.business.others.opentype.OpenTypeActivity.EXTRA_PATH";
-    private final OpenTypePresenter mPresenter = new OpenTypePresenter(this);
+    private final OpenTypePresenter mPresenter =
+            new OpenTypePresenter().setViewHolder(getViewHolder());
     private final OpenTypeAdapter mAdapter = new OpenTypeAdapter(mPresenter, this);
     private OpenTypePickerDialog mPicker;
     private AlertDialog mInfo;
@@ -46,22 +48,14 @@ public class OpenTypeActivity extends BaseActivity implements OpenTypeView,
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_opentype;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_opentype);
         setSupportActionBar(R.id.ot_toolbar);
         final RecyclerView content = findViewById(R.id.ot_content);
         content.setAdapter(mAdapter);
         showLoading();
         mPresenter.parse(getIntent().getStringExtra(EXTRA_PATH));
-    }
-
-    @Override
-    protected OpenTypePresenter getPresenter() {
-        return mPresenter;
     }
 
     @Override

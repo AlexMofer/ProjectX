@@ -15,16 +15,12 @@
  */
 package am.project.x.business.others.crypto;
 
-import am.util.mvp.AMModel;
+import am.util.mvp.core.MVPModel;
 
 /**
  * Model
  */
-class CryptoModel extends AMModel<CryptoPresenter> implements CryptoViewModel, CryptoJob.Callback {
-
-    CryptoModel(CryptoPresenter presenter) {
-        super(presenter);
-    }
+class CryptoModel extends MVPModel<CryptoPresenter> implements CryptoViewModel, CryptoJob.Callback {
 
     // ViewModel
     @Override
@@ -50,8 +46,9 @@ class CryptoModel extends AMModel<CryptoPresenter> implements CryptoViewModel, C
     // Callback
     @Override
     public void onResult(String output) {
-        if (isDetachedFromPresenter())
+        final CryptoPresenter presenter = getPresenter();
+        if (presenter == null)
             return;
-        getPresenter().onResult(output);
+        presenter.onResult(output);
     }
 }

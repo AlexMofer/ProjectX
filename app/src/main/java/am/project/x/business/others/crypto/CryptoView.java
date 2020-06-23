@@ -15,12 +15,12 @@
  */
 package am.project.x.business.others.crypto;
 
-import am.util.mvp.AMView;
+import am.util.mvp.core.MVPView;
 
 /**
  * View
  */
-interface CryptoView extends AMView {
+interface CryptoView extends MVPView {
     /**
      * 输出计算结果
      *

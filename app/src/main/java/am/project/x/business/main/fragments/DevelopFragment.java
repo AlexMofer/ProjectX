@@ -15,43 +15,34 @@
  */
 package am.project.x.business.main.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import am.project.x.R;
-import am.project.x.base.BaseFragment;
-import am.project.x.business.developing.DevelopingActivity;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class DevelopFragment extends BaseFragment implements View.OnClickListener {
+import am.appcompat.app.BaseFragment;
+import am.project.x.R;
+import am.project.x.business.developing.DevelopingActivity;
+
+public class DevelopFragment extends BaseFragment {
 
     public static DevelopFragment newInstance() {
         return new DevelopFragment();
     }
 
-    @Override
-    protected int getContentViewLayout(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
-        return R.layout.fragment_main_develop;
+    public DevelopFragment() {
+        super(R.layout.fragment_main_develop);
     }
 
     @Override
-    protected void initializeFragment(Activity activity, @Nullable Bundle savedInstanceState) {
-        findViewById(R.id.develop_btn_developing).setOnClickListener(this);
-        findViewById(R.id.develop_btn_supergridview).setOnClickListener(this);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        findViewById(R.id.develop_btn_developing).setOnClickListener(this::open);
+//        findViewById(R.id.develop_btn_supergridview).setOnClickListener(this::open);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.develop_btn_developing:
-                DevelopingActivity.start(getActivity());
-                break;
-            case R.id.develop_btn_supergridview:
-                break;
-        }
+    private void open(View view) {
+        DevelopingActivity.start(requireContext());
     }
 }

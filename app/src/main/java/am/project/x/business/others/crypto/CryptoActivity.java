@@ -23,18 +23,20 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import am.project.support.utils.InputMethodUtils;
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+
+import am.project.support.utils.InputMethodUtils;
+import am.project.x.R;
+import am.project.x.common.CommonActivity;
 
 /**
  * 加密解密
  */
-public class CryptoActivity extends BaseActivity implements CryptoView, View.OnClickListener {
+public class CryptoActivity extends CommonActivity implements CryptoView, View.OnClickListener {
 
-    private final CryptoPresenter mPresenter = new CryptoPresenter(this);
+    private final CryptoPresenter mPresenter = new CryptoPresenter()
+            .setViewHolder(getViewHolder());
     private EditText mVInput;
     private TextView mVOutput;
     private AlertDialog mDLoading;
@@ -44,12 +46,9 @@ public class CryptoActivity extends BaseActivity implements CryptoView, View.OnC
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_crypto;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_crypto);
         setSupportActionBar(R.id.crypto_toolbar);
         mVInput = findViewById(R.id.crypto_edt_input);
         mVOutput = findViewById(R.id.crypto_tv_output);
@@ -58,11 +57,6 @@ public class CryptoActivity extends BaseActivity implements CryptoView, View.OnC
         findViewById(R.id.crypto_btn_des).setOnClickListener(this);
         findViewById(R.id.crypto_btn_aes).setOnClickListener(this);
         findViewById(R.id.crypto_btn_rsa).setOnClickListener(this);
-    }
-
-    @Override
-    protected CryptoPresenter getPresenter() {
-        return mPresenter;
     }
 
     // View

@@ -15,12 +15,12 @@
  */
 package am.project.x.business.others.font;
 
-import am.util.mvp.AMView;
+import am.util.mvp.core.MVPView;
 
 /**
  * View
  */
-interface FontView extends AMView {
+interface FontView extends MVPView {
     void onLoadConfigFailure();
 
     void onLoadConfigSuccess();

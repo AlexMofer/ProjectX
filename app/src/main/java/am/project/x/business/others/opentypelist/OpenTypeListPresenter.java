@@ -15,31 +15,24 @@
  */
 package am.project.x.business.others.opentypelist;
 
-import am.util.mvp.AMPresenter;
+import am.util.mvp.core.MVPPresenter;
 
 /**
  * Presenter
  */
-class OpenTypeListPresenter extends AMPresenter<OpenTypeListView, OpenTypeListModel> implements
+class OpenTypeListPresenter extends MVPPresenter<OpenTypeListView, OpenTypeListModel> implements
         OpenTypeListView, OpenTypeListViewModel {
 
-    private final OpenTypeListModel mModel = new OpenTypeListModel(this);
-
-    OpenTypeListPresenter(OpenTypeListView view) {
-        super(view);
-    }
-
-    @Override
-    protected OpenTypeListModel getModel() {
-        return mModel;
+    OpenTypeListPresenter() {
+        setModel(new OpenTypeListModel());
     }
 
     // View
     @Override
     public void onOpenTypeLoaded() {
-        if (isDetachedFromView())
-            return;
-        getView().onOpenTypeLoaded();
+        final OpenTypeListView view = getView();
+        if (view != null)
+            view.onOpenTypeLoaded();
     }
 
     // AdapterViewModel

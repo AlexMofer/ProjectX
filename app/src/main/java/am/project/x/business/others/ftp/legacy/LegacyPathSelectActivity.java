@@ -39,8 +39,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 
+import am.appcompat.app.BaseActivity;
 import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import am.project.x.utils.FolderFilter;
 
 /**
@@ -68,12 +68,9 @@ public class LegacyPathSelectActivity extends BaseActivity implements
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_legacy_path_select;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_legacy_path_select);
         mAdapter.setDir(getIntent().getStringExtra(EXTRA_PATH));
         setSupportActionBar(R.id.lps_toolbar);
         mVToolbar = findViewById(R.id.lps_toolbar);
@@ -221,7 +218,6 @@ public class LegacyPathSelectActivity extends BaseActivity implements
         String getSubtitle() {
             if (mDir == null)
                 return getString(R.string.lps_path_invalid);
-            //noinspection deprecation
             final String root = Environment.getExternalStorageDirectory().getAbsolutePath();
             if (TextUtils.equals(root, mDir.getPath()))
                 return getString(R.string.lps_path_root);

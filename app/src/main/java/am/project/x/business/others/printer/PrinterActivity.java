@@ -34,20 +34,22 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+
+import am.project.x.R;
+import am.project.x.common.CommonActivity;
 
 /**
  * 小票打印
  */
-public class PrinterActivity extends BaseActivity implements PrinterView,
+public class PrinterActivity extends CommonActivity implements PrinterView,
         RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener,
         View.OnClickListener, PrinterIPDialog.OnDialogListener,
         PrinterBluetoothDialog.OnDialogListener, PrinterStateDialog.OnDialogListener {
 
-    private final PrinterPresenter mPresenter = new PrinterPresenter(this);
+    private final PrinterPresenter mPresenter =
+            new PrinterPresenter().setViewHolder(getViewHolder());
     private final BluetoothAdapter mAdapter = BluetoothAdapter.getDefaultAdapter();
     private EditText mVWidth;
     private EditText mVHeight;
@@ -58,7 +60,6 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
     private boolean mShouldClose = false;
     private PrinterIPDialog mIP;
     private PrinterBluetoothDialog mBluetooth;
-    private PrinterStateDialog mState;
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
         @Override
@@ -86,18 +87,16 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
         }
 
     };
+    private PrinterStateDialog mState;
 
     public static void start(Context context) {
         context.startActivity(new Intent(context, PrinterActivity.class));
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_printer;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_printer);
         setSupportActionBar(R.id.printer_toolbar);
         mVWidth = findViewById(R.id.printer_edt_width);
         mVHeight = findViewById(R.id.printer_edt_height);
@@ -122,8 +121,9 @@ public class PrinterActivity extends BaseActivity implements PrinterView,
     }
 
     @Override
-    protected PrinterPresenter getPresenter() {
-        return mPresenter;
+    protected void onStop() {
+        super.onStop();
+        mPresenter.stop();
     }
 
     @Override

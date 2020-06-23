@@ -28,8 +28,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import java.util.List;
 
+import am.appcompat.app.BaseActivity;
 import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import am.project.x.business.others.ftp.advanced.AdvancedFragment;
 import am.project.x.business.others.ftp.legacy.LegacyFragment;
 
@@ -51,12 +51,9 @@ public class FtpActivity extends BaseActivity implements FtpFragmentCallback {
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_ftp;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ftp);
         setSupportActionBar(R.id.ftp_toolbar);
         mVContent = findViewById(R.id.ftp_content);
         setFragment(false);

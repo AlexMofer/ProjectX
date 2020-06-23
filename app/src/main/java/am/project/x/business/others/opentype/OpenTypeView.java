@@ -15,12 +15,12 @@
  */
 package am.project.x.business.others.opentype;
 
-import am.util.mvp.AMView;
+import am.util.mvp.core.MVPView;
 
 /**
  * View
  */
-interface OpenTypeView extends AMView {
+interface OpenTypeView extends MVPView {
     void onParseFailure();
 
     void onParseSuccess(boolean isCollection);

@@ -15,16 +15,14 @@
  */
 package am.project.x.business.main.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import am.appcompat.app.BaseFragment;
 import am.project.x.R;
-import am.project.x.base.BaseFragment;
 import am.project.x.business.others.clipboard.ClipboardActivity;
 import am.project.x.business.others.crypto.CryptoActivity;
 import am.project.x.business.others.floatingactionmode.FloatingActionModeActivity;
@@ -34,56 +32,54 @@ import am.project.x.business.others.opentypelist.OpenTypeListActivity;
 import am.project.x.business.others.printer.PrinterActivity;
 import am.project.x.business.others.retrofithelper.RetrofitActivity;
 
-public class OthersFragment extends BaseFragment implements View.OnClickListener {
+public class OthersFragment extends BaseFragment {
+
+    public OthersFragment() {
+        super(R.layout.fragment_main_others);
+    }
 
     public static OthersFragment newInstance() {
         return new OthersFragment();
     }
 
     @Override
-    protected int getContentViewLayout(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
-        return R.layout.fragment_main_others;
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        findViewById(R.id.other_btn_printer).setOnClickListener(this::open);
+        findViewById(R.id.other_btn_crypto).setOnClickListener(this::open);
+        findViewById(R.id.other_btn_ftp).setOnClickListener(this::open);
+        findViewById(R.id.other_btn_font).setOnClickListener(this::open);
+        findViewById(R.id.other_btn_opentype).setOnClickListener(this::open);
+        findViewById(R.id.other_btn_floating).setOnClickListener(this::open);
+        findViewById(R.id.other_btn_clipboard).setOnClickListener(this::open);
+        findViewById(R.id.other_btn_retrofit).setOnClickListener(this::open);
     }
 
-    @Override
-    protected void initializeFragment(Activity activity, @Nullable Bundle savedInstanceState) {
-        findViewById(R.id.other_btn_printer).setOnClickListener(this);
-        findViewById(R.id.other_btn_crypto).setOnClickListener(this);
-        findViewById(R.id.other_btn_ftp).setOnClickListener(this);
-        findViewById(R.id.other_btn_font).setOnClickListener(this);
-        findViewById(R.id.other_btn_opentype).setOnClickListener(this);
-        findViewById(R.id.other_btn_floating).setOnClickListener(this);
-        findViewById(R.id.other_btn_clipboard).setOnClickListener(this);
-        findViewById(R.id.other_btn_retrofit).setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
+    private void open(View v) {
         switch (v.getId()) {
             case R.id.other_btn_printer:
-                PrinterActivity.start(getActivity());
+                PrinterActivity.start(requireContext());
                 break;
             case R.id.other_btn_crypto:
-                CryptoActivity.start(getActivity());
+                CryptoActivity.start(requireContext());
                 break;
             case R.id.other_btn_ftp:
-                FtpActivity.start(getActivity());
+                FtpActivity.start(requireContext());
                 break;
             case R.id.other_btn_font:
-                FontActivity.start(getActivity());
+                FontActivity.start(requireContext());
                 break;
             case R.id.other_btn_opentype:
-                OpenTypeListActivity.start(getActivity());
+                OpenTypeListActivity.start(requireContext());
                 break;
             case R.id.other_btn_floating:
-                FloatingActionModeActivity.start(getActivity());
+                FloatingActionModeActivity.start(requireContext());
                 break;
             case R.id.other_btn_clipboard:
-                ClipboardActivity.start(getActivity());
+                ClipboardActivity.start(requireContext());
                 break;
             case R.id.other_btn_retrofit:
-                RetrofitActivity.start(getActivity());
+                RetrofitActivity.start(requireContext());
                 break;
         }
     }

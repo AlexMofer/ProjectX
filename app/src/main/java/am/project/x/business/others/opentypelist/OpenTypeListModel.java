@@ -17,20 +17,16 @@ package am.project.x.business.others.opentypelist;
 
 import java.io.File;
 
-import am.util.mvp.AMModel;
+import am.util.mvp.core.MVPModel;
 
 /**
  * Model
  */
-class OpenTypeListModel extends AMModel<OpenTypeListPresenter> implements OpenTypeListViewModel {
+class OpenTypeListModel extends MVPModel<OpenTypeListPresenter> implements OpenTypeListViewModel {
 
     private static final String DIR_FONTS = "/system/fonts";
     private final File dir = new File(DIR_FONTS);
     private File[] mItems;
-
-    OpenTypeListModel(OpenTypeListPresenter presenter) {
-        super(presenter);
-    }
 
     // AdapterViewModel
     @Override
@@ -52,9 +48,10 @@ class OpenTypeListModel extends AMModel<OpenTypeListPresenter> implements OpenTy
     @Override
     public void loadOpenType() {
         mItems = dir.listFiles();
-        if (isDetachedFromPresenter())
+        final OpenTypeListPresenter presenter = getPresenter();
+        if (presenter == null)
             return;
-        getPresenter().onOpenTypeLoaded();
+        presenter.onOpenTypeLoaded();
     }
 
     @Override

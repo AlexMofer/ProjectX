@@ -79,4 +79,9 @@ interface PrinterViewModel {
      * 打印
      */
     void print();
+
+    /**
+     * 停止
+     */
+    void stop();
 }

@@ -21,8 +21,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
+import am.appcompat.app.BaseActivity;
 import am.project.x.R;
-import am.project.x.base.BaseActivity;
 
 /**
  * 正在开发
@@ -34,12 +34,9 @@ public class DevelopingActivity extends BaseActivity {
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_developing;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_developing);
         setSupportActionBar(R.id.developing_toolbar);
     }
 }

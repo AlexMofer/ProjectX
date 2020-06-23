@@ -15,7 +15,7 @@
  */
 package am.project.x;
 
-import am.project.x.base.BroadcastApplication;
+import am.project.x.broadcast.BroadcastApplication;
 import am.project.x.notification.NotificationChannelHelper;
 
 /**

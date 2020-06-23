@@ -29,13 +29,14 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Locale;
-
-import am.project.x.R;
-import am.project.x.base.BaseActivity;
-import am.widget.headerfootergridview.HeaderFooterGridView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
+
+import java.util.Locale;
+
+import am.appcompat.app.BaseActivity;
+import am.project.x.R;
+import am.widget.headerfootergridview.HeaderFooterGridView;
 
 /**
  * 头尾网格视图
@@ -56,12 +57,9 @@ public class HeaderFooterGridViewActivity extends BaseActivity implements
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_headerfootergridview;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_headerfootergridview);
         setSupportActionBar(R.id.hfg_toolbar);
         mVContent = findViewById(R.id.hfg_hfg_content);
         tvHeaderView1 = createTextView(this);

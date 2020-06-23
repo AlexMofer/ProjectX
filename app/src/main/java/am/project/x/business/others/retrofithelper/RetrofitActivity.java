@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import am.appcompat.app.BaseActivity;
 import am.project.x.R;
-import am.project.x.base.BaseActivity;
 import am.project.x.business.others.retrofithelper.gson.GsonHelper;
 import am.util.retrofit.TinyCallback;
 import am.util.retrofit.WeakCallback;
@@ -28,12 +28,9 @@ public class RetrofitActivity extends BaseActivity implements TinyCallback<TestB
     }
 
     @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_retrofit;
-    }
-
-    @Override
-    protected void initializeActivity(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_retrofit);
         setSupportActionBar(R.id.retrofit_toolbar);
         mVInput = findViewById(R.id.main_edt_input);
         mVOutput = findViewById(R.id.main_tv_output);

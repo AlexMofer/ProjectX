@@ -25,12 +25,10 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -43,9 +41,9 @@ import androidx.annotation.RequiresApi;
 
 import java.util.Locale;
 
+import am.appcompat.app.BaseFragment;
 import am.project.support.utils.InputMethodUtils;
 import am.project.x.R;
-import am.project.x.base.BaseSupportFragment;
 import am.project.x.business.others.ftp.FtpFragmentCallback;
 import am.project.x.utils.ContextUtils;
 
@@ -54,7 +52,7 @@ import am.project.x.utils.ContextUtils;
  * Created by Alex on 2019/10/10.
  */
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-public class AdvancedFragment extends BaseSupportFragment implements TextWatcher,
+public class AdvancedFragment extends BaseFragment implements TextWatcher,
         CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     private static final int ACTIVITY_REQUEST_URI = 100;
@@ -69,20 +67,19 @@ public class AdvancedFragment extends BaseSupportFragment implements TextWatcher
         return new AdvancedFragment();
     }
 
-    @Override
-    protected int getContentViewLayout(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-        return R.layout.fragment_ftp_advanced;
+    public AdvancedFragment() {
+        super(R.layout.fragment_ftp_advanced);
     }
 
     @Override
-    protected void initializeFragment(Activity activity, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         mVPort = findViewById(R.id.advanced_edt_port);
         mVAuto = findViewById(R.id.advanced_cb_auto);
         mVUri = findViewById(R.id.advanced_btn_uri);
 
-        mConfig = new AdvancedFtpConfig(activity);
+        mConfig = new AdvancedFtpConfig(requireContext());
         mVPort.setText(String.format(Locale.getDefault(), "%d", mConfig.getPort()));
         mVAuto.setChecked(mConfig.isAutoChangePort());
         mVUri.setText(mConfig.getUri());
