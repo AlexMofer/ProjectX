@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 AlexMofer
+ * Copyright (C) 2020 AlexMofer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,32 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package am.util.retrofit;
 
-import retrofit2.Call;
-
 /**
- * 精简的回调
- * Created by Alex on 2018/3/14.
+ * 回调
+ * Created by Alex on 2020/6/23.
  */
-public interface SimplifiedCallback<T> {
+public interface Callback<T> {
+
+    int ERROR_CODE_THROWABLE = -1;
+    int ERROR_CODE_EMPTY = -2;
 
     /**
      * 响应
      *
-     * @param call   请求
      * @param result 结果（在回调包装器允许空结果的情况下，可能为空）
      */
-    void onResponse(Call<T> call, T result);
+    void onResponse(T result);
 
     /**
      * 错误
      *
-     * @param call    请求
      * @param code    错误码
      * @param message 错误信息（可能为空）
-     * @param result  结果（可能为空）
      */
-    void onFailure(Call<T> call, int code, String message, T result);
+    void onFailure(int code, String message);
 }

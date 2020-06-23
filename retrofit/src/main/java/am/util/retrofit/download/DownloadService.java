@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 AlexMofer
+ * Copyright (C) 2020 AlexMofer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,28 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package am.util.retrofit.download;
 
-package am.util.retrofit;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 
 /**
- * 极简的回调
- * Created by Alex on 2018/3/14.
+ * 下载
+ * Created by Alex on 2018/12/3.
  */
-public interface TinyCallback<T> {
+interface DownloadService {
 
     /**
-     * 响应
+     * 下载文件
      *
-     * @param result 结果（在回调包装器允许空结果的情况下，可能为空）
+     * @param fileUrl 文件链接
+     * @return 文件
      */
-    void onResponse(T result);
+    @GET
+    Call<ResponseBody> download(@Url String fileUrl);
 
     /**
-     * 错误
+     * 流式下载文件
      *
-     * @param code    错误码
-     * @param message 错误信息（可能为空）
-     * @param result  结果（可能为空）
+     * @param fileUrl 文件链接
+     * @return 文件
      */
-    void onFailure(int code, String message, T result);
+    @Streaming
+    @GET
+    Call<ResponseBody> downloadStreaming(@Url String fileUrl);
 }

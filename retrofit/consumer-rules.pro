@@ -38,3 +38,11 @@
 
 # Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
 -dontwarn org.codehaus.mojo.animal_sniffer.*
+
+# Other
+-dontnote okhttp3.**
+-dontnote okio.**
+-dontwarn com.squareup.okhttp.**
+-dontwarn org.springframework.beans.factory.**
+-dontwarn javax.security.sasl.SaslException
+-dontwarn java.lang.ClassValue

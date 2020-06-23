@@ -16,30 +16,45 @@
 
 package am.util.retrofit;
 
+import java.lang.ref.WeakReference;
+
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
  * 回调包装器
  * Created by Alex on 2018/3/14.
  */
-@SuppressWarnings({"WeakerAccess", "unused"})
-public class CallbackWrapper<T> implements Callback<T> {
+@SuppressWarnings({"WeakerAccess", "unused", "NullableProblems"})
+public class CallbackWrapper<T> implements retrofit2.Callback<T> {
 
-    public static final int ERROR_CODE_THROWABLE = 0xff000001;
-    public static final int ERROR_CODE_NULL = 0xff000002;
-    private final SimplifiedCallback<T> mSimplified;
-    private final TinyCallback<T> mTiny;
+    private WeakReference<Callback<T>> mWeakCallback;
+    private Callback<T> mCallback;
 
-    public CallbackWrapper(SimplifiedCallback<T> callback) {
-        mSimplified = callback;
-        mTiny = null;
+    /**
+     * 设置回调
+     *
+     * @param callback 回调
+     * @param weak     是否为弱引用
+     * @return 回调包装器
+     */
+    public CallbackWrapper<T> setCallback(Callback<T> callback, boolean weak) {
+        if (weak) {
+            mWeakCallback = new WeakReference<>(callback);
+            mCallback = null;
+        } else {
+            mWeakCallback = null;
+            mCallback = callback;
+        }
+        return this;
     }
 
-    public CallbackWrapper(TinyCallback<T> callback) {
-        mSimplified = null;
-        mTiny = callback;
+    private Callback<T> getCallback() {
+        if (mCallback != null)
+            return mCallback;
+        if (mWeakCallback != null)
+            return mWeakCallback.get();
+        return null;
     }
 
     /**
@@ -47,7 +62,7 @@ public class CallbackWrapper<T> implements Callback<T> {
      *
      * @return 默认不检查
      */
-    public boolean checkNullResponse() {
+    public boolean checkEmptyResponse() {
         return false;
     }
 
@@ -55,18 +70,21 @@ public class CallbackWrapper<T> implements Callback<T> {
     public void onResponse(Call<T> call, Response<T> response) {
         if (response.isSuccessful()) {
             final T result = response.body();
-            if (checkNullResponse() && result == null)
-                onFailure(call, ERROR_CODE_NULL, null, null);
+            if (checkEmptyResponse() && result == null)
+                onEmptyResponse(call, response);
             else
                 onResponse(call, result);
         } else {
-            onFailure(call, response.code(), response.message(), response.body());
+            onFailure(call, response.code(), response.message());
         }
     }
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
-        onFailure(call, ERROR_CODE_THROWABLE, t.getMessage(), null);
+        final Callback<T> callback = getCallback();
+        if (callback == null)
+            return;
+        callback.onFailure(Callback.ERROR_CODE_THROWABLE, t.getMessage());
     }
 
     /**
@@ -76,10 +94,10 @@ public class CallbackWrapper<T> implements Callback<T> {
      * @param result 结果（在回调包装器允许空结果的情况下，可能为空）
      */
     protected void onResponse(Call<T> call, T result) {
-        if (mSimplified != null)
-            mSimplified.onResponse(call, result);
-        if (mTiny != null)
-            mTiny.onResponse(result);
+        final Callback<T> callback = getCallback();
+        if (callback == null)
+            return;
+        callback.onResponse(result);
     }
 
     /**
@@ -88,12 +106,24 @@ public class CallbackWrapper<T> implements Callback<T> {
      * @param call    请求
      * @param code    错误码
      * @param message 错误信息（可能为空）
-     * @param result  结果（可能为空）
      */
-    protected void onFailure(Call<T> call, int code, String message, T result) {
-        if (mSimplified != null)
-            mSimplified.onFailure(call, code, message, result);
-        if (mTiny != null)
-            mTiny.onFailure(code, message, result);
+    protected void onFailure(Call<T> call, int code, String message) {
+        final Callback<T> callback = getCallback();
+        if (callback == null)
+            return;
+        callback.onFailure(code, message);
+    }
+
+    /**
+     * 出现空响应
+     *
+     * @param call     请求
+     * @param response 响应
+     */
+    protected void onEmptyResponse(Call<T> call, Response<T> response) {
+        final Callback<T> callback = getCallback();
+        if (callback == null)
+            return;
+        callback.onFailure(Callback.ERROR_CODE_EMPTY, "Empty Response.");
     }
 }

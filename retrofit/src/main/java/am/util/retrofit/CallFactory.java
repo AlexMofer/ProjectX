@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
 
 /**
@@ -38,6 +39,7 @@ public class CallFactory<S> {
         onInitializeOkHttpClientBuilder(mClientBuilder);
         mRetrofitBuilder = new Retrofit.Builder();
         onInitializeRetrofitBuilder(mRetrofitBuilder);
+        mRetrofitBuilder.addConverterFactory(onCreateConverterFactory(mRetrofitBuilder));
     }
 
     public CallFactory(Class<S> service) {
@@ -95,6 +97,16 @@ public class CallFactory<S> {
      * @param builder RetrofitBuilder
      */
     protected void onInitializeRetrofitBuilder(Retrofit.Builder builder) {
+    }
+
+    /**
+     * 创建转换工厂
+     *
+     * @param builder RetrofitBuilder
+     * @return 转换工厂
+     */
+    protected Converter.Factory onCreateConverterFactory(Retrofit.Builder builder) {
+        return GsonConverterFactory.newInstance();
     }
 
     /**
