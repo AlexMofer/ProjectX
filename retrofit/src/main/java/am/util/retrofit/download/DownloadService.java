@@ -25,7 +25,7 @@ import retrofit2.http.Url;
  * 下载
  * Created by Alex on 2018/12/3.
  */
-interface DownloadService {
+public interface DownloadService {
 
     /**
      * 下载文件

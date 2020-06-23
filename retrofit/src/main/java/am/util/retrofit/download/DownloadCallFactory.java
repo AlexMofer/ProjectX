@@ -26,7 +26,7 @@ import retrofit2.Retrofit;
 public class DownloadCallFactory extends CallFactory<DownloadService> {
     private static DownloadCallFactory mInstance;
 
-    private DownloadCallFactory() {
+    protected DownloadCallFactory() {
         //no instance
         super(DownloadService.class);
     }
