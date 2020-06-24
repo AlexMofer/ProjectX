@@ -36,14 +36,14 @@ import am.project.x.business.others.ftp.legacy.LegacyFragment;
 /**
  * FTP 文件传输
  */
-public class FtpActivityRename extends BaseActivity implements FtpFragmentCallback {
+public class FtpActivity extends BaseActivity implements FtpFragmentCallback {
 
     private static final String TAG_ADVANCED = "advanced";
     private static final String TAG_LEGACY = "legacy";
     private ViewGroup mVContent;
 
     public static Intent getStarter(Context context) {
-        return new Intent(context, FtpActivityRename.class);
+        return new Intent(context, FtpActivity.class);
     }
 
     public static void start(Context context) {

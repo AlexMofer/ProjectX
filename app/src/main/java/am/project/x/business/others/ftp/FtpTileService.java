@@ -28,7 +28,7 @@ import am.project.x.R;
  * 文件传输快捷菜单
  */
 @RequiresApi(24)
-public class FtpTileServiceRename extends TileService {
+public class FtpTileService extends TileService {
 
     @Override
     public void onClick() {

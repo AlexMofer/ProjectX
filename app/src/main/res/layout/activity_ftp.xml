@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".business.others.ftp.FtpActivityRename">
+    tools:context=".business.others.ftp.FtpActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/ftp_toolbar"

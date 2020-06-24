@@ -34,7 +34,7 @@ import androidx.annotation.RequiresApi;
 
 import am.project.x.R;
 import am.project.x.broadcast.LocalBroadcastHelper;
-import am.project.x.business.others.ftp.FtpActivityRename;
+import am.project.x.business.others.ftp.FtpActivity;
 import am.project.x.notification.NotificationMaker;
 import am.project.x.utils.ContextUtils;
 import am.project.x.utils.Utils;
@@ -136,7 +136,7 @@ public class AdvancedFtpService extends Service {
         startForeground(NotificationMaker.ID_FTP,
                 NotificationMaker.getFTPRunning(this, title, text,
                         PendingIntent.getActivity(this, NotificationMaker.ID_FTP,
-                                FtpActivityRename.getStarter(this),
+                                FtpActivity.getStarter(this),
                                 PendingIntent.FLAG_UPDATE_CURRENT)));
         STARTED = true;
         LocalBroadcastHelper.sendBroadcast(LocalBroadcastHelper.ACTION_FTP_STARTED);
