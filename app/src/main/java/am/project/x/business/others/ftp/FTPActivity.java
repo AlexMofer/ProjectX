@@ -34,7 +34,7 @@ import am.project.x.business.others.ftp.advanced.AdvancedFragment;
 import am.project.x.business.others.ftp.legacy.LegacyFragment;
 
 /**
- * FTP 文件传输
+ * FTP 文件传输 
  */
 public class FtpActivity extends BaseActivity implements FtpFragmentCallback {
 
