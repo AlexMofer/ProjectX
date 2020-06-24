@@ -120,14 +120,14 @@
             android:label="@string/crypto_label" />
         <activity android:name=".business.browser.BrowserActivity" />
         <activity
-            android:name=".business.others.ftp.FtpActivity"
+            android:name=".business.others.ftp.FtpActivityRename"
             android:label="@string/ftp_label"
             android:launchMode="singleTask" />
         <activity
             android:name=".business.others.ftp.legacy.LegacyPathSelectActivity"
             android:label="@string/lps_label" />
         <activity
-            android:name=".business.others.ftp.FtpSwitcherActivity"
+            android:name=".business.others.ftp.FtpSwitcherActivityRename"
             android:theme="@style/CompletelyTransparentDialog" />
         <activity
             android:name=".business.others.font.FontActivity"
@@ -158,7 +158,7 @@
             android:name=".business.others.ftp.advanced.AdvancedFtpService"
             android:exported="false" />
         <service
-            android:name=".business.others.ftp.FtpTileService"
+            android:name=".business.others.ftp.FtpTileServiceRename"
             android:icon="@drawable/ic_tile_ftp"
             android:label="@string/ftp_tile_label_inactive"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">

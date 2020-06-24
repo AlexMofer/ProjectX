@@ -20,15 +20,15 @@ import android.graphics.drawable.Icon;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 
-import am.project.x.R;
-
 import androidx.annotation.RequiresApi;
+
+import am.project.x.R;
 
 /**
  * 文件传输快捷菜单
  */
 @RequiresApi(24)
-public class FtpTileService extends TileService {
+public class FtpTileServiceRename extends TileService {
 
     @Override
     public void onClick() {

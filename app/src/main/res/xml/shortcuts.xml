@@ -9,7 +9,7 @@
         android:shortcutShortLabel="@string/ftp_switcher_shortcuts_short">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="am.project.x.business.others.ftp.FtpSwitcherActivity"
+            android:targetClass="am.project.x.business.others.ftp.FtpSwitcherActivityRename"
             android:targetPackage="am.project.x" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>

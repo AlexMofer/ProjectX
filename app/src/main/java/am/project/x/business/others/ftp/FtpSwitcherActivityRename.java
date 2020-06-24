@@ -26,7 +26,7 @@ import am.project.x.R;
 /**
  * 文件传输开关
  */
-public class FtpSwitcherActivity extends BaseActivity {
+public class FtpSwitcherActivityRename extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

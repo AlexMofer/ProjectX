@@ -27,7 +27,7 @@ import am.project.x.business.others.clipboard.ClipboardActivity;
 import am.project.x.business.others.crypto.CryptoActivity;
 import am.project.x.business.others.floatingactionmode.FloatingActionModeActivity;
 import am.project.x.business.others.font.FontActivity;
-import am.project.x.business.others.ftp.FtpActivity;
+import am.project.x.business.others.ftp.FtpActivityRename;
 import am.project.x.business.others.opentypelist.OpenTypeListActivity;
 import am.project.x.business.others.printer.PrinterActivity;
 import am.project.x.business.others.retrofithelper.RetrofitActivity;
@@ -64,7 +64,7 @@ public class OthersFragment extends BaseFragment {
                 CryptoActivity.start(requireContext());
                 break;
             case R.id.other_btn_ftp:
-                FtpActivity.start(requireContext());
+                FtpActivityRename.start(requireContext());
                 break;
             case R.id.other_btn_font:
                 FontActivity.start(requireContext());
