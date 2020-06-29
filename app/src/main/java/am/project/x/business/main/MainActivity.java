@@ -64,6 +64,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     private ViewGroup mVContent;
     private String mCurrent;
 
+    public MainActivity() {
+        super(R.layout.activity_main);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
     }
@@ -71,7 +75,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         ViewUtils.setLayoutFullscreen(getWindow().getDecorView(), false);
 
         final Toolbar toolbar = findViewById(R.id.main_toolbar);

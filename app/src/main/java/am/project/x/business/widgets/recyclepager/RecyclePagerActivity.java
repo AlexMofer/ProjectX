@@ -44,6 +44,10 @@ public class RecyclePagerActivity extends BaseActivity implements View.OnClickLi
     private TextView mVPage;
     private TextView mVTitle;
 
+    public RecyclePagerActivity() {
+        super(R.layout.activity_recyclepager);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, RecyclePagerActivity.class));
     }
@@ -51,7 +55,6 @@ public class RecyclePagerActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recyclepager);
         setSupportActionBar(R.id.rp_toolbar);
         final ViewPager pager = findViewById(R.id.rp_vp_content);
         mVPage = findViewById(R.id.rp_tv_page_value);

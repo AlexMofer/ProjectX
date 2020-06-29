@@ -38,6 +38,10 @@ public class GridDrawableActivity extends BaseActivity implements
     private GridDrawable mDrawable;
     private float density;
 
+    public GridDrawableActivity() {
+        super(R.layout.activity_griddrawable);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, GridDrawableActivity.class));
     }
@@ -45,7 +49,6 @@ public class GridDrawableActivity extends BaseActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_griddrawable);
         setSupportActionBar(R.id.grd_toolbar);
         mVImage = findViewById(R.id.lrd_iv_content);
         mDrawable = new GridDrawable(ContextCompat.getDrawable(this,

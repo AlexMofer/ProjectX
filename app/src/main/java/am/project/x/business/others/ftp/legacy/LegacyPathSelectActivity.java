@@ -57,6 +57,10 @@ public class LegacyPathSelectActivity extends BaseActivity implements
     private AlertDialog mCreator;
     private EditText mVName;
 
+    public LegacyPathSelectActivity() {
+        super(R.layout.activity_legacy_path_select);
+    }
+
     public static Intent getStarter(Context context, String path) {
         final Intent starter = new Intent(context, LegacyPathSelectActivity.class);
         starter.putExtra(EXTRA_PATH, path);
@@ -70,7 +74,6 @@ public class LegacyPathSelectActivity extends BaseActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_legacy_path_select);
         mAdapter.setDir(getIntent().getStringExtra(EXTRA_PATH));
         setSupportActionBar(R.id.lps_toolbar);
         mVToolbar = findViewById(R.id.lps_toolbar);

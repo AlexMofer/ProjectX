@@ -35,6 +35,10 @@ import am.project.x.utils.ViewUtils;
  */
 public class AboutActivity extends BaseActivity {
 
+    public AboutActivity() {
+        super(R.layout.activity_about);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, AboutActivity.class));
     }
@@ -42,7 +46,6 @@ public class AboutActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
         ViewUtils.setLayoutFullscreen(getWindow().getDecorView(), false);
         setSupportActionBar(R.id.about_toolbar);
         ((TextView) findViewById(R.id.about_tv_version)).setText(

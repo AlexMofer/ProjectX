@@ -36,6 +36,10 @@ public class ClipboardActivity extends BaseActivity implements View.OnClickListe
     private TextView mVResult;
     private final ClipboardBean mData = ClipboardBean.test();
 
+    public ClipboardActivity() {
+        super(R.layout.activity_clipboard);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, ClipboardActivity.class));
     }
@@ -43,7 +47,6 @@ public class ClipboardActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_clipboard);
         setSupportActionBar(R.id.clipboard_toolbar);
         mVResult = findViewById(R.id.clipboard_tv_result);
         findViewById(R.id.clipboard_btn_copy).setOnClickListener(this);

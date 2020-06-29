@@ -42,6 +42,10 @@ public class LineDrawableActivity extends BaseActivity implements
 
     private LineDrawable drawable;
 
+    public LineDrawableActivity() {
+        super(R.layout.activity_linedrawable);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, LineDrawableActivity.class));
     }
@@ -49,7 +53,6 @@ public class LineDrawableActivity extends BaseActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_linedrawable);
         setSupportActionBar(R.id.lid_toolbar);
         drawable = new LineDrawable(Color.TRANSPARENT,
                 ContextCompat.getColor(this, R.color.colorPrimary), 1,

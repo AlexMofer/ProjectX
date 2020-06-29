@@ -48,6 +48,10 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
     private View vEmoji;
     private View vMore;
 
+    public SmoothInputLayoutActivity() {
+        super(R.layout.activity_smoothinputlayout);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, SmoothInputLayoutActivity.class));
     }
@@ -56,7 +60,6 @@ public class SmoothInputLayoutActivity extends BaseActivity implements View.OnCl
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_smoothinputlayout);
         setSupportActionBar(R.id.sil_toolbar);
         lytContent = findViewById(R.id.sil_lyt_content);
         btnVoice = findViewById(R.id.sil_ibtn_voice);

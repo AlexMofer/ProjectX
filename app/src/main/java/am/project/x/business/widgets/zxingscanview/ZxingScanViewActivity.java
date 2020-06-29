@@ -57,6 +57,10 @@ public class ZxingScanViewActivity extends BaseActivity implements ZxingScanView
     private ZxingScanView mVScan;
     private ZxingForegroundView mVForeground;
 
+    public ZxingScanViewActivity() {
+        super(R.layout.activity_zxingscanview);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, ZxingScanViewActivity.class));
     }
@@ -64,7 +68,6 @@ public class ZxingScanViewActivity extends BaseActivity implements ZxingScanView
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_zxingscanview);
         setSupportActionBar(R.id.zsv_toolbar);
         mVScan = findViewById(R.id.zsv_zsv_scan);
         mVForeground = findViewById(R.id.zsv_zfv_foreground);

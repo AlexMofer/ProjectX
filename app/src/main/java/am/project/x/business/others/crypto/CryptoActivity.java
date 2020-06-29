@@ -41,6 +41,10 @@ public class CryptoActivity extends CommonActivity implements CryptoView, View.O
     private TextView mVOutput;
     private AlertDialog mDLoading;
 
+    public CryptoActivity() {
+        super(R.layout.activity_crypto);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, CryptoActivity.class));
     }
@@ -48,7 +52,6 @@ public class CryptoActivity extends CommonActivity implements CryptoView, View.O
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_crypto);
         setSupportActionBar(R.id.crypto_toolbar);
         mVInput = findViewById(R.id.crypto_edt_input);
         mVOutput = findViewById(R.id.crypto_tv_output);

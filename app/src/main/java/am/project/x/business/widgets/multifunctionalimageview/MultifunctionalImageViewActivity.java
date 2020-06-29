@@ -45,6 +45,10 @@ public class MultifunctionalImageViewActivity extends BaseActivity implements
             new RoundRectClipOutlineProvider(0);
     private MultifunctionalImageView mVImage;
 
+    public MultifunctionalImageViewActivity() {
+        super(R.layout.activity_multifunctionalimageview);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, MultifunctionalImageViewActivity.class));
     }
@@ -52,7 +56,6 @@ public class MultifunctionalImageViewActivity extends BaseActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_multifunctionalimageview);
         setSupportActionBar(R.id.miv_toolbar);
         mVImage = findViewById(R.id.miv_image);
         final Switch crop = findViewById(R.id.miv_sw_crop);

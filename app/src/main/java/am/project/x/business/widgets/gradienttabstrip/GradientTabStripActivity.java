@@ -42,6 +42,10 @@ import am.widget.gradienttabstrip.GradientTabStrip;
  */
 public class GradientTabStripActivity extends BaseActivity {
 
+    public GradientTabStripActivity() {
+        super(R.layout.activity_gradienttabstrip);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, GradientTabStripActivity.class));
     }
@@ -49,7 +53,6 @@ public class GradientTabStripActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gradienttabstrip);
         setSupportActionBar(R.id.gts_toolbar);
         ((ViewPager) findViewById(R.id.gts_vp_pagers))
                 .setAdapter(new PagerAdapter(getPagers()));

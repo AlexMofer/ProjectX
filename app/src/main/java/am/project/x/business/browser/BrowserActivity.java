@@ -33,6 +33,10 @@ public class BrowserActivity extends BaseActivity implements PowerfulWebView.OnT
     private static final String EXTRA_URL = "url";
     private PowerfulWebView mVContent;
 
+    public BrowserActivity() {
+        super(R.layout.activity_browser);
+    }
+
     public static void start(Context context, String url) {
         final Intent starter = new Intent(context, BrowserActivity.class);
         starter.putExtra(EXTRA_URL, url);
@@ -42,7 +46,6 @@ public class BrowserActivity extends BaseActivity implements PowerfulWebView.OnT
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_browser);
         setSupportActionBar(R.id.browser_toolbar);
         final String url = getIntent().getStringExtra(EXTRA_URL);
         if (TextUtils.isEmpty(url)) {

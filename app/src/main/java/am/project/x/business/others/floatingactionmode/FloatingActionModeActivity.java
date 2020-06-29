@@ -41,6 +41,10 @@ public class FloatingActionModeActivity extends BaseActivity implements PressVie
     private final Rect mBound = new Rect();
     private FloatingActionMode mMode;
 
+    public FloatingActionModeActivity() {
+        super(R.layout.activity_floatingactionmode);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, FloatingActionModeActivity.class));
     }
@@ -48,7 +52,6 @@ public class FloatingActionModeActivity extends BaseActivity implements PressVie
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_floatingactionmode);
         setSupportActionBar(R.id.floating_toolbar);
         final PressView bound = findViewById(R.id.floating_dv_bound);
         bound.setOnPressListener(this);

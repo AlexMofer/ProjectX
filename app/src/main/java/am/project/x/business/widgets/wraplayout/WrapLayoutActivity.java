@@ -35,6 +35,10 @@ public class WrapLayoutActivity extends BaseActivity implements RadioGroup.OnChe
 
     private WrapLayout mVContent;
 
+    public WrapLayoutActivity() {
+        super(R.layout.activity_wraplayout);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, WrapLayoutActivity.class));
     }
@@ -42,7 +46,6 @@ public class WrapLayoutActivity extends BaseActivity implements RadioGroup.OnChe
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wraplayout);
         setSupportActionBar(R.id.wl_toolbar);
         mVContent = findViewById(R.id.wl_wl_content);
         final RadioGroup gravity = findViewById(R.id.wl_rg_gravity);

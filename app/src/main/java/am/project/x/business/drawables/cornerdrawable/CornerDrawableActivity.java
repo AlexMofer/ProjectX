@@ -44,6 +44,10 @@ public class CornerDrawableActivity extends BaseActivity implements
     private CornerDrawable mDrawable;
     private float mDensity;
 
+    public CornerDrawableActivity() {
+        super(R.layout.activity_cornerdrawable);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, CornerDrawableActivity.class));
     }
@@ -51,7 +55,6 @@ public class CornerDrawableActivity extends BaseActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cornerdrawable);
         setSupportActionBar(R.id.cnd_toolbar);
         mVContent = findViewById(R.id.cnd_tv_content);
         mDensity = getResources().getDisplayMetrics().density;

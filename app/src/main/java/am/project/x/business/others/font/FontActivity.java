@@ -40,6 +40,10 @@ public class FontActivity extends CommonActivity implements FontView,
 
     private FontFamilyPickerDialog mPicker;
 
+    public FontActivity() {
+        super(R.layout.activity_font);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, FontActivity.class));
     }
@@ -47,7 +51,6 @@ public class FontActivity extends CommonActivity implements FontView,
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_font);
         setSupportActionBar(R.id.font_toolbar);
         final RecyclerView content = findViewById(R.id.font_content);
         content.setAdapter(mAdapter);

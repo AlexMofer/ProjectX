@@ -89,6 +89,10 @@ public class PrinterActivity extends CommonActivity implements PrinterView,
     };
     private PrinterStateDialog mState;
 
+    public PrinterActivity() {
+        super(R.layout.activity_printer);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, PrinterActivity.class));
     }
@@ -96,7 +100,6 @@ public class PrinterActivity extends CommonActivity implements PrinterView,
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_printer);
         setSupportActionBar(R.id.printer_toolbar);
         mVWidth = findViewById(R.id.printer_edt_width);
         mVHeight = findViewById(R.id.printer_edt_height);

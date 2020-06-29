@@ -40,6 +40,10 @@ import am.widget.indicatortabstrip.IndicatorTabStrip;
  */
 public class IndicatorTabStripActivity extends BaseActivity {
 
+    public IndicatorTabStripActivity() {
+        super(R.layout.activity_indicatortabstrip);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, IndicatorTabStripActivity.class));
     }
@@ -47,7 +51,6 @@ public class IndicatorTabStripActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_indicatortabstrip);
         setSupportActionBar(R.id.its_toolbar);
         ((ViewPager) findViewById(R.id.its_vp_content)).setAdapter(new PagerAdapter(getPagers()));
         ((IndicatorTabStrip) findViewById(R.id.its_its_tabs)).setAdapter(new TabAdapter());

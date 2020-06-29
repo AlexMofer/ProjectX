@@ -44,6 +44,10 @@ public class CircleProgressBarActivity extends BaseActivity implements
     private CircleProgressBar mProgress;
     private float density;
 
+    public CircleProgressBarActivity() {
+        super(R.layout.activity_circleprogressbar);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, CircleProgressBarActivity.class));
     }
@@ -51,7 +55,6 @@ public class CircleProgressBarActivity extends BaseActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_circleprogressbar);
         setSupportActionBar(R.id.cpb_toolbar);
         mProgress = findViewById(R.id.cpb_cpb_bar);
         density = getResources().getDisplayMetrics().density;

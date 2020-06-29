@@ -34,10 +34,11 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
 import am.project.x.R;
-import androidx.annotation.NonNull;
 
 /**
  * 带进度条的WebView
@@ -108,11 +109,12 @@ public class PowerfulWebView extends WebView {
         invalidate();
         if (mProgressListener != null)
             mProgressListener.onProgressChanged(this, progress);
-        if (progress == 100) {
-            if (mState != null && mState.isError()) {
-                if (mErrorListener != null)
-                    mErrorListener.onError(this);
-            }
+    }
+
+    protected void onFinish(String url) {
+        if (mState != null && mState.isError()) {
+            if (mErrorListener != null)
+                mErrorListener.onError(this);
         }
     }
 
@@ -274,6 +276,14 @@ public class PowerfulWebView extends WebView {
         }
 
         @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            if (view instanceof PowerfulWebView) {
+                ((PowerfulWebView) view).onFinish(url);
+            }
+        }
+
+        @Override
         public void onReceivedError(WebView view, int errorCode, String description,
                                     String failingUrl) {
             super.onReceivedError(view, errorCode, description, failingUrl);
@@ -302,19 +312,16 @@ public class PowerfulWebView extends WebView {
         public static final int SUPPORT_TYPE_COMPAT = 2;// 兼容API 17以下用户
         private final String mName;
         private final Handler mHandler = new Handler(Looper.getMainLooper(),
-                new Handler.Callback() {
-                    @Override
-                    public boolean handleMessage(Message msg) {
-                        onReceiveValue((String) msg.obj);
-                        return true;
-                    }
+                msg -> {
+                    onReceiveValue((String) msg.obj);
+                    return true;
                 });
 
         public JavascriptInterfaceHelper(@NonNull String name) {
             mName = name;
         }
 
-        @SuppressLint({"JavascriptInterface", "AddJavascriptInterface"})
+        @SuppressLint({"JavascriptInterface", "AddJavascriptInterface", "ObsoleteSdkInt"})
         private void onAdd(WebView view) {
             final int type = getSupportType();
             switch (type) {

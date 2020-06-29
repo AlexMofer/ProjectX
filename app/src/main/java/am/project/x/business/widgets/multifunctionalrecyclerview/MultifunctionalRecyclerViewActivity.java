@@ -34,18 +34,21 @@ import am.widget.multifunctionalrecyclerview.MultifunctionalRecyclerView;
  */
 public class MultifunctionalRecyclerViewActivity extends BaseActivity {
 
-    public static void start(Context context) {
-        context.startActivity(new Intent(context, MultifunctionalRecyclerViewActivity.class));
-    }
-
     private final Adapter mAdapter = new Adapter();
     private MultifunctionalRecyclerView mVContent;
     private MultifunctionalLinearLayoutManager mManager;
 
+    public MultifunctionalRecyclerViewActivity() {
+        super(R.layout.activity_multifunctionalrecyclerview);
+    }
+
+    public static void start(Context context) {
+        context.startActivity(new Intent(context, MultifunctionalRecyclerViewActivity.class));
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_multifunctionalrecyclerview);
         setSupportActionBar(R.id.mrv_toolbar);
         mVContent = findViewById(R.id.mrv_rv_content);
         final int gap = 20;

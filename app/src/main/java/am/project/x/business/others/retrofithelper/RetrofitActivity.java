@@ -24,6 +24,10 @@ public class RetrofitActivity extends BaseActivity implements Callback<TestBean>
     private EditText mVInput;
     private TextView mVOutput;
 
+    public RetrofitActivity() {
+        super(R.layout.activity_retrofit);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, RetrofitActivity.class));
     }
@@ -31,7 +35,6 @@ public class RetrofitActivity extends BaseActivity implements Callback<TestBean>
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_retrofit);
         setSupportActionBar(R.id.retrofit_toolbar);
         mVInput = findViewById(R.id.main_edt_input);
         mVOutput = findViewById(R.id.main_tv_output);

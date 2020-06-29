@@ -39,6 +39,10 @@ public class OpenTypeListActivity extends MVPActivity implements OpenTypeListVie
             new OpenTypeListPresenter().setViewHolder(getViewHolder());
     private final OpenTypeListAdapter mAdapter = new OpenTypeListAdapter(mPresenter, this);
 
+    public OpenTypeListActivity() {
+        super(R.layout.activity_opentypelist);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, OpenTypeListActivity.class));
     }
@@ -46,7 +50,6 @@ public class OpenTypeListActivity extends MVPActivity implements OpenTypeListVie
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_opentypelist);
         setSupportActionBar(R.id.otl_toolbar);
         final RecyclerView list = findViewById(R.id.otl_content);
         final Drawable divider = ContextCompat.getDrawable(this, R.drawable.divider_common);

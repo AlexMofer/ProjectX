@@ -37,6 +37,10 @@ public class TextDrawableActivity extends BaseActivity implements
 
     private TextDrawable drawable;
 
+    public TextDrawableActivity() {
+        super(R.layout.activity_textdrawable);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, TextDrawableActivity.class));
     }
@@ -44,7 +48,6 @@ public class TextDrawableActivity extends BaseActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_textdrawable);
         setSupportActionBar(R.id.td_toolbar);
         final float size = 86 * getResources().getDisplayMetrics().density;
         drawable = new TextDrawable(getString(R.string.td_content), size,

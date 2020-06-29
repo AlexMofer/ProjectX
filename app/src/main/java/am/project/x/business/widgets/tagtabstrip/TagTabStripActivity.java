@@ -38,6 +38,10 @@ import am.util.viewpager.adapter.ViewsPagerAdapter;
  */
 public class TagTabStripActivity extends BaseActivity {
 
+    public TagTabStripActivity() {
+        super(R.layout.activity_tagtabstrip);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, TagTabStripActivity.class));
     }
@@ -45,7 +49,6 @@ public class TagTabStripActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tagtabstrip);
         setSupportActionBar(R.id.tts_toolbar);
         ((ViewPager) findViewById(R.id.tts_vp_pagers))
                 .setAdapter(new ViewsPagerAdapter(getPagers()));

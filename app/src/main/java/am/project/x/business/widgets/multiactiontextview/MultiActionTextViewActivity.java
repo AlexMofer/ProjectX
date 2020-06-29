@@ -36,6 +36,10 @@ import am.widget.multiactiontextview.MultiActionTextView;
 public class MultiActionTextViewActivity extends BaseActivity implements View.OnClickListener,
         MultiActionClickableSpan.OnTextClickedListener {
 
+    public MultiActionTextViewActivity() {
+        super(R.layout.activity_multiactiontextview);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, MultiActionTextViewActivity.class));
     }
@@ -43,7 +47,6 @@ public class MultiActionTextViewActivity extends BaseActivity implements View.On
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_multiactiontextview);
         setSupportActionBar(R.id.mat_toolbar);
         final MultiActionTextView text = findViewById(R.id.mat_tv_content);
         final int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);

@@ -42,6 +42,10 @@ public class FtpActivity extends BaseActivity implements FtpFragmentCallback {
     private static final String TAG_LEGACY = "legacy";
     private ViewGroup mVContent;
 
+    public FtpActivity() {
+        super(R.layout.activity_ftp);
+    }
+
     public static Intent getStarter(Context context) {
         return new Intent(context, FtpActivity.class);
     }
@@ -53,7 +57,6 @@ public class FtpActivity extends BaseActivity implements FtpFragmentCallback {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ftp);
         setSupportActionBar(R.id.ftp_toolbar);
         mVContent = findViewById(R.id.ftp_content);
         setFragment(false);

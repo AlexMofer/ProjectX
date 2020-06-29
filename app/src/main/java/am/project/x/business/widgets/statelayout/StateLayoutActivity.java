@@ -49,6 +49,10 @@ public class StateLayoutActivity extends BaseActivity implements
     private View mVError;
     private View mVEmpty;
 
+    public StateLayoutActivity() {
+        super(R.layout.activity_statelayout);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, StateLayoutActivity.class));
     }
@@ -56,7 +60,6 @@ public class StateLayoutActivity extends BaseActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_statelayout);
         setSupportActionBar(R.id.sl_toolbar);
         mVState = findViewById(R.id.sl_lyt_state);
         final RadioGroup state = findViewById(R.id.sl_rg_state);

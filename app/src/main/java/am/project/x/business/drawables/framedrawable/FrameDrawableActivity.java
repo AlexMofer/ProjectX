@@ -32,6 +32,10 @@ public class FrameDrawableActivity extends BaseActivity {
 
     private FrameDrawable mDrawable;
 
+    public FrameDrawableActivity() {
+        super(R.layout.activity_framedrawable);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, FrameDrawableActivity.class));
     }
@@ -39,7 +43,6 @@ public class FrameDrawableActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_framedrawable);
         setSupportActionBar(R.id.frame_toolbar);
         // TODO
         mDrawable = new FrameDrawable();

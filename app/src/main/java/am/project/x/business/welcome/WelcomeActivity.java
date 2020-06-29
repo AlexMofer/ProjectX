@@ -31,10 +31,13 @@ public class WelcomeActivity extends BaseActivity implements Runnable {
     private static final long DELAY_MILLIS = 2500;
     private boolean mDoNotStart = false;
 
+    public WelcomeActivity() {
+        super(R.layout.activity_welcome);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
         getWindow().getDecorView().postDelayed(this, DELAY_MILLIS);
     }
 

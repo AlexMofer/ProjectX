@@ -52,6 +52,10 @@ public class HeaderFooterGridViewActivity extends BaseActivity implements
     private TextView tvFooterView1, tvFooterView2, tvFooterView3;
     private TextView tvFooterItem1, tvFooterItem2, tvFooterItem3;
 
+    public HeaderFooterGridViewActivity() {
+        super(R.layout.activity_headerfootergridview);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, HeaderFooterGridViewActivity.class));
     }
@@ -59,7 +63,6 @@ public class HeaderFooterGridViewActivity extends BaseActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_headerfootergridview);
         setSupportActionBar(R.id.hfg_toolbar);
         mVContent = findViewById(R.id.hfg_hfg_content);
         tvHeaderView1 = createTextView(this);

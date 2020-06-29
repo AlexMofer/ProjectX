@@ -42,6 +42,10 @@ public class DrawableRatingBarActivity extends BaseActivity implements
 
     private DrawableRatingBar mVRating;
 
+    public DrawableRatingBarActivity() {
+        super(R.layout.activity_drawableratingbar);
+    }
+
     public static void start(Context context) {
         context.startActivity(new Intent(context, DrawableRatingBarActivity.class));
     }
@@ -49,7 +53,6 @@ public class DrawableRatingBarActivity extends BaseActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drawableratingbar);
         setSupportActionBar(R.id.drb_toolbar);
         mVRating = findViewById(R.id.drb_rb_stars);
         final SeekBar max = findViewById(R.id.drb_sb_max);

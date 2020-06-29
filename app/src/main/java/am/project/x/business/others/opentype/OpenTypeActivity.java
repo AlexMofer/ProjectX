@@ -42,6 +42,10 @@ public class OpenTypeActivity extends CommonActivity implements OpenTypeView,
     private OpenTypePickerDialog mPicker;
     private AlertDialog mInfo;
 
+    public OpenTypeActivity() {
+        super(R.layout.activity_opentype);
+    }
+
     public static void start(Context context, String path) {
         context.startActivity(
                 new Intent(context, OpenTypeActivity.class).putExtra(EXTRA_PATH, path));
@@ -50,7 +54,6 @@ public class OpenTypeActivity extends CommonActivity implements OpenTypeView,
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_opentype);
         setSupportActionBar(R.id.ot_toolbar);
         final RecyclerView content = findViewById(R.id.ot_content);
         content.setAdapter(mAdapter);
