@@ -19,7 +19,6 @@ import android.view.View;
 
 import androidx.annotation.ContentView;
 import androidx.annotation.IdRes;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -34,7 +33,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public BaseActivity() {
     }
 
-    @RequiresApi(27)
     @ContentView
     public BaseActivity(int contentLayoutId) {
         super(contentLayoutId);
