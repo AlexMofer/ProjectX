@@ -17,7 +17,6 @@ package am.util.mvp.ui;
 
 import androidx.annotation.ContentView;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
@@ -41,7 +40,6 @@ public abstract class MVPActivity extends BaseActivity implements MVPView {
         getLifecycle().addObserver(mLifecycleEventObserver);
     }
 
-    @RequiresApi(27)
     @ContentView
     public MVPActivity(int contentLayoutId) {
         super(contentLayoutId);

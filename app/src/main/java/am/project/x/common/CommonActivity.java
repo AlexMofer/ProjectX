@@ -18,8 +18,6 @@ package am.project.x.common;
 
 import android.app.Dialog;
 
-import androidx.annotation.RequiresApi;
-
 import java.util.ArrayList;
 
 import am.project.x.business.common.LoadingDialog;
@@ -39,7 +37,6 @@ public abstract class CommonActivity extends MVPActivity {
     public CommonActivity() {
     }
 
-    @RequiresApi(27)
     public CommonActivity(int contentLayoutId) {
         super(contentLayoutId);
     }
