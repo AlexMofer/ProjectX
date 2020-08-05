@@ -19,6 +19,8 @@ package am.util.printer;
 import android.bluetooth.BluetoothDevice;
 import android.os.AsyncTask;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
@@ -26,6 +28,7 @@ import java.util.List;
  * 打印执行者
  * Created by Alex on 2016/11/10.
  */
+@SuppressWarnings("unused")
 public class PrintExecutor {
     private int type;
     private PrintSocketHolder holder;
@@ -110,8 +113,19 @@ public class PrintExecutor {
     }
 
     /**
+     * 获取输入流
+     *
+     * @return 输入流
+     * @throws IOException 错误
+     */
+    public InputStream getInputStream() throws IOException {
+        return holder.getInputStream();
+    }
+
+    /**
      * 销毁
      */
+    @SuppressWarnings("UnusedReturnValue")
     public int closeSocket() {
         return holder.closeSocket();
     }
@@ -175,6 +189,7 @@ public class PrintExecutor {
         void onResult(int errorCode);
     }
 
+    @SuppressWarnings("ALL")
     private class PrintTask extends AsyncTask<PrintDataMaker, Integer, Integer> implements
             PrintSocketHolder.OnStateChangedListener {
 

@@ -21,6 +21,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 import java.net.Socket;
@@ -95,6 +96,14 @@ public class PrintSocketHolder {
             return ERROR_3;
         }
         return ERROR_0;
+    }
+
+    public InputStream getInputStream() throws IOException {
+        if (mDevice != null) {
+            return bluetoothSocket.getInputStream();
+        } else {
+            return socket.getInputStream();
+        }
     }
 
     public boolean isSocketPrepared() {
