@@ -30,8 +30,11 @@ import java.util.List;
 /**
  * StorageManager兼容器
  * Created by Alex on 2017/9/3.
+ *
+ * @see am.project.support.storage.StorageManagerCompat 使用该对象替代，下一版本将移除
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings("ALL")
+@Deprecated
 public final class AMStorageManagerCompat {
     private static final StorageManagerCompatImpl IMPL;
 

@@ -35,8 +35,10 @@ import am.project.support.compat.AMStorageManagerCompat;
 /**
  * Uri工具类
  * Created by Alex on 2017/10/23.
+ * 因其方法获取到的结果并不能够保证正确，该方法下一版本将移除。
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("ALL")
+@Deprecated
 public class UriUtils {
     private static final String EXTERNAL_STORAGE_PROVIDER_AUTHORITY =
             "com.android.externalstorage.documents";
