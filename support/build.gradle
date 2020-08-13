@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         //noinspection MinSdkTooLow
-        minSdkVersion 9
+        minSdkVersion 11
         targetSdkVersion 30
-        versionCode 31
-        versionName "1.6.3"
+        versionCode 32
+        versionName "1.7.0"
     }
 
     compileOptions {
@@ -20,6 +20,7 @@ android {
 
 dependencies {
     implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.collection:collection:1.1.0'
 }
 
 //apply from: "bintray.gradle"
