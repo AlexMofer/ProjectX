@@ -117,20 +117,21 @@ class MultiProcessSharedPreferencesContentValuesHelper {
             switch (type) {
                 case MultiProcessSharedPreferencesAction.TYPE_STRING:
                     actions.add(MultiProcessSharedPreferencesAction.putString(
-                            object.getString(KEY_KEY), object.getString(KEY_VALUE)));
+                            object.getString(KEY_KEY),
+                            object.has(KEY_VALUE) ? object.getString(KEY_VALUE) : null));
                     break;
                 case MultiProcessSharedPreferencesAction.TYPE_STRING_SET:
                     final String key = object.getString(KEY_KEY);
                     final Set<String> values;
-                    if (object.isNull(KEY_VALUE)) {
-                        values = null;
-                    } else {
+                    if (object.has(KEY_VALUE)) {
                         values = new ArraySet<>();
                         final JSONArray set = object.getJSONArray(KEY_VALUE);
                         final int length = set.length();
                         for (int j = 0; j < length; j++) {
                             values.add(set.getString(j));
                         }
+                    } else {
+                        values = null;
                     }
                     actions.add(MultiProcessSharedPreferencesAction.putStringSet(key, values));
                     break;
@@ -144,8 +145,8 @@ class MultiProcessSharedPreferencesContentValuesHelper {
                     break;
                 case MultiProcessSharedPreferencesAction.TYPE_FLOAT:
                     actions.add(MultiProcessSharedPreferencesAction.putFloat(
-                            object.getString(KEY_KEY),
-                            Float.parseFloat(object.getString(KEY_VALUE))));
+                            object.getString(KEY_KEY), object.has(KEY_VALUE) ?
+                                    Float.parseFloat(object.getString(KEY_VALUE)) : 0.0f));
                     break;
                 case MultiProcessSharedPreferencesAction.TYPE_BOOLEAN:
                     actions.add(MultiProcessSharedPreferencesAction.putBoolean(

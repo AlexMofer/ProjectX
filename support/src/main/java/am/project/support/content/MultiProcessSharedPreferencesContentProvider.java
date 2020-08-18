@@ -193,13 +193,13 @@ public class MultiProcessSharedPreferencesContentProvider extends ContentProvide
         final String name = selectionArgs[0];
         if (TextUtils.isEmpty(name))
             return 0;
-        final boolean change = Boolean.parseBoolean(selectionArgs[1]);
+        final boolean notify = Boolean.parseBoolean(selectionArgs[1]);
         if (values == null)
             return 0;
         final SharedPreferences preferences =
                 context.getSharedPreferences(name, Context.MODE_PRIVATE);
         preferences.registerOnSharedPreferenceChangeListener(mChangeHandler);
-        mChangeHandler.mNotify = change;
+        mChangeHandler.mNotify = notify;
         final int code = mMatcher.match(uri);
         if (code != CODE_APPLY && code != CODE_COMMIT)
             return 0;

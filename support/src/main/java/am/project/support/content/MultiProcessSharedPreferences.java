@@ -41,6 +41,7 @@ public class MultiProcessSharedPreferences implements SharedPreferences {
     private final String mName;
     private final Uri mBaseUri;
     private MultiProcessSharedPreferencesChangeBroadcastReceiver mReceiver;
+    private boolean mNotifyChanged;
 
     private MultiProcessSharedPreferences(@NonNull Context context, @NonNull String name,
                                           @Nullable String authority) {
@@ -217,6 +218,24 @@ public class MultiProcessSharedPreferences implements SharedPreferences {
         }
     }
 
+    /**
+     * 判断是否通知改变
+     *
+     * @return 通知改变时返回true
+     */
+    public boolean isNotifyChanged() {
+        return mNotifyChanged;
+    }
+
+    /**
+     * 设置是否通知改变
+     *
+     * @param notify 是否通知
+     */
+    public void setNotifyChanged(boolean notify) {
+        mNotifyChanged = notify;
+    }
+
     private Cursor query(String path, String key) {
         if (mBaseUri == null)
             return null;
@@ -234,7 +253,7 @@ public class MultiProcessSharedPreferences implements SharedPreferences {
         if (mBaseUri == null)
             return false;
         final Uri uri = Uri.withAppendedPath(mBaseUri, path);
-        final String[] args = new String[]{mName, String.valueOf(mReceiver != null)};
+        final String[] args = new String[]{mName, String.valueOf(mNotifyChanged)};
         final ContentValues values = new ContentValues();
         MultiProcessSharedPreferencesContentValuesHelper.put(values, actions);
         try {

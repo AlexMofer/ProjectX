@@ -16,6 +16,8 @@
 
 package am.project.support.content;
 
+import androidx.annotation.Nullable;
+
 import java.util.Set;
 
 /**
@@ -45,14 +47,16 @@ class MultiProcessSharedPreferencesAction {
         mKey = key;
     }
 
-    public static MultiProcessSharedPreferencesAction putString(String key, String value) {
+    public static MultiProcessSharedPreferencesAction putString(String key,
+                                                                @Nullable String value) {
         final MultiProcessSharedPreferencesAction action =
                 new MultiProcessSharedPreferencesAction(TYPE_STRING, key);
         action.mString = value;
         return action;
     }
 
-    public static MultiProcessSharedPreferencesAction putStringSet(String key, Set<String> values) {
+    public static MultiProcessSharedPreferencesAction putStringSet(String key,
+                                                                   @Nullable Set<String> values) {
         final MultiProcessSharedPreferencesAction action =
                 new MultiProcessSharedPreferencesAction(TYPE_STRING_SET, key);
         action.mSet = values;
@@ -103,10 +107,12 @@ class MultiProcessSharedPreferencesAction {
         return mKey;
     }
 
+    @Nullable
     public String getString() {
         return mString;
     }
 
+    @Nullable
     public Set<String> getStringSet() {
         return mSet;
     }
