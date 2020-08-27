@@ -263,6 +263,10 @@ public class MultiProcessSharedPreferences implements SharedPreferences {
         }
     }
 
+    String getName() {
+        return mName;
+    }
+
     private class EditorImpl implements Editor {
 
         private final ArrayList<MultiProcessSharedPreferencesAction> mActions = new ArrayList<>();

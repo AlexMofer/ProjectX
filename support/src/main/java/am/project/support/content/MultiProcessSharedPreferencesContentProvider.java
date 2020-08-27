@@ -32,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 跨进程首选项ContentProvider
@@ -59,6 +60,7 @@ public class MultiProcessSharedPreferencesContentProvider extends ContentProvide
     private static final int CODE_CONTAINS = 8;
     private static final int CODE_APPLY = 9;
     private static final int CODE_COMMIT = 10;
+    private static final String KEY_NAME = "MULTI_PROCESS_SHARED_PREFERENCES_KEY_NAME_86D0651E94434D6B939139F9CD5613DE";
     private static String AUTHORITY;
     private final UriMatcher mMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     private final ChangeHandler mChangeHandler = new ChangeHandler();
@@ -131,8 +133,11 @@ public class MultiProcessSharedPreferencesContentProvider extends ContentProvide
                 context.getSharedPreferences(name, Context.MODE_PRIVATE);
         final int code = mMatcher.match(uri);
         if (code == CODE_GET_ALL) {
+            final Map<String, ?> all = preferences.getAll();
+            if (all != null)
+                all.remove(KEY_NAME);
             return new MultiProcessSharedPreferencesCursor(false)
-                    .setAll(preferences.getAll());
+                    .setAll(all);
         }
         final String key = selectionArgs[1];
         if (key == null)
@@ -198,6 +203,8 @@ public class MultiProcessSharedPreferencesContentProvider extends ContentProvide
             return 0;
         final SharedPreferences preferences =
                 context.getSharedPreferences(name, Context.MODE_PRIVATE);
+        if (!preferences.contains(KEY_NAME))
+            preferences.edit().putString(KEY_NAME, name).apply();
         preferences.registerOnSharedPreferenceChangeListener(mChangeHandler);
         mChangeHandler.mNotify = notify;
         final int code = mMatcher.match(uri);
@@ -252,7 +259,8 @@ public class MultiProcessSharedPreferencesContentProvider extends ContentProvide
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (!mNotify)
                 return;
-            MultiProcessSharedPreferencesChangeBroadcastReceiver.sendBroadcast(getContext(), key);
+            MultiProcessSharedPreferencesChangeBroadcastReceiver.sendBroadcast(getContext(),
+                    sharedPreferences.getString(KEY_NAME, null), key);
         }
     }
 }

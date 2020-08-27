@@ -8,8 +8,8 @@ android {
         //noinspection MinSdkTooLow
         minSdkVersion 11
         targetSdkVersion 30
-        versionCode 33
-        versionName "1.7.1"
+        versionCode 34
+        versionName "1.7.2"
     }
 
     compileOptions {

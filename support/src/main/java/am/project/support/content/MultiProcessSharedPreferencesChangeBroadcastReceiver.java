@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import androidx.collection.ArraySet;
 
@@ -31,7 +32,8 @@ import androidx.collection.ArraySet;
 public class MultiProcessSharedPreferencesChangeBroadcastReceiver extends BroadcastReceiver {
 
     private static final String ACTION = "am.support.content.ACTION_MULTI_PROCESS_SHARED_PREFERENCES_CHANGED";
-    private static final String EXTRA = "am.support.content.extra.MULTI_PROCESS_SHARED_PREFERENCES_CHANGED_KEY";
+    private static final String EXTRA_NAME = "am.support.content.extra.MULTI_PROCESS_SHARED_PREFERENCES_CHANGED_NAME";
+    private static final String EXTRA_KEY = "am.support.content.extra.MULTI_PROCESS_SHARED_PREFERENCES_CHANGED_KEY";
 
     private final MultiProcessSharedPreferences mPreferences;
     private final ArraySet<SharedPreferences.OnSharedPreferenceChangeListener> mListeners =
@@ -42,10 +44,12 @@ public class MultiProcessSharedPreferencesChangeBroadcastReceiver extends Broadc
         mPreferences = preferences;
     }
 
-    static void sendBroadcast(Context context, String key) {
+    static void sendBroadcast(Context context, String name, String key) {
         if (context == null)
             return;
-        context.sendBroadcast(new Intent(ACTION).putExtra(EXTRA, key));
+        context.sendBroadcast(new Intent(ACTION)
+                .putExtra(EXTRA_NAME, name)
+                .putExtra(EXTRA_KEY, key));
     }
 
     static void registerReceiver(Context context,
@@ -76,10 +80,12 @@ public class MultiProcessSharedPreferencesChangeBroadcastReceiver extends Broadc
     @Override
     public void onReceive(Context context, Intent intent) {
         if (ACTION.equals(intent.getAction())) {
-            final String key = intent.getStringExtra(EXTRA);
-            synchronized (mListeners) {
-                for (SharedPreferences.OnSharedPreferenceChangeListener listener : mListeners) {
-                    listener.onSharedPreferenceChanged(mPreferences, key);
+            if (TextUtils.equals(intent.getStringExtra(EXTRA_NAME), mPreferences.getName())) {
+                final String key = intent.getStringExtra(EXTRA_KEY);
+                synchronized (mListeners) {
+                    for (SharedPreferences.OnSharedPreferenceChangeListener listener : mListeners) {
+                        listener.onSharedPreferenceChanged(mPreferences, key);
+                    }
                 }
             }
         }
