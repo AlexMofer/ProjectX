@@ -15,10 +15,12 @@
  */
 package am.appcompat.app;
 
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.ContentView;
 import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -30,12 +32,21 @@ import androidx.appcompat.widget.Toolbar;
 @SuppressWarnings("unused")
 public abstract class BaseActivity extends AppCompatActivity {
 
+    private Toolbar mToolbar;
+
     public BaseActivity() {
     }
 
     @ContentView
     public BaseActivity(int contentLayoutId) {
         super(contentLayoutId);
+    }
+
+    @Override
+    protected void onTitleChanged(CharSequence title, int color) {
+        super.onTitleChanged(title, color);
+        if (mToolbar != null)
+            mToolbar.setTitle(title);
     }
 
     /**
@@ -66,11 +77,35 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * 设置 Toolbar
+     *
+     * @param toolbarId Toolbar资源ID
+     */
+    public final void setToolbar(@IdRes int toolbarId) {
+        final View view = findViewById(toolbarId);
+        if (view instanceof Toolbar) {
+            mToolbar = (Toolbar) view;
+            mToolbar.setNavigationOnClickListener(this::onToolbarNavigationClick);
+            mToolbar.setOnMenuItemClickListener(this::onToolbarMenuItemClick);
+        }
+    }
+
+    /**
      * 点击了Toolbar的返回按钮
      *
      * @param v 返回按钮
      */
     protected void onToolbarNavigationClick(View v) {
         onBackPressed();
+    }
+
+    /**
+     * 点击Toolbar的菜单子项
+     *
+     * @param item 子项
+     * @return 是否消耗掉这次点击事件
+     */
+    protected boolean onToolbarMenuItemClick(@NonNull MenuItem item) {
+        return false;
     }
 }

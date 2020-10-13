@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 30
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.2.0"
     }
 
     compileOptions {
@@ -20,7 +20,7 @@ android {
 dependencies {
 //    api 'am.util:mvp-core:1.0.0'
     api project(':mvp-core')
-//    api 'am.appcompat:appcompat-plus:1.0.1'
+//    api 'am.appcompat:appcompat-plus:1.2.0'
     api project(':appcompat-plus')
 }
 
