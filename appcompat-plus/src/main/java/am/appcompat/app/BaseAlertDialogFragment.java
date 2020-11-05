@@ -27,7 +27,6 @@ import androidx.appcompat.app.AlertDialog;
  * 基础警报对话框
  * Created by Alex on 2020/6/12.
  */
-@SuppressWarnings("unused")
 public class BaseAlertDialogFragment extends BaseDialogFragment {
 
     private boolean mBlockView = false;

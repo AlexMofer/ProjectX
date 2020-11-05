@@ -29,7 +29,6 @@ import java.lang.ref.WeakReference;
  * Application 持有者
  * Created by Alex on 2020/3/7.
  */
-@SuppressWarnings("unused")
 public final class ApplicationHolder implements Application.ActivityLifecycleCallbacks {
 
     private static ApplicationHolder mInstance;

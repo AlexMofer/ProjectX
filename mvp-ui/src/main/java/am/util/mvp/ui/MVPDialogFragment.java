@@ -33,7 +33,6 @@ import am.util.mvp.core.MVPViewHolder;
  * MVP对话框
  * Created by Alex on 2020/3/6.
  */
-@SuppressWarnings("unused")
 public class MVPDialogFragment extends BaseDialogFragment implements MVPView {
 
     private final MVPViewHolder<MVPView> mViewHolder = new MVPViewHolder<>();

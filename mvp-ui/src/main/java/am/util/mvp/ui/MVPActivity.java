@@ -29,7 +29,6 @@ import am.util.mvp.core.MVPViewHolder;
  * MVP Activity
  * Created by Alex on 2020/3/11.
  */
-@SuppressWarnings("unused")
 public abstract class MVPActivity extends BaseActivity implements MVPView {
 
     private final MVPViewHolder<MVPView> mViewHolder = new MVPViewHolder<>();

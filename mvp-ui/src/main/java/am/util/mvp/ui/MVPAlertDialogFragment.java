@@ -32,7 +32,6 @@ import am.util.mvp.core.MVPViewHolder;
  * MVP警告对话框
  * Created by Alex on 2020/6/12.
  */
-@SuppressWarnings("unused")
 public class MVPAlertDialogFragment extends BaseAlertDialogFragment implements MVPView {
 
     private final MVPViewHolder<MVPView> mViewHolder = new MVPViewHolder<>();
