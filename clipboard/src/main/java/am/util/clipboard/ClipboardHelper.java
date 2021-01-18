@@ -30,9 +30,11 @@ import java.io.FileNotFoundException;
 
 /**
  * 剪切板辅助器
+ * 使用{@link SuperClipboard}
  * Created by Alex on 2019/3/8.
  */
-@SuppressWarnings({"WeakerAccess", "unused"})
+@Deprecated
+@SuppressWarnings("ALL")
 public abstract class ClipboardHelper {
 
     private static final String PATH_CLIPBOARD = "clipboard";

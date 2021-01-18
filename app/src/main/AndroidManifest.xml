@@ -168,7 +168,7 @@
         </service>
 
         <provider
-            android:name=".business.others.clipboard.MyClipboardProvider"
+            android:name="am.util.clipboard.ClipboardContentProvider"
             android:authorities="${applicationId}.clipboardprovider"
             android:exported="false"
             android:grantUriPermissions="true" />

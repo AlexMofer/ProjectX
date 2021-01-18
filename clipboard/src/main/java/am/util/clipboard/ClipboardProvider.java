@@ -26,9 +26,11 @@ import java.io.FileNotFoundException;
 
 /**
  * 剪切板ContentProvider
+ * 使用{@link SuperClipboard}
  * Created by Alex on 2019/3/7.
  */
-@SuppressWarnings("NullableProblems")
+@Deprecated
+@SuppressWarnings("ALL")
 public abstract class ClipboardProvider extends ContentProvider {
 
     private UriMatcher mMatcher;

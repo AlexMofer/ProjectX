@@ -27,8 +27,11 @@ import java.io.Serializable;
 
 /**
  * 文件剪切板辅助器
+ * 使用{@link SuperClipboard}
  * Created by Alex on 2019/3/8.
  */
+@Deprecated
+@SuppressWarnings("ALL")
 public abstract class FileClipboardHelper extends ClipboardHelper {
 
     private static final String NAME = "am_util_clipboard_tmp_clipboard";
