@@ -20,6 +20,8 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
@@ -61,16 +63,17 @@ public final class GsonConverterFactory extends Converter.Factory {
     }
 
     @Override
-    public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations,
-                                                            Retrofit retrofit) {
+    public Converter<ResponseBody, ?> responseBodyConverter(@NotNull Type type,
+                                                            @NotNull Annotation[] annotations,
+                                                            @NotNull Retrofit retrofit) {
         return new GsonResponseBodyConverter<>(gson, gson.getAdapter(TypeToken.get(type)));
     }
 
     @Override
-    public Converter<?, RequestBody> requestBodyConverter(Type type,
-                                                          Annotation[] parameterAnnotations,
-                                                          Annotation[] methodAnnotations,
-                                                          Retrofit retrofit) {
+    public Converter<?, RequestBody> requestBodyConverter(@NotNull Type type,
+                                                          @NotNull Annotation[] parameterAnnotations,
+                                                          @NotNull Annotation[] methodAnnotations,
+                                                          @NotNull Retrofit retrofit) {
         return new GsonRequestBodyConverter<>(gson, gson.getAdapter(TypeToken.get(type)));
     }
 }

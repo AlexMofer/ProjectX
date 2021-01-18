@@ -2,29 +2,23 @@ package am.project.x.business.others.retrofithelper.gson;
 
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Gson辅助器
  * Created by Alex on 2017/8/17.
  */
-@SuppressWarnings({"WeakerAccess", "unused"})
 public class GsonHelper {
 
     private static Gson mGson;
@@ -32,7 +26,6 @@ public class GsonHelper {
     private static Gson getGson() {
         if (mGson == null) {
             mGson = new GsonBuilder()
-                    .registerTypeAdapter(Date.class, new DateDeserializer())
                     .setDateFormat(DateFormat.LONG)
                     .create();
         }
@@ -46,28 +39,48 @@ public class GsonHelper {
      * @return 格式化的字符串
      */
     public static String toJson(Object src) {
-        if (src instanceof List<?>)
-            return toJson(src, new TypeToken<List<?>>() {
-            }.getType());
-        if (src instanceof Set<?>)
-            return toJson(src, new TypeToken<Set<?>>() {
-            }.getType());
-        if (src instanceof Map<?, ?>)
-            return toJson(src, new TypeToken<Map<?, ?>>() {
-            }.getType());
-
         return getGson().toJson(src);
     }
 
     /**
      * 范型对象序列化
      *
-     * @param src       需要序列化的实体对象
+     * @param src       需要序列化的范型对象
      * @param typeOfSrc 范型类型
+     *                  可使用 {@link com.google.gson.reflect.TypeToken} 类辅助。
+     *                  例如获取 {@code Collection<Foo>} 类型：
+     *                  {@code Type typeOfSrc = new TypeToken<Collection<Foo>>(){}.getType();}
+     *                  还可以使用 {@link #getType(Type, Type...)} 静态方法辅助。
+     *                  例如获取 {@code Collection<Foo>} 类型：
+     *                  {@code Type typeOfSrc = GsonHelper.getType(Collection.class, Foo.class);}
      * @return 格式化的字符串
      */
     public static String toJson(Object src, Type typeOfSrc) {
         return getGson().toJson(src, typeOfSrc);
+    }
+
+    /**
+     * 范型对象序列化
+     *
+     * @param src        需要序列化的范型对象
+     * @param clazz      类型类
+     * @param parameters 类型参数类
+     * @return 格式化的字符串
+     */
+    public static String toJson(Object src, Class<?> clazz, Class<?>... parameters) {
+        return toJson(src, getType(clazz, parameters));
+    }
+
+    /**
+     * List对象序列化
+     *
+     * @param list  需要序列化的List对象
+     * @param clazz 类型参数类
+     * @param <T>   目标类型
+     * @return 格式化的字符串
+     */
+    public static <T> String listToJson(List<T> list, Class<T> clazz) {
+        return toJson(list, List.class, clazz);
     }
 
     /**
@@ -79,36 +92,8 @@ public class GsonHelper {
      * @return 实体对象
      * @throws JsonSyntaxException 错误
      */
-    public static <T> T fromJsonOrThrow(String json, Class<T> classOfT)
-            throws JsonSyntaxException {
+    public static <T> T fromJsonOrThrow(String json, Class<T> classOfT) throws JsonSyntaxException {
         return getGson().fromJson(json, classOfT);
-    }
-
-    /**
-     * 反序列范型对象
-     *
-     * @param json    字符串
-     * @param typeOfT 范型类型
-     * @param <T>     目标类型
-     * @return 实体对象
-     * @throws JsonSyntaxException 错误
-     */
-    public static <T> T fromJsonOrThrow(String json, Type typeOfT) throws JsonSyntaxException {
-        return getGson().fromJson(json, typeOfT);
-    }
-
-    /**
-     * 反序列范型对象
-     *
-     * @param json         字符串
-     * @param typeTokenOfT 范型类型Token
-     * @param <T>          目标类型
-     * @return 实体对象
-     * @throws JsonSyntaxException 错误
-     */
-    public static <T> T fromJsonOrThrow(String json, TypeToken<T> typeTokenOfT)
-            throws JsonSyntaxException {
-        return fromJsonOrThrow(json, typeTokenOfT.getType());
     }
 
     /**
@@ -135,10 +120,34 @@ public class GsonHelper {
      *
      * @param json    字符串
      * @param typeOfT 范型类型
+     *                可使用 {@link com.google.gson.reflect.TypeToken} 类辅助。
+     *                例如获取 {@code Collection<Foo>} 类型：
+     *                {@code Type typeOfSrc = new TypeToken<Collection<Foo>>(){}.getType();}
+     *                还可以使用 {@link #getType(Type, Type...)} 静态方法辅助。
+     *                例如获取 {@code Collection<Foo>} 类型：
+     *                {@code Type typeOfSrc = GsonHelper.getType(Collection.class, Foo.class);}
      * @param <T>     目标类型
-     * @return 实体对象
+     * @return 泛型对象
+     * @throws JsonSyntaxException 错误
      */
-    @Nullable
+    public static <T> T fromJsonOrThrow(String json, Type typeOfT) throws JsonSyntaxException {
+        return getGson().fromJson(json, typeOfT);
+    }
+
+    /**
+     * 反序列范型对象
+     *
+     * @param json    字符串
+     * @param typeOfT 范型类型
+     *                可使用 {@link com.google.gson.reflect.TypeToken} 类辅助。
+     *                例如获取 {@code Collection<Foo>} 类型：
+     *                {@code Type typeOfSrc = new TypeToken<Collection<Foo>>(){}.getType();}
+     *                还可以使用 {@link #getType(Type, Type...)} 静态方法辅助。
+     *                例如获取 {@code Collection<Foo>} 类型：
+     *                {@code Type typeOfSrc = GsonHelper.getType(Collection.class, Foo.class);}
+     * @param <T>     目标类型
+     * @return 泛型对象
+     */
     public static <T> T fromJson(String json, Type typeOfT) {
         if (TextUtils.isEmpty(json))
             return null;
@@ -152,32 +161,69 @@ public class GsonHelper {
     /**
      * 反序列范型对象
      *
-     * @param json         字符串
-     * @param typeTokenOfT 范型类型Token
-     * @param <T>          目标类型
-     * @return 实体对象
+     * @param json       字符串
+     * @param clazz      类型类
+     * @param parameters 类型参数类
+     * @param <T>        目标类型
+     * @return 泛型对象
      */
-    @Nullable
-    public static <T> T fromJson(String json, TypeToken<T> typeTokenOfT) {
-        if (TextUtils.isEmpty(json))
-            return null;
-        try {
-            return fromJsonOrThrow(json, typeTokenOfT);
-        } catch (JsonSyntaxException e) {
-            return null;
-        }
+    public static <T> T fromJson(String json, Class<?> clazz, Class<?>... parameters) {
+        return fromJson(json, getType(clazz, parameters));
     }
 
     /**
-     * 日期序列化
+     * 反序列List对象
+     *
+     * @param json  字符串
+     * @param clazz 类型参数类
+     * @param <T>   目标类型
+     * @return List对象
      */
-    private static class DateDeserializer implements JsonDeserializer<Date> {
+    public static <T> List<T> listFromJson(String json, Class<T> clazz) {
+        return fromJson(json, List.class, clazz);
+    }
 
+    /**
+     * 获取类型
+     *
+     * @param type       类型
+     * @param parameters 类型参数
+     * @return 类型
+     */
+    public static ParameterizedType getType(Type type, Type... parameters) {
+        return new ParameterizedTypeImpl(type, parameters);
+    }
+
+    private static class ParameterizedTypeImpl implements ParameterizedType {
+
+        private final Type mRaw;
+        private final Type[] mArguments;
+
+        public ParameterizedTypeImpl(Type raw, Type... arguments) {
+            mRaw = raw;
+            if (arguments == null || arguments.length <= 0) {
+                mArguments = new Type[0];
+            } else {
+                mArguments = Arrays.copyOf(arguments, arguments.length);
+            }
+        }
+
+        @NonNull
         @Override
-        public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                throws JsonParseException {
-            return new Date(json.getAsJsonPrimitive().getAsLong());
+        public Type[] getActualTypeArguments() {
+            return mArguments;
+        }
+
+        @NonNull
+        @Override
+        public Type getRawType() {
+            return mRaw;
+        }
+
+        @Nullable
+        @Override
+        public Type getOwnerType() {
+            return null;
         }
     }
 }
-

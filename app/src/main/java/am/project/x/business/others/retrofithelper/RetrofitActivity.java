@@ -59,7 +59,7 @@ public class RetrofitActivity extends BaseActivity implements Callback<TestBean>
         if (result == null)
             mVOutput.setText(R.string.retrofit_output_null);
         else
-            mVOutput.setText(GsonHelper.toJson(result));
+            mVOutput.setText(GsonHelper.toJson(result, TestBean.class));
     }
 
     @Override
