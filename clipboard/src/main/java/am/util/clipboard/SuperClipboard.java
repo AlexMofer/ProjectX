@@ -52,13 +52,13 @@ public class SuperClipboard {
      * @param authority Authority
      */
     public static void setAuthority(String authority) {
-        ClipboardContentProvider.setAuthority(authority);
+        ClipboardProvider.setAuthority(authority);
     }
 
     private static Uri getUri(Context context, String pathSegment) {
         if (sBase == null) {
             if (sAuthority == null) {
-                sAuthority = ClipboardContentProvider.getAuthority(context);
+                sAuthority = ClipboardProvider.getAuthority(context);
             }
             if (sAuthority != null) {
                 sBase = Uri.parse(ContentResolver.SCHEME_CONTENT + "://" + sAuthority);
@@ -72,7 +72,7 @@ public class SuperClipboard {
 
     private static Uri getCopyUri(Context context) {
         return getUri(context,
-                ClipboardContentProvider.PATH_COPY + "/" + UUID.randomUUID().hashCode());
+                ClipboardProvider.PATH_COPY + "/" + UUID.randomUUID().toString());
     }
 
     /**
@@ -93,7 +93,7 @@ public class SuperClipboard {
             return false;
         }
         try {
-            final Uri clear = getUri(context, ClipboardContentProvider.PATH_CLEAR);
+            final Uri clear = getUri(context, ClipboardProvider.PATH_CLEAR);
             if (clear != null) {
                 context.getContentResolver().delete(clear, null, null);
             }
@@ -135,7 +135,7 @@ public class SuperClipboard {
             return false;
         }
         try {
-            final Uri clear = getUri(context, ClipboardContentProvider.PATH_CLEAR);
+            final Uri clear = getUri(context, ClipboardProvider.PATH_CLEAR);
             if (clear != null) {
                 context.getContentResolver().delete(clear, null, null);
             }
@@ -356,7 +356,7 @@ public class SuperClipboard {
      */
     public static boolean clear(Context context) {
         try {
-            final Uri clear = getUri(context, ClipboardContentProvider.PATH_CLEAR);
+            final Uri clear = getUri(context, ClipboardProvider.PATH_CLEAR);
             if (clear != null) {
                 context.getContentResolver().delete(clear, null, null);
             }
@@ -384,7 +384,7 @@ public class SuperClipboard {
      */
     public static boolean isCopied(Context context) {
         try {
-            final Uri check = getUri(context, ClipboardContentProvider.PATH_CHECK);
+            final Uri check = getUri(context, ClipboardProvider.PATH_CHECK);
             if (check != null) {
                 final Cursor cursor =
                         context.getContentResolver().query(check, null, null,
