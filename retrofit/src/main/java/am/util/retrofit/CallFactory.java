@@ -22,29 +22,44 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * 请求工厂
  * Created by Alex on 2018/3/14.
  */
-@SuppressWarnings({"WeakerAccess", "unused"})
 public class CallFactory<S> {
     private static final long DEFAULT_TIMEOUT = 60000L;
-    private final OkHttpClient.Builder mClientBuilder;
-    private final Retrofit.Builder mRetrofitBuilder;
-    private S mService;
+    private final OkHttpClient.Builder mClientBuilder = new OkHttpClient.Builder();
+    private final Retrofit.Builder mRetrofitBuilder = new Retrofit.Builder();
+    private String mBaseUrl;
+    private S mServer;
 
     public CallFactory() {
-        mClientBuilder = new OkHttpClient.Builder();
         onInitializeOkHttpClientBuilder(mClientBuilder);
-        mRetrofitBuilder = new Retrofit.Builder();
         onInitializeRetrofitBuilder(mRetrofitBuilder);
         mRetrofitBuilder.addConverterFactory(onCreateConverterFactory(mRetrofitBuilder));
     }
 
-    public CallFactory(Class<S> service) {
+    public CallFactory(String baseUrl) {
+        setBaseUrl(baseUrl);
+        mRetrofitBuilder.addConverterFactory(onCreateConverterFactory(mRetrofitBuilder));
+    }
+
+    public CallFactory(Class<S> server) {
         this();
-        createService(service);
+        createServer(server);
+    }
+
+    public CallFactory(String baseUrl, Class<S> server) {
+        this(baseUrl);
+        createServer(server);
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        mBaseUrl = baseUrl;
+        onInitializeOkHttpClientBuilder(mClientBuilder);
+        onInitializeRetrofitBuilder(mRetrofitBuilder);
     }
 
     /**
@@ -97,6 +112,9 @@ public class CallFactory<S> {
      * @param builder RetrofitBuilder
      */
     protected void onInitializeRetrofitBuilder(Retrofit.Builder builder) {
+        if (mBaseUrl != null) {
+            builder.baseUrl(mBaseUrl);
+        }
     }
 
     /**
@@ -106,21 +124,21 @@ public class CallFactory<S> {
      * @return 转换工厂
      */
     protected Converter.Factory onCreateConverterFactory(Retrofit.Builder builder) {
-        return GsonConverterFactory.newInstance();
+        return GsonConverterFactory.create();
     }
 
     /**
      * 创建服务接口
      *
-     * @param service 服务接口
+     * @param server 服务接口
      */
-    public void createService(Class<S> service) {
-        mService = mRetrofitBuilder.client(mClientBuilder.build()).build().create(service);
+    public void createServer(Class<S> server) {
+        mServer = mRetrofitBuilder.client(mClientBuilder.build()).build().create(server);
     }
 
     /**
      * 获取客户端构建器
-     * 对构建器做修改后需重新调用{@link #createService(Class)}
+     * 对构建器做修改后需重新调用{@link #createServer(Class)}
      *
      * @return OkHttpClient.Builder
      */
@@ -130,7 +148,7 @@ public class CallFactory<S> {
 
     /**
      * 获取Retrofit构建器
-     * 对构建器做修改后需重新调用{@link #createService(Class)}
+     * 对构建器做修改后需重新调用{@link #createServer(Class)}
      *
      * @return Retrofit.Builder
      */
@@ -138,7 +156,12 @@ public class CallFactory<S> {
         return mRetrofitBuilder;
     }
 
-    public final S getService() {
-        return mService;
+    /**
+     * 获取服务接口
+     *
+     * @return 服务接口
+     */
+    public final S getServer() {
+        return mServer;
     }
 }

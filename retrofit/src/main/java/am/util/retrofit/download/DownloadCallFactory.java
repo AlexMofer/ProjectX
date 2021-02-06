@@ -16,19 +16,18 @@
 package am.util.retrofit.download;
 
 import am.util.retrofit.CallFactory;
-import retrofit2.Retrofit;
 
 /**
  * 下载请求生成器
  * Created by Alex on 2017/9/13.
  */
 
-public class DownloadCallFactory extends CallFactory<DownloadService> {
+public class DownloadCallFactory extends CallFactory<DownloadServer> {
     private static DownloadCallFactory mInstance;
 
     protected DownloadCallFactory() {
         //no instance
-        super(DownloadService.class);
+        super("https://www.android.com", DownloadServer.class);
     }
 
     public static DownloadCallFactory getInstance() {
@@ -36,11 +35,5 @@ public class DownloadCallFactory extends CallFactory<DownloadService> {
             mInstance = new DownloadCallFactory();
         }
         return mInstance;
-    }
-
-    @Override
-    protected void onInitializeRetrofitBuilder(Retrofit.Builder builder) {
-        super.onInitializeRetrofitBuilder(builder);
-        builder.baseUrl("https://www.android.com");
     }
 }

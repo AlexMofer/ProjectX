@@ -2,14 +2,14 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion '30.0.2'
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
         //noinspection MinSdkTooLow
         minSdkVersion 9
         targetSdkVersion 30
-        versionCode 7
-        versionName "2.9.0"
+        versionCode 8
+        versionName "2.9.0.1"
         consumerProguardFiles 'consumer-rules.pro'
     }
 
@@ -22,6 +22,9 @@ android {
 dependencies {
     api 'com.squareup.retrofit2:retrofit:2.9.0'
     api 'com.squareup.okhttp3:logging-interceptor:4.8.0'
+    api('com.squareup.retrofit2:converter-gson:2.9.0') {
+        exclude group: 'com.google.code.gson', module: 'gson'
+    }
     api 'com.google.code.gson:gson:2.8.6'
 }
 

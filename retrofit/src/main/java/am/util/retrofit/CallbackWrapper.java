@@ -16,6 +16,8 @@
 
 package am.util.retrofit;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.ref.WeakReference;
 
 import retrofit2.Call;
@@ -25,7 +27,6 @@ import retrofit2.Response;
  * 回调包装器
  * Created by Alex on 2018/3/14.
  */
-@SuppressWarnings({"WeakerAccess", "unused", "NullableProblems"})
 public class CallbackWrapper<T> implements retrofit2.Callback<T> {
 
     private WeakReference<Callback<T>> mWeakCallback;
@@ -67,7 +68,7 @@ public class CallbackWrapper<T> implements retrofit2.Callback<T> {
     }
 
     @Override
-    public void onResponse(Call<T> call, Response<T> response) {
+    public void onResponse(@NotNull Call<T> call, Response<T> response) {
         if (response.isSuccessful()) {
             final T result = response.body();
             if (checkEmptyResponse() && result == null)
@@ -80,7 +81,7 @@ public class CallbackWrapper<T> implements retrofit2.Callback<T> {
     }
 
     @Override
-    public void onFailure(Call<T> call, Throwable t) {
+    public void onFailure(@NotNull Call<T> call, @NotNull Throwable t) {
         final Callback<T> callback = getCallback();
         if (callback == null)
             return;
