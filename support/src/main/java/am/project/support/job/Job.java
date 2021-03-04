@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 AlexMofer
+ * Copyright (C) 2021 AlexMofer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,573 +13,317 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package am.project.support.job;
 
-import android.util.SparseArray;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 任务
- * Created by Alex on 2017/9/11.
+ * Created by Alex on 2021/3/1.
  */
-@SuppressWarnings({"WeakerAccess", "unused"})
-public abstract class Job<T> {
-
-    public static final int LEVEL_LOW = -1;
-    public static final int LEVEL_DEFAULT = 0;
-    public static final int LEVEL_MIDDLE = 1;
-    public static final int LEVEL_HIGH = 2;
-    private static final ArrayList<Job.Progress> PROGRESSES = new ArrayList<>();
-    private final SparseArray<Object> mParams = new SparseArray<>();
-    private final SparseArray<WeakReference<Object>> mWeakParams = new SparseArray<>();
-    private final SparseArray<Object> mResults = new SparseArray<>();
-    private JobHolder mHolder;
-    private T mCallback;
-    private WeakReference<T> mWeakReference;
-    private int mAction;
-    private boolean mSuccess = false;
+public abstract class Job<C> {
+    public static final int PRIORITY_LOW = -1;// 低优先级
+    public static final int PRIORITY_MIDDLE = 0; // 中优先级
+    public static final int PRIORITY_HIGH = 1;// 高优先级
+    private final JobParam mParam = new JobParam();
+    private final Command mCommand = new Command(this);
+    private C mCallback;
+    private WeakReference<C> mWeakCallback;
+    private long mId;
     private Object mTag;
+    private int mPriority = PRIORITY_MIDDLE;
+    private JobTraverse mTraverse = JobTraverse.getMainTraverse();
 
-    public Job(T callback) {
-        this(callback, 0);
-    }
-
-    public Job(T callback, boolean weakReference) {
-        this(callback, weakReference, 0);
-    }
-
-    public Job(T callback, int action, Object... params) {
-        this(callback, true, action, params);
-    }
-
-    public Job(T callback, boolean weakReference, int action, Object... params) {
-        setCallback(callback, weakReference);
-        mAction = action;
-        int key = 0;
-        for (Object param : params) {
-            putParam(key, param);
-            key++;
-        }
-    }
-
-    public static Executor getDefaultExecutor() {
-        return JobExecutor.getDefault();
-    }
-
-    public static Executor getSingleExecutor() {
-        return JobExecutor.getSingle();
-    }
-
-    public static Executor getExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime,
-                                       TimeUnit unit, BlockingQueue<Runnable> workQueue,
-                                       ThreadFactory threadFactory, boolean allowCoreThreadTimeOut) {
-        return JobExecutor.getExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit,
-                workQueue, threadFactory, allowCoreThreadTimeOut);
-    }
-
-    public static Progress getProgress() {
-        final Progress progress;
-        synchronized (PROGRESSES) {
-            if (PROGRESSES.isEmpty()) {
-                progress = new Progress();
-            } else {
-                progress = PROGRESSES.remove(0);
-            }
-        }
-        return progress;
-    }
-
-    void setHolder(JobHolder holder) {
-        mHolder = holder;
-    }
-
-    public void setCallback(T callback, boolean weakReference) {
-        if (weakReference) {
-            mWeakReference = new WeakReference<>(callback);
+    public Job(@Nullable C callback, boolean weakCallback, long id, Object... params) {
+        if (weakCallback) {
+            mCallback = null;
+            mWeakCallback = new WeakReference<>(callback);
         } else {
             mCallback = callback;
-            mWeakReference = new WeakReference<>(callback);
+            mWeakCallback = null;
         }
+        mId = id;
+        mParam.set(params);
     }
 
-    public int getAction() {
-        return mAction;
+    public Job(@Nullable C callback, long id, Object... params) {
+        this(callback, true, id, params);
     }
 
-    public void setAction(int action) {
-        mAction = action;
+    public Job(@Nullable C callback) {
+        this(callback, 0, true);
     }
 
-    public void putParam(int key, Object value) {
-        if (value == null) {
-            mParams.remove(key);
-            return;
+    /**
+     * 获取回调
+     *
+     * @return 回调
+     */
+    @Nullable
+    protected C getCallback() {
+        return mWeakCallback != null ? mWeakCallback.get() : mCallback;
+    }
+
+    /**
+     * 设置回调
+     *
+     * @param callback 回调
+     * @param weak     是否为弱引用
+     * @return 自身
+     */
+    public Job<C> setCallback(@Nullable C callback, boolean weak) {
+        if (weak) {
+            mCallback = null;
+            mWeakCallback = new WeakReference<>(callback);
+        } else {
+            mCallback = callback;
+            mWeakCallback = null;
         }
-        mParams.put(key, value);
+        return this;
     }
 
-    public <Params> Params getParamOrThrow(int key) throws IllegalArgumentException {
-        final Object param = mParams.get(key);
-        if (param == null)
-            throw new IllegalArgumentException("There is no param with key" + key + ".");
-        final Params result;
-        try {
-            //noinspection unchecked
-            result = (Params) param;
-        } catch (ClassCastException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-        return result;
+    /**
+     * 获取任务ID
+     *
+     * @return 任务ID
+     */
+    protected long getId() {
+        return mId;
     }
 
-    public <Params> Params getParam(int key, Params defaultValue) {
-        try {
-            return getParamOrThrow(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
+    /**
+     * 设置ID
+     *
+     * @param id ID
+     * @return 自身
+     */
+    public Job<C> setId(long id) {
+        mId = id;
+        return this;
     }
 
-    public <Params> Params getParam(int key) {
-        return getParam(key, null);
-    }
-
-    public void clearParams() {
-        mParams.clear();
-    }
-
-    public boolean getBooleanParam(int key) throws IllegalArgumentException {
-        final Boolean param = getParamOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public boolean getBooleanParam(int key, boolean defaultValue) {
-        try {
-            return getBooleanParam(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public byte getByteParam(int key) throws IllegalArgumentException {
-        final Byte param = getParamOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public byte getByteParam(int key, byte defaultValue) {
-        try {
-            return getByteParam(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public short getShortParam(int key) throws IllegalArgumentException {
-        final Short param = getParamOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public short getShortParam(int key, short defaultValue) {
-        try {
-            return getShortParam(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public char getCharParam(int key) throws IllegalArgumentException {
-        final Character param = getParamOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public char getCharParam(int key, char defaultValue) {
-        try {
-            return getCharParam(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public int getIntParam(int key) throws IllegalArgumentException {
-        final Integer param = getParamOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public int getIntParam(int key, int defaultValue) {
-        try {
-            return getIntParam(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public long getLongParam(int key) throws IllegalArgumentException {
-        final Long param = getParamOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public long getLongParam(int key, long defaultValue) {
-        try {
-            return getLongParam(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public float getFloatParam(int key) throws IllegalArgumentException {
-        final Float param = getParamOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public float getFloatParam(int key, float defaultValue) {
-        try {
-            return getFloatParam(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public double getDoubleParam(int key) throws IllegalArgumentException {
-        final Double param = getParamOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public double getDoubleParam(int key, double defaultValue) {
-        try {
-            return getDoubleParam(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public void putWeakParam(int key, Object value) {
-        if (value == null) {
-            mWeakParams.remove(key);
-            return;
-        }
-        mWeakParams.put(key, new WeakReference<>(value));
-    }
-
-    public <Params> Params getWeakParamOrThrow(int key) throws IllegalArgumentException {
-        final WeakReference<Object> weak = mWeakParams.get(key);
-        if (weak == null)
-            throw new IllegalArgumentException("There is no param with key" + key + ".");
-        final Object param = weak.get();
-        if (param == null)
-            return null;
-        final Params result;
-        try {
-            //noinspection unchecked
-            result = (Params) param;
-        } catch (ClassCastException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-        return result;
-    }
-
-    public <Params> Params getWeakParam(int key, Params defaultValue) {
-        try {
-            return getWeakParamOrThrow(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public <Params> Params getWeakParam(int key) {
-        return getWeakParam(key, null);
-    }
-
-    public void clearWeakParams() {
-        mWeakParams.clear();
-    }
-
-    public void setResult(boolean success, Object... results) {
-        clearResult();
-        mSuccess = success;
-        int i = 0;
-        for (Object result : results) {
-            putResult(i, result);
-            i++;
-        }
-    }
-
-    public boolean isSuccess() {
-        return mSuccess;
-    }
-
-    public void putResult(int key, Object value) {
-        if (value == null) {
-            mResults.remove(key);
-            return;
-        }
-        mResults.put(key, value);
-    }
-
-    public <Result> Result getResultOrThrow(int key) throws IllegalArgumentException {
-        final Object result = mResults.get(key);
-        if (result == null)
-            throw new IllegalArgumentException("There is no result with key" + key + ".");
-        final Result r;
-        try {
-            //noinspection unchecked
-            r = (Result) result;
-        } catch (ClassCastException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-        return r;
-    }
-
-    public <Result> Result getResult(int key, Result defaultValue) {
-        try {
-            return getResultOrThrow(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public <Result> Result getResult(int key) {
-        return getResult(key, null);
-    }
-
-    public void clearResult() {
-        mSuccess = false;
-        mResults.clear();
-    }
-
-    public boolean getBooleanResult(int key) throws IllegalArgumentException {
-        final Boolean param = getResultOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public boolean getBooleanResult(int key, boolean defaultValue) {
-        try {
-            return getBooleanResult(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public byte getByteResult(int key) throws IllegalArgumentException {
-        final Byte param = getResultOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public byte getByteResult(int key, byte defaultValue) {
-        try {
-            return getByteResult(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public short getShortResult(int key) throws IllegalArgumentException {
-        final Short param = getResultOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public short getShortResult(int key, short defaultValue) {
-        try {
-            return getShortResult(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public char getCharResult(int key) throws IllegalArgumentException {
-        final Character param = getResultOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public char getCharResult(int key, char defaultValue) {
-        try {
-            return getCharResult(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public int getIntResult(int key) throws IllegalArgumentException {
-        final Integer param = getResultOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public int getIntResult(int key, int defaultValue) {
-        try {
-            return getIntResult(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public long getLongResult(int key) throws IllegalArgumentException {
-        final Long param = getResultOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public long getLongResult(int key, long defaultValue) {
-        try {
-            return getLongResult(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public float getFloatResult(int key) throws IllegalArgumentException {
-        final Float param = getResultOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public float getFloatResult(int key, float defaultValue) {
-        try {
-            return getFloatResult(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
-    public double getDoubleResult(int key) throws IllegalArgumentException {
-        final Double param = getResultOrThrow(key);
-        if (param == null)
-            throw new IllegalArgumentException("It's null object.");
-        return param;
-    }
-
-    public double getDoubleResult(int key, double defaultValue) {
-        try {
-            return getDoubleResult(key);
-        } catch (IllegalArgumentException e) {
-            return defaultValue;
-        }
-    }
-
+    /**
+     * 获取附属物
+     *
+     * @return 附属物
+     */
+    @Nullable
     public Object getTag() {
         return mTag;
     }
 
-    public Job<T> setTag(Object tag) {
+    /**
+     * 设置附属物
+     *
+     * @param tag 附属物
+     * @return 自身
+     */
+    public Job<C> setTag(@Nullable Object tag) {
         mTag = tag;
         return this;
     }
 
-    protected abstract void doInBackground();
-
-    protected final void publishProgress(Progress progress) {
-        if (mHolder != null)
-            mHolder.publishProgress(progress);
+    /**
+     * 获取优先级
+     *
+     * @return 优先级
+     */
+    public int getPriority() {
+        return mPriority;
     }
 
-    protected void onProgressUpdate(Job.Progress progress) {
-        final T callback = mCallback == null ? mWeakReference.get() : mCallback;
-        dispatchProgress(callback, progress);
-        synchronized (PROGRESSES) {
-            PROGRESSES.add(progress);
-        }
+    /**
+     * 设置优先级
+     *
+     * @param priority 优先级
+     * @return 自身
+     */
+    public Job<C> setPriority(int priority) {
+        mPriority = priority;
+        return this;
     }
 
-    protected void dispatchProgress(T callback, Job.Progress progress) {
+    /**
+     * 设置任务线程通信（默认为子线程到UI主线程）
+     *
+     * @param traverse 任务线程通信
+     * @return 自身
+     */
+    public Job<C> setTraverse(@NonNull JobTraverse traverse) {
+        mTraverse = traverse;
+        return this;
     }
 
-    protected void onPostExecute() {
-        final T callback = mCallback != null ? mCallback :
-                (mWeakReference != null ? mWeakReference.get() : null);
-        dispatchResult(callback);
-        mCallback = null;
-        mWeakReference = null;
-        clearParams();
-        clearWeakParams();
-        clearResult();
+    /**
+     * 清空弱引用值
+     */
+    public void clearWeakParams() {
+        mParam.clearWeak();
     }
 
-    protected void dispatchResult(T callback) {
+    /**
+     * 设置弱引用值
+     *
+     * @param key   键
+     * @param value 值
+     * @return 自身
+     */
+    public Job<C> putWeakParam(int key, @Nullable Object value) {
+        mParam.putWeak(key, value);
+        return this;
     }
 
-    protected Runnable getJobHolder(Job job) {
-        return JobHolder.get(job);
+    /**
+     * 异步执行
+     *
+     * @param executor 执行者
+     */
+    public void execute(@NonNull JobExecutor executor) {
+        executor.execute(mCommand);
     }
 
-    public int getLevel() {
-        return LEVEL_DEFAULT;
-    }
-
+    /**
+     * 并发异步执行
+     */
     public void execute() {
-        getDefaultExecutor().execute(getJobHolder(this));
+        execute(JobExecutorHelper.getDefault());
     }
 
+    /**
+     * 串行异步执行
+     */
     public void executeInSingle() {
-        getSingleExecutor().execute(getJobHolder(this));
+        execute(JobExecutorHelper.getSingle());
     }
 
-    public static class Progress {
+    /**
+     * 获取参数持有者
+     *
+     * @return 参数持有者
+     */
+    @NonNull
+    protected JobParam getParam() {
+        return mParam;
+    }
 
-        private final SparseArray<Object> mProgress = new SparseArray<>();
+    /**
+     * 后台执行任务
+     *
+     * @param result 结果
+     */
+    protected abstract void doInBackground(@NonNull JobResult result);
 
-        public void putProgress(int key, Object value) {
-            if (value == null) {
-                mProgress.remove(key);
-                return;
-            }
-            mProgress.put(key, value);
+    /**
+     * 发布进度
+     *
+     * @param progress 进度
+     */
+    protected final void publishProgress(@NonNull JobProgress progress) {
+        mTraverse.publishProgress(this, progress);
+    }
+
+    /**
+     * 构造进度对象
+     *
+     * @return 进度对象
+     */
+    @NonNull
+    protected JobProgress createProgress() {
+        return JobProgress.get();
+    }
+
+    /**
+     * 分发进度
+     *
+     * @param progress 进度
+     */
+    protected void dispatchProgress(@NonNull JobProgress progress) {
+        final C callback = getCallback();
+        if (callback != null) {
+            onProgress(callback, progress);
+        }
+        JobProgress.put(progress);
+    }
+
+    /**
+     * 处理进度
+     *
+     * @param callback 回调
+     * @param progress 进度
+     */
+    protected void onProgress(@NonNull C callback, @NonNull JobProgress progress) {
+    }
+
+    /**
+     * 分发结果
+     *
+     * @param result 结果
+     */
+    protected void dispatchResult(@NonNull JobResult result) {
+        final C callback = getCallback();
+        if (callback != null) {
+            onResult(callback, result);
+        }
+        JobResult.put(result);
+    }
+
+    /**
+     * 处理结果
+     *
+     * @param callback 回调
+     * @param result   结果
+     */
+    protected void onResult(@NonNull C callback, @NonNull JobResult result) {
+    }
+
+    private static class Command implements JobExecutor.Executable, Comparable<Command> {
+
+        private final Job<?> mJob;
+        private JobExecutor mExecutor;
+        private long mTime = 0;
+
+        public Command(Job<?> job) {
+            mJob = job;
         }
 
-        public <T> T getProgressOrThrow(int key) throws IllegalArgumentException {
-            final Object progress = mProgress.get(key);
-            if (progress == null)
-                throw new IllegalArgumentException("There is no progress with key" + key + ".");
-            try {
-                //noinspection unchecked
-                return (T) progress;
-            } catch (ClassCastException e) {
-                throw new IllegalArgumentException(e.getMessage());
-            }
+        @Override
+        public void run() {
+            final JobResult result = JobResult.get();
+            mJob.doInBackground(result);
+            mJob.mTraverse.publishResult(mJob, result);
         }
 
-        public <T> T getProgress(int key, T defaultValue) {
-            try {
-                return getProgressOrThrow(key);
-            } catch (IllegalArgumentException e) {
-                return defaultValue;
-            }
+        @Override
+        public void beforeExecute(@NonNull JobExecutor executor) {
+            mExecutor = executor;
+            mTime = System.currentTimeMillis();
         }
 
-        public <T> T getProgress(int key) {
-            return getProgress(key, null);
+        @Override
+        public void afterExecute(@NonNull JobExecutor executor) {
+            mTime = 0;
+            mExecutor = null;
+        }
+
+        @Override
+        public int compareTo(Command o) {
+            final int priority = mJob.getPriority();
+            final int priorityOther = o.mJob.getPriority();
+            if (priority == priorityOther) {
+                if (mExecutor == o.mExecutor) {
+                    // 同一执行者
+                    return Long.compare(mTime, o.mTime);
+                } else {
+                    return 0;
+                }
+            } else if (priority > priorityOther) {
+                return 1;
+            } else {
+                return -1;
+            }
         }
     }
 }

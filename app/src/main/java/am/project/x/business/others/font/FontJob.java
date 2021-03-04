@@ -15,7 +15,10 @@
  */
 package am.project.x.business.others.font;
 
+import androidx.annotation.NonNull;
+
 import am.project.support.job.Job;
+import am.project.support.job.JobResult;
 import am.util.font.TypefaceCollection;
 import am.util.font.TypefaceConfig;
 
@@ -24,73 +27,69 @@ import am.util.font.TypefaceConfig;
  */
 class FontJob extends Job<FontJob.Callback> {
 
-    private static final int ACTION_CONFIG = 0;
-    private static final int ACTION_TYPEFACE = 1;
+    private static final int ID_CONFIG = 0;
+    private static final int ID_TYPEFACE = 1;
 
-    private FontJob(Callback callback, int action, Object... params) {
-        super(callback, action, params);
+    private FontJob(Callback callback, long id, Object... params) {
+        super(callback, id, params);
     }
 
     static void loadConfig(Callback callback) {
-        new FontJob(callback, ACTION_CONFIG).execute();
+        new FontJob(callback, ID_CONFIG).execute();
     }
 
     static void loadTypefaceCollection(Callback callback, TypefaceConfig config,
                                        String nameOrAlias) {
-        new FontJob(callback, ACTION_TYPEFACE, config, nameOrAlias).execute();
+        new FontJob(callback, ID_TYPEFACE, config, nameOrAlias).execute();
     }
 
     @Override
-    protected void doInBackground() {
-        switch (getAction()) {
-            case ACTION_CONFIG:
-                handleActionConfig();
-                break;
-            case ACTION_TYPEFACE:
-                handleActionTypeface();
-                break;
+    protected void doInBackground(@NonNull JobResult result) {
+        final long id = getId();
+        if (id == ID_CONFIG) {
+            handleActionConfig(result);
+        } else if (id == ID_TYPEFACE) {
+            handleActionTypeface(result);
         }
     }
 
-    private void handleActionConfig() {
+    private void handleActionConfig(@NonNull JobResult result) {
         final TypefaceConfig config = TypefaceConfig.getInstance();
-        if (config.isAvailable())
-            setResult(true, config);
-    }
-
-    private void handleActionTypeface() {
-        final TypefaceConfig config = getParam(0);
-        final String nameOrAlias = getParam(1);
-        final TypefaceCollection collection = config.getTypefaceCollection(nameOrAlias);
-        if (collection != null)
-            setResult(true, collection);
-    }
-
-    @Override
-    protected void dispatchResult(Callback callback) {
-        super.dispatchResult(callback);
-        if (callback == null)
-            return;
-        switch (getAction()) {
-            case ACTION_CONFIG:
-                notifyActionConfig(callback);
-                break;
-            case ACTION_TYPEFACE:
-                notifyActionTypeface(callback);
-                break;
+        if (config.isAvailable()) {
+            result.set(true, config);
         }
     }
 
-    private void notifyActionConfig(Callback callback) {
-        if (isSuccess())
-            callback.onLoadConfigSuccess(this.<TypefaceConfig>getResult(0));
+    private void handleActionTypeface(@NonNull JobResult result) {
+        final TypefaceConfig config = getParam().get(0);
+        final String nameOrAlias = getParam().get(1);
+        final TypefaceCollection collection = config.getTypefaceCollection(nameOrAlias);
+        if (collection != null) {
+            result.set(true, collection);
+        }
+    }
+
+    @Override
+    protected void onResult(@NonNull Callback callback, @NonNull JobResult result) {
+        super.onResult(callback, result);
+        final long id = getId();
+        if (id == ID_CONFIG) {
+            notifyActionConfig(callback, result);
+        } else if (id == ID_TYPEFACE) {
+            notifyActionTypeface(callback, result);
+        }
+    }
+
+    private void notifyActionConfig(@NonNull Callback callback, @NonNull JobResult result) {
+        if (result.isSuccess())
+            callback.onLoadConfigSuccess(result.get(0));
         else
             callback.onLoadConfigFailure();
     }
 
-    private void notifyActionTypeface(Callback callback) {
-        if (isSuccess())
-            callback.onLoadTypefaceCollectionSuccess(this.<TypefaceCollection>getResult(0));
+    private void notifyActionTypeface(@NonNull Callback callback, @NonNull JobResult result) {
+        if (result.isSuccess())
+            callback.onLoadTypefaceCollectionSuccess(result.get(0));
         else
             callback.onLoadTypefaceCollectionFailure();
     }

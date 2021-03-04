@@ -15,16 +15,19 @@
  */
 package am.project.x.business.others.opentype;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.io.File;
 
 import am.project.support.job.Job;
+import am.project.support.job.JobResult;
 import am.util.opentype.FileOpenTypeReader;
 import am.util.opentype.OpenType;
 import am.util.opentype.OpenTypeCollection;
 import am.util.opentype.OpenTypeParser;
 import am.util.opentype.OpenTypeReader;
 import am.util.opentype.TableRecord;
-import androidx.annotation.Nullable;
 
 /**
  * Job
@@ -40,8 +43,8 @@ class OpenTypeJob extends Job<OpenTypeJob.Callback> {
     }
 
     @Override
-    protected void doInBackground() {
-        final String path = getParam(0);
+    protected void doInBackground(@NonNull JobResult result) {
+        final String path = getParam().getString(0);
         final File font = new File(path);
         if (!font.exists() || !font.isFile() || !font.canRead())
             return;
@@ -86,18 +89,16 @@ class OpenTypeJob extends Job<OpenTypeJob.Callback> {
                 // ignore
             }
         }
-        if (success)
-            setResult(true, isCollection, ot, otc);
+        if (success) {
+            result.set(true, isCollection, ot, otc);
+        }
     }
 
     @Override
-    protected void dispatchResult(Callback callback) {
-        super.dispatchResult(callback);
-        if (callback == null)
-            return;
-        if (isSuccess())
-            callback.onParseSuccess(getBooleanResult(0), this.<OpenType>getResult(1),
-                    this.<OpenTypeCollection>getResult(2));
+    protected void onResult(@NonNull Callback callback, @NonNull JobResult result) {
+        super.onResult(callback, result);
+        if (result.isSuccess())
+            callback.onParseSuccess(result.getBoolean(0), result.get(1), result.get(2));
         else
             callback.onParseFailure();
     }

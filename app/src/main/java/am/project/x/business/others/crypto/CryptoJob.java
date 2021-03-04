@@ -18,9 +18,12 @@ package am.project.x.business.others.crypto;
 import android.os.Build;
 import android.util.Base64;
 
+import androidx.annotation.NonNull;
+
 import java.security.KeyPair;
 
 import am.project.support.job.Job;
+import am.project.support.job.JobResult;
 import am.project.support.security.AESUtil;
 import am.project.support.security.DESedeUtil;
 import am.project.support.security.MessageDigestUtils;
@@ -31,51 +34,47 @@ import am.project.support.security.RSAUtil;
  */
 class CryptoJob extends Job<CryptoJob.Callback> {
 
-    private static final int ACTION_MESSAGE = 0;
-    private static final int ACTION_DES = 1;
-    private static final int ACTION_AES = 2;
-    private static final int ACTION_RSA = 3;
+    private static final int ID_MESSAGE = 0;
+    private static final int ID_DES = 1;
+    private static final int ID_AES = 2;
+    private static final int ID_RSA = 3;
 
-    private CryptoJob(Callback callback, int action, Object... params) {
-        super(callback, action, params);
+    private CryptoJob(Callback callback, long id, Object... params) {
+        super(callback, id, params);
     }
 
     static void getMessage(Callback callback, String input) {
-        new CryptoJob(callback, ACTION_MESSAGE, input).execute();
+        new CryptoJob(callback, ID_MESSAGE, input).execute();
     }
 
     static void getDES(Callback callback, String input) {
-        new CryptoJob(callback, ACTION_DES, input).execute();
+        new CryptoJob(callback, ID_DES, input).execute();
     }
 
     static void getAES(Callback callback, String input) {
-        new CryptoJob(callback, ACTION_AES, input).execute();
+        new CryptoJob(callback, ID_AES, input).execute();
     }
 
     static void getRSA(Callback callback, String input) {
-        new CryptoJob(callback, ACTION_RSA, input).execute();
+        new CryptoJob(callback, ID_RSA, input).execute();
     }
 
     @Override
-    protected void doInBackground() {
-        switch (getAction()) {
-            case ACTION_MESSAGE:
-                handleActionMessage();
-                break;
-            case ACTION_DES:
-                handleActionDES();
-                break;
-            case ACTION_AES:
-                handleActionAES();
-                break;
-            case ACTION_RSA:
-                handleActionRSA();
-                break;
+    protected void doInBackground(@NonNull JobResult result) {
+        final long id = getId();
+        if (id == ID_MESSAGE) {
+            handleActionMessage(result);
+        } else if (id == ID_DES) {
+            handleActionDES(result);
+        } else if (id == ID_AES) {
+            handleActionAES(result);
+        } else if (id == ID_RSA) {
+            handleActionRSA(result);
         }
     }
 
-    private void handleActionMessage() {
-        final String input = getParam(0);
+    private void handleActionMessage(@NonNull JobResult result) {
+        final String input = getParam().get(0);
         final StringBuffer buffer = new StringBuffer();
         getMD5(buffer, input);
         getSHA1(buffer, input);
@@ -83,7 +82,7 @@ class CryptoJob extends Job<CryptoJob.Callback> {
         getSHA256(buffer, input);
         getSHA384(buffer, input);
         getSHA512(buffer, input);
-        setResult(true, buffer.toString());
+        result.set(true, buffer.toString());
     }
 
     private void getMD5(StringBuffer buffer, String text) {
@@ -131,13 +130,13 @@ class CryptoJob extends Job<CryptoJob.Callback> {
         buffer.append("\n");
     }
 
-    private void handleActionDES() {
-        final String input = getParam(0);
+    private void handleActionDES(@NonNull JobResult result) {
+        final String input = getParam().get(0);
         final StringBuffer buffer = new StringBuffer();
         doDES(buffer, input);
         doDESWithRandomKey(buffer, input);
         doDESWithPBEKey(buffer, input);
-        setResult(true, buffer.toString());
+        result.set(true, buffer.toString());
     }
 
     private void doDES(StringBuffer buffer, String text) {
@@ -258,13 +257,13 @@ class CryptoJob extends Job<CryptoJob.Callback> {
         buffer.append("\n");
     }
 
-    private void handleActionAES() {
-        final String input = getParam(0);
+    private void handleActionAES(@NonNull JobResult result) {
+        final String input = getParam().get(0);
         final StringBuffer buffer = new StringBuffer();
         doAES(buffer, input);
         doAESWithRandomKey(buffer, input);
         doAESWithPBEKey(buffer, input);
-        setResult(true, buffer.toString());
+        result.set(true, buffer.toString());
     }
 
     private void doAES(StringBuffer buffer, String text) {
@@ -386,11 +385,11 @@ class CryptoJob extends Job<CryptoJob.Callback> {
         buffer.append("\n");
     }
 
-    private void handleActionRSA() {
-        final String input = getParam(0);
+    private void handleActionRSA(@NonNull JobResult result) {
+        final String input = getParam().get(0);
         final StringBuffer buffer = new StringBuffer();
         doRSA(buffer, input);
-        setResult(true, buffer.toString());
+        result.set(true, buffer.toString());
     }
 
     private void doRSA(StringBuffer buffer, String text) {
@@ -435,11 +434,9 @@ class CryptoJob extends Job<CryptoJob.Callback> {
     }
 
     @Override
-    protected void dispatchResult(Callback callback) {
-        super.dispatchResult(callback);
-        if (callback == null)
-            return;
-        callback.onResult(this.<String>getResult(0));
+    protected void onResult(@NonNull Callback callback, @NonNull JobResult result) {
+        super.onResult(callback, result);
+        callback.onResult(result.get(0));
     }
 
     public interface Callback {
