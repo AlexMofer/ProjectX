@@ -160,27 +160,27 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * 刷新Toolbar菜单
-     */
-    protected void invalidateToolbarMenu() {
-        if (mToolbar instanceof androidx.appcompat.widget.Toolbar) {
-            final androidx.appcompat.widget.Toolbar toolbar =
-                    (androidx.appcompat.widget.Toolbar) mToolbar;
-            onUpdateToolbarMenu(toolbar.getMenu());
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (mToolbar instanceof android.widget.Toolbar) {
-                final android.widget.Toolbar toolbar =
-                        (android.widget.Toolbar) mToolbar;
-                onUpdateToolbarMenu(toolbar.getMenu());
-            }
-        }
-    }
-
-    /**
      * 更新Toolbar菜单
      *
      * @param menu 菜单
      */
-    protected void onUpdateToolbarMenu(@NonNull Menu menu) {
+    protected void onToolbarMenuUpdate(@NonNull Menu menu) {
+    }
+
+    /**
+     * 刷新Toolbar菜单
+     */
+    public void invalidateToolbarMenu() {
+        if (mToolbar instanceof androidx.appcompat.widget.Toolbar) {
+            final androidx.appcompat.widget.Toolbar toolbar =
+                    (androidx.appcompat.widget.Toolbar) mToolbar;
+            onToolbarMenuUpdate(toolbar.getMenu());
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (mToolbar instanceof android.widget.Toolbar) {
+                final android.widget.Toolbar toolbar =
+                        (android.widget.Toolbar) mToolbar;
+                onToolbarMenuUpdate(toolbar.getMenu());
+            }
+        }
     }
 }
