@@ -2,13 +2,13 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion '30.0.2'
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 30
-        versionCode 4
-        versionName "1.2.0.1"
+        versionCode 5
+        versionName "1.2.0.2"
     }
 
     compileOptions {
@@ -20,7 +20,7 @@ android {
 dependencies {
 //    api 'am.util:mvp-core:1.0.0'
     api project(':mvp-core')
-//    api 'am.appcompat:appcompat-plus:1.2.0.1'
+//    api 'am.appcompat:appcompat-plus:1.2.0.2'
     api project(':appcompat-plus')
 }
 
