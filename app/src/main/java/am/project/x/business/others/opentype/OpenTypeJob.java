@@ -20,8 +20,7 @@ import androidx.annotation.Nullable;
 
 import java.io.File;
 
-import am.project.support.job.Job;
-import am.project.support.job.JobResult;
+import am.util.job.Job;
 import am.util.opentype.FileOpenTypeReader;
 import am.util.opentype.OpenType;
 import am.util.opentype.OpenTypeCollection;
@@ -34,8 +33,8 @@ import am.util.opentype.TableRecord;
  */
 class OpenTypeJob extends Job<OpenTypeJob.Callback> {
 
-    private OpenTypeJob(Callback callback, int action, Object... params) {
-        super(callback, action, params);
+    private OpenTypeJob(Callback callback, int id, Object... params) {
+        super(callback, id, params);
     }
 
     static void parse(Callback callback, String path) {
@@ -43,8 +42,8 @@ class OpenTypeJob extends Job<OpenTypeJob.Callback> {
     }
 
     @Override
-    protected void doInBackground(@NonNull JobResult result) {
-        final String path = getParam().getString(0);
+    protected void doInBackground(@NonNull Result result) {
+        final String path = getParams().getString(0);
         final File font = new File(path);
         if (!font.exists() || !font.isFile() || !font.canRead())
             return;
@@ -95,7 +94,7 @@ class OpenTypeJob extends Job<OpenTypeJob.Callback> {
     }
 
     @Override
-    protected void onResult(@NonNull Callback callback, @NonNull JobResult result) {
+    protected void onResult(@NonNull Callback callback, @NonNull Result result) {
         super.onResult(callback, result);
         if (result.isSuccess())
             callback.onParseSuccess(result.getBoolean(0), result.get(1), result.get(2));

@@ -17,10 +17,9 @@ package am.project.x.business.others.font;
 
 import androidx.annotation.NonNull;
 
-import am.project.support.job.Job;
-import am.project.support.job.JobResult;
 import am.util.font.TypefaceCollection;
 import am.util.font.TypefaceConfig;
+import am.util.job.Job;
 
 /**
  * Job
@@ -30,7 +29,7 @@ class FontJob extends Job<FontJob.Callback> {
     private static final int ID_CONFIG = 0;
     private static final int ID_TYPEFACE = 1;
 
-    private FontJob(Callback callback, long id, Object... params) {
+    private FontJob(Callback callback, int id, Object... params) {
         super(callback, id, params);
     }
 
@@ -44,25 +43,27 @@ class FontJob extends Job<FontJob.Callback> {
     }
 
     @Override
-    protected void doInBackground(@NonNull JobResult result) {
-        final long id = getId();
-        if (id == ID_CONFIG) {
-            handleActionConfig(result);
-        } else if (id == ID_TYPEFACE) {
-            handleActionTypeface(result);
+    protected void doInBackground(@NonNull Result result) {
+        switch (getId()) {
+            case ID_CONFIG:
+                handleActionConfig(result);
+                break;
+            case ID_TYPEFACE:
+                handleActionTypeface(result);
+                break;
         }
     }
 
-    private void handleActionConfig(@NonNull JobResult result) {
+    private void handleActionConfig(@NonNull Result result) {
         final TypefaceConfig config = TypefaceConfig.getInstance();
         if (config.isAvailable()) {
             result.set(true, config);
         }
     }
 
-    private void handleActionTypeface(@NonNull JobResult result) {
-        final TypefaceConfig config = getParam().get(0);
-        final String nameOrAlias = getParam().get(1);
+    private void handleActionTypeface(@NonNull Result result) {
+        final TypefaceConfig config = getParams().get(0);
+        final String nameOrAlias = getParams().get(1);
         final TypefaceCollection collection = config.getTypefaceCollection(nameOrAlias);
         if (collection != null) {
             result.set(true, collection);
@@ -70,24 +71,26 @@ class FontJob extends Job<FontJob.Callback> {
     }
 
     @Override
-    protected void onResult(@NonNull Callback callback, @NonNull JobResult result) {
+    protected void onResult(@NonNull Callback callback, @NonNull Result result) {
         super.onResult(callback, result);
-        final long id = getId();
-        if (id == ID_CONFIG) {
-            notifyActionConfig(callback, result);
-        } else if (id == ID_TYPEFACE) {
-            notifyActionTypeface(callback, result);
+        switch (getId()) {
+            case ID_CONFIG:
+                notifyActionConfig(callback, result);
+                break;
+            case ID_TYPEFACE:
+                notifyActionTypeface(callback, result);
+                break;
         }
     }
 
-    private void notifyActionConfig(@NonNull Callback callback, @NonNull JobResult result) {
+    private void notifyActionConfig(@NonNull Callback callback, @NonNull Result result) {
         if (result.isSuccess())
             callback.onLoadConfigSuccess(result.get(0));
         else
             callback.onLoadConfigFailure();
     }
 
-    private void notifyActionTypeface(@NonNull Callback callback, @NonNull JobResult result) {
+    private void notifyActionTypeface(@NonNull Callback callback, @NonNull Result result) {
         if (result.isSuccess())
             callback.onLoadTypefaceCollectionSuccess(result.get(0));
         else

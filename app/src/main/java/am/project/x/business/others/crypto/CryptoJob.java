@@ -22,12 +22,11 @@ import androidx.annotation.NonNull;
 
 import java.security.KeyPair;
 
-import am.project.support.job.Job;
-import am.project.support.job.JobResult;
 import am.project.support.security.AESUtil;
 import am.project.support.security.DESedeUtil;
 import am.project.support.security.MessageDigestUtils;
 import am.project.support.security.RSAUtil;
+import am.util.job.Job;
 
 /**
  * Job
@@ -39,7 +38,7 @@ class CryptoJob extends Job<CryptoJob.Callback> {
     private static final int ID_AES = 2;
     private static final int ID_RSA = 3;
 
-    private CryptoJob(Callback callback, long id, Object... params) {
+    private CryptoJob(Callback callback, int id, Object... params) {
         super(callback, id, params);
     }
 
@@ -60,21 +59,25 @@ class CryptoJob extends Job<CryptoJob.Callback> {
     }
 
     @Override
-    protected void doInBackground(@NonNull JobResult result) {
-        final long id = getId();
-        if (id == ID_MESSAGE) {
-            handleActionMessage(result);
-        } else if (id == ID_DES) {
-            handleActionDES(result);
-        } else if (id == ID_AES) {
-            handleActionAES(result);
-        } else if (id == ID_RSA) {
-            handleActionRSA(result);
+    protected void doInBackground(Result result) {
+        switch (getId()) {
+            case ID_MESSAGE:
+                handleActionMessage(result);
+                break;
+            case ID_DES:
+                handleActionDES(result);
+                break;
+            case ID_AES:
+                handleActionAES(result);
+                break;
+            case ID_RSA:
+                handleActionRSA(result);
+                break;
         }
     }
 
-    private void handleActionMessage(@NonNull JobResult result) {
-        final String input = getParam().get(0);
+    private void handleActionMessage(@NonNull Result result) {
+        final String input = getParams().get(0);
         final StringBuffer buffer = new StringBuffer();
         getMD5(buffer, input);
         getSHA1(buffer, input);
@@ -130,8 +133,8 @@ class CryptoJob extends Job<CryptoJob.Callback> {
         buffer.append("\n");
     }
 
-    private void handleActionDES(@NonNull JobResult result) {
-        final String input = getParam().get(0);
+    private void handleActionDES(@NonNull Result result) {
+        final String input = getParams().get(0);
         final StringBuffer buffer = new StringBuffer();
         doDES(buffer, input);
         doDESWithRandomKey(buffer, input);
@@ -257,8 +260,8 @@ class CryptoJob extends Job<CryptoJob.Callback> {
         buffer.append("\n");
     }
 
-    private void handleActionAES(@NonNull JobResult result) {
-        final String input = getParam().get(0);
+    private void handleActionAES(@NonNull Result result) {
+        final String input = getParams().get(0);
         final StringBuffer buffer = new StringBuffer();
         doAES(buffer, input);
         doAESWithRandomKey(buffer, input);
@@ -385,8 +388,8 @@ class CryptoJob extends Job<CryptoJob.Callback> {
         buffer.append("\n");
     }
 
-    private void handleActionRSA(@NonNull JobResult result) {
-        final String input = getParam().get(0);
+    private void handleActionRSA(@NonNull Result result) {
+        final String input = getParams().get(0);
         final StringBuffer buffer = new StringBuffer();
         doRSA(buffer, input);
         result.set(true, buffer.toString());
@@ -434,7 +437,7 @@ class CryptoJob extends Job<CryptoJob.Callback> {
     }
 
     @Override
-    protected void onResult(@NonNull Callback callback, @NonNull JobResult result) {
+    protected void onResult(@NonNull Callback callback, @NonNull Result result) {
         super.onResult(callback, result);
         callback.onResult(result.get(0));
     }
