@@ -1,8 +1,11 @@
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+}
+
 
 android {
     compileSdkVersion 30
-    buildToolsVersion '30.0.2'
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
         //noinspection MinSdkTooLow
@@ -18,5 +21,3 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
-
-//apply from: "bintray.gradle"

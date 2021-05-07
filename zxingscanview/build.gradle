@@ -1,8 +1,10 @@
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+}
 
 android {
     compileSdkVersion 30
-    buildToolsVersion '30.0.2'
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
         minSdkVersion 15
@@ -20,4 +22,3 @@ android {
 dependencies {
     api 'com.google.zxing:core:3.3.3'
 }
-//apply from: "bintray.gradle"

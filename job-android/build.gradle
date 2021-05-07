@@ -1,4 +1,6 @@
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+}
 
 android {
     compileSdkVersion 30
@@ -21,5 +23,3 @@ dependencies {
 //    api 'am.util:job-core:1.0.0'
     api project(':job-core')
 }
-
-//apply from: "bintray.gradle"

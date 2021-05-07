@@ -1,4 +1,6 @@
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+}
 
 android {
     compileSdkVersion 30
@@ -23,5 +25,3 @@ dependencies {
 //    api 'am.appcompat:appcompat-plus:1.2.0.2'
     api project(':appcompat-plus')
 }
-
-//apply from: "bintray.gradle"
