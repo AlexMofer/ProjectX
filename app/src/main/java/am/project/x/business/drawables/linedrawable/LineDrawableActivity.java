@@ -30,14 +30,15 @@ import android.widget.Spinner;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.drawable.LineDrawable;
 import am.project.x.R;
 
 /**
  * 横线图片
  */
-public class LineDrawableActivity extends BaseActivity implements
+public class LineDrawableActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener, SeekBar.OnSeekBarChangeListener {
 
     private LineDrawable drawable;

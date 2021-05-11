@@ -21,11 +21,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseFragment;
+import com.am.appcompat.app.Fragment;
+
 import am.project.x.R;
 import am.project.x.business.developing.DevelopingActivity;
 
-public class DevelopFragment extends BaseFragment {
+public class DevelopFragment extends Fragment {
 
     public static DevelopFragment newInstance() {
         return new DevelopFragment();

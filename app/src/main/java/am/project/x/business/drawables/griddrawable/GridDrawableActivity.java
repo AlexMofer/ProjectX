@@ -24,14 +24,15 @@ import android.widget.SeekBar;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.drawable.GridDrawable;
 import am.project.x.R;
 
 /**
  * 网格图片
  */
-public class GridDrawableActivity extends BaseActivity implements
+public class GridDrawableActivity extends AppCompatActivity implements
         SeekBar.OnSeekBarChangeListener {
 
     private ImageView mVImage;

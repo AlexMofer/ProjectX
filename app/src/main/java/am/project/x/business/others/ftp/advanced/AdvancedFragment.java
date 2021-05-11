@@ -39,9 +39,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.am.appcompat.app.Fragment;
+
 import java.util.Locale;
 
-import am.appcompat.app.BaseFragment;
 import am.project.support.utils.InputMethodUtils;
 import am.project.x.R;
 import am.project.x.business.others.ftp.FtpFragmentCallback;
@@ -52,7 +53,7 @@ import am.project.x.utils.ContextUtils;
  * Created by Alex on 2019/10/10.
  */
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-public class AdvancedFragment extends BaseFragment implements TextWatcher,
+public class AdvancedFragment extends Fragment implements TextWatcher,
         CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     private static final int ACTIVITY_REQUEST_URI = 100;

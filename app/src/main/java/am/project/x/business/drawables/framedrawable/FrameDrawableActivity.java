@@ -21,14 +21,15 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.drawable.FrameDrawable;
 import am.project.x.R;
 
 /**
  * 帧图片
  */
-public class FrameDrawableActivity extends BaseActivity {
+public class FrameDrawableActivity extends AppCompatActivity {
 
     private FrameDrawable mDrawable;
 

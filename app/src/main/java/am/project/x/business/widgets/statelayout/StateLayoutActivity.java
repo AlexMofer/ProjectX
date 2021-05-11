@@ -30,7 +30,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.x.R;
 import am.project.x.widget.CircularProgressImageView;
 import am.widget.stateframelayout.StateFrameLayout;
@@ -38,7 +39,7 @@ import am.widget.stateframelayout.StateFrameLayout;
 /**
  * 状态布局
  */
-public class StateLayoutActivity extends BaseActivity implements
+public class StateLayoutActivity extends AppCompatActivity implements
         RadioGroup.OnCheckedChangeListener, View.OnClickListener {
 
     private StateFrameLayout mVState;

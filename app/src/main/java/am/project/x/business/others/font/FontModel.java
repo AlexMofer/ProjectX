@@ -17,6 +17,8 @@ package am.project.x.business.others.font;
 
 import android.content.Context;
 
+import com.am.mvp.core.MVPModel;
+
 import java.io.File;
 import java.util.List;
 
@@ -26,7 +28,6 @@ import am.util.font.TypefaceCollection;
 import am.util.font.TypefaceConfig;
 import am.util.font.TypefaceFallback;
 import am.util.font.TypefaceItem;
-import am.util.mvp.core.MVPModel;
 
 /**
  * Model

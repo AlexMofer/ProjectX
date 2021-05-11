@@ -30,14 +30,15 @@ import android.widget.Switch;
 
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.x.R;
 import am.widget.circleprogressbar.CircleProgressBar;
 
 /**
  * 环形进度条
  */
-public class CircleProgressBarActivity extends BaseActivity implements
+public class CircleProgressBarActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener, SeekBar.OnSeekBarChangeListener,
         CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 

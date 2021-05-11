@@ -18,9 +18,10 @@ package am.project.x.business.others.opentype;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.am.job.Job;
+
 import java.io.File;
 
-import am.util.job.Job;
 import am.util.opentype.FileOpenTypeReader;
 import am.util.opentype.OpenType;
 import am.util.opentype.OpenTypeCollection;

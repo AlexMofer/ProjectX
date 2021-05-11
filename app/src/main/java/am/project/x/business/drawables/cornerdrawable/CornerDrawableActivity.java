@@ -30,14 +30,15 @@ import android.widget.Spinner;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.drawable.CornerDrawable;
 import am.project.x.R;
 
 /**
  * 尖角框
  */
-public class CornerDrawableActivity extends BaseActivity implements
+public class CornerDrawableActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener, SeekBar.OnSeekBarChangeListener {
 
     private View mVContent;

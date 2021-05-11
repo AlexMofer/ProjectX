@@ -18,17 +18,18 @@ package am.project.x.common;
 
 import android.app.Dialog;
 
+import com.am.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 
 import am.project.x.business.common.LoadingDialog;
-import am.util.mvp.ui.MVPActivity;
 
 /**
  * 基础Activity
  * Created by Alex on 2020/6/1.
  */
 @SuppressWarnings("unused")
-public abstract class CommonActivity extends MVPActivity {
+public abstract class CommonActivity extends AppCompatActivity {
     private final ArrayList<Dialog> mShowDialogs = new ArrayList<>();
     private Dialog mLoading;
     private boolean mShowLoading = false;

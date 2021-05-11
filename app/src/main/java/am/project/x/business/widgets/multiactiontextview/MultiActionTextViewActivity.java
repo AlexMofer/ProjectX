@@ -25,7 +25,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.x.R;
 import am.widget.multiactiontextview.MultiActionClickableSpan;
 import am.widget.multiactiontextview.MultiActionTextView;
@@ -33,7 +34,7 @@ import am.widget.multiactiontextview.MultiActionTextView;
 /**
  * 文本点击
  */
-public class MultiActionTextViewActivity extends BaseActivity implements View.OnClickListener,
+public class MultiActionTextViewActivity extends AppCompatActivity implements View.OnClickListener,
         MultiActionClickableSpan.OnTextClickedListener {
 
     public MultiActionTextViewActivity() {

@@ -24,7 +24,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.x.BuildConfig;
 import am.project.x.R;
 import am.project.x.business.browser.BrowserActivity;
@@ -33,7 +34,7 @@ import am.project.x.utils.ViewUtils;
 /**
  * 关于
  */
-public class AboutActivity extends BaseActivity {
+public class AboutActivity extends AppCompatActivity {
 
     public AboutActivity() {
         super(R.layout.activity_about);

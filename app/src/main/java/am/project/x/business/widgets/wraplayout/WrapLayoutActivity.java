@@ -23,14 +23,15 @@ import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.x.R;
 import am.widget.wraplayout.WrapLayout;
 
 /**
  * 自动换行布局
  */
-public class WrapLayoutActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener,
+public class WrapLayoutActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener,
         SeekBar.OnSeekBarChangeListener {
 
     private WrapLayout mVContent;

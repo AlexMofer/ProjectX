@@ -26,9 +26,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.am.appcompat.app.AppCompatActivity;
+
 import java.util.List;
 
-import am.appcompat.app.BaseActivity;
 import am.project.x.R;
 import am.project.x.business.others.ftp.advanced.AdvancedFragment;
 import am.project.x.business.others.ftp.legacy.LegacyFragment;
@@ -36,7 +37,7 @@ import am.project.x.business.others.ftp.legacy.LegacyFragment;
 /**
  * FTP 文件传输
  */
-public class FtpActivity extends BaseActivity implements FtpFragmentCallback {
+public class FtpActivity extends AppCompatActivity implements FtpFragmentCallback {
 
     private static final String TAG_ADVANCED = "advanced";
     private static final String TAG_LEGACY = "legacy";

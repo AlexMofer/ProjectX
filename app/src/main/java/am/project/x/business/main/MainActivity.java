@@ -33,9 +33,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.am.appcompat.app.AppCompatActivity;
 import com.google.android.material.navigation.NavigationView;
 
-import am.appcompat.app.BaseActivity;
 import am.project.x.BuildConfig;
 import am.project.x.R;
 import am.project.x.business.about.AboutActivity;
@@ -50,7 +50,7 @@ import am.project.x.utils.ViewUtils;
 /**
  * 主页
  */
-public class MainActivity extends BaseActivity implements View.OnClickListener,
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     private static final String EXTRA_FRAGMENT = "current";

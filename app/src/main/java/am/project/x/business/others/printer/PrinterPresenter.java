@@ -17,7 +17,7 @@ package am.project.x.business.others.printer;
 
 import android.bluetooth.BluetoothDevice;
 
-import am.util.mvp.core.MVPPresenter;
+import com.am.mvp.core.MVPPresenter;
 
 /**
  * Presenter

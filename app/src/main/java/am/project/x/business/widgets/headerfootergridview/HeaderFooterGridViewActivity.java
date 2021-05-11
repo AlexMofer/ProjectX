@@ -32,16 +32,17 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import com.am.appcompat.app.AppCompatActivity;
+
 import java.util.Locale;
 
-import am.appcompat.app.BaseActivity;
 import am.project.x.R;
 import am.widget.headerfootergridview.HeaderFooterGridView;
 
 /**
  * 头尾网格视图
  */
-public class HeaderFooterGridViewActivity extends BaseActivity implements
+public class HeaderFooterGridViewActivity extends AppCompatActivity implements
         CompoundButton.OnCheckedChangeListener, SeekBar.OnSeekBarChangeListener,
         View.OnClickListener, AdapterView.OnItemClickListener {
 

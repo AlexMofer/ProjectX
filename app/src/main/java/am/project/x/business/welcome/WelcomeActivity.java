@@ -19,14 +19,15 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.x.R;
 import am.project.x.business.main.MainActivity;
 
 /**
  * 欢迎页
  */
-public class WelcomeActivity extends BaseActivity implements Runnable {
+public class WelcomeActivity extends AppCompatActivity implements Runnable {
 
     private static final long DELAY_MILLIS = 2500;
     private boolean mDoNotStart = false;

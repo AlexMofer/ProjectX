@@ -37,10 +37,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.am.appcompat.app.Fragment;
+
 import java.io.File;
 import java.util.Locale;
 
-import am.appcompat.app.BaseFragment;
 import am.project.support.utils.InputMethodUtils;
 import am.project.x.R;
 import am.project.x.business.others.ftp.FtpFragmentCallback;
@@ -51,7 +52,7 @@ import am.project.x.utils.ContextUtils;
  * Created by Alex on 2017/10/10.
  */
 
-public class LegacyFragment extends BaseFragment implements TextWatcher,
+public class LegacyFragment extends Fragment implements TextWatcher,
         CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     private static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 101;

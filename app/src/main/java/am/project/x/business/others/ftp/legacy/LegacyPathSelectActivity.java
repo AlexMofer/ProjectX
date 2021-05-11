@@ -37,9 +37,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.am.appcompat.app.AppCompatActivity;
+
 import java.io.File;
 
-import am.appcompat.app.BaseActivity;
 import am.project.x.R;
 import am.project.x.utils.FolderFilter;
 
@@ -47,7 +48,7 @@ import am.project.x.utils.FolderFilter;
  * 传统路径选择页面
  * Created by Alex on 2019/10/10.
  */
-public class LegacyPathSelectActivity extends BaseActivity implements
+public class LegacyPathSelectActivity extends AppCompatActivity implements
         DialogInterface.OnClickListener {
 
     private static final String EXTRA_PATH = "LegacyPathSelectActivity.EXTRA_PATH";

@@ -29,14 +29,15 @@ import android.widget.Switch;
 
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.x.R;
 import am.widget.drawableratingbar.DrawableRatingBar;
 
 /**
  * 图片评级
  */
-public class DrawableRatingBarActivity extends BaseActivity implements
+public class DrawableRatingBarActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener,
         SeekBar.OnSeekBarChangeListener {
 

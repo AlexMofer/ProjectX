@@ -15,7 +15,7 @@
  */
 package am.project.x.business.others.printer;
 
-import am.util.mvp.core.MVPView;
+import com.am.mvp.core.MVPView;
 
 /**
  * View

@@ -26,17 +26,18 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
+import com.am.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
-import am.appcompat.app.BaseActivity;
 import am.project.x.R;
 import am.util.viewpager.adapter.ViewsPagerAdapter;
 
 /**
  * 图片标记栏
  */
-public class TagTabStripActivity extends BaseActivity {
+public class TagTabStripActivity extends AppCompatActivity {
 
     public TagTabStripActivity() {
         super(R.layout.activity_tagtabstrip);

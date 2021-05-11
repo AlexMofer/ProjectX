@@ -15,7 +15,7 @@
  */
 package am.project.x.business.others.crypto;
 
-import am.util.mvp.core.MVPPresenter;
+import com.am.mvp.core.MVPPresenter;
 
 /**
  * Presenter

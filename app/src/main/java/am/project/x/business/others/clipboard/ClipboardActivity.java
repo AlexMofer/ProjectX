@@ -23,12 +23,13 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.am.appcompat.app.AppCompatActivity;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Random;
 
-import am.appcompat.app.BaseActivity;
 import am.project.x.R;
 import am.util.clipboard.SuperClipboard;
 
@@ -36,7 +37,7 @@ import am.util.clipboard.SuperClipboard;
  * 剪切板
  * Created by Alex on 2019/3/13.
  */
-public class ClipboardActivity extends BaseActivity {
+public class ClipboardActivity extends AppCompatActivity {
 
     private TextView mVResult;
     private final ClipboardBean mData = ClipboardBean.test();

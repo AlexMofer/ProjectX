@@ -28,11 +28,12 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.am.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import am.appcompat.app.BaseActivity;
 import am.project.x.R;
 import am.util.viewpager.adapter.ViewsPagerAdapter;
 import am.widget.gradienttabstrip.GradientTabStrip;
@@ -40,7 +41,7 @@ import am.widget.gradienttabstrip.GradientTabStrip;
 /**
  * 渐变底部栏
  */
-public class GradientTabStripActivity extends BaseActivity {
+public class GradientTabStripActivity extends AppCompatActivity {
 
     public GradientTabStripActivity() {
         super(R.layout.activity_gradienttabstrip);

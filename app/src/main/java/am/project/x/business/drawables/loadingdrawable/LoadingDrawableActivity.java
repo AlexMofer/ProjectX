@@ -22,13 +22,14 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.x.R;
 
 /**
  * 载入图片
  */
-public class LoadingDrawableActivity extends BaseActivity {
+public class LoadingDrawableActivity extends AppCompatActivity {
 
     private float density;
 

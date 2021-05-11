@@ -21,7 +21,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseFragment;
+import com.am.appcompat.app.Fragment;
+
 import am.project.x.R;
 import am.project.x.business.others.clipboard.ClipboardActivity;
 import am.project.x.business.others.crypto.CryptoActivity;
@@ -32,7 +33,7 @@ import am.project.x.business.others.opentypelist.OpenTypeListActivity;
 import am.project.x.business.others.printer.PrinterActivity;
 import am.project.x.business.others.retrofithelper.RetrofitActivity;
 
-public class OthersFragment extends BaseFragment {
+public class OthersFragment extends Fragment {
 
     public OthersFragment() {
         super(R.layout.fragment_main_others);

@@ -19,9 +19,10 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 
+import com.am.mvp.core.MVPModel;
+
 import am.project.x.ProjectXApplication;
 import am.project.x.R;
-import am.util.mvp.core.MVPModel;
 import am.util.opentype.OpenType;
 import am.util.opentype.OpenTypeCollection;
 import am.util.opentype.TableRecord;

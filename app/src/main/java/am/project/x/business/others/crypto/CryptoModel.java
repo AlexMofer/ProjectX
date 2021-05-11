@@ -15,7 +15,7 @@
  */
 package am.project.x.business.others.crypto;
 
-import am.util.mvp.core.MVPModel;
+import com.am.mvp.core.MVPModel;
 
 /**
  * Model

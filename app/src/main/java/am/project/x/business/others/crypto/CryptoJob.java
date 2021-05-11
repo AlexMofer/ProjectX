@@ -20,13 +20,14 @@ import android.util.Base64;
 
 import androidx.annotation.NonNull;
 
+import com.am.job.Job;
+
 import java.security.KeyPair;
 
 import am.project.support.security.AESUtil;
 import am.project.support.security.DESedeUtil;
 import am.project.support.security.MessageDigestUtils;
 import am.project.support.security.RSAUtil;
-import am.util.job.Job;
 
 /**
  * Job

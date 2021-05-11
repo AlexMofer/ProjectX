@@ -25,14 +25,15 @@ import android.widget.Switch;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.drawable.TextDrawable;
 import am.project.x.R;
 
 /**
  * 文本图片
  */
-public class TextDrawableActivity extends BaseActivity implements
+public class TextDrawableActivity extends AppCompatActivity implements
         CompoundButton.OnCheckedChangeListener {
 
     private TextDrawable drawable;

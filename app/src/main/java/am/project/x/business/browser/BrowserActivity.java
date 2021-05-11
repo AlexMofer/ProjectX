@@ -24,11 +24,12 @@ import android.webkit.WebSettings;
 
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.x.R;
 import am.project.x.widget.PowerfulWebView;
 
-public class BrowserActivity extends BaseActivity implements PowerfulWebView.OnTitleListener {
+public class BrowserActivity extends AppCompatActivity implements PowerfulWebView.OnTitleListener {
 
     private static final String EXTRA_URL = "url";
     private PowerfulWebView mVContent;

@@ -26,11 +26,12 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
+import com.am.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import am.appcompat.app.BaseActivity;
 import am.project.x.R;
 import am.util.viewpager.adapter.ViewsPagerAdapter;
 import am.widget.indicatortabstrip.IndicatorTabStrip;
@@ -38,7 +39,7 @@ import am.widget.indicatortabstrip.IndicatorTabStrip;
 /**
  * 游标顶部栏
  */
-public class IndicatorTabStripActivity extends BaseActivity {
+public class IndicatorTabStripActivity extends AppCompatActivity {
 
     public IndicatorTabStripActivity() {
         super(R.layout.activity_indicatortabstrip);

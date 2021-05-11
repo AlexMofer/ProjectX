@@ -29,16 +29,17 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.am.appcompat.app.AppCompatActivity;
+
 import java.util.Locale;
 
-import am.appcompat.app.BaseActivity;
 import am.project.x.R;
 import am.util.viewpager.adapter.RecyclePagerAdapter;
 
 /**
  * 回收页视图
  */
-public class RecyclePagerActivity extends BaseActivity implements View.OnClickListener {
+public class RecyclePagerActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final Adapter mAdapter = new Adapter();
     private TextView mVPage;

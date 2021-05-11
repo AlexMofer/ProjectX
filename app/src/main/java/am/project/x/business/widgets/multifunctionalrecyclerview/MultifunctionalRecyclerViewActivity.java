@@ -24,7 +24,8 @@ import android.view.MenuItem;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.x.R;
 import am.widget.multifunctionalrecyclerview.MultifunctionalLinearLayoutManager;
 import am.widget.multifunctionalrecyclerview.MultifunctionalRecyclerView;
@@ -32,7 +33,7 @@ import am.widget.multifunctionalrecyclerview.MultifunctionalRecyclerView;
 /**
  * 多功能RecyclerView
  */
-public class MultifunctionalRecyclerViewActivity extends BaseActivity {
+public class MultifunctionalRecyclerViewActivity extends AppCompatActivity {
 
     private final Adapter mAdapter = new Adapter();
     private MultifunctionalRecyclerView mVContent;

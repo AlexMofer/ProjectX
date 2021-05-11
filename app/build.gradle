@@ -55,8 +55,8 @@ dependencies {
     implementation 'androidx.documentfile:documentfile:1.0.1'
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation project(':mvp-ui')
-    implementation project(':job-android')
+    implementation 'io.github.alexmofer.appcompat:appcompat:1.2.0'
+    implementation 'io.github.alexmofer.job:job-android:1.0.0'
     implementation project(':tabstrip')
     implementation project(':viewpager')
     implementation project(':multifunctionalimageview')

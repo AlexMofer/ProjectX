@@ -24,7 +24,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.support.compat.AMActivityCompat;
 import am.project.x.R;
 import am.widget.floatingactionmode.FloatingActionMode;
@@ -35,7 +36,7 @@ import am.widget.floatingactionmode.FloatingSubMenu;
 /**
  * 悬浮菜单
  */
-public class FloatingActionModeActivity extends BaseActivity implements PressView.OnPressListener,
+public class FloatingActionModeActivity extends AppCompatActivity implements PressView.OnPressListener,
         FloatingActionMode.Callback {
 
     private final Rect mBound = new Rect();

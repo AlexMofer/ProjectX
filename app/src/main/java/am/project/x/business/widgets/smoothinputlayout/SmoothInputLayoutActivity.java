@@ -28,14 +28,15 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.x.R;
 import am.widget.smoothinputlayout.SmoothInputLayout;
 
 /**
  * 输入面板
  */
-public class SmoothInputLayoutActivity extends BaseActivity implements View.OnClickListener,
+public class SmoothInputLayoutActivity extends AppCompatActivity implements View.OnClickListener,
         View.OnTouchListener, TextWatcher, SmoothInputLayout.OnVisibilityChangeListener {
 
     private SmoothInputLayout lytContent;

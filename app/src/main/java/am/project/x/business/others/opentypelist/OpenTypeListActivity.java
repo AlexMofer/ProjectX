@@ -25,14 +25,15 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.x.R;
 import am.project.x.business.others.opentype.OpenTypeActivity;
-import am.util.mvp.ui.MVPActivity;
 
 /**
  * 字体文件列表
  */
-public class OpenTypeListActivity extends MVPActivity implements OpenTypeListView,
+public class OpenTypeListActivity extends AppCompatActivity implements OpenTypeListView,
         OpenTypeListViewHolder.OnViewHolderListener {
 
     private final OpenTypeListPresenter mPresenter =

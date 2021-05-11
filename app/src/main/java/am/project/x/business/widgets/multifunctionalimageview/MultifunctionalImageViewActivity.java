@@ -28,7 +28,8 @@ import android.widget.Switch;
 
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.x.R;
 import am.widget.multifunctionalimageview.ClipOutlineProvider;
 import am.widget.multifunctionalimageview.MultifunctionalImageView;
@@ -37,7 +38,7 @@ import am.widget.multifunctionalimageview.RoundRectClipOutlineProvider;
 /**
  * 裁剪图片视图
  */
-public class MultifunctionalImageViewActivity extends BaseActivity implements
+public class MultifunctionalImageViewActivity extends AppCompatActivity implements
         CompoundButton.OnCheckedChangeListener, SeekBar.OnSeekBarChangeListener,
         AdapterView.OnItemSelectedListener {
 

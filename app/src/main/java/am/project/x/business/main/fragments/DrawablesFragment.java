@@ -21,7 +21,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseFragment;
+import com.am.appcompat.app.Fragment;
+
 import am.project.x.R;
 import am.project.x.business.drawables.cornerdrawable.CornerDrawableActivity;
 import am.project.x.business.drawables.framedrawable.FrameDrawableActivity;
@@ -30,7 +31,7 @@ import am.project.x.business.drawables.linedrawable.LineDrawableActivity;
 import am.project.x.business.drawables.loadingdrawable.LoadingDrawableActivity;
 import am.project.x.business.drawables.textdrawable.TextDrawableActivity;
 
-public class DrawablesFragment extends BaseFragment {
+public class DrawablesFragment extends Fragment {
 
     public static DrawablesFragment newInstance() {
         return new DrawablesFragment();

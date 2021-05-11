@@ -20,13 +20,14 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.x.R;
 
 /**
  * 文件传输开关
  */
-public class FtpSwitcherActivity extends BaseActivity {
+public class FtpSwitcherActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

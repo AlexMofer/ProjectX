@@ -21,13 +21,14 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseActivity;
+import com.am.appcompat.app.AppCompatActivity;
+
 import am.project.x.R;
 
 /**
  * 正在开发
  */
-public class DevelopingActivity extends BaseActivity {
+public class DevelopingActivity extends AppCompatActivity {
 
     public DevelopingActivity() {
         super(R.layout.activity_developing);

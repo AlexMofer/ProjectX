@@ -15,9 +15,9 @@
  */
 package am.project.x.business.others.opentypelist;
 
-import java.io.File;
+import com.am.mvp.core.MVPModel;
 
-import am.util.mvp.core.MVPModel;
+import java.io.File;
 
 /**
  * Model

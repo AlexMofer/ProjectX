@@ -21,7 +21,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import am.appcompat.app.BaseFragment;
+import com.am.appcompat.app.Fragment;
+
 import am.project.x.R;
 import am.project.x.business.widgets.circleprogressbar.CircleProgressBarActivity;
 import am.project.x.business.widgets.drawableratingbar.DrawableRatingBarActivity;
@@ -38,7 +39,7 @@ import am.project.x.business.widgets.tagtabstrip.TagTabStripActivity;
 import am.project.x.business.widgets.wraplayout.WrapLayoutActivity;
 import am.project.x.business.widgets.zxingscanview.ZxingScanViewActivity;
 
-public class WidgetsFragment extends BaseFragment {
+public class WidgetsFragment extends Fragment {
 
     public static WidgetsFragment newInstance() {
         return new WidgetsFragment();
