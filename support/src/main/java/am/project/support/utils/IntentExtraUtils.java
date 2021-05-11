@@ -118,7 +118,7 @@ public final class IntentExtraUtils {
             }
         }
         if (data instanceof ArrayList) {
-            final ArrayList list = (ArrayList) data;
+            final ArrayList<?> list = (ArrayList<?>) data;
             if (list.isEmpty())
                 return true;
             final Object item = list.get(0);
