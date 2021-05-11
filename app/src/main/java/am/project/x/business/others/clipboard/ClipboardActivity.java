@@ -21,17 +21,16 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.am.appcompat.app.AppCompatActivity;
-
-import org.jetbrains.annotations.NotNull;
+import com.am.clipboard.SuperClipboard;
 
 import java.io.Serializable;
 import java.util.Random;
 
 import am.project.x.R;
-import am.util.clipboard.SuperClipboard;
 
 /**
  * 剪切板
@@ -108,7 +107,7 @@ public class ClipboardActivity extends AppCompatActivity {
                     "Test:" + v);
         }
 
-        @NotNull
+        @NonNull
         @Override
         public String toString() {
             return "ClipboardBean{" +
