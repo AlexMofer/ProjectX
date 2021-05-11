@@ -12,11 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.retrofit.helper.Callback;
+import com.am.retrofit.helper.CallbackWrapper;
 
 import am.project.x.R;
 import am.project.x.business.others.retrofithelper.gson.GsonHelper;
-import am.util.retrofit.Callback;
-import am.util.retrofit.CallbackWrapper;
 
 public class RetrofitActivity extends AppCompatActivity implements Callback<TestBean> {
 

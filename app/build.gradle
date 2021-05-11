@@ -57,6 +57,7 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'io.github.alexmofer.appcompat:appcompat:1.2.0'
     implementation 'io.github.alexmofer.job:job-android:1.0.0'
+    implementation 'io.github.alexmofer.retrofit:retrofit-helper:2.9.0'
     implementation project(':tabstrip')
     implementation project(':viewpager')
     implementation project(':multifunctionalimageview')
@@ -77,5 +78,4 @@ dependencies {
     implementation project(':opentype')
     implementation project(':floatingactionmode')
     implementation project(':clipboard')
-    implementation project(':retrofit')
 }

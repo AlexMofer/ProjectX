@@ -1,7 +1,8 @@
 package am.project.x.business.others.retrofithelper;
 
+import com.am.retrofit.helper.CallFactory;
+
 import am.project.x.BuildConfig;
-import am.util.retrofit.CallFactory;
 import retrofit2.Call;
 
 /**

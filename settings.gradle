@@ -1,4 +1,3 @@
-include ':retrofit'
 include ':clipboard'
 include ':multifunctionalimageview'
 include ':floatingactionmode'
