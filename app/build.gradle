@@ -59,9 +59,10 @@ dependencies {
     implementation 'io.github.alexmofer.job:job-android:1.0.0'
     implementation 'io.github.alexmofer.retrofit:retrofit-helper:2.9.0'
     implementation 'io.github.alexmofer.clipboard:clipboard:2.0.1'
+    implementation 'io.github.alexmofer.widget:multifunctionalimageview:1.1.1'
     implementation project(':tabstrip')
     implementation project(':viewpager')
-    implementation project(':multifunctionalimageview')
+//    implementation project(':multifunctionalimageview')
     implementation project(':stateframelayout')
     implementation project(':wraplayout')
     implementation project(':drawableratingbar')

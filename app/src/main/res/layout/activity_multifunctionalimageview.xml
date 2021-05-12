@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tool:context=".business.widgets.multifunctionalimageview.MultifunctionalImageViewActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/miv_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/miv_label" />
 
-    <am.widget.multifunctionalimageview.MultifunctionalImageView
+    <com.am.widget.multifunctionalimageview.MultifunctionalImageView
         android:id="@+id/miv_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <Switch
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/miv_sw_crop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
                 android:textColor="#ff666666"
                 android:textSize="14sp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/miv_radius"
@@ -72,7 +72,7 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/miv_height_width_scale"
@@ -87,7 +87,7 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/miv_border_width"
@@ -102,7 +102,7 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/miv_padding"
@@ -117,7 +117,7 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/miv_scaletype"

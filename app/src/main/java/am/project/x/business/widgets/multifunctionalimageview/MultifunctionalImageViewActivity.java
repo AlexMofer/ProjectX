@@ -24,16 +24,16 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.Switch;
 
 import androidx.annotation.Nullable;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.widget.multifunctionalimageview.ClipOutlineProvider;
+import com.am.widget.multifunctionalimageview.MultifunctionalImageView;
+import com.am.widget.multifunctionalimageview.RoundRectClipOutlineProvider;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import am.project.x.R;
-import am.widget.multifunctionalimageview.ClipOutlineProvider;
-import am.widget.multifunctionalimageview.MultifunctionalImageView;
-import am.widget.multifunctionalimageview.RoundRectClipOutlineProvider;
 
 /**
  * 裁剪图片视图
@@ -59,7 +59,7 @@ public class MultifunctionalImageViewActivity extends AppCompatActivity implemen
         super.onCreate(savedInstanceState);
         setSupportActionBar(R.id.miv_toolbar);
         mVImage = findViewById(R.id.miv_image);
-        final Switch crop = findViewById(R.id.miv_sw_crop);
+        final SwitchMaterial crop = findViewById(R.id.miv_sw_crop);
         final SeekBar radius = findViewById(R.id.miv_sb_radius);
         final SeekBar height = findViewById(R.id.miv_sb_height);
         final SeekBar border = findViewById(R.id.miv_sb_border);
@@ -90,22 +90,18 @@ public class MultifunctionalImageViewActivity extends AppCompatActivity implemen
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        switch (seekBar.getId()) {
-            case R.id.miv_sb_height:
-                mVImage.setFixedSize(100, 100 - progress);
-                break;
-            case R.id.miv_sb_border:
-                mVImage.setBorderWidth((int) (progress *
-                        getResources().getDisplayMetrics().density));
-                break;
-            case R.id.miv_sb_radius:
-                mRoundRect.setRadius(progress * getResources().getDisplayMetrics().density);
-                mVImage.invalidateClipOutline();
-                break;
-            case R.id.miv_sb_padding:
-                final int padding = (int) (progress * getResources().getDisplayMetrics().density);
-                mVImage.setPadding(padding, padding, padding, padding);
-                break;
+        final int id = seekBar.getId();
+        if (id == R.id.miv_sb_height) {
+            mVImage.setFixedSize(100, 100 - progress);
+        } else if (id == R.id.miv_sb_border) {
+            mVImage.setBorderWidth((int) (progress *
+                    getResources().getDisplayMetrics().density));
+        } else if (id == R.id.miv_sb_radius) {
+            mRoundRect.setRadius(progress * getResources().getDisplayMetrics().density);
+            mVImage.invalidateClipOutline();
+        } else if (id == R.id.miv_sb_padding) {
+            final int padding = (int) (progress * getResources().getDisplayMetrics().density);
+            mVImage.setPadding(padding, padding, padding, padding);
         }
     }
 
