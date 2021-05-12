@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tts_toolbar" />
 
-    <am.widget.tagtabstrip.TagTabStrip
+    <com.am.widget.tagtabstrip.TagTabStrip
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="6dp"

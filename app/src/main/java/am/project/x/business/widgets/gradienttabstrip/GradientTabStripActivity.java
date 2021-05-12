@@ -29,6 +29,7 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.widget.gradienttabstrip.GradientTabStrip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,6 @@ import java.util.Locale;
 
 import am.project.x.R;
 import am.util.viewpager.adapter.ViewsPagerAdapter;
-import am.widget.gradienttabstrip.GradientTabStrip;
 
 /**
  * 渐变底部栏

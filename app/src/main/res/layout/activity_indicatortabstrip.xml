@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/its_toolbar">
 
-        <am.widget.indicatortabstrip.IndicatorTabStrip
+        <com.am.widget.indicatortabstrip.IndicatorTabStrip
             android:id="@+id/its_its_tabs"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"

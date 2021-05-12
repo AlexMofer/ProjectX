@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.widget.indicatortabstrip.IndicatorTabStrip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,6 @@ import java.util.Locale;
 
 import am.project.x.R;
 import am.util.viewpager.adapter.ViewsPagerAdapter;
-import am.widget.indicatortabstrip.IndicatorTabStrip;
 
 /**
  * 游标顶部栏
