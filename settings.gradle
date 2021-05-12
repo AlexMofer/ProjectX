@@ -1,4 +1,3 @@
-include ':multifunctionalrecyclerview'
 include ':support'
 include ':printer'
 include ':drawable'

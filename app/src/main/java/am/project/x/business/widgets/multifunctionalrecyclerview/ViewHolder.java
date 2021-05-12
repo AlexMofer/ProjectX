@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Locale;
+import com.am.widget.multifunctionalrecyclerview.MultifunctionalRecyclerView;
 
-import am.widget.multifunctionalrecyclerview.MultifunctionalRecyclerView;
+import java.util.Locale;
 
 
 /**

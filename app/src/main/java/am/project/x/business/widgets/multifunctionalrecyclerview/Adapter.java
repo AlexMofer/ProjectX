@@ -4,7 +4,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import am.widget.multifunctionalrecyclerview.MultifunctionalRecyclerView;
+import com.am.widget.multifunctionalrecyclerview.MultifunctionalRecyclerView;
 
 
 /**

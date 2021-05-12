@@ -25,10 +25,10 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.widget.multifunctionalrecyclerview.MultifunctionalLinearLayoutManager;
+import com.am.widget.multifunctionalrecyclerview.MultifunctionalRecyclerView;
 
 import am.project.x.R;
-import am.widget.multifunctionalrecyclerview.MultifunctionalLinearLayoutManager;
-import am.widget.multifunctionalrecyclerview.MultifunctionalRecyclerView;
 
 /**
  * 多功能RecyclerView
