@@ -19,15 +19,15 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 
+import com.am.font.opentype.OpenType;
+import com.am.font.opentype.OpenTypeCollection;
+import com.am.font.opentype.TableRecord;
+import com.am.font.opentype.tables.BaseTable;
+import com.am.font.opentype.tables.NamingTable;
 import com.am.mvp.core.MVPModel;
 
 import am.project.x.ProjectXApplication;
 import am.project.x.R;
-import am.util.opentype.OpenType;
-import am.util.opentype.OpenTypeCollection;
-import am.util.opentype.TableRecord;
-import am.util.opentype.tables.BaseTable;
-import am.util.opentype.tables.NamingTable;
 
 /**
  * Model

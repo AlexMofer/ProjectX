@@ -17,10 +17,9 @@ package am.project.x.business.others.font;
 
 import androidx.annotation.NonNull;
 
+import com.am.font.TypefaceCollection;
+import com.am.font.TypefaceConfig;
 import com.am.job.Job;
-
-import am.util.font.TypefaceCollection;
-import am.util.font.TypefaceConfig;
 
 /**
  * Job

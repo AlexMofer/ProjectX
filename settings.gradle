@@ -1,5 +1,3 @@
-include ':opentype'
-include ':font'
 include ':ftpserver'
 include ':multifunctionalrecyclerview'
 include ':support'

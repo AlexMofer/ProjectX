@@ -61,6 +61,8 @@ dependencies {
     implementation 'io.github.alexmofer.clipboard:clipboard:2.0.1'
     implementation 'io.github.alexmofer.widget:multifunctionalimageview:1.1.1'
     implementation 'io.github.alexmofer.widget:floatingactionmode:2.0.3'
+    implementation 'io.github.alexmofer.font:opentype:1.0.4'
+    implementation 'io.github.alexmofer.font:font-android:1.0.5'
     implementation project(':tabstrip')
     implementation project(':viewpager')
     implementation project(':stateframelayout')
@@ -76,6 +78,4 @@ dependencies {
     implementation project(':support')
     implementation project(':multifunctionalrecyclerview')
     implementation project(':ftpserver')
-    implementation project(':font')
-    implementation project(':opentype')
 }

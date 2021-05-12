@@ -18,16 +18,15 @@ package am.project.x.business.others.opentype;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.am.font.opentype.FileOpenTypeReader;
+import com.am.font.opentype.OpenType;
+import com.am.font.opentype.OpenTypeCollection;
+import com.am.font.opentype.OpenTypeParser;
+import com.am.font.opentype.OpenTypeReader;
+import com.am.font.opentype.TableRecord;
 import com.am.job.Job;
 
 import java.io.File;
-
-import am.util.opentype.FileOpenTypeReader;
-import am.util.opentype.OpenType;
-import am.util.opentype.OpenTypeCollection;
-import am.util.opentype.OpenTypeParser;
-import am.util.opentype.OpenTypeReader;
-import am.util.opentype.TableRecord;
 
 /**
  * Job
