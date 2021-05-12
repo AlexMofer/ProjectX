@@ -32,13 +32,14 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.am.ftp.ftpserver.FtpServer;
+
 import am.project.x.R;
 import am.project.x.broadcast.LocalBroadcastHelper;
 import am.project.x.business.others.ftp.FtpActivity;
 import am.project.x.notification.NotificationMaker;
 import am.project.x.utils.ContextUtils;
 import am.project.x.utils.Utils;
-import am.util.ftpserver.FtpServer;
 
 /**
  * 文件传输服务
