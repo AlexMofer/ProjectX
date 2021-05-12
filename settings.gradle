@@ -1,4 +1,3 @@
-include ':floatingactionmode'
 include ':opentype'
 include ':font'
 include ':ftpserver'

@@ -60,9 +60,9 @@ dependencies {
     implementation 'io.github.alexmofer.retrofit:retrofit-helper:2.9.0'
     implementation 'io.github.alexmofer.clipboard:clipboard:2.0.1'
     implementation 'io.github.alexmofer.widget:multifunctionalimageview:1.1.1'
+    implementation 'io.github.alexmofer.widget:floatingactionmode:2.0.3'
     implementation project(':tabstrip')
     implementation project(':viewpager')
-//    implementation project(':multifunctionalimageview')
     implementation project(':stateframelayout')
     implementation project(':wraplayout')
     implementation project(':drawableratingbar')
@@ -78,5 +78,4 @@ dependencies {
     implementation project(':ftpserver')
     implementation project(':font')
     implementation project(':opentype')
-    implementation project(':floatingactionmode')
 }
