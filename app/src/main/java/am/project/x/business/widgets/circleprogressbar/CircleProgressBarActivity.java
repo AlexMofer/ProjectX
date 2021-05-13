@@ -31,9 +31,9 @@ import android.widget.Switch;
 import androidx.annotation.Nullable;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.widget.circleprogressbar.CircleProgressBar;
 
 import am.project.x.R;
-import am.widget.circleprogressbar.CircleProgressBar;
 
 /**
  * 环形进度条

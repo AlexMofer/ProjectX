@@ -17,7 +17,7 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/cpb_label" />
 
-    <am.widget.circleprogressbar.CircleProgressBar
+    <com.am.widget.circleprogressbar.CircleProgressBar
         android:id="@+id/cpb_cpb_bar"
         android:layout_width="match_parent"
         android:layout_height="400dp"
