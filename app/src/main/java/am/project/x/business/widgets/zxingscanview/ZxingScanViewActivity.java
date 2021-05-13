@@ -28,6 +28,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.widget.zxingscanview.ZxingForegroundView;
+import com.am.widget.zxingscanview.ZxingScanView;
 import com.google.zxing.Result;
 import com.google.zxing.ResultMetadataType;
 import com.google.zxing.client.result.ParsedResult;
@@ -40,8 +42,6 @@ import java.util.EnumSet;
 import java.util.Map;
 
 import am.project.x.R;
-import am.widget.zxingscanview.ZxingForegroundView;
-import am.widget.zxingscanview.ZxingScanView;
 
 /**
  * 条码扫描

@@ -17,7 +17,7 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/zsv_label" />
 
-    <am.widget.zxingscanview.ZxingScanView
+    <com.am.widget.zxingscanview.ZxingScanView
         android:id="@+id/zsv_zsv_scan"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -28,7 +28,7 @@
         app:zsvScanHeight="400dp"
         app:zsvScanWidth="300dp" />
 
-    <am.widget.zxingscanview.ZxingForegroundView
+    <com.am.widget.zxingscanview.ZxingForegroundView
         android:id="@+id/zsv_zfv_foreground"
         android:layout_width="match_parent"
         android:layout_height="0dp"
