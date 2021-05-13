@@ -117,7 +117,7 @@
         app:layout_constraintBottom_toTopOf="@id/sl_rg_state"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <am.widget.stateframelayout.StateFrameLayout
+    <com.am.widget.stateframelayout.StateFrameLayout
         android:id="@+id/sl_lyt_state"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -139,6 +139,6 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark"
             tool:ignore="UnusedAttribute" />
 
-    </am.widget.stateframelayout.StateFrameLayout>
+    </com.am.widget.stateframelayout.StateFrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

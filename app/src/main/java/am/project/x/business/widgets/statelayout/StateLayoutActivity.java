@@ -31,10 +31,10 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.widget.stateframelayout.StateFrameLayout;
 
 import am.project.x.R;
 import am.project.x.widget.CircularProgressImageView;
-import am.widget.stateframelayout.StateFrameLayout;
 
 /**
  * 状态布局
