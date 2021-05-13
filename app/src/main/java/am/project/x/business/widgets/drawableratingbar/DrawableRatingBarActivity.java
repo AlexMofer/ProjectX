@@ -111,25 +111,21 @@ public class DrawableRatingBarActivity extends AppCompatActivity implements
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        switch (buttonView.getId()) {
-            case R.id.drb_sh_manually:
-                mVRating.setManually(isChecked);
-                break;
-            case R.id.drb_sh_touchable:
-                mVRating.setOnlyItemTouchable(isChecked);
-                break;
+        int id = buttonView.getId();
+        if (id == R.id.drb_sh_manually) {
+            mVRating.setManually(isChecked);
+        } else if (id == R.id.drb_sh_touchable) {
+            mVRating.setOnlyItemTouchable(isChecked);
         }
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        switch (seekBar.getId()) {
-            case R.id.drb_sb_max:
-                mVRating.setMax(6 + progress);
-                break;
-            case R.id.drb_sb_min:
-                mVRating.setMin(progress);
-                break;
+        int id = seekBar.getId();
+        if (id == R.id.drb_sb_max) {
+            mVRating.setMax(6 + progress);
+        } else if (id == R.id.drb_sb_min) {
+            mVRating.setMin(progress);
         }
     }
 
