@@ -29,9 +29,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.widget.smoothinputlayout.SmoothInputLayout;
 
 import am.project.x.R;
-import am.widget.smoothinputlayout.SmoothInputLayout;
 
 /**
  * 输入面板
