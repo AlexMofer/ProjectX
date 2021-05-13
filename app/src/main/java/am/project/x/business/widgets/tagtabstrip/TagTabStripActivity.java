@@ -27,12 +27,12 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.widget.pageradapter.ViewsPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 import am.project.x.R;
-import am.util.viewpager.adapter.ViewsPagerAdapter;
 
 /**
  * 图片标记栏

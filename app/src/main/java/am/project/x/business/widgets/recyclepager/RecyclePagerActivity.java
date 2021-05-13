@@ -30,11 +30,11 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.widget.pageradapter.RecyclePagerAdapter;
 
 import java.util.Locale;
 
 import am.project.x.R;
-import am.util.viewpager.adapter.RecyclePagerAdapter;
 
 /**
  * 回收页视图
@@ -73,30 +73,25 @@ public class RecyclePagerActivity extends AppCompatActivity implements View.OnCl
     // Listener
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.rp_btn_reduce_page:
-                mAdapter.reducePage();
-                mVPage.setText(String.format(Locale.getDefault(), "%d", mAdapter.mCount));
-                break;
-            case R.id.rp_btn_add_page:
-                mAdapter.addPage();
-                mVPage.setText(String.format(Locale.getDefault(), "%d", mAdapter.mCount));
-                break;
-            case R.id.rp_btn_reduce_offset:
-                mAdapter.reduceOffset();
-                mVTitle.setText(String.format(Locale.getDefault(), "%d", mAdapter.mOffset));
-                break;
-            case R.id.rp_btn_add_offset:
-                mAdapter.addOffset();
-                mVTitle.setText(String.format(Locale.getDefault(), "%d", mAdapter.mOffset));
-                break;
-            case R.id.rp_btn_exchange:
-                mAdapter.exchange();
-                break;
+        final int id = v.getId();
+        if (id == R.id.rp_btn_reduce_page) {
+            mAdapter.reducePage();
+            mVPage.setText(String.format(Locale.getDefault(), "%d", mAdapter.mCount));
+        } else if (id == R.id.rp_btn_add_page) {
+            mAdapter.addPage();
+            mVPage.setText(String.format(Locale.getDefault(), "%d", mAdapter.mCount));
+        } else if (id == R.id.rp_btn_reduce_offset) {
+            mAdapter.reduceOffset();
+            mVTitle.setText(String.format(Locale.getDefault(), "%d", mAdapter.mOffset));
+        } else if (id == R.id.rp_btn_add_offset) {
+            mAdapter.addOffset();
+            mVTitle.setText(String.format(Locale.getDefault(), "%d", mAdapter.mOffset));
+        } else if (id == R.id.rp_btn_exchange) {
+            mAdapter.exchange();
         }
     }
 
-    private class Holder extends RecyclePagerAdapter.PagerViewHolder {
+    private static class Holder extends RecyclePagerAdapter.PagerViewHolder {
 
         Holder(Context context) {
             super(new AppCompatTextView(context));
@@ -110,7 +105,7 @@ public class RecyclePagerActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private class RedHolder extends Holder {
+    private static class RedHolder extends Holder {
         RedHolder(Context context) {
             super(context);
             ((AppCompatTextView) itemView).setTextColor(
@@ -118,7 +113,7 @@ public class RecyclePagerActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private class BlueHolder extends Holder {
+    private static class BlueHolder extends Holder {
 
         BlueHolder(Context context) {
             super(context);
@@ -127,7 +122,7 @@ public class RecyclePagerActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private class Adapter extends RecyclePagerAdapter<Holder> {
+    private static class Adapter extends RecyclePagerAdapter<Holder> {
 
         private static final int TYPE_RED = 1;
         private static final int TYPE_BLUE = 2;
@@ -167,7 +162,7 @@ public class RecyclePagerActivity extends AppCompatActivity implements View.OnCl
 
         void reducePage() {
             mCount--;
-            mCount = mCount < 0 ? 0 : mCount;
+            mCount = Math.max(mCount, 0);
             notifyItemRemoved(mCount);
         }
 

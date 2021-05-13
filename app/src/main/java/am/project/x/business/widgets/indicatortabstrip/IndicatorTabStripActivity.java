@@ -28,13 +28,13 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.am.appcompat.app.AppCompatActivity;
 import com.am.widget.indicatortabstrip.IndicatorTabStrip;
+import com.am.widget.pageradapter.ViewsPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import am.project.x.R;
-import am.util.viewpager.adapter.ViewsPagerAdapter;
 
 /**
  * 游标顶部栏
@@ -70,7 +70,7 @@ public class IndicatorTabStripActivity extends AppCompatActivity {
         return views;
     }
 
-    private class PagerAdapter extends ViewsPagerAdapter {
+    private static class PagerAdapter extends ViewsPagerAdapter {
 
         PagerAdapter(List<View> views) {
             super(views);
@@ -82,7 +82,7 @@ public class IndicatorTabStripActivity extends AppCompatActivity {
         }
     }
 
-    private class TabAdapter extends IndicatorTabStrip.Adapter {
+    private static class TabAdapter extends IndicatorTabStrip.Adapter {
         @Override
         public String getDotText(int position, int count) {
             switch (position) {
