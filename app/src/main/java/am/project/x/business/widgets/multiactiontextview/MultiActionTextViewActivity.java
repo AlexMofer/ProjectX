@@ -26,10 +26,10 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.widget.multiactiontextview.MultiActionClickableSpan;
+import com.am.widget.multiactiontextview.MultiActionTextView;
 
 import am.project.x.R;
-import am.widget.multiactiontextview.MultiActionClickableSpan;
-import am.widget.multiactiontextview.MultiActionTextView;
 
 /**
  * 文本点击

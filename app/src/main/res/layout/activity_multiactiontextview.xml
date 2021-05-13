@@ -17,7 +17,7 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/mat_label" />
 
-    <am.widget.multiactiontextview.MultiActionTextView
+    <com.am.widget.multiactiontextview.MultiActionTextView
         android:id="@+id/mat_tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
