@@ -33,11 +33,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.widget.headerfootergridview.HeaderFooterGridView;
 
 import java.util.Locale;
 
 import am.project.x.R;
-import am.widget.headerfootergridview.HeaderFooterGridView;
 
 /**
  * 头尾网格视图
@@ -137,19 +137,15 @@ public class HeaderFooterGridViewActivity extends AppCompatActivity implements
     // Listener
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-        switch (compoundButton.getId()) {
-            case R.id.hfg_cb_hv:
-                changeHeaderView(checked);
-                break;
-            case R.id.hfg_cb_hi:
-                changeHeaderItem(checked);
-                break;
-            case R.id.hfg_cb_fv:
-                changeFooterView(checked);
-                break;
-            case R.id.hfg_cb_fi:
-                changeFooterItem(checked);
-                break;
+        final int id = compoundButton.getId();
+        if (id == R.id.hfg_cb_hv) {
+            changeHeaderView(checked);
+        } else if (id == R.id.hfg_cb_hi) {
+            changeHeaderItem(checked);
+        } else if (id == R.id.hfg_cb_fv) {
+            changeFooterView(checked);
+        } else if (id == R.id.hfg_cb_fi) {
+            changeFooterItem(checked);
         }
     }
 

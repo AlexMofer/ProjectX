@@ -75,7 +75,7 @@
 
     </LinearLayout>
 
-    <am.widget.headerfootergridview.HeaderFooterGridView
+    <com.am.widget.headerfootergridview.HeaderFooterGridView
         android:id="@+id/hfg_hfg_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
