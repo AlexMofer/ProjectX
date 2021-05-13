@@ -25,14 +25,14 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.Switch;
 
 import androidx.annotation.Nullable;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.widget.drawableratingbar.DrawableRatingBar;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import am.project.x.R;
-import am.widget.drawableratingbar.DrawableRatingBar;
 
 /**
  * 图片评级
@@ -60,8 +60,8 @@ public class DrawableRatingBarActivity extends AppCompatActivity implements
         final SeekBar min = findViewById(R.id.drb_sb_min);
 
         this.<Spinner>findViewById(R.id.drb_sp_gravity).setOnItemSelectedListener(this);
-        this.<Switch>findViewById(R.id.drb_sh_manually).setOnCheckedChangeListener(this);
-        this.<Switch>findViewById(R.id.drb_sh_touchable).setOnCheckedChangeListener(this);
+        this.<SwitchMaterial>findViewById(R.id.drb_sh_manually).setOnCheckedChangeListener(this);
+        this.<SwitchMaterial>findViewById(R.id.drb_sh_touchable).setOnCheckedChangeListener(this);
         max.setOnSeekBarChangeListener(this);
         max.setProgress(0);
         min.setOnSeekBarChangeListener(this);

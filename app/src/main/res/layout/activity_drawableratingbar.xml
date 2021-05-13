@@ -17,7 +17,7 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/drb_label" />
 
-    <am.widget.drawableratingbar.DrawableRatingBar
+    <com.am.widget.drawableratingbar.DrawableRatingBar
         android:id="@+id/drb_rb_stars"
         android:layout_width="match_parent"
         android:layout_height="120dp"
@@ -63,7 +63,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/drb_rb_stars" />
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/drb_sh_manually"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/drb_sp_gravity" />
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/drb_sh_touchable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
