@@ -18,15 +18,16 @@ package am.project.x.business.widgets.wraplayout;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.widget.wraplayout.WrapLayout;
 
 import am.project.x.R;
-import am.widget.wraplayout.WrapLayout;
 
 /**
  * 自动换行布局
@@ -64,30 +65,24 @@ public class WrapLayoutActivity extends AppCompatActivity implements RadioGroup.
     // Listener
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
-            case R.id.wl_rb_top:
-                mVContent.setGravity(WrapLayout.GRAVITY_TOP);
-                break;
-            case R.id.wl_rb_center:
-                mVContent.setGravity(WrapLayout.GRAVITY_CENTER);
-                break;
-            case R.id.wl_rb_bottom:
-                mVContent.setGravity(WrapLayout.GRAVITY_BOTTOM);
-                break;
+        if (checkedId == R.id.wl_rb_top) {
+            mVContent.setGravity(Gravity.TOP);
+        } else if (checkedId == R.id.wl_rb_center) {
+            mVContent.setGravity(Gravity.CENTER);
+        } else if (checkedId == R.id.wl_rb_bottom) {
+            mVContent.setGravity(Gravity.BOTTOM);
         }
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        switch (seekBar.getId()) {
-            case R.id.wl_sb_horizontal:
-                mVContent.setHorizontalSpacing(
-                        (int) (progress * getResources().getDisplayMetrics().density));
-                break;
-            case R.id.wl_sb_vertical:
-                mVContent.setVerticalSpacing(
-                        (int) (progress * getResources().getDisplayMetrics().density));
-                break;
+        int id = seekBar.getId();
+        if (id == R.id.wl_sb_horizontal) {
+            mVContent.setHorizontalSpacing(
+                    (int) (progress * getResources().getDisplayMetrics().density));
+        } else if (id == R.id.wl_sb_vertical) {
+            mVContent.setVerticalSpacing(
+                    (int) (progress * getResources().getDisplayMetrics().density));
         }
     }
 

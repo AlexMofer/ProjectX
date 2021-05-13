@@ -23,14 +23,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ld_toolbar">
 
-        <am.widget.wraplayout.WrapLayout
+        <com.am.widget.wraplayout.WrapLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:padding="30dp"
-            app:wlyGravity="center"
-            app:wlyHorizontalSpacing="30dp"
-            app:wlyVerticalSpacing="30dp">
+            android:gravity="center"
+            android:horizontalSpacing="30dp"
+            android:verticalSpacing="30dp">
 
             <am.project.x.widget.CircularProgressImageView
                 android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center" />
 
-        </am.widget.wraplayout.WrapLayout>
+        </com.am.widget.wraplayout.WrapLayout>
 
     </ScrollView>
 
