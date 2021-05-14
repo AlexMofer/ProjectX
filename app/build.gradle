@@ -76,6 +76,6 @@ dependencies {
     implementation 'io.github.alexmofer.font:font-android:1.0.5'
     implementation 'io.github.alexmofer.ftp:ftpserver-android:2.0.2'
     implementation 'io.github.alexmofer.drawable:drawable:2.1.0'
-    implementation project(':printer')
+    implementation 'io.github.alexmofer.printer:printer:2.1.2'
     implementation project(':support')
 }

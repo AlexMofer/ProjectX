@@ -18,6 +18,11 @@ package am.project.x.business.others.printer;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import com.am.printer.PrintDataMaker;
+import com.am.printer.PrinterWriter;
+import com.am.printer.PrinterWriter58mm;
+import com.am.printer.PrinterWriter80mm;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -26,10 +31,6 @@ import java.util.Locale;
 
 import am.project.x.R;
 import am.project.x.utils.QRCodeUtil;
-import am.util.printer.PrintDataMaker;
-import am.util.printer.PrinterWriter;
-import am.util.printer.PrinterWriter58mm;
-import am.util.printer.PrinterWriter80mm;
 
 /**
  * 数据生成器

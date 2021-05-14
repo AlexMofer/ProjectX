@@ -19,14 +19,14 @@ import android.bluetooth.BluetoothDevice;
 import android.text.TextUtils;
 
 import com.am.mvp.core.MVPModel;
+import com.am.printer.PrintExecutor;
+import com.am.printer.PrintSocketHolder;
+import com.am.printer.PrinterWriter;
+import com.am.printer.PrinterWriter58mm;
+import com.am.printer.PrinterWriter80mm;
 
 import am.project.x.ProjectXApplication;
 import am.project.x.R;
-import am.util.printer.PrintExecutor;
-import am.util.printer.PrintSocketHolder;
-import am.util.printer.PrinterWriter;
-import am.util.printer.PrinterWriter58mm;
-import am.util.printer.PrinterWriter80mm;
 
 /**
  * Model
