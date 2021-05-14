@@ -19,7 +19,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -31,8 +30,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.drawable.LineDrawable;
 
-import am.drawable.LineDrawable;
 import am.project.x.R;
 
 /**
@@ -58,11 +57,7 @@ public class LineDrawableActivity extends AppCompatActivity implements
         drawable = new LineDrawable(Color.TRANSPARENT,
                 ContextCompat.getColor(this, R.color.colorPrimary), 1,
                 Gravity.BOTTOM);
-        if (Build.VERSION.SDK_INT >= 16) {
-            findViewById(R.id.lid_tv_content).setBackground(drawable);
-        } else {
-            findViewById(R.id.lid_tv_content).setBackgroundDrawable(drawable);
-        }
+        findViewById(R.id.lid_tv_content).setBackground(drawable);
         this.<Spinner>findViewById(R.id.lid_sp_gravity).setOnItemSelectedListener(this);
         this.<SeekBar>findViewById(R.id.lid_sb_size).setOnSeekBarChangeListener(this);
     }

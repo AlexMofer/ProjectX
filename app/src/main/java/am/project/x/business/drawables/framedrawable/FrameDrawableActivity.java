@@ -22,8 +22,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.drawable.FrameDrawable;
 
-import am.drawable.FrameDrawable;
 import am.project.x.R;
 
 /**

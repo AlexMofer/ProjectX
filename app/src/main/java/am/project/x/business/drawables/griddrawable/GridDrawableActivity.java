@@ -25,8 +25,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.drawable.GridDrawable;
 
-import am.drawable.GridDrawable;
 import am.project.x.R;
 
 /**
@@ -66,21 +66,18 @@ public class GridDrawableActivity extends AppCompatActivity implements
     // Listener
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        switch (seekBar.getId()) {
-            case R.id.grd_sb_number_row:
-                mDrawable.setRowCount(progress + 1);
-                mVImage.requestLayout();
-                break;
-            case R.id.grd_sb_number_column:
-                mDrawable.setColumnCount(progress + 1);
-                mVImage.requestLayout();
-                break;
-            case R.id.grd_sb_gap:
-                final float spacing = density * progress;
-                mDrawable.setHorizontalSpacing(spacing);
-                mDrawable.setVerticalSpacing(spacing);
-                mVImage.requestLayout();
-                break;
+        final int id = seekBar.getId();
+        if (id == R.id.grd_sb_number_row) {
+            mDrawable.setRowCount(progress + 1);
+            mVImage.requestLayout();
+        } else if (id == R.id.grd_sb_number_column) {
+            mDrawable.setColumnCount(progress + 1);
+            mVImage.requestLayout();
+        } else if (id == R.id.grd_sb_gap) {
+            final float spacing = density * progress;
+            mDrawable.setHorizontalSpacing(spacing);
+            mDrawable.setVerticalSpacing(spacing);
+            mVImage.requestLayout();
         }
     }
 

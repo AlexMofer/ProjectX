@@ -17,7 +17,6 @@ package am.project.x.business.drawables.textdrawable;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -26,8 +25,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.drawable.TextDrawable;
 
-import am.drawable.TextDrawable;
 import am.project.x.R;
 
 /**
@@ -54,11 +53,7 @@ public class TextDrawableActivity extends AppCompatActivity implements
         drawable = new TextDrawable(getString(R.string.td_content), size,
                 ContextCompat.getColor(this, R.color.colorPrimary));
         drawable.setDensity(getResources().getDisplayMetrics().density);
-        if (Build.VERSION.SDK_INT >= 16) {
-            findViewById(R.id.td_v_content).setBackground(drawable);
-        } else {
-            findViewById(R.id.td_v_content).setBackgroundDrawable(drawable);
-        }
+        findViewById(R.id.td_v_content).setBackground(drawable);
         this.<Switch>findViewById(R.id.td_sh_scale).setOnCheckedChangeListener(this);
     }
 
