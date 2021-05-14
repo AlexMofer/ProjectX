@@ -25,12 +25,12 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.am.appcompat.app.AppCompatActivity;
+import com.am.tool.support.compat.AMActivityCompat;
 import com.am.widget.floatingactionmode.FloatingActionMode;
 import com.am.widget.floatingactionmode.FloatingMenu;
 import com.am.widget.floatingactionmode.FloatingMenuItem;
 import com.am.widget.floatingactionmode.FloatingSubMenu;
 
-import am.project.support.compat.AMActivityCompat;
 import am.project.x.R;
 
 /**

@@ -20,12 +20,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import am.project.support.utils.InputMethodUtils;
 import am.project.x.R;
 import am.project.x.utils.AlertDialogUtils;
 import am.project.x.utils.StringUtils;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialog;
+
+import com.am.tool.support.utils.InputMethodUtils;
 
 /**
  * 固定IP填写对话框
@@ -33,8 +34,8 @@ import androidx.appcompat.app.AppCompatDialog;
 class PrinterIPDialog extends AppCompatDialog implements View.OnClickListener {
 
     private final OnDialogListener mListener;
-    private EditText mVIp;
-    private EditText mVPort;
+    private final EditText mVIp;
+    private final EditText mVPort;
 
     PrinterIPDialog(@NonNull Context context, @NonNull OnDialogListener listener) {
         super(context, AlertDialogUtils.getAlertDialogTheme(context));
@@ -69,7 +70,7 @@ class PrinterIPDialog extends AppCompatDialog implements View.OnClickListener {
             return;
         } else {
             try {
-                port = Integer.valueOf(portStr);
+                port = Integer.parseInt(portStr);
             } catch (Exception e) {
                 port = -1;
             }

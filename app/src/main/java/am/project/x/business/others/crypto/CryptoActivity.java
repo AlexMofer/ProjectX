@@ -26,7 +26,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-import am.project.support.utils.InputMethodUtils;
+import com.am.tool.support.utils.InputMethodUtils;
+
 import am.project.x.R;
 import am.project.x.common.CommonActivity;
 

@@ -40,10 +40,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.am.appcompat.app.Fragment;
+import com.am.tool.support.utils.InputMethodUtils;
 
 import java.util.Locale;
 
-import am.project.support.utils.InputMethodUtils;
 import am.project.x.R;
 import am.project.x.business.others.ftp.FtpFragmentCallback;
 import am.project.x.utils.ContextUtils;

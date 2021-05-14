@@ -77,5 +77,6 @@ dependencies {
     implementation 'io.github.alexmofer.ftp:ftpserver-android:2.0.2'
     implementation 'io.github.alexmofer.drawable:drawable:2.1.0'
     implementation 'io.github.alexmofer.printer:printer:2.1.2'
-    implementation project(':support')
+    implementation 'io.github.alexmofer.tool:support-android:1.9.0'
+    implementation 'io.github.alexmofer.multiprocesssharedpreferences:multiprocesssharedpreferences:1.0.0'
 }

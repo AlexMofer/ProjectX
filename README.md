@@ -4,7 +4,7 @@ ProjectX
 
 <img src="images/svg/ic_launcher.svg" width="192" height="192" alt="Icon"/>
 
-所有个人开源项目合集，便于管理及维护。
+**所有控件均已从Jcenter迁移到Maven Central，整个项目已全部拆分，下列的连接基本已失效，请在repo中查看具体控件，后续将更新该说明文档。**
 
 Widget
 ------
