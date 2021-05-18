@@ -68,7 +68,7 @@ zxing条码扫描视图。
 支持多进程的SharedPreferences。
 - ***[Drawable][121]***  
 Android Drawables。
-- ***[Printer][122]***
+- ***[Printer][122]***  
 标准ESC-POS命令打印，固定IP或蓝牙打印，支持黑白图片打印。后续将考虑将其修改为平台无关的Java库。
 
 [100]: https://github.com/AlexMofer/MVPAndroid
@@ -98,7 +98,7 @@ Android Drawables。
 其他
 ---
 
-- ***[CompressPlugin][200]***
+- ***[CompressPlugin][200]***  
 Gradle Compress Plugin为基于Apache Commons Compress的Gradle解压插件，用于解压大多数类型的归档型压缩文件及压缩型压缩文件。
 
 [200]: https://github.com/AlexMofer/CompressPlugin
