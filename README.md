@@ -2,124 +2,106 @@
 ProjectX
 ========
 
-<img src="images/svg/ic_launcher.svg" width="192" height="192" alt="Icon"/>
+所有开源控件使用示例。
 
-**所有控件均已从Jcenter迁移到Maven Central，整个项目已全部拆分，下列的连接基本已失效，请在repo中查看具体控件，后续将更新该说明文档。**
-
-Widget
-------
-
-- ***[BaseTabStrip][1]***
-
-    TabStrip基础类，其实现了类似于PagerTabStrip的一些基础方法，继承该类型并实现相应方法达到自定义的PagerTabStrip同类型的效果。
-- ***[GradientTabStrip][2]***
-
-    继承自BaseTabStrip，实现微信式渐变底部Tab效果
-- ***[TagTabStrip][3]***
-
-    继承自BaseTabStrip，实现ViewPager滚动标记点
-- ***[IndicatorTabStrip][4]***
-
-    继承自BaseTabStrip，移动式下标渐变缩放Tab，Item不建议超过5个
-- ***[ShapeImageView][5]***
-
-    图形裁剪ImageView，API 21 及以上 使用 View.setOutlineProvider(ViewOutlineProvider) 方式实现，API 18 及以上 使用 Canvas.clipPath(Path) 方式实现，API 18 以下   使用 Paint.setXfermode(Xfermode) 方式实现（使用的是PorterDuffXfermode），均支持动态图；支持固定高宽缩放比缩放，支持前景Drawable，支持ImageView的所有ScaleType
-- ***[StateFrameLayout][6]***
-
-    状态帧布局，通常用于网络请求的四种状态，普通、载入、错误、空白。支持Drawable或者View来展示，也可以混搭
-- ***[WrapLayout][7]***
-
-    自动换行布局，支持不等长不等宽子项，且可以设置垂直间距与水平间距及子项对齐模式
-- ***[ReplaceLayout][8]***
-
-    交替布局，配合TabStrip使用，达到伴随ViewPager动作而进行改变的效果
-- ***[DrawableRatingBar][9]***
-
-    双图片评级控件，可设置图片间距，支持拖动进度及点击进度，可控制最大值最小值，及是否可手动。
-- ***[HeaderFooterGridView][10]***
-
-    头尾GridView，支持AUTO_FIT模式，头尾模式有两种，无反射代码。
-- ***[MultiActionTextView][11]***
-
-    文字可点击TextView，设置文字部分可点击，点击执行不同操作。
-- ***[CircleProgressBar][13]***
-
-    带载入动画的环形进度条，可高度配置，支持配置成表盘。
-- ***[ZxingScanView][14]***
-
-    一个View实现zxing条码扫描视图。
-- ***[SmoothInputLayout][15]***
-
-    仿微信式，平滑输入面板，防止键盘的出现与消失导致特殊输入面板的顶起与塌陷。
-
-[1]: https://github.com/AlexMofer/ProjectX/tree/master/basetabstrip
-[2]: https://github.com/AlexMofer/ProjectX/tree/master/gradienttabstrip
-[3]: https://github.com/AlexMofer/ProjectX/tree/master/tagtabstrip
-[4]: https://github.com/AlexMofer/ProjectX/tree/master/indicatortabstrip
-[5]: https://github.com/AlexMofer/ProjectX/tree/master/shapeimageview
-[6]: https://github.com/AlexMofer/ProjectX/tree/master/stateframelayout
-[7]: https://github.com/AlexMofer/ProjectX/tree/master/wraplayout
-[8]: https://github.com/AlexMofer/ProjectX/tree/master/replacelayout
-[9]: https://github.com/AlexMofer/ProjectX/tree/master/drawableratingbar
-[10]: https://github.com/AlexMofer/ProjectX/tree/master/headerfootergridview
-[11]: https://github.com/AlexMofer/ProjectX/tree/master/multiactiontextview
-[12]: https://github.com/AlexMofer/ProjectX/tree/master/selectionview
-[13]: https://github.com/AlexMofer/ProjectX/tree/master/circleprogressbar
-[14]: https://github.com/AlexMofer/ProjectX/tree/master/zxingscanview
-[15]: https://github.com/AlexMofer/ProjectX/tree/master/smoothinputlayout
-
-Drawable
---------
-
-- ***[DoubleCircleDrawable][100]***
-
-    双圈动图，用于载入提示。
-- ***[CirclingDrawable][100]***
-
-    外围小点转圈动图。
-- ***[CenterDrawable][100]***
-
-    中心图片，背景可绘制形状，一般用于ImageView的src，保证缩放后，中心的Drawable不变形。用于一般background属性的话，无需使用本控件，直接使用layer-list来定义即可。
-- ***[CombinationDrawable][100]***
-
-    双层图片，与CenterDrawable类似，背景为另一Drawable，一般用于ImageView的src，保证缩放后，中心的Drawable不变形。用于一般background属性的话，无需使用本控件，直接使用layer-list来定义即可。
-- ***[CornerDrawable][100]***
-    
-    尖角框，使用该Drawable时，会改变View的Padding值。
-- ***[LineDrawable][100]***
-
-    横线图片，主要是底色为透明或半透明色时有用，为不透明时，通过layer-list即可实现。
-- ***[LinearDrawable][100]***
-    
-    线性图片，多张图片排列，支持设置间隔，主要用于替代多个ImageView排列，节省性能。
-- ***[TextDrawable][100]***
-    
-    文字图片。
-- ***[CircleExpandDrawable][100]***
-    
-    圆圈扩大图片。
-- ***[MaterialProgressDrawable][100]***
-
-    SwipeRefreshLayout载入动图。
-
-[100]: https://github.com/AlexMofer/ProjectX/tree/master/drawable
-
-Other
+Java库
 -----
 
-- ***[Printer][200]***
+- ***[MVPCore][1]***  
+MVP设计模式基础核心，与平台无关，便于进一步实现Android或者鸿蒙的MVP设计模式。
+- ***[JobCore][2]***  
+线程异步基础核心，与平台无关，便于进一步实现Android或者鸿蒙的线程异步。
+- ***[RetrofitHelper][3]***  
+Retrofit辅助库，Gson解析，请求日志打印，解决回调强引用问题。
+- ***[OpenType][4]***  
+OpenType字体解析。
 
-    标准ES-POS命令打印，固定IP或蓝牙打印，支持黑白图片打印
-- ***[Security][201]***
+[1]: https://github.com/AlexMofer/MVPCore
+[2]: https://github.com/AlexMofer/JobCore
+[3]: https://github.com/AlexMofer/RetrofitHelper
+[4]: https://github.com/AlexMofer/OpenType
 
-    加密解密，主要为3DES、AES、RSA加密算法的整理
-- ***[Support][202]***
+Android库
+--------
 
-    支持包
+- ***[MVPAndroid][100]***  
+Android的MVP设计模式。
+- ***[JobAndroid][101]***  
+Android线程异步辅助库。
+- ***[FontAndroid][102]***  
+Android字体解析库。
+- ***[FTPServerAndroid][103]***  
+Android平台的FTP服务器。
+- ***[SupportAndroid][104]***  
+Android 支持库，一些杂七杂八的辅助工具。
+- ***[AppCompat][105]***  
+对AndroidX的AppCompat增强，增加MVP设计模式及部分常用方法。
+- ***[Clipboard][106]***  
+超级剪切板，利用内容提供者实现剪切板复制粘贴任何数据。
+- ***[MultifunctionalImageView][107]***  
+多功能ImageView。
+- ***[FloatingActionMode][108]***  
+悬浮菜单。
+- ***[MultifunctionalRecyclerView][109]***  
+多功能RecyclerView。
+- ***[TabStrip][110]***  
+ViewPager的页面栏，包括访微信式渐变底部Tab效果、ViewPager滚动标记点、移动式下标渐变缩放Tab。
+- ***[PagerAdapter][111]***  
+ViewPager的复用回收的PagerAdapter及支持View集合的PagerAdapter。
+- ***[WrapLayout][112]***  
+自动换行布局，支持不等长不等宽子项，且可以设置垂直间距与水平间距及子项对齐模式。
+- ***[StateLayout][113]***  
+状态布局，包括状态帧布局。
+- ***[DrawableRatingBar][114]***  
+双图片评级控件，可设置图片间距，支持拖动进度及点击进度，可控制最大值最小值，及是否可手动。
+- ***[HeaderFooterGridView][115]***  
+头尾GridView，支持AUTO_FIT模式，头尾模式有两种，无反射代码。
+- ***[MultiActionTextView][116]***  
+文字可点击TextView，设置文字部分可点击，点击执行不同操作。
+- ***[CircleProgressBar][117]***
+带载入动画的环形进度条，可高度配置，支持配置成表盘。
+- ***[ZxingScanView][118]***  
+zxing条码扫描视图。
+- ***[SmoothInputLayout][119]***  
+仿微信式，平滑输入面板，防止键盘的出现与消失导致特殊输入面板的顶起与塌陷。
+- ***[MultiProcessSharedPreferences][120]***  
+支持多进程的SharedPreferences。
+- ***[Drawable][121]***  
+Android Drawables。
+- ***[Printer][122]***
+标准ESC-POS命令打印，固定IP或蓝牙打印，支持黑白图片打印。后续将考虑将其修改为平台无关的Java库。
 
-[200]: https://github.com/AlexMofer/ProjectX/tree/master/printer
-[201]: https://github.com/AlexMofer/ProjectX/tree/master/security
-[202]: https://github.com/AlexMofer/ProjectX/tree/master/support
+[100]: https://github.com/AlexMofer/MVPAndroid
+[101]: https://github.com/AlexMofer/JobAndroid
+[102]: https://github.com/AlexMofer/FontAndroid
+[103]: https://github.com/AlexMofer/FTPServerAndroid
+[104]: https://github.com/AlexMofer/SupportAndroid
+[105]: https://github.com/AlexMofer/AppCompat
+[106]: https://github.com/AlexMofer/Clipboard
+[107]: https://github.com/AlexMofer/MultifunctionalImageView
+[108]: https://github.com/AlexMofer/FloatingActionMode
+[109]: https://github.com/AlexMofer/MultifunctionalRecyclerView
+[110]: https://github.com/AlexMofer/TabStrip
+[111]: https://github.com/AlexMofer/PagerAdapter
+[112]: https://github.com/AlexMofer/WrapLayout
+[113]: https://github.com/AlexMofer/StateLayout
+[114]: https://github.com/AlexMofer/DrawableRatingBar
+[115]: https://github.com/AlexMofer/HeaderFooterGridView
+[116]: https://github.com/AlexMofer/MultiActionTextView
+[117]: https://github.com/AlexMofer/CircleProgressBar
+[118]: https://github.com/AlexMofer/ZxingScanView
+[119]: https://github.com/AlexMofer/SmoothInputLayout
+[120]: https://github.com/AlexMofer/MultiProcessSharedPreferences
+[121]: https://github.com/AlexMofer/Drawable
+[122]: https://github.com/AlexMofer/Printer
+
+其他
+---
+
+- ***[CompressPlugin][200]***
+Gradle Compress Plugin为基于Apache Commons Compress的Gradle解压插件，用于解压大多数类型的归档型压缩文件及压缩型压缩文件。
+
+[200]: https://github.com/AlexMofer/CompressPlugin
 
 Demo
 ----
@@ -130,31 +112,24 @@ Demo
 [300]: https://play.google.com/store/apps/details?id=am.project.x
 [301]: https://raw.githubusercontent.com/AlexMofer/ProjectX/master/release/ProjectX.apk
 
-Support
--------
+支持
+---
 
-- Google+: https://plus.google.com/114728839435421501183
-- Gmail: moferalex@gmail.com
+- Gmail: <mailto:moferalex@gmail.com>
 
-如果发现错误，请在此处提出:
-https://github.com/AlexMofer/ProjectX/issues
+许可
+---
 
-License
--------
+Copyright 2021 AlexMofer
 
-Copyright (C) 2015 AlexMofer
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-Licensed to the Apache Software Foundation (ASF) under one or more contributor
-license agreements.  See the NOTICE file distributed with this work for
-additional information regarding copyright ownership.  The ASF licenses this
-file to you under the Apache License, Version 2.0 (the "License"); you may not
-use this file except in compliance with the License.  You may obtain a copy of
-the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
+   http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
-License for the specific language governing permissions and limitations under
-the License.
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
