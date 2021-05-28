@@ -17,3 +17,13 @@ local.properties
 
 # Key
 *.jks
+
+# Secret
+secret.properties
+signing.properties
+*.gpg
+*.pgp
+*.asc
+
+# Other
+temp/

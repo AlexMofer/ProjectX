@@ -58,7 +58,7 @@ ViewPager的复用回收的PagerAdapter及支持View集合的PagerAdapter。
 头尾GridView，支持AUTO_FIT模式，头尾模式有两种，无反射代码。
 - ***[MultiActionTextView][116]***  
 文字可点击TextView，设置文字部分可点击，点击执行不同操作。
-- ***[CircleProgressBar][117]***
+- ***[CircleProgressBar][117]***  
 带载入动画的环形进度条，可高度配置，支持配置成表盘。
 - ***[ZxingScanView][118]***  
 zxing条码扫描视图。
