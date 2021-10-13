@@ -22,6 +22,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".business.welcome.WelcomeActivity"
+            android:exported="true"
             android:theme="@style/WelcomeTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +35,7 @@
         </activity>
         <activity
             android:name=".business.main.MainActivity"
+            android:exported="true"
             android:theme="@style/MainTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -159,6 +161,7 @@
             android:exported="false" />
         <service
             android:name=".business.others.ftp.FtpTileService"
+            android:exported="true"
             android:icon="@drawable/ic_tile_ftp"
             android:label="@string/ftp_tile_label_inactive"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
