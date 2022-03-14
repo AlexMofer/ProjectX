@@ -34,15 +34,17 @@ android {
 //            signingConfig signingConfigs.Release
         }
     }
-    lintOptions {
-        abortOnError false
-    }
     packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
+        resources {
+            excludes += ['META-INF/DEPENDENCIES']
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lint {
+        abortOnError false
     }
 }
 
