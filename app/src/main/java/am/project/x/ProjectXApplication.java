@@ -32,6 +32,7 @@ public class ProjectXApplication extends BroadcastApplication {
         mInstance = this;
         super.onCreate();
         NotificationChannelHelper.updateNotificationChannel(this);
+        // TODO 尝试使用 import * 来加载包中所有类，通过该方式来注入代码，达到Job直接应用平台代码
     }
 
     /**
