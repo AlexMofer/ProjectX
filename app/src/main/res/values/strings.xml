@@ -350,9 +350,11 @@
     <string name="mrv_menu_mode_horizontal_singular">水平单页</string>
     <!--剪切板-->
     <string name="clipboard_label">剪切板</string>
-    <string name="clipboard_copy">复制</string>
-    <string name="clipboard_paste">粘贴</string>
     <string name="clipboard_info">已复制到剪切板</string>
+    <string name="clipboard_copy_data">复制数据</string>
+    <string name="clipboard_paste_data">粘贴数据</string>
+    <string name="clipboard_copy_file">复制文件</string>
+    <string name="clipboard_paste_file">粘贴文件</string>
     <!--Retrofit-->
     <string name="retrofit_label">Retrofit辅助</string>
     <string name="retrofit_test">测试</string>

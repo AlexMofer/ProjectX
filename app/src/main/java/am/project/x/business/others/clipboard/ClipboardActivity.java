@@ -27,8 +27,14 @@ import androidx.annotation.Nullable;
 import com.am.appcompat.app.AppCompatActivity;
 import com.am.clipboard.SuperClipboard;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.Serializable;
 import java.util.Random;
+import java.util.UUID;
 
 import am.project.x.R;
 
@@ -38,8 +44,8 @@ import am.project.x.R;
  */
 public class ClipboardActivity extends AppCompatActivity {
 
-    private TextView mVResult;
     private final ClipboardBean mData = ClipboardBean.test();
+    private File mFile;
 
     public ClipboardActivity() {
         super(R.layout.activity_clipboard);
@@ -49,28 +55,79 @@ public class ClipboardActivity extends AppCompatActivity {
         context.startActivity(new Intent(context, ClipboardActivity.class));
     }
 
+    @SuppressWarnings("UnusedReturnValue")
+    private static boolean writeString(File file, String content) {
+        if (content == null)
+            return file.delete();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(content);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private static String readString(File file) {
+        if (file == null || !file.exists() || !file.isFile()) {
+            return null;
+        }
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            final StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSupportActionBar(R.id.clipboard_toolbar);
-        mVResult = findViewById(R.id.clipboard_tv_result);
-        findViewById(R.id.clipboard_btn_copy).setOnClickListener(v -> copy());
-        findViewById(R.id.clipboard_btn_paste).setOnClickListener(v -> paste());
-        this.<TextView>findViewById(R.id.clipboard_tv_target).setText(mData.toString());
+        mFile = new File(getExternalCacheDir(), UUID.randomUUID().toString());
+        writeString(mFile, "This is file content, created at " + System.currentTimeMillis());
+
+        SuperClipboard.check(this);
+        findViewById(R.id.clipboard_btn_copy_data).setOnClickListener(v -> copyData());
+        findViewById(R.id.clipboard_btn_paste_data).setOnClickListener(v -> pasteData());
+        findViewById(R.id.clipboard_btn_copy_file).setOnClickListener(v -> copyFile());
+        findViewById(R.id.clipboard_btn_paste_file).setOnClickListener(v -> pasteFile());
+        this.<TextView>findViewById(R.id.clipboard_tv_target_data).setText(mData.toString());
+        this.<TextView>findViewById(R.id.clipboard_tv_target_file).setText(readString(mFile));
     }
 
-    private void copy() {
-        if (SuperClipboard.copy(this,
-                SuperClipboard.MIME_ITEM + "/vnd.projectx.data", mData)) {
+    private void copyData() {
+        if (SuperClipboard.setPrimaryClip(this,
+                SuperClipboard.getMime("vnd.projectx.data"), mData)) {
             Toast.makeText(this, R.string.clipboard_info,
                     Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void paste() {
-        final Serializable result = SuperClipboard.getClipData(this);
-        if (result instanceof ClipboardBean) {
-            mVResult.setText(result.toString());
+    private void pasteData() {
+        final ClipboardBean result = SuperClipboard.getPrimaryClipSerializable(this);
+        if (result != null) {
+            this.<TextView>findViewById(R.id.clipboard_tv_result_data).setText(result.toString());
+        }
+    }
+
+    private void copyFile() {
+        if (SuperClipboard.setPrimaryClip(this,
+                SuperClipboard.getMime("vnd.projectx.file"), mFile)) {
+            Toast.makeText(this, R.string.clipboard_info,
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void pasteFile() {
+        final File temp = new File(getExternalCacheDir(), UUID.randomUUID().toString());
+        if (SuperClipboard.getPrimaryClipFile(this, temp)) {
+            this.<TextView>findViewById(R.id.clipboard_tv_result_file).setText(readString(temp));
+            //noinspection ResultOfMethodCallIgnored
+            temp.delete();
         }
     }
 
