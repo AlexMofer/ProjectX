@@ -18,6 +18,7 @@ package am.project.x.business.others.floatingactionmode;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -25,7 +26,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.am.appcompat.app.AppCompatActivity;
-import com.am.tool.support.compat.AMActivityCompat;
 import com.am.widget.floatingactionmode.FloatingActionMode;
 import com.am.widget.floatingactionmode.FloatingMenu;
 import com.am.widget.floatingactionmode.FloatingMenuItem;
@@ -97,7 +97,9 @@ public class FloatingActionModeActivity extends AppCompatActivity implements Pre
     @Override
     public void onGetContentRect(FloatingActionMode mode, View view, Rect outRect) {
         outRect.set(mBound);
-        mode.setInMultiWindowMode(AMActivityCompat.isInMultiWindowMode(this));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mode.setInMultiWindowMode(isInMultiWindowMode());
+        }
     }
 
     @Override
