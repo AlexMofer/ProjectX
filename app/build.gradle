@@ -57,7 +57,7 @@ dependencies {
     implementation 'androidx.documentfile:documentfile:1.0.1'
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'io.github.alexmofer.appcompat:appcompat:1.5.1'
+    implementation 'io.github.alexmofer.appcompat:appcompat:1.5.1.1'
     implementation 'io.github.alexmofer.job:job-android:2.0.2'
     implementation 'io.github.alexmofer.retrofit:retrofit-helper:2.9.0'
     implementation 'io.github.alexmofer.clipboard:clipboard:3.0.1'
@@ -79,6 +79,6 @@ dependencies {
     implementation 'io.github.alexmofer.ftp:ftpserver-android:2.0.2'
     implementation 'io.github.alexmofer.drawable:drawable:2.1.0'
     implementation 'io.github.alexmofer.printer:printer:2.1.2'
-    implementation 'io.github.alexmofer.tool:support-android:1.10.0'
+    implementation 'io.github.alexmofer.tool:support-android:2.0.0'
     implementation 'io.github.alexmofer.multiprocesssharedpreferences:multiprocesssharedpreferences:1.0.0'
 }
