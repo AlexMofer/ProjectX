@@ -139,7 +139,7 @@ class FontModel extends MVPModel<FontPresenter> implements FontViewModel, FontJo
 
     @Override
     public String getTypefaceItemName(Object item) {
-        return item instanceof TypefaceItem ? ((TypefaceItem) item).getName() : null;
+        return item instanceof TypefaceItem ? ((TypefaceItem) item).getName().trim() : null;
     }
 
     @Override
@@ -193,7 +193,8 @@ class FontModel extends MVPModel<FontPresenter> implements FontViewModel, FontJo
     @Override
     public String getTypefaceItemPath(Object item) {
         if (item instanceof TypefaceItem)
-            return TypefaceConfig.getFontsDir() + File.separator + ((TypefaceItem) item).getName();
+            return new File(TypefaceConfig.getFontsDir(),
+                    ((TypefaceItem) item).getName().trim()).getPath();
         return null;
     }
 
