@@ -1,29 +1,10 @@
-# Gradle files
-.gradle/
-build/
-
-# Local configuration file (sdk path, etc)
-local.properties
-
-# Android Studio
-.idea/
 *.iml
-
-# Windows OS
-/*/Thumbs.db
-
-# Apple OS
+/.gradle
+/local.properties
+/.idea
 .DS_Store
-
-# Key
-*.jks
-
-# Secret
-secret.properties
-signing.properties
-*.gpg
-*.pgp
-*.asc
-
-# Other
-temp/
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties

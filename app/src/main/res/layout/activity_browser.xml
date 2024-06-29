@@ -14,7 +14,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <am.project.x.widget.PowerfulWebView
+    <io.github.alexmofer.projectx.widget.PowerfulWebView
         android:id="@+id/browser_wb_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
