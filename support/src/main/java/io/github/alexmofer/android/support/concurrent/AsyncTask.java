@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 异步任务
+ * 建议使用 CompletableFuture + UIThreadExecutor 替代
  * Created by Alex on 2024/3/1.
  */
 public final class AsyncTask {

@@ -23,8 +23,11 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.concurrent.CompletableFuture;
+
 import io.github.alexmofer.android.support.app.ApplicationData;
 import io.github.alexmofer.android.support.app.ApplicationHolder;
+import io.github.alexmofer.android.support.concurrent.UIThreadExecutor;
 import io.github.alexmofer.projectx.databinding.ActivityDevelopingBinding;
 
 /**
@@ -42,6 +45,16 @@ public class DevelopingActivity extends AppCompatActivity {
         setContentView(ActivityDevelopingBinding.inflate(getLayoutInflater()).getRoot());
         TestApplicationData.getInstance().toast(this);
         InnerApplicationData.getInstance().toast(this);
+
+        System.out.println("lalalalalal-------------------------------------CompletableFuture:" + Thread.currentThread().getName());
+        CompletableFuture.supplyAsync(() -> {
+                    System.out.println("lalalalalal-------------------------------------supplyAsync:" + Thread.currentThread().getName());
+                    return "你好你好";
+                })
+                .thenAcceptAsync(result -> {
+                    System.out.println("lalalalalal-------------------------------------thenAcceptAsync:" + Thread.currentThread().getName());
+
+                }, UIThreadExecutor.get());
     }
 
     private static class InnerApplicationData extends ApplicationData {
