@@ -31,14 +31,14 @@ android {
 }
 
 dependencies {
-    compileOnly 'androidx.annotation:annotation:1.8.0'
-    compileOnly 'androidx.collection:collection:1.4.0'
+    compileOnly 'androidx.annotation:annotation:1.9.1'
+    compileOnly 'androidx.collection:collection:1.5.0'
     compileOnly 'androidx.appcompat:appcompat:1.7.0'
     compileOnly 'androidx.window:window:1.3.0'
-    compileOnly 'androidx.recyclerview:recyclerview:1.3.2'
-    compileOnly 'androidx.databinding:viewbinding:8.5.0'
-    compileOnly 'androidx.documentfile:documentfile:1.0.1'
-    compileOnly 'com.google.code.gson:gson:2.11.0'
+    compileOnly 'androidx.recyclerview:recyclerview:1.4.0'
+    compileOnly 'androidx.databinding:viewbinding:8.10.0'
+    compileOnly 'androidx.documentfile:documentfile:1.1.0'
+    compileOnly 'com.google.code.gson:gson:2.13.1'
 }
 
 //apply from: "maven-central-aar.gradle"

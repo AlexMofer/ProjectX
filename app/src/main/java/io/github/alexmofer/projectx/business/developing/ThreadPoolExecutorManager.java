@@ -1,5 +1,6 @@
 package io.github.alexmofer.projectx.business.developing;
 
+import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -32,7 +33,7 @@ public class ThreadPoolExecutorManager {
                     MAXIMUM_POOL_SIZE,
                     KEEP_ALIVE,
                     TimeUnit.SECONDS,
-                    new PriorityBlockingQueue<>(),
+                    new PriorityBlockingQueue<>(3, new InnerComparator()),
                     new PriorityThreadFactory(android.os.Process.THREAD_PRIORITY_BACKGROUND
                             + android.os.Process.THREAD_PRIORITY_MORE_FAVORABLE
                             + android.os.Process.THREAD_PRIORITY_MORE_FAVORABLE,
@@ -48,7 +49,7 @@ public class ThreadPoolExecutorManager {
                     MAXIMUM_POOL_SIZE,
                     KEEP_ALIVE,
                     TimeUnit.SECONDS,
-                    new PriorityBlockingQueue<>(),
+                    new PriorityBlockingQueue<>(3, new InnerComparator()),
                     new PriorityThreadFactory(android.os.Process.THREAD_PRIORITY_BACKGROUND,
                             "Job"));
         }
@@ -60,10 +61,22 @@ public class ThreadPoolExecutorManager {
             sJobSingleThreadPool = new ThreadPoolExecutor(1, 1,
                     KEEP_ALIVE,
                     TimeUnit.SECONDS,
-                    new PriorityBlockingQueue<>(),
+                    new PriorityBlockingQueue<>(3, new InnerComparator()),
                     new PriorityThreadFactory(android.os.Process.THREAD_PRIORITY_BACKGROUND,
                             "Job Single"));
         }
         return sJobSingleThreadPool;
+    }
+
+    private static class InnerComparator implements Comparator<Runnable> {
+
+        @Override
+        public int compare(Runnable o1, Runnable o2) {
+            if (o1 instanceof Comparable && o2 instanceof Comparable) {
+                //noinspection unchecked,rawtypes
+                return ((Comparable) o1).compareTo(o2);
+            }
+            return 0;
+        }
     }
 }

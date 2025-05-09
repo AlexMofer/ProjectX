@@ -71,6 +71,19 @@ public class StringResourceException extends Exception {
     }
 
     /**
+     * 获取消息
+     *
+     * @param t 异常
+     * @return 消息
+     */
+    public static StringResource getMessage(Throwable t) {
+        if (t instanceof StringResourceException) {
+            return ((StringResourceException) t).getStringResource();
+        }
+        return new StringResource(t.getMessage());
+    }
+
+    /**
      * 获取信息
      *
      * @return 信息
