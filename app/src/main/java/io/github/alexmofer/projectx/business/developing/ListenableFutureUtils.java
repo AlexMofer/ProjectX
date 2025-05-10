@@ -49,6 +49,7 @@ public class ListenableFutureUtils {
      * @param failure 任务失败回调
      * @param <T>     返回类型
      * @return 异步任务
+     * @noinspection UnusedReturnValue
      */
     public static <T> ListenableFuture<T> submit(Callable<T> task, SuccessCallback<T> success, @Nullable FailureCallback failure) {
         final ListeningExecutorService service = getListeningExecutorService();
