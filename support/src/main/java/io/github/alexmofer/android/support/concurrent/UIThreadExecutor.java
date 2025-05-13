@@ -22,4 +22,13 @@ public class UIThreadExecutor implements Executor {
     public void execute(Runnable command) {
         mHandler.post(command);
     }
+
+    /**
+     * 获取 Handler
+     *
+     * @return Handler
+     */
+    public Handler getHandler() {
+        return mHandler;
+    }
 }
