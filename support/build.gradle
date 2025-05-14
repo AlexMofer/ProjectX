@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'io.github.alexmofer.android.support'
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         minSdk 14

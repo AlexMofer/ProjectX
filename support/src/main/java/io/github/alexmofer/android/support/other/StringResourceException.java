@@ -37,6 +37,10 @@ public class StringResourceException extends Exception {
         this(new StringResource(message));
     }
 
+    public StringResourceException(@StringRes int message, Object... formatArgs) {
+        this(new StringResource(message, formatArgs));
+    }
+
     public StringResourceException(@NonNull StringResource message, String msg) {
         super(msg);
         mMessage = message;
