@@ -29,15 +29,24 @@ import androidx.core.content.res.ResourcesCompat;
  */
 public class StringResource {
     private final int mRes;
+    private final Object[] mFormatArgs;
     private final String mStr;
 
     public StringResource(@StringRes int res) {
         mRes = res;
+        mFormatArgs = null;
+        mStr = null;
+    }
+
+    public StringResource(@StringRes int res, Object... formatArgs) {
+        mRes = res;
+        mFormatArgs = formatArgs;
         mStr = null;
     }
 
     public StringResource(String str) {
         mRes = ResourcesCompat.ID_NULL;
+        mFormatArgs = null;
         mStr = str;
     }
 
@@ -80,7 +89,11 @@ public class StringResource {
     @Nullable
     public String getString(Context context) {
         if (mRes != ResourcesCompat.ID_NULL) {
-            return context.getString(mRes);
+            if (mFormatArgs == null) {
+                return context.getString(mRes);
+            } else {
+                return context.getString(mRes, mFormatArgs);
+            }
         }
         return mStr;
     }
