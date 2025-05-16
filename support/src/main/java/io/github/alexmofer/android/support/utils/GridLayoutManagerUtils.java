@@ -34,15 +34,18 @@ public class GridLayoutManagerUtils {
      *
      * @param view                  RecyclerView
      * @param itemMinWidth          子项需要的最小宽度，DP为单位（以RecyclerView宽度进行均分）
+     * @param roundDown             true 时向下取整，false 四舍五入
      * @param notifyItemDecorations 是否通知子项装饰刷新
      */
-    public static void setSpanCountCalculator(RecyclerView view, int itemMinWidth, boolean notifyItemDecorations) {
+    public static void setSpanCountCalculator(RecyclerView view, int itemMinWidth,
+                                              boolean roundDown,
+                                              boolean notifyItemDecorations) {
         view.addOnLayoutChangeListener(
                 (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
                     final int width = v.getWidth();
                     final float itemWidth =
                             TypedValueCompat.dpToPx(itemMinWidth, v.getResources().getDisplayMetrics());
-                    final int count = Math.max(2, Math.round(width / itemWidth - 0.5f));
+                    final int count = Math.max(2, Math.round(width / itemWidth + (roundDown ? -0.5f : 0)));
                     final RecyclerView.LayoutManager manager = ((RecyclerView) v).getLayoutManager();
                     if (manager instanceof GridLayoutManager) {
                         v.post(() -> {
