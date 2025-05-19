@@ -1,6 +1,5 @@
 package io.github.alexmofer.projectx.business.developing;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.common.util.concurrent.FutureCallback;
@@ -11,6 +10,7 @@ import com.google.common.util.concurrent.MoreExecutors;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
+import java.util.function.Consumer;
 
 import io.github.alexmofer.android.support.concurrent.UIThreadExecutor;
 
@@ -51,7 +51,8 @@ public class ListenableFutureUtils {
      * @return 异步任务
      * @noinspection UnusedReturnValue
      */
-    public static <T> ListenableFuture<T> submit(Callable<T> task, SuccessCallback<T> success, @Nullable FailureCallback failure) {
+    public static <T> ListenableFuture<T> submit(Callable<T> task, Consumer<T> success,
+                                                 @Nullable Consumer<Throwable> failure) {
         final ListeningExecutorService service = getListeningExecutorService();
         final ListenableFuture<T> future = service.submit(task);
         Futures.addCallback(
@@ -59,24 +60,16 @@ public class ListenableFutureUtils {
                 new FutureCallback<T>() {
 
                     public void onSuccess(T result) {
-                        success.onSuccess(result);
+                        success.accept(result);
                     }
 
-                    public void onFailure(@NonNull Throwable t) {
+                    public void onFailure(@androidx.annotation.NonNull Throwable t) {
                         if (failure != null) {
-                            failure.onFailure(t);
+                            failure.accept(t);
                         }
                     }
                 },
                 getUIThreadExecutor());
         return future;
-    }
-
-    public interface SuccessCallback<V> {
-        void onSuccess(V result);
-    }
-
-    public interface FailureCallback {
-        void onFailure(@NonNull Throwable t);
     }
 }
