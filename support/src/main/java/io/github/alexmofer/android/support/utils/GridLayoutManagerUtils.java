@@ -48,6 +48,9 @@ public class GridLayoutManagerUtils {
                     final int count = Math.max(2, Math.round(width / itemWidth + (roundDown ? -0.5f : 0)));
                     final RecyclerView.LayoutManager manager = ((RecyclerView) v).getLayoutManager();
                     if (manager instanceof GridLayoutManager) {
+                        if (count == ((GridLayoutManager) manager).getSpanCount()) {
+                            return;
+                        }
                         v.post(() -> {
                             ((GridLayoutManager) manager).setSpanCount(count);
                             if (notifyItemDecorations) {
