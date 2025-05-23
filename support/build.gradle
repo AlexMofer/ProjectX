@@ -7,7 +7,7 @@ android {
     compileSdk 36
 
     defaultConfig {
-        minSdk 14
+        minSdk 21
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -38,6 +38,7 @@ dependencies {
     compileOnly 'androidx.recyclerview:recyclerview:1.4.0'
     compileOnly 'androidx.databinding:viewbinding:8.10.0'
     compileOnly 'androidx.documentfile:documentfile:1.1.0'
+    compileOnly "androidx.exifinterface:exifinterface:1.4.1"
     compileOnly 'com.google.code.gson:gson:2.13.1'
 }
 
