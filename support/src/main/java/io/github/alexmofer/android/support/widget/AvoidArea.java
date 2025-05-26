@@ -105,4 +105,13 @@ public class AvoidArea {
     public static void paddingIgnoreTop(View view) {
         padding(view, LEFT | RIGHT | BOTTOM);
     }
+
+    /**
+     * 以 Padding 形式处理系统避让区域
+     *
+     * @param view View
+     */
+    public static void paddingAll(View view) {
+        padding(view, LEFT | TOP | RIGHT | BOTTOM);
+    }
 }
