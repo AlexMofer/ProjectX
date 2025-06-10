@@ -82,10 +82,10 @@ afterEvaluate {
             maven {
                 url = pp.getProperty("POM_VERSION").contains("SNAPSHOT") ?
                         pp.getProperty("SNAPSHOT_REPOSITORY_URL",
-                                "https://central.sonatype.com/repository/maven-snapshots/")
+                                "https://s01.oss.sonatype.org/content/repositories/snapshots/")
                         :
                         pp.getProperty("RELEASE_REPOSITORY_URL",
-                                "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/")
+                                "https://s01.oss.sonatype.org/content/repositories/releases/")
 
                 credentials(PasswordCredentials) {
                     username = sp.getProperty("NEXUS_USERNAME")
