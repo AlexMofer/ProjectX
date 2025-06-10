@@ -24,17 +24,24 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
+import androidx.annotation.AttrRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.StyleRes;
+import androidx.annotation.StyleableRes;
 
 import java.io.File;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Context工具
@@ -172,6 +179,32 @@ public class ContextUtils {
         return file;
     }
 
+    /**
+     * Retrieve styled attribute information in this Context's theme.  See
+     * {@link android.content.res.Resources.Theme#obtainStyledAttributes(AttributeSet, int[], int, int)}
+     * for more information.
+     *
+     * @see android.content.res.Resources.Theme#obtainStyledAttributes(AttributeSet, int[], int, int)
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static void obtainStyledAttributes(Consumer<TypedArray> consumer,
+                                              @NonNull Context context,
+                                              @Nullable AttributeSet set,
+                                              @NonNull @StyleableRes int[] attrs,
+                                              @AttrRes int defStyleAttr,
+                                              @StyleRes int defStyleRes) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            try (final TypedArray custom =
+                         context.obtainStyledAttributes(set, attrs, defStyleAttr, defStyleRes)) {
+                consumer.accept(custom);
+            }
+        } else {
+            final TypedArray custom =
+                    context.obtainStyledAttributes(set, attrs, defStyleAttr, defStyleRes);
+            consumer.accept(custom);
+            custom.recycle();
+        }
+    }
 
     /**
      * Converts an dip data value holding a dimension to its final floating
