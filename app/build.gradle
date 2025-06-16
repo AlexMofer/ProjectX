@@ -48,6 +48,7 @@ dependencies {
     implementation 'androidx.documentfile:documentfile:1.1.0'
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'androidx.window:window:1.4.0'
     implementation 'io.github.alexmofer.appcompat:appcompat:1.6.1.3'
     implementation 'io.github.alexmofer.job:job-android:2.0.3'
     implementation 'io.github.alexmofer.clipboard:clipboard:3.0.1'

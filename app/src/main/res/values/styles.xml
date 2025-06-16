@@ -64,4 +64,28 @@
         <item name="floatingActionModeItemTextColor">#FF000000</item>
         <item name="floatingActionModeItemTextSize">14sp</item>
     </style>
+
+    <style name="Animation.Dialog.Sheet" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/sheet_enter</item>
+        <item name="android:windowExitAnimation">@anim/sheet_exit</item>
+    </style>
+
+    <style name="Animation.Dialog.Center" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_exit</item>
+    </style>
+
+    <style name="Theme.Dialog.Sheet" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimAmount">0.36</item>
+        <item name="android:windowElevation">10dp</item>
+        <item name="android:windowClipToOutline">true</item>
+    </style>
+    <style name="Theme.Dialog.Center" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimAmount">0.36</item>
+        <item name="android:windowElevation">10dp</item>
+        <item name="android:windowClipToOutline">true</item>
+    </style>
 </resources>
