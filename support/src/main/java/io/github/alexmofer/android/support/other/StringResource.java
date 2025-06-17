@@ -81,6 +81,16 @@ public class StringResource {
     }
 
     /**
+     * 获取消息
+     *
+     * @param t 异常
+     * @return 消息
+     */
+    public static StringResource from(Throwable t) {
+        return StringResourceException.getMessage(t);
+    }
+
+    /**
      * 获取字符串
      *
      * @param context Context
@@ -104,6 +114,9 @@ public class StringResource {
      * @param context Context
      */
     public void showToast(Context context) {
-        Toast.makeText(context, getString(context), Toast.LENGTH_SHORT).show();
+        final String message = getString(context);
+        if (message != null) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        }
     }
 }

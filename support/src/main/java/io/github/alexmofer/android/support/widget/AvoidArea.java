@@ -36,7 +36,9 @@ public class AvoidArea {
     public static final int TOP = 1 << 1;
     public static final int RIGHT = 1 << 2;
     public static final int BOTTOM = 1 << 3;
-    public static final int ALL = LEFT | TOP | RIGHT | BOTTOM;
+    public static final int HORIZONTAL = LEFT | RIGHT;
+    public static final int VERTICAL = TOP | BOTTOM;
+    public static final int ALL = HORIZONTAL | VERTICAL;
 
     private AvoidArea() {
         //no instance
