@@ -1,165 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:name=".ProjectXApplication"
+        android:name=".Application"
         android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.NoActionBar"
+        tools:targetApi="31">
         <activity
-            android:name=".business.welcome.WelcomeActivity"
+            android:name=".features.welcome.WelcomeActivity"
             android:exported="true"
-            android:theme="@style/WelcomeTheme">
+            android:theme="@style/Theme.Welcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts" />
         </activity>
-        <activity
-            android:name=".business.main.MainActivity"
-            android:exported="true"
-            android:theme="@style/MainTheme"/>
-        <activity
-            android:name=".business.about.AboutActivity"
-            android:label="@string/about_label"
-            android:theme="@style/AboutTheme" />
-        <activity
-            android:name=".business.developing.DevelopingActivity"
-            android:label="@string/developing_label" />
-        <activity
-            android:name=".business.widgets.gradienttabstrip.GradientTabStripActivity"
-            android:label="@string/gts_label" />
-        <activity
-            android:name=".business.widgets.tagtabstrip.TagTabStripActivity"
-            android:label="@string/tts_label" />
-        <activity
-            android:name=".business.widgets.indicatortabstrip.IndicatorTabStripActivity"
-            android:label="@string/its_label" />
-        <activity
-            android:name=".business.widgets.multifunctionalimageview.MultifunctionalImageViewActivity"
-            android:label="@string/miv_label" />
-        <activity
-            android:name=".business.widgets.statelayout.StateLayoutActivity"
-            android:label="@string/sl_label" />
-        <activity
-            android:name=".business.widgets.wraplayout.WrapLayoutActivity"
-            android:label="@string/wl_label" />
-        <activity
-            android:name=".business.widgets.drawableratingbar.DrawableRatingBarActivity"
-            android:label="@string/drb_label" />
-        <activity
-            android:name=".business.widgets.headerfootergridview.HeaderFooterGridViewActivity"
-            android:label="@string/hfg_label" />
-        <activity
-            android:name=".business.widgets.multiactiontextview.MultiActionTextViewActivity"
-            android:label="@string/mat_label" />
-        <activity
-            android:name=".business.widgets.recyclepager.RecyclePagerActivity"
-            android:label="@string/rp_label" />
-        <activity
-            android:name=".business.widgets.circleprogressbar.CircleProgressBarActivity"
-            android:label="@string/cpb_label" />
-        <activity
-            android:name=".business.widgets.zxingscanview.ZxingScanViewActivity"
-            android:label="@string/zsv_label" />
-        <activity
-            android:name=".business.widgets.smoothinputlayout.SmoothInputLayoutActivity"
-            android:label="@string/sil_label"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".business.drawables.loadingdrawable.LoadingDrawableActivity"
-            android:label="@string/ld_label" />
-        <activity
-            android:name=".business.drawables.cornerdrawable.CornerDrawableActivity"
-            android:label="@string/cnd_label" />
-        <activity
-            android:name=".business.drawables.framedrawable.FrameDrawableActivity"
-            android:label="@string/frame_label" />
-        <activity
-            android:name=".business.drawables.linedrawable.LineDrawableActivity"
-            android:label="@string/lid_label" />
-        <activity
-            android:name=".business.drawables.griddrawable.GridDrawableActivity"
-            android:label="@string/grd_label" />
-        <activity
-            android:name=".business.drawables.textdrawable.TextDrawableActivity"
-            android:label="@string/td_label" />
-        <activity
-            android:name=".business.others.printer.PrinterActivity"
-            android:label="@string/printer_label" />
-        <activity
-            android:name=".business.others.crypto.CryptoActivity"
-            android:label="@string/crypto_label" />
-        <activity android:name=".business.browser.BrowserActivity" />
-        <activity
-            android:name=".business.others.ftp.FtpActivity"
-            android:label="@string/ftp_label"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".business.others.ftp.legacy.LegacyPathSelectActivity"
-            android:label="@string/lps_label" />
-        <activity
-            android:name=".business.others.ftp.FtpSwitcherActivity"
-            android:theme="@style/CompletelyTransparentDialog" />
-        <activity
-            android:name=".business.others.font.FontActivity"
-            android:label="@string/font_label" />
-        <activity
-            android:name=".business.others.opentypelist.OpenTypeListActivity"
-            android:label="@string/otl_label" />
-        <activity
-            android:name=".business.others.opentype.OpenTypeActivity"
-            android:label="@string/ot_label" />
-        <activity
-            android:name=".business.others.floatingactionmode.FloatingActionModeActivity"
-            android:label="@string/floating_label" />
-        <activity
-            android:name=".business.widgets.multifunctionalrecyclerview.MultifunctionalRecyclerViewActivity"
-            android:label="@string/mrv_label" />
-        <activity
-            android:name=".business.others.clipboard.ClipboardActivity"
-            android:label="@string/clipboard_label" />
-        <activity
-            android:name=".business.others.retrofithelper.RetrofitActivity"
-            android:label="@string/retrofit_label" />
-
-        <service
-            android:name=".business.others.ftp.legacy.LegacyFtpService"
-            android:exported="false" />
-        <service
-            android:name=".business.others.ftp.advanced.AdvancedFtpService"
-            android:exported="false" />
-        <service
-            android:name=".business.others.ftp.FtpTileService"
-            android:exported="true"
-            android:icon="@drawable/ic_tile_ftp"
-            android:label="@string/ftp_tile_label_inactive"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
-        </service>
+        <activity android:name=".features.main.MainActivity" />
     </application>
 
 </manifest>

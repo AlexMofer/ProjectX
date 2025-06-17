@@ -31,6 +31,7 @@ import java.util.ArrayList;
  * 功能拓展的AppCompatActivity
  * Created by Alex on 2024/2/29.
  */
+@Deprecated
 public class AppCompatActivity extends androidx.appcompat.app.AppCompatActivity {
 
     private final ArrayList<AppCompatDialog> mDialogs = new ArrayList<>();

@@ -43,7 +43,7 @@ public class EdgeToEdge {
     // https://cs.android.com/android/platform/superproject/+/master:frameworks/base/core/res/res/color/system_bar_background_semi_transparent.xml
     // https://cs.android.com/android/platform/superproject/+/master:frameworks/base/core/res/remote_color_resources_res/values/colors.xml;l=67
     public static final int DefaultDarkScrim = Color.argb(0x80, 0x1b, 0x1b, 0x1b);
-    private static EdgeToEdgeImpl Impl = null;
+    private static Compat Impl = null;
 
     private EdgeToEdge() {
         //no instance
@@ -57,19 +57,17 @@ public class EdgeToEdge {
                               boolean navigationBarIsDark) {
         if (Impl == null) {
             if (Build.VERSION.SDK_INT >= 30) {
-                Impl = new EdgeToEdgeApi30();
+                Impl = new Api30Impl();
             } else if (Build.VERSION.SDK_INT >= 29) {
-                Impl = new EdgeToEdgeApi29();
+                Impl = new Api29Impl();
             } else if (Build.VERSION.SDK_INT >= 28) {
-                Impl = new EdgeToEdgeApi28();
+                Impl = new Api28Impl();
             } else if (Build.VERSION.SDK_INT >= 26) {
-                Impl = new EdgeToEdgeApi26();
+                Impl = new Api26Impl();
             } else if (Build.VERSION.SDK_INT >= 23) {
-                Impl = new EdgeToEdgeApi23();
-            } else if (Build.VERSION.SDK_INT >= 21) {
-                Impl = new EdgeToEdgeApi21();
+                Impl = new Api23Impl();
             } else {
-                Impl = new EdgeToEdgeBase();
+                Impl = new Api21Impl();
             }
         }
         Impl.setUp(statusBarStyle, navigationBarStyle, window, view, statusBarIsDark, navigationBarIsDark);
@@ -109,7 +107,7 @@ public class EdgeToEdge {
                 SystemBarStyle.auto(DefaultLightScrim, DefaultDarkScrim));
     }
 
-    private interface EdgeToEdgeImpl {
+    private interface Compat {
 
         void setUp(SystemBarStyle statusBarStyle, SystemBarStyle navigationBarStyle, Window window,
                    View view, boolean statusBarIsDark, boolean navigationBarIsDark);
@@ -117,7 +115,7 @@ public class EdgeToEdge {
         void adjustLayoutInDisplayCutoutMode(Window window);
     }
 
-    private static class EdgeToEdgeBase implements EdgeToEdgeImpl {
+    private static class BaseImpl implements Compat {
 
         @Override
         public void setUp(SystemBarStyle statusBarStyle, SystemBarStyle navigationBarStyle,
@@ -132,8 +130,7 @@ public class EdgeToEdge {
         }
     }
 
-    @RequiresApi(21)
-    private static class EdgeToEdgeApi21 extends EdgeToEdgeBase {
+    private static class Api21Impl extends BaseImpl {
 
         @Override
         public void setUp(SystemBarStyle statusBarStyle, SystemBarStyle navigationBarStyle,
@@ -146,7 +143,7 @@ public class EdgeToEdge {
     }
 
     @RequiresApi(23)
-    private static class EdgeToEdgeApi23 extends EdgeToEdgeBase {
+    private static class Api23Impl extends Api21Impl {
 
         @Override
         public void setUp(SystemBarStyle statusBarStyle, SystemBarStyle navigationBarStyle,
@@ -160,7 +157,7 @@ public class EdgeToEdge {
     }
 
     @RequiresApi(26)
-    private static class EdgeToEdgeApi26 extends EdgeToEdgeBase {
+    private static class Api26Impl extends Api23Impl {
 
         @Override
         public void setUp(SystemBarStyle statusBarStyle, SystemBarStyle navigationBarStyle,
@@ -177,7 +174,7 @@ public class EdgeToEdge {
     }
 
     @RequiresApi(28)
-    private static class EdgeToEdgeApi28 extends EdgeToEdgeApi26 {
+    private static class Api28Impl extends Api26Impl {
 
         @Override
         public void adjustLayoutInDisplayCutoutMode(Window window) {
@@ -187,7 +184,7 @@ public class EdgeToEdge {
     }
 
     @RequiresApi(29)
-    private static class EdgeToEdgeApi29 extends EdgeToEdgeApi28 {
+    private static class Api29Impl extends Api28Impl {
 
         @Override
         public void setUp(SystemBarStyle statusBarStyle, SystemBarStyle navigationBarStyle,
@@ -206,7 +203,7 @@ public class EdgeToEdge {
     }
 
     @RequiresApi(30)
-    private static class EdgeToEdgeApi30 extends EdgeToEdgeApi29 {
+    private static class Api30Impl extends Api29Impl {
 
         @Override
         public void adjustLayoutInDisplayCutoutMode(Window window) {

@@ -93,6 +93,7 @@ public class ApplicationHolder {
      * @param text     文本
      * @param duration 时长
      */
+    @Deprecated
     public static void toast(CharSequence text, int duration) {
         Toast.makeText(getApplicationContext(), text, duration).show();
     }
@@ -102,6 +103,7 @@ public class ApplicationHolder {
      *
      * @param text 文本
      */
+    @Deprecated
     public static void toast(CharSequence text) {
         toast(text, Toast.LENGTH_SHORT);
     }
@@ -112,6 +114,7 @@ public class ApplicationHolder {
      * @param resId    文本资源
      * @param duration 时长
      */
+    @Deprecated
     public static void toast(@StringRes int resId, int duration) {
         Toast.makeText(getApplicationContext(), resId, duration).show();
     }
@@ -121,6 +124,7 @@ public class ApplicationHolder {
      *
      * @param resId 文本资源
      */
+    @Deprecated
     public static void toast(@StringRes int resId) {
         toast(resId, Toast.LENGTH_SHORT);
     }
@@ -133,6 +137,7 @@ public class ApplicationHolder {
      * @param <T>     类型
      * @return 应用级数据对象
      */
+    @Deprecated
     @NonNull
     public static <T extends ApplicationData> T getApplicationData(Class<T> clazz,
                                                                    @NonNull ApplicationDataCreator<T> creator) {

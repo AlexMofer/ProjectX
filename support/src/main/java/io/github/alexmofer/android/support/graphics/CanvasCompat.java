@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
  * 画布兼容器
  * Created by Alex on 2022/10/18.
  */
+@Deprecated
 public class CanvasCompat {
 
     private CanvasCompat() {
@@ -39,7 +40,7 @@ public class CanvasCompat {
      */
     public static int saveLayer(Canvas canvas, float left, float top, float right, float bottom,
                                 @Nullable Paint paint) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= 21) {
             return canvas.saveLayer(left, top, right, bottom, paint);
         } else {
             //noinspection deprecation
@@ -74,9 +75,10 @@ public class CanvasCompat {
      * @return value to pass to restoreToCount() to balance this save()
      */
     public static int saveLayer(Canvas canvas, @Nullable RectF bounds, @Nullable Paint paint) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= 21) {
             return canvas.saveLayer(bounds, paint);
         } else {
+            //noinspection deprecation
             return canvas.saveLayer(bounds, paint, Canvas.ALL_SAVE_FLAG);
         }
     }
@@ -86,9 +88,10 @@ public class CanvasCompat {
      * object it takes only the {@code alpha} parameter.
      */
     public static int saveLayerAlpha(@NonNull Canvas canvas, @Nullable RectF bounds, int alpha) {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT > 21) {
             return canvas.saveLayerAlpha(bounds, alpha);
         } else {
+            //noinspection deprecation
             return canvas.saveLayerAlpha(bounds, alpha, Canvas.ALL_SAVE_FLAG);
         }
     }
@@ -99,9 +102,10 @@ public class CanvasCompat {
      */
     public static int saveLayerAlpha(
             @NonNull Canvas canvas, float left, float top, float right, float bottom, int alpha) {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT > 21) {
             return canvas.saveLayerAlpha(left, top, right, bottom, alpha);
         } else {
+            //noinspection deprecation
             return canvas.saveLayerAlpha(left, top, right, bottom, alpha, Canvas.ALL_SAVE_FLAG);
         }
     }

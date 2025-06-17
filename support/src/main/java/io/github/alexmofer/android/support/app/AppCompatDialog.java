@@ -14,6 +14,7 @@ import java.lang.ref.WeakReference;
  * 功能拓展的AppCompatDialog
  * Created by Alex on 2024/2/29.
  */
+@Deprecated
 public class AppCompatDialog extends androidx.appcompat.app.AppCompatDialog {
 
     private WeakReference<AppCompatActivity> mCreateActivity;

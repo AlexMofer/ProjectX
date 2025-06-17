@@ -27,6 +27,8 @@ import androidx.annotation.RequiresApi;
  */
 public class ApplicationCompat {
 
+    private static Compat Impl = null;
+
     private ApplicationCompat() {
         //no instance
     }
@@ -38,26 +40,29 @@ public class ApplicationCompat {
      * attribute within AndroidManifest.xml.
      */
     public static String getProcessName() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            return Api28Impl.getProcessName();
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            return Api18Impl.getProcessName();
-        } else {
-            return BaseImpl.getProcessName();
+        if (Impl == null) {
+            if (Build.VERSION.SDK_INT >= 28) {
+                Impl = new Api28Impl();
+            } else {
+                Impl = new Api18Impl();
+            }
         }
+        return Impl.getProcessName();
+
     }
 
-    static class BaseImpl {
+    interface Compat {
+        String getProcessName();
+    }
 
-        private BaseImpl() {
-            // This class is not instantiable.
-        }
+    static class BaseImpl implements Compat {
 
         @SuppressLint("PrivateApi")
-        static String getProcessName() {
+        @Override
+        public String getProcessName() {
             try {
                 return (String) Class.forName("android.app.ActivityThread", false,
-                        Application.class.getClassLoader())
+                                Application.class.getClassLoader())
                         .getMethod("currentPackageName")
                         .invoke(null);
             } catch (Throwable e) {
@@ -66,18 +71,14 @@ public class ApplicationCompat {
         }
     }
 
-    @RequiresApi(18)
-    static class Api18Impl {
-
-        private Api18Impl() {
-            // This class is not instantiable.
-        }
+    static class Api18Impl extends BaseImpl {
 
         @SuppressLint("PrivateApi")
-        static String getProcessName() {
+        @Override
+        public String getProcessName() {
             try {
                 return (String) Class.forName("android.app.ActivityThread", false,
-                        Application.class.getClassLoader())
+                                Application.class.getClassLoader())
                         .getMethod("currentProcessName")
                         .invoke(null);
             } catch (Throwable e) {
@@ -87,13 +88,10 @@ public class ApplicationCompat {
     }
 
     @RequiresApi(28)
-    static class Api28Impl {
+    static class Api28Impl extends Api18Impl {
 
-        private Api28Impl() {
-            // This class is not instantiable.
-        }
-
-        static String getProcessName() {
+        @Override
+        public String getProcessName() {
             return Application.getProcessName();
         }
     }

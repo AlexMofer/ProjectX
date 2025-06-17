@@ -1,4 +1,4 @@
-package io.github.alexmofer.projectx.business.common;
+package io.github.alexmofer.projectx.features.common;
 
 import android.content.Context;
 import android.graphics.Color;

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
  * 应用数据
  * Created by Alex on 2023/12/15.
  */
+@Deprecated
 public abstract class ApplicationData {
 
 

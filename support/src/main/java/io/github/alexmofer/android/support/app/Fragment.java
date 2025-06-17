@@ -16,6 +16,7 @@ import io.github.alexmofer.android.support.utils.FragmentUtils;
  * 功能拓展的Fragment
  * Created by Alex on 2024/2/29.
  */
+@Deprecated
 public class Fragment extends androidx.fragment.app.Fragment {
 
     private View mToolbar;

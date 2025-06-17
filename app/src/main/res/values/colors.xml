@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorWindowBackground">@android:color/white</color>
-    <color name="colorPrimary">#4788f4</color>
-    <color name="colorPrimaryDark">#4272c4</color>
-    <color name="colorAccent">#fe439b</color>
-    <color name="colorDark">#28000000</color>
-    <color name="colorRipple">#804788f4</color>
+    <color name="c_primary">#4788f4</color>
 </resources>

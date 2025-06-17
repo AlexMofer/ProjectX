@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "ProjectX"
 include ':support'
 include ':app'
+include ':app_old'

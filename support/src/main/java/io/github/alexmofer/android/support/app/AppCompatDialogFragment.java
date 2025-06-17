@@ -13,6 +13,7 @@ import io.github.alexmofer.android.support.utils.FragmentUtils;
  * 功能拓展的AppCompatDialogFragment
  * Created by Alex on 2024/2/29.
  */
+@Deprecated
 public class AppCompatDialogFragment extends androidx.appcompat.app.AppCompatDialogFragment {
 
     public AppCompatDialogFragment() {

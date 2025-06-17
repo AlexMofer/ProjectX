@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
  * 应用级数据创建器
  * Created by Alex on 2024/2/28.
  */
+@Deprecated
 public interface ApplicationDataCreator<T extends ApplicationData> {
 
     /**
