@@ -17,6 +17,8 @@ package io.github.alexmofer.android.support.utils;
 
 import android.graphics.Color;
 
+import androidx.annotation.ColorInt;
+
 /**
  * 颜色工具
  * Created by Alex on 2024/1/12.
@@ -25,6 +27,30 @@ public class ColorUtils {
 
     private ColorUtils() {
         //no instance
+    }
+
+    /**
+     * 获取颜色
+     *
+     * @param color 颜色
+     * @param alpha 透明度
+     * @return 颜色
+     */
+    @ColorInt
+    public static int getColor(@ColorInt int color, int alpha) {
+        return Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color));
+    }
+
+    /**
+     * 获取颜色
+     *
+     * @param color   颜色
+     * @param opacity 不透明度
+     * @return 颜色
+     */
+    @ColorInt
+    public static int getColor(@ColorInt int color, float opacity) {
+        return getColor(color, Math.max(0, Math.min(255, Math.round(255 * opacity))));
     }
 
     /**
