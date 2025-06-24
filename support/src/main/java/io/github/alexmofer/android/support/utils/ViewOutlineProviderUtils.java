@@ -22,13 +22,11 @@ import android.view.View;
 import android.view.ViewOutlineProvider;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 /**
  * ViewOutlineProvider 工具
  * Created by Alex on 2024/3/18.
  */
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class ViewOutlineProviderUtils {
 
     public static final ViewOutlineProvider OVAL = new ViewOutlineProvider() {
@@ -44,6 +42,14 @@ public class ViewOutlineProviderUtils {
                     view.getPaddingTop(),
                     view.getWidth() - view.getPaddingRight(),
                     view.getHeight() - view.getPaddingBottom());
+        }
+    };
+    public static final ViewOutlineProvider CAPSULE = new ViewOutlineProvider() {
+        @Override
+        public void getOutline(View view, Outline outline) {
+            final int width = view.getWidth();
+            final int height = view.getHeight();
+            outline.setRoundRect(0, 0, width, height, height * 0.5f);
         }
     };
 
