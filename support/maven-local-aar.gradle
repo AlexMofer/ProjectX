@@ -80,17 +80,7 @@ afterEvaluate {
         }
         repositories {
             maven {
-                url = pp.getProperty("POM_VERSION").contains("SNAPSHOT") ?
-                        pp.getProperty("SNAPSHOT_REPOSITORY_URL",
-                                "https://central.sonatype.com/repository/maven-snapshots/")
-                        :
-                        pp.getProperty("RELEASE_REPOSITORY_URL",
-                                "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/")
-
-                credentials(PasswordCredentials) {
-                    username = sp.getProperty("NEXUS_USERNAME")
-                    password = sp.getProperty("NEXUS_PASSWORD")
-                }
+                url = layout.buildDirectory.dir("repo")
             }
         }
     }
