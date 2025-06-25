@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2025 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.alexmofer.projectx.features.common;
 
 import android.content.Context;
@@ -13,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import androidx.annotation.ColorInt;
@@ -37,22 +53,21 @@ public class CenterDialogFragment extends AppCompatDialogFragment {
     public static final int SIZE_MEDIUM = 0;// 半屏高度
     public static final int SIZE_LARGE = 1;// 满屏高度
     public static final int SIZE_FIT_CONTENT = 2;// 适应高度
-    private final int mSize;
     private final int mBackgroundColor;
+    private final int mSize;
 
-    public CenterDialogFragment(int size, @ColorRes int backgroundColor) {
+    public CenterDialogFragment(@ColorRes int backgroundColor, int size) {
         setStyle(STYLE_NO_TITLE, 0);
-        if (size == SIZE_MEDIUM || size == SIZE_LARGE
-                || size == SIZE_FIT_CONTENT) {
+        this.mBackgroundColor = backgroundColor;
+        if (size == SIZE_MEDIUM || size == SIZE_LARGE || size == SIZE_FIT_CONTENT) {
             mSize = size;
         } else {
-            mSize = SIZE_MEDIUM;
+            mSize = SIZE_FIT_CONTENT;
         }
-        this.mBackgroundColor = backgroundColor;
     }
 
     public CenterDialogFragment(int size) {
-        this(size, ResourcesCompat.ID_NULL);
+        this(R.color.bc_dialog, size);
     }
 
     public CenterDialogFragment() {
@@ -62,9 +77,17 @@ public class CenterDialogFragment extends AppCompatDialogFragment {
     @NonNull
     @Override
     public AppCompatDialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        final View title = onCreateTitle(savedInstanceState);
+        return onCreateDialog(savedInstanceState, title);
+    }
+
+    @NonNull
+    protected AppCompatDialog onCreateDialog(@Nullable Bundle savedInstanceState,
+                                             @Nullable View title) {
         return new CenterDialog(
                 requireContext(), R.style.Theme_Dialog_Center, this::getBackgroundColor,
-                this::getCenterWidth, this::getMaxCenterWidth, mSize, this::getCenterRadius);
+                this::getCenterWidth, this::getMaxCenterWidth, mSize, this::getCenterRadius,
+                title);
     }
 
     /**
@@ -125,6 +148,17 @@ public class CenterDialogFragment extends AppCompatDialogFragment {
      */
     protected float getCenterRadius(DisplayMetrics metrics) {
         return TypedValueCompat.dpToPx(16, metrics);
+    }
+
+    /**
+     * 创建标题 View
+     *
+     * @param savedInstanceState 保存的实例
+     * @return 实例
+     */
+    @Nullable
+    protected View onCreateTitle(@Nullable Bundle savedInstanceState) {
+        return null;
     }
 
     private interface SizeAdapter {
@@ -196,13 +230,15 @@ public class CenterDialogFragment extends AppCompatDialogFragment {
 
         private final int mWindowWidth;
         private final int mWindowHeight;
+        private final ViewGroup mRootView;
         private final ViewGroup mContentView;
         private final ViewGroup.LayoutParams mContentLayout;
         private final Drawable mBackground;
 
         public CenterDialog(@NonNull Context context, int theme, BackgroundAdapter background,
                             SizeFAdapter centerWidth, SizeAdapter centerMax,
-                            int heightSize, SizeFAdapter centerRadius) {
+                            int heightSize, SizeFAdapter centerRadius,
+                            @Nullable View title) {
             super(context, theme);
             final Window window = getWindow();
             if (window != null) {
@@ -222,21 +258,76 @@ public class CenterDialogFragment extends AppCompatDialogFragment {
             if (heightSize == SIZE_MEDIUM) {
                 // 半屏
                 mWindowHeight = Math.max(1, Math.round(windowBounds.height() * 0.5f));
-                mContentView = new FitHeightFrameLayout(context, 1f);
+                final ViewGroup root = new FitHeightFrameLayout(context, 1f);
+                if (title == null) {
+                    mRootView = root;
+                    mContentView = root;
+                } else {
+                    final LinearLayout column = new LinearLayout(context);
+                    column.setOrientation(LinearLayout.VERTICAL);
+                    column.addView(title, new LinearLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.WRAP_CONTENT));
+                    final FrameLayout content = new FrameLayout(context);
+                    column.addView(content, new LinearLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT, 0, 1));
+                    root.addView(column, new FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.MATCH_PARENT));
+                    mRootView = root;
+                    mContentView = content;
+                }
                 mContentLayout = new FrameLayout.LayoutParams(
                         FrameLayout.LayoutParams.MATCH_PARENT,
                         FrameLayout.LayoutParams.MATCH_PARENT);
             } else if (heightSize == SIZE_LARGE) {
                 // 满屏
                 mWindowHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
-                mContentView = new FitHeightFrameLayout(context, 0.9f);
+                final ViewGroup root = new FitHeightFrameLayout(context, 0.9f);
+                if (title == null) {
+                    mRootView = root;
+                    mContentView = root;
+                } else {
+                    final LinearLayout column = new LinearLayout(context);
+                    column.setOrientation(LinearLayout.VERTICAL);
+                    column.addView(title, new LinearLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.WRAP_CONTENT));
+                    final FrameLayout content = new FrameLayout(context);
+                    column.addView(content, new LinearLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT, 0, 1));
+                    root.addView(column, new FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.MATCH_PARENT));
+                    mRootView = root;
+                    mContentView = content;
+                }
                 mContentLayout = new FrameLayout.LayoutParams(
                         FrameLayout.LayoutParams.MATCH_PARENT,
                         FrameLayout.LayoutParams.MATCH_PARENT);
             } else {
                 // 内容高度
                 mWindowHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
-                mContentView = new FitHeightScrollView(context, 0.9f);
+                final ViewGroup root = new FitHeightScrollView(context, 0.9f);
+                if (title == null) {
+                    mRootView = root;
+                    mContentView = root;
+                } else {
+                    final LinearLayout column = new LinearLayout(context);
+                    column.setOrientation(LinearLayout.VERTICAL);
+                    column.addView(title, new LinearLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.WRAP_CONTENT));
+                    final FrameLayout content = new FrameLayout(context);
+                    column.addView(content, new LinearLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.WRAP_CONTENT));
+                    root.addView(column, new FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.WRAP_CONTENT));
+                    mRootView = root;
+                    mContentView = content;
+                }
                 mContentLayout = new FrameLayout.LayoutParams(
                         FrameLayout.LayoutParams.MATCH_PARENT,
                         FrameLayout.LayoutParams.WRAP_CONTENT);
@@ -256,17 +347,13 @@ public class CenterDialogFragment extends AppCompatDialogFragment {
 
         @Override
         public void setContentView(@NonNull View view) {
-            if (mContentView != null) {
-                mContentView.removeAllViews();
-                if (mContentLayout != null) {
-                    mContentView.addView(view, mContentLayout);
-                } else {
-                    mContentView.addView(view);
-                }
-                super.setContentView(mContentView);
+            mContentView.removeAllViews();
+            if (mContentLayout != null) {
+                mContentView.addView(view, mContentLayout);
             } else {
-                super.setContentView(view);
+                mContentView.addView(view);
             }
+            super.setContentView(mRootView);
             final Window window = getWindow();
             if (window != null) {
                 window.setLayout(mWindowWidth, mWindowHeight);
