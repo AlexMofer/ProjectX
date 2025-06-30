@@ -19,11 +19,13 @@ import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
 import androidx.core.util.TypedValueCompat;
 import androidx.core.view.DisplayCutoutCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -50,7 +52,8 @@ public class AvoidArea {
      * @param view           View
      * @param edge           待处理的边
      * @param cutoutCritical 挖孔尺寸临界值，单位 DP，挖孔尺寸不超过临界值时仅采样 systemBars，挖孔尺寸超过临界值时采样 systemBars 与 displayCutout
-     * @param consumed       是否阻止传递，建议不阻止，阻止传递在 Android 10（API 29） 前后表现不一致，需要使用 {@link androidx.core.view.ViewGroupCompat#installCompatInsetsDispatch(View)} 处理
+     * @param consumed       是否阻止传递，建议不阻止，阻止传递在 Android 10（API 29） 前后表现不一致，
+     *                       需要使用 {@link androidx.core.view.ViewGroupCompat#installCompatInsetsDispatch(View)} 处理
      */
     public static void padding(View view, int edge, int cutoutCritical, boolean consumed) {
         ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
@@ -115,5 +118,38 @@ public class AvoidArea {
      */
     public static void paddingAll(View view) {
         padding(view, LEFT | TOP | RIGHT | BOTTOM);
+    }
+
+    /**
+     * 末位子项避让底部的 ItemDecoration
+     */
+    public static class AvoidBottomItemDecoration extends RecyclerView.ItemDecoration {
+
+        private int mBottom = 0;
+
+        public AvoidBottomItemDecoration(RecyclerView container, boolean consumed) {
+            ViewCompat.setOnApplyWindowInsetsListener(container, (v, windowInsets) -> {
+                final Insets insets = windowInsets.getInsets(
+                        WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                if (mBottom != insets.bottom) {
+                    mBottom = insets.bottom;
+                    container.invalidateItemDecorations();
+                }
+                return consumed ? WindowInsetsCompat.CONSUMED : windowInsets;
+            });
+        }
+
+        @Override
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
+                                   @NonNull RecyclerView parent,
+                                   @NonNull RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+            if (mBottom == 0) {
+                return;
+            }
+            if (parent.getChildAdapterPosition(view) == state.getItemCount() - 1) {
+                outRect.bottom = mBottom;
+            }
+        }
     }
 }
