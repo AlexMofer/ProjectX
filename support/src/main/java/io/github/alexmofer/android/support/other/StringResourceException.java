@@ -29,7 +29,40 @@ public class StringResourceException extends Exception {
 
     private final StringResource mMessage;
 
+    public StringResourceException() {
+        super();
+        mMessage = new StringResource("");
+    }
+
+    public StringResourceException(String message) {
+        super(message);
+        mMessage = new StringResource(message);
+    }
+
+    public StringResourceException(String message, Throwable cause) {
+        super(message, cause);
+        mMessage = new StringResource(message);
+    }
+
+    public StringResourceException(@NonNull Throwable cause) {
+        super(cause);
+        mMessage = StringResource.from(cause);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected StringResourceException(String message, Throwable cause,
+                                      boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+        mMessage = new StringResource(message);
+    }
+
     public StringResourceException(@NonNull StringResource message) {
+        super();
+        mMessage = message;
+    }
+
+    public StringResourceException(@NonNull StringResource message, Throwable cause) {
+        super(cause);
         mMessage = message;
     }
 
@@ -41,37 +74,12 @@ public class StringResourceException extends Exception {
         this(new StringResource(message, formatArgs));
     }
 
-    public StringResourceException(@NonNull StringResource message, String msg) {
-        super(msg);
-        mMessage = message;
+    public StringResourceException(Throwable cause, @StringRes int message) {
+        this(new StringResource(message), cause);
     }
 
-    public StringResourceException(String message) {
-        this(new StringResource(message), message);
-    }
-
-    public StringResourceException(@NonNull StringResource message,
-                                   String msg, Throwable cause) {
-        super(msg, cause);
-        mMessage = message;
-    }
-
-    public StringResourceException(String message, Throwable cause) {
-        this(new StringResource(message), message, cause);
-    }
-
-    public StringResourceException(@NonNull StringResource message,
-                                   Throwable cause) {
-        super(cause);
-        mMessage = message;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    protected StringResourceException(@NonNull StringResource message,
-                                      String msg, Throwable cause, boolean enableSuppression,
-                                      boolean writableStackTrace) {
-        super(msg, cause, enableSuppression, writableStackTrace);
-        mMessage = message;
+    public StringResourceException(Throwable cause, @StringRes int message, Object... formatArgs) {
+        this(new StringResource(message, formatArgs), cause);
     }
 
     /**
