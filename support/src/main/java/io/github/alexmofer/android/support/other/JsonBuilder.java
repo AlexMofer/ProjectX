@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.alexmofer.android.support.utils;
+package io.github.alexmofer.android.support.other;
 
 import android.util.JsonWriter;
 
@@ -25,10 +25,8 @@ import java.io.StringWriter;
 
 /**
  * Json构建器
- * 使用 io.github.alexmofer.android.support.other.JsonBuilder
  * Created by Alex on 2022/11/12.
  */
-@Deprecated
 public class JsonBuilder implements Closeable {
 
     private final StringWriter mWriter = new StringWriter();
