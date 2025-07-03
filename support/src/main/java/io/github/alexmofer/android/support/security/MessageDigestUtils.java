@@ -30,7 +30,6 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -74,7 +73,7 @@ public class MessageDigestUtils {
      * @return 16进制字符串
      */
     @Nullable
-    private static String toHexString(@Nullable byte[] bytes, int minLength) {
+    public static String toHexString(@Nullable byte[] bytes, int minLength) {
         if (bytes == null) {
             return null;
         }
@@ -88,6 +87,18 @@ public class MessageDigestUtils {
         }
         builder.append(str);
         return builder.toString();
+    }
+
+    /**
+     * 转换为16进制
+     *
+     * @param md        MessageDigest
+     * @param minLength 16进制字符串长度
+     * @return 16进制字符串
+     */
+    @Nullable
+    public static String toHexString(MessageDigest md, int minLength) {
+        return toHexString(md.digest(), minLength);
     }
 
     /**
