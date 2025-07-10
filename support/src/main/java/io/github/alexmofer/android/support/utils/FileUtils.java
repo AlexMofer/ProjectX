@@ -15,8 +15,8 @@
  */
 package io.github.alexmofer.android.support.utils;
 
-import android.os.Build;
 import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +47,18 @@ public class FileUtils {
     public static final int MAX_LENGTH_PATH = 4096;// Linux路径最大字符数
     public static final FileFilter FILTER_DIRECTORY_ONLY = File::isDirectory;
     public static final FileFilter FILTER_FILE_ONLY = File::isFile;
+    public static final char EXTENSION_DELIMITER = '.';
+    private static final char ILLEGAL_CHARACTER_0 = '/';
+    private static final char ILLEGAL_CHARACTER_1 = '?';
+    private static final char ILLEGAL_CHARACTER_2 = '*';
+    private static final char ILLEGAL_CHARACTER_3 = ':';
+    private static final char ILLEGAL_CHARACTER_4 = '|';
+    private static final char ILLEGAL_CHARACTER_5 = '\\';
+    private static final char ILLEGAL_CHARACTER_6 = '<';
+    private static final char ILLEGAL_CHARACTER_7 = '>';
+    private static final char ILLEGAL_CHARACTER_8 = '\"';
+    private static final int MAX_EXTENSION_LENGTH = 64;
+    private static final int MAX_TIMES = 5000;
 
     private FileUtils() {
         //no instance
@@ -143,122 +155,6 @@ public class FileUtils {
     }
 
     /**
-     * 获取后缀名
-     * 如：pdf
-     *
-     * @param name  文件名
-     * @param lower 转化为小写字母
-     * @return 后缀名
-     */
-    public static String getExtension(String name, boolean lower) {
-        if (name == null) {
-            return null;
-        }
-        final int index = name.lastIndexOf('.');
-        if (index >= 0 && index < name.length() - 1) {
-            if (lower) {
-                return name.substring(index + 1).toLowerCase();
-            } else {
-                return name.substring(index + 1);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 获取后缀名
-     * 如：pdf
-     *
-     * @param file  文件
-     * @param lower 转化为小写字母
-     * @return 后缀名
-     */
-    public static String getExtension(File file, boolean lower) {
-        if (file != null && file.isFile()) {
-            return getExtension(file.getName(), lower);
-        }
-        return null;
-    }
-
-    /**
-     * 获取无后缀名的文件名
-     *
-     * @param name 文件名
-     * @return 无后缀名的文件名
-     */
-    public static String getNameWithoutExtension(String name) {
-        if (name == null) {
-            return null;
-        }
-        final int index = name.lastIndexOf('.');
-        if (index < 0) {
-            return name;
-        }
-        if (index == 0) {
-            return "";
-        }
-        return name.substring(0, index);
-    }
-
-    /**
-     * 校准文件名
-     *
-     * @param newName      新名称
-     * @param originalName 原始名称
-     * @param extension    后缀名
-     * @return 校准后的文件名
-     */
-    public static String adjustFileName(@Nullable String newName, String originalName,
-                                        @Nullable String extension) {
-        if (TextUtils.isEmpty(newName)) {
-            // 文件名为空
-            return originalName;
-        }
-        if (!TextUtils.isEmpty(extension)) {
-            // 校验后缀名
-            if (newName.indexOf('.') == -1) {
-                // 无后缀名自动追加
-                newName += "." + extension;
-            }
-            if (TextUtils.equals(newName.toLowerCase(), "." + extension)) {
-                // 后缀名错误
-                return originalName;
-            }
-        }
-        if (newName.length() > 255) {
-            // 文件名过长
-            return originalName;
-        }
-        if (newName.indexOf('\u0000') >= 0 ||
-                newName.indexOf('\\') >= 0 ||
-                newName.indexOf('/') >= 0 ||
-                newName.indexOf(':') >= 0 ||
-                newName.indexOf('*') >= 0 ||
-                newName.indexOf('?') >= 0 ||
-                newName.indexOf('"') >= 0 ||
-                newName.indexOf('<') >= 0 ||
-                newName.indexOf('>') >= 0 ||
-                newName.indexOf('|') >= 0) {
-            // 文件名包含非法字符
-            return originalName;
-        }
-        return newName;
-    }
-
-    /**
-     * 获取无后缀名的文件名
-     *
-     * @param file 文件
-     * @return 无后缀名的文件名
-     */
-    public static String getNameWithoutExtension(File file) {
-        if (file != null && file.isFile()) {
-            return getNameWithoutExtension(file.getName());
-        }
-        return null;
-    }
-
-    /**
      * 写入字符串内容
      *
      * @param file    文件
@@ -287,12 +183,7 @@ public class FileUtils {
      * @return 是否成功
      */
     public static boolean writeString(File file, String content) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            return writeString(file, content, StandardCharsets.UTF_8);
-        } else {
-            //noinspection CharsetObjectCanBeUsed
-            return writeString(file, content, Charset.forName("UTF-8"));
-        }
+        return writeString(file, content, StandardCharsets.UTF_8);
     }
 
     /**
@@ -327,12 +218,7 @@ public class FileUtils {
      * @return 字符串
      */
     public static String readString(File file) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            return readString(file, StandardCharsets.UTF_8);
-        } else {
-            //noinspection CharsetObjectCanBeUsed
-            return readString(file, Charset.forName("UTF-8"));
-        }
+        return readString(file, StandardCharsets.UTF_8);
     }
 
     /**
@@ -584,5 +470,233 @@ public class FileUtils {
         }
         final String path = file.getPath();
         return path.indexOf(directory.getPath()) == 0;
+    }
+
+    /**
+     * 获取后缀名
+     *
+     * @param name   文件名
+     * @param strict 是否为严格模式
+     * @param lower  是否自动小写
+     * @return 后缀名
+     */
+    @Nullable
+    public static String getExtension(String name, boolean strict, boolean lower) {
+        if (TextUtils.isEmpty(name)) {
+            return null;
+        }
+        int indexLastDot = -1;
+        final int length = name.length();
+        for (int i = 0; i < length; i++) {
+            if (name.charAt(i) == EXTENSION_DELIMITER) {
+                indexLastDot = i;
+            }
+        }
+        if (indexLastDot == -1 || indexLastDot == length - 1) {
+            // 最后一个“.”不存在或者在末尾
+            return null;
+        }
+        if (!strict) {
+            // 不限定长度，且不要求必须为英文与数字
+            if (lower) {
+                return name.substring(indexLastDot + 1, length).toLowerCase();
+            } else {
+                return name.substring(indexLastDot + 1, length);
+            }
+        }
+        final String extension = name.substring(indexLastDot + 1, length);
+        final String MIME = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        if (MIME != null || (extension.length() <= MAX_EXTENSION_LENGTH
+                && extension.matches("[a-zA-Z0-9/-]+"))) {
+            return lower ? extension.toLowerCase() : extension;
+        }
+        return null;
+    }
+
+    /**
+     * 获取后缀名
+     * 如：pdf
+     *
+     * @param name  文件名
+     * @param lower 转化为小写字母
+     * @return 后缀名
+     */
+    public static String getExtension(String name, boolean lower) {
+        return getExtension(name, false, lower);
+    }
+
+    /**
+     * 获取后缀名
+     * 如：pdf
+     *
+     * @param file  文件
+     * @param lower 转化为小写字母
+     * @return 后缀名
+     */
+    public static String getExtension(File file, boolean lower) {
+        if (file != null && file.isFile()) {
+            return getExtension(file.getName(), false, lower);
+        }
+        return null;
+    }
+
+    /**
+     * 获取无后缀名的文件名
+     *
+     * @param name 文件名
+     * @return 无后缀名的文件名
+     */
+    public static String getNameWithoutExtension(String name) {
+        if (name == null) {
+            return null;
+        }
+        final int index = name.lastIndexOf('.');
+        if (index < 0) {
+            return name;
+        }
+        if (index == 0) {
+            return "";
+        }
+        return name.substring(0, index);
+    }
+
+    /**
+     * 获取无后缀名的文件名
+     *
+     * @param file 文件
+     * @return 无后缀名的文件名
+     */
+    public static String getNameWithoutExtension(File file) {
+        if (file != null && file.isFile()) {
+            return getNameWithoutExtension(file.getName());
+        }
+        return null;
+    }
+
+    /**
+     * 校准文件名
+     *
+     * @param newName      新名称
+     * @param originalName 原始名称
+     * @param extension    后缀名
+     * @return 校准后的文件名
+     */
+    @Deprecated
+    public static String adjustFileName(@Nullable String newName, String originalName,
+                                        @Nullable String extension) {
+        if (TextUtils.isEmpty(newName)) {
+            // 文件名为空
+            return originalName;
+        }
+        if (!TextUtils.isEmpty(extension)) {
+            // 校验后缀名
+            if (newName.indexOf('.') == -1) {
+                // 无后缀名自动追加
+                newName += "." + extension;
+            }
+            if (TextUtils.equals(newName.toLowerCase(), "." + extension)) {
+                // 后缀名错误
+                return originalName;
+            }
+        }
+        if (newName.length() > 255) {
+            // 文件名过长
+            return originalName;
+        }
+        if (newName.indexOf('\u0000') >= 0 ||
+                newName.indexOf('\\') >= 0 ||
+                newName.indexOf('/') >= 0 ||
+                newName.indexOf(':') >= 0 ||
+                newName.indexOf('*') >= 0 ||
+                newName.indexOf('?') >= 0 ||
+                newName.indexOf('"') >= 0 ||
+                newName.indexOf('<') >= 0 ||
+                newName.indexOf('>') >= 0 ||
+                newName.indexOf('|') >= 0) {
+            // 文件名包含非法字符
+            return originalName;
+        }
+        return newName;
+    }
+
+    /**
+     * 获取非法字符位置
+     *
+     * @param name   文件名
+     * @param strict 是否为严格模式
+     * @return 第一个非法字符的位置，找不到时返回-1
+     */
+    public static int indexOfIllegalCharacter(String name, boolean strict) {
+        if (name == null) {
+            return -1;
+        }
+        final int length = name.length();
+        if (!strict) {
+            // 非严苛模式，仅检查是否包含“/”
+            for (int i = 0; i < length; i++) {
+                if (name.charAt(i) == ILLEGAL_CHARACTER_0) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        for (int i = 0; i < length; i++) {
+            final char c = name.charAt(i);
+            if (c == ILLEGAL_CHARACTER_0
+                    || c == ILLEGAL_CHARACTER_1
+                    || c == ILLEGAL_CHARACTER_2
+                    || c == ILLEGAL_CHARACTER_3
+                    || c == ILLEGAL_CHARACTER_4
+                    || c == ILLEGAL_CHARACTER_5
+                    || c == ILLEGAL_CHARACTER_6
+                    || c == ILLEGAL_CHARACTER_7
+                    || c == ILLEGAL_CHARACTER_8) {
+                // Windows上的非法字符
+                return i;
+            }
+            if (c < 32 || c == 127) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 判断文件名是否包含非法字符
+     *
+     * @param name   文件名
+     * @param strict 是否为严格模式
+     * @return 包含非法字符时返回true
+     */
+    public static boolean hasIllegalCharacter(String name, boolean strict) {
+        return name != null && indexOfIllegalCharacter(name, strict) >= 0;
+    }
+
+    /**
+     * 判断文件名是否过长
+     *
+     * @param name      文件名
+     * @param extension 拓展名
+     * @return 文件名过长时返回true
+     */
+    public static boolean isNameTooLong(String name, @Nullable String extension) {
+        if (name == null) {
+            return false;
+        }
+        if (extension == null || extension.isEmpty()) {
+            return name.length() > MAX_LENGTH_NAME;
+        } else {
+            return name.length() + 1 + extension.length() > MAX_LENGTH_NAME;
+        }
+    }
+
+    /**
+     * 判断文件名是否过长
+     *
+     * @param name 文件名
+     * @return 文件名过长时返回true
+     */
+    public static boolean isNameTooLong(String name) {
+        return isNameTooLong(name, null);
     }
 }

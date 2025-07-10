@@ -176,6 +176,18 @@ public class UriUtils {
     }
 
     /**
+     * 获取名称
+     *
+     * @param uri 链接
+     * @return 名称
+     */
+    @Nullable
+    public static String getNameByPath(Uri uri) {
+        final List<String> segments = uri.getPathSegments();
+        return (segments == null || segments.isEmpty()) ? null : segments.get(segments.size() - 1);
+    }
+
+    /**
      * 获取 MIME 类型
      *
      * @param resolver ContentResolver
