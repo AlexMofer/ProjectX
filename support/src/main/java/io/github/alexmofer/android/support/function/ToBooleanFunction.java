@@ -26,7 +26,7 @@ import java.util.function.Function;
  *
  * @param <T> the type of the input to the function
  * @see Function
- * @since 1.10.0
+ * @since 1.11.0
  */
 @FunctionalInterface
 public interface ToBooleanFunction<T> {
