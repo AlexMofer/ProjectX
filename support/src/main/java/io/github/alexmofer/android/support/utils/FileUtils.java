@@ -699,4 +699,83 @@ public class FileUtils {
     public static boolean isNameTooLong(String name) {
         return isNameTooLong(name, null);
     }
+
+    /**
+     * 检查及处理重名
+     *
+     * @param name      名称
+     * @param directory 是否为文件夹
+     * @param generator 重名时的新名词生成器
+     * @param checker   重名检查器
+     * @param maxTimes  最大允许的生成次数
+     * @return 处理后的名词
+     */
+    public static String generateName(@NonNull String name, boolean directory,
+                                      @NonNull NameGenerator generator,
+                                      @NonNull NameChecker checker, int maxTimes) {
+        if (checker.accept(name, directory)) {
+            return name;
+        }
+        if (maxTimes == 0) {
+            return name;
+        }
+        int times = 1;
+        String generated = generator.generate(name, directory, times);
+        while (!checker.accept(generated, directory)) {
+            if (maxTimes > 0) {
+                if (times >= maxTimes) {
+                    return generated;
+                }
+            }
+            times++;
+            generated = generator.generate(name, directory, times);
+        }
+        return generated;
+    }
+
+    /**
+     * 检查及处理重名
+     *
+     * @param name      名称
+     * @param directory 是否为文件夹
+     * @param generator 重名时的新名词生成器
+     * @param checker   重名检查器
+     * @return 处理后的名词
+     */
+    public static String generateName(@NonNull String name, boolean directory,
+                                      @NonNull NameGenerator generator,
+                                      @NonNull NameChecker checker) {
+        return generateName(name, directory, generator, checker, MAX_TIMES);
+    }
+
+    /**
+     * 名称构建器
+     */
+    @FunctionalInterface
+    public interface NameGenerator {
+        /**
+         * 生成一个名称
+         *
+         * @param name      名称
+         * @param directory 是否为文件夹
+         * @param times     第几次，从 1 开始
+         * @return 名称
+         */
+        String generate(@NonNull String name, boolean directory, int times);
+    }
+
+    /**
+     * 名称检查器
+     */
+    @FunctionalInterface
+    public interface NameChecker {
+        /**
+         * 判断是否接受该名称
+         *
+         * @param name      名称
+         * @param directory 是否为文件夹
+         * @return 接受该名称时返回 true
+         */
+        boolean accept(@NonNull String name, boolean directory);
+    }
 }
