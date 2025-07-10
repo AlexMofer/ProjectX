@@ -15,25 +15,27 @@
  */
 package io.github.alexmofer.android.support.function;
 
+import java.util.function.Function;
+
 /**
- * Represents a supplier of results.
- *
- * <p>There is no requirement that a new or distinct result be returned each
- * time the supplier is invoked.
+ * Represents a function that produces a boolean-valued result.  This is the
+ * {@code boolean}-producing primitive specialization for {@link Function}.
  *
  * <p>This is a <a href="package-summary.html">functional interface</a>
- * whose functional method is {@link #get()}.
+ * whose functional method is {@link #applyAsBoolean(Object)}.
  *
- * @param <T> the type of results supplied by this supplier
- * @since 1.8.0
+ * @param <T> the type of the input to the function
+ * @see Function
+ * @since 1.10.0
  */
 @FunctionalInterface
-public interface ThrowableSupplier<T> {
+public interface ToBooleanFunction<T> {
 
     /**
-     * Gets a result.
+     * Applies this function to the given argument.
      *
-     * @return a result
+     * @param value the function argument
+     * @return the function result
      */
-    T get() throws Exception;
+    boolean applyAsBoolean(T value);
 }
