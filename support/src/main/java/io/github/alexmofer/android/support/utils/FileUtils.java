@@ -544,20 +544,25 @@ public class FileUtils {
      * 获取无后缀名的文件名
      *
      * @param name 文件名
+     * @param strict 是否为严格模式
+     * @return 无后缀名的文件名
+     */
+    public static String getNameWithoutExtension(String name, boolean strict) {
+        final String extension = getExtension(name, strict, false);
+        if (extension == null) {
+            return name;
+        }
+        return name.substring(0, name.length() - extension.length() - 1);
+    }
+
+    /**
+     * 获取无后缀名的文件名
+     *
+     * @param name 文件名
      * @return 无后缀名的文件名
      */
     public static String getNameWithoutExtension(String name) {
-        if (name == null) {
-            return null;
-        }
-        final int index = name.lastIndexOf('.');
-        if (index < 0) {
-            return name;
-        }
-        if (index == 0) {
-            return "";
-        }
-        return name.substring(0, index);
+        return getNameWithoutExtension(name, false);
     }
 
     /**
@@ -571,52 +576,6 @@ public class FileUtils {
             return getNameWithoutExtension(file.getName());
         }
         return null;
-    }
-
-    /**
-     * 校准文件名
-     *
-     * @param newName      新名称
-     * @param originalName 原始名称
-     * @param extension    后缀名
-     * @return 校准后的文件名
-     */
-    @Deprecated
-    public static String adjustFileName(@Nullable String newName, String originalName,
-                                        @Nullable String extension) {
-        if (TextUtils.isEmpty(newName)) {
-            // 文件名为空
-            return originalName;
-        }
-        if (!TextUtils.isEmpty(extension)) {
-            // 校验后缀名
-            if (newName.indexOf('.') == -1) {
-                // 无后缀名自动追加
-                newName += "." + extension;
-            }
-            if (TextUtils.equals(newName.toLowerCase(), "." + extension)) {
-                // 后缀名错误
-                return originalName;
-            }
-        }
-        if (newName.length() > 255) {
-            // 文件名过长
-            return originalName;
-        }
-        if (newName.indexOf('\u0000') >= 0 ||
-                newName.indexOf('\\') >= 0 ||
-                newName.indexOf('/') >= 0 ||
-                newName.indexOf(':') >= 0 ||
-                newName.indexOf('*') >= 0 ||
-                newName.indexOf('?') >= 0 ||
-                newName.indexOf('"') >= 0 ||
-                newName.indexOf('<') >= 0 ||
-                newName.indexOf('>') >= 0 ||
-                newName.indexOf('|') >= 0) {
-            // 文件名包含非法字符
-            return originalName;
-        }
-        return newName;
     }
 
     /**
