@@ -86,4 +86,25 @@ public class ColorUtils {
                 Color.green(color) * 0.587f + Color.blue(color) * 0.114f;
         return gray < 192;
     }
+
+    /**
+     * 颜色叠加透明度
+     *
+     * @param color 颜色
+     * @param alpha 透明度
+     * @return 叠加后的颜色
+     */
+    public static int applyAlpha(int color, int alpha) {
+        if (alpha == 255) {
+            return color;
+        }
+        final int r = Color.red(color);
+        final int g = Color.green(color);
+        final int b = Color.blue(color);
+        if (alpha == 0) {
+            return Color.argb(0, r, g, b);
+        }
+        return Color.argb(Math.min(255, Math.max(0, Math.round(
+                1f * Color.alpha(color) / 255 * (1f * alpha / 255)))), r, g, b);
+    }
 }
