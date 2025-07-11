@@ -35,7 +35,7 @@ dependencies {
     compileOnly 'androidx.appcompat:appcompat:1.7.1'
     compileOnly 'androidx.window:window:1.4.0'
     compileOnly 'androidx.recyclerview:recyclerview:1.4.0'
-    compileOnly 'androidx.databinding:viewbinding:8.11.0'
+    compileOnly 'androidx.databinding:viewbinding:8.11.1'
     compileOnly 'androidx.documentfile:documentfile:1.1.0'
     compileOnly "androidx.exifinterface:exifinterface:1.4.1"
     compileOnly 'com.google.code.gson:gson:2.13.1'
