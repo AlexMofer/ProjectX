@@ -102,7 +102,18 @@ public class StringResource {
             if (mFormatArgs == null) {
                 return context.getString(mRes);
             } else {
-                return context.getString(mRes, mFormatArgs);
+                // 处理格式化嵌套
+                final int count = mFormatArgs.length;
+                final Object[] args = new Object[count];
+                for (int i = 0; i < count; i++) {
+                    final Object arg = mFormatArgs[i];
+                    if (arg instanceof StringResource) {
+                        args[i] = ((StringResource) arg).getString(context);
+                    } else {
+                        args[i] = arg;
+                    }
+                }
+                return context.getString(mRes, args);
             }
         }
         return mStr;
