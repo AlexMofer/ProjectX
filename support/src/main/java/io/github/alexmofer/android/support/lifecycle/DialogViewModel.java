@@ -24,40 +24,53 @@ import androidx.lifecycle.MutableLiveData;
 import kotlinx.coroutines.CoroutineScope;
 
 /**
- * Dismiss Toast ViewModel
+ * 对话框 ViewModel
  * Created by Alex on 2025/7/15.
  */
-public class DismissToastViewModel extends ToastViewModel {
+public class DialogViewModel extends ToastViewModel {
 
     private final MutableLiveData<Boolean> mDismiss = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> mCancelable = new MutableLiveData<>(true);
 
-    public DismissToastViewModel() {
+    public DialogViewModel() {
     }
 
-    public DismissToastViewModel(@NonNull CoroutineScope viewModelScope) {
+    public DialogViewModel(@NonNull CoroutineScope viewModelScope) {
         super(viewModelScope);
     }
 
-    public DismissToastViewModel(@NonNull AutoCloseable... closeables) {
+    public DialogViewModel(@NonNull AutoCloseable... closeables) {
         super(closeables);
     }
 
-    public DismissToastViewModel(@NonNull CoroutineScope viewModelScope,
-                                 @NonNull AutoCloseable... closeables) {
+    public DialogViewModel(@NonNull CoroutineScope viewModelScope,
+                           @NonNull AutoCloseable... closeables) {
         super(viewModelScope, closeables);
     }
 
     /**
      * 观察 Dismiss
      *
-     * @param fragment DialogFragment
+     * @param viewModel DialogViewModel
+     * @param fragment  DialogFragment
      */
-    public static void observeDismiss(DismissToastViewModel viewModel, DialogFragment fragment) {
+    public static void observeDismiss(DialogViewModel viewModel, DialogFragment fragment) {
         viewModel.getDismiss().observe(fragment.getViewLifecycleOwner(), value -> {
             if (Boolean.TRUE.equals(value)) {
                 fragment.dismiss();
             }
         });
+    }
+
+    /**
+     * 观察 Cancelable
+     *
+     * @param viewModel DialogViewModel
+     * @param fragment  DialogFragment
+     */
+    public static void observeCancelable(DialogViewModel viewModel, DialogFragment fragment) {
+        viewModel.getCancelable().observe(fragment.getViewLifecycleOwner(),
+                value -> fragment.setCancelable(Boolean.TRUE.equals(value)));
     }
 
     /**
@@ -85,5 +98,32 @@ public class DismissToastViewModel extends ToastViewModel {
      */
     protected void postDismiss(@Nullable Boolean dismiss) {
         mDismiss.postValue(dismiss);
+    }
+
+    /**
+     * 获取 Cancelable
+     *
+     * @return Cancelable
+     */
+    public LiveData<Boolean> getCancelable() {
+        return mCancelable;
+    }
+
+    /**
+     * 设置 Cancelable
+     *
+     * @param cancelable Cancelable
+     */
+    protected void setCancelable(@Nullable Boolean cancelable) {
+        mCancelable.setValue(cancelable);
+    }
+
+    /**
+     * 抛出 Cancelable
+     *
+     * @param cancelable Cancelable
+     */
+    protected void postCancelable(@Nullable Boolean cancelable) {
+        mCancelable.postValue(cancelable);
     }
 }
