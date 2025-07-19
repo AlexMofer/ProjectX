@@ -14,8 +14,10 @@ import java.util.UUID;
 /**
  * Fragment 数据传递 ViewModel
  * 借助 Activity 传递 Fragment 的不可序列化的数据，例如：回调
+ * 不保留 Activity 时存在问题
  * Created by Alex on 2025/7/15.
  */
+@Deprecated
 public class FragmentDataTransferViewModel extends ViewModel {
 
     private static final String KEY_ID = "io.github.alexmofer.android.support.lifecycle.key.ID";

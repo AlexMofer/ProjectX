@@ -22,6 +22,7 @@ import android.content.res.Configuration;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.collection.ArrayMap;
 
@@ -33,6 +34,7 @@ public class ApplicationHolder {
 
     private static ApplicationHolder mInstance;
     private final Application mApplication;
+    private final ArrayMap<String, Object> mDataMap = new ArrayMap<>();
     private final ArrayMap<String, ApplicationData> mApplicationDataMap = new ArrayMap<>();
 
     private ApplicationHolder(Application application) {
@@ -85,6 +87,37 @@ public class ApplicationHolder {
      */
     public static Context getApplicationContext() {
         return getApplication().getApplicationContext();
+    }
+
+    /**
+     * 存入数据
+     *
+     * @param id   ID
+     * @param data 数据
+     */
+    public static void putData(@NonNull String id, Object data) {
+        getInstance().mDataMap.put(id, data);
+    }
+
+    /**
+     * 获取数据
+     *
+     * @param id ID
+     * @return 数据，注意类型转换问题
+     */
+    @Nullable
+    public static <T> T getData(String id) {
+        //noinspection unchecked
+        return (T) getInstance().mDataMap.get(id);
+    }
+
+    /**
+     * 移除数据
+     *
+     * @param id ID
+     */
+    public static void removeData(String id) {
+        getInstance().mDataMap.remove(id);
     }
 
     /**

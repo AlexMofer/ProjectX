@@ -15,6 +15,7 @@
  */
 package io.github.alexmofer.android.support.utils;
 
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewParent;
 
@@ -23,11 +24,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import java.util.UUID;
+
+import io.github.alexmofer.android.support.app.ApplicationHolder;
+
 /**
  * Fragment 工具
  * Created by Alex on 2024/3/8.
  */
 public class FragmentUtils {
+
+    private static final String KEY_ID = "io.github.alexmofer.android.support.key.ID";
 
     private FragmentUtils() {
         //no instance
@@ -88,5 +95,45 @@ public class FragmentUtils {
             return (T) activity;
         }
         return getCallback(view, clazz);
+    }
+
+    /**
+     * 存入数据
+     *
+     * @param args Fragment 参数
+     * @param data 数据
+     */
+    public static void putData(Bundle args, Object data) {
+        final String id = UUID.randomUUID().toString();
+        ApplicationHolder.putData(id, data);
+        args.putString(KEY_ID, id);
+    }
+
+    /**
+     * 获取数据
+     *
+     * @param fragment Fragment
+     * @return 数据，注意类型转换问题
+     */
+    @Nullable
+    public static <T> T getData(Fragment fragment) {
+        final Bundle args = fragment.getArguments();
+        if (args == null || !args.containsKey(KEY_ID)) {
+            return null;
+        }
+        return ApplicationHolder.getData(args.getString(KEY_ID));
+    }
+
+    /**
+     * 移除数据
+     *
+     * @param fragment Fragment
+     */
+    public static void removeData(Fragment fragment) {
+        final Bundle args = fragment.getArguments();
+        if (args == null || !args.containsKey(KEY_ID)) {
+            return;
+        }
+        ApplicationHolder.removeData(args.getString(KEY_ID));
     }
 }
