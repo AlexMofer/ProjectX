@@ -23,7 +23,7 @@ import androidx.annotation.NonNull;
  * SpannableString 构建器
  * Created by Alex on 2025/7/20.
  */
-public class SpannableStringBuilder {
+public final class SpannableStringBuilder {
 
     private final SpannableString mText;
 
@@ -40,7 +40,6 @@ public class SpannableStringBuilder {
     public SpannableString build() {
         return mText;
     }
-
 
     public SpannableStringBuilder setSpan(Object what, int start, int end, int flags) {
         mText.setSpan(what, start, end, flags);

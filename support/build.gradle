@@ -39,6 +39,7 @@ dependencies {
     compileOnly 'androidx.documentfile:documentfile:1.1.0'
     compileOnly "androidx.exifinterface:exifinterface:1.4.1"
     compileOnly 'androidx.lifecycle:lifecycle-viewmodel:2.9.2'
+    compileOnly 'androidx.activity:activity:1.10.1'
     compileOnly 'com.google.code.gson:gson:2.13.1'
 }
 
