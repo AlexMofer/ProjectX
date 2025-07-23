@@ -276,7 +276,7 @@ public class UriUtils {
      */
     @RequiresApi(19)
     public static long lastModified(ContentResolver resolver, Uri uri) {
-        return queryForLong(resolver, uri, DocumentsContract.Document.COLUMN_LAST_MODIFIED, 0);
+        return queryForLong(resolver, uri, DocumentsContract.Document.COLUMN_LAST_MODIFIED, -1);
     }
 
     /**
@@ -300,7 +300,7 @@ public class UriUtils {
      */
     @RequiresApi(19)
     public static long length(ContentResolver resolver, Uri uri) {
-        return queryForLong(resolver, uri, DocumentsContract.Document.COLUMN_SIZE, 0);
+        return queryForLong(resolver, uri, DocumentsContract.Document.COLUMN_SIZE, -1);
     }
 
     /**
