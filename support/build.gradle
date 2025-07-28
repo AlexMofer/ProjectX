@@ -32,6 +32,7 @@ android {
 dependencies {
     compileOnly 'androidx.annotation:annotation:1.9.1'
     compileOnly 'androidx.collection:collection:1.5.0'
+    compileOnly 'androidx.core:core:1.16.0'
     compileOnly 'androidx.appcompat:appcompat:1.7.1'
     compileOnly 'androidx.window:window:1.4.0'
     compileOnly 'androidx.recyclerview:recyclerview:1.4.0'
