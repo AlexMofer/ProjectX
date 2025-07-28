@@ -708,6 +708,20 @@ public class FileUtils {
     }
 
     /**
+     * 判断该文件夹是否为空文件夹
+     *
+     * @param dir 目录
+     * @return 为空文件夹时返回 true
+     */
+    public static boolean isEmptyDirectory(File dir) {
+        if (dir == null || !dir.exists() || !dir.isDirectory()) {
+            return false;
+        }
+        final String[] children = dir.list();
+        return children == null || children.length == 0;
+    }
+
+    /**
      * 名称构建器
      */
     @FunctionalInterface
