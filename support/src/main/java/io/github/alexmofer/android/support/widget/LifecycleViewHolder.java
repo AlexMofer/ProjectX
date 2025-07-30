@@ -25,8 +25,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * LifecycleViewHolder
+ * 存在问题，不建议使用
  * Created by Alex on 2024/1/5.
  */
+@Deprecated
 public class LifecycleViewHolder extends RecyclerView.ViewHolder implements LifecycleOwner {
 
     private final LifecycleRegistry mRegistry = new LifecycleRegistry(this);

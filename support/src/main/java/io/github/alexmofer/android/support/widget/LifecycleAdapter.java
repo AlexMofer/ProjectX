@@ -25,8 +25,10 @@ import java.util.List;
 
 /**
  * LifecycleAdapter
+ * 存在问题，不建议使用
  * Created by Alex on 2024/1/5.
  */
+@Deprecated
 public abstract class LifecycleAdapter<VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH> {
 
