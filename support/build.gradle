@@ -7,7 +7,7 @@ android {
     compileSdkVersion 36
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 24
     }
 
     compileOptions {
