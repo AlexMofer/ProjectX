@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 AlexMofer
+ * Copyright (C) 2025 AlexMofer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,278 +17,474 @@ package io.github.alexmofer.android.support.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
- * DividerItemDecoration is a RecyclerView.ItemDecoration that can be used as a divider between
- * items of a LinearLayoutManager. It supports both HORIZONTAL and VERTICAL orientations.
- * Created by Alex on 2024/4/26.
+ * 子项分割线
+ * Created by Alex on 2025/8/5.
  */
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
-    private final Rect mBounds = new Rect();
-    private final Drawable mDivider;
-    private final boolean mShowBeginning;
-    private final boolean mShowMiddle;
-    private final boolean mShowEnd;
-    private final int mDividerPadding;
-    private final int mDividerWidth;
-    private final int mDividerHeight;
 
-    public DividerItemDecoration(Drawable divider, int showDividers, int dividerPadding) {
+    /**
+     * Don't show any dividers.
+     */
+    public static final int SHOW_DIVIDER_NONE = LinearLayout.SHOW_DIVIDER_NONE;
+    /**
+     * Show a divider at the beginning of the group.
+     */
+    public static final int SHOW_DIVIDER_BEGINNING = LinearLayout.SHOW_DIVIDER_BEGINNING;
+    /**
+     * Show dividers between each item in the group.
+     */
+    public static final int SHOW_DIVIDER_MIDDLE = LinearLayout.SHOW_DIVIDER_MIDDLE;
+    /**
+     * Show a divider at the end of the group.
+     */
+    public static final int SHOW_DIVIDER_END = LinearLayout.SHOW_DIVIDER_END;
+    private final Divider mDivider;
+    private final int mShowDividers;
+    private final boolean mShowDividerBeginning;
+    private final boolean mShowDividerMiddle;
+    private final boolean mShowDividerEnd;
+
+    public DividerItemDecoration(@NonNull Divider divider, @DividerMode int showDividers) {
         mDivider = divider;
-        mShowBeginning = (showDividers & LinearLayout.SHOW_DIVIDER_BEGINNING)
-                == LinearLayout.SHOW_DIVIDER_BEGINNING;
-        mShowMiddle = (showDividers & LinearLayout.SHOW_DIVIDER_MIDDLE)
-                == LinearLayout.SHOW_DIVIDER_MIDDLE;
-        mShowEnd = (showDividers & LinearLayout.SHOW_DIVIDER_END)
-                == LinearLayout.SHOW_DIVIDER_END;
-        mDividerPadding = dividerPadding;
-        if (divider == null) {
-            mDividerWidth = 0;
-            mDividerHeight = 0;
-        } else {
-            mDividerWidth = divider.getIntrinsicWidth();
-            mDividerHeight = divider.getIntrinsicHeight();
-        }
-    }
-
-    public DividerItemDecoration(Drawable divider, int showDividers) {
-        this(divider, showDividers, 0);
-    }
-
-    public DividerItemDecoration(Drawable divider) {
-        this(divider, LinearLayout.SHOW_DIVIDER_MIDDLE, 0);
+        mShowDividers = showDividers;
+        mShowDividerBeginning = (showDividers & SHOW_DIVIDER_BEGINNING) == SHOW_DIVIDER_BEGINNING;
+        mShowDividerMiddle = (showDividers & SHOW_DIVIDER_MIDDLE) == SHOW_DIVIDER_MIDDLE;
+        mShowDividerEnd = (showDividers & SHOW_DIVIDER_END) == SHOW_DIVIDER_END;
     }
 
     public DividerItemDecoration(Context context, @DrawableRes int divider,
-                                 int showDividers, int dividerPadding) {
-        this(AppCompatResources.getDrawable(context, divider), showDividers, dividerPadding);
-    }
-
-    public DividerItemDecoration(Context context, @DrawableRes int divider, int showDividers) {
-        this(AppCompatResources.getDrawable(context, divider), showDividers, 0);
+                                 @DividerMode int showDividers) {
+        this(new DrawableDivider(context, divider), showDividers);
     }
 
     public DividerItemDecoration(Context context, @DrawableRes int divider) {
-        this(AppCompatResources.getDrawable(context, divider),
-                LinearLayout.SHOW_DIVIDER_MIDDLE, 0);
+        this(context, divider, SHOW_DIVIDER_MIDDLE);
     }
 
-    public DividerItemDecoration(int showDividers, int dividerHeight) {
-        this(new TransparentDividerDrawable(dividerHeight), showDividers, 0);
+    public DividerItemDecoration(int size, @ColorInt int color,
+                                 float radius, float paddingStart, float paddingEnd,
+                                 @DividerMode int showDividers) {
+        this(new ColorDivider(size, color, radius, paddingStart, paddingEnd), showDividers);
     }
 
-    public DividerItemDecoration(int dividerHeight) {
-        this(new TransparentDividerDrawable(dividerHeight),
-                LinearLayout.SHOW_DIVIDER_MIDDLE, 0);
+    public DividerItemDecoration(int size, @ColorInt int color) {
+        this(size, color, 0, 0, 0, SHOW_DIVIDER_MIDDLE);
     }
 
     @Override
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
                                @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
-        if (mDivider == null) {
+        if (mShowDividers == SHOW_DIVIDER_NONE) {
             return;
         }
-        final RecyclerView.LayoutManager manager = parent.getLayoutManager();
-        if (!(manager instanceof LinearLayoutManager)) {
+        final RecyclerView.LayoutManager lm = parent.getLayoutManager();
+        if (lm instanceof GridLayoutManager && ((GridLayoutManager) lm).getSpanCount() != 1) {
+            // 非单个子项的网格布局
             return;
         }
-        final LinearLayoutManager lm = (LinearLayoutManager) manager;
-        if (lm.getOrientation() == LinearLayoutManager.HORIZONTAL) {
-            getItemOffsetsHorizontal(outRect, view, lm);
+        if (!(lm instanceof LinearLayoutManager)) {
+            return;
+        }
+        final int orientation = ((LinearLayoutManager) lm).getOrientation();
+        final int size = mDivider.getSize(orientation);
+        if (orientation == LinearLayoutManager.HORIZONTAL) {
+            // 水平
+            if (parent.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+                if (mShowDividerBeginning) {
+                    final int position = parent.getChildAdapterPosition(view);
+                    if (position == 0) {
+                        outRect.right = size;
+                    }
+                }
+                if (mShowDividerMiddle && mShowDividerEnd) {
+                    outRect.left = size;
+                } else {
+                    final int position = parent.getChildAdapterPosition(view);
+                    final int itemCount = state.getItemCount();
+                    if (position == itemCount - 1) {
+                        // 尾项
+                        if (mShowDividerEnd) {
+                            outRect.left = size;
+                        }
+                    } else {
+                        if (mShowDividerMiddle) {
+                            outRect.left = size;
+                        }
+                    }
+                }
+            } else {
+                if (mShowDividerBeginning) {
+                    final int position = parent.getChildAdapterPosition(view);
+                    if (position == 0) {
+                        outRect.left = size;
+                    }
+                }
+                if (mShowDividerMiddle && mShowDividerEnd) {
+                    outRect.right = size;
+                } else {
+                    final int position = parent.getChildAdapterPosition(view);
+                    final int itemCount = state.getItemCount();
+                    if (position == itemCount - 1) {
+                        // 尾项
+                        if (mShowDividerEnd) {
+                            outRect.right = size;
+                        }
+                    } else {
+                        if (mShowDividerMiddle) {
+                            outRect.right = size;
+                        }
+                    }
+                }
+            }
         } else {
-            getItemOffsetsVertical(outRect, view, lm);
-        }
-    }
-
-    private void getItemOffsetsHorizontal(Rect outRect, View view, LinearLayoutManager manager) {
-        final int position = manager.getPosition(view);
-        final int itemCount = manager.getItemCount();
-        if (position == 0) {
-            // 首项
-            if (mShowBeginning) {
-                outRect.left = mDividerWidth;
+            // 垂直
+            if (mShowDividerBeginning) {
+                final int position = parent.getChildAdapterPosition(view);
+                if (position == 0) {
+                    outRect.top = size;
+                }
             }
-        }
-        if (position == itemCount - 1) {
-            // 尾项
-            if (mShowEnd) {
-                outRect.right = mDividerWidth;
-            }
-        } else {
-            // 非尾项
-            if (mShowMiddle) {
-                outRect.right = mDividerWidth;
-            }
-        }
-    }
-
-    private void getItemOffsetsVertical(Rect outRect, View view, LinearLayoutManager manager) {
-        final int position = manager.getPosition(view);
-        final int itemCount = manager.getItemCount();
-        if (position == 0) {
-            // 首项
-            if (mShowBeginning) {
-                outRect.top = mDividerHeight;
-            }
-        }
-        if (position == itemCount - 1) {
-            // 尾项
-            if (mShowEnd) {
-                outRect.bottom = mDividerHeight;
-            }
-        } else {
-            // 非尾项
-            if (mShowMiddle) {
-                outRect.bottom = mDividerHeight;
+            if (mShowDividerMiddle && mShowDividerEnd) {
+                outRect.bottom = size;
+            } else {
+                final int position = parent.getChildAdapterPosition(view);
+                final int itemCount = state.getItemCount();
+                if (position == itemCount - 1) {
+                    // 尾项
+                    if (mShowDividerEnd) {
+                        outRect.bottom = size;
+                    }
+                } else {
+                    if (mShowDividerMiddle) {
+                        outRect.bottom = size;
+                    }
+                }
             }
         }
     }
 
     @Override
-    public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent,
-                       @NonNull RecyclerView.State state) {
-        super.onDraw(c, parent, state);
-        if (mDivider == null) {
+    public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent,
+                           @NonNull RecyclerView.State state) {
+        if (mShowDividers == SHOW_DIVIDER_NONE) {
             return;
         }
-        final RecyclerView.LayoutManager manager = parent.getLayoutManager();
-        if (!(manager instanceof LinearLayoutManager)) {
+        final RecyclerView.LayoutManager lm = parent.getLayoutManager();
+        if (lm instanceof GridLayoutManager && ((GridLayoutManager) lm).getSpanCount() != 1) {
+            // 非单个子项的网格布局
             return;
         }
-        final LinearLayoutManager lm = (LinearLayoutManager) manager;
-        if (lm.getOrientation() == LinearLayoutManager.HORIZONTAL) {
-            drawHorizontal(c, parent, lm);
-        } else {
-            drawVertical(c, parent, lm);
+        if (!(lm instanceof LinearLayoutManager)) {
+            return;
+        }
+        final int orientation = ((LinearLayoutManager) lm).getOrientation();
+        final int size = mDivider.getSize(orientation);
+        final int count = lm.getChildCount();
+        for (int i = 0; i < count; i++) {
+            final View child = lm.getChildAt(i);
+            if (child != null) {
+                onDrawOver(c, child, parent, state, orientation, size);
+            }
         }
     }
 
-    private void drawHorizontal(Canvas canvas, RecyclerView parent, LinearLayoutManager manager) {
-        canvas.save();
-        final int top;
-        final int bottom;
-        if (parent.getClipToPadding()) {
-            top = parent.getPaddingTop() + mDividerPadding;
-            bottom = parent.getHeight() - parent.getPaddingBottom() - mDividerPadding;
-            canvas.clipRect(parent.getPaddingLeft(), top,
-                    parent.getWidth() - parent.getPaddingRight(), bottom);
-        } else {
-            top = mDividerPadding;
-            bottom = parent.getHeight() - mDividerPadding;
-        }
-        final int itemCount = manager.getItemCount();
-        final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
-            parent.getDecoratedBoundsWithMargins(child, mBounds);
-            final int position = manager.getPosition(child);
-            if (position == 0) {
-                // 首项
-                if (mShowBeginning) {
-                    final int left = mBounds.left + Math.round(child.getTranslationX());
-                    final int right = left + mDivider.getIntrinsicWidth();
-                    mDivider.setBounds(left, top, right, bottom);
-                    mDivider.draw(canvas);
+    protected void onDrawOver(@NonNull Canvas c, @NonNull View view,
+                              @NonNull RecyclerView parent, @NonNull RecyclerView.State state,
+                              int orientation, int size) {
+        mDivider.onPreDraw(parent, orientation);
+        int start;
+        int end;
+        if (orientation == LinearLayoutManager.HORIZONTAL) {
+            // 水平
+            if (parent.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+                if (mShowDividerBeginning) {
+                    final int position = parent.getChildAdapterPosition(view);
+                    if (position == 0) {
+                        start = view.getRight() + Math.round(view.getTranslationX());
+                        end = start + size;
+                        mDivider.onDraw(c, orientation, start, end);
+                    }
                 }
-            }
-            if (position == itemCount - 1) {
-                // 尾项
-                if (mShowEnd) {
-                    final int right = mBounds.right + Math.round(child.getTranslationX());
-                    final int left = right - mDivider.getIntrinsicWidth();
-                    mDivider.setBounds(left, top, right, bottom);
-                    mDivider.draw(canvas);
+                if (mShowDividerMiddle && mShowDividerEnd) {
+                    end = view.getLeft() + Math.round(view.getTranslationX());
+                    start = end - size;
+                    mDivider.onDraw(c, orientation, start, end);
+                } else {
+                    final int position = parent.getChildAdapterPosition(view);
+                    final int itemCount = state.getItemCount();
+                    if (position == itemCount - 1) {
+                        // 尾项
+                        if (mShowDividerEnd) {
+                            end = view.getLeft() + Math.round(view.getTranslationX());
+                            start = end - size;
+                            mDivider.onDraw(c, orientation, start, end);
+                        }
+                    } else {
+                        if (mShowDividerMiddle) {
+                            end = view.getLeft() + Math.round(view.getTranslationX());
+                            start = end - size;
+                            mDivider.onDraw(c, orientation, start, end);
+                        }
+                    }
                 }
             } else {
-                // 非尾项
-                if (mShowMiddle) {
-                    final int right = mBounds.right + Math.round(child.getTranslationX());
-                    final int left = right - mDivider.getIntrinsicWidth();
-                    mDivider.setBounds(left, top, right, bottom);
-                    mDivider.draw(canvas);
+                if (mShowDividerBeginning) {
+                    final int position = parent.getChildAdapterPosition(view);
+                    if (position == 0) {
+                        end = view.getLeft() + Math.round(view.getTranslationX());
+                        start = end - size;
+                        mDivider.onDraw(c, orientation, start, end);
+                    }
+                }
+                if (mShowDividerMiddle && mShowDividerEnd) {
+                    start = view.getRight() + Math.round(view.getTranslationX());
+                    end = start + size;
+                    mDivider.onDraw(c, orientation, start, end);
+                } else {
+                    final int position = parent.getChildAdapterPosition(view);
+                    final int itemCount = state.getItemCount();
+                    if (position == itemCount - 1) {
+                        // 尾项
+                        if (mShowDividerEnd) {
+                            start = view.getRight() + Math.round(view.getTranslationX());
+                            end = start + size;
+                            mDivider.onDraw(c, orientation, start, end);
+                        }
+                    } else {
+                        if (mShowDividerMiddle) {
+                            start = view.getRight() + Math.round(view.getTranslationX());
+                            end = start + size;
+                            mDivider.onDraw(c, orientation, start, end);
+                        }
+                    }
                 }
             }
-        }
-        canvas.restore();
-    }
-
-    private void drawVertical(Canvas canvas, RecyclerView parent, LinearLayoutManager manager) {
-        canvas.save();
-        final int left;
-        final int right;
-        if (parent.getClipToPadding()) {
-            left = parent.getPaddingLeft() + mDividerPadding;
-            right = parent.getWidth() - parent.getPaddingRight() - mDividerPadding;
-            canvas.clipRect(left, parent.getPaddingTop(), right,
-                    parent.getHeight() - parent.getPaddingBottom());
         } else {
-            left = mDividerPadding;
-            right = parent.getWidth() - mDividerPadding;
-        }
-        final int itemCount = manager.getItemCount();
-        final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
-            parent.getDecoratedBoundsWithMargins(child, mBounds);
-            final int position = manager.getPosition(child);
-            if (position == 0) {
-                // 首项
-                if (mShowBeginning) {
-                    final int top = mBounds.top + Math.round(child.getTranslationY());
-                    final int bottom = top + mDivider.getIntrinsicHeight();
-                    mDivider.setBounds(left, top, right, bottom);
-                    mDivider.draw(canvas);
+            // 垂直
+            if (mShowDividerBeginning) {
+                final int position = parent.getChildAdapterPosition(view);
+                if (position == 0) {
+                    end = view.getTop() + Math.round(view.getTranslationY());
+                    start = end - size;
+                    mDivider.onDraw(c, orientation, start, end);
                 }
             }
-            if (position == itemCount - 1) {
-                // 尾项
-                if (mShowEnd) {
-                    final int bottom = mBounds.bottom + Math.round(child.getTranslationY());
-                    final int top = bottom - mDivider.getIntrinsicHeight();
-                    mDivider.setBounds(left, top, right, bottom);
-                    mDivider.draw(canvas);
-                }
+            if (mShowDividerMiddle && mShowDividerEnd) {
+                start = view.getBottom() + Math.round(view.getTranslationY());
+                end = start + size;
+                mDivider.onDraw(c, orientation, start, end);
             } else {
-                // 非尾项
-                if (mShowMiddle) {
-                    final int bottom = mBounds.bottom + Math.round(child.getTranslationY());
-                    final int top = bottom - mDivider.getIntrinsicHeight();
-                    mDivider.setBounds(left, top, right, bottom);
-                    mDivider.draw(canvas);
+                final int position = parent.getChildAdapterPosition(view);
+                final int itemCount = state.getItemCount();
+                if (position == itemCount - 1) {
+                    // 尾项
+                    if (mShowDividerEnd) {
+                        start = view.getBottom() + Math.round(view.getTranslationY());
+                        end = start + size;
+                        mDivider.onDraw(c, orientation, start, end);
+                    }
+                } else {
+                    if (mShowDividerMiddle) {
+                        start = view.getBottom() + Math.round(view.getTranslationY());
+                        end = start + size;
+                        mDivider.onDraw(c, orientation, start, end);
+                    }
                 }
             }
         }
-        canvas.restore();
     }
 
-    private static class TransparentDividerDrawable extends
-            io.github.alexmofer.android.support.graphics.drawable.Drawable {
+    @IntDef(flag = true, value = {
+            SHOW_DIVIDER_NONE,
+            SHOW_DIVIDER_BEGINNING,
+            SHOW_DIVIDER_MIDDLE,
+            SHOW_DIVIDER_END
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface DividerMode {
+    }
 
+    public interface Divider {
+
+        /**
+         * 获取主轴间隔
+         *
+         * @param orientation 布局方向
+         * @return 主轴间隔
+         */
+        int getSize(int orientation);
+
+        /**
+         * 开始绘制
+         *
+         * @param parent      RecyclerView
+         * @param orientation 布局方向
+         */
+        default void onPreDraw(@NonNull RecyclerView parent, int orientation) {
+        }
+
+        /**
+         * 绘制
+         *
+         * @param canvas      画布
+         * @param orientation 布局方向
+         * @param start       主轴开始位置（已处理 RTL）
+         * @param end         主轴结束位置（已处理 RTL）
+         */
+        void onDraw(@NonNull Canvas canvas, int orientation, int start, int end);
+    }
+
+    public static class DrawableDivider implements Divider {
+        private final Drawable mImage;
+
+        public DrawableDivider(Context context, @DrawableRes int divider) {
+            mImage = AppCompatResources.getDrawable(context, divider);
+        }
+
+        @Override
+        public int getSize(int orientation) {
+            if (mImage == null) {
+                return 0;
+            }
+            if (orientation == LinearLayoutManager.HORIZONTAL) {
+                // 水平
+                return Math.max(1, mImage.getIntrinsicWidth());
+            } else {
+                // 垂直
+                return Math.max(1, mImage.getIntrinsicHeight());
+            }
+        }
+
+        @Override
+        public void onPreDraw(@NonNull RecyclerView parent, int orientation) {
+            if (mImage == null) {
+                return;
+            }
+            // 设置位置
+            if (orientation == LinearLayoutManager.HORIZONTAL) {
+                // 水平
+                final int paddingTop = parent.getPaddingTop();
+                final int maxHeight = parent.getHeight() - paddingTop - parent.getPaddingBottom();
+                final int imageWidth = Math.max(1, mImage.getIntrinsicWidth());
+                final int intrinsicHeight = mImage.getIntrinsicHeight();
+                final int imageHeight = intrinsicHeight == -1 ? maxHeight : intrinsicHeight;
+                final int top = Math.round(paddingTop + maxHeight * 0.5f - imageHeight * 0.5f);
+                mImage.setBounds(0, top, imageWidth, top + imageHeight);
+            } else {
+                // 垂直
+                final int paddingLeft = parent.getPaddingLeft();
+                final int maxWidth = parent.getWidth() - paddingLeft - parent.getPaddingRight();
+                final int intrinsicWidth = mImage.getIntrinsicWidth();
+                final int imageWidth = intrinsicWidth == -1 ? maxWidth : intrinsicWidth;
+                final int imageHeight = Math.max(1, mImage.getIntrinsicHeight());
+                final int left = Math.round(paddingLeft + maxWidth * 0.5f - imageWidth * 0.5f);
+                mImage.setBounds(left, 0, left + imageWidth, imageHeight);
+            }
+        }
+
+        @Override
+        public void onDraw(@NonNull Canvas canvas, int orientation, int start, int end) {
+            if (mImage == null) {
+                return;
+            }
+            if (orientation == LinearLayoutManager.HORIZONTAL) {
+                // 水平
+                canvas.save();
+                canvas.translate(start, 0);
+                mImage.draw(canvas);
+                canvas.restore();
+            } else {
+                // 垂直
+                canvas.save();
+                canvas.translate(0, start);
+                mImage.draw(canvas);
+                canvas.restore();
+            }
+        }
+    }
+
+    public static class ColorDivider implements Divider {
+
+        private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final int mSize;
+        private final float mRadius;
+        private final float mPaddingStart;
+        private final float mPaddingEnd;
+        private float mStart;
+        private float mEnd;
 
-        public TransparentDividerDrawable(int size) {
+        public ColorDivider(int size, @ColorInt int color, float radius,
+                            float paddingStart, float paddingEnd) {
             mSize = size;
+            mPaint.setColor(color);
+            mRadius = radius;
+            mPaddingStart = paddingStart;
+            mPaddingEnd = paddingEnd;
         }
 
         @Override
-        public int getIntrinsicWidth() {
+        public int getSize(int orientation) {
             return mSize;
         }
 
         @Override
-        public int getIntrinsicHeight() {
-            return mSize;
+        public void onPreDraw(@NonNull RecyclerView parent, int orientation) {
+            if (orientation == LinearLayoutManager.HORIZONTAL) {
+                // 水平
+                mStart = parent.getPaddingTop() + mPaddingStart;
+                mEnd = parent.getHeight() - parent.getPaddingBottom() - mPaddingEnd;
+            } else {
+                // 垂直
+                if (parent.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+                    mStart = parent.getPaddingLeft() + mPaddingEnd;
+                    mEnd = parent.getWidth() - parent.getPaddingRight() - mPaddingStart;
+                } else {
+                    mStart = parent.getPaddingLeft() + mPaddingStart;
+                    mEnd = parent.getWidth() - parent.getPaddingRight() - mPaddingEnd;
+                }
+            }
+        }
+
+        @Override
+        public void onDraw(@NonNull Canvas canvas, int orientation, int start, int end) {
+            if (mStart >= mEnd) {
+                return;
+            }
+            if (orientation == LinearLayoutManager.HORIZONTAL) {
+                // 水平
+                if (mRadius > 0) {
+                    canvas.drawRoundRect(start, mStart, end, mEnd, mRadius, mRadius, mPaint);
+                } else {
+                    canvas.drawRect(start, mStart, end, mEnd, mPaint);
+                }
+            } else {
+                // 垂直
+                if (mRadius > 0) {
+                    canvas.drawRoundRect(mStart, start, mEnd, end, mRadius, mRadius, mPaint);
+                } else {
+                    canvas.drawRect(mStart, start, mEnd, end, mPaint);
+                }
+            }
         }
     }
 }
