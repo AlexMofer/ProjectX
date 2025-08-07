@@ -63,7 +63,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private final boolean mShowDividerMiddle;
     private final boolean mShowDividerEnd;
 
-    public DividerItemDecoration(@NonNull Divider divider, @DividerMode int showDividers) {
+    public DividerItemDecoration(@NonNull Divider divider, int showDividers) {
         mDivider = divider;
         mShowDividers = showDividers;
         mShowDividerBeginning = (showDividers & SHOW_DIVIDER_BEGINNING) == SHOW_DIVIDER_BEGINNING;
@@ -71,8 +71,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         mShowDividerEnd = (showDividers & SHOW_DIVIDER_END) == SHOW_DIVIDER_END;
     }
 
-    public DividerItemDecoration(Context context, @DrawableRes int divider,
-                                 @DividerMode int showDividers) {
+    public DividerItemDecoration(Context context, @DrawableRes int divider, int showDividers) {
         this(new DrawableDivider(context, divider), showDividers);
     }
 
@@ -82,7 +81,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     public DividerItemDecoration(int size, @ColorInt int color,
                                  float radius, float paddingStart, float paddingEnd,
-                                 @DividerMode int showDividers) {
+                                 int showDividers) {
         this(new ColorDivider(size, color, radius, paddingStart, paddingEnd), showDividers);
     }
 
@@ -312,16 +311,6 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
                 }
             }
         }
-    }
-
-    @IntDef(flag = true, value = {
-            SHOW_DIVIDER_NONE,
-            SHOW_DIVIDER_BEGINNING,
-            SHOW_DIVIDER_MIDDLE,
-            SHOW_DIVIDER_END
-    })
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface DividerMode {
     }
 
     public interface Divider {
