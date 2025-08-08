@@ -48,15 +48,15 @@ public class FileUtils {
     public static final FileFilter FILTER_DIRECTORY_ONLY = File::isDirectory;
     public static final FileFilter FILTER_FILE_ONLY = File::isFile;
     public static final char EXTENSION_DELIMITER = '.';
-    private static final char ILLEGAL_CHARACTER_0 = '/';
-    private static final char ILLEGAL_CHARACTER_1 = '?';
-    private static final char ILLEGAL_CHARACTER_2 = '*';
-    private static final char ILLEGAL_CHARACTER_3 = ':';
-    private static final char ILLEGAL_CHARACTER_4 = '|';
-    private static final char ILLEGAL_CHARACTER_5 = '\\';
-    private static final char ILLEGAL_CHARACTER_6 = '<';
-    private static final char ILLEGAL_CHARACTER_7 = '>';
-    private static final char ILLEGAL_CHARACTER_8 = '\"';
+    static final char ILLEGAL_CHARACTER_0 = '/';
+    static final char ILLEGAL_CHARACTER_1 = '?';
+    static final char ILLEGAL_CHARACTER_2 = '*';
+    static final char ILLEGAL_CHARACTER_3 = ':';
+    static final char ILLEGAL_CHARACTER_4 = '|';
+    static final char ILLEGAL_CHARACTER_5 = '\\';
+    static final char ILLEGAL_CHARACTER_6 = '<';
+    static final char ILLEGAL_CHARACTER_7 = '>';
+    static final char ILLEGAL_CHARACTER_8 = '\"';
     private static final int MAX_EXTENSION_LENGTH = 64;
     private static final int MAX_TIMES = 5000;
 
@@ -543,7 +543,7 @@ public class FileUtils {
     /**
      * 获取无后缀名的文件名
      *
-     * @param name 文件名
+     * @param name   文件名
      * @param strict 是否为严格模式
      * @return 无后缀名的文件名
      */
