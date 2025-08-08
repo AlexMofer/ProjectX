@@ -15,14 +15,18 @@
  */
 package io.github.alexmofer.android.support.utils;
 
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import java.util.function.Consumer;
 
 /**
  * 输入框工具
@@ -63,6 +67,34 @@ public class EditTextUtils {
             // 文件
             editor.setOnFocusChangeListener(new FileNameSelector(editor, extension));
         }
+    }
+
+    /**
+     * 添加文本变化监听
+     *
+     * @param editor   EditText
+     * @param consumer 回调
+     */
+    public static TextWatcher addOnTextChangedListener(EditText editor,
+                                                       Consumer<Editable> consumer) {
+        final TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                consumer.accept(s);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // do nothing
+            }
+        };
+        editor.addTextChangedListener(watcher);
+        return watcher;
     }
 
     private static class AutoFocus implements View.OnAttachStateChangeListener {
