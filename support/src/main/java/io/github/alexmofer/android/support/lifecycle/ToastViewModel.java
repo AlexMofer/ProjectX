@@ -78,7 +78,7 @@ public class ToastViewModel extends ViewModel {
      * @param fragment  Fragment
      */
     public static void observeToast(ToastViewModel viewModel, Fragment fragment) {
-        observeToast(viewModel, fragment.getViewLifecycleOwner(), fragment::requireContext);
+        observeToast(viewModel, fragment, fragment::requireContext);
     }
 
     /**

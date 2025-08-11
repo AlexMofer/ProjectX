@@ -55,7 +55,7 @@ public class DialogViewModel extends ToastViewModel {
      * @param fragment  DialogFragment
      */
     public static void observeDismiss(DialogViewModel viewModel, DialogFragment fragment) {
-        viewModel.getDismiss().observe(fragment.getViewLifecycleOwner(), value -> {
+        viewModel.getDismiss().observe(fragment, value -> {
             if (Boolean.TRUE.equals(value)) {
                 fragment.dismiss();
             }
@@ -69,7 +69,7 @@ public class DialogViewModel extends ToastViewModel {
      * @param fragment  DialogFragment
      */
     public static void observeCancelable(DialogViewModel viewModel, DialogFragment fragment) {
-        viewModel.getCancelable().observe(fragment.getViewLifecycleOwner(),
+        viewModel.getCancelable().observe(fragment,
                 value -> fragment.setCancelable(Boolean.TRUE.equals(value)));
     }
 
