@@ -13,7 +13,7 @@ Android 支持库，一些杂七杂八的辅助工具。
 ```
 dependencies {
     ...
-    implementation 'io.github.alexmofer.android:support:1.16.1'
+    implementation 'io.github.alexmofer.android:support:1.17.0'
     ...
 }
 ```
