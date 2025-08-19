@@ -15,6 +15,7 @@
  */
 package io.github.alexmofer.android.support.other;
 
+import android.text.TextUtils;
 import android.util.JsonWriter;
 
 import androidx.annotation.NonNull;
@@ -170,6 +171,41 @@ public class JsonBuilder implements Closeable {
     }
 
     /**
+     * 添加名称与值
+     *
+     * @param name   名称
+     * @param value  值
+     * @param insert 是否添加
+     */
+    public JsonBuilder nameAndValue(String name, String value, boolean insert) {
+        if (insert) {
+            //noinspection resource
+            name(name).value(value);
+        }
+        return this;
+    }
+
+    /**
+     * 值非 null 时添加项
+     *
+     * @param name  名称
+     * @param value 值
+     */
+    public JsonBuilder nameAndValueNotNull(String name, String value) {
+        return nameAndValue(name, value, value != null);
+    }
+
+    /**
+     * 值非空时添加项
+     *
+     * @param name  名称
+     * @param value 值
+     */
+    public JsonBuilder nameAndValueNotEmpty(String name, String value) {
+        return nameAndValue(name, value, !TextUtils.isEmpty(value));
+    }
+
+    /**
      * Encodes {@code value}.
      *
      * @return this builder.
@@ -179,6 +215,21 @@ public class JsonBuilder implements Closeable {
             mJson.value(value);
         } catch (IOException e) {
             // ignore
+        }
+        return this;
+    }
+
+    /**
+     * 添加名称与值
+     *
+     * @param name   名称
+     * @param value  值
+     * @param insert 是否添加
+     */
+    public JsonBuilder nameAndValue(String name, boolean value, boolean insert) {
+        if (insert) {
+            //noinspection resource
+            name(name).value(value);
         }
         return this;
     }
@@ -200,6 +251,21 @@ public class JsonBuilder implements Closeable {
     }
 
     /**
+     * 添加名称与值
+     *
+     * @param name   名称
+     * @param value  值
+     * @param insert 是否添加
+     */
+    public JsonBuilder nameAndValue(String name, double value, boolean insert) {
+        if (insert) {
+            //noinspection resource
+            name(name).value(value);
+        }
+        return this;
+    }
+
+    /**
      * Encodes {@code value}.
      *
      * @return this builder.
@@ -214,6 +280,31 @@ public class JsonBuilder implements Closeable {
     }
 
     /**
+     * 添加名称与值
+     *
+     * @param name   名称
+     * @param value  值
+     * @param insert 是否添加
+     */
+    public JsonBuilder nameAndValue(String name, long value, boolean insert) {
+        if (insert) {
+            //noinspection resource
+            name(name).value(value);
+        }
+        return this;
+    }
+
+    /**
+     * 值非0时添加项
+     *
+     * @param name  名称
+     * @param value 值
+     */
+    public JsonBuilder nameAndValueNotZero(String name, long value) {
+        return nameAndValue(name, value, value != 0);
+    }
+
+    /**
      * Encodes {@code value}.
      *
      * @param value a finite value. May not be {@link Double#isNaN() NaNs} or
@@ -225,6 +316,21 @@ public class JsonBuilder implements Closeable {
             mJson.value(value);
         } catch (IOException e) {
             // ignore
+        }
+        return this;
+    }
+
+    /**
+     * 添加名称与值
+     *
+     * @param name   名称
+     * @param value  值
+     * @param insert 是否添加
+     */
+    public JsonBuilder nameAndValue(String name, Number value, boolean insert) {
+        if (insert) {
+            //noinspection resource
+            name(name).value(value);
         }
         return this;
     }
