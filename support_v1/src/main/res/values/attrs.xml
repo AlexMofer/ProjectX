@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AnimatedRotateDrawable">
+        <attr name="android:visible" />
+        <attr name="android:drawable" />
+        <attr name="android:pivotX" />
+        <attr name="android:pivotY" />
+        <attr name="android:repeatMode" />
+        <attr name="android:duration" />
+        <attr name="android:progress" />
+    </declare-styleable>
+</resources>
