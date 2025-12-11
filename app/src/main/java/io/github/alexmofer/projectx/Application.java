@@ -15,6 +15,8 @@
  */
 package io.github.alexmofer.projectx;
 
+import android.content.Context;
+
 import androidx.multidex.MultiDexApplication;
 
 import io.github.alexmofer.android.support.app.ApplicationHolder;
@@ -26,8 +28,8 @@ import io.github.alexmofer.android.support.app.ApplicationHolder;
 public class Application extends MultiDexApplication {
 
     @Override
-    public void onCreate() {
-        super.onCreate();
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
         ApplicationHolder.create(this);
     }
 }

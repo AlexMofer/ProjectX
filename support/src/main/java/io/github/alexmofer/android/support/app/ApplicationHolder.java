@@ -16,14 +16,10 @@
 package io.github.alexmofer.android.support.app;
 
 import android.app.Application;
-import android.content.ComponentCallbacks2;
 import android.content.Context;
-import android.content.res.Configuration;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.collection.ArrayMap;
 
 /**
@@ -35,11 +31,9 @@ public class ApplicationHolder {
     private static ApplicationHolder mInstance;
     private final Application mApplication;
     private final ArrayMap<String, Object> mDataMap = new ArrayMap<>();
-    private final ArrayMap<String, ApplicationData> mApplicationDataMap = new ArrayMap<>();
 
     private ApplicationHolder(Application application) {
         mApplication = application;
-        application.registerComponentCallbacks(new InnerComponentCallbacks(this));
     }
 
     /**
@@ -118,120 +112,5 @@ public class ApplicationHolder {
      */
     public static void removeData(String id) {
         getInstance().mDataMap.remove(id);
-    }
-
-    /**
-     * 发送Toast
-     *
-     * @param text     文本
-     * @param duration 时长
-     */
-    @Deprecated
-    public static void toast(CharSequence text, int duration) {
-        Toast.makeText(getApplicationContext(), text, duration).show();
-    }
-
-    /**
-     * 发送Toast
-     *
-     * @param text 文本
-     */
-    @Deprecated
-    public static void toast(CharSequence text) {
-        toast(text, Toast.LENGTH_SHORT);
-    }
-
-    /**
-     * 发送Toast
-     *
-     * @param resId    文本资源
-     * @param duration 时长
-     */
-    @Deprecated
-    public static void toast(@StringRes int resId, int duration) {
-        Toast.makeText(getApplicationContext(), resId, duration).show();
-    }
-
-    /**
-     * 发送Toast
-     *
-     * @param resId 文本资源
-     */
-    @Deprecated
-    public static void toast(@StringRes int resId) {
-        toast(resId, Toast.LENGTH_SHORT);
-    }
-
-    /**
-     * 获取应用级数据
-     *
-     * @param clazz   类
-     * @param creator 构建者
-     * @param <T>     类型
-     * @return 应用级数据对象
-     */
-    @Deprecated
-    @NonNull
-    public static <T extends ApplicationData> T getApplicationData(Class<T> clazz,
-                                                                   @NonNull ApplicationDataCreator<T> creator) {
-        synchronized (ApplicationHolder.class) {
-            final ApplicationHolder holder = getInstance();
-            final String key = clazz.getName();
-            final ApplicationData saved = holder.mApplicationDataMap.get(key);
-            if (saved != null) {
-                //noinspection unchecked
-                return (T) saved;
-            }
-            final T created = creator.create();
-            holder.mApplicationDataMap.put(key, created);
-            return created;
-        }
-    }
-
-    static void removeApplicationData(ApplicationData data) {
-        synchronized (ApplicationHolder.class) {
-            final ApplicationData removed =
-                    getInstance().mApplicationDataMap.remove(data.getClass().getName());
-            if (removed != null) {
-                removed.onDestroy();
-            }
-        }
-    }
-
-    private static class InnerComponentCallbacks implements ComponentCallbacks2 {
-
-        private final ApplicationHolder mHolder;
-
-        public InnerComponentCallbacks(ApplicationHolder holder) {
-            mHolder = holder;
-        }
-
-        @Override
-        public void onConfigurationChanged(@NonNull Configuration newConfig) {
-            synchronized (ApplicationHolder.class) {
-                final int count = mHolder.mApplicationDataMap.size();
-                for (int i = 0; i < count; i++) {
-                    mHolder.mApplicationDataMap.valueAt(i).onConfigurationChanged(newConfig);
-                }
-            }
-        }
-
-        @Override
-        public void onLowMemory() {
-            // ignore 14 以前的主要回调，实现 onTrimMemory 即可
-        }
-
-        @Override
-        public void onTrimMemory(int level) {
-            synchronized (ApplicationHolder.class) {
-                final int count = mHolder.mApplicationDataMap.size();
-                for (int i = count - 1; i >= 0; i--) {
-                    final ApplicationData saved = mHolder.mApplicationDataMap.valueAt(i);
-                    if (saved.onTrimMemory(level)) {
-                        mHolder.mApplicationDataMap.removeAt(i).onDestroy();
-                    }
-                }
-            }
-        }
     }
 }

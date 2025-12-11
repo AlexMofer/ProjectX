@@ -33,7 +33,7 @@ public class ThreadUtils {
      * @return true if we are on the main thread, false otherwise.
      */
     public static boolean isMainThread() {
-        return Looper.getMainLooper().getThread() == Thread.currentThread();
+        return Looper.getMainLooper().isCurrentThread();
     }
 
     /**
