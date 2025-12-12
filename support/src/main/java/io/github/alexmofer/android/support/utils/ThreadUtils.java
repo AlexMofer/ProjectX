@@ -51,7 +51,7 @@ public class ThreadUtils {
      */
     public static void checkWorkerThread() {
         if (isMainThread()) {
-            throw new IllegalStateException("Access In main thread.");
+            throw new IllegalStateException("Access In worker thread.");
         }
     }
 }

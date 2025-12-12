@@ -36,7 +36,6 @@ public class ImageCropContracts {
     /**
      * 裁剪
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public static class CropImage extends ActivityResultContract<Request, Integer> {
 
         @NonNull

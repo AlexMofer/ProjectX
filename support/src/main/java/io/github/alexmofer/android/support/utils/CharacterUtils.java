@@ -35,7 +35,6 @@ public class CharacterUtils {
      * @param c 字符
      * @return 为中文字符时返回true
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public static boolean isChineseByScript(char c) {
         return Character.UnicodeScript.of(c) == Character.UnicodeScript.HAN;
     }
