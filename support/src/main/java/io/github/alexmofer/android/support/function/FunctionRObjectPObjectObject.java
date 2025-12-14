@@ -5,9 +5,9 @@ package io.github.alexmofer.android.support.function;
  * Created by Alex on 2025/12/11.
  */
 @FunctionalInterface
-public interface FunctionRObjectPFloat<R> {
+public interface FunctionRObjectPObjectObject<R, P1, P2> {
     /**
      * 执行
      */
-    R execute(float param);
+    R execute(P1 param1, P2 param2);
 }

@@ -5,9 +5,9 @@ package io.github.alexmofer.android.support.function;
  * Created by Alex on 2025/12/11.
  */
 @FunctionalInterface
-public interface FunctionRBooleanPObjectObject<T1, T2> {
+public interface FunctionRBooleanPObjectObject<P1, P2> {
     /**
      * 执行
      */
-    boolean execute(T1 param1, T2 param2);
+    boolean execute(P1 param1, P2 param2);
 }

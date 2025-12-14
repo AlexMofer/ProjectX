@@ -5,9 +5,9 @@ package io.github.alexmofer.android.support.function;
  * Created by Alex on 2025/12/11.
  */
 @FunctionalInterface
-public interface FunctionRVoidPInt {
+public interface FunctionPLong {
     /**
      * 执行
      */
-    void execute(int param);
+    void execute(long param);
 }

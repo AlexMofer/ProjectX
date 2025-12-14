@@ -52,10 +52,6 @@ public class ViewOutlineProviderUtils {
             outline.setRoundRect(0, 0, width, height, height * 0.5f);
         }
     };
-    public static final int FLAG_ROUND_RECT_LT = 1;
-    public static final int FLAG_ROUND_RECT_RT = 2;
-    public static final int FLAG_ROUND_RECT_LB = 4;
-    public static final int FLAG_ROUND_RECT_RB = 8;
 
     private ViewOutlineProviderUtils() {
         //no instance
@@ -79,76 +75,115 @@ public class ViewOutlineProviderUtils {
      * 新建圆角矩形外边框
      *
      * @param radius 圆角半径
-     * @param flags  四个角
-     * @return 圆角矩形外边框
-     */
-    public static ViewOutlineProvider newRoundRect(float radius, int flags) {
-        return new RoundRectViewOutlineProvider(radius, flags);
-    }
-
-    /**
-     * 新建圆角矩形外边框
-     *
-     * @param radius 圆角半径
      * @return 圆角矩形外边框
      */
     public static ViewOutlineProvider newRoundRect(float radius) {
-        return newRoundRect(radius,
-                FLAG_ROUND_RECT_LT | FLAG_ROUND_RECT_RT | FLAG_ROUND_RECT_LB | FLAG_ROUND_RECT_RB);
+        return new RoundRectViewOutlineProvider(radius);
+    }
+
+    /**
+     * 新建顶部圆角矩形外边框
+     *
+     * @param radius 圆角半径
+     * @return 顶部圆角矩形外边框
+     */
+    public static ViewOutlineProvider newTopRoundRect(float radius) {
+        return new TopRoundRectViewOutlineProvider(radius);
+    }
+
+    /**
+     * 新建底部圆角矩形外边框
+     *
+     * @param radius 圆角半径
+     * @return 底部圆角矩形外边框
+     */
+    public static ViewOutlineProvider newBottomRoundRect(float radius) {
+        return new BottomRoundRectViewOutlineProvider(radius);
     }
 
     private static class RoundRectViewOutlineProvider extends ViewOutlineProvider {
 
         private final float mRadius;
-        private final int mFlags;
-        private final float[] mRadii = new float[8];
-        private final Path mPath;
 
-        public RoundRectViewOutlineProvider(float radius, int flags) {
+        public RoundRectViewOutlineProvider(float radius) {
             mRadius = radius;
-            mFlags = flags;
-            Path path = null;
-            if (flags != (FLAG_ROUND_RECT_LT | FLAG_ROUND_RECT_RT | FLAG_ROUND_RECT_LB | FLAG_ROUND_RECT_RB)) {
-                if ((flags & FLAG_ROUND_RECT_LT) == FLAG_ROUND_RECT_LT) {
-                    path = new Path();
-                    mRadii[0] = mRadius;
-                    mRadii[1] = mRadius;
-                }
-                if ((flags & FLAG_ROUND_RECT_RT) == FLAG_ROUND_RECT_RT) {
-                    path = new Path();
-                    mRadii[2] = mRadius;
-                    mRadii[3] = mRadius;
-                }
-                if ((flags & FLAG_ROUND_RECT_LB) == FLAG_ROUND_RECT_LB) {
-                    path = new Path();
-                    mRadii[6] = mRadius;
-                    mRadii[7] = mRadius;
-                }
-                if ((flags & FLAG_ROUND_RECT_RB) == FLAG_ROUND_RECT_RB) {
-                    path = new Path();
-                    mRadii[4] = mRadius;
-                    mRadii[5] = mRadius;
-                }
-            }
-            mPath = path;
         }
 
         @Override
         public void getOutline(View view, Outline outline) {
-            if (mFlags == 0) {
-                return;
+            outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), mRadius);
+        }
+    }
+
+    private static class TopRoundRectViewOutlineProvider extends ViewOutlineProvider {
+
+        private final float mRadius;
+        private final Path mPath;
+        private final float[] mRadii;
+
+        public TopRoundRectViewOutlineProvider(float radius) {
+            mRadius = radius;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                // 可对路径进行裁剪
+                mPath = new Path();
+                mRadii = new float[8];
+                mRadii[0] = mRadius;
+                mRadii[1] = mRadius;
+                mRadii[2] = mRadius;
+                mRadii[3] = mRadius;
+            } else {
+                mPath = null;
+                mRadii = null;
             }
-            if (mFlags == (FLAG_ROUND_RECT_LT | FLAG_ROUND_RECT_RT | FLAG_ROUND_RECT_LB | FLAG_ROUND_RECT_RB)) {
-                outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), mRadius);
-                return;
+        }
+
+        @Override
+        public void getOutline(View view, Outline outline) {
+            if (mPath == null || mRadii == null) {
+                outline.setRoundRect(0, 0, view.getWidth(),
+                        view.getHeight() + Math.round(mRadius * 2), mRadius);
+            } else {
+                mPath.rewind();
+                mPath.addRoundRect(0, 0, view.getWidth(), view.getHeight(), mRadii,
+                        Path.Direction.CW);
+                ViewOutlineProviderUtils.setPath(outline, mPath);
             }
-            if (mPath == null) {
-                return;
+        }
+    }
+
+    private static class BottomRoundRectViewOutlineProvider extends ViewOutlineProvider {
+
+        private final float mRadius;
+        private final Path mPath;
+        private final float[] mRadii;
+
+        public BottomRoundRectViewOutlineProvider(float radius) {
+            mRadius = radius;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                // 可对路径进行裁剪
+                mPath = new Path();
+                mRadii = new float[8];
+                mRadii[6] = mRadius;
+                mRadii[7] = mRadius;
+                mRadii[4] = mRadius;
+                mRadii[5] = mRadius;
+            } else {
+                mPath = null;
+                mRadii = null;
             }
-            mPath.rewind();
-            mPath.addRoundRect(0, 0, view.getWidth(), view.getHeight(), mRadii,
-                    Path.Direction.CW);
-            setPath(outline, mPath);
+        }
+
+        @Override
+        public void getOutline(View view, Outline outline) {
+            if (mPath == null || mRadii == null) {
+                outline.setRoundRect(0, -Math.round(mRadius * 2), view.getWidth(),
+                        view.getHeight(), mRadius);
+            } else {
+                mPath.rewind();
+                mPath.addRoundRect(0, 0, view.getWidth(), view.getHeight(), mRadii,
+                        Path.Direction.CW);
+                ViewOutlineProviderUtils.setPath(outline, mPath);
+            }
         }
     }
 }

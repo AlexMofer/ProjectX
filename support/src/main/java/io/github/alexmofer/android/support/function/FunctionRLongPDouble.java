@@ -5,9 +5,9 @@ package io.github.alexmofer.android.support.function;
  * Created by Alex on 2025/12/11.
  */
 @FunctionalInterface
-public interface FunctionRVoidPFloat {
+public interface FunctionRLongPDouble {
     /**
      * 执行
      */
-    void execute(float param);
+    long execute(double param);
 }

@@ -5,9 +5,9 @@ package io.github.alexmofer.android.support.function;
  * Created by Alex on 2025/12/11.
  */
 @FunctionalInterface
-public interface FunctionRVoidPObjectBoolean<T> {
+public interface FunctionRDoubleThrowable {
     /**
      * 执行
      */
-    void execute(T param1, boolean param2);
+    double execute() throws Exception;
 }

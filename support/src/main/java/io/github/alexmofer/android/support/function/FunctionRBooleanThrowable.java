@@ -5,9 +5,9 @@ package io.github.alexmofer.android.support.function;
  * Created by Alex on 2025/12/11.
  */
 @FunctionalInterface
-public interface FunctionRVoidPLong {
+public interface FunctionRBooleanThrowable {
     /**
      * 执行
      */
-    void execute(long param);
+    boolean execute() throws Exception;
 }
