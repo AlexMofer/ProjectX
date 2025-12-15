@@ -52,9 +52,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this,
-                EdgeToEdge.SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
-                EdgeToEdge.SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT));
+        EdgeToEdge.enable(this);
         final DisplayMetrics metrics = getResources().getDisplayMetrics();
         final int dp48 = TypedValueUtils.getDimensionPixelOffset(48, metrics);
         final int dp12 = TypedValueUtils.getDimensionPixelOffset(12, metrics);

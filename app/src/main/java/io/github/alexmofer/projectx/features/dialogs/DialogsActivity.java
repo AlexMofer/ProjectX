@@ -3,7 +3,6 @@ package io.github.alexmofer.projectx.features.dialogs;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -14,16 +13,15 @@ import android.widget.ScrollView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import io.github.alexmofer.android.support.utils.TypedValueUtils;
+import io.github.alexmofer.android.support.widget.AvoidArea;
+import io.github.alexmofer.android.support.window.EdgeToEdge;
 import io.github.alexmofer.projectx.ui.builders.ButtonBuilder;
 import io.github.alexmofer.projectx.ui.builders.LayoutParamsBuilder;
 import io.github.alexmofer.projectx.ui.builders.LinearLayoutBuilder;
 import io.github.alexmofer.projectx.ui.builders.MarginLayoutParamsBuilder;
 import io.github.alexmofer.projectx.ui.builders.TextViewBuilder;
 import io.github.alexmofer.projectx.ui.builders.ViewGroupBuilder;
-
-import io.github.alexmofer.android.support.utils.TypedValueUtils;
-import io.github.alexmofer.android.support.widget.AvoidArea;
-import io.github.alexmofer.android.support.window.EdgeToEdge;
 
 /**
  * 主页
@@ -38,9 +36,7 @@ public final class DialogsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this,
-                EdgeToEdge.SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
-                EdgeToEdge.SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT));
+        EdgeToEdge.enable(this);
         final DisplayMetrics metrics = getResources().getDisplayMetrics();
         final int dp48 = TypedValueUtils.getDimensionPixelOffset(48, metrics);
         final int dp12 = TypedValueUtils.getDimensionPixelOffset(12, metrics);

@@ -30,6 +30,8 @@ import androidx.annotation.RequiresApi;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
+import io.github.alexmofer.android.support.function.FunctionRBooleanPObject;
+
 /**
  * 边到边
  * Created by Alex on 2025/6/12.
@@ -78,33 +80,32 @@ public class EdgeToEdge {
                               SystemBarStyle navigationBarStyle) {
         final Window window = activity.getWindow();
         final View view = window.getDecorView();
-        final boolean statusBarIsDark = Boolean.TRUE.equals(
-                statusBarStyle.detectDarkMode.apply(view.getResources()));
-        final boolean navigationBarIsDark = Boolean.TRUE.equals(
-                navigationBarStyle.detectDarkMode.apply(view.getResources()));
+        final boolean statusBarIsDark = statusBarStyle.detectDarkMode.execute(view.getResources());
+        final boolean navigationBarIsDark =
+                navigationBarStyle.detectDarkMode.execute(view.getResources());
         enable(statusBarStyle, navigationBarStyle, window, view, statusBarIsDark,
                 navigationBarIsDark);
     }
 
     public static void enable(Activity activity) {
         enable(activity, SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
-                SystemBarStyle.auto(DefaultLightScrim, DefaultDarkScrim));
+                SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT));
     }
 
     public static void enable(Window window, SystemBarStyle statusBarStyle,
                               SystemBarStyle navigationBarStyle) {
         final View view = window.getDecorView();
-        final boolean statusBarIsDark = Boolean.TRUE.equals(
-                statusBarStyle.detectDarkMode.apply(view.getResources()));
-        final boolean navigationBarIsDark = Boolean.TRUE.equals(
-                navigationBarStyle.detectDarkMode.apply(view.getResources()));
+        final boolean statusBarIsDark =
+                statusBarStyle.detectDarkMode.execute(view.getResources());
+        final boolean navigationBarIsDark =
+                navigationBarStyle.detectDarkMode.execute(view.getResources());
         enable(statusBarStyle, navigationBarStyle, window, view, statusBarIsDark,
                 navigationBarIsDark);
     }
 
     public static void enable(Window window) {
         enable(window, SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
-                SystemBarStyle.auto(DefaultLightScrim, DefaultDarkScrim));
+                SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT));
     }
 
     private interface Compat {
@@ -212,23 +213,19 @@ public class EdgeToEdge {
         }
     }
 
-    // API24 以后可使用 Function<Resources, Boolean> 替代
-    public interface DarkModeDetector {
-        boolean apply(Resources t);
-    }
-
     public static class SystemBarStyle {
         protected final int lightScrim;
         protected final int darkScrim;
         protected final int nightMode;
-        protected final DarkModeDetector detectDarkMode;
+        protected final FunctionRBooleanPObject<Resources> detectDarkMode;
 
         public SystemBarStyle(int lightScrim, int darkScrim, int nightMode,
-                              DarkModeDetector detectDarkMode) {
+                              FunctionRBooleanPObject<Resources> detectDarkMode) {
             this.lightScrim = lightScrim;
             this.darkScrim = darkScrim;
             this.nightMode = nightMode;
             this.detectDarkMode = detectDarkMode;
+
         }
 
         public static SystemBarStyle auto(@ColorInt int lightScrim, @ColorInt int darkScrim) {
