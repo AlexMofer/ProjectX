@@ -1,0 +1,277 @@
+package io.github.alexmofer.projectx.features.dialogs;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import io.github.alexmofer.projectx.ui.builders.ButtonBuilder;
+import io.github.alexmofer.projectx.ui.builders.LayoutParamsBuilder;
+import io.github.alexmofer.projectx.ui.builders.LinearLayoutBuilder;
+import io.github.alexmofer.projectx.ui.builders.MarginLayoutParamsBuilder;
+import io.github.alexmofer.projectx.ui.builders.TextViewBuilder;
+import io.github.alexmofer.projectx.ui.builders.ViewGroupBuilder;
+
+import io.github.alexmofer.android.support.utils.TypedValueUtils;
+import io.github.alexmofer.android.support.widget.AvoidArea;
+import io.github.alexmofer.android.support.window.EdgeToEdge;
+
+/**
+ * 主页
+ * Created by Alex on 2025/11/25.
+ */
+public final class DialogsActivity extends AppCompatActivity {
+
+    public static void start(Context context) {
+        context.startActivity(new Intent(context, DialogsActivity.class));
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this,
+                EdgeToEdge.SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
+                EdgeToEdge.SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT));
+        final DisplayMetrics metrics = getResources().getDisplayMetrics();
+        final int dp48 = TypedValueUtils.getDimensionPixelOffset(48, metrics);
+        final int dp12 = TypedValueUtils.getDimensionPixelOffset(12, metrics);
+        final Context context = this;
+        final View content = new LinearLayoutBuilder(context)
+                .setOrientation(LinearLayout.VERTICAL)
+                .addView(new TextViewBuilder(context)
+                                .setText("三种主要样式对话框")
+                                .setTextSize(32)
+                                .setTextColor(Color.WHITE)
+                                .setBackgroundColor(Color.RED)
+                                .build(),
+                        new LayoutParamsBuilder()
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("Fullscreen")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestFullscreenFragment().show(getSupportFragmentManager(), "Fullscreen"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("TestCenterScrollable")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestCenterScrollableFragment().show(getSupportFragmentManager(), "Center"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("TestCenterScrollableOver")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestCenterScrollableOverFragment().show(getSupportFragmentManager(), "Center"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("TestCenterNoScrollOver")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestCenterNoScrollOverFragment().show(getSupportFragmentManager(), "Center"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("TestCenterNoScroll")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestCenterNoScrollFragment().show(getSupportFragmentManager(), "Center"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("TestCenterMatch")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestCenterMatchFragment().show(getSupportFragmentManager(), "Center"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("TestSheetScrollable")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestSheetScrollableFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("TestSheetScrollableOver")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestSheetScrollableOverFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("TestSheetNoScrollOver")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestSheetNoScrollOverFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("TestSheetNoScroll")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestSheetNoScrollFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("TestSheetMatch")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestSheetMatchFragment().show(getSupportFragmentManager(), "Center"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("TestSheetScrollableSTS")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestSheetScrollableSTSFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("TestSheetScrollableOverSTS")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestSheetScrollableOverSTSFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("TestSheetNoScrollOverSTS")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestSheetNoScrollOverSTSFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("TestSheetNoScrollSTS")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestSheetNoScrollSTSFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("TestSheetMatchSTS")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestSheetMatchSTSFragment().show(getSupportFragmentManager(), "Center"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .setBackgroundColor(Color.GREEN)
+                .build();
+        AvoidArea.paddingAll(content);
+        setContentView(new ViewGroupBuilder(new ScrollView(context))
+                .addView(content,
+                        new LayoutParamsBuilder()
+                                .matchWidth()
+                                .build())
+                .build());
+    }
+}
