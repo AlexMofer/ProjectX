@@ -29,6 +29,7 @@ import androidx.exifinterface.media.ExifInterface;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.nio.file.Files;
 
 /**
  * 位图工具
@@ -84,6 +85,28 @@ public class BitmapUtils {
             if (input == null) {
                 throw new Exception("Cannot open uri.");
             }
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(input, null, options);
+            return options.outWidth > 0 && options.outHeight > 0;
+        }
+    }
+
+    /**
+     * 判断沙盒文件是否为位图
+     *
+     * @param file 沙盒文件
+     * @return 为位图时返回 true
+     * @throws Exception 其他异常
+     */
+    public static boolean isBitmap(File file) throws Exception {
+        if (!file.exists()) {
+            return false;
+        }
+        if (!file.isFile()) {
+            return false;
+        }
+        try (final InputStream input = Files.newInputStream(file.toPath())) {
             final BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
             BitmapFactory.decodeStream(input, null, options);

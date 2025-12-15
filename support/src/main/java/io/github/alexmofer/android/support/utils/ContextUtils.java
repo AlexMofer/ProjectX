@@ -32,6 +32,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 import androidx.annotation.AttrRes;
+import androidx.annotation.ColorRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -206,4 +207,34 @@ public class ContextUtils {
         }
     }
 
+    /**
+     * 创建固定 UI 模式的 Context
+     *
+     * @param context Context
+     * @param night   是否深色模式
+     * @return 固定 UI 模式的 Context
+     */
+    public static Context createUIModeContext(@NonNull Context context, boolean night) {
+        final Configuration configuration = new Configuration();
+        configuration.setTo(context.getResources().getConfiguration());
+        configuration.uiMode = configuration.uiMode & ~Configuration.UI_MODE_NIGHT_MASK;
+        if (night) {
+            configuration.uiMode |= Configuration.UI_MODE_NIGHT_YES;
+        } else {
+            configuration.uiMode |= Configuration.UI_MODE_NIGHT_NO;
+        }
+        return context.createConfigurationContext(configuration);
+    }
+
+    /**
+     * 获取固定 UI 模式下的颜色资源值
+     *
+     * @param context Context
+     * @param night   是否深色模式
+     * @param id      颜色资源
+     * @return 颜色值
+     */
+    public static int getUIModeColor(Context context, boolean night, @ColorRes int id) {
+        return createUIModeContext(context, night).getColor(id);
+    }
 }
