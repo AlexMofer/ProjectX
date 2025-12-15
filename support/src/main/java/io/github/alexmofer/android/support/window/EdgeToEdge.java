@@ -36,7 +36,7 @@ import io.github.alexmofer.android.support.function.FunctionRBooleanPObject;
  * 边到边
  * Created by Alex on 2025/6/12.
  */
-public class EdgeToEdge {
+public final class EdgeToEdge {
     // The light scrim color used in the platform API 29+
     // https://cs.android.com/android/platform/superproject/+/master:frameworks/base/core/java/com/android/internal/policy/DecorView.java;drc=6ef0f022c333385dba2c294e35b8de544455bf19;l=142
     public static final int DefaultLightScrim = Color.argb(0xe6, 0xFF, 0xFF, 0xFF);

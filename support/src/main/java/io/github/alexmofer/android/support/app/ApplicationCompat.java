@@ -25,7 +25,7 @@ import androidx.annotation.RequiresApi;
  * Application兼容器
  * Created by Alex on 2022/3/24.
  */
-public class ApplicationCompat {
+public final class ApplicationCompat {
 
     private static Compat Impl = null;
 

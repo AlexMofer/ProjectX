@@ -22,12 +22,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.core.util.TypedValueCompat;
-import androidx.window.layout.WindowMetrics;
-import androidx.window.layout.WindowMetricsCalculator;
 
 import io.github.alexmofer.android.support.utils.ViewOutlineProviderUtils;
 import io.github.alexmofer.android.support.widget.AvoidArea;
 import io.github.alexmofer.android.support.window.EdgeToEdge;
+import io.github.alexmofer.android.support.window.WindowMetricsHelper;
 
 /**
  * 底部对话框
@@ -63,11 +62,7 @@ public class SheetDialogFragment extends CenterDialogFragment {
      * @return 返回 true 时进入 Sheet 模式，反之进入居中对话框模式
      */
     protected boolean onBranch(@Nullable Bundle savedInstanceState) {
-        final WindowMetricsCalculator calculator = WindowMetricsCalculator.Companion.getOrCreate();
-        final WindowMetrics metrics = calculator.computeCurrentWindowMetrics(requireActivity());
-        final float width = metrics.getWidthDp();
-        final float height = metrics.getHeightDp();
-        mSheet = width < 480 || height < 480;
+        mSheet = !WindowMetricsHelper.computeCurrentWindowMetrics(requireActivity()).isSW480();
         return mSheet;
     }
 

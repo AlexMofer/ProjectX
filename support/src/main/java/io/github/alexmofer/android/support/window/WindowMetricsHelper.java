@@ -1,27 +1,11 @@
-/*
- * Copyright (C) 2023 AlexMofer
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package io.github.alexmofer.android.support.window;
 
 import android.app.Activity;
+import android.content.Context;
 
-import androidx.annotation.BoolRes;
+import androidx.annotation.UiContext;
+import androidx.window.layout.WindowMetrics;
 import androidx.window.layout.WindowMetricsCalculator;
-
-import io.github.alexmofer.android.support.R;
-import io.github.alexmofer.android.support.app.ApplicationHolder;
 
 /**
  * 窗口尺寸辅助
@@ -31,10 +15,9 @@ import io.github.alexmofer.android.support.app.ApplicationHolder;
  * 较小的高度	小于 480dp	99.78% 的手机处于横屏模式
  * 中等高度	480dp+	96.56% 的平板电脑处于横屏模式，97.59% 的手机处于竖屏模式
  * 展开高度	900dp+	94.25% 的平板电脑处于竖屏模式
- * Created by Alex on 2023/6/29.
+ * Created by Alex on 2025/12/15.
  */
-public class WindowSizeHelper {
-
+public final class WindowMetricsHelper {
     public static final int LEVEL_MIN = 0;// 低于320dp的等级
     public static final int LEVEL_320 = 1;// 不低于320dp的等级
     public static final int LEVEL_480 = 2;// 不低于480dp的等级
@@ -42,35 +25,45 @@ public class WindowSizeHelper {
     public static final int LEVEL_720 = 4;// 不低于720dp的等级
     public static final int LEVEL_840 = 5;// 不低于840dp的等级
     public static final int LEVEL_900 = 6;// 不低于900dp的等级
+    public final WindowMetrics windowMetrics;
 
-    private WindowSizeHelper() {
-        //no instance
+    private static WindowMetricsCalculator sCalculator;
+
+    private WindowMetricsHelper(WindowMetrics windowMetrics) {
+        this.windowMetrics = windowMetrics;
+    }
+
+    private static WindowMetricsCalculator getCalculator() {
+        if (sCalculator == null) {
+            sCalculator = WindowMetricsCalculator.getOrCreate();
+        }
+        return sCalculator;
+    }
+
+    public static WindowMetricsHelper computeCurrentWindowMetrics(Activity activity) {
+        return new WindowMetricsHelper(getCalculator().computeCurrentWindowMetrics(activity));
+    }
+
+    public static WindowMetricsHelper computeCurrentWindowMetrics(@UiContext Context context) {
+        return new WindowMetricsHelper(getCalculator().computeCurrentWindowMetrics(context));
     }
 
     /**
-     * 获取Activity窗口宽度
+     * 获取窗口宽度
      *
-     * @param activity Activity
-     * @return Activity窗口宽度
+     * @return 窗口宽度
      */
-    public static int getWidth(Activity activity) {
-        return WindowMetricsCalculator.getOrCreate()
-                .computeCurrentWindowMetrics(activity).getBounds().width();
+    public int getWidth() {
+        return windowMetrics.getBounds().width();
     }
 
     /**
-     * 获取Activity窗口高度
+     * 获取窗口高度
      *
-     * @param activity Activity
-     * @return Activity窗口高度
+     * @return 窗口高度
      */
-    public static int getHeight(Activity activity) {
-        return WindowMetricsCalculator.getOrCreate()
-                .computeCurrentWindowMetrics(activity).getBounds().height();
-    }
-
-    private static boolean getBoolean(@BoolRes int id) {
-        return ApplicationHolder.getApplicationContext().getResources().getBoolean(id);
+    public int getHeight() {
+        return windowMetrics.getBounds().height();
     }
 
     /**
@@ -78,8 +71,8 @@ public class WindowSizeHelper {
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isW320() {
-        return getBoolean(R.bool.w320);
+    public boolean isW320() {
+        return windowMetrics.getWidthDp() >= 320;
     }
 
     /**
@@ -87,8 +80,8 @@ public class WindowSizeHelper {
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isW480() {
-        return getBoolean(R.bool.w480);
+    public boolean isW480() {
+        return windowMetrics.getWidthDp() >= 480;
     }
 
     /**
@@ -96,8 +89,8 @@ public class WindowSizeHelper {
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isW600() {
-        return getBoolean(R.bool.w600);
+    public boolean isW600() {
+        return windowMetrics.getWidthDp() >= 600;
     }
 
     /**
@@ -105,8 +98,8 @@ public class WindowSizeHelper {
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isW720() {
-        return getBoolean(R.bool.w720);
+    public boolean isW720() {
+        return windowMetrics.getWidthDp() >= 720;
     }
 
     /**
@@ -114,8 +107,8 @@ public class WindowSizeHelper {
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isW840() {
-        return getBoolean(R.bool.w840);
+    public boolean isW840() {
+        return windowMetrics.getWidthDp() >= 840;
     }
 
     /**
@@ -123,8 +116,8 @@ public class WindowSizeHelper {
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isW900() {
-        return getBoolean(R.bool.w900);
+    public boolean isW900() {
+        return windowMetrics.getWidthDp() >= 900;
     }
 
     /**
@@ -132,7 +125,7 @@ public class WindowSizeHelper {
      *
      * @return 可用宽度等级
      */
-    public static int getWLevel() {
+    public int getWLevel() {
         if (isW900()) {
             return LEVEL_900;
         }
@@ -159,8 +152,8 @@ public class WindowSizeHelper {
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isH320() {
-        return getBoolean(R.bool.h320);
+    public boolean isH320() {
+        return windowMetrics.getHeightDp() >= 320;
     }
 
     /**
@@ -168,8 +161,8 @@ public class WindowSizeHelper {
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isH480() {
-        return getBoolean(R.bool.h480);
+    public boolean isH480() {
+        return windowMetrics.getHeightDp() >= 480;
     }
 
     /**
@@ -177,8 +170,8 @@ public class WindowSizeHelper {
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isH600() {
-        return getBoolean(R.bool.h600);
+    public boolean isH600() {
+        return windowMetrics.getHeightDp() >= 600;
     }
 
     /**
@@ -186,8 +179,8 @@ public class WindowSizeHelper {
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isH720() {
-        return getBoolean(R.bool.h720);
+    public boolean isH720() {
+        return windowMetrics.getHeightDp() >= 720;
     }
 
     /**
@@ -195,8 +188,8 @@ public class WindowSizeHelper {
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isH840() {
-        return getBoolean(R.bool.h840);
+    public boolean isH840() {
+        return windowMetrics.getHeightDp() >= 840;
     }
 
     /**
@@ -204,8 +197,8 @@ public class WindowSizeHelper {
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isH900() {
-        return getBoolean(R.bool.h900);
+    public boolean isH900() {
+        return windowMetrics.getHeightDp() >= 900;
     }
 
     /**
@@ -213,7 +206,7 @@ public class WindowSizeHelper {
      *
      * @return 可用高度等级
      */
-    public static int getHLevel() {
+    public int getHLevel() {
         if (isH900()) {
             return LEVEL_900;
         }
@@ -237,42 +230,38 @@ public class WindowSizeHelper {
 
     /**
      * 判断是否窗口短边宽度在320dp及以上
-     * 不同平台有所差异，有些返回的是完整窗口，有些返回的是窗口可用
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isSW320() {
-        return getBoolean(R.bool.sw320);
+    public boolean isSW320() {
+        return windowMetrics.getWidthDp() >= 320 && windowMetrics.getHeightDp() >= 320;
     }
 
     /**
      * 判断是否窗口短边宽度在480dp及以上
-     * 不同平台有所差异，有些返回的是完整窗口，有些返回的是窗口可用
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isSW480() {
-        return getBoolean(R.bool.sw480);
+    public boolean isSW480() {
+        return windowMetrics.getWidthDp() >= 480 && windowMetrics.getHeightDp() >= 480;
     }
 
     /**
      * 判断是否窗口短边宽度在600dp及以上
-     * 不同平台有所差异，有些返回的是完整窗口，有些返回的是窗口可用
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isSW600() {
-        return getBoolean(R.bool.sw600);
+    public boolean isSW600() {
+        return windowMetrics.getWidthDp() >= 600 && windowMetrics.getHeightDp() >= 600;
     }
 
     /**
      * 判断是否窗口短边宽度在720dp及以上
-     * 不同平台有所差异，有些返回的是完整窗口，有些返回的是窗口可用
      *
      * @return 不低于限定值时返回true
      */
-    public static boolean isSW720() {
-        return getBoolean(R.bool.sw720);
+    public boolean isSW720() {
+        return windowMetrics.getWidthDp() >= 720 && windowMetrics.getHeightDp() >= 720;
     }
 
     /**
@@ -280,7 +269,7 @@ public class WindowSizeHelper {
      *
      * @return 窗口短边等级
      */
-    public static int getSWLevel() {
+    public int getSWLevel() {
         if (isSW720()) {
             return LEVEL_720;
         }
