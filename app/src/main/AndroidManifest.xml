@@ -25,6 +25,7 @@
         </activity>
         <activity android:name=".features.main.MainActivity" />
         <activity android:name=".features.dialogs.DialogsActivity" />
+        <activity android:name=".features.save.SaveInstanceActivity" />
     </application>
 
 </manifest>

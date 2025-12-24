@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 
 import kotlinx.coroutines.CoroutineScope;
 
@@ -35,17 +36,8 @@ public class DialogViewModel extends ToastViewModel {
     public DialogViewModel() {
     }
 
-    public DialogViewModel(@NonNull CoroutineScope viewModelScope) {
-        super(viewModelScope);
-    }
-
-    public DialogViewModel(@NonNull AutoCloseable... closeables) {
-        super(closeables);
-    }
-
-    public DialogViewModel(@NonNull CoroutineScope viewModelScope,
-                           @NonNull AutoCloseable... closeables) {
-        super(viewModelScope, closeables);
+    public DialogViewModel(@NonNull SavedStateHandle handle) {
+        super(handle);
     }
 
     /**

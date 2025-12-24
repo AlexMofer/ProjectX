@@ -32,6 +32,7 @@ import io.github.alexmofer.android.support.utils.TypedValueUtils;
 import io.github.alexmofer.android.support.widget.AvoidArea;
 import io.github.alexmofer.android.support.window.EdgeToEdge;
 import io.github.alexmofer.projectx.features.dialogs.DialogsActivity;
+import io.github.alexmofer.projectx.features.save.SaveInstanceActivity;
 import io.github.alexmofer.projectx.ui.builders.ButtonBuilder;
 import io.github.alexmofer.projectx.ui.builders.LayoutParamsBuilder;
 import io.github.alexmofer.projectx.ui.builders.LinearLayoutBuilder;
@@ -76,6 +77,19 @@ public class MainActivity extends AppCompatActivity {
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
                                 .setOnClickListener(v -> DialogsActivity.start(this))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
+                                .setText("应用实例保存框架")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> SaveInstanceActivity.start(this))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)

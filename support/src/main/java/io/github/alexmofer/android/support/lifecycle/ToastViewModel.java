@@ -25,33 +25,23 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.SavedStateHandle;
 
 import io.github.alexmofer.android.support.other.StringResource;
-import kotlinx.coroutines.CoroutineScope;
 
 /**
  * Toast ViewModel
  * Created by Alex on 2024/4/23.
  */
-public class ToastViewModel extends ViewModel {
+public class ToastViewModel extends SavedStateViewModel {
 
     private final MutableLiveData<StringResource> mToast = new MutableLiveData<>();
 
     public ToastViewModel() {
     }
 
-    public ToastViewModel(@NonNull CoroutineScope viewModelScope) {
-        super(viewModelScope);
-    }
-
-    public ToastViewModel(@NonNull AutoCloseable... closeables) {
-        super(closeables);
-    }
-
-    public ToastViewModel(@NonNull CoroutineScope viewModelScope,
-                          @NonNull AutoCloseable... closeables) {
-        super(viewModelScope, closeables);
+    public ToastViewModel(@NonNull SavedStateHandle handle) {
+        super(handle);
     }
 
     /**
