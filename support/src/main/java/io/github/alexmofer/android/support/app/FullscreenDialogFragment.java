@@ -43,7 +43,6 @@ public class FullscreenDialogFragment extends CenterDialogFragment {
      * @return 返回 true 时进入 Sheet 模式，反之进入居中对话框模式
      */
     protected boolean onBranch(@Nullable Bundle savedInstanceState) {
-        mFullscreen = true;
         return true;
     }
 
@@ -59,10 +58,9 @@ public class FullscreenDialogFragment extends CenterDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        if (onBranch(savedInstanceState)) {
-            return new FullscreenDialog(requireContext(), getTheme());
-        }
-        return super.onCreateDialog(savedInstanceState);
+        mFullscreen = onBranch(savedInstanceState);
+        return mFullscreen ? new FullscreenDialog(requireContext(), getTheme())
+                : super.onCreateDialog(savedInstanceState);
     }
 
     @Override
