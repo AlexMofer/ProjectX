@@ -17,6 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import io.github.alexmofer.android.support.app.FullscreenDialogFragment;
+import io.github.alexmofer.android.support.utils.TypedValueUtils;
+import io.github.alexmofer.android.support.widget.AvoidArea;
+import io.github.alexmofer.android.support.window.WindowMetricsHelper;
 import io.github.alexmofer.projectx.ui.builders.ButtonBuilder;
 import io.github.alexmofer.projectx.ui.builders.EditTextBuilder;
 import io.github.alexmofer.projectx.ui.builders.LayoutParamsBuilder;
@@ -27,14 +30,19 @@ import io.github.alexmofer.projectx.ui.builders.TextViewBuilder;
 import io.github.alexmofer.projectx.ui.builders.ViewBuilder;
 import io.github.alexmofer.projectx.ui.builders.ViewGroupBuilder;
 
-import io.github.alexmofer.android.support.utils.TypedValueUtils;
-import io.github.alexmofer.android.support.widget.AvoidArea;
-
 /**
- * 测试全屏
+ * 测试全屏（手机全屏，平板居中）
  * Created by Alex on 2025/11/26.
  */
-public final class TestFullscreenFragment extends FullscreenDialogFragment {
+public final class TestFullscreenLimitedFragment extends FullscreenDialogFragment {
+
+
+    @Override
+    protected boolean onBranch(@Nullable Bundle savedInstanceState) {
+        final WindowMetricsHelper helper =
+                WindowMetricsHelper.computeCurrentWindowMetrics(requireActivity());
+        return !(helper.isW480() && helper.isH480());
+    }
 
     @NonNull
     @Override
@@ -53,7 +61,7 @@ public final class TestFullscreenFragment extends FullscreenDialogFragment {
         final View content = new LinearLayoutBuilder(context)
                 .setOrientation(LinearLayout.VERTICAL)
                 .addView(new TextViewBuilder(context)
-                                .setText("测试全屏")
+                                .setText("手机全屏、平板居中")
                                 .setTextSize(64)
                                 .setTextColor(Color.WHITE)
                                 .setBackgroundColor(Color.RED)
@@ -108,7 +116,9 @@ public final class TestFullscreenFragment extends FullscreenDialogFragment {
                                 .build())
                 .setBackgroundColor(Color.YELLOW)
                 .build();
-        AvoidArea.paddingAll(content);
+        if (isFullscreen()) {
+            AvoidArea.paddingAll(content);
+        }
         return new ViewGroupBuilder(new ScrollView(context))
                 .addView(content,
                         new LayoutParamsBuilder()

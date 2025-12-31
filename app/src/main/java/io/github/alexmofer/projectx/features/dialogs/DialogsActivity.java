@@ -66,13 +66,26 @@ public final class DialogsActivity extends AppCompatActivity {
                                 .matchWidth()
                                 .build())
                 .addView(new ButtonBuilder(context)
+                                .setText("FullscreenLimited")
+                                .setTextSize(16)
+                                .setTextColor(Color.WHITE)
+                                .setGravity(Gravity.CENTER)
+                                .setMinHeight(dp48)
+                                .setBackgroundColor(Color.BLUE)
+                                .setOnClickListener(v -> new TestFullscreenLimitedFragment().show(getSupportFragmentManager(), "FullscreenLimited"))
+                                .build(),
+                        new MarginLayoutParamsBuilder()
+                                .setMarginTop(dp12)
+                                .matchWidth()
+                                .build())
+                .addView(new ButtonBuilder(context)
                                 .setText("TestCenterScrollable")
                                 .setTextSize(16)
                                 .setTextColor(Color.WHITE)
                                 .setGravity(Gravity.CENTER)
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
-                                .setOnClickListener(v -> new TestCenterScrollableFragment().show(getSupportFragmentManager(), "Center"))
+                                .setOnClickListener(v -> new TestCenterScrollableFragment().show(getSupportFragmentManager(), "TestCenterScrollable"))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)
@@ -85,7 +98,7 @@ public final class DialogsActivity extends AppCompatActivity {
                                 .setGravity(Gravity.CENTER)
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
-                                .setOnClickListener(v -> new TestCenterScrollableOverFragment().show(getSupportFragmentManager(), "Center"))
+                                .setOnClickListener(v -> new TestCenterScrollableOverFragment().show(getSupportFragmentManager(), "TestCenterScrollableOver"))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)
@@ -98,7 +111,7 @@ public final class DialogsActivity extends AppCompatActivity {
                                 .setGravity(Gravity.CENTER)
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
-                                .setOnClickListener(v -> new TestCenterNoScrollOverFragment().show(getSupportFragmentManager(), "Center"))
+                                .setOnClickListener(v -> new TestCenterNoScrollOverFragment().show(getSupportFragmentManager(), "TestCenterNoScrollOver"))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)
@@ -111,7 +124,7 @@ public final class DialogsActivity extends AppCompatActivity {
                                 .setGravity(Gravity.CENTER)
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
-                                .setOnClickListener(v -> new TestCenterNoScrollFragment().show(getSupportFragmentManager(), "Center"))
+                                .setOnClickListener(v -> new TestCenterNoScrollFragment().show(getSupportFragmentManager(), "TestCenterNoScroll"))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)
@@ -124,7 +137,7 @@ public final class DialogsActivity extends AppCompatActivity {
                                 .setGravity(Gravity.CENTER)
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
-                                .setOnClickListener(v -> new TestCenterMatchFragment().show(getSupportFragmentManager(), "Center"))
+                                .setOnClickListener(v -> new TestCenterMatchFragment().show(getSupportFragmentManager(), "TestCenterMatch"))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)
@@ -137,7 +150,7 @@ public final class DialogsActivity extends AppCompatActivity {
                                 .setGravity(Gravity.CENTER)
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
-                                .setOnClickListener(v -> new TestSheetScrollableFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .setOnClickListener(v -> new TestSheetScrollableFragment().show(getSupportFragmentManager(), "TestSheetScrollable"))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)
@@ -150,7 +163,7 @@ public final class DialogsActivity extends AppCompatActivity {
                                 .setGravity(Gravity.CENTER)
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
-                                .setOnClickListener(v -> new TestSheetScrollableOverFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .setOnClickListener(v -> new TestSheetScrollableOverFragment().show(getSupportFragmentManager(), "TestSheetScrollableOver"))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)
@@ -163,7 +176,7 @@ public final class DialogsActivity extends AppCompatActivity {
                                 .setGravity(Gravity.CENTER)
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
-                                .setOnClickListener(v -> new TestSheetNoScrollOverFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .setOnClickListener(v -> new TestSheetNoScrollOverFragment().show(getSupportFragmentManager(), "TestSheetNoScrollOver"))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)
@@ -176,7 +189,7 @@ public final class DialogsActivity extends AppCompatActivity {
                                 .setGravity(Gravity.CENTER)
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
-                                .setOnClickListener(v -> new TestSheetNoScrollFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .setOnClickListener(v -> new TestSheetNoScrollFragment().show(getSupportFragmentManager(), "TestSheetNoScroll"))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)
@@ -189,7 +202,7 @@ public final class DialogsActivity extends AppCompatActivity {
                                 .setGravity(Gravity.CENTER)
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
-                                .setOnClickListener(v -> new TestSheetMatchFragment().show(getSupportFragmentManager(), "Center"))
+                                .setOnClickListener(v -> new TestSheetMatchFragment().show(getSupportFragmentManager(), "TestSheetMatch"))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)
@@ -202,7 +215,7 @@ public final class DialogsActivity extends AppCompatActivity {
                                 .setGravity(Gravity.CENTER)
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
-                                .setOnClickListener(v -> new TestSheetScrollableSTSFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .setOnClickListener(v -> new TestSheetScrollableSTSFragment().show(getSupportFragmentManager(), "TestSheetScrollableSTS"))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)
@@ -215,7 +228,7 @@ public final class DialogsActivity extends AppCompatActivity {
                                 .setGravity(Gravity.CENTER)
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
-                                .setOnClickListener(v -> new TestSheetScrollableOverSTSFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .setOnClickListener(v -> new TestSheetScrollableOverSTSFragment().show(getSupportFragmentManager(), "TestSheetScrollableOverSTS"))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)
@@ -228,7 +241,7 @@ public final class DialogsActivity extends AppCompatActivity {
                                 .setGravity(Gravity.CENTER)
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
-                                .setOnClickListener(v -> new TestSheetNoScrollOverSTSFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .setOnClickListener(v -> new TestSheetNoScrollOverSTSFragment().show(getSupportFragmentManager(), "TestSheetNoScrollOverSTS"))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)
@@ -241,7 +254,7 @@ public final class DialogsActivity extends AppCompatActivity {
                                 .setGravity(Gravity.CENTER)
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
-                                .setOnClickListener(v -> new TestSheetNoScrollSTSFragment().show(getSupportFragmentManager(), "Sheet"))
+                                .setOnClickListener(v -> new TestSheetNoScrollSTSFragment().show(getSupportFragmentManager(), "TestSheetNoScrollSTS"))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)
@@ -254,7 +267,7 @@ public final class DialogsActivity extends AppCompatActivity {
                                 .setGravity(Gravity.CENTER)
                                 .setMinHeight(dp48)
                                 .setBackgroundColor(Color.BLUE)
-                                .setOnClickListener(v -> new TestSheetMatchSTSFragment().show(getSupportFragmentManager(), "Center"))
+                                .setOnClickListener(v -> new TestSheetMatchSTSFragment().show(getSupportFragmentManager(), "TestSheetMatchSTS"))
                                 .build(),
                         new MarginLayoutParamsBuilder()
                                 .setMarginTop(dp12)
