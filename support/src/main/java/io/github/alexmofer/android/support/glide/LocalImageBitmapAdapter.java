@@ -1,15 +1,29 @@
+/*
+ * Copyright (C) 2026 AlexMofer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.alexmofer.android.support.glide;
 
 import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
 
 import com.bumptech.glide.Registry;
 import com.bumptech.glide.load.Options;
-import com.bumptech.glide.load.engine.Resource;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -19,53 +33,36 @@ import java.io.IOException;
 public interface LocalImageBitmapAdapter extends LocalImageAdapter {
 
     /**
-     * Returns {@code true} if this decoder is capable of decoding the given source with the given
-     * options, and {@code false} otherwise.
+     * 使用给定的选项能够生成位图，则返回{@code true}，否则返回{@code false}。
      *
-     * <p>Decoders should make a best effort attempt to quickly determine if they are likely to be
-     * able to decode data, but should not attempt to completely read the given data. A typical
-     * implementation would check the file headers verify they match content the decoder expects to
-     * handle (i.e. a GIF decoder should verify that the image contains the GIF header block.
+     * <p>方法应尽力快速判断是否可能解码数据，但不应尝试完整读取给定数据。
+     * 典型的实现方式是检查文件头，验证其是否与解码器预期处理的内容匹配。
      *
-     * <p>Decoders that return {@code true} from {@code handles} may still return {@code null} from
-     * {@link #decode(int, int, Options)} if the data is partial or formatted incorrectly.
+     * <p>该方法返回{@code true}后，依旧可以在{@link #load(int, int, Options)}中返回{@code null} ，
+     * 来表明生成位图失败。
      */
     default boolean handles(@NonNull Options options) throws IOException {
         return true;
     }
 
     /**
-     * Returns a decoded resource from the given data or null if no resource could be decoded.
+     * 根据给定数据生成位图，如果无法生成位图则返回{@code null} 。
      *
-     * <p>The {@code source} is managed by the caller, there's no need to close it. The returned
-     * {@link Resource} will be {@link Resource#recycle() released} when the engine sees fit.
+     * <p>生成后的位图由调用者管理，返回的{@link Bitmap}会在引擎认为合适时{@link Bitmap#recycle() 释放} 。
      *
-     * <p>Note - The {@code width} and {@code height} arguments are hints only, there is no
-     * requirement that the decoded resource exactly match the given dimensions. A typical use case
-     * would be to use the target dimensions to determine how much to downsample Bitmaps by to avoid
-     * overly large allocations.
+     * <p>注意 - {@code width}和{@code height}参数仅供参考，生成的位图无需与给定尺寸完全匹配。
+     * 一个典型的应用场景是使用目标尺寸来确定位图的降采样比例，以避免分配过大的内存空间。
      *
-     * @param width   The ideal width in pixels of the decoded resource, or {@link
-     *                com.bumptech.glide.request.target.Target#SIZE_ORIGINAL} to indicate the original resource
-     *                width.
-     * @param height  The ideal height in pixels of the decoded resource, or {@link
-     *                com.bumptech.glide.request.target.Target#SIZE_ORIGINAL} to indicate the original resource
-     *                height.
-     * @param options A map of string keys to objects that may or may not contain options available to
-     *                this particular implementation. Implementations should not assume that any or all of their
-     *                option keys are present. However, implementations may assume that if one of their option
-     *                keys is present, it's value is non-null and is of the expected type.
-     * @throws IOException      typically only if the {@code source} ({@link java.io.InputStream}, {@link
-     *                          android.os.ParcelFileDescriptor} etc) throws while being read.
-     * @throws OutOfMemoryError is sometimes thrown if the the request produces an overly large result
-     *                          due to some combination of source size, requested size, source format and requested format.
-     *                          Callers do/must handle this error and implementations can throw this error.
-     * @throws RuntimeException is thrown by a variety of decoding libraries, including various
-     *                          Android libraries. Callers do/must handle this error and implementations can throw this
-     *                          exception or, preferably, more detailed subclasses.
+     * @param width   生成位图的理想宽度，值为{@link com.bumptech.glide.request.target.Target#SIZE_ORIGINAL}表示资源原始宽度。
+     * @param height  生成位图的理想高度，值为{@link com.bumptech.glide.request.target.Target#SIZE_ORIGINAL}表示资源原始高度。
+     * @param options 选项参数，注意检查需要的选项值是否存在且类型符合。
+     * @throws IOException      生成位图时可抛出该异常用于表示读取失败。
+     * @throws OutOfMemoryError 可抛出该错误用于表示生成位图时内存不足。
+     * @throws RuntimeException 该方法也可抛出运行时异常，最好是能在消息中阐述跟详细的失败原因。
      */
+    @WorkerThread
     @Nullable
-    Bitmap decode(int width, int height, @NonNull Options options) throws IOException;
+    Bitmap load(int width, int height, @NonNull Options options) throws IOException;
 
     /**
      * 注册
@@ -75,7 +72,7 @@ public interface LocalImageBitmapAdapter extends LocalImageAdapter {
     static void register(@NonNull Registry registry) {
         registry.prepend(Registry.BUCKET_BITMAP, LocalImageBitmapAdapter.class, Bitmap.class,
                 new LocalImageBitmapResourceDecoder());
-        registry.prepend(LocalImageFileAdapter.class, File.class,
-                new LocalImageFileModelLoaderFactory());
+        registry.prepend(LocalImageBitmapAdapter.class, LocalImageBitmapAdapter.class,
+                new LocalImageBitmapModelLoaderFactory());
     }
 }
