@@ -15,6 +15,7 @@
  */
 package io.github.alexmofer.android.support.utils;
 
+import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
@@ -36,6 +37,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.github.alexmofer.android.support.function.FunctionRObjectThrowable;
 
 /**
  * 文件工具类
@@ -187,6 +190,33 @@ public class FileUtils {
     }
 
     /**
+     * 写入字符串内容
+     *
+     * @param provider 文件提供者
+     * @param content  字符串
+     * @param cs       字符集
+     */
+    public static void writeString(FunctionRObjectThrowable<ParcelFileDescriptor> provider,
+                                   String content, Charset cs) throws Exception {
+        try (final BufferedWriter writer = new BufferedWriter(
+                new OutputStreamWriter(new ParcelFileDescriptor.AutoCloseOutputStream(
+                        provider.execute()), cs))) {
+            writer.write(content);
+        }
+    }
+
+    /**
+     * 写入字符串内容
+     *
+     * @param provider 文件提供者
+     * @param content  字符串
+     */
+    public static void writeString(FunctionRObjectThrowable<ParcelFileDescriptor> provider,
+                                   String content) throws Exception {
+        writeString(provider, content, StandardCharsets.UTF_8);
+    }
+
+    /**
      * 读取字符串内容
      *
      * @param file 文件
@@ -219,6 +249,40 @@ public class FileUtils {
      */
     public static String readString(File file) {
         return readString(file, StandardCharsets.UTF_8);
+    }
+
+    /**
+     * 读取字符串内容
+     *
+     * @param provider 文件提供者
+     * @param cs       字符集
+     * @return 字符串
+     */
+    @NonNull
+    public static String readString(FunctionRObjectThrowable<ParcelFileDescriptor> provider,
+                                    Charset cs) throws Exception {
+        try (final BufferedReader reader = new BufferedReader(
+                new InputStreamReader(new ParcelFileDescriptor.AutoCloseInputStream(
+                        provider.execute()), cs))) {
+            final StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            return sb.toString();
+        }
+    }
+
+    /**
+     * 读取字符串内容
+     *
+     * @param provider 文件提供者
+     * @return 字符串
+     */
+    @NonNull
+    public static String readString(FunctionRObjectThrowable<ParcelFileDescriptor> provider)
+            throws Exception {
+        return readString(provider, StandardCharsets.UTF_8);
     }
 
     /**
