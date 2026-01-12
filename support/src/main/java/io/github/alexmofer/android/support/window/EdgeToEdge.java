@@ -17,7 +17,6 @@ package io.github.alexmofer.android.support.window;
 
 import android.app.Activity;
 import android.app.UiModeManager;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
@@ -31,6 +30,7 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 import io.github.alexmofer.android.support.function.FunctionRBooleanPObject;
+import io.github.alexmofer.android.support.utils.ConfigurationUtils;
 
 /**
  * 边到边
@@ -230,8 +230,7 @@ public final class EdgeToEdge {
 
         public static SystemBarStyle auto(@ColorInt int lightScrim, @ColorInt int darkScrim) {
             return new SystemBarStyle(lightScrim, darkScrim, UiModeManager.MODE_NIGHT_AUTO,
-                    resources -> (resources.getConfiguration().uiMode
-                            & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES);
+                    resources -> ConfigurationUtils.isNight(resources.getConfiguration()));
         }
 
         public static SystemBarStyle dark(@ColorInt int scrim) {

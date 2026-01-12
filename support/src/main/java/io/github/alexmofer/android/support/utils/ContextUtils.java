@@ -28,12 +28,9 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorRes;
-import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -62,8 +59,7 @@ public class ContextUtils {
      * @noinspection BooleanMethodIsAlwaysInverted
      */
     public static boolean isNight(Context context) {
-        return (context.getResources().getConfiguration().uiMode &
-                Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        return ConfigurationUtils.isNight(context.getResources().getConfiguration());
     }
 
     /**

@@ -2,7 +2,6 @@ package io.github.alexmofer.android.support.app;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -26,6 +25,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.util.TypedValueCompat;
 
+import io.github.alexmofer.android.support.utils.ContextUtils;
 import io.github.alexmofer.android.support.utils.TypedValueUtils;
 import io.github.alexmofer.android.support.widget.AvoidArea;
 import io.github.alexmofer.android.support.window.EdgeToEdge;
@@ -201,8 +201,7 @@ public class CenterDialogFragment extends AppCompatDialogFragment {
     @Nullable
     protected Drawable getContentBackground(@NonNull Context context) {
         final GradientDrawable background = new GradientDrawable();
-        if ((context.getResources().getConfiguration().uiMode
-                & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) {
+        if (ContextUtils.isNight(context)) {
             background.setColor(context.getColor(android.R.color.background_dark));
         } else {
             background.setColor(context.getColor(android.R.color.background_light));
