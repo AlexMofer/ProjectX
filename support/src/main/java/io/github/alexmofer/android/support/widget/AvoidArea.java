@@ -47,6 +47,136 @@ public class AvoidArea {
     }
 
     /**
+     * 回调
+     */
+    public interface Callback {
+        void onChanged(View view, int left, int top, int right, int bottom);
+    }
+
+    /**
+     * 以 Padding 形式处理系统避让区域
+     *
+     * @param view           View
+     * @param edge           待处理的边
+     * @param cutoutCritical 挖孔尺寸临界值，单位 DP，挖孔尺寸不超过临界值时仅采样 systemBars，挖孔尺寸超过临界值时采样 systemBars 与 displayCutout
+     * @param consumed       是否阻止传递，建议不阻止，阻止传递在 Android 10（API 29） 前后表现不一致，
+     *                       需要使用 {@link androidx.core.view.ViewGroupCompat#installCompatInsetsDispatch(View)} 处理
+     * @param supportRTL     是否支持从右到左布局
+     * @param callback       回调
+     */
+    public static void listen(View view, int edge, int cutoutCritical, boolean consumed,
+                              boolean supportRTL, Callback callback) {
+        ViewCompat.setOnApplyWindowInsetsListener(view,
+                (v, windowInsets) -> {
+                    final DisplayCutoutCompat cutout = windowInsets.getDisplayCutout();
+                    boolean ignoreCutout = true;
+                    if (cutout != null) {
+                        final List<Rect> boundingRects = cutout.getBoundingRects();
+                        final DisplayMetrics metrics = v.getResources().getDisplayMetrics();
+                        for (Rect rect : boundingRects) {
+                            final float width = TypedValueCompat.pxToDp(rect.width(), metrics);
+                            final float height = TypedValueCompat.pxToDp(rect.height(), metrics);
+                            if (width > cutoutCritical || height > cutoutCritical) {
+                                ignoreCutout = false;
+                                break;
+                            }
+                        }
+                    }
+                    final int type = ignoreCutout ? WindowInsetsCompat.Type.systemBars() :
+                            WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout();
+                    final Insets insets = windowInsets.getInsets(type);
+                    final int left;
+                    final int right;
+                    final int top = (edge & TOP) == TOP ? insets.top : 0;
+                    final int bottom = (edge & BOTTOM) == BOTTOM ? insets.bottom : 0;
+                    if (supportRTL && v.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+                        left = (edge & RIGHT) == RIGHT ? insets.left : 0;
+                        right = (edge & LEFT) == LEFT ? insets.right : 0;
+                    } else {
+                        left = (edge & LEFT) == LEFT ? insets.left : 0;
+                        right = (edge & RIGHT) == RIGHT ? insets.right : 0;
+                    }
+                    callback.onChanged(v, left, top, right, bottom);
+                    return consumed ? WindowInsetsCompat.CONSUMED : windowInsets;
+                });
+    }
+
+    /**
+     * 以 Padding 形式处理系统避让区域
+     *
+     * @param view           View
+     * @param edge           待处理的边
+     * @param cutoutCritical 挖孔尺寸临界值，单位 DP，挖孔尺寸不超过临界值时仅采样 systemBars，挖孔尺寸超过临界值时采样 systemBars 与 displayCutout
+     * @param consumed       是否阻止传递，建议不阻止，阻止传递在 Android 10（API 29） 前后表现不一致，
+     *                       需要使用 {@link androidx.core.view.ViewGroupCompat#installCompatInsetsDispatch(View)} 处理
+     * @param callback       回调
+     */
+    public static void listen(View view, int edge, int cutoutCritical, boolean consumed, Callback callback) {
+        listen(view, edge, cutoutCritical, consumed, true, callback);
+    }
+
+    /**
+     * 以 Padding 形式处理系统避让区域
+     *
+     * @param view     View
+     * @param edge     待处理的边
+     * @param callback 回调
+     */
+    public static void listen(View view, int edge, Callback callback) {
+        listen(view, edge, 50, false, callback);
+    }
+
+    /**
+     * 以 Padding 形式处理系统避让区域（忽略底部）
+     *
+     * @param view     View
+     * @param callback 回调
+     */
+    public static void listenIgnoreBottom(View view, Callback callback) {
+        listen(view, HORIZONTAL | TOP, callback);
+    }
+
+    /**
+     * 以 Padding 形式处理系统避让区域（忽略顶部）
+     *
+     * @param view     View
+     * @param callback 回调
+     */
+    public static void listenIgnoreTop(View view, Callback callback) {
+        listen(view, HORIZONTAL | BOTTOM, callback);
+    }
+
+    /**
+     * 以 Padding 形式处理系统避让区域（仅顶部）
+     *
+     * @param view     View
+     * @param callback 回调
+     */
+    public static void listenTop(View view, Callback callback) {
+        listen(view, TOP, callback);
+    }
+
+    /**
+     * 以 Padding 形式处理系统避让区域（仅底部）
+     *
+     * @param view     View
+     * @param callback 回调
+     */
+    public static void listenBottom(View view, Callback callback) {
+        listen(view, BOTTOM, callback);
+    }
+
+    /**
+     * 以 Padding 形式处理系统避让区域
+     *
+     * @param view     View
+     * @param callback 回调
+     */
+    public static void listenAll(View view, Callback callback) {
+        listen(view, ALL, callback);
+    }
+
+    /**
      * 以 Padding 形式处理系统避让区域
      *
      * @param view           View
@@ -58,38 +188,7 @@ public class AvoidArea {
      */
     public static void padding(View view, int edge, int cutoutCritical, boolean consumed,
                                boolean supportRTL) {
-        ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
-            final DisplayCutoutCompat cutout = windowInsets.getDisplayCutout();
-            boolean ignoreCutout = true;
-            if (cutout != null) {
-                final List<Rect> boundingRects = cutout.getBoundingRects();
-                final DisplayMetrics metrics = v.getResources().getDisplayMetrics();
-                for (Rect rect : boundingRects) {
-                    final float width = TypedValueCompat.pxToDp(rect.width(), metrics);
-                    final float height = TypedValueCompat.pxToDp(rect.height(), metrics);
-                    if (width > cutoutCritical || height > cutoutCritical) {
-                        ignoreCutout = false;
-                        break;
-                    }
-                }
-            }
-            final int type = ignoreCutout ? WindowInsetsCompat.Type.systemBars() :
-                    WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout();
-            final Insets insets = windowInsets.getInsets(type);
-            final int left;
-            final int right;
-            final int top = (edge & TOP) == TOP ? insets.top : 0;
-            final int bottom = (edge & BOTTOM) == BOTTOM ? insets.bottom : 0;
-            if (supportRTL && v.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
-                left = (edge & RIGHT) == RIGHT ? insets.left : 0;
-                right = (edge & LEFT) == LEFT ? insets.right : 0;
-            } else {
-                left = (edge & LEFT) == LEFT ? insets.left : 0;
-                right = (edge & RIGHT) == RIGHT ? insets.right : 0;
-            }
-            v.setPadding(left, top, right, bottom);
-            return consumed ? WindowInsetsCompat.CONSUMED : windowInsets;
-        });
+        listen(view, edge, cutoutCritical, consumed, supportRTL, View::setPadding);
     }
 
     /**
@@ -121,7 +220,7 @@ public class AvoidArea {
      * @param view View
      */
     public static void paddingIgnoreBottom(View view) {
-        padding(view, LEFT | TOP | RIGHT);
+        padding(view, HORIZONTAL | TOP);
     }
 
     /**
@@ -130,7 +229,25 @@ public class AvoidArea {
      * @param view View
      */
     public static void paddingIgnoreTop(View view) {
-        padding(view, LEFT | RIGHT | BOTTOM);
+        padding(view, HORIZONTAL | BOTTOM);
+    }
+
+    /**
+     * 以 Padding 形式处理系统避让区域（仅顶部）
+     *
+     * @param view View
+     */
+    public static void paddingTop(View view) {
+        padding(view, TOP);
+    }
+
+    /**
+     * 以 Padding 形式处理系统避让区域（仅底部）
+     *
+     * @param view View
+     */
+    public static void paddingBottom(View view) {
+        padding(view, BOTTOM);
     }
 
     /**
@@ -139,7 +256,7 @@ public class AvoidArea {
      * @param view View
      */
     public static void paddingAll(View view) {
-        padding(view, LEFT | TOP | RIGHT | BOTTOM);
+        padding(view, ALL);
     }
 
     /**

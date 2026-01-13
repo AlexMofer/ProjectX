@@ -76,22 +76,6 @@ public final class EdgeToEdge {
         Impl.adjustLayoutInDisplayCutoutMode(window);
     }
 
-    public static void enable(Activity activity, SystemBarStyle statusBarStyle,
-                              SystemBarStyle navigationBarStyle) {
-        final Window window = activity.getWindow();
-        final View view = window.getDecorView();
-        final boolean statusBarIsDark = statusBarStyle.detectDarkMode.execute(view.getResources());
-        final boolean navigationBarIsDark =
-                navigationBarStyle.detectDarkMode.execute(view.getResources());
-        enable(statusBarStyle, navigationBarStyle, window, view, statusBarIsDark,
-                navigationBarIsDark);
-    }
-
-    public static void enable(Activity activity) {
-        enable(activity, SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
-                SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT));
-    }
-
     public static void enable(Window window, SystemBarStyle statusBarStyle,
                               SystemBarStyle navigationBarStyle) {
         final View view = window.getDecorView();
@@ -106,6 +90,33 @@ public final class EdgeToEdge {
     public static void enable(Window window) {
         enable(window, SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
                 SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT));
+    }
+
+    public static void enableWithDarkStatusBar(Window window) {
+        enable(window, SystemBarStyle.dark(Color.TRANSPARENT),
+                SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT));
+    }
+
+    public static void enableWithOpaqueNavigationBar(Window window) {
+        enable(window, SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
+                SystemBarStyle.auto(DefaultLightScrim, DefaultDarkScrim));
+    }
+
+    public static void enable(Activity activity, SystemBarStyle statusBarStyle,
+                              SystemBarStyle navigationBarStyle) {
+        enable(activity.getWindow(), statusBarStyle, navigationBarStyle);
+    }
+
+    public static void enable(Activity activity) {
+        enable(activity.getWindow());
+    }
+
+    public static void enableWithDarkStatusBar(Activity activity) {
+        enableWithDarkStatusBar(activity.getWindow());
+    }
+
+    public static void enableWithOpaqueNavigationBar(Activity activity) {
+        enableWithOpaqueNavigationBar(activity.getWindow());
     }
 
     private interface Compat {
