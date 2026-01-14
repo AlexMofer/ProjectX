@@ -15,11 +15,13 @@
  */
 package io.github.alexmofer.android.support.window;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 
 import androidx.annotation.GravityInt;
 import androidx.annotation.IntDef;
@@ -31,6 +33,7 @@ import androidx.core.view.DisplayCutoutCompat;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
@@ -77,6 +80,19 @@ public final class AvoidAreaCalculator extends ViewModel {
     @NonNull
     public static AvoidAreaCalculator getInstance(@NonNull FragmentActivity activity) {
         return getInstance(activity, activity.getWindow().getDecorView());
+    }
+
+    @NonNull
+    public static AvoidAreaCalculator getInstance(@NonNull DialogFragment fragment) {
+        View view = null;
+        final Dialog dialog = fragment.getDialog();
+        if (dialog != null) {
+            final Window window = dialog.getWindow();
+            if (window != null) {
+                view = window.getDecorView();
+            }
+        }
+        return getInstance(fragment, view);
     }
 
     private void onStart(@Nullable View view) {
