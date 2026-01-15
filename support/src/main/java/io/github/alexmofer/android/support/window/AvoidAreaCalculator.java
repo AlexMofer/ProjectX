@@ -295,6 +295,7 @@ public final class AvoidAreaCalculator extends ViewModel {
          * <p>会智能忽略位于中间的挖孔区域
          *
          * @param context Context
+         * @param size    尺寸
          * @return 条件集
          */
         public static Conditions newTopStart(@NonNull Context context, float size) {
@@ -310,11 +311,31 @@ public final class AvoidAreaCalculator extends ViewModel {
          * <p>会智能忽略位于中间的挖孔区域
          *
          * @param context Context
+         * @param size    尺寸
          * @return 条件集
          */
         public static Conditions newTopEnd(@NonNull Context context, float size) {
             return new Conditions(context)
                     .setTop(NormalCondition.newTop())
+                    .setEnd(new MaxCondition(
+                            NormalCondition.newEndSystemBars(),
+                            DisplayCutoutIgnoreByCoverCondition.newTopEnd(context, size)));
+        }
+
+        /**
+         * 新建顶部栏避让条件
+         * <p>会智能忽略位于中间的挖孔区域
+         *
+         * @param context Context
+         * @param size    尺寸
+         * @return 条件集
+         */
+        public static Conditions newTopBar(@NonNull Context context, float size) {
+            return new Conditions(context)
+                    .setTop(NormalCondition.newTop())
+                    .setStart(new MaxCondition(
+                            NormalCondition.newStartSystemBars(),
+                            DisplayCutoutIgnoreByCoverCondition.newTopStart(context, size)))
                     .setEnd(new MaxCondition(
                             NormalCondition.newEndSystemBars(),
                             DisplayCutoutIgnoreByCoverCondition.newTopEnd(context, size)));
