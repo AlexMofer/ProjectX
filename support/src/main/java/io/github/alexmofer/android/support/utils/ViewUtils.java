@@ -15,10 +15,13 @@
  */
 package io.github.alexmofer.android.support.utils;
 
+import android.graphics.Rect;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.view.WindowInsetsCompat;
@@ -133,5 +136,34 @@ public class ViewUtils {
             return ((ViewGroup.MarginLayoutParams) lp).bottomMargin;
         }
         return 0;
+    }
+
+    /**
+     * 获取子 View 相对于父 View 的边框
+     *
+     * @param parent 父 View 或者父父 View
+     * @param child  子 View 或者子子 View
+     * @param bounds 边框
+     * @return 获取成功时返回 true，无父子关系时返回 false
+     */
+    public static boolean getChildBounds(@NonNull View parent, @NonNull View child,
+                                         @NonNull Rect bounds) {
+        int x = child.getLeft();
+        int y = child.getTop();
+        ViewParent p = child.getParent();
+        while (true) {
+            if (p == parent) {
+                bounds.set(x, y, x + child.getWidth(), y + child.getHeight());
+                return true;
+            }
+            if (p instanceof View) {
+                final View container = (View) p;
+                x += container.getLeft();
+                y += container.getTop();
+                p = container.getParent();
+                continue;
+            }
+            return false;
+        }
     }
 }
