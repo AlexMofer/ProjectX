@@ -26,6 +26,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.view.WindowInsetsCompat;
 
+import io.github.alexmofer.android.support.function.FunctionRIntPIntInt;
+
 /**
  * View 工具
  * Created by Alex on 2022/12/13.
@@ -165,5 +167,39 @@ public class ViewUtils {
             }
             return false;
         }
+    }
+
+    /**
+     * 计算尺寸
+     *
+     * @param size        需要的尺寸
+     * @param measureSpec 给出的测量尺寸
+     * @param calculator  AT_MOST 模式下的计算方式，传空时使用二者的小值
+     * @return 布局尺寸
+     */
+    public static int getSize(int size, int measureSpec, @Nullable FunctionRIntPIntInt calculator) {
+        final int mode = View.MeasureSpec.getMode(measureSpec);
+        switch (mode) {
+            case View.MeasureSpec.AT_MOST:
+                return calculator == null ?
+                        Math.min(size, View.MeasureSpec.getSize(measureSpec)) :
+                        calculator.execute(size, View.MeasureSpec.getSize(measureSpec));
+            case View.MeasureSpec.EXACTLY:
+                return View.MeasureSpec.getSize(measureSpec);
+            case View.MeasureSpec.UNSPECIFIED:
+            default:
+                return size;
+        }
+    }
+
+    /**
+     * 计算尺寸
+     *
+     * @param size        需要的尺寸
+     * @param measureSpec 给出的测量尺寸
+     * @return 布局尺寸
+     */
+    public static int getSize(int size, int measureSpec) {
+        return getSize(size, measureSpec, null);
     }
 }
