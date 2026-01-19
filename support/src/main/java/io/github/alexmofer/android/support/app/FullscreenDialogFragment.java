@@ -40,7 +40,7 @@ public class FullscreenDialogFragment extends CenterDialogFragment {
      * 分离
      *
      * @param savedInstanceState 保存的状态
-     * @return 返回 true 时进入 Sheet 模式，反之进入居中对话框模式
+     * @return 返回 true 时进入全屏对话框模式，反之进入居中对话框模式
      */
     protected boolean onBranch(@Nullable Bundle savedInstanceState) {
         return true;
