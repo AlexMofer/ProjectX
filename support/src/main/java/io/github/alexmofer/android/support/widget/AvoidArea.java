@@ -29,10 +29,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import io.github.alexmofer.android.support.window.AvoidAreaCalculator;
+import io.github.alexmofer.android.support.window.AvoidAreaCalculatorViewModel;
+
 /**
  * 避让区域
+ * 使用 {@link AvoidAreaCalculator} 替代。
+ * <p>
  * Created by Alex on 2025/5/15.
+ *
+ * @see AvoidAreaCalculator
+ * @see AvoidAreaCalculatorViewModel
  */
+@Deprecated
 public class AvoidArea {
     public static final int LEFT = 1;
     public static final int TOP = 1 << 1;

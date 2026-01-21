@@ -16,7 +16,6 @@
 package io.github.alexmofer.android.support.graphics.drawable;
 
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -38,7 +37,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 
 import io.github.alexmofer.android.support.R;
-import io.github.alexmofer.android.support.utils.DrawableUtils;
+import io.github.alexmofer.android.support.utils.TypedArrayUtils;
 
 /**
  * 旋转Drawable
@@ -140,28 +139,28 @@ public class AnimatedRotateDrawable extends DrawableWrapperCompat implements Ani
                         @NonNull AttributeSet attrs, @Nullable Resources.Theme theme)
             throws IOException, XmlPullParserException {
         super.inflate(r, parser, attrs, theme);
-        //noinspection resource
-        final TypedArray custom = DrawableUtils.obtainAttributes(r, theme, attrs,
-                R.styleable.AnimatedRotateDrawable);
-        setVisible(custom.getBoolean(R.styleable.AnimatedRotateDrawable_android_visible, isVisible()),
-                true);
-        setDrawable(custom.getDrawable(R.styleable.AnimatedRotateDrawable_android_drawable));
-        if (custom.hasValue(R.styleable.AnimatedRotateDrawable_android_pivotX)) {
-            final TypedValue tv = custom.peekValue(R.styleable.AnimatedRotateDrawable_android_pivotX);
-            mPivotXRel = tv.type == TypedValue.TYPE_FRACTION;
-            mPivotX = mPivotXRel ? tv.getFraction(1.0f, 1.0f) : tv.getFloat();
-        }
-        if (custom.hasValue(R.styleable.AnimatedRotateDrawable_android_pivotY)) {
-            final TypedValue tv = custom.peekValue(R.styleable.AnimatedRotateDrawable_android_pivotY);
-            mPivotYRel = tv.type == TypedValue.TYPE_FRACTION;
-            mPivotY = mPivotYRel ? tv.getFraction(1.0f, 1.0f) : tv.getFloat();
-        }
-        setFramesCount(custom.getInt(R.styleable.AnimatedRotateDrawable_android_progress,
-                mFramesCount));
-        setFrameDuration(custom.getInt(R.styleable.AnimatedRotateDrawable_android_duration,
-                mFrameDuration));
-        setReverse(custom.getInt(R.styleable.AnimatedRotateDrawable_android_repeatMode, 1) == 2);
-        custom.recycle();
+        TypedArrayUtils.handleTypedArray(() -> TypedArrayUtils.obtainAttributes(r, theme, attrs,
+                        R.styleable.AnimatedRotateDrawable),
+                custom -> {
+                    setVisible(custom.getBoolean(R.styleable.AnimatedRotateDrawable_android_visible, isVisible()),
+                            true);
+                    setDrawable(custom.getDrawable(R.styleable.AnimatedRotateDrawable_android_drawable));
+                    if (custom.hasValue(R.styleable.AnimatedRotateDrawable_android_pivotX)) {
+                        final TypedValue tv = custom.peekValue(R.styleable.AnimatedRotateDrawable_android_pivotX);
+                        mPivotXRel = tv.type == TypedValue.TYPE_FRACTION;
+                        mPivotX = mPivotXRel ? tv.getFraction(1.0f, 1.0f) : tv.getFloat();
+                    }
+                    if (custom.hasValue(R.styleable.AnimatedRotateDrawable_android_pivotY)) {
+                        final TypedValue tv = custom.peekValue(R.styleable.AnimatedRotateDrawable_android_pivotY);
+                        mPivotYRel = tv.type == TypedValue.TYPE_FRACTION;
+                        mPivotY = mPivotYRel ? tv.getFraction(1.0f, 1.0f) : tv.getFloat();
+                    }
+                    setFramesCount(custom.getInt(R.styleable.AnimatedRotateDrawable_android_progress,
+                            mFramesCount));
+                    setFrameDuration(custom.getInt(R.styleable.AnimatedRotateDrawable_android_duration,
+                            mFrameDuration));
+                    setReverse(custom.getInt(R.styleable.AnimatedRotateDrawable_android_repeatMode, 1) == 2);
+                });
     }
 
     /**

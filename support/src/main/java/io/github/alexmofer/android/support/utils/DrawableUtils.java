@@ -15,66 +15,148 @@
  */
 package io.github.alexmofer.android.support.utils;
 
-import android.content.res.Resources;
-import android.content.res.TypedArray;
+import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.util.AttributeSet;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 
 import androidx.annotation.ColorInt;
-import androidx.annotation.IntRange;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 /**
  * Drawable 工具
  * Created by Alex on 2024/1/18.
  */
-public class DrawableUtils {
+public final class DrawableUtils {
 
     private DrawableUtils() {
         //no instance
     }
 
     /**
-     * Obtains styled attributes from the theme, if available, or unstyled
-     * resources if the theme is null.
+     * 新建分割器
+     *
+     * @param color  颜色
+     * @param width  宽度，-1表示占满
+     * @param height 高度，-1表示占满
+     * @return 分割器
      */
-    @NonNull
-    public static TypedArray obtainAttributes(@NonNull Resources res,
-                                              @Nullable Resources.Theme theme,
-                                              @NonNull AttributeSet set,
-                                              @NonNull int[] attrs) {
-        if (theme == null) {
-            return res.obtainAttributes(set, attrs);
-        }
-        return theme.obtainStyledAttributes(set, attrs, 0, 0);
+    public static GradientDrawable newDivider(@ColorInt int color, int width, int height) {
+        final GradientDrawable drawable = new GradientDrawable();
+        drawable.setColor(color);
+        drawable.setSize(width, height);
+        return drawable;
     }
 
     /**
-     * 应用透明
+     * 新建垂直分割器
+     *
+     * @param color  颜色
+     * @param height 高度
+     * @return 垂直分割器
+     */
+    public static GradientDrawable newDividerVertical(@ColorInt int color, int height) {
+        return newDivider(color, -1, height);
+    }
+
+    /**
+     * 新建透明垂直分割器
+     *
+     * @param height 高度
+     * @return 垂直分割器
+     */
+    public static GradientDrawable newDividerVertical(int height) {
+        return newDividerVertical(Color.TRANSPARENT, height);
+    }
+
+    /**
+     * 新建水平分割器
      *
      * @param color 颜色
-     * @param alpha 透明度
-     * @return 应用透明后的颜色
+     * @param width 宽度
+     * @return 水平分割器
      */
-    public static int applyAlpha(@ColorInt int color, @IntRange(from = 0, to = 255) int alpha) {
-        if (alpha == 255) {
-            return color;
+    public static GradientDrawable newDividerHorizontal(@ColorInt int color, int width) {
+        return newDivider(color, width, -1);
+    }
+
+    /**
+     * 新建透明水平分割器
+     *
+     * @param width 宽度
+     * @return 水平分割器
+     */
+    public static GradientDrawable newDividerHorizontal(int width) {
+        return newDividerHorizontal(Color.TRANSPARENT, width);
+    }
+
+    /**
+     * 新建水平渐变
+     *
+     * @param colorStart 起始颜色
+     * @param colorEnd   结束颜色
+     * @return 水平渐变
+     */
+    public static GradientDrawable newGradientHorizontal(@ColorInt int colorStart,
+                                                         @ColorInt int colorEnd) {
+        final GradientDrawable drawable = new GradientDrawable();
+        drawable.setColors(new int[]{colorStart, colorEnd});
+        drawable.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
+        return drawable;
+    }
+
+    /**
+     * 新建垂直渐变
+     *
+     * @param colorStart 起始颜色
+     * @param colorEnd   结束颜色
+     * @return 垂直渐变
+     */
+    public static GradientDrawable newGradientVertical(@ColorInt int colorStart,
+                                                       @ColorInt int colorEnd) {
+        final GradientDrawable drawable = new GradientDrawable();
+        drawable.setColors(new int[]{colorStart, colorEnd});
+        return drawable;
+    }
+
+    public static GradientDrawable newEmpty(int width, int height) {
+        final GradientDrawable drawable = new GradientDrawable();
+        drawable.setSize(width, height);
+        return drawable;
+    }
+
+    @NonNull
+    public static Drawable setTintList(@NonNull Drawable drawable, @Nullable ColorStateList tint) {
+        final Drawable wrapped = DrawableCompat.wrap(drawable).mutate();
+        wrapped.setTintList(tint);
+        return wrapped;
+    }
+
+    @NonNull
+    public static Drawable setTint(@NonNull Drawable drawable, @ColorInt int tintColor) {
+        final Drawable wrapped = DrawableCompat.wrap(drawable).mutate();
+        wrapped.setTint(tintColor);
+        return wrapped;
+    }
+
+    @Nullable
+    public static Drawable getTintedDrawable(Context context, @DrawableRes int id,
+                                             @Nullable ColorStateList tint) {
+        final Drawable drawable = AppCompatResources.getDrawable(context, id);
+        if (drawable == null) {
+            return null;
         }
-        final int r = Color.red(color);
-        final int b = Color.blue(color);
-        final int g = Color.green(color);
-        if (alpha == 0) {
-            return Color.argb(0, r, b, g);
-        }
-        final int a = Color.alpha(color);
-        if (a == 255) {
-            return Color.argb(alpha, r, b, g);
-        }
-        if (a == 0) {
-            return Color.argb(0, r, b, g);
-        }
-        return Color.argb(Math.max(0, Math.min(255,
-                Math.round((a / 255f) * (alpha / 255f) * 255))), r, b, g);
+        return setTintList(drawable, tint);
+    }
+
+    @Nullable
+    public static Drawable getTintedDrawable(Context context, @DrawableRes int id,
+                                             @ColorInt int color) {
+        return getTintedDrawable(context, id, ColorStateList.valueOf(color));
     }
 }

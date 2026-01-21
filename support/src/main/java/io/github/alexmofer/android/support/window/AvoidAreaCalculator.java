@@ -15,13 +15,12 @@
  */
 package io.github.alexmofer.android.support.window;
 
-import android.app.Dialog;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
 
 import androidx.annotation.GravityInt;
 import androidx.annotation.IntDef;
@@ -30,16 +29,10 @@ import androidx.annotation.Nullable;
 import androidx.core.graphics.Insets;
 import androidx.core.util.TypedValueCompat;
 import androidx.core.view.DisplayCutoutCompat;
-import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -54,7 +47,8 @@ import io.github.alexmofer.android.support.function.FunctionRInt;
  * 避让区域计算器
  * Created by Alex on 2026/1/14.
  */
-public final class AvoidAreaCalculator extends ViewModel {
+@SuppressLint("RtlHardcoded")
+public final class AvoidAreaCalculator {
     public static final int LEFT = 1;
     public static final int TOP = 1 << 1;
     public static final int RIGHT = 1 << 2;
@@ -65,55 +59,25 @@ public final class AvoidAreaCalculator extends ViewModel {
 
     private final MutableLiveData<WindowInsetsCompat> mWindowInsets =
             new MutableLiveData<>(new WindowInsetsCompat(null));
-    private final OnApplyWindowInsetsListener mListener = this::onApplyWindowInsets;
-    private View mView;
 
-    @NonNull
-    public static AvoidAreaCalculator getInstance(@NonNull ViewModelStoreOwner owner,
-                                                  @Nullable View view) {
-        final AvoidAreaCalculator calculator =
-                new ViewModelProvider(owner).get(AvoidAreaCalculator.class);
-        calculator.onStart(view);
-        return calculator;
+    public AvoidAreaCalculator() {
+    }
+
+    public AvoidAreaCalculator(@NonNull View view) {
+        setView(view);
+    }
+
+    /**
+     * 设置 View
+     *
+     * @param view View
+     */
+    public void setView(@NonNull View view) {
+        ViewCompat.setOnApplyWindowInsetsListener(view, this::onApplyWindowInsets);
     }
 
     @NonNull
-    public static AvoidAreaCalculator getInstance(@NonNull FragmentActivity activity) {
-        return getInstance(activity, activity.getWindow().getDecorView());
-    }
-
-    @NonNull
-    public static AvoidAreaCalculator getInstance(@NonNull DialogFragment fragment) {
-        View view = null;
-        final Dialog dialog = fragment.getDialog();
-        if (dialog != null) {
-            final Window window = dialog.getWindow();
-            if (window != null) {
-                view = window.getDecorView();
-            }
-        }
-        return getInstance(fragment, view);
-    }
-
-    private void onStart(@Nullable View view) {
-        if (view == null || mView == view) {
-            return;
-        }
-        if (mView != null) {
-            ViewCompat.setOnApplyWindowInsetsListener(mView, null);
-        }
-        mView = view;
-        ViewCompat.setOnApplyWindowInsetsListener(mView, mListener);
-    }
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        mView = null;
-    }
-
-    @NonNull
-    private WindowInsetsCompat onApplyWindowInsets(@NonNull View v,
+    private WindowInsetsCompat onApplyWindowInsets(@NonNull View unused,
                                                    @NonNull WindowInsetsCompat windowInsets) {
         mWindowInsets.setValue(new WindowInsetsCompat(windowInsets));
         return windowInsets;
