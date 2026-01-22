@@ -40,8 +40,10 @@ public final class StateUtils {
     public static final int[] STATE_NONE = new int[0];
     public static final int[] STATE_SELECTED = new int[]{android.R.attr.state_selected};
     public static final int[] STATE_ACTIVATED = new int[]{android.R.attr.state_activated};
+    public static final int[] STATE_ENABLED = new int[]{android.R.attr.state_enabled};
     public static final int[][] STATES_SELECTED = new int[][]{STATE_SELECTED, STATE_NONE};
     public static final int[][] STATES_ACTIVATED = new int[][]{STATE_ACTIVATED, STATE_NONE};
+    public static final int[][] STATES_ENABLED = new int[][]{STATE_ENABLED, STATE_NONE};
 
     private StateUtils() {
         //no instance
@@ -59,32 +61,47 @@ public final class StateUtils {
     }
 
     @NonNull
-    public static StateListDrawable newDrawableSelectable(@NonNull Drawable selected,
-                                                          @NonNull Drawable fallback) {
+    public static StateListDrawable newDrawableSelected(@NonNull Drawable selected,
+                                                        @NonNull Drawable fallback) {
         return newDrawable(STATES_SELECTED, selected, fallback);
     }
 
     @NonNull
-    public static StateListDrawable newDrawableSelectable(Context context,
-                                                          @DrawableRes int selected,
-                                                          @DrawableRes int fallback) {
-        return newDrawableSelectable(
+    public static StateListDrawable newDrawableSelected(Context context,
+                                                        @DrawableRes int selected,
+                                                        @DrawableRes int fallback) {
+        return newDrawableSelected(
                 Objects.requireNonNull(AppCompatResources.getDrawable(context, selected)),
                 Objects.requireNonNull(AppCompatResources.getDrawable(context, fallback)));
     }
 
     @NonNull
-    public static StateListDrawable newDrawableActivatable(@NonNull Drawable activated,
-                                                           @NonNull Drawable fallback) {
+    public static StateListDrawable newDrawableActivated(@NonNull Drawable activated,
+                                                         @NonNull Drawable fallback) {
         return newDrawable(STATES_ACTIVATED, activated, fallback);
     }
 
     @NonNull
-    public static StateListDrawable newDrawableActivatable(Context context,
-                                                           @DrawableRes int activated,
-                                                           @DrawableRes int fallback) {
-        return newDrawableActivatable(
+    public static StateListDrawable newDrawableActivated(Context context,
+                                                         @DrawableRes int activated,
+                                                         @DrawableRes int fallback) {
+        return newDrawableActivated(
                 Objects.requireNonNull(AppCompatResources.getDrawable(context, activated)),
+                Objects.requireNonNull(AppCompatResources.getDrawable(context, fallback)));
+    }
+
+    @NonNull
+    public static StateListDrawable newDrawableEnabled(@NonNull Drawable enabled,
+                                                       @NonNull Drawable fallback) {
+        return newDrawable(STATES_ENABLED, enabled, fallback);
+    }
+
+    @NonNull
+    public static StateListDrawable newDrawableEnabled(Context context,
+                                                       @DrawableRes int enabled,
+                                                       @DrawableRes int fallback) {
+        return newDrawableEnabled(
+                Objects.requireNonNull(AppCompatResources.getDrawable(context, enabled)),
                 Objects.requireNonNull(AppCompatResources.getDrawable(context, fallback)));
     }
 
@@ -95,48 +112,71 @@ public final class StateUtils {
     }
 
     @NonNull
-    public static ColorStateList newColorSelectable(@ColorInt int selected,
-                                                    @ColorInt int fallback) {
+    public static ColorStateList newColorSelected(@ColorInt int selected,
+                                                  @ColorInt int fallback) {
         return newColor(STATES_SELECTED, selected, fallback);
     }
 
     @NonNull
-    public static ColorStateList newColorSelectable(Context context,
-                                                    @ColorRes int selected,
-                                                    @ColorRes int fallback) {
-        return newColorSelectable(ContextCompat.getColor(context, selected),
+    public static ColorStateList newColorSelected(Context context,
+                                                  @ColorRes int selected,
+                                                  @ColorRes int fallback) {
+        return newColorSelected(ContextCompat.getColor(context, selected),
                 ContextCompat.getColor(context, fallback));
     }
 
     @NonNull
-    public static ColorStateList newColorActivatable(@ColorInt int activated,
-                                                     @ColorInt int fallback) {
+    public static ColorStateList newColorActivated(@ColorInt int activated,
+                                                   @ColorInt int fallback) {
         return newColor(STATES_ACTIVATED, activated, fallback);
     }
 
     @NonNull
-    public static ColorStateList newColorActivatable(Context context,
-                                                     @ColorRes int activated,
-                                                     @ColorRes int fallback) {
-        return newColorActivatable(ContextCompat.getColor(context, activated),
+    public static ColorStateList newColorActivated(Context context,
+                                                   @ColorRes int activated,
+                                                   @ColorRes int fallback) {
+        return newColorActivated(ContextCompat.getColor(context, activated),
                 ContextCompat.getColor(context, fallback));
     }
 
     @NonNull
-    public static Drawable newColorDrawableSelectable(@ColorInt int selected,
-                                                      @ColorInt int fallback) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            return new ColorStateListDrawable(newColorSelectable(selected, fallback));
-        }
-        return newDrawableSelectable(new ColorDrawable(selected), new ColorDrawable(fallback));
+    public static ColorStateList newColorEnabled(@ColorInt int enabled,
+                                                 @ColorInt int fallback) {
+        return newColor(STATES_ENABLED, enabled, fallback);
     }
 
     @NonNull
-    public static Drawable newColorDrawableActivatable(@ColorInt int activated,
-                                                       @ColorInt int fallback) {
+    public static ColorStateList newColorEnabled(Context context,
+                                                 @ColorRes int enabled,
+                                                 @ColorRes int fallback) {
+        return newColorEnabled(ContextCompat.getColor(context, enabled),
+                ContextCompat.getColor(context, fallback));
+    }
+
+    @NonNull
+    public static Drawable newColorDrawableSelected(@ColorInt int selected,
+                                                    @ColorInt int fallback) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            return new ColorStateListDrawable(newColorActivatable(activated, fallback));
+            return new ColorStateListDrawable(newColorSelected(selected, fallback));
         }
-        return newDrawableActivatable(new ColorDrawable(activated), new ColorDrawable(fallback));
+        return newDrawableSelected(new ColorDrawable(selected), new ColorDrawable(fallback));
+    }
+
+    @NonNull
+    public static Drawable newColorDrawableActivated(@ColorInt int activated,
+                                                     @ColorInt int fallback) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return new ColorStateListDrawable(newColorActivated(activated, fallback));
+        }
+        return newDrawableActivated(new ColorDrawable(activated), new ColorDrawable(fallback));
+    }
+
+    @NonNull
+    public static Drawable newColorDrawableEnabled(@ColorInt int enabled,
+                                                   @ColorInt int fallback) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return new ColorStateListDrawable(newColorEnabled(enabled, fallback));
+        }
+        return newDrawableEnabled(new ColorDrawable(enabled), new ColorDrawable(fallback));
     }
 }
