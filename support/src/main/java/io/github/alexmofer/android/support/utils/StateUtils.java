@@ -37,13 +37,16 @@ import java.util.Objects;
  * Created by Alex on 2026/1/21.
  */
 public final class StateUtils {
-    public static final int[] STATE_NONE = new int[0];
+    public static final int[] STATE_FALLBACK = new int[0];
     public static final int[] STATE_SELECTED = new int[]{android.R.attr.state_selected};
     public static final int[] STATE_ACTIVATED = new int[]{android.R.attr.state_activated};
     public static final int[] STATE_ENABLED = new int[]{android.R.attr.state_enabled};
-    public static final int[][] STATES_SELECTED = new int[][]{STATE_SELECTED, STATE_NONE};
-    public static final int[][] STATES_ACTIVATED = new int[][]{STATE_ACTIVATED, STATE_NONE};
-    public static final int[][] STATES_ENABLED = new int[][]{STATE_ENABLED, STATE_NONE};
+    public static final int[] STATE_DISABLED = new int[]{-android.R.attr.state_enabled};
+    public static final int[] STATE_FOCUSED = new int[]{android.R.attr.state_focused};
+    public static final int[][] STATES_SELECTED = new int[][]{STATE_SELECTED, STATE_FALLBACK};
+    public static final int[][] STATES_ACTIVATED = new int[][]{STATE_ACTIVATED, STATE_FALLBACK};
+    public static final int[][] STATES_ENABLED = new int[][]{STATE_ENABLED, STATE_FALLBACK};
+    public static final int[][] STATES_FOCUSED_DISABLED = new int[][]{STATE_FOCUSED, STATE_DISABLED, STATE_FALLBACK};
 
     private StateUtils() {
         //no instance
@@ -103,6 +106,13 @@ public final class StateUtils {
         return newDrawableEnabled(
                 Objects.requireNonNull(AppCompatResources.getDrawable(context, enabled)),
                 Objects.requireNonNull(AppCompatResources.getDrawable(context, fallback)));
+    }
+
+    @NonNull
+    public static StateListDrawable newDrawableFocusedDisable(@NonNull Drawable focused,
+                                                              @NonNull Drawable disable,
+                                                              @NonNull Drawable fallback) {
+        return newDrawable(STATES_FOCUSED_DISABLED, focused, disable, fallback);
     }
 
     @NonNull
