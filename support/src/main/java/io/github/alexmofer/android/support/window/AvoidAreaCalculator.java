@@ -152,17 +152,33 @@ public final class AvoidAreaCalculator {
     /**
      * 计算顶部
      *
+     * @param owner     LifecycleOwner
+     * @param ignoreIME 是否忽略输入法
+     * @param callback  回调
+     */
+    public void calculateBottom(@NonNull LifecycleOwner owner,
+                                boolean ignoreIME,
+                                @NonNull FunctionPInt callback) {
+        calculate(owner, windowInsets -> {
+            final Insets insets = windowInsets.getInsets(
+                    ignoreIME ?
+                            WindowInsetsCompat.Type.systemBars()
+                                    | WindowInsetsCompat.Type.displayCutout() :
+                            WindowInsetsCompat.Type.systemBars()
+                                    | WindowInsetsCompat.Type.displayCutout() // 一般底部不会挖孔，此处包含也没有问题
+                                    | WindowInsetsCompat.Type.ime());
+            callback.execute(insets.bottom);
+        });
+    }
+
+    /**
+     * 计算顶部
+     *
      * @param owner    LifecycleOwner
      * @param callback 回调
      */
     public void calculateBottom(@NonNull LifecycleOwner owner, @NonNull FunctionPInt callback) {
-        calculate(owner, windowInsets -> {
-            final Insets insets = windowInsets.getInsets(
-                    WindowInsetsCompat.Type.systemBars()
-                            | WindowInsetsCompat.Type.displayCutout() // 一般底部不会挖孔，此处包含也没有问题
-                            | WindowInsetsCompat.Type.ime());
-            callback.execute(insets.bottom);
-        });
+        calculateBottom(owner, false, callback);
     }
 
     @Retention(RetentionPolicy.SOURCE)
