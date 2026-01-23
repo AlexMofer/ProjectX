@@ -32,8 +32,8 @@ import io.github.alexmofer.android.support.function.FunctionRIntPIntInt;
  * View 工具
  * Created by Alex on 2022/12/13.
  */
-public class ViewUtils {
-
+public final class ViewUtils {
+    public static final int MAX_SIZE = (1 << 30) - 1;// View.MeasureSpec.MODE_SHIFT
     private ViewUtils() {
         //no instance
     }
