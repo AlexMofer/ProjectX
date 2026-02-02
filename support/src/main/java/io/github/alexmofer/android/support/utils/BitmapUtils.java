@@ -20,10 +20,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Size;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.exifinterface.media.ExifInterface;
 
 import java.io.File;
@@ -35,7 +37,7 @@ import java.nio.file.Files;
  * 位图工具
  * Created by Alex on 2024/4/16.
  */
-public class BitmapUtils {
+public final class BitmapUtils {
 
     private BitmapUtils() {
         //no instance
@@ -74,6 +76,19 @@ public class BitmapUtils {
     /**
      * 判断是否为位图
      *
+     * @param input 输入流
+     * @return 为位图时返回 true
+     */
+    public static boolean isBitmap(@NonNull InputStream input) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(input, null, options);
+        return options.outWidth > 0 && options.outHeight > 0;
+    }
+
+    /**
+     * 判断是否为位图
+     *
      * @param context Context
      * @param uri     Uri
      * @return 为位图时返回 true
@@ -85,10 +100,7 @@ public class BitmapUtils {
             if (input == null) {
                 throw new Exception("Cannot open uri.");
             }
-            final BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(input, null, options);
-            return options.outWidth > 0 && options.outHeight > 0;
+            return isBitmap(input);
         }
     }
 
@@ -99,6 +111,7 @@ public class BitmapUtils {
      * @return 为位图时返回 true
      * @throws Exception 其他异常
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static boolean isBitmap(File file) throws Exception {
         if (!file.exists()) {
             return false;
@@ -107,22 +120,104 @@ public class BitmapUtils {
             return false;
         }
         try (final InputStream input = Files.newInputStream(file.toPath())) {
-            final BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(input, null, options);
-            return options.outWidth > 0 && options.outHeight > 0;
+            return isBitmap(input);
         }
     }
 
-    private static int getExifOrientation(Context context, @NonNull Uri uri) throws Exception {
-        try (final InputStream input = context.getContentResolver().openInputStream(uri)) {
-            if (input == null) {
-                throw new Exception("Cannot open uri.");
-            }
-            final ExifInterface exif = new ExifInterface(input);
-            return exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_NORMAL);
+    private static int getExifOrientation(@NonNull InputStream input) throws Exception {
+        final ExifInterface exif = new ExifInterface(input);
+        return exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL);
+    }
+
+    /**
+     * 从流获取位图
+     *
+     * @param input         流
+     * @param mutable       是否可修改
+     * @param config        格式
+     * @param premultiplied 是否预乘，未预乘的位图不可用于显示
+     * @return 位图
+     */
+    @NonNull
+    public static Bitmap fromStream(@NonNull InputStream input, int orientation,
+                                    boolean mutable, Bitmap.Config config, boolean premultiplied) throws Exception {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inMutable = mutable;
+        options.inPreferredConfig = config;
+        options.inPremultiplied = premultiplied;
+        final Bitmap original = BitmapFactory.decodeStream(input, null, options);
+        if (original == null) {
+            throw new Exception("Cannot get bitmap from stream.");
         }
+        // 处理 EXIF ORIENTATION
+        if (orientation == ExifInterface.ORIENTATION_FLIP_HORIZONTAL) {
+            // 水平翻转
+            final Matrix matrix = new Matrix();
+            matrix.setScale(-1, 1);
+            final Bitmap handled = Bitmap.createBitmap(original, 0, 0,
+                    original.getWidth(), original.getHeight(), matrix, true);
+            original.recycle();
+            return handled;
+        }
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            // 180度旋转
+            final Matrix matrix = new Matrix();
+            matrix.setRotate(180);
+            final Bitmap handled = Bitmap.createBitmap(original, 0, 0,
+                    original.getWidth(), original.getHeight(), matrix, true);
+            original.recycle();
+            return handled;
+        }
+        if (orientation == ExifInterface.ORIENTATION_FLIP_VERTICAL) {
+            // 垂直翻转
+            final Matrix matrix = new Matrix();
+            matrix.setScale(1, -1);
+            final Bitmap handled = Bitmap.createBitmap(original, 0, 0,
+                    original.getWidth(), original.getHeight(), matrix, true);
+            original.recycle();
+            return handled;
+        }
+        if (orientation == ExifInterface.ORIENTATION_TRANSPOSE) {
+            // 垂直翻转再旋转90度
+            final Matrix matrix = new Matrix();
+            matrix.setScale(1, -1);
+            matrix.postRotate(90);
+            final Bitmap handled = Bitmap.createBitmap(original, 0, 0,
+                    original.getWidth(), original.getHeight(), matrix, true);
+            original.recycle();
+            return handled;
+        }
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            // 旋转90度
+            final Matrix matrix = new Matrix();
+            matrix.setRotate(90);
+            final Bitmap handled = Bitmap.createBitmap(original, 0, 0,
+                    original.getWidth(), original.getHeight(), matrix, true);
+            original.recycle();
+            return handled;
+        }
+        if (orientation == ExifInterface.ORIENTATION_TRANSVERSE) {
+            // 旋转90度再垂直翻转
+            final Matrix matrix = new Matrix();
+            matrix.setRotate(90);
+            matrix.postScale(1, -1);
+            final Bitmap handled = Bitmap.createBitmap(original, 0, 0,
+                    original.getWidth(), original.getHeight(), matrix, true);
+            original.recycle();
+            return handled;
+        }
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            // 旋转270度
+            final Matrix matrix = new Matrix();
+            matrix.setRotate(270);
+            final Bitmap handled = Bitmap.createBitmap(original, 0, 0,
+                    original.getWidth(), original.getHeight(), matrix, true);
+            original.recycle();
+            return handled;
+        }
+        // 无需处理
+        return original;
     }
 
     /**
@@ -135,146 +230,153 @@ public class BitmapUtils {
      * @param premultiplied 是否预乘，未预乘的位图不可用于显示
      * @return 位图
      */
+    @NonNull
     public static Bitmap fromUri(Context context, @NonNull Uri uri,
                                  boolean mutable, Bitmap.Config config, boolean premultiplied) throws Exception {
         if (!isBitmap(context, uri)) {
             throw new Exception("Not a bitmap uri.");
         }
-        final int orientation = getExifOrientation(context, uri);
+        final int orientation;
         try (final InputStream input = context.getContentResolver().openInputStream(uri)) {
             if (input == null) {
                 throw new Exception("Cannot get bitmap from uri.");
             }
-            final BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inMutable = mutable;
-            options.inPreferredConfig = config;
-            options.inPremultiplied = premultiplied;
-            final Bitmap original = BitmapFactory.decodeStream(input, null, options);
-            if (original == null) {
+            orientation = getExifOrientation(input);
+        }
+        try (final InputStream input = context.getContentResolver().openInputStream(uri)) {
+            if (input == null) {
                 throw new Exception("Cannot get bitmap from uri.");
             }
-            // 处理 EXIF ORIENTATION
-            if (orientation == ExifInterface.ORIENTATION_FLIP_HORIZONTAL) {
-                // 水平翻转
-                final Matrix matrix = new Matrix();
-                matrix.setScale(-1, 1);
-                final Bitmap handled = Bitmap.createBitmap(original, 0, 0,
-                        original.getWidth(), original.getHeight(), matrix, true);
-                original.recycle();
-                return handled;
-            }
-            if (orientation == ExifInterface.ORIENTATION_ROTATE_180) {
-                // 180度旋转
-                final Matrix matrix = new Matrix();
-                matrix.setRotate(180);
-                final Bitmap handled = Bitmap.createBitmap(original, 0, 0,
-                        original.getWidth(), original.getHeight(), matrix, true);
-                original.recycle();
-                return handled;
-            }
-            if (orientation == ExifInterface.ORIENTATION_FLIP_VERTICAL) {
-                // 垂直翻转
-                final Matrix matrix = new Matrix();
-                matrix.setScale(1, -1);
-                final Bitmap handled = Bitmap.createBitmap(original, 0, 0,
-                        original.getWidth(), original.getHeight(), matrix, true);
-                original.recycle();
-                return handled;
-            }
-            if (orientation == ExifInterface.ORIENTATION_TRANSPOSE) {
-                // 垂直翻转再旋转90度
-                final Matrix matrix = new Matrix();
-                matrix.setScale(1, -1);
-                matrix.postRotate(90);
-                final Bitmap handled = Bitmap.createBitmap(original, 0, 0,
-                        original.getWidth(), original.getHeight(), matrix, true);
-                original.recycle();
-                return handled;
-            }
-            if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
-                // 旋转90度
-                final Matrix matrix = new Matrix();
-                matrix.setRotate(90);
-                final Bitmap handled = Bitmap.createBitmap(original, 0, 0,
-                        original.getWidth(), original.getHeight(), matrix, true);
-                original.recycle();
-                return handled;
-            }
-            if (orientation == ExifInterface.ORIENTATION_TRANSVERSE) {
-                // 旋转90度再垂直翻转
-                final Matrix matrix = new Matrix();
-                matrix.setRotate(90);
-                matrix.postScale(1, -1);
-                final Bitmap handled = Bitmap.createBitmap(original, 0, 0,
-                        original.getWidth(), original.getHeight(), matrix, true);
-                original.recycle();
-                return handled;
-            }
-            if (orientation == ExifInterface.ORIENTATION_ROTATE_270) {
-                // 旋转270度
-                final Matrix matrix = new Matrix();
-                matrix.setRotate(270);
-                final Bitmap handled = Bitmap.createBitmap(original, 0, 0,
-                        original.getWidth(), original.getHeight(), matrix, true);
-                original.recycle();
-                return handled;
-            }
-            // 无需处理
-            return original;
+            return fromStream(input, orientation, mutable, config, premultiplied);
         }
     }
 
+
+    /**
+     * 从文件获取位图
+     *
+     * @param file          文件
+     * @param mutable       是否可修改
+     * @param config        格式
+     * @param premultiplied 是否预乘，未预乘的位图不可用于显示
+     * @return 位图
+     */
+    @NonNull
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static Bitmap fromFile(@NonNull File file,
+                                  boolean mutable, Bitmap.Config config, boolean premultiplied) throws Exception {
+        if (!isBitmap(file)) {
+            throw new Exception("Not a bitmap file.");
+        }
+        final int orientation;
+        try (final InputStream input = Files.newInputStream(file.toPath())) {
+            if (input == null) {
+                throw new Exception("Cannot get bitmap from file.");
+            }
+            orientation = getExifOrientation(input);
+        }
+        try (final InputStream input = Files.newInputStream(file.toPath())) {
+            if (input == null) {
+                throw new Exception("Cannot get bitmap from file.");
+            }
+            return fromStream(input, orientation, mutable, config, premultiplied);
+        }
+    }
+
+    /**
+     * 获取位图尺寸
+     *
+     * @param input       输入流
+     * @param orientation 方向
+     * @noinspection SuspiciousNameCombination
+     */
+    @NonNull
+    public static Size getSize(@NonNull InputStream input, int orientation) throws Exception {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(input, null, options);
+        // 处理 EXIF ORIENTATION
+        if (orientation == ExifInterface.ORIENTATION_FLIP_HORIZONTAL) {
+            // 水平翻转
+            return new Size(options.outWidth, options.outHeight);
+        }
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            // 180度旋转
+            return new Size(options.outWidth, options.outHeight);
+        }
+        if (orientation == ExifInterface.ORIENTATION_FLIP_VERTICAL) {
+            // 垂直翻转
+            return new Size(options.outWidth, options.outHeight);
+        }
+        if (orientation == ExifInterface.ORIENTATION_TRANSPOSE) {
+            // 垂直翻转再旋转90度
+            return new Size(options.outHeight, options.outWidth);
+        }
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            // 旋转90度
+            return new Size(options.outHeight, options.outWidth);
+        }
+        if (orientation == ExifInterface.ORIENTATION_TRANSVERSE) {
+            // 旋转90度再垂直翻转
+            return new Size(options.outHeight, options.outWidth);
+        }
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            // 旋转270度
+            return new Size(options.outHeight, options.outWidth);
+        }
+        // 无需处理
+        return new Size(options.outWidth, options.outHeight);
+    }
 
     /**
      * 获取位图尺寸
      *
      * @param context Context
      * @param uri     Uri
-     * @noinspection SuspiciousNameCombination
      */
+    @NonNull
     public static Size getSize(Context context, @NonNull Uri uri) throws Exception {
         if (!isBitmap(context, uri)) {
             throw new Exception("Not a bitmap uri.");
         }
-        final int orientation = getExifOrientation(context, uri);
+        final int orientation;
         try (final InputStream input = context.getContentResolver().openInputStream(uri)) {
             if (input == null) {
                 throw new Exception("Cannot get bitmap from uri.");
             }
-            final BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(input, null, options);
-            // 处理 EXIF ORIENTATION
-            if (orientation == ExifInterface.ORIENTATION_FLIP_HORIZONTAL) {
-                // 水平翻转
-                return new Size(options.outWidth, options.outHeight);
+            orientation = getExifOrientation(input);
+        }
+        try (final InputStream input = context.getContentResolver().openInputStream(uri)) {
+            if (input == null) {
+                throw new Exception("Cannot get bitmap from uri.");
             }
-            if (orientation == ExifInterface.ORIENTATION_ROTATE_180) {
-                // 180度旋转
-                return new Size(options.outWidth, options.outHeight);
+            return getSize(input, orientation);
+        }
+    }
+
+    /**
+     * 获取位图尺寸
+     *
+     * @param file 文件
+     */
+    @NonNull
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static Size getSize(@NonNull File file) throws Exception {
+        if (!isBitmap(file)) {
+            throw new Exception("Not a bitmap uri.");
+        }
+        final int orientation;
+        try (final InputStream input = Files.newInputStream(file.toPath())) {
+            if (input == null) {
+                throw new Exception("Cannot get bitmap from uri.");
             }
-            if (orientation == ExifInterface.ORIENTATION_FLIP_VERTICAL) {
-                // 垂直翻转
-                return new Size(options.outWidth, options.outHeight);
+            orientation = getExifOrientation(input);
+        }
+        try (final InputStream input = Files.newInputStream(file.toPath())) {
+            if (input == null) {
+                throw new Exception("Cannot get bitmap from uri.");
             }
-            if (orientation == ExifInterface.ORIENTATION_TRANSPOSE) {
-                // 垂直翻转再旋转90度
-                return new Size(options.outHeight, options.outWidth);
-            }
-            if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
-                // 旋转90度
-                return new Size(options.outHeight, options.outWidth);
-            }
-            if (orientation == ExifInterface.ORIENTATION_TRANSVERSE) {
-                // 旋转90度再垂直翻转
-                return new Size(options.outHeight, options.outWidth);
-            }
-            if (orientation == ExifInterface.ORIENTATION_ROTATE_270) {
-                // 旋转270度
-                return new Size(options.outHeight, options.outWidth);
-            }
-            // 无需处理
-            return new Size(options.outWidth, options.outHeight);
+            return getSize(input, orientation);
         }
     }
 }
