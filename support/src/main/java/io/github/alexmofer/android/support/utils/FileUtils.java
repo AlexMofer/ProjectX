@@ -786,6 +786,27 @@ public class FileUtils {
     }
 
     /**
+     * 获取或创建文件夹
+     *
+     * @param parent 父文件夹
+     * @param name   文件夹名称
+     * @return 文件夹
+     */
+    @NonNull
+    public static File getOrCreateDirectory(@NonNull File parent, @NonNull String name) {
+        final File dir = new File(parent, name);
+        if (dir.exists()) {
+            if (dir.isDirectory()) {
+                return dir;
+            }
+            FileUtils.delete(dir);
+        }
+        //noinspection ResultOfMethodCallIgnored
+        dir.mkdirs();
+        return dir;
+    }
+
+    /**
      * 名称构建器
      */
     @FunctionalInterface
