@@ -15,9 +15,17 @@
  */
 package io.github.alexmofer.android.support.utils;
 
+import android.os.Build;
+
+import androidx.annotation.NonNull;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +34,7 @@ import java.util.List;
  * 流工具
  * Created by Alex on 2022/3/25.
  */
-public class StreamUtils {
+public final class StreamUtils {
 
     private static final int DEFAULT_BUFFER_SIZE = 8192;
     /**
@@ -201,5 +209,25 @@ public class StreamUtils {
      */
     public static byte[] readAllBytes(InputStream input) throws IOException {
         return readNBytes(input, Integer.MAX_VALUE);
+    }
+
+    @NonNull
+    public static InputStream newInputStream(@NonNull File file) throws IOException {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return Files.newInputStream(file.toPath());
+        } else {
+            //noinspection IOStreamConstructor
+            return new FileInputStream(file);
+        }
+    }
+
+    @NonNull
+    public static OutputStream newOutputStream(@NonNull File file) throws IOException {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return Files.newOutputStream(file.toPath());
+        } else {
+            //noinspection IOStreamConstructor
+            return new FileOutputStream(file);
+        }
     }
 }

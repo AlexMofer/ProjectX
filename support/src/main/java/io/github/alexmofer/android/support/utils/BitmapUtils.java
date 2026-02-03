@@ -20,18 +20,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
-import android.os.Build;
 import android.util.Size;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.exifinterface.media.ExifInterface;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.nio.file.Files;
 
 /**
  * 位图工具
@@ -111,7 +108,7 @@ public final class BitmapUtils {
      * @return 为位图时返回 true
      * @throws Exception 其他异常
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isBitmap(File file) throws Exception {
         if (!file.exists()) {
             return false;
@@ -119,7 +116,7 @@ public final class BitmapUtils {
         if (!file.isFile()) {
             return false;
         }
-        try (final InputStream input = Files.newInputStream(file.toPath())) {
+        try (final InputStream input = StreamUtils.newInputStream(file)) {
             return isBitmap(input);
         }
     }
@@ -262,23 +259,16 @@ public final class BitmapUtils {
      * @return 位图
      */
     @NonNull
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static Bitmap fromFile(@NonNull File file,
                                   boolean mutable, Bitmap.Config config, boolean premultiplied) throws Exception {
         if (!isBitmap(file)) {
             throw new Exception("Not a bitmap file.");
         }
         final int orientation;
-        try (final InputStream input = Files.newInputStream(file.toPath())) {
-            if (input == null) {
-                throw new Exception("Cannot get bitmap from file.");
-            }
+        try (final InputStream input = StreamUtils.newInputStream(file)) {
             orientation = getExifOrientation(input);
         }
-        try (final InputStream input = Files.newInputStream(file.toPath())) {
-            if (input == null) {
-                throw new Exception("Cannot get bitmap from file.");
-            }
+        try (final InputStream input = StreamUtils.newInputStream(file)) {
             return fromStream(input, orientation, mutable, config, premultiplied);
         }
     }
@@ -360,22 +350,15 @@ public final class BitmapUtils {
      * @param file 文件
      */
     @NonNull
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static Size getSize(@NonNull File file) throws Exception {
         if (!isBitmap(file)) {
             throw new Exception("Not a bitmap uri.");
         }
         final int orientation;
-        try (final InputStream input = Files.newInputStream(file.toPath())) {
-            if (input == null) {
-                throw new Exception("Cannot get bitmap from uri.");
-            }
+        try (final InputStream input = StreamUtils.newInputStream(file)) {
             orientation = getExifOrientation(input);
         }
-        try (final InputStream input = Files.newInputStream(file.toPath())) {
-            if (input == null) {
-                throw new Exception("Cannot get bitmap from uri.");
-            }
+        try (final InputStream input = StreamUtils.newInputStream(file)) {
             return getSize(input, orientation);
         }
     }
