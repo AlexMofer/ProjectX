@@ -819,4 +819,14 @@ public class UriUtils {
             return readString(resolver, file, Charset.forName("UTF-8"));
         }
     }
+
+    /**
+     * 获取无查询参数的网址链接
+     *
+     * @param uri Uri
+     * @return 去除查询参数的网址链接
+     */
+    public static String getUrlWithoutQuery(@NonNull Uri uri) {
+        return uri.getScheme() + "://" + uri.getAuthority() + uri.getEncodedPath();
+    }
 }
