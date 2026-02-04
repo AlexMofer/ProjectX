@@ -15,12 +15,20 @@
  */
 package io.github.alexmofer.android.support.app;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.ComponentCallbacks;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.collection.ArrayMap;
+import androidx.core.os.LocaleListCompat;
+
+import java.util.Locale;
 
 /**
  * Application 持有者
@@ -28,11 +36,14 @@ import androidx.collection.ArrayMap;
  */
 public class ApplicationHolder {
 
+    @SuppressLint("StaticFieldLeak")
     private static ApplicationHolder mInstance;
     private final Application mApplication;
     private final ArrayMap<String, Object> mDataMap = new ArrayMap<>();
+    private boolean mContextAdjusted;
+    private Context mAdjustedContext;
 
-    private ApplicationHolder(Application application) {
+    private ApplicationHolder(@NonNull Application application) {
         mApplication = application;
     }
 
@@ -41,7 +52,7 @@ public class ApplicationHolder {
      *
      * @param application Application
      */
-    public static void create(Application application) {
+    public static void create(@NonNull Application application) {
         mInstance = new ApplicationHolder(application);
     }
 
@@ -75,12 +86,75 @@ public class ApplicationHolder {
     }
 
     /**
-     * 获取 Application级别 Context
+     * 获取应用级别上下文
+     * <p> 如果应用有应用内多语言切换，请使用 {@link #getAdjustedApplicationContext()}
+     *
+     * @return Context
+     * @see #getAdjustedApplicationContext()
+     */
+    @NonNull
+    public static Context getApplicationContext() {
+        return getApplication().getApplicationContext();
+    }
+
+    /**
+     * 获取针对应用内多语言切换修正过的应用级别上下文
      *
      * @return Context
      */
-    public static Context getApplicationContext() {
-        return getApplication().getApplicationContext();
+    @NonNull
+    public static Context getAdjustedApplicationContext() {
+        if (Build.VERSION.SDK_INT >= 33) {
+            return getApplicationContext();
+        }
+        final ApplicationHolder holder = getInstance();
+        holder.mApplication.registerComponentCallbacks(new ComponentCallbacks() {
+            @Override
+            public void onConfigurationChanged(@NonNull Configuration newConfig) {
+                invalidateAdjustedApplicationContext();
+            }
+
+            @Override
+            public void onLowMemory() {
+                // do nothings
+            }
+        });
+        if (holder.mContextAdjusted) {
+            if (holder.mAdjustedContext != null) {
+                return holder.mAdjustedContext;
+            }
+            return getApplicationContext();
+        }
+        final Locale locale = AppCompatDelegate.getApplicationLocales().get(0);
+        if (locale == null) {
+            // 跟随系统
+            holder.mContextAdjusted = true;
+            holder.mAdjustedContext = null;
+            return getApplicationContext();
+        }
+        final Context context = ApplicationHolder.getApplicationContext();
+        final Configuration configuration =
+                new Configuration(context.getResources().getConfiguration());
+        configuration.setLocale(locale);
+        holder.mContextAdjusted = true;
+        holder.mAdjustedContext = context.createConfigurationContext(configuration);
+        return holder.mAdjustedContext;
+    }
+
+    /**
+     * 重置纠正过的应用级上下文
+     * <p> 在应用内设置语言后，请调用此方法，否则通过应用级上下文获取的资源可能并不对，尤其是多语言字符串
+     *
+     * @see AppCompatDelegate#setApplicationLocales(LocaleListCompat)
+     */
+    public static void invalidateAdjustedApplicationContext() {
+        if (Build.VERSION.SDK_INT >= 33) {
+            return;
+        }
+        if (mInstance != null) {
+            mInstance.mContextAdjusted = false;
+            mInstance.mAdjustedContext = null;
+        }
     }
 
     /**
@@ -100,7 +174,7 @@ public class ApplicationHolder {
      * @return 数据，注意类型转换问题
      */
     @Nullable
-    public static <T> T getData(String id) {
+    public static <T> T getData(@NonNull String id) {
         //noinspection unchecked
         return (T) getInstance().mDataMap.get(id);
     }
@@ -110,7 +184,7 @@ public class ApplicationHolder {
      *
      * @param id ID
      */
-    public static void removeData(String id) {
+    public static void removeData(@NonNull String id) {
         getInstance().mDataMap.remove(id);
     }
 }
