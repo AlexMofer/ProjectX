@@ -159,4 +159,37 @@ public final class DrawableUtils {
                                              @ColorInt int color) {
         return getTintedDrawable(context, id, ColorStateList.valueOf(color));
     }
+
+    @NonNull
+    public static GradientDrawable newGradientDrawable(@ColorInt int fillColor,
+                                                       float cornerRadius) {
+        final GradientDrawable drawable = new GradientDrawable();
+        drawable.setColor(fillColor);
+        drawable.setCornerRadius(cornerRadius);
+        return drawable;
+    }
+
+    @NonNull
+    public static GradientDrawable newGradientDrawableCapsule(@ColorInt int fillColor) {
+        return newGradientDrawable(fillColor, ViewUtils.MAX_SIZE);
+    }
+
+    @NonNull
+    public static GradientDrawable newGradientDrawable(@ColorInt int fillColor,
+                                                       int strokeWidth,
+                                                       @ColorInt int strokeColor,
+                                                       float cornerRadius) {
+        final GradientDrawable drawable = new GradientDrawable();
+        drawable.setColor(fillColor);
+        drawable.setStroke(strokeWidth, strokeColor);
+        drawable.setCornerRadius(cornerRadius);
+        return drawable;
+    }
+
+    @NonNull
+    public static GradientDrawable newGradientDrawableCapsule(@ColorInt int fillColor,
+                                                              int strokeWidth,
+                                                              @ColorInt int strokeColor) {
+        return newGradientDrawable(fillColor, strokeWidth, strokeColor, ViewUtils.MAX_SIZE);
+    }
 }
