@@ -17,15 +17,13 @@ package io.github.alexmofer.projectx;
 
 import android.content.Context;
 
-import androidx.multidex.MultiDexApplication;
-
 import io.github.alexmofer.android.support.app.ApplicationHolder;
 
 /**
  * 应用 Application
  * Created by Alex on 2018/7/23.
  */
-public class Application extends MultiDexApplication {
+public class Application extends android.app.Application {
 
     @Override
     protected void attachBaseContext(Context base) {

@@ -21,7 +21,7 @@ public class SavedStateViewModel extends ViewModel {
     }
 
     public SavedStateViewModel(@NonNull SavedStateHandle handle) {
-        // 依托 Activity 及 Fragment 的状态保存能力，因此只试用于少量数据保存
+        // 依托 Activity 及 Fragment 的状态保存能力，因此只适用于少量数据保存
         final String key = getProviderKey();
         final Bundle savedInstanceState = handle.get(key);
         handle.setSavedStateProvider(key, new InnerSavedStateProvider());

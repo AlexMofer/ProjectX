@@ -12,7 +12,6 @@ android {
         targetSdkVersion 36
         versionCode 82
         versionName "4.0.0"
-        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -41,7 +40,6 @@ android {
 dependencies {
     implementation project(path: ':support')
     implementation 'androidx.appcompat:appcompat:1.7.1'
-    implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.core:core-splashscreen:1.2.0'
     implementation 'androidx.window:window:1.5.1'
     implementation 'com.google.guava:guava:33.5.0-android'
