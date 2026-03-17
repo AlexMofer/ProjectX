@@ -14,6 +14,7 @@ import io.github.alexmofer.android.support.concurrent.UIThreadExecutor;
  * 注意：仅适用于少量数据保存
  * Created by Alex on 2025/12/24.
  */
+@Deprecated
 public class SavedStateViewModel extends ViewModel {
 
     public SavedStateViewModel() {
@@ -41,6 +42,7 @@ public class SavedStateViewModel extends ViewModel {
      *
      * @return 整体数据提供者 Key
      */
+    @Deprecated
     protected String getProviderKey() {
         return "SavedStateViewModel_Data";
     }
@@ -50,6 +52,7 @@ public class SavedStateViewModel extends ViewModel {
      *
      * @return 在构造函数中执行时返回 true，默认为 false
      */
+    @Deprecated
     protected boolean restoreInConstructor() {
         return false;
     }
@@ -59,6 +62,7 @@ public class SavedStateViewModel extends ViewModel {
      *
      * @param outState 保存的状态
      */
+    @Deprecated
     protected void onSaveInstanceState(@NonNull Bundle outState) {
     }
 
@@ -67,6 +71,7 @@ public class SavedStateViewModel extends ViewModel {
      *
      * @param savedInstanceState 恢复的状态
      */
+    @Deprecated
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
     }
 

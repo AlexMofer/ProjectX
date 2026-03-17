@@ -17,9 +17,11 @@ package io.github.alexmofer.android.support.utils;
 
 import android.graphics.Outline;
 import android.graphics.Path;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewOutlineProvider;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
@@ -52,6 +54,7 @@ public class ViewOutlineProviderUtils {
             outline.setRoundRect(0, 0, width, height, height * 0.5f);
         }
     };
+    public static final ViewOutlineProvider IMAGE_CONTENT = new ImageViewContent(0);
 
     private ViewOutlineProviderUtils() {
         //no instance
@@ -99,6 +102,15 @@ public class ViewOutlineProviderUtils {
      */
     public static ViewOutlineProvider newBottomRoundRect(float radius) {
         return new BottomRoundRectViewOutlineProvider(radius);
+    }
+
+    /**
+     * 新建图片圆角边框
+     * @param radius 圆角半径
+     * @return 图片圆角边框
+     */
+    public static ViewOutlineProvider newImageContentWithRadius(float radius) {
+        return new ImageViewContent(radius);
     }
 
     private static class RoundRectViewOutlineProvider extends ViewOutlineProvider {
@@ -183,6 +195,47 @@ public class ViewOutlineProviderUtils {
                 mPath.addRoundRect(0, 0, view.getWidth(), view.getHeight(), mRadii,
                         Path.Direction.CW);
                 ViewOutlineProviderUtils.setPath(outline, mPath);
+            }
+        }
+    }
+
+    public static class ImageViewContent extends ViewOutlineProvider {
+        private final float mRadius;
+
+        public ImageViewContent(float radius) {
+            mRadius = radius;
+        }
+
+        @Override
+        public void getOutline(View view, Outline outline) {
+            if (view instanceof ImageView) {
+                final Drawable content = ((ImageView) view).getDrawable();
+                if (content != null) {
+                    final float imageAspectRatio = 1f * content.getIntrinsicWidth() / content.getIntrinsicHeight();
+                    final int viewWidth = view.getWidth();
+                    final int viewHeight = view.getHeight();
+                    final float viewAspectRatio = 1f * viewWidth / viewHeight;
+                    if (imageAspectRatio >= viewAspectRatio) {
+                        // 按照宽度计算
+                        final int offset = Math.round((viewHeight - viewWidth / imageAspectRatio) * 0.5f);
+                        getOutline((ImageView) view, outline,
+                                0, offset, viewWidth, viewHeight - offset);
+                    } else {
+                        // 按照高度计算
+                        final int offset = Math.round((viewWidth - viewHeight * imageAspectRatio) * 0.5f);
+                        getOutline((ImageView) view, outline,
+                                offset, 0, viewWidth - offset, viewHeight);
+                    }
+                }
+            }
+        }
+
+        protected void getOutline(@NonNull ImageView view, @NonNull Outline outline,
+                                  int imageLeft, int imageTop, int imageRight, int imageBottom) {
+            if (mRadius > 0) {
+                outline.setRoundRect(imageLeft, imageTop, imageRight, imageBottom, mRadius);
+            } else {
+                outline.setRect(imageLeft, imageTop, imageRight, imageBottom);
             }
         }
     }

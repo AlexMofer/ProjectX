@@ -15,14 +15,10 @@
  */
 package io.github.alexmofer.android.support.lifecycle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.SavedStateHandle;
-
-import kotlinx.coroutines.CoroutineScope;
 
 /**
  * 对话框 ViewModel
@@ -32,13 +28,6 @@ public class DialogViewModel extends ToastViewModel {
 
     private final MutableLiveData<Boolean> mDismiss = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> mCancelable = new MutableLiveData<>(true);
-
-    public DialogViewModel() {
-    }
-
-    public DialogViewModel(@NonNull SavedStateHandle handle) {
-        super(handle);
-    }
 
     /**
      * 观察 Dismiss

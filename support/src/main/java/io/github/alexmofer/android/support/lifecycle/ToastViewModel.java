@@ -17,7 +17,6 @@ package io.github.alexmofer.android.support.lifecycle;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Supplier;
 import androidx.fragment.app.Fragment;
@@ -25,7 +24,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.SavedStateHandle;
+import androidx.lifecycle.ViewModel;
 
 import io.github.alexmofer.android.support.other.StringResource;
 
@@ -33,16 +32,9 @@ import io.github.alexmofer.android.support.other.StringResource;
  * Toast ViewModel
  * Created by Alex on 2024/4/23.
  */
-public class ToastViewModel extends SavedStateViewModel {
+public class ToastViewModel extends ViewModel {
 
     private final MutableLiveData<StringResource> mToast = new MutableLiveData<>();
-
-    public ToastViewModel() {
-    }
-
-    public ToastViewModel(@NonNull SavedStateHandle handle) {
-        super(handle);
-    }
 
     /**
      * 观察 Toast
