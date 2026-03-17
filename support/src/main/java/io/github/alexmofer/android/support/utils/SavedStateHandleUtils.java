@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.SavedStateHandle;
 
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import io.github.alexmofer.android.support.app.ApplicationHolder;
@@ -31,7 +32,7 @@ import io.github.alexmofer.android.support.app.ApplicationHolder;
  */
 public final class SavedStateHandleUtils {
     private static final String KEY_CACHE_ID = "io.github.alexmofer.android.support:CACHE_ID";
-    private static final String KEY_BUNDLE = "io.github.alexmofer.android.support:bundle";
+    private static final String KEY_APPLICATION_DATA_BUNDLE = "io.github.alexmofer.android.support:APPLICATION_DATA_BUNDLE";
 
     private SavedStateHandleUtils() {
         //no instance
@@ -99,6 +100,29 @@ public final class SavedStateHandleUtils {
      */
     public static <T> T getOrCreateByApplicationData(@NonNull SavedStateHandle handle,
                                                      @NonNull Supplier<T> constructor) {
-        return getOrCreateByApplicationData(handle, KEY_BUNDLE, constructor);
+        return getOrCreateByApplicationData(handle, KEY_APPLICATION_DATA_BUNDLE, constructor);
+    }
+
+    /**
+     * 处理 SavedStateProvider
+     *
+     * @param handle    SavedStateHandle
+     * @param bundleKey SavedStateProvider 的存储 Key
+     * @param restorer  恢复回调
+     * @param saver     保存回调
+     */
+    public static void handleSavedStateProvider(@NonNull SavedStateHandle handle,
+                                                @NonNull String bundleKey,
+                                                @NonNull Consumer<Bundle> restorer,
+                                                @NonNull Consumer<Bundle> saver) {
+        final Bundle savedInstanceState = handle.get(bundleKey);
+        if (savedInstanceState != null) {
+            restorer.accept(savedInstanceState);
+        }
+        handle.setSavedStateProvider(bundleKey, () -> {
+            final Bundle outState = new Bundle();
+            saver.accept(outState);
+            return outState;
+        });
     }
 }
