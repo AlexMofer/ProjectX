@@ -37,6 +37,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 
 import io.github.alexmofer.android.support.R;
+import io.github.alexmofer.android.support.graphics.drawable.builders.DrawableWrapperBuilder;
 import io.github.alexmofer.android.support.utils.TypedArrayUtils;
 
 /**
@@ -59,6 +60,10 @@ public class AnimatedRotateDrawable extends DrawableWrapperCompat implements Ani
 
     public AnimatedRotateDrawable() {
         super(DEFAULT);
+    }
+
+    public AnimatedRotateDrawable(@Nullable Drawable drawable) {
+        super(drawable);
     }
 
     @Override
@@ -217,4 +222,45 @@ public class AnimatedRotateDrawable extends DrawableWrapperCompat implements Ani
             }
         }
     };
+
+    /**
+     * 链式构建器
+     */
+    public static class Builder extends DrawableWrapperBuilder {
+        private final AnimatedRotateDrawable mDrawable;
+
+        public Builder(@NonNull AnimatedRotateDrawable drawable) {
+            super(drawable);
+            mDrawable = drawable;
+        }
+
+        public Builder() {
+            this(new AnimatedRotateDrawable());
+        }
+
+        public Builder(@Nullable Drawable drawable) {
+            this(new AnimatedRotateDrawable(drawable));
+        }
+
+        @NonNull
+        @Override
+        public AnimatedRotateDrawable build() {
+            return mDrawable;
+        }
+
+        public Builder setFramesCount(int framesCount) {
+            mDrawable.setFramesCount(framesCount);
+            return this;
+        }
+
+        public Builder setFrameDuration(int frameDuration) {
+            mDrawable.setFrameDuration(frameDuration);
+            return this;
+        }
+
+        public Builder setReverse(boolean reverse) {
+            mDrawable.setReverse(reverse);
+            return this;
+        }
+    }
 }
