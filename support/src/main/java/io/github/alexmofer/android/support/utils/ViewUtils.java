@@ -34,6 +34,7 @@ import io.github.alexmofer.android.support.function.FunctionRIntPIntInt;
  */
 public final class ViewUtils {
     public static final int MAX_SIZE = (1 << 30) - 1;// View.MeasureSpec.MODE_SHIFT
+
     private ViewUtils() {
         //no instance
     }
@@ -201,5 +202,34 @@ public final class ViewUtils {
      */
     public static int getSize(int size, int measureSpec) {
         return getSize(size, measureSpec, null);
+    }
+
+    /**
+     * 获取该 View 基于其最后一个 View 类型的父容器的布局区域（多用于计算 Popup 可用弹出空间）
+     * 注意：该方法不会检测父容器是否已测量布局
+     *
+     * @param child    待计算的 View
+     * @param bounds   用于承载区域的容器
+     * @param rootSize 最后一个父容器的宽高
+     */
+    public static void getBoundsOfRoot(@NonNull View child,
+                                       @NonNull Rect bounds,
+                                       @NonNull int[] rootSize) {
+        int x = child.getLeft();
+        int y = child.getTop();
+        ViewParent p = child.getParent();
+        while (true) {
+            if (p instanceof View) {
+                final View container = (View) p;
+                x += container.getLeft();
+                y += container.getTop();
+                p = container.getParent();
+                rootSize[0] = container.getWidth();
+                rootSize[1] = container.getHeight();
+                continue;
+            }
+            bounds.set(x, y, x + child.getWidth(), y + child.getHeight());
+            break;
+        }
     }
 }
