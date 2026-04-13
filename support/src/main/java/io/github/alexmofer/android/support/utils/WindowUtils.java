@@ -16,16 +16,19 @@
 package io.github.alexmofer.android.support.utils;
 
 import android.os.Build;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 /**
  * 窗口工具
  * Created by Alex on 2025/7/16.
  */
-public class WindowUtils {
+public final class WindowUtils {
 
     private WindowUtils() {
         //no instance
@@ -52,5 +55,30 @@ public class WindowUtils {
             window.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
             window.getAttributes().setBlurBehindRadius(blurBehindRadius);
         }
+    }
+
+    /**
+     * If true, changes the foreground color of the status bars to light so that the items on the
+     * bar can be read clearly. If false, reverts to the default appearance.
+     * <p>
+     * Once this method is called, modifying `systemUiVisibility` directly to change the
+     * appearance is undefined behavior.
+     */
+    public static void setAppearanceLightStatusBars(@NonNull Window window,
+                                                    @NonNull View view,
+                                                    boolean isLight) {
+        new WindowInsetsControllerCompat(window, view).setAppearanceLightStatusBars(isLight);
+    }
+
+    /**
+     * If true, changes the foreground color of the status bars to light so that the items on the
+     * bar can be read clearly. If false, reverts to the default appearance.
+     * <p>
+     * Once this method is called, modifying `systemUiVisibility` directly to change the
+     * appearance is undefined behavior.
+     */
+    public static void setAppearanceLightStatusBars(@NonNull Window window,
+                                                    boolean isLight) {
+        setAppearanceLightStatusBars(window, window.getDecorView(), isLight);
     }
 }
