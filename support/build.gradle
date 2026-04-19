@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'io.github.alexmofer.android.support'
-    compileSdkVersion 36
+    compileSdkVersion 37
 
     defaultConfig {
         minSdkVersion 24
@@ -30,7 +30,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.annotation:annotation:1.9.1'
+    implementation 'androidx.annotation:annotation:1.10.0'
     implementation 'androidx.collection:collection:1.6.0'
     implementation 'androidx.core:core:1.18.0'
     implementation 'androidx.appcompat:appcompat:1.7.1'
@@ -42,7 +42,7 @@ dependencies {
     implementation 'androidx.transition:transition:1.7.0'
     implementation 'com.google.code.gson:gson:2.13.2'
     compileOnly 'androidx.viewpager2:viewpager2:1.1.0'
-    compileOnly 'com.github.bumptech.glide:glide:5.0.5'
+    compileOnly 'com.github.bumptech.glide:glide:5.0.7'
 }
 
 //apply from: "maven-central-aar.gradle"
