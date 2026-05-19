@@ -25,6 +25,7 @@ import java.io.FileFilter;
 import java.util.regex.Pattern;
 
 import io.github.alexmofer.android.support.function.FunctionPObjectDouble;
+import io.github.alexmofer.android.support.function.FunctionRObjectPObject;
 
 /**
  * 文件搜索工具
@@ -97,7 +98,10 @@ public final class FileSearchUtils {
     /**
      * 计算匹配度分数（分数越高越匹配）
      */
-    private static double calculateMatchScore(@NonNull String fileName, @NonNull String query) {
+    private static double calculateMatchScore(String fileName, @NonNull String query) {
+        if (fileName == null || fileName.isEmpty()) {
+            return 0.0;
+        }
         if (fileName.equals(query)) {
             return SCORE_MAX; // 完美完全匹配，赋予最高权重
         }
@@ -117,11 +121,7 @@ public final class FileSearchUtils {
 
         // 3. 长度惩罚（避免 "test.txt" 和 "a_very_long_name_with_test_inside.txt" 分数一样）
         // 文件名越短，query 的占比越高
-        // 防止除以零，虽然 fileName 为空时前面可能已经处理，但为了健壮性
-        //noinspection SizeReplaceableByIsEmpty
-        if (fileName.length() > 0) {
-            score += (1.0 / fileName.length()) * SCORE_LENGTH_PENALTY;
-        }
+        score += (1.0 / fileName.length()) * SCORE_LENGTH_PENALTY;
 
         return score;
     }
@@ -163,6 +163,7 @@ public final class FileSearchUtils {
     private static void executeSearch(@NonNull File currentDir,
                                       @NonNull FileFilter fileFilter,
                                       @NonNull FileFilter dirFilter,
+                                      @NonNull FunctionRObjectPObject<String, String> fileNameHandler,
                                       @NonNull Pattern pattern,
                                       @NonNull String cleanQuery,
                                       @NonNull FunctionPObjectDouble<File> callback,
@@ -176,18 +177,19 @@ public final class FileSearchUtils {
             signal.throwIfCanceled();
             // fileFilter 筛选器决定是否接受文件或者文件夹作为搜索结果
             if (fileFilter.accept(file)) {
-                final String name = file.getName();
+                final String name = file.getName().toLowerCase();
                 // 对文件名进行模式匹配
                 if (pattern.matcher(name).matches()) {
                     // 计算分数（大小写不敏感）
-                    final double score = calculateMatchScore(name.toLowerCase(), cleanQuery);
-                    callback.execute(file, score);
+                    callback.execute(file,
+                            calculateMatchScore(fileNameHandler.execute(name), cleanQuery));
                 }
             }
             if (file.isDirectory()) {
                 // dirFilter 筛选器决定是否递归搜索子目录
                 if (dirFilter.accept(file)) {
-                    executeSearch(file, fileFilter, dirFilter, pattern, cleanQuery, callback, signal);
+                    executeSearch(file, fileFilter, dirFilter, fileNameHandler,
+                            pattern, cleanQuery, callback, signal);
                 }
             }
         }
@@ -196,16 +198,18 @@ public final class FileSearchUtils {
     /**
      * 搜索目录
      *
-     * @param startDir   起始目录
-     * @param fileFilter 文件过滤器，用于控制文件或者文件夹是否可作为搜索结果
-     * @param dirFilter  目录过滤器，用于控制子目录是否可搜索
-     * @param criterion  搜索条件
-     * @param isRegex    是否为正则表达式
-     * @param callback   回调
+     * @param startDir        起始目录
+     * @param fileFilter      文件过滤器，用于控制文件或者文件夹是否可作为搜索结果
+     * @param dirFilter       目录过滤器，用于控制子目录是否可搜索
+     * @param fileNameHandler 文件名处理器，可控制拓展名是否用于评分计算
+     * @param criterion       搜索条件
+     * @param isRegex         是否为正则表达式
+     * @param callback        回调
      */
     public static void search(@NonNull File startDir,
                               @NonNull FileFilter fileFilter,
                               @NonNull FileFilter dirFilter,
+                              @NonNull FunctionRObjectPObject<String, String> fileNameHandler,
                               @NonNull String criterion, boolean isRegex,
                               @NonNull FunctionPObjectDouble<File> callback,
                               @NonNull CancellationSignal signal) throws OperationCanceledException {
@@ -231,10 +235,30 @@ public final class FileSearchUtils {
             // 如果正则编译出错，直接返回
             return;
         }
-
         // 清理查询字符串用于相似度计算，去除通配符
         final String cleanQuery = criterion.replace("*", "").replace("?", "").toLowerCase();
         signal.throwIfCanceled();
-        executeSearch(startDir, fileFilter, dirFilter, pattern, cleanQuery, callback, signal);
+        executeSearch(startDir, fileFilter, dirFilter, fileNameHandler,
+                pattern, cleanQuery, callback, signal);
+    }
+
+    /**
+     * 搜索目录
+     *
+     * @param startDir   起始目录
+     * @param fileFilter 文件过滤器，用于控制文件或者文件夹是否可作为搜索结果
+     * @param dirFilter  目录过滤器，用于控制子目录是否可搜索
+     * @param criterion  搜索条件
+     * @param isRegex    是否为正则表达式
+     * @param callback   回调
+     */
+    public static void search(@NonNull File startDir,
+                              @NonNull FileFilter fileFilter,
+                              @NonNull FileFilter dirFilter,
+                              @NonNull String criterion, boolean isRegex,
+                              @NonNull FunctionPObjectDouble<File> callback,
+                              @NonNull CancellationSignal signal) throws OperationCanceledException {
+        search(startDir, fileFilter, dirFilter, name -> name,
+                criterion, isRegex, callback, signal);
     }
 }
