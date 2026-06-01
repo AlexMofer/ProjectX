@@ -42,5 +42,4 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.core:core-splashscreen:1.2.0'
     implementation 'androidx.window:window:1.5.1'
-    implementation 'com.google.guava:guava:33.6.0-android'
 }
