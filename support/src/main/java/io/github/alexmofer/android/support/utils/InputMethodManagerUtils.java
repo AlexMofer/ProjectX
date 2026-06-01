@@ -20,7 +20,9 @@ import android.content.Context;
 import android.os.Build;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 /**
@@ -30,11 +32,7 @@ import androidx.fragment.app.Fragment;
 public class InputMethodManagerUtils {
 
     private static InputMethodManager getSystemService(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return context.getSystemService(InputMethodManager.class);
-        } else {
-            return (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        }
+        return context.getSystemService(InputMethodManager.class);
     }
 
     /**
@@ -90,6 +88,7 @@ public class InputMethodManagerUtils {
      * @return 是否有执行关闭动作
      */
     public static boolean hideSoftInput(Activity activity, boolean clearFocus) {
+        if (activity == null) return false;
         return hideSoftInput(activity.getCurrentFocus(), clearFocus);
     }
 
@@ -101,10 +100,45 @@ public class InputMethodManagerUtils {
      * @return 是否有执行关闭动作
      */
     public static boolean hideSoftInput(Fragment fragment, boolean clearFocus) {
+        if (fragment == null) return false;
         final View view = fragment.getView();
         if (view == null) {
             return false;
         }
         return hideSoftInput(view.findFocus(), clearFocus);
+    }
+
+    /**
+     * 设置自动聚焦
+     *
+     * @param view      View
+     * @param delayMillis 触发延迟
+     */
+    public static void setAutoFocus(@NonNull View view, long delayMillis) {
+        final Runnable autoFocus = () -> {
+            try {
+                if (view.isAttachedToWindow()) {
+                    InputMethodManagerUtils.showSoftInput(view);
+                }
+            } catch (Throwable t) {
+                // ignore
+            }
+        };
+        if (view.isAttachedToWindow()) {
+            view.postDelayed(autoFocus, delayMillis);
+        } else {
+            view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+                @Override
+                public void onViewAttachedToWindow(@NonNull View v) {
+                    v.removeOnAttachStateChangeListener(this);
+                    view.postDelayed(autoFocus, delayMillis);
+                }
+
+                @Override
+                public void onViewDetachedFromWindow(@NonNull View v) {
+                    // do nothing
+                }
+            });
+        }
     }
 }

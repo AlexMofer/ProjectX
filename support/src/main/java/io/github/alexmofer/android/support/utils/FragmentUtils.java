@@ -16,6 +16,7 @@
 package io.github.alexmofer.android.support.utils;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewParent;
 
@@ -23,7 +24,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
+import java.util.List;
 import java.util.UUID;
 
 import io.github.alexmofer.android.support.app.ApplicationHolder;
@@ -135,5 +138,85 @@ public class FragmentUtils {
             return;
         }
         ApplicationHolder.removeData(args.getString(KEY_ID));
+    }
+
+    @Nullable
+    private static Fragment findFragmentInChildren(@NonNull Fragment parent, @NonNull String tag) {
+        // 检查当前 Fragment 的子 Fragment
+        final Fragment child = parent.getChildFragmentManager().findFragmentByTag(tag);
+        if (child != null) {
+            return child;
+        }
+
+        // 递归检查子 Fragment 的子 Fragment
+        final List<Fragment> children = parent.getChildFragmentManager().getFragments();
+        for (Fragment f : children) {
+            if (f != null && f.isAdded()) {
+                Fragment found = findFragmentInChildren(f, tag);
+                if (found != null) {
+                    return found;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * 通过 Tag 查找 Fragment
+     *
+     * @param activity FragmentActivity
+     * @param tag      Tag
+     * @return Fragment
+     */
+    @Nullable
+    public static Fragment findFragment(@NonNull FragmentActivity activity,
+                                        @NonNull String tag) {
+        if (TextUtils.isEmpty(tag)) {
+            return null;
+        }
+
+        // 首先尝试从 Activity 的 FragmentManager 中查找
+        Fragment fragment = activity.getSupportFragmentManager().findFragmentByTag(tag);
+        if (fragment != null) {
+            return fragment;
+        }
+
+        // 如果未找到，递归遍历所有已添加的 Fragment 及其子 Fragment
+        final List<Fragment> fragments = activity.getSupportFragmentManager().getFragments();
+        for (Fragment f : fragments) {
+            if (f != null && f.isAdded()) {
+                Fragment found = findFragmentInChildren(f, tag);
+                if (found != null) {
+                    return found;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 查找当前处于活跃状态的 Fragment
+     *
+     * @param fragmentManager FragmentManager
+     * @return 当前处于活跃状态的 Fragment
+     */
+    @Nullable
+    public static Fragment findActiveFragment(@NonNull FragmentManager fragmentManager) {
+        final List<Fragment> fragments = fragmentManager.getFragments();
+        if (fragments.isEmpty()) return null;
+        // 倒序遍历，因为新添加/压入栈顶的 Fragment 通常在列表末尾
+        for (int i = fragments.size() - 1; i >= 0; i--) {
+            Fragment fragment = fragments.get(i);
+            // 必须同时满足 added、visible 且未被隐藏
+            if (fragment != null && fragment.isAdded() && fragment.isVisible() && !fragment.isHidden()) {
+                // 递归查找该 Fragment 的子组件（Child Fragment）
+                final FragmentManager childFragmentManager = fragment.getChildFragmentManager();
+                final Fragment childFragment = findActiveFragment(childFragmentManager);
+                // 如果子 Fragment 存在，则返回子 Fragment，否则返回当前 Fragment
+                return childFragment != null ? childFragment : fragment;
+            }
+        }
+        return null;
     }
 }

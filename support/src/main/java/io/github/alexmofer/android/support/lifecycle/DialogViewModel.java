@@ -15,19 +15,32 @@
  */
 package io.github.alexmofer.android.support.lifecycle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 
 /**
  * 对话框 ViewModel
  * Created by Alex on 2025/7/15.
  */
 public class DialogViewModel extends ToastViewModel {
+    private static final String KEY_DISMISS = "io.github.alexmofer.android.support:dialog_vm:dismiss";
+    private static final String KEY_CANCELABLE = "io.github.alexmofer.android.support:dialog_vm:cancelable";
+    private final MutableLiveData<Boolean> mDismiss;
+    private final MutableLiveData<Boolean> mCancelable;
 
-    private final MutableLiveData<Boolean> mDismiss = new MutableLiveData<>(false);
-    private final MutableLiveData<Boolean> mCancelable = new MutableLiveData<>(true);
+    public DialogViewModel(@NonNull SavedStateHandle handle) {
+        mDismiss = handle.getLiveData(KEY_DISMISS, false);
+        mCancelable = handle.getLiveData(KEY_CANCELABLE, true);
+    }
+
+    public DialogViewModel() {
+        mDismiss = new MutableLiveData<>(false);
+        mCancelable = new MutableLiveData<>(true);
+    }
 
     /**
      * 观察 Dismiss

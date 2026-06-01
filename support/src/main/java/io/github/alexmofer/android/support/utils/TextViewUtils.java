@@ -15,10 +15,14 @@
  */
 package io.github.alexmofer.android.support.utils;
 
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+
+import java.util.function.Consumer;
 
 /**
  * TextView 工具
@@ -42,5 +46,20 @@ public final class TextViewUtils {
         view.setMarqueeRepeatLimit(-1);
         view.setHorizontallyScrolling(true);
         view.setSelected(true);
+    }
+
+    /**
+     * 添加文本变化监听
+     *
+     * @param editor   EditText
+     * @param consumer 回调
+     */
+    @SuppressWarnings("UnusedReturnValue")
+    @NonNull
+    public static TextWatcher addOnTextChangedListener(@NonNull TextView editor,
+                                                       @NonNull Consumer<Editable> consumer) {
+        final TextWatcher watcher = TextWatcherUtils.newAfterTextChanged(consumer);
+        editor.addTextChangedListener(watcher);
+        return watcher;
     }
 }

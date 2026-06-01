@@ -18,7 +18,9 @@ package io.github.alexmofer.android.support.utils;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-import androidx.core.util.Consumer;
+import androidx.annotation.NonNull;
+
+import java.util.function.Consumer;
 
 /**
  * TextWatcher 工具
@@ -36,7 +38,8 @@ public class TextWatcherUtils {
      * @param consumer 变更后回调
      * @return 观察者
      */
-    public static TextWatcher newAfterTextChanged(Consumer<Editable> consumer) {
+    @NonNull
+    public static TextWatcher newAfterTextChanged(@NonNull Consumer<Editable> consumer) {
         return new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {

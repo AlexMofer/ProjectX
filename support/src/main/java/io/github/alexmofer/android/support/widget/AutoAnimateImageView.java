@@ -24,6 +24,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 
+import io.github.alexmofer.android.support.widget.builders.ImageViewBuilder;
+
 /**
  * 自动运行 ImageView
  * Created by Alex on 2025/6/17.
@@ -41,6 +43,11 @@ public class AutoAnimateImageView extends AppCompatImageView {
     public AutoAnimateImageView(@NonNull Context context, @Nullable AttributeSet attrs,
                                 int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    @NonNull
+    public static ImageViewBuilder newAutoAnimate(@NonNull Context context) {
+        return new ImageViewBuilder(new AutoAnimateImageView(context, null, 0));
     }
 
     @Override

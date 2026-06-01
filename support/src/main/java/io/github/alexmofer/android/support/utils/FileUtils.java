@@ -33,10 +33,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import io.github.alexmofer.android.support.function.FunctionRObjectThrowable;
 
@@ -65,6 +67,195 @@ public class FileUtils {
 
     private FileUtils() {
         //no instance
+    }
+
+    /**
+     * 获取修正后的文件名
+     *
+     * @param baseName     无拓展名名称
+     * @param extension    拓展名，为空时表示为文件夹
+     * @param fallbackName baseName被修正为空时，使用该名称（不带拓展名）
+     * @return 修正后的文件名
+     */
+    @NonNull
+    public static String getAdjustFileName(@NonNull String baseName,
+                                           @Nullable String extension,
+                                           @NonNull String fallbackName) {
+        // 去除非法字符并截断超长名称
+        if (baseName.isEmpty()) {
+            baseName = fallbackName;
+        }
+
+        // 定义文件名中的非法字符正则表达式
+        // 包括：<>:"/\|?* 以及控制字符（ASCII 0-31）
+        final String illegalCharsRegex = "[<>:\"/\\\\|?*\\x00-\\x1F]";
+        String adjustedName = baseName.replaceAll(illegalCharsRegex, "_");
+
+        // 去除首尾空格和点号（避免隐藏文件或无效名称）
+        adjustedName = adjustedName.trim();
+        adjustedName = adjustedName.replaceAll("^[. ]+", "").replaceAll("[. ]+$", "");
+
+        // 如果处理后为空，使用 fallbackName
+        if (adjustedName.isEmpty()) {
+            adjustedName = fallbackName;
+        }
+
+        // 计算最大允许长度（预留扩展名的空间）
+        int maxLength = 240;// 留有余地，避免达到 255 字节极限
+        if (extension != null && !extension.isEmpty()) {
+            maxLength -= extension.length() + 1; // +1 为点号
+        }
+
+        // 如果超长则截断
+        if (adjustedName.length() > maxLength) {
+            adjustedName = adjustedName.substring(0, maxLength);
+            // 截断后再次去除尾部空格和点号
+            adjustedName = adjustedName.replaceAll("[. ]+$", "");
+            if (adjustedName.isEmpty()) {
+                adjustedName = fallbackName.substring(0, Math.min(fallbackName.length(), maxLength));
+            }
+        }
+
+        // 组装完整文件名
+        if (extension == null || extension.isEmpty()) {
+            return adjustedName;
+        } else {
+            return adjustedName + "." + extension;
+        }
+    }
+
+    /**
+     * 移动文件或文件夹（支持非空，失败抛出异常）
+     *
+     * @param src 源 File 对象
+     * @param dst 目标 File 对象
+     * @throws IOException 移动过程中遇到任何错误均抛出异常
+     */
+    public static void moveToNonExisting(File src, File dst) throws IOException {
+        if (src == null || !src.exists()) {
+            throw new IOException("Source file does not exist: " + (src != null ? src.getPath() : "null"));
+        }
+        // 1. 尝试原子重命名（同分区最高效）
+        if (src.renameTo(dst)) {
+            return;
+        }
+
+        // 2. 跨分区或重命名失败：执行“递归拷贝 + 递归删除”
+        try {
+            copyRecursive(src, dst);
+        } catch (IOException e) {
+            // 如果拷贝一半失败，清理已生成的不完整目标文件（可选逻辑）
+            throw new IOException("Failed to copy files during move operation", e);
+        }
+
+        if (!deleteRecursive(src)) {
+            throw new IOException("Files copied to destination, but failed to delete source: " + src.getPath());
+        }
+    }
+
+    private static void copyRecursive(File src, File dest) throws IOException {
+        if (src.isDirectory()) {
+            // 如果是文件夹，确保目标目录创建成功
+            if (!dest.exists() && !dest.mkdirs()) {
+                throw new IOException("Failed to create destination directory: " + dest.getPath());
+            }
+
+            String[] children = src.list();
+            if (children != null) {
+                for (String child : children) {
+                    copyRecursive(new File(src, child), new File(dest, child));
+                }
+            }
+        } else {
+            // 如果是文件，执行 NIO 拷贝
+            copyFile(src, dest);
+        }
+    }
+
+    public static void copyFile(@NonNull File src, @NonNull File dest) throws IOException {
+        if (!src.exists() || !src.isFile()) {
+            throw new IOException("Source file does not exist or is not a file: " + src.getPath());
+        }
+        final File parent = dest.getParentFile();
+        if (parent != null && !parent.exists() && !parent.mkdirs()) {
+            throw new IOException("Failed to create parent directory for: " + dest.getPath());
+        }
+        try (final FileInputStream input = new FileInputStream(src);
+             final FileOutputStream output = new FileOutputStream(dest)) {
+            final FileChannel in = input.getChannel();
+            final long transferred = in.transferTo(0, in.size(), output.getChannel());
+            if (transferred != in.size()) {
+                throw new IOException("Incomplete file transfer: " + src.getPath());
+            }
+        }
+    }
+
+    private static boolean deleteRecursive(File file) {
+        if (file.isDirectory()) {
+            File[] children = file.listFiles();
+            if (children != null) {
+                for (File child : children) {
+                    if (!deleteRecursive(child)) return false;
+                }
+            }
+        }
+        return file.delete();
+    }
+
+    /**
+     * 复制文件夹到一个不存在的目录
+     *
+     * @param src  源文件夹
+     * @param dest 目标文件夹
+     * @throws IOException 拷贝过程中任何错误均抛出异常
+     */
+    public static void copyDirectoryToNonExistingDirectory(File src, File dest) throws IOException {
+        if (src == null || !src.exists()) {
+            throw new IOException("Source directory does not exist: " + (src != null ? src.getPath() : "null"));
+        }
+        if (!src.isDirectory()) {
+            throw new IOException("Source is not a directory: " + src.getPath());
+        }
+        if (dest.exists()) {
+            throw new IOException("Destination directory already exists: " + dest.getPath());
+        }
+        if (!dest.mkdirs()) {
+            throw new IOException("Failed to create destination directory: " + dest.getPath());
+        }
+        final String[] children = src.list();
+        if (children != null) {
+            for (String child : children) {
+                final File srcChild = new File(src, child);
+                final File destChild = new File(dest, child);
+                if (srcChild.isFile()) {
+                    FileUtils.copyOrThrow(srcChild, destChild);
+                    continue;
+                }
+                if (srcChild.isDirectory()) {
+                    copyDirectoryToNonExistingDirectory(srcChild, destChild);
+                }
+            }
+        }
+    }
+
+    @NonNull
+    public static File getNonExistingFile(@NonNull File parent, @NonNull String baseName, @Nullable String extensionName, @NonNull String format, int startIndex) {
+        File dest;
+        int index = startIndex;
+        if (extensionName == null) {
+            do {
+                final String newName = String.format(Locale.getDefault(), format, baseName, index);
+                dest = new File(parent, newName);
+                index++;
+            } while (dest.exists());
+        } else {
+            do {
+                final String newName = String.format(Locale.getDefault(), format, baseName, index) + "." + extensionName;
+                dest = new File(parent, newName);
+                index++;
+            } while (dest.exists());
+        }
+        return dest;
     }
 
     /**
@@ -104,24 +295,6 @@ public class FileUtils {
     public static void copyOrThrow(File source, OutputStream target) throws IOException {
         try (final FileInputStream input = new FileInputStream(source)) {
             StreamUtils.copy(input, target);
-        }
-    }
-
-
-    /**
-     * 复制文件
-     *
-     * @param source 源文件
-     * @param target 目标文件
-     * @return 复制成功时返回true
-     */
-    public static boolean copyFile(File source, File target) {
-        try (final FileInputStream input = new FileInputStream(source);
-             final FileOutputStream output = new FileOutputStream(target)) {
-            StreamUtils.copy(input, output);
-            return true;
-        } catch (Throwable t) {
-            return false;
         }
     }
 
@@ -410,7 +583,9 @@ public class FileUtils {
                         failure.add(child);
                         continue;
                     }
-                    if (!copyFile(child, target)) {
+                    try {
+                        copyFile(child, target);
+                    } catch (IOException e) {
                         failure.add(child);
                     }
                 }

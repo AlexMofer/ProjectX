@@ -16,18 +16,23 @@
 package io.github.alexmofer.android.support.app;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentCallbacks;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.os.Bundle;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.collection.ArrayMap;
+import androidx.core.app.ActivityCompat;
 import androidx.core.os.LocaleListCompat;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 /**
@@ -40,11 +45,15 @@ public class ApplicationHolder {
     private static ApplicationHolder mInstance;
     private final Application mApplication;
     private final ArrayMap<String, Object> mDataMap = new ArrayMap<>();
+    private final ArrayList<Activity> mCreated = new ArrayList<>();
+    private final ArrayList<Activity> mResumed = new ArrayList<>();
     private boolean mContextAdjusted;
     private Context mAdjustedContext;
+    private Boolean mPureColdStart = null;
 
     private ApplicationHolder(@NonNull Application application) {
         mApplication = application;
+        application.registerActivityLifecycleCallbacks(new InnerActivityLifecycleCallbacks());
     }
 
     /**
@@ -186,5 +195,100 @@ public class ApplicationHolder {
      */
     public static void removeData(@NonNull String id) {
         getInstance().mDataMap.remove(id);
+    }
+
+    /**
+     * 获取最后一个处于 Resumed 的 Activity
+     *
+     * @return Activity
+     */
+    @Nullable
+    public Activity getLastResumedActivity() {
+        return mResumed.isEmpty() ? null : mResumed.get(mResumed.size() - 1);
+    }
+
+    /**
+     * 获取最后一个已创建且尚未被销毁的 Activity
+     *
+     * @return Activity
+     */
+    @Nullable
+    public Activity getLastCreatedActivity() {
+        return mCreated.isEmpty() ? null : mCreated.get(mCreated.size() - 1);
+    }
+
+    /**
+     * 重新创建所有 Activity
+     */
+    @MainThread
+    public void recreateAllActivities() {
+        final ArrayList<Activity> activities = new ArrayList<>(mCreated);
+        for (Activity activity : activities) {
+            try {
+                ActivityCompat.recreate(activity);
+            } catch (Throwable t) {
+                // ignore
+            }
+        }
+    }
+
+    /**
+     * 判断进程是否为冷启动
+     *
+     * @return 为冷启动时返回 true
+     */
+    public boolean isPureColdStart() throws Exception {
+        if (mPureColdStart == null) {
+            throw new Exception("Please call isPureColdStart() after one activity created.");
+        }
+        return mPureColdStart;
+    }
+
+    private class InnerActivityLifecycleCallbacks
+            implements Application.ActivityLifecycleCallbacks {
+
+        @Override
+        public void onActivityPreCreated(@NonNull Activity activity,
+                                         @Nullable Bundle savedInstanceState) {
+            if (mPureColdStart == null) {
+                mPureColdStart = savedInstanceState == null;
+            }
+        }
+
+        @Override
+        public void onActivityCreated(@NonNull Activity activity,
+                                      @Nullable Bundle savedInstanceState) {
+            mCreated.add(activity);
+        }
+
+        @Override
+        public void onActivityDestroyed(@NonNull Activity activity) {
+            mCreated.remove(activity);
+        }
+
+        @Override
+        public void onActivityPaused(@NonNull Activity activity) {
+            mResumed.remove(activity);
+        }
+
+        @Override
+        public void onActivityResumed(@NonNull Activity activity) {
+            mResumed.add(activity);
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(@NonNull Activity activity,
+                                                @NonNull Bundle outState) {
+        }
+
+        @Override
+        public void onActivityStarted(@NonNull Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityStopped(@NonNull Activity activity) {
+
+        }
     }
 }

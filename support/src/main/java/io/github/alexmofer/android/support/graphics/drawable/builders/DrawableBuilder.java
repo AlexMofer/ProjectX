@@ -77,12 +77,12 @@ public class DrawableBuilder {
     }
 
     /**
-     * 修改未定义属性
+     * 解包装
      *
      * @param function 方法
      * @return 自身
      */
-    public final <T extends Drawable> DrawableBuilder changeAttribute(@Nullable FunctionPObject<T> function) {
+    public final <T extends Drawable> DrawableBuilder unwrap(@Nullable FunctionPObject<T> function) {
         if (function != null) {
             //noinspection unchecked
             function.execute((T) mDrawable);

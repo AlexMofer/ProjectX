@@ -24,7 +24,6 @@ import androidx.core.util.TypedValueCompat;
 
 import io.github.alexmofer.android.support.utils.ContextUtils;
 import io.github.alexmofer.android.support.utils.ViewOutlineProviderUtils;
-import io.github.alexmofer.android.support.widget.AvoidArea;
 import io.github.alexmofer.android.support.window.EdgeToEdge;
 import io.github.alexmofer.android.support.window.WindowMetricsHelper;
 
@@ -463,11 +462,11 @@ public class SheetDialogFragment extends CenterDialogFragment {
             warp.setClipToOutline(getContentClipToOutline(true, mEdgeToEdge));
             warp.setElevation(getContentElevation(context, true, mEdgeToEdge));
             mContent = warp;
-            if (mEdgeToEdge) {
-                AvoidArea.padding(this, AvoidArea.TOP);
-            } else {
-                AvoidArea.paddingAll(this);
-            }
+//            if (mEdgeToEdge) {
+//                AvoidArea.padding(this, AvoidArea.TOP);
+//            } else {
+//                AvoidArea.paddingAll(this);
+//            }
         }
 
         @Override

@@ -27,7 +27,6 @@ import androidx.core.util.TypedValueCompat;
 
 import io.github.alexmofer.android.support.utils.ContextUtils;
 import io.github.alexmofer.android.support.utils.TypedValueUtils;
-import io.github.alexmofer.android.support.widget.AvoidArea;
 import io.github.alexmofer.android.support.window.EdgeToEdge;
 
 /**
@@ -382,7 +381,7 @@ public class CenterDialogFragment extends AppCompatDialogFragment {
             warp.setClipToOutline(getContentClipToOutline());
             warp.setElevation(getContentElevation(context));
             mContent = warp;
-            AvoidArea.paddingAll(this);
+//            AvoidArea.paddingAll(this);
         }
 
         @Override

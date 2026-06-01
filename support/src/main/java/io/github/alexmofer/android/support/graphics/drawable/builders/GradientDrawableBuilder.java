@@ -46,6 +46,8 @@ public class GradientDrawableBuilder extends DrawableBuilder {
         this(new GradientDrawable(orientation, colors));
     }
 
+
+
     @NonNull
     @Override
     public GradientDrawable build() {
@@ -86,6 +88,10 @@ public class GradientDrawableBuilder extends DrawableBuilder {
     public GradientDrawableBuilder setSize(int width, int height) {
         mDrawable.setSize(width, height);
         return this;
+    }
+
+    public GradientDrawableBuilder setSize(int size) {
+        return setSize(size, size);
     }
 
     public GradientDrawableBuilder setShape(int shape) {
