@@ -24,6 +24,7 @@ import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.collection.MutableFloatObjectMap;
 
 /**
  * ViewOutlineProvider 工具
@@ -55,6 +56,7 @@ public class ViewOutlineProviderUtils {
         }
     };
     public static final ViewOutlineProvider IMAGE_CONTENT = new ImageViewContent(0);
+    private static final MutableFloatObjectMap<ViewOutlineProvider> sRoundRect = new MutableFloatObjectMap<>();// 使用率很高，缓存一下
 
     private ViewOutlineProviderUtils() {
         //no instance
@@ -80,8 +82,9 @@ public class ViewOutlineProviderUtils {
      * @param radius 圆角半径
      * @return 圆角矩形外边框
      */
+    @NonNull
     public static ViewOutlineProvider newRoundRect(float radius) {
-        return new RoundRectViewOutlineProvider(radius);
+        return sRoundRect.getOrPut(radius, () -> new RoundRectViewOutlineProvider(radius));
     }
 
     /**
@@ -90,6 +93,7 @@ public class ViewOutlineProviderUtils {
      * @param radius 圆角半径
      * @return 顶部圆角矩形外边框
      */
+    @NonNull
     public static ViewOutlineProvider newTopRoundRect(float radius) {
         return new TopRoundRectViewOutlineProvider(radius);
     }
@@ -100,15 +104,18 @@ public class ViewOutlineProviderUtils {
      * @param radius 圆角半径
      * @return 底部圆角矩形外边框
      */
+    @NonNull
     public static ViewOutlineProvider newBottomRoundRect(float radius) {
         return new BottomRoundRectViewOutlineProvider(radius);
     }
 
     /**
      * 新建图片圆角边框
+     *
      * @param radius 圆角半径
      * @return 图片圆角边框
      */
+    @NonNull
     public static ViewOutlineProvider newImageContentWithRadius(float radius) {
         return new ImageViewContent(radius);
     }

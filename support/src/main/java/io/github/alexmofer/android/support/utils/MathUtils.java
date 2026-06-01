@@ -19,7 +19,7 @@ package io.github.alexmofer.android.support.utils;
  * Math 工具
  * Created by Alex on 2025/6/25.
  */
-public class MathUtils {
+public final class MathUtils {
 
     private MathUtils() {
         //no instance
