@@ -866,6 +866,11 @@ public class ViewBuilder {
         return this;
     }
 
+    public ViewBuilder setTag(@IdRes int key, final Object tag) {
+        mView.setTag(key, tag);
+        return this;
+    }
+
     public ViewBuilder setOnFocusChangeListener(View.OnFocusChangeListener l) {
         mView.setOnFocusChangeListener(l);
         return this;
