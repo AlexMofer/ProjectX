@@ -31,6 +31,9 @@ import androidx.core.util.TypedValueCompat;
 import androidx.core.view.DisplayCutoutCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 
@@ -65,6 +68,32 @@ public final class AvoidAreaCalculator {
 
     public AvoidAreaCalculator(@NonNull View view) {
         setView(view);
+    }
+
+    /**
+     * 获取计算器
+     *
+     * @param activity FragmentActivity
+     * @return 计算器
+     */
+    @NonNull
+    public static AvoidAreaCalculator get(@NonNull FragmentActivity activity) {
+        return AvoidAreaCalculatorViewModel.getInstance(activity).getCalculator();
+    }
+
+    /**
+     * 获取计算器
+     *
+     * @param fragment Fragment
+     * @return 计算器
+     */
+    @NonNull
+    public static AvoidAreaCalculator get(@NonNull Fragment fragment) {
+        if (fragment instanceof DialogFragment) {
+            return AvoidAreaCalculatorViewModel.getInstance((DialogFragment) fragment)
+                    .getCalculator();
+        }
+        return get(fragment.requireActivity());
     }
 
     /**
