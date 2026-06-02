@@ -40,7 +40,6 @@ import java.util.Locale;
  * Created by Alex on 2024/2/28.
  */
 public class ApplicationHolder {
-
     @SuppressLint("StaticFieldLeak")
     private static ApplicationHolder mInstance;
     private final Application mApplication;
@@ -203,8 +202,9 @@ public class ApplicationHolder {
      * @return Activity
      */
     @Nullable
-    public Activity getLastResumedActivity() {
-        return mResumed.isEmpty() ? null : mResumed.get(mResumed.size() - 1);
+    public static Activity getLastResumedActivity() {
+        final ApplicationHolder holder = getInstance();
+        return holder.mResumed.isEmpty() ? null : holder.mResumed.get(holder.mResumed.size() - 1);
     }
 
     /**
@@ -213,16 +213,18 @@ public class ApplicationHolder {
      * @return Activity
      */
     @Nullable
-    public Activity getLastCreatedActivity() {
-        return mCreated.isEmpty() ? null : mCreated.get(mCreated.size() - 1);
+    public static Activity getLastCreatedActivity() {
+        final ApplicationHolder holder = getInstance();
+        return holder.mCreated.isEmpty() ? null : holder.mCreated.get(holder.mCreated.size() - 1);
     }
 
     /**
      * 重新创建所有 Activity
      */
     @MainThread
-    public void recreateAllActivities() {
-        final ArrayList<Activity> activities = new ArrayList<>(mCreated);
+    public static void recreateAllActivities() {
+        final ApplicationHolder holder = getInstance();
+        final ArrayList<Activity> activities = new ArrayList<>(holder.mCreated);
         for (Activity activity : activities) {
             try {
                 ActivityCompat.recreate(activity);
@@ -237,11 +239,12 @@ public class ApplicationHolder {
      *
      * @return 为冷启动时返回 true
      */
-    public boolean isPureColdStart() throws Exception {
-        if (mPureColdStart == null) {
+    public static boolean isPureColdStart() throws Exception {
+        final ApplicationHolder holder = getInstance();
+        if (holder.mPureColdStart == null) {
             throw new Exception("Please call isPureColdStart() after one activity created.");
         }
-        return mPureColdStart;
+        return holder.mPureColdStart;
     }
 
     private class InnerActivityLifecycleCallbacks
