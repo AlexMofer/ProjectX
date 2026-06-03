@@ -26,8 +26,9 @@ public interface SystemBarStyleControllable {
      */
     static boolean refreshSystemBarStyle(@NonNull FragmentActivity activity) {
         if (activity instanceof SystemBarStyleController.Holder) {
-            ((SystemBarStyleController.Holder) activity).getSystemBarStyleController()
-                    .refreshSystemBarStyle(activity.getSupportFragmentManager());
+            ((SystemBarStyleController.Holder) activity)
+                    .getSystemBarStyleController()
+                    .refreshSystemBarStyle(activity);
             return true;
         }
         return false;

@@ -19,7 +19,7 @@ public class UIThreadExecutor implements Executor {
         mHandler = HandlerCompat.createAsync(Looper.getMainLooper());
     }
 
-    public static UIThreadExecutor getDefault() {
+    public static synchronized UIThreadExecutor getDefault() {
         if (sDefault == null) {
             sDefault = new UIThreadExecutor();
         }

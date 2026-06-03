@@ -49,8 +49,6 @@ public final class ListenableFutureHelper {
     public static final int SORT_QUEUES = 1;// 先进后出
     private static final Object sJobThreadPoolLock = new Object();
     private static volatile ExecutorService sJobThreadPool;
-    private static final Object sUIThreadExecutorLock = new Object();
-    private static volatile UIThreadExecutor sUIThreadExecutor;
 
     private ListenableFutureHelper() {
         //no instance
@@ -109,14 +107,7 @@ public final class ListenableFutureHelper {
      */
     @NonNull
     public static UIThreadExecutor getUIThreadExecutor() {
-        if (sUIThreadExecutor == null) {
-            synchronized (sUIThreadExecutorLock) {
-                if (sUIThreadExecutor == null) {
-                    sUIThreadExecutor = new UIThreadExecutor();
-                }
-            }
-        }
-        return sUIThreadExecutor;
+        return UIThreadExecutor.getDefault();
     }
 
     /**

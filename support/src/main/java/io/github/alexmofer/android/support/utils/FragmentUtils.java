@@ -27,6 +27,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import io.github.alexmofer.android.support.app.ApplicationHolder;
@@ -49,7 +50,7 @@ public class FragmentUtils {
      * @return 回调
      */
     @Nullable
-    public static <T> T getCallback(View view, @NonNull Class<T> clazz) {
+    public static <T> T getCallback(@Nullable View view, @NonNull Class<T> clazz) {
         if (view == null) {
             return null;
         }
@@ -78,7 +79,7 @@ public class FragmentUtils {
      * @return 回调
      */
     @Nullable
-    public static <T> T getCallback(Fragment fragment, @NonNull Class<T> clazz) {
+    public static <T> T getCallback(@NonNull Fragment fragment, @NonNull Class<T> clazz) {
         final View view = fragment.getView();
         if (view != null) {
             final ViewParent vp = view.getParent();
@@ -106,7 +107,7 @@ public class FragmentUtils {
      * @param args Fragment 参数
      * @param data 数据
      */
-    public static void putData(Bundle args, Object data) {
+    public static void putData(@NonNull Bundle args, Object data) {
         final String id = UUID.randomUUID().toString();
         ApplicationHolder.putData(id, data);
         args.putString(KEY_ID, id);
@@ -119,12 +120,12 @@ public class FragmentUtils {
      * @return 数据，注意类型转换问题
      */
     @Nullable
-    public static <T> T getData(Fragment fragment) {
+    public static <T> T getData(@NonNull Fragment fragment) {
         final Bundle args = fragment.getArguments();
         if (args == null || !args.containsKey(KEY_ID)) {
             return null;
         }
-        return ApplicationHolder.getData(args.getString(KEY_ID));
+        return ApplicationHolder.getData(Objects.requireNonNull(args.getString(KEY_ID)));
     }
 
     /**
@@ -132,12 +133,12 @@ public class FragmentUtils {
      *
      * @param fragment Fragment
      */
-    public static void removeData(Fragment fragment) {
+    public static void removeData(@NonNull Fragment fragment) {
         final Bundle args = fragment.getArguments();
         if (args == null || !args.containsKey(KEY_ID)) {
             return;
         }
-        ApplicationHolder.removeData(args.getString(KEY_ID));
+        ApplicationHolder.removeData(Objects.requireNonNull(args.getString(KEY_ID)));
     }
 
     @Nullable
@@ -196,26 +197,41 @@ public class FragmentUtils {
     }
 
     /**
-     * 查找当前处于活跃状态的 Fragment
+     * 查找可见的 Fragment
+     * 注意：Activity 的 Window 的 DecorView 都还没有附着到窗口时，
+     * Fragment 虽然已经 Resumed，但 isVisible 判断依然为 false，
+     * 因为其 View 的 getWindowToken 为 null，
+     * 所以需要在 Activity 的 Window 的 DecorView 附着到窗口 其 onViewAttachedToWindow 调用完成以后该方法才有效。
+     * 该方法放在 View 的点击事件中执行是没有问题的。
      *
      * @param fragmentManager FragmentManager
-     * @return 当前处于活跃状态的 Fragment
+     * @return 可见的 Fragment
      */
     @Nullable
-    public static Fragment findActiveFragment(@NonNull FragmentManager fragmentManager) {
+    public static Fragment findVisibleFragment(@NonNull FragmentManager fragmentManager) {
         final List<Fragment> fragments = fragmentManager.getFragments();
         if (fragments.isEmpty()) return null;
-        // 倒序遍历，因为新添加/压入栈顶的 Fragment 通常在列表末尾
         for (int i = fragments.size() - 1; i >= 0; i--) {
-            Fragment fragment = fragments.get(i);
-            // 必须同时满足 added、visible 且未被隐藏
-            if (fragment != null && fragment.isAdded() && fragment.isVisible() && !fragment.isHidden()) {
-                // 递归查找该 Fragment 的子组件（Child Fragment）
+            final Fragment fragment = fragments.get(i);
+            if (fragment != null && fragment.isVisible()) {
                 final FragmentManager childFragmentManager = fragment.getChildFragmentManager();
-                final Fragment childFragment = findActiveFragment(childFragmentManager);
-                // 如果子 Fragment 存在，则返回子 Fragment，否则返回当前 Fragment
+                final Fragment childFragment = findVisibleFragment(childFragmentManager);
                 return childFragment != null ? childFragment : fragment;
             }
+        }
+        return null;
+    }
+
+    /**
+     * 获取可见的 Fragment
+     *
+     * @param activity FragmentActivity
+     * @return 可见的 Fragment
+     */
+    @Nullable
+    public static Fragment findVisibleFragment(@NonNull FragmentActivity activity) {
+        if (activity.getWindow().getDecorView().isAttachedToWindow()) {
+            return findVisibleFragment(activity.getSupportFragmentManager());
         }
         return null;
     }
