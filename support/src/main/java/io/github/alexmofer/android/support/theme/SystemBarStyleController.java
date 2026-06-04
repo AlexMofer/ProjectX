@@ -53,6 +53,22 @@ public final class SystemBarStyleController {
                 final View decorView = window.getDecorView();
                 final WindowInsetsControllerCompat controller =
                         WindowCompat.getInsetsController(window, decorView);
+                decorView.addOnAttachStateChangeListener(
+                        new View.OnAttachStateChangeListener() {
+                            @Override
+                            public void onViewAttachedToWindow(@NonNull View v) {
+                                // 直接执行是无效的，
+                                // 因为 Fragment 的 View 的 onViewAttachedToWindow 在该方法之后执行，
+                                // 因此需要将刷新 post 到 UI 线程中执行。
+                                UIThreadExecutor.getDefault().getHandler().post(
+                                        () -> refreshSystemBarStyle(activity));
+                            }
+
+                            @Override
+                            public void onViewDetachedFromWindow(@NonNull View v) {
+                                // do nothing
+                            }
+                        });
                 mLightStatusBars.observe(owner, isLight -> {
                     if (isLight == null) {
                         controller.setAppearanceLightStatusBars(statusBarDefaultAdapter.execute());
@@ -69,22 +85,7 @@ public final class SystemBarStyleController {
                 });
             }
         });
-        activity.getWindow().getDecorView().addOnAttachStateChangeListener(
-                new View.OnAttachStateChangeListener() {
-                    @Override
-                    public void onViewAttachedToWindow(@NonNull View v) {
-                        // 直接执行是无效的，
-                        // 因为 Fragment 的 View 的 onViewAttachedToWindow 在该方法之后执行，
-                        // 因此需要将刷新 post 到 UI 线程中执行。
-                        UIThreadExecutor.getDefault().getHandler().post(
-                                () -> refreshSystemBarStyle(activity));
-                    }
 
-                    @Override
-                    public void onViewDetachedFromWindow(@NonNull View v) {
-                        // do nothing
-                    }
-                });
     }
 
     public <T extends AppCompatActivity & Holder> SystemBarStyleController(@NonNull T activity,
