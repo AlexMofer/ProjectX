@@ -334,6 +334,11 @@ public class TextViewBuilder extends ViewBuilder {
         return this;
     }
 
+    public TextViewBuilder setHighlightColor(@ColorInt int color) {
+        mView.setHighlightColor(color);
+        return this;
+    }
+
     public TextViewBuilder setAutoMarquee() {
         TextViewUtils.setAutoMarquee(mView);
         return this;
