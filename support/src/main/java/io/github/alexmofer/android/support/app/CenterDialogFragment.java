@@ -82,7 +82,7 @@ public class CenterDialogFragment extends AppCompatDialogFragment {
                 if (args != null) {
                     ((NonRepeatable) find).onNewArguments(args);
                 }
-                return false;
+                return true;
             }
         }
         final CenterDialogFragment created;
