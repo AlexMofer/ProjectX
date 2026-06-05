@@ -16,174 +16,20 @@
 package io.github.alexmofer.android.support.app;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.transition.Slide;
+
+import io.github.alexmofer.android.support.transition.FragmentTransitions;
+import io.github.alexmofer.android.support.utils.FragmentUtils;
 
 /**
  * 基础 Fragment
  * Created by Alex on 2026/4/25.
  */
 public abstract class Fragment extends androidx.fragment.app.Fragment implements BackPressable {
-
-    /**
-     * 尝试移除自身
-     *
-     * @param fragment Fragment
-     * @return 移除成功时返回 true
-     */
-    @SuppressWarnings("UnusedReturnValue")
-    public static boolean tryRemoveSelf(@NonNull androidx.fragment.app.Fragment fragment) {
-        if (fragment instanceof Fragment) {
-            try {
-                ((Fragment) fragment).removeSelf();
-                return true;
-            } catch (Throwable t) {
-                //ignore
-            }
-        }
-        return false;
-    }
-
-
-    private static void add(@NonNull FragmentManager manager,
-                            @IdRes int containerId,
-                            @NonNull Class<? extends Fragment> clazz,
-                            @Nullable Bundle args) {
-        final String tag = clazz.getName();
-        if (NonRepeatable.class.isAssignableFrom(clazz)) {
-            // 不可重复
-            final androidx.fragment.app.Fragment find = manager.findFragmentByTag(tag);
-            if (clazz.isInstance(find)) {
-                if (args != null) {
-                    ((NonRepeatable) find).onNewArguments(args);
-                }
-                return;
-            }
-        }
-        manager.beginTransaction()
-                .add(containerId, clazz, args, tag)
-                .commit();
-    }
-
-    /**
-     * 添加
-     *
-     * @param activity FragmentActivity
-     * @param clazz    Fragment 类名
-     * @param args     参数
-     * @return 添加成功时返回 true
-     */
-    @SuppressWarnings({"UnusedReturnValue", "SameParameterValue"})
-    protected static boolean add(@NonNull FragmentActivity activity,
-                                 @IdRes int containerId,
-                                 @NonNull Class<? extends Fragment> clazz,
-                                 @Nullable Bundle args) {
-        if (activity.findViewById(containerId) == null) {
-            // 未找到容器
-            return false;
-        }
-        add(activity.getSupportFragmentManager(), containerId, clazz, args);
-        return true;
-    }
-
-    /**
-     * 添加
-     *
-     * @param fragment Fragment
-     * @param clazz    Fragment 类名
-     * @param args     参数
-     * @return 添加成功时返回 true
-     */
-    @SuppressWarnings({"UnusedReturnValue", "SameParameterValue"})
-    protected static boolean add(@NonNull androidx.fragment.app.Fragment fragment,
-                                 @IdRes int containerId,
-                                 @NonNull Class<? extends Fragment> clazz,
-                                 @Nullable Bundle args) {
-        final View view = fragment.getView();
-        if (view == null) {
-            return false;
-        }
-        if (view.findViewById(containerId) == null) {
-            // 未找到容器
-            return false;
-        }
-        add(fragment.getChildFragmentManager(), containerId, clazz, args);
-        return true;
-    }
-
-    private static void replace(@NonNull FragmentManager manager,
-                                @IdRes int containerId,
-                                @NonNull Class<? extends Fragment> clazz,
-                                @Nullable Bundle args) {
-        final String tag = clazz.getName();
-        if (NonRepeatable.class.isAssignableFrom(clazz)) {
-            // 不可重复
-            final androidx.fragment.app.Fragment find = manager.findFragmentByTag(tag);
-            if (clazz.isInstance(find)) {
-                if (args != null) {
-                    ((NonRepeatable) find).onNewArguments(args);
-                }
-                return;
-            }
-        }
-        manager.beginTransaction()
-                .replace(containerId, clazz, args, tag)
-                .commit();
-    }
-
-    /**
-     * 替换
-     *
-     * @param activity FragmentActivity
-     * @param clazz    Fragment 类名
-     * @param args     参数
-     * @return 添加成功时返回 true
-     */
-    @SuppressWarnings({"UnusedReturnValue", "SameParameterValue"})
-    protected static boolean replace(@NonNull FragmentActivity activity,
-                                     @IdRes int containerId,
-                                     @NonNull Class<? extends Fragment> clazz,
-                                     @Nullable Bundle args) {
-        if (activity.findViewById(containerId) == null) {
-            // 未找到容器
-            return false;
-        }
-        replace(activity.getSupportFragmentManager(), containerId, clazz, args);
-        return true;
-    }
-
-    /**
-     * 替换
-     *
-     * @param fragment Fragment
-     * @param clazz    Fragment 类名
-     * @param args     参数
-     * @return 添加成功时返回 true
-     */
-    @SuppressWarnings({"UnusedReturnValue", "SameParameterValue"})
-    protected static boolean replace(@NonNull androidx.fragment.app.Fragment fragment,
-                                     @IdRes int containerId,
-                                     @NonNull Class<? extends Fragment> clazz,
-                                     @Nullable Bundle args) {
-        final View view = fragment.getView();
-        if (view == null) {
-            return false;
-        }
-        if (view.findViewById(containerId) == null) {
-            // 未找到容器
-            return false;
-        }
-        replace(fragment.getChildFragmentManager(), containerId, clazz, args);
-        return true;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -197,11 +43,7 @@ public abstract class Fragment extends androidx.fragment.app.Fragment implements
      * @param savedInstanceState 状态
      */
     protected void onConfigTransition(@Nullable Bundle savedInstanceState) {
-        if (this instanceof SlideEnd) {
-            final long duration = getResources().getInteger(android.R.integer.config_shortAnimTime);
-            setEnterTransition(new Slide(Gravity.END).setDuration(duration));
-            setExitTransition(new Slide(Gravity.END).setDuration(duration));
-        }
+        FragmentTransitions.setTransitions(this);
     }
 
     @Override
@@ -225,11 +67,12 @@ public abstract class Fragment extends androidx.fragment.app.Fragment implements
 
     /**
      * 移除自身
+     *
+     * @return 移除成功时返回 true
      */
-    protected void removeSelf() {
-        getParentFragmentManager().beginTransaction()
-                .remove(this)
-                .commit();
+    @SuppressWarnings("UnusedReturnValue")
+    protected boolean removeSelf() {
+        return FragmentUtils.tryRemoveSelf(this);
     }
 
     /**

@@ -39,8 +39,6 @@ import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.util.TypedValueCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import io.github.alexmofer.android.support.utils.ContextUtils;
 import io.github.alexmofer.android.support.utils.TypedValueUtils;
@@ -60,40 +58,6 @@ public class CenterDialogFragment extends AppCompatDialogFragment {
 
     public CenterDialogFragment(@LayoutRes int contentLayoutId) {
         super(contentLayoutId);
-    }
-
-    /**
-     * 显示对话框
-     *
-     * @param manager FragmentManager
-     * @param clazz   对话框类
-     * @param args    参数
-     * @return 显示成功时返回true
-     */
-    @SuppressWarnings("UnusedReturnValue")
-    protected static boolean show(@NonNull FragmentManager manager,
-                                  @NonNull Class<? extends CenterDialogFragment> clazz,
-                                  @Nullable Bundle args) {
-        final String tag = clazz.getName();
-        if (NonRepeatable.class.isAssignableFrom(clazz)) {
-            // 不可重复
-            final Fragment find = manager.findFragmentByTag(tag);
-            if (find != null && clazz.isInstance(find)) {
-                if (args != null) {
-                    ((NonRepeatable) find).onNewArguments(args);
-                }
-                return true;
-            }
-        }
-        final CenterDialogFragment created;
-        try {
-            created = clazz.newInstance();
-        } catch (Throwable t) {
-            return false;
-        }
-        created.setArguments(args);
-        created.show(manager, tag);
-        return true;
     }
 
     @NonNull

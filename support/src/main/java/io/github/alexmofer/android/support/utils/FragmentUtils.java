@@ -20,8 +20,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewParent;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -31,6 +33,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import io.github.alexmofer.android.support.app.ApplicationHolder;
+import io.github.alexmofer.android.support.app.NonRepeatable;
 
 /**
  * Fragment 工具
@@ -139,6 +142,184 @@ public class FragmentUtils {
             return;
         }
         ApplicationHolder.removeData(Objects.requireNonNull(args.getString(KEY_ID)));
+    }
+
+    /**
+     * 尝试移除自身
+     *
+     * @param fragment Fragment
+     * @return 移除成功时返回 true
+     */
+    public static boolean tryRemoveSelf(@NonNull Fragment fragment) {
+        try {
+            fragment.getParentFragmentManager().beginTransaction()
+                    .remove(fragment)
+                    .commit();
+            return true;
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
+    private static void add(@NonNull FragmentManager manager,
+                            @IdRes int containerId,
+                            @NonNull Class<? extends Fragment> clazz,
+                            @Nullable Bundle args) {
+        final String tag = clazz.getName();
+        if (NonRepeatable.class.isAssignableFrom(clazz)) {
+            // 不可重复
+            final Fragment find = manager.findFragmentByTag(tag);
+            if (clazz.isInstance(find)) {
+                if (args != null) {
+                    ((NonRepeatable) find).onNewArguments(args);
+                }
+                return;
+            }
+        }
+        manager.beginTransaction()
+                .add(containerId, clazz, args, tag)
+                .commit();
+    }
+
+    /**
+     * 添加
+     *
+     * @param activity FragmentActivity
+     * @param clazz    Fragment 类名
+     * @param args     参数
+     * @return 添加成功时返回 true
+     */
+    public static boolean add(@NonNull FragmentActivity activity,
+                              @IdRes int containerId,
+                              @NonNull Class<? extends Fragment> clazz,
+                              @Nullable Bundle args) {
+        if (activity.findViewById(containerId) == null) {
+            // 未找到容器
+            return false;
+        }
+        add(activity.getSupportFragmentManager(), containerId, clazz, args);
+        return true;
+    }
+
+    /**
+     * 添加
+     *
+     * @param fragment Fragment
+     * @param clazz    Fragment 类名
+     * @param args     参数
+     * @return 添加成功时返回 true
+     */
+    public static boolean add(@NonNull Fragment fragment,
+                              @IdRes int containerId,
+                              @NonNull Class<? extends Fragment> clazz,
+                              @Nullable Bundle args) {
+        final View view = fragment.getView();
+        if (view == null) {
+            return false;
+        }
+        if (view.findViewById(containerId) == null) {
+            // 未找到容器
+            return false;
+        }
+        add(fragment.getChildFragmentManager(), containerId, clazz, args);
+        return true;
+    }
+
+    private static void replace(@NonNull FragmentManager manager,
+                                @IdRes int containerId,
+                                @NonNull Class<? extends Fragment> clazz,
+                                @Nullable Bundle args) {
+        final String tag = clazz.getName();
+        if (NonRepeatable.class.isAssignableFrom(clazz)) {
+            // 不可重复
+            final Fragment find = manager.findFragmentByTag(tag);
+            if (clazz.isInstance(find)) {
+                if (args != null) {
+                    ((NonRepeatable) find).onNewArguments(args);
+                }
+                return;
+            }
+        }
+        manager.beginTransaction()
+                .replace(containerId, clazz, args, tag)
+                .commit();
+    }
+
+    /**
+     * 替换
+     *
+     * @param activity FragmentActivity
+     * @param clazz    Fragment 类名
+     * @param args     参数
+     * @return 添加成功时返回 true
+     */
+    public static boolean replace(@NonNull FragmentActivity activity,
+                                  @IdRes int containerId,
+                                  @NonNull Class<? extends Fragment> clazz,
+                                  @Nullable Bundle args) {
+        if (activity.findViewById(containerId) == null) {
+            // 未找到容器
+            return false;
+        }
+        replace(activity.getSupportFragmentManager(), containerId, clazz, args);
+        return true;
+    }
+
+    /**
+     * 替换
+     *
+     * @param fragment Fragment
+     * @param clazz    Fragment 类名
+     * @param args     参数
+     * @return 添加成功时返回 true
+     */
+    public static boolean replace(@NonNull Fragment fragment,
+                                  @IdRes int containerId,
+                                  @NonNull Class<? extends Fragment> clazz,
+                                  @Nullable Bundle args) {
+        final View view = fragment.getView();
+        if (view == null) {
+            return false;
+        }
+        if (view.findViewById(containerId) == null) {
+            // 未找到容器
+            return false;
+        }
+        replace(fragment.getChildFragmentManager(), containerId, clazz, args);
+        return true;
+    }
+
+    /**
+     * 显示对话框
+     *
+     * @param manager FragmentManager
+     * @param clazz   对话框类
+     * @param args    参数
+     * @return 显示成功时返回true
+     */
+    public static boolean show(@NonNull FragmentManager manager,
+                                  @NonNull Class<? extends DialogFragment> clazz,
+                                  @Nullable Bundle args) {
+        final String tag = clazz.getName();
+        if (NonRepeatable.class.isAssignableFrom(clazz)) {
+            // 不可重复
+            final Fragment find = manager.findFragmentByTag(tag);
+            if (find != null && clazz.isInstance(find)) {
+                if (args != null) {
+                    ((NonRepeatable) find).onNewArguments(args);
+                }
+                return true;
+            }
+        }
+        final DialogFragment created;
+        try {
+            created = clazz.newInstance();
+        } catch (Throwable t) {
+            return false;
+        }
+        created.setArguments(args);
+        created.show(manager, tag);
+        return true;
     }
 
     @Nullable
