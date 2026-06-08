@@ -88,4 +88,9 @@ public class ViewGroupBuilder extends ViewBuilder {
         mView.setClipToPadding(clipToPadding);
         return this;
     }
+
+    public ViewGroupBuilder setTransitionGroup(boolean isTransitionGroup) {
+        mView.setTransitionGroup(isTransitionGroup);
+        return this;
+    }
 }
