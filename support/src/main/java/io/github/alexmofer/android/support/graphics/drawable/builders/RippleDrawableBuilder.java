@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -24,6 +25,14 @@ public class RippleDrawableBuilder extends LayerDrawableBuilder {
     public RippleDrawableBuilder(@NonNull ColorStateList color, @Nullable Drawable content,
                                  @Nullable Drawable mask) {
         this(new RippleDrawable(color, content, mask));
+    }
+
+    public RippleDrawableBuilder(@NonNull ColorStateList color) {
+        this(color, null, null);
+    }
+
+    public RippleDrawableBuilder(@ColorInt int color) {
+        this(ColorStateList.valueOf(color));
     }
 
     @NonNull
