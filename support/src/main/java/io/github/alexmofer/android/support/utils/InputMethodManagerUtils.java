@@ -17,10 +17,8 @@ package io.github.alexmofer.android.support.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.WindowInsetsCompat;
@@ -112,7 +110,7 @@ public class InputMethodManagerUtils {
     /**
      * 设置自动聚焦
      *
-     * @param view      View
+     * @param view        View
      * @param delayMillis 触发延迟
      */
     public static void setAutoFocus(@NonNull View view, long delayMillis) {
