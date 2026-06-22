@@ -225,6 +225,32 @@ public class FragmentUtils {
         return true;
     }
 
+    /**
+     * 添加
+     * 注意：仅推荐无 View 的 Fragment 使用
+     * @param manager FragmentManager
+     * @param clazz   Fragment 类名
+     * @param args    参数
+     */
+    public static void add(@NonNull FragmentManager manager,
+                           @NonNull Class<? extends Fragment> clazz,
+                           @Nullable Bundle args) {
+        final String tag = clazz.getName();
+        if (NonRepeatable.class.isAssignableFrom(clazz)) {
+            // 不可重复
+            final Fragment find = manager.findFragmentByTag(tag);
+            if (clazz.isInstance(find)) {
+                if (args != null) {
+                    ((NonRepeatable) find).onNewArguments(args);
+                }
+                return;
+            }
+        }
+        manager.beginTransaction()
+                .add(clazz, args, tag)
+                .commit();
+    }
+
     private static void replace(@NonNull FragmentManager manager,
                                 @IdRes int containerId,
                                 @NonNull Class<? extends Fragment> clazz,

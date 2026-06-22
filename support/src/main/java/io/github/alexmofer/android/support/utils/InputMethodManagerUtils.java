@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 /**
@@ -140,5 +141,19 @@ public class InputMethodManagerUtils {
                 }
             });
         }
+    }
+
+    /**
+     * 判断键盘是否打开
+     *
+     * @param view 任何 View
+     * @return true 打开
+     */
+    public static boolean isKeyboardOpen(View view) {
+        if (view == null || view.getRootWindowInsets() == null) {
+            return false;
+        }
+        return WindowInsetsCompat.toWindowInsetsCompat(view.getRootWindowInsets())
+                .isVisible(WindowInsetsCompat.Type.ime());
     }
 }
