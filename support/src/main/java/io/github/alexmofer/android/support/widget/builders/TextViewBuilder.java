@@ -167,7 +167,11 @@ public class TextViewBuilder extends ViewBuilder {
     }
 
     public TextViewBuilder setText(@StringRes int resid) {
-        mView.setText(resid);
+        if (resid == ResourcesCompat.ID_NULL) {
+            mView.setText(null);
+        } else {
+            mView.setText(resid);
+        }
         return this;
     }
 
@@ -193,19 +197,19 @@ public class TextViewBuilder extends ViewBuilder {
                                    boolean autoGone) {
         text.observe(owner, value -> {
             if (value == null) {
-                mView.setText(null);
+                setText((CharSequence) null);
                 if (autoGone) {
                     mView.setVisibility(View.GONE);
                 }
             } else {
                 if (value instanceof CharSequence) {
-                    mView.setText((CharSequence) value);
+                    setText((CharSequence) value);
                 } else if (value instanceof Integer) {
-                    mView.setText((Integer) value);
+                    setText((Integer) value);
                 } else if (value instanceof StringResource) {
-                    StringResource.setText(mView, (StringResource) value);
+                    setText((StringResource) value);
                 } else {
-                    mView.setText(value.toString());
+                    setText(value.toString());
                 }
                 if (autoGone) {
                     mView.setVisibility(View.VISIBLE);
