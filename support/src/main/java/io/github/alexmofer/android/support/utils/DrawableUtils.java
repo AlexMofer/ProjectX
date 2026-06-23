@@ -26,6 +26,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 /**
@@ -46,6 +47,7 @@ public final class DrawableUtils {
      * @param height 高度，-1表示占满
      * @return 分割器
      */
+    @NonNull
     public static GradientDrawable newDivider(@ColorInt int color, int width, int height) {
         final GradientDrawable drawable = new GradientDrawable();
         drawable.setColor(color);
@@ -60,6 +62,7 @@ public final class DrawableUtils {
      * @param height 高度
      * @return 垂直分割器
      */
+    @NonNull
     public static GradientDrawable newDividerVertical(@ColorInt int color, int height) {
         return newDivider(color, -1, height);
     }
@@ -70,6 +73,7 @@ public final class DrawableUtils {
      * @param height 高度
      * @return 垂直分割器
      */
+    @NonNull
     public static GradientDrawable newDividerVertical(int height) {
         return newDividerVertical(Color.TRANSPARENT, height);
     }
@@ -81,6 +85,7 @@ public final class DrawableUtils {
      * @param width 宽度
      * @return 水平分割器
      */
+    @NonNull
     public static GradientDrawable newDividerHorizontal(@ColorInt int color, int width) {
         return newDivider(color, width, -1);
     }
@@ -91,6 +96,7 @@ public final class DrawableUtils {
      * @param width 宽度
      * @return 水平分割器
      */
+    @NonNull
     public static GradientDrawable newDividerHorizontal(int width) {
         return newDividerHorizontal(Color.TRANSPARENT, width);
     }
@@ -102,6 +108,7 @@ public final class DrawableUtils {
      * @param colorEnd   结束颜色
      * @return 水平渐变
      */
+    @NonNull
     public static GradientDrawable newGradientHorizontal(@ColorInt int colorStart,
                                                          @ColorInt int colorEnd) {
         final GradientDrawable drawable = new GradientDrawable();
@@ -117,6 +124,7 @@ public final class DrawableUtils {
      * @param colorEnd   结束颜色
      * @return 垂直渐变
      */
+    @NonNull
     public static GradientDrawable newGradientVertical(@ColorInt int colorStart,
                                                        @ColorInt int colorEnd) {
         final GradientDrawable drawable = new GradientDrawable();
@@ -124,6 +132,7 @@ public final class DrawableUtils {
         return drawable;
     }
 
+    @NonNull
     public static GradientDrawable newEmpty(int width, int height) {
         final GradientDrawable drawable = new GradientDrawable();
         drawable.setSize(width, height);
@@ -145,8 +154,11 @@ public final class DrawableUtils {
     }
 
     @Nullable
-    public static Drawable getTintedDrawable(Context context, @DrawableRes int id,
+    public static Drawable getTintedDrawable(@NonNull Context context, @DrawableRes int id,
                                              @Nullable ColorStateList tint) {
+        if (id == ResourcesCompat.ID_NULL) {
+            return null;
+        }
         final Drawable drawable = AppCompatResources.getDrawable(context, id);
         if (drawable == null) {
             return null;
@@ -155,7 +167,7 @@ public final class DrawableUtils {
     }
 
     @Nullable
-    public static Drawable getTintedDrawable(Context context, @DrawableRes int id,
+    public static Drawable getTintedDrawable(@NonNull Context context, @DrawableRes int id,
                                              @ColorInt int color) {
         return getTintedDrawable(context, id, ColorStateList.valueOf(color));
     }

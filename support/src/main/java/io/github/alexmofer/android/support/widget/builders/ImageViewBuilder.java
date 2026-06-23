@@ -53,6 +53,10 @@ public class ImageViewBuilder extends ViewBuilder {
     }
 
     public ImageViewBuilder setImageResource(@DrawableRes int resId) {
+        if (resId == ResourcesCompat.ID_NULL) {
+            mView.setImageDrawable(null);
+            return this;
+        }
         mView.setImageResource(resId);
         return this;
     }

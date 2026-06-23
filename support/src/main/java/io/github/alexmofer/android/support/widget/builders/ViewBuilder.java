@@ -34,6 +34,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -77,7 +78,11 @@ public class ViewBuilder {
     }
 
     public static void setTooltipText(@NonNull View view, @StringRes int tooltipText) {
-        ViewCompat.setTooltipText(view, view.getContext().getString(tooltipText));
+        if (tooltipText == ResourcesCompat.ID_NULL) {
+            ViewCompat.setTooltipText(view, null);
+        } else {
+            ViewCompat.setTooltipText(view, view.getContext().getString(tooltipText));
+        }
     }
 
     @NonNull
