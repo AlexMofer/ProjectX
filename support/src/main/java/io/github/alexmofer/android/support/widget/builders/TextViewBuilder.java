@@ -349,21 +349,7 @@ public class TextViewBuilder extends ViewBuilder {
     }
 
     public TextViewBuilder showSoftInputWhenAttached(long delayMillis) {
-        mView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(@NonNull View v) {
-                v.postDelayed(() -> {
-                    if (v.isAttachedToWindow()) {
-                        InputMethodManagerUtils.showSoftInput(v);
-                    }
-                }, delayMillis);
-            }
-
-            @Override
-            public void onViewDetachedFromWindow(@NonNull View v) {
-
-            }
-        });
+        InputMethodManagerUtils.setAutoFocus(mView, delayMillis);
         return this;
     }
 

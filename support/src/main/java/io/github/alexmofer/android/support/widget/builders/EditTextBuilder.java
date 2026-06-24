@@ -17,10 +17,12 @@ package io.github.alexmofer.android.support.widget.builders;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatEditText;
 
 /**
@@ -49,5 +51,31 @@ public final class EditTextBuilder extends TextViewBuilder {
     @Override
     public EditText build() {
         return mView;
+    }
+
+    public EditTextBuilder setSelection(int start, int stop) {
+        mView.setSelection(start, stop);
+        return this;
+    }
+
+    public EditTextBuilder setSelection(int index) {
+        mView.setSelection(index);
+        return this;
+    }
+
+    public EditTextBuilder selectAll() {
+        mView.selectAll();
+        return this;
+    }
+
+    public EditTextBuilder extendSelection(int index) {
+        mView.extendSelection(index);
+        return this;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+    public EditTextBuilder setStyleShortcutsEnabled(boolean enabled) {
+        mView.setStyleShortcutsEnabled(enabled);
+        return this;
     }
 }
