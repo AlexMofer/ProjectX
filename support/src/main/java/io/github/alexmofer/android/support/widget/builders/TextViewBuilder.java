@@ -407,4 +407,9 @@ public class TextViewBuilder extends ViewBuilder {
         mView.setHighlightColor(ColorUtils.getColor(color, 0.3f));
         return this;
     }
+
+    public TextViewBuilder setSelectAllOnFocus(boolean selectAllOnFocus) {
+        mView.setSelectAllOnFocus(selectAllOnFocus);
+        return this;
+    }
 }
