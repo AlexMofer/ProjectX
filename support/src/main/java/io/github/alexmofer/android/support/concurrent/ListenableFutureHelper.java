@@ -239,6 +239,21 @@ public final class ListenableFutureHelper {
     /**
      * 提交异步任务
      *
+     * @param task     任务执行回调
+     * @param callback 任务回调
+     * @return 异步任务
+     * @noinspection UnusedReturnValue
+     */
+    @NonNull
+    public static <T> ListenableFuture<T> submit(@NonNull ThrowableRunnable task,
+                                                 @Nullable Consumer<Throwable> callback) {
+        final Runnable success = callback == null ? null : () -> callback.accept(null);
+        return submit(task, success, callback);
+    }
+
+    /**
+     * 提交异步任务
+     *
      * @param task 任务执行回调
      * @return 异步任务
      * @noinspection UnusedReturnValue
