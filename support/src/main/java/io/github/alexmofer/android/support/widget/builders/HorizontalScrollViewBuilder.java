@@ -17,7 +17,6 @@ package io.github.alexmofer.android.support.widget.builders;
 
 import android.content.Context;
 import android.widget.HorizontalScrollView;
-import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 
@@ -45,6 +44,11 @@ public final class HorizontalScrollViewBuilder extends ViewGroupBuilder {
 
     public HorizontalScrollViewBuilder setFillViewport(boolean fillViewport) {
         mView.setFillViewport(fillViewport);
+        return this;
+    }
+
+    public HorizontalScrollViewBuilder setSmoothScrollingEnabled(boolean smoothScrollingEnabled) {
+        mView.setSmoothScrollingEnabled(smoothScrollingEnabled);
         return this;
     }
 }

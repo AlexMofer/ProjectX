@@ -19,6 +19,11 @@ import android.content.Context;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+
+import io.github.alexmofer.android.support.utils.InputMethodManagerUtils;
+import io.github.alexmofer.android.support.utils.ScrollViewUtils;
+import io.github.alexmofer.android.support.window.AvoidAreaCalculator;
 
 /**
  * ScrollView 构建器
@@ -44,6 +49,31 @@ public final class ScrollViewBuilder extends ViewGroupBuilder {
 
     public ScrollViewBuilder setFillViewport(boolean fillViewport) {
         mView.setFillViewport(fillViewport);
+        return this;
+    }
+
+    public ScrollViewBuilder setSmoothScrollingEnabled(boolean smoothScrollingEnabled) {
+        mView.setSmoothScrollingEnabled(smoothScrollingEnabled);
+        return this;
+    }
+
+    /**
+     * 设置自动滚动到焦点子项（软键盘导致布局变更）
+     *
+     * @param calculator  避让区域计算器
+     * @param owner       生命周期拥有者
+     * @param offsetTop   聚焦子项顶部偏移
+     * @param delayMillis 延迟时间
+     */
+    public ScrollViewBuilder setAutoScrollToFocusChild(@NonNull AvoidAreaCalculator calculator,
+                                                       @NonNull LifecycleOwner owner,
+                                                       int offsetTop, long delayMillis) {
+        calculator.calculateBottom(owner, false, unused ->
+                mView.postDelayed(() -> {
+                    if (InputMethodManagerUtils.isKeyboardOpen(mView)) {
+                        ScrollViewUtils.scrollToFocusChild(mView, offsetTop);
+                    }
+                }, delayMillis));
         return this;
     }
 }
