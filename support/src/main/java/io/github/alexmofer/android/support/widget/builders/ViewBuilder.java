@@ -881,6 +881,16 @@ public class ViewBuilder {
         return this;
     }
 
+    public ViewBuilder setHorizontalScrollBarEnabled(boolean horizontalScrollBarEnabled) {
+        mView.setHorizontalScrollBarEnabled(horizontalScrollBarEnabled);
+        return this;
+    }
+
+    public ViewBuilder setVerticalScrollBarEnabled(boolean verticalScrollBarEnabled) {
+        mView.setVerticalScrollBarEnabled(verticalScrollBarEnabled);
+        return this;
+    }
+
     public interface TouchInterceptor {
 
         /**
