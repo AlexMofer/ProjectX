@@ -233,6 +233,11 @@ public class TextViewBuilder extends ViewBuilder {
         return this;
     }
 
+    public TextViewBuilder setHint(@StringRes int resid) {
+        mView.setHint(resid);
+        return this;
+    }
+
     public TextViewBuilder setHintTextColor(@ColorInt int color) {
         mView.setHintTextColor(color);
         return this;
