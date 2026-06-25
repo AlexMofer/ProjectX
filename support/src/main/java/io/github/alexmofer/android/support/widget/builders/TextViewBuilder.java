@@ -223,6 +223,12 @@ public class TextViewBuilder extends ViewBuilder {
         return setText(owner, text, false);
     }
 
+    public TextViewBuilder setRefreshTextSignal(@NonNull LifecycleOwner owner, @NonNull LiveData<?> signal,
+                                                @NonNull Consumer<TextView> callback) {
+        signal.observe(owner, unused -> callback.accept(mView));
+        return this;
+    }
+
     public TextViewBuilder setInputType(int type) {
         mView.setInputType(type);
         return this;
