@@ -19,6 +19,7 @@ import android.content.Context;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.res.ResourcesCompat;
@@ -27,7 +28,7 @@ import androidx.core.content.res.ResourcesCompat;
  * 字符串资源
  * Created by Alex on 2023/11/28.
  */
-public class StringResource {
+public class StringResource implements StringAdapter {
     private final int mRes;
     private final Object[] mFormatArgs;
     private final String mStr;
@@ -90,14 +91,9 @@ public class StringResource {
         return StringResourceException.getMessage(t);
     }
 
-    /**
-     * 获取字符串
-     *
-     * @param context Context
-     * @return 字符串
-     */
     @Nullable
-    public String getString(Context context) {
+    @Override
+    public String getString(@NonNull Context context) {
         if (mRes != ResourcesCompat.ID_NULL) {
             if (mFormatArgs == null) {
                 return context.getString(mRes);
@@ -107,8 +103,8 @@ public class StringResource {
                 final Object[] args = new Object[count];
                 for (int i = 0; i < count; i++) {
                     final Object arg = mFormatArgs[i];
-                    if (arg instanceof StringResource) {
-                        args[i] = ((StringResource) arg).getString(context);
+                    if (arg instanceof StringAdapter) {
+                        args[i] = ((StringAdapter) arg).getString(context);
                     } else {
                         args[i] = arg;
                     }

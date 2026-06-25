@@ -44,6 +44,7 @@ import androidx.lifecycle.LiveData;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import io.github.alexmofer.android.support.other.StringAdapter;
 import io.github.alexmofer.android.support.other.StringResource;
 import io.github.alexmofer.android.support.utils.ColorUtils;
 import io.github.alexmofer.android.support.utils.DrawableUtils;
@@ -193,6 +194,11 @@ public class TextViewBuilder extends ViewBuilder {
         return this;
     }
 
+    public TextViewBuilder setText(StringAdapter text) {
+        mView.setText(text == null ? null : text.getString(mView.getContext()));
+        return this;
+    }
+
     public TextViewBuilder setText(LifecycleOwner owner, LiveData<?> text,
                                    boolean autoGone) {
         text.observe(owner, value -> {
@@ -208,6 +214,8 @@ public class TextViewBuilder extends ViewBuilder {
                     setText((Integer) value);
                 } else if (value instanceof StringResource) {
                     setText((StringResource) value);
+                } else if (value instanceof StringAdapter) {
+                    setText((StringAdapter) value);
                 } else {
                     setText(value.toString());
                 }
