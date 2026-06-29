@@ -417,4 +417,14 @@ public class TextViewBuilder extends ViewBuilder {
         mView.setSelectAllOnFocus(selectAllOnFocus);
         return this;
     }
+
+    public TextViewBuilder setMaxLength(int maxLength) {
+        TextViewUtils.setMaxLength(mView, maxLength);
+        return this;
+    }
+
+    public TextViewBuilder setAllCaps(boolean allCaps) {
+        mView.setAllCaps(allCaps);
+        return this;
+    }
 }

@@ -16,6 +16,7 @@
 package io.github.alexmofer.android.support.utils;
 
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.TextView;
@@ -61,5 +62,28 @@ public final class TextViewUtils {
         final TextWatcher watcher = TextWatcherUtils.newAfterTextChanged(consumer);
         editor.addTextChangedListener(watcher);
         return watcher;
+    }
+
+    /**
+     * 设置 TextView 的最大字符长度限制
+     *
+     * @param textView  目标 TextView 或 EditText
+     * @param maxLength 最大允许输入的字符数（如 10 代表最多输入 10 个字符）
+     */
+    public static void setMaxLength(@NonNull TextView textView, int maxLength) {
+        if (maxLength <= 0) {
+            textView.setFilters(new InputFilter[0]);
+            return;
+        }
+        final InputFilter.LengthFilter lengthFilter = new InputFilter.LengthFilter(maxLength);
+        final InputFilter[] existingFilters = textView.getFilters();
+        if (existingFilters != null && existingFilters.length > 0) {
+            InputFilter[] newFilters = new InputFilter[existingFilters.length + 1];
+            System.arraycopy(existingFilters, 0, newFilters, 0, existingFilters.length);
+            newFilters[existingFilters.length] = lengthFilter;
+            textView.setFilters(newFilters);
+        } else {
+            textView.setFilters(new InputFilter[]{lengthFilter});
+        }
     }
 }
