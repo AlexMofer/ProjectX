@@ -227,6 +227,12 @@ public class TextViewBuilder extends ViewBuilder {
         return this;
     }
 
+    public TextViewBuilder setTextByToString(@NonNull LifecycleOwner owner,
+                                             @NonNull LiveData<?> text) {
+        text.observe(owner, value -> setText(value == null ? null : value.toString()));
+        return this;
+    }
+
     public TextViewBuilder setText(LifecycleOwner owner, LiveData<?> text) {
         return setText(owner, text, false);
     }
