@@ -29,7 +29,7 @@ import io.github.alexmofer.android.support.utils.FragmentUtils;
  * 基础 Fragment
  * Created by Alex on 2026/4/25.
  */
-public abstract class Fragment extends androidx.fragment.app.Fragment implements BackPressable {
+public abstract class Fragment extends androidx.fragment.app.Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,11 +53,12 @@ public abstract class Fragment extends androidx.fragment.app.Fragment implements
     }
 
     protected void onConfigBackPressed() {
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
-                new InnerOnBackPressedCallback());
+        if (this instanceof BackPressable) {
+            requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
+                    new InnerOnBackPressedCallback());
+        }
     }
 
-    @Override
     public final void dispatchBackPressed() {
         if (onBackPressed()) {
             return;
