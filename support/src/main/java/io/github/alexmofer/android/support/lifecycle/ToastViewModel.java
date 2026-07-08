@@ -17,6 +17,7 @@ package io.github.alexmofer.android.support.lifecycle;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Supplier;
 import androidx.fragment.app.Fragment;
@@ -46,7 +47,7 @@ public class ToastViewModel extends ViewModel {
                                     Supplier<Context> contextSupplier) {
         viewModel.getToast().observe(owner, value -> {
             if (value != null) {
-                value.showToast(contextSupplier.get());
+                viewModel.onShowToast(contextSupplier.get(), value);
                 viewModel.clearToast();
             }
         });
@@ -106,5 +107,15 @@ public class ToastViewModel extends ViewModel {
         if (mToast.getValue() != null) {
             mToast.setValue(null);
         }
+    }
+
+    /**
+     * 显示 Toast
+     *
+     * @param context Context
+     * @param message 消息
+     */
+    protected void onShowToast(@NonNull Context context, @NonNull StringResource message) {
+        message.showToast(context);
     }
 }
