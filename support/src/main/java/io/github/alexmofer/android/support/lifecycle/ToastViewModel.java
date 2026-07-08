@@ -16,6 +16,7 @@
 package io.github.alexmofer.android.support.lifecycle;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,15 +27,16 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import io.github.alexmofer.android.support.other.StringResource;
+import io.github.alexmofer.android.support.function.FunctionPObjectObject;
+import io.github.alexmofer.android.support.other.StringAdapter;
 
 /**
  * Toast ViewModel
  * Created by Alex on 2024/4/23.
  */
 public class ToastViewModel extends ViewModel {
-
-    private final MutableLiveData<StringResource> mToast = new MutableLiveData<>();
+    private final MutableLiveData<StringAdapter> mToast = new MutableLiveData<>();
+    private FunctionPObjectObject<Context, StringAdapter> mToastShowFunction;
 
     /**
      * 观察 Toast
@@ -78,7 +80,7 @@ public class ToastViewModel extends ViewModel {
      *
      * @return Toast
      */
-    public LiveData<StringResource> getToast() {
+    public LiveData<StringAdapter> getToast() {
         return mToast;
     }
 
@@ -87,7 +89,7 @@ public class ToastViewModel extends ViewModel {
      *
      * @param message 消息
      */
-    protected void setToast(@Nullable StringResource message) {
+    protected void setToast(@Nullable StringAdapter message) {
         mToast.setValue(message);
     }
 
@@ -96,7 +98,7 @@ public class ToastViewModel extends ViewModel {
      *
      * @param message 消息
      */
-    protected void postToast(@Nullable StringResource message) {
+    protected void postToast(@Nullable StringAdapter message) {
         mToast.postValue(message);
     }
 
@@ -115,7 +117,23 @@ public class ToastViewModel extends ViewModel {
      * @param context Context
      * @param message 消息
      */
-    protected void onShowToast(@NonNull Context context, @NonNull StringResource message) {
-        message.showToast(context);
+    protected void onShowToast(@NonNull Context context, @NonNull StringAdapter message) {
+        if (mToastShowFunction != null) {
+            mToastShowFunction.execute(context, message);
+        } else {
+            final String msg = message.getString(context);
+            if (msg != null) {
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    /**
+     * 设置 Toast 显示函数
+     *
+     * @param function 函数
+     */
+    public void setToastShowFunction(@Nullable FunctionPObjectObject<Context, StringAdapter> function) {
+        mToastShowFunction = function;
     }
 }
