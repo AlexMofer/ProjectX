@@ -38,13 +38,19 @@ public final class EditTextBuilder extends TextViewBuilder {
     }
 
     public EditTextBuilder(@NonNull Context context) {
-        this(new AppCompatEditText(context));
-        setBackgroundColor(Color.TRANSPARENT);
-        setMinimumHeight(0);
-        setMinHeight(0);
-        setMinimumWidth(0);
-        setMinWidth(0);
-        setInputType(EditorInfo.TYPE_CLASS_TEXT);
+        this(build(context));
+    }
+
+    @NonNull
+    public static EditText build(@NonNull Context context) {
+        final AppCompatEditText editor = new AppCompatEditText(context);
+        editor.setBackgroundColor(Color.TRANSPARENT);
+        editor.setMinimumHeight(0);
+        editor.setMinHeight(0);
+        editor.setMinimumWidth(0);
+        editor.setMinWidth(0);
+        editor.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+        return editor;
     }
 
     @NonNull

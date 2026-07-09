@@ -33,7 +33,12 @@ public final class HorizontalScrollViewBuilder extends ViewGroupBuilder {
     }
 
     public HorizontalScrollViewBuilder(@NonNull Context context) {
-        this(new HorizontalScrollView(context));
+        this(build(context));
+    }
+
+    @NonNull
+    public static HorizontalScrollView build(@NonNull Context context) {
+        return new HorizontalScrollView(context);
     }
 
     @NonNull

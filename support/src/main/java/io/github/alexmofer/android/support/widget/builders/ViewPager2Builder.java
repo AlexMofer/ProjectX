@@ -16,7 +16,6 @@
 package io.github.alexmofer.android.support.widget.builders;
 
 import android.content.Context;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,7 +39,12 @@ public final class ViewPager2Builder extends ViewGroupBuilder {
     }
 
     public ViewPager2Builder(@NonNull Context context) {
-        this(new ViewPager2(context));
+        this(build(context));
+    }
+
+    @NonNull
+    public static ViewPager2 build(@NonNull Context context) {
+        return new ViewPager2(context);
     }
 
     @NonNull

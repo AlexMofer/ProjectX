@@ -36,7 +36,12 @@ public final class ConstraintLayoutBuilder extends ViewGroupBuilder {
     }
 
     public ConstraintLayoutBuilder(@NonNull Context context) {
-        this(new ConstraintLayout(context));
+        this(build(context));
+    }
+
+    @NonNull
+    public static ConstraintLayout build(@NonNull Context context) {
+        return new ConstraintLayout(context);
     }
 
     @NonNull

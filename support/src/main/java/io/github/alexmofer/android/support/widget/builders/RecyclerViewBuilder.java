@@ -27,7 +27,12 @@ public class RecyclerViewBuilder extends ViewGroupBuilder {
     }
 
     public RecyclerViewBuilder(@NonNull Context context) {
-        this(new RecyclerView(context));
+        this(build(context));
+    }
+
+    @NonNull
+    public static RecyclerView build(@NonNull Context context) {
+        return new RecyclerView(context);
     }
 
     @NonNull

@@ -38,7 +38,12 @@ public final class ScrollViewBuilder extends ViewGroupBuilder {
     }
 
     public ScrollViewBuilder(@NonNull Context context) {
-        this(new ScrollView(context));
+        this(build(context));
+    }
+
+    @NonNull
+    public static ScrollView build(@NonNull Context context) {
+        return new ScrollView(context);
     }
 
     @NonNull

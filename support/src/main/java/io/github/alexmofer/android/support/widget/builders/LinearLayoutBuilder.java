@@ -34,7 +34,12 @@ public final class LinearLayoutBuilder extends ViewGroupBuilder {
     }
 
     public LinearLayoutBuilder(@NonNull Context context) {
-        this(new LinearLayout(context));
+        this(build(context));
+    }
+
+    @NonNull
+    public static LinearLayout build(@NonNull Context context) {
+        return new LinearLayout(context);
     }
 
     @NonNull

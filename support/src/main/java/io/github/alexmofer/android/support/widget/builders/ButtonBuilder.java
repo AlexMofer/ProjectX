@@ -35,7 +35,12 @@ public final class ButtonBuilder extends TextViewBuilder {
     }
 
     public ButtonBuilder(@NonNull Context context) {
-        this(new AppCompatButton(context, null, 0));
+        this(build(context));
+    }
+
+    @NonNull
+    public static Button build(@NonNull Context context) {
+        return new AppCompatButton(context, null, 0);
     }
 
     @NonNull

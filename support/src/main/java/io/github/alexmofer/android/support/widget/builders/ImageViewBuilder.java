@@ -43,7 +43,12 @@ public class ImageViewBuilder extends ViewBuilder {
     }
 
     public ImageViewBuilder(@NonNull Context context) {
-        this(new AppCompatImageView(context, null, 0));
+        this(build(context));
+    }
+
+    @NonNull
+    public static ImageView build(@NonNull Context context) {
+        return new AppCompatImageView(context, null, 0);
     }
 
     @NonNull

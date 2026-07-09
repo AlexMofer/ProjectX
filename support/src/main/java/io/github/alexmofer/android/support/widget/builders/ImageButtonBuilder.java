@@ -19,7 +19,12 @@ public final class ImageButtonBuilder extends ImageViewBuilder {
     }
 
     public ImageButtonBuilder(@NonNull Context context) {
-        this(new AppCompatImageButton(context, null, 0));
+        this(build(context));
+    }
+
+    @NonNull
+    public static ImageButton build(@NonNull Context context) {
+        return new AppCompatImageButton(context, null, 0);
     }
 
     @NonNull

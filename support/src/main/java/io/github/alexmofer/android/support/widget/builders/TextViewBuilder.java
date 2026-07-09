@@ -65,7 +65,12 @@ public class TextViewBuilder extends ViewBuilder {
     }
 
     public TextViewBuilder(@NonNull Context context) {
-        this(new AppCompatTextView(context, null, 0));
+        this(build(context));
+    }
+
+    @NonNull
+    public static TextView build(@NonNull Context context) {
+        return new AppCompatTextView(context, null, 0);
     }
 
     public static void setWeight(@NonNull TextView view, @Nullable Typeface family,

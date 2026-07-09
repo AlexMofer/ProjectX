@@ -36,6 +36,7 @@ public class ViewGroupBuilder extends ViewBuilder {
         this.mView = view;
     }
 
+    @NonNull
     public static ViewGroupBuilder newFrameLayout(Context context) {
         return new ViewGroupBuilder(new FrameLayout(context));
     }
