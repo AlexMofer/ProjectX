@@ -47,13 +47,32 @@ public class FragmentUtils {
         //no instance
     }
 
+    @Nullable
+    private static <T> T findCallbackInChildren(@NonNull FragmentManager manager,
+                                                @NonNull Class<T> clazz) {
+        final List<Fragment> children = manager.getFragments();
+        for (Fragment f : children) {
+            if (clazz.isInstance(f)) {
+                //noinspection unchecked
+                return (T) f;
+            }
+            final T found = findCallbackInChildren(f.getChildFragmentManager(), clazz);
+            if (found != null) {
+                return found;
+            }
+        }
+        return null;
+    }
+
     /**
-     * 获取回调 (检查 Fragment 的 View 的上级 View 是否为回调)
+     * 寻找回调
      *
+     * @param view  View
+     * @param clazz 回调类
      * @return 回调
      */
     @Nullable
-    public static <T> T getCallback(@Nullable View view, @NonNull Class<T> clazz) {
+    public static <T> T findCallback(@Nullable View view, @NonNull Class<T> clazz) {
         if (view == null) {
             return null;
         }
@@ -73,16 +92,36 @@ public class FragmentUtils {
     }
 
     /**
-     * 获取回调
-     * 1. 检查 Fragment 的 View 的父 View 是否为回调
-     * 2. 检查 Fragment 的 父 Fragment 是否为回调
-     * 3. 检查 Fragment 的 Activity 是否为回调
-     * 4. 检查 Fragment 的 View 的上级 View 是否为回调
+     * 寻找回调
      *
+     * @param fragment Fragment
+     * @param clazz    回调类
      * @return 回调
      */
     @Nullable
-    public static <T> T getCallback(@NonNull Fragment fragment, @NonNull Class<T> clazz) {
+    public static <T> T findCallback(@NonNull Fragment fragment, @NonNull Class<T> clazz) {
+        final Fragment parent = fragment.getParentFragment();
+        if (parent != null) {
+            if (clazz.isInstance(parent)) {
+                //noinspection unchecked
+                return (T) parent;
+            }
+            final T found = findCallbackInChildren(parent.getChildFragmentManager(), clazz);
+            if (found != null) {
+                return found;
+            }
+        }
+        final FragmentActivity activity = fragment.getActivity();
+        if (activity != null) {
+            if (clazz.isInstance(activity)) {
+                //noinspection unchecked
+                return (T) activity;
+            }
+            final T found = findCallbackInChildren(activity.getSupportFragmentManager(), clazz);
+            if (found != null) {
+                return found;
+            }
+        }
         final View view = fragment.getView();
         if (view != null) {
             final ViewParent vp = view.getParent();
@@ -91,17 +130,19 @@ public class FragmentUtils {
                 return (T) vp;
             }
         }
-        final Fragment parent = fragment.getParentFragment();
-        if (clazz.isInstance(parent)) {
-            //noinspection unchecked
-            return (T) parent;
-        }
-        final FragmentActivity activity = fragment.getActivity();
-        if (clazz.isInstance(activity)) {
-            //noinspection unchecked
-            return (T) activity;
-        }
-        return getCallback(view, clazz);
+        return findCallback(view, clazz);
+    }
+
+    @Deprecated
+    @Nullable
+    public static <T> T getCallback(@Nullable View view, @NonNull Class<T> clazz) {
+        return findCallback(view, clazz);
+    }
+
+    @Deprecated
+    @Nullable
+    public static <T> T getCallback(@NonNull Fragment fragment, @NonNull Class<T> clazz) {
+        return findCallback(fragment, clazz);
     }
 
     /**
@@ -228,6 +269,7 @@ public class FragmentUtils {
     /**
      * 添加
      * 注意：仅推荐无 View 的 Fragment 使用
+     *
      * @param manager FragmentManager
      * @param clazz   Fragment 类名
      * @param args    参数
@@ -324,8 +366,8 @@ public class FragmentUtils {
      * @return 显示成功时返回true
      */
     public static boolean show(@NonNull FragmentManager manager,
-                                  @NonNull Class<? extends DialogFragment> clazz,
-                                  @Nullable Bundle args) {
+                               @NonNull Class<? extends DialogFragment> clazz,
+                               @Nullable Bundle args) {
         final String tag = clazz.getName();
         if (NonRepeatable.class.isAssignableFrom(clazz)) {
             // 不可重复
