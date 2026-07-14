@@ -35,7 +35,7 @@ import java.util.Objects;
  * Created by Alex on 2026/7/9.
  */
 public final class ChangeTextStateColor extends Transition {
-    private static final String PROPNAME_COLOR = "android:ChangeTextSelectableColor:color";
+    private static final String PROPNAME_COLOR = "io.github.alexmofer.android.support:ChangeTextSelectableColor:color";
     private static final String[] sTransitionProperties = {PROPNAME_COLOR};
     private static final ColorEvaluator sColorEvaluator = new ColorEvaluator();
 
