@@ -37,13 +37,17 @@ public abstract class Fragment extends androidx.fragment.app.Fragment {
         onConfigTransition(savedInstanceState);
     }
 
+    protected long getTransitionDuration() {
+        return requireContext().getResources().getInteger(android.R.integer.config_shortAnimTime);
+    }
+
     /**
      * 配置转场
      *
      * @param savedInstanceState 状态
      */
     protected void onConfigTransition(@Nullable Bundle savedInstanceState) {
-        FragmentTransitions.setTransitions(this);
+        FragmentTransitions.setTransitions(this, getTransitionDuration());
     }
 
     @Override
