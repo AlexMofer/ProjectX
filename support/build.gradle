@@ -4,10 +4,14 @@ plugins {
 
 android {
     namespace 'io.github.alexmofer.android.support'
-    compileSdkVersion 37
+    compileSdk {
+        version = release(37) {
+            minorApiLevel = 2
+        }
+    }
 
     defaultConfig {
-        minSdkVersion 24
+        minSdk 24
     }
 
     compileOptions {

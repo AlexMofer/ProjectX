@@ -4,12 +4,16 @@ plugins {
 
 android {
     namespace 'io.github.alexmofer.projectx'
-    compileSdkVersion 37
+    compileSdk {
+        version = release(37) {
+            minorApiLevel = 2
+        }
+    }
 
     defaultConfig {
         applicationId "io.github.alexmofer.projectx"
-        minSdkVersion 24
-        targetSdkVersion 37
+        minSdk 26
+        targetSdk 37
         versionCode 82
         versionName "4.0.0"
     }
