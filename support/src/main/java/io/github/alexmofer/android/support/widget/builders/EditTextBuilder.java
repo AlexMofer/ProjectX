@@ -22,8 +22,11 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatEditText;
+
+import io.github.alexmofer.android.support.utils.EditTextUtils;
 
 /**
  * EditText 构建器
@@ -82,6 +85,27 @@ public final class EditTextBuilder extends TextViewBuilder {
     @RequiresApi(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     public EditTextBuilder setStyleShortcutsEnabled(boolean enabled) {
         mView.setStyleShortcutsEnabled(enabled);
+        return this;
+    }
+
+    /**
+     * 设置文件名输入
+     *
+     * @param extension 拓展名，null或者长度0表示为文件夹
+     */
+    public EditTextBuilder setFilenameInput(@Nullable String extension) {
+        EditTextUtils.setFilenameInput(mView, extension);
+        return this;
+    }
+
+    /**
+     * 在光标位置插入文本（如果光标是选区则替换选区）
+     *
+     * @param text            要插入的文本
+     * @param adjustSelection 是否调整光标
+     */
+    public EditTextBuilder insertText(String text, boolean adjustSelection) {
+        EditTextUtils.insertText(mView, text, adjustSelection);
         return this;
     }
 }

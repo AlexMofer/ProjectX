@@ -15,7 +15,9 @@
  */
 package io.github.alexmofer.android.support.utils;
 
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.Selection;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
@@ -52,6 +54,57 @@ public class EditTextUtils {
         } else {
             // 文件
             editor.setOnFocusChangeListener(new FileNameSelector(editor, extension));
+        }
+    }
+
+    /**
+     * 在光标位置插入文本（如果光标是选区则替换选区）
+     *
+     * @param view            文本视图
+     * @param text            要插入的文本
+     * @param adjustSelection 是否调整光标
+     */
+    public static void insertText(EditText view, String text, boolean adjustSelection) {
+        final Editable editable = view == null ? null : view.getText();
+        if (editable == null) {
+            return;
+        }
+        // 获取当前选区/光标位置
+        final int start = view.getSelectionStart();
+        final int end = view.getSelectionEnd();
+
+        // 容错处理：如果未能成功获取光标位置（如 view 未获取焦点），默认放置在文本末尾
+        int realStart = Math.max(0, Math.min(start, end));
+        int realEnd = Math.max(0, Math.max(start, end));
+
+        // 避免插入 null
+        CharSequence insertText = text == null ? "" : text;
+
+        if (realStart == realEnd) {
+            // ================= 1. 非选区（光标插入） =================
+            if (TextUtils.isEmpty(insertText)) {
+                return;
+            }
+
+            // 在光标位置插入文本
+            editable.insert(realStart, insertText);
+
+            // 如果需要调整光标，将光标移动到新插入文本的末尾
+            if (adjustSelection) {
+                int newCursorPos = realStart + insertText.length();
+                Selection.setSelection(editable, newCursorPos);
+            }
+
+        } else {
+            // ================= 2. 选区（替换选区） =================
+            // 用新文本替换选中区域 [realStart, realEnd)
+            editable.replace(realStart, realEnd, insertText);
+
+            // 如果需要调整光标，将光标区域重置为新文本的选区状态 [realStart, realStart + newTextLength]
+            if (adjustSelection) {
+                int newSelectionEnd = realStart + insertText.length();
+                Selection.setSelection(editable, realStart, newSelectionEnd);
+            }
         }
     }
 
