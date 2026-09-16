@@ -133,18 +133,6 @@ public class FragmentUtils {
         return findCallback(view, clazz);
     }
 
-    @Deprecated
-    @Nullable
-    public static <T> T getCallback(@Nullable View view, @NonNull Class<T> clazz) {
-        return findCallback(view, clazz);
-    }
-
-    @Deprecated
-    @Nullable
-    public static <T> T getCallback(@NonNull Fragment fragment, @NonNull Class<T> clazz) {
-        return findCallback(fragment, clazz);
-    }
-
     /**
      * 存入数据
      *
@@ -381,7 +369,7 @@ public class FragmentUtils {
         }
         final DialogFragment created;
         try {
-            created = clazz.newInstance();
+            created = clazz.getDeclaredConstructor().newInstance();
         } catch (Throwable t) {
             return false;
         }
