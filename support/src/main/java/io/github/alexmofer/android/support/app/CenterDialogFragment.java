@@ -396,7 +396,6 @@ public class CenterDialogFragment extends AppCompatDialogFragment {
             warp.setClipToOutline(getContentClipToOutline());
             warp.setElevation(getContentElevation(context));
             mContent = warp;
-//            AvoidArea.paddingAll(this);
         }
 
         @Override
