@@ -29,10 +29,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
-import io.github.alexmofer.android.support.app.ApplicationHolder;
 import io.github.alexmofer.android.support.app.NonRepeatable;
 
 /**
@@ -40,8 +37,6 @@ import io.github.alexmofer.android.support.app.NonRepeatable;
  * Created by Alex on 2024/3/8.
  */
 public class FragmentUtils {
-
-    private static final String KEY_ID = "io.github.alexmofer.android.support.key.ID";
 
     private FragmentUtils() {
         //no instance
@@ -131,46 +126,6 @@ public class FragmentUtils {
             }
         }
         return findCallback(view, clazz);
-    }
-
-    /**
-     * 存入数据
-     *
-     * @param args Fragment 参数
-     * @param data 数据
-     */
-    public static void putData(@NonNull Bundle args, Object data) {
-        final String id = UUID.randomUUID().toString();
-        ApplicationHolder.putData(id, data);
-        args.putString(KEY_ID, id);
-    }
-
-    /**
-     * 获取数据
-     *
-     * @param fragment Fragment
-     * @return 数据，注意类型转换问题
-     */
-    @Nullable
-    public static <T> T getData(@NonNull Fragment fragment) {
-        final Bundle args = fragment.getArguments();
-        if (args == null || !args.containsKey(KEY_ID)) {
-            return null;
-        }
-        return ApplicationHolder.getData(Objects.requireNonNull(args.getString(KEY_ID)));
-    }
-
-    /**
-     * 移除数据
-     *
-     * @param fragment Fragment
-     */
-    public static void removeData(@NonNull Fragment fragment) {
-        final Bundle args = fragment.getArguments();
-        if (args == null || !args.containsKey(KEY_ID)) {
-            return;
-        }
-        ApplicationHolder.removeData(Objects.requireNonNull(args.getString(KEY_ID)));
     }
 
     /**
