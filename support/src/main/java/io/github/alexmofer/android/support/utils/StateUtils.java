@@ -43,10 +43,12 @@ public final class StateUtils {
     public static final int[] STATE_ENABLED = new int[]{android.R.attr.state_enabled};
     public static final int[] STATE_DISABLED = new int[]{-android.R.attr.state_enabled};
     public static final int[] STATE_FOCUSED = new int[]{android.R.attr.state_focused};
+    public static final int[] STATE_PRESSED = new int[]{android.R.attr.state_pressed};
     public static final int[][] STATES_SELECTED = new int[][]{STATE_SELECTED, STATE_FALLBACK};
     public static final int[][] STATES_ACTIVATED = new int[][]{STATE_ACTIVATED, STATE_FALLBACK};
     public static final int[][] STATES_ENABLED = new int[][]{STATE_ENABLED, STATE_FALLBACK};
     public static final int[][] STATES_FOCUSED_DISABLED = new int[][]{STATE_FOCUSED, STATE_DISABLED, STATE_FALLBACK};
+    public static final int[][] STATES_PRESSED_DISABLED = new int[][]{STATE_PRESSED, STATE_DISABLED, STATE_FALLBACK};
 
     private StateUtils() {
         //no instance
@@ -116,6 +118,13 @@ public final class StateUtils {
     }
 
     @NonNull
+    public static StateListDrawable newDrawablePressedDisabled(@NonNull Drawable pressed,
+                                                               @NonNull Drawable disabled,
+                                                               @NonNull Drawable fallback) {
+        return newDrawable(STATES_PRESSED_DISABLED, pressed, disabled, fallback);
+    }
+
+    @NonNull
     public static ColorStateList newColor(@NonNull int[][] states,
                                           @NonNull @ColorInt int... colors) {
         return new ColorStateList(states, colors);
@@ -161,6 +170,20 @@ public final class StateUtils {
                                                  @ColorRes int fallback) {
         return newColorEnabled(ContextCompat.getColor(context, enabled),
                 ContextCompat.getColor(context, fallback));
+    }
+
+    @NonNull
+    public static ColorStateList newColorFocusedDisabled(@ColorInt int focused,
+                                                         @ColorInt int disabled,
+                                                         @ColorInt int fallback) {
+        return newColor(STATES_FOCUSED_DISABLED, focused, disabled, fallback);
+    }
+
+    @NonNull
+    public static ColorStateList newColorPressedDisabled(@ColorInt int pressed,
+                                                         @ColorInt int disabled,
+                                                         @ColorInt int fallback) {
+        return newColor(STATES_PRESSED_DISABLED, pressed, disabled, fallback);
     }
 
     @NonNull
