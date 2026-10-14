@@ -50,6 +50,7 @@ import java.util.function.Consumer;
 import io.github.alexmofer.android.support.function.FunctionPObject;
 import io.github.alexmofer.android.support.function.FunctionPObjectBoolean;
 import io.github.alexmofer.android.support.function.FunctionPObjectObject;
+import io.github.alexmofer.android.support.function.FunctionRBooleanPObjectObject;
 import io.github.alexmofer.android.support.utils.InputMethodManagerUtils;
 import io.github.alexmofer.android.support.utils.TypedValueUtils;
 import io.github.alexmofer.android.support.window.AvoidAreaCalculator;
@@ -807,7 +808,8 @@ public class ViewBuilder {
         return this;
     }
 
-    public ViewBuilder setSelected(LifecycleOwner owner, LiveData<Boolean> selected) {
+    public ViewBuilder setSelected(@NonNull LifecycleOwner owner,
+                                   @Nullable LiveData<Boolean> selected) {
         if (selected == null) {
             return this;
         }
@@ -815,7 +817,8 @@ public class ViewBuilder {
         return this;
     }
 
-    public ViewBuilder setSelected(LifecycleOwner owner, LiveData<Boolean> selected,
+    public ViewBuilder setSelected(@NonNull LifecycleOwner owner,
+                                   @Nullable LiveData<Boolean> selected,
                                    boolean reverse) {
         if (selected == null) {
             return this;
@@ -828,11 +831,24 @@ public class ViewBuilder {
         return this;
     }
 
-    public ViewBuilder setSelected(LifecycleOwner owner, LiveData<?> selected, Object value) {
+    public ViewBuilder setSelected(@NonNull LifecycleOwner owner,
+                                   @Nullable LiveData<?> selected,
+                                   @Nullable Object value) {
         if (selected == null) {
             return this;
         }
         selected.observe(owner, v -> mView.setSelected(Objects.equals(value, v)));
+        return this;
+    }
+
+    public ViewBuilder setSelected(@NonNull LifecycleOwner owner,
+                                   @Nullable LiveData<?> selected,
+                                   @Nullable Object value,
+                                   @NonNull FunctionRBooleanPObjectObject<Object, Object> checker) {
+        if (selected == null) {
+            return this;
+        }
+        selected.observe(owner, v -> mView.setSelected(checker.execute(v, value)));
         return this;
     }
 

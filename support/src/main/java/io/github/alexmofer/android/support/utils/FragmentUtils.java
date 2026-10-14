@@ -129,6 +129,47 @@ public class FragmentUtils {
     }
 
     /**
+     * 寻找回调
+     *
+     * @param activity FragmentActivity
+     * @param clazz    回调类
+     * @return 回调
+     */
+    @Nullable
+    public static <T> T findCallback(@NonNull FragmentActivity activity, @NonNull Class<T> clazz) {
+        if (clazz.isInstance(activity)) {
+            //noinspection unchecked
+            return (T) activity;
+        }
+        return findCallbackInChildren(activity.getSupportFragmentManager(), clazz);
+    }
+
+    /**
+     * 寻找回调
+     *
+     * @param container 拥有者
+     * @param clazz     回调类
+     * @return 回调
+     */
+    @Nullable
+    public static <T> T findCallback(@NonNull Object container, @NonNull Class<T> clazz) {
+        if (clazz.isInstance(container)) {
+            //noinspection unchecked
+            return (T) container;
+        }
+        if (container instanceof FragmentActivity) {
+            return findCallback((FragmentActivity) container, clazz);
+        }
+        if (container instanceof Fragment) {
+            return FragmentUtils.findCallback((Fragment) container, clazz);
+        }
+        if (container instanceof View) {
+            return FragmentUtils.findCallback((View) container, clazz);
+        }
+        return null;
+    }
+
+    /**
      * 尝试移除自身
      *
      * @param fragment Fragment
