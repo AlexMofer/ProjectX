@@ -31,6 +31,7 @@ import androidx.annotation.Nullable;
  * 圆形投影背景
  * Created by Alex on 2026/6/8.
  */
+@Deprecated
 public final class CircleDropShadowBackground extends Drawable {
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final float mPercentage;
