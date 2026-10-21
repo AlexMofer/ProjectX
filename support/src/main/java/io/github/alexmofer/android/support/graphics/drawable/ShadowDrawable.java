@@ -108,6 +108,7 @@ public class ShadowDrawable extends Drawable {
             //noinspection deprecation
             outline.setConvexPath(mPath);
         }
+        outline.setAlpha(1);
     }
 
     public void setShadow(float radius, float dx, float dy, @ColorInt int shadowColor) {
