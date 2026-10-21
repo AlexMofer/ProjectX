@@ -17,6 +17,7 @@ package io.github.alexmofer.android.support.graphics.drawable;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
+import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
@@ -24,6 +25,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -96,6 +98,16 @@ public class ShadowDrawable extends Drawable {
     @Override
     public void setColorFilter(@Nullable ColorFilter colorFilter) {
         mPaint.setColorFilter(colorFilter);
+    }
+
+    @Override
+    public void getOutline(@NonNull Outline outline) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            outline.setPath(mPath);
+        } else {
+            //noinspection deprecation
+            outline.setConvexPath(mPath);
+        }
     }
 
     public void setShadow(float radius, float dx, float dy, @ColorInt int shadowColor) {
