@@ -15,6 +15,7 @@
  */
 package io.github.alexmofer.android.support.utils;
 
+import android.graphics.Paint;
 import android.text.TextPaint;
 
 import androidx.annotation.NonNull;
@@ -39,5 +40,38 @@ public final class TextPaintUtils {
     public static float getBaseline(@NonNull TextPaint paint, float centerY) {
         final float ascent = paint.ascent();
         return centerY - (paint.descent() - ascent) * 0.5f - ascent;
+    }
+
+    /**
+     * 获取字体高度
+     *
+     * @param paint 字体画笔
+     * @return 字体高度
+     */
+    public static float getFontHeight(@NonNull TextPaint paint) {
+        final Paint.FontMetrics metrics = paint.getFontMetrics();
+        return metrics.descent - metrics.ascent;
+    }
+
+    /**
+     * 获取字体高度（包含过多的冗余留白）
+     *
+     * @param paint 字体画笔
+     * @return 字体高度（包含过多的冗余留白）
+     */
+    public static float getFontHeightWithPadding(@NonNull TextPaint paint) {
+        final Paint.FontMetrics metrics = paint.getFontMetrics();
+        return metrics.bottom - metrics.top;
+    }
+
+    /**
+     * 获取行高
+     *
+     * @param paint 字体画笔
+     * @return 行高
+     */
+    public static float getLineHeight(@NonNull TextPaint paint) {
+        final Paint.FontMetrics metrics = paint.getFontMetrics();
+        return metrics.descent - metrics.ascent + metrics.leading;
     }
 }
