@@ -146,6 +146,30 @@ public final class AvoidAreaCalculator {
 
     /**
      * 计算
+     * <p>不会处理布局方向，请在应用时自行根据 View 布局方向进行处理
+     *
+     * @param owner    LifecycleOwner
+     * @param ime      是否处理输入法
+     * @param callback 回调，未处理布局方向
+     */
+    public void calculate(@NonNull LifecycleOwner owner, boolean ime, @NonNull Callback callback) {
+        calculate(owner, ime ? WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout() | WindowInsetsCompat.Type.ime()
+                : WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout(), ALL, callback);
+    }
+
+    /**
+     * 计算
+     * <p>不会处理布局方向，请在应用时自行根据 View 布局方向进行处理
+     *
+     * @param owner    LifecycleOwner
+     * @param callback 回调，未处理布局方向
+     */
+    public void calculate(@NonNull LifecycleOwner owner, @NonNull Callback callback) {
+        calculate(owner, false, callback);
+    }
+
+    /**
+     * 计算
      * <p>有些计算条件可能会处理布局方向
      *
      * @param owner      LifecycleOwner
