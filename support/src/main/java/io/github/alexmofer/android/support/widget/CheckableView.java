@@ -80,7 +80,7 @@ public abstract class CheckableView extends View implements Checkable {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!mDragEnabled) {
+        if (!mDragEnabled || !isEnabled()) {
             return super.onTouchEvent(event);
         }
         final int action = event.getAction();
