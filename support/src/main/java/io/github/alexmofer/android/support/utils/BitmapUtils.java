@@ -36,6 +36,7 @@ import androidx.exifinterface.media.ExifInterface;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.function.Consumer;
 
 /**
  * 位图工具
@@ -438,15 +439,17 @@ public final class BitmapUtils {
     /**
      * 从文件创建图片
      *
-     * @param file      图片文件
-     * @param maxWidth  最大宽度，小于等于0表示不限制
-     * @param maxHeight 最大高度，小于等于0表示不限制
+     * @param file            图片文件
+     * @param maxWidth        最大宽度，小于等于0表示不限制
+     * @param maxHeight       最大高度，小于等于0表示不限制
+     * @param optionsConsumer 选项配置器
      * @return 图片
      * @throws Exception 创建图片时发生的异常
      */
     @NonNull
     public static Bitmap fromFile(@NonNull File file,
-                                  int maxWidth, int maxHeight) throws Exception {
+                                  int maxWidth, int maxHeight,
+                                  @Nullable Consumer<BitmapFactory.Options> optionsConsumer) throws Exception {
         final int srcWidth;
         final int srcHeight;
         try (final InputStream input = StreamUtils.newInputStream(file)) {
@@ -474,6 +477,9 @@ public final class BitmapUtils {
         final int targetHeight = isRotated ? srcWidth : srcHeight;
 
         final BitmapFactory.Options options = new BitmapFactory.Options();
+        if (optionsConsumer != null) {
+            optionsConsumer.accept(options);
+        }
         options.inSampleSize = calculateInSampleSize(targetWidth, targetHeight, maxWidth, maxHeight);
         // 3. 第二阶段：正式解码加载 Bitmap
         Bitmap bitmap;
@@ -506,6 +512,21 @@ public final class BitmapUtils {
             }
         }
         return bitmap;
+    }
+
+    /**
+     * 从文件创建图片
+     *
+     * @param file      图片文件
+     * @param maxWidth  最大宽度，小于等于0表示不限制
+     * @param maxHeight 最大高度，小于等于0表示不限制
+     * @return 图片
+     * @throws Exception 创建图片时发生的异常
+     */
+    @NonNull
+    public static Bitmap fromFile(@NonNull File file,
+                                  int maxWidth, int maxHeight) throws Exception {
+        return fromFile(file, maxWidth, maxHeight, null);
     }
 
     /**
