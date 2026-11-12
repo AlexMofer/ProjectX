@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Objects;
 
 import io.github.alexmofer.android.support.function.FunctionPObjectBoolean;
+import io.github.alexmofer.android.support.widget.AutoAdjustSpanCount;
 import io.github.alexmofer.android.support.widget.AutoAdjustSpanCountGridLayoutManager;
 import io.github.alexmofer.android.support.widget.AutoCenterHorizontalLinearLayoutManager;
 
@@ -46,10 +48,63 @@ public class RecyclerViewBuilder extends ViewGroupBuilder {
         return this;
     }
 
+    @Deprecated
     public RecyclerViewBuilder setGridLayoutManager(int minCount, int itemMinWidth,
                                                     boolean notifyItemDecorations) {
         return setLayoutManager(new AutoAdjustSpanCountGridLayoutManager(
                 mView.getContext(), minCount, itemMinWidth, notifyItemDecorations));
+    }
+
+    public RecyclerViewBuilder setAutoAdjustSpanCountGrid(int orientation,
+                                                          boolean reverseLayout,
+                                                          int spanMinCount,
+                                                          @Px int itemMinWidth,
+                                                          boolean notifyItemDecorations) {
+        return setLayoutManager(new AutoAdjustSpanCount.GridLayoutManager(
+                mView.getContext(), orientation, reverseLayout, spanMinCount, itemMinWidth, notifyItemDecorations));
+    }
+
+    public RecyclerViewBuilder setAutoAdjustSpanCountGrid(int spanMinCount,
+                                                          @Px int itemMinWidth,
+                                                          boolean notifyItemDecorations) {
+        return setLayoutManager(new AutoAdjustSpanCount.GridLayoutManager(
+                mView.getContext(), spanMinCount, itemMinWidth, notifyItemDecorations));
+    }
+
+    public RecyclerViewBuilder setAutoAdjustSpanCountGrid(int spanMinCount,
+                                                          @Px int itemMinWidth) {
+        return setLayoutManager(new AutoAdjustSpanCount.GridLayoutManager(
+                mView.getContext(), spanMinCount, itemMinWidth));
+    }
+
+    public RecyclerViewBuilder setAutoAdjustSpanCountGrid(@Px int itemMinWidth) {
+        return setLayoutManager(new AutoAdjustSpanCount.GridLayoutManager(
+                mView.getContext(), itemMinWidth));
+    }
+
+    public RecyclerViewBuilder setAutoAdjustSpanCountStaggeredGrid(int spanMinCount,
+                                                                   int orientation,
+                                                                   @Px int itemMinWidth,
+                                                                   boolean notifyItemDecorations) {
+        return setLayoutManager(new AutoAdjustSpanCount.StaggeredGridLayoutManager(
+                spanMinCount, orientation, itemMinWidth, notifyItemDecorations));
+    }
+
+    public RecyclerViewBuilder setAutoAdjustSpanCountStaggeredGrid(int spanMinCount,
+                                                                   @Px int itemMinWidth,
+                                                                   boolean notifyItemDecorations) {
+        return setLayoutManager(new AutoAdjustSpanCount.StaggeredGridLayoutManager(
+                spanMinCount, itemMinWidth, notifyItemDecorations));
+    }
+
+    public RecyclerViewBuilder setAutoAdjustSpanCountStaggeredGrid(int spanMinCount,
+                                                                   @Px int itemMinWidth) {
+        return setLayoutManager(new AutoAdjustSpanCount.StaggeredGridLayoutManager(
+                spanMinCount, itemMinWidth));
+    }
+
+    public RecyclerViewBuilder setAutoAdjustSpanCountStaggeredGrid(@Px int itemMinWidth) {
+        return setLayoutManager(new AutoAdjustSpanCount.StaggeredGridLayoutManager(itemMinWidth));
     }
 
     public RecyclerViewBuilder setVertical() {
